@@ -18,6 +18,11 @@ export const metadata: Metadata = {
   description: "Is GitHub up? A tiny service status monitor.",
 };
 
+// The service registry (lib/services.ts) is a JSON file read at request
+// time, not a build-time constant — force every page to render dynamically
+// so newly-added services show up without a rebuild.
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({
   children,
 }: Readonly<{

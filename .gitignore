@@ -25,6 +25,10 @@ yarn-error.log*
 # vercel
 .vercel
 
+# runtime-added service registry (see lib/services.ts) — seeded fresh on
+# first run, not meant to be committed
+/data/
+
 # editor
 .vscode/
 

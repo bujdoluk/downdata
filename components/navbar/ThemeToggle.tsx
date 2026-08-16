@@ -30,7 +30,9 @@ export default function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label="Toggle theme"
-      className="ml-auto rounded-md p-2 text-neutral-500 hover:bg-black/5 dark:text-white/60 dark:hover:bg-white/10"
+      // Unconditional (not dark:-prefixed): this button always sits on the
+      // permanently-black navbar, regardless of the site-wide theme.
+      className="rounded-md p-2 text-white/60 hover:bg-white/10"
     >
       {/* Shown in dark mode (click to switch to light) */}
       <SunIcon className="hidden dark:block" />

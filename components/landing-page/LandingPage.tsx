@@ -1,0 +1,342 @@
+import Link from "next/link";
+
+const mono = "font-mono";
+
+function BoltIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor" className={className} aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+    </svg>
+  );
+}
+
+function UserGroupIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor" className={className} aria-hidden="true">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
+      />
+    </svg>
+  );
+}
+
+function StackIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor" className={className} aria-hidden="true">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
+      />
+    </svg>
+  );
+}
+
+const features = [
+  {
+    icon: BoltIcon,
+    title: "Checks as fast as 5 seconds",
+    body: "Starter checks every 15s, Pro every 10s. UptimeRobot's cheapest paid plan only manages 60s.",
+  },
+  {
+    icon: UserGroupIcon,
+    title: "Unlimited seats, every plan",
+    body: "UptimeRobot charges $15–19/month per teammate past the first three. Here, the whole team is included.",
+  },
+  {
+    icon: StackIcon,
+    title: "Self-hosted, if you want",
+    body: "Run it on your own box for a flat fee. None of the five competitors we checked offer that at all.",
+  },
+];
+
+export default function LandingPage() {
+  return (
+    <div data-theme="dark" className="bg-base-100 text-base-content">
+      {/* Nav */}
+      <nav className="border-base-300 border-b">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-5">
+          <Link href="/" className="text-lg font-extrabold tracking-tight">
+            <span className="text-primary">down</span>DATA
+          </Link>
+          <div className="flex items-center gap-8 text-sm">
+            <a href="#pricing" className="text-base-content/70 hover:text-base-content transition-colors">
+              Pricing
+            </a>
+            <a href="#" className="btn btn-sm rounded-full">
+              Start free trial
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <header className="relative overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="bg-primary/20 pointer-events-none absolute top-[-12rem] left-1/2 h-[36rem] w-[56rem] -translate-x-1/2 rounded-full blur-[120px]"
+        />
+        <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-8 py-24 lg:grid-cols-[1.05fr_1fr] lg:py-32">
+          <div className="flex flex-col items-center gap-7 text-center lg:items-start lg:text-left">
+            <div className={`badge badge-success badge-soft gap-2 py-4 text-[0.72rem] tracking-[0.1em] uppercase ${mono}`}>
+              <span className="bg-success animate-signal-pulse h-[7px] w-[7px] rounded-full" />
+              All monitored services operational
+            </div>
+
+            <h1 className="max-w-xl text-5xl leading-[1.05] font-black tracking-tight text-balance sm:text-6xl">
+              If it goes <span className="text-primary">down</span>, you&rsquo;ll know first.
+            </h1>
+
+            <p className="text-base-content/70 max-w-lg text-lg leading-relaxed">
+              downDATA watches the status pages you already depend on — GitHub, Supabase,
+              Cloudflare, and anything else on Atlassian Statuspage — checked as often as
+              every <span className={`${mono} text-base-content`}>5s</span>, starting at{" "}
+              <span className={`${mono} text-base-content`}>$5/month</span> where StatusGator
+              charges <span className={`${mono} text-base-content`}>$274</span> for the same job.
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+              <a href="#" className="btn btn-primary rounded-full shadow-lg">
+                Start your 14-day trial
+              </a>
+              <a href="#pricing" className="btn btn-outline rounded-full">
+                See pricing
+              </a>
+            </div>
+            <div className="text-base-content/50 text-sm">No credit card. Full access for 14 days.</div>
+          </div>
+
+          {/* Demo panel — the hero visual */}
+          <div className="relative mx-auto w-full max-w-md lg:mx-0">
+            <div className="bg-primary/10 absolute inset-0 translate-x-3 translate-y-3 rounded-2xl" aria-hidden="true" />
+            <div className="card card-border bg-base-200 relative shadow-2xl">
+              <div className="card-body gap-3 p-6">
+                <div className="flex items-center justify-between px-1 pb-1">
+                  <span className={`text-base-content/50 text-[0.7rem] tracking-[0.1em] uppercase ${mono}`}>
+                    Live dashboard
+                  </span>
+                  <span className="flex gap-1.5">
+                    <span className="bg-base-content/10 h-2.5 w-2.5 rounded-full" />
+                    <span className="bg-base-content/10 h-2.5 w-2.5 rounded-full" />
+                    <span className="bg-base-content/10 h-2.5 w-2.5 rounded-full" />
+                  </span>
+                </div>
+                {[
+                  { name: "GitHub", status: "All Systems Operational", ok: true },
+                  { name: "Supabase", status: "Partially Degraded Service", ok: false },
+                  { name: "Cloudflare", status: "All Systems Operational", ok: true },
+                ].map((row) => (
+                  <div
+                    key={row.name}
+                    className="border-base-300 bg-base-300/40 hover:border-base-content/20 flex items-center justify-between gap-4 rounded-xl border px-4 py-3.5 transition-colors"
+                  >
+                    <div className="flex items-center gap-3 text-sm font-semibold">
+                      <span className="flex h-5 w-5 shrink-0 overflow-hidden rounded-[5px]">
+                        <span className="bg-success flex-1" />
+                        <span className="bg-warning flex-1" />
+                        <span className="bg-error flex-1" />
+                      </span>
+                      {row.name}
+                    </div>
+                    <div className={`flex items-center gap-2 text-xs ${row.ok ? "text-success" : "text-warning"}`}>
+                      <span className={`h-2 w-2 shrink-0 rounded-full ${row.ok ? "bg-success" : "bg-warning"}`} />
+                      {row.status}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* Features */}
+      <section className="border-base-300 bg-base-200/40 border-t py-24">
+        <div className="mx-auto max-w-6xl px-8">
+          <div className="mx-auto mb-14 flex max-w-xl flex-col items-center gap-3 text-center">
+            <h2 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
+              Cheaper because the bill behind it is smaller.
+            </h2>
+            <p className="text-base-content/70">
+              Competitor pricing partly pays for phone/SMS infrastructure and
+              multi-region probe networks we don&rsquo;t carry the same way.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+            {features.map(({ icon: Icon, title, body }) => (
+              <div key={title} className="card card-border bg-base-200 hover:border-base-content/20 transition-colors">
+                <div className="card-body gap-4 p-7">
+                  <div className="bg-primary/10 flex h-11 w-11 items-center justify-center rounded-xl">
+                    <Icon className="text-primary h-6 w-6" />
+                  </div>
+                  <h3 className="card-title text-base">{title}</h3>
+                  <p className="text-base-content/70 text-sm leading-relaxed">{body}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section id="pricing" className="py-24">
+        <div className="mx-auto max-w-6xl px-8">
+          <div className="mx-auto mb-14 flex max-w-xl flex-col items-center gap-3 text-center">
+            <h2 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">Pricing</h2>
+            <p className="text-base-content/70">
+              Instead, a real 14-day trial with full access — no card required. Pick
+              a plan when you&rsquo;re ready, not before.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {/* Starter */}
+            <div className="card card-border bg-base-200">
+              <div className="card-body gap-6 p-8">
+                <div className="flex flex-col gap-1">
+                  <div className="text-base font-bold">Starter</div>
+                  <div className={`text-4xl font-bold ${mono}`}>
+                    $5<span className="text-base-content/50 text-base font-normal">/mo</span>
+                  </div>
+                </div>
+                <ul className="text-base-content/70 flex flex-1 flex-col gap-3 text-sm">
+                  <li className="flex justify-between gap-4">
+                    Monitors <span className={`${mono} text-base-content`}>50</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    Check interval <span className={`${mono} text-base-content`}>15s</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    Status pages <span className={`${mono} text-base-content`}>5</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    Team seats <span className={`${mono} text-base-content`}>Unlimited</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    History <span className={`${mono} text-base-content`}>6 mo</span>
+                  </li>
+                </ul>
+                <div className="card-actions">
+                  <a href="#" className="btn btn-outline w-full rounded-full">
+                    Get started
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Pro */}
+            <div className="card card-border border-primary/40 bg-base-200 shadow-2xl">
+              <div className="card-body gap-6 p-8">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center justify-between text-base font-bold">
+                    Pro
+                    <span className={`badge badge-primary ${mono}`}>Most teams</span>
+                  </div>
+                  <div className={`text-4xl font-bold ${mono}`}>
+                    $15<span className="text-base-content/50 text-base font-normal">/mo</span>
+                  </div>
+                </div>
+                <ul className="text-base-content/70 flex flex-1 flex-col gap-3 text-sm">
+                  <li className="flex justify-between gap-4">
+                    Monitors <span className={`${mono} text-base-content`}>250</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    Check interval <span className={`${mono} text-base-content`}>10s</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    Status pages <span className={`${mono} text-base-content`}>Unlimited</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    Team seats <span className={`${mono} text-base-content`}>Unlimited</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    History <span className={`${mono} text-base-content`}>12 mo</span>
+                  </li>
+                </ul>
+                <div className="card-actions">
+                  <a href="#" className="btn btn-primary w-full rounded-full">
+                    Get started
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Business — in the making */}
+            <div className="card card-border card-dash bg-base-200/60">
+              <div className="card-body gap-6 p-8">
+                <div className="flex flex-col gap-1">
+                  <div className="text-base-content/70 flex items-center justify-between text-base font-bold">
+                    Business
+                    <span className={`badge badge-ghost ${mono}`}>In the making</span>
+                  </div>
+                  <div className="text-base-content/50 text-2xl font-bold">Pricing TBD</div>
+                </div>
+                <ul className="text-base-content/50 flex flex-1 flex-col gap-3 text-sm">
+                  <li className="flex justify-between gap-4">
+                    Monitors <span className={mono}>1,000</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    Check interval <span className={mono}>5s</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    Status pages <span className={mono}>Unlimited</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    Team seats <span className={mono}>Unlimited</span>
+                  </li>
+                  <li className="flex justify-between gap-4">
+                    History <span className={mono}>24 mo</span>
+                  </li>
+                </ul>
+                <div className="border-base-300 text-base-content/50 border-t border-dashed pt-4 text-xs">
+                  SSO, audit logs, and priority support are still being built. Leave your
+                  email and we&rsquo;ll tell you the day it ships.
+                </div>
+                <div className="card-actions">
+                  <button type="button" disabled className="btn btn-disabled w-full rounded-full">
+                    Get notified
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-base-content/70 mt-10 text-center text-sm">
+            Need more than 1,000 monitors, or want to run it yourself?{" "}
+            <a href="#" className="link link-hover text-base-content font-medium">
+              Ask about a self-hosted license.
+            </a>
+          </p>
+        </div>
+      </section>
+
+      {/* Closing CTA */}
+      <div className="border-base-300 relative overflow-hidden border-t py-28 text-center">
+        <div
+          aria-hidden="true"
+          className="bg-primary/10 pointer-events-none absolute top-1/2 left-1/2 h-[24rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"
+        />
+        <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-7 px-8">
+          <h2 className="max-w-md text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
+            Fourteen days. Full access. No card.
+          </h2>
+          <a href="#" className="btn btn-primary rounded-full shadow-lg">
+            Start your trial
+          </a>
+        </div>
+      </div>
+
+      <footer className="border-base-300 border-t py-10">
+        <div className="text-base-content/50 mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-8 text-sm">
+          <span className="font-bold">
+            <span className="text-primary">down</span>DATA
+          </span>
+          <span>Status data sourced from each provider&rsquo;s public Statuspage API.</span>
+        </div>
+      </footer>
+    </div>
+  );
+}

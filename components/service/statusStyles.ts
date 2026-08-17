@@ -2,12 +2,12 @@ export type Indicator = "none" | "minor" | "major" | "critical" | string;
 
 export const INDICATOR_STYLES: Record<
   string,
-  { dot: string; text: string; label: string }
+  { dot: string; text: string; badge: string; label: string }
 > = {
-  none: { dot: "bg-emerald-500", text: "text-emerald-600 dark:text-emerald-400", label: "Operational" },
-  minor: { dot: "bg-yellow-500", text: "text-yellow-600 dark:text-yellow-400", label: "Minor issues" },
-  major: { dot: "bg-orange-500", text: "text-orange-600 dark:text-orange-400", label: "Major outage" },
-  critical: { dot: "bg-red-500", text: "text-red-600 dark:text-red-400", label: "Critical outage" },
+  none: { dot: "bg-success", text: "text-success", badge: "badge-success", label: "Operational" },
+  minor: { dot: "bg-warning", text: "text-warning", badge: "badge-warning", label: "Minor issues" },
+  major: { dot: "bg-accent", text: "text-accent", badge: "badge-accent", label: "Major outage" },
+  critical: { dot: "bg-error", text: "text-error", badge: "badge-error", label: "Critical outage" },
 };
 
 export type ComponentStatus =
@@ -20,17 +20,18 @@ export type ComponentStatus =
 
 export const COMPONENT_STATUS_STYLES: Record<
   string,
-  { dot: string; text: string; label: string }
+  { dot: string; text: string; badge: string; label: string }
 > = {
-  operational: { dot: "bg-emerald-500", text: "text-emerald-600 dark:text-emerald-400", label: "Operational" },
-  degraded_performance: { dot: "bg-yellow-500", text: "text-yellow-600 dark:text-yellow-400", label: "Degraded performance" },
-  partial_outage: { dot: "bg-orange-500", text: "text-orange-600 dark:text-orange-400", label: "Partial outage" },
-  major_outage: { dot: "bg-red-500", text: "text-red-600 dark:text-red-400", label: "Major outage" },
-  under_maintenance: { dot: "bg-blue-500", text: "text-blue-600 dark:text-blue-400", label: "Under maintenance" },
+  operational: { dot: "bg-success", text: "text-success", badge: "badge-success", label: "Operational" },
+  degraded_performance: { dot: "bg-warning", text: "text-warning", badge: "badge-warning", label: "Degraded performance" },
+  partial_outage: { dot: "bg-accent", text: "text-accent", badge: "badge-accent", label: "Partial outage" },
+  major_outage: { dot: "bg-error", text: "text-error", badge: "badge-error", label: "Major outage" },
+  under_maintenance: { dot: "bg-info", text: "text-info", badge: "badge-info", label: "Under maintenance" },
 };
 
 export const FALLBACK_STYLE = {
-  dot: "bg-black/20 dark:bg-white/30",
-  text: "text-neutral-500 dark:text-white/50",
+  dot: "bg-base-content/20",
+  text: "text-base-content/50",
+  badge: "badge-ghost",
   label: "Unknown",
 };

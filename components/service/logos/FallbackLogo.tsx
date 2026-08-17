@@ -6,7 +6,7 @@ export default function FallbackLogo({ size = 28, name }: { size?: number; name:
   return (
     <div
       style={{ width: size, height: size, fontSize: size * 0.5 }}
-      className="flex shrink-0 items-center justify-center border border-black/10 bg-black/10 font-semibold text-neutral-600 dark:border-white/10 dark:bg-white/10 dark:text-white/70"
+      className="border-base-300 bg-base-300 text-base-content/70 flex shrink-0 items-center justify-center border font-semibold"
       aria-hidden="true"
     >
       {initial}

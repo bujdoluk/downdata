@@ -23,6 +23,7 @@
     "@types/node": "24",
     "@types/react": "19",
     "@types/react-dom": "19",
+    "daisyui": "5.7.17",
     "eslint": "9",
     "eslint-config-next": "16.3.0",
     "tailwindcss": "4",

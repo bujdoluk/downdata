@@ -8,38 +8,28 @@ export default function Navbar() {
   const services = getAllServices();
 
   return (
-    // Background is intentionally unconditional — the navbar stays black
-    // regardless of the site-wide light/dark theme.
-    <header className="sticky top-0 z-10 border-b border-white/10 bg-[#0b0d12]/80 backdrop-blur">
-      <div className="mx-auto flex max-w-5xl items-center gap-4 px-6 py-4">
-        {/* Forces every dark: utility below to always apply, since this
-            content always sits on the permanently-black bar. ThemeToggle
-            stays outside this scope so its icon still reflects the real
-            site-wide theme. */}
-        <div data-theme="dark" className="flex flex-1 items-center gap-4">
+    <header className="sticky top-0 z-10 border-b border-white/10 bg-[#0a0b10]/80 backdrop-blur">
+      <div className="navbar mx-auto max-w-5xl">
+        <div data-theme="dark" className="navbar-start gap-4">
           <Link href="/" className="flex items-center gap-2.5">
             <Logo className="h-6 w-6" />
-            <span className="text-lg font-semibold tracking-tight text-white">
-              <span className="text-red-500">down</span>DATA
+            <span className="text-lg font-semibold tracking-tight text-base-content">
+              <span className="text-primary">down</span>DATA
             </span>
           </Link>
           <ServiceSearch services={services} />
-          <nav className="ml-auto flex shrink-0 items-center gap-4">
-            <Link
-              href="/"
-              className="text-sm font-medium text-white/70 transition-colors hover:text-white"
-            >
+        </div>
+        <div className="navbar-end gap-1">
+          <div data-theme="dark" className="flex items-center gap-1">
+            <Link href="/" className="btn btn-ghost btn-sm text-base-content/70">
               Services
             </Link>
-            <Link
-              href="/add-service"
-              className="text-sm font-medium text-white/70 transition-colors hover:text-white"
-            >
+            <Link href="/add-service" className="btn btn-ghost btn-sm text-base-content/70">
               Add service
             </Link>
-          </nav>
+          </div>
+          <ThemeToggle />
         </div>
-        <ThemeToggle />
       </div>
     </header>
   );

@@ -1,0 +1,103 @@
+{
+  "status": {
+    "operational": "Operativo",
+    "minorIssues": "Problemi minori",
+    "majorOutage": "Interruzione grave",
+    "criticalOutage": "Interruzione critica",
+    "degradedPerformance": "Prestazioni ridotte",
+    "partialOutage": "Interruzione parziale",
+    "underMaintenance": "In manutenzione",
+    "unknown": "Sconosciuto"
+  },
+  "nav": {
+    "services": "Servizi",
+    "addService": "Aggiungi servizio",
+    "searchPlaceholder": "Cerca servizi…",
+    "noServicesFound": "Nessun servizio trovato.",
+    "toggleTheme": "Cambia tema",
+    "language": "Lingua"
+  },
+  "serviceCard": {
+    "checkingStatus": "Controllo dello stato…",
+    "unreachable": "API di stato non raggiungibile",
+    "outages24h_one": "{{count}} interruzione nelle ultime 24 h",
+    "outages24h_other": "{{count}} interruzioni nelle ultime 24 h"
+  },
+  "serviceDetail": {
+    "back": "← Indietro",
+    "checkingStatus": "Controllo dello stato…",
+    "unreachable": "API di stato non raggiungibile",
+    "components": "Componenti",
+    "incidents": "Incidenti",
+    "noIncidents": "Nessun incidente segnalato.",
+    "updated": "aggiornato",
+    "lastUpdated": "Ultimo aggiornamento {{time}}"
+  },
+  "addService": {
+    "back": "← Indietro",
+    "title": "Aggiungi un servizio",
+    "subtitle": "Scegli un servizio da iniziare a monitorare.",
+    "allTracked": "Stai già monitorando tutto ciò che è nel catalogo.",
+    "add": "Aggiungi",
+    "adding": "Aggiunta in corso…",
+    "somethingWrong": "Qualcosa è andato storto."
+  },
+  "landing": {
+    "nav": {
+      "pricing": "Prezzi",
+      "startTrial": "Prova gratuita"
+    },
+    "hero": {
+      "eyebrow": "Tutti i servizi monitorati sono operativi",
+      "titlePrefix": "Se qualcosa",
+      "titleDown": "si blocca",
+      "titleSuffix": ", lo saprai per primo.",
+      "body": "downDATA monitora le pagine di stato da cui già dipendi — GitHub, Supabase, Cloudflare e qualsiasi altra basata su Atlassian Statuspage — controllate anche ogni {{interval}}, a partire da {{price}}, mentre StatusGator fa pagare {{competitorPrice}} per lo stesso servizio.",
+      "ctaTrial": "Inizia la prova gratuita di 14 giorni",
+      "ctaPricing": "Vedi i prezzi",
+      "noCard": "Nessuna carta di credito richiesta. Accesso completo per 14 giorni.",
+      "liveDashboard": "Dashboard in tempo reale"
+    },
+    "features": {
+      "heading": "Più economico perché i costi dietro le quinte sono minori.",
+      "subtitle": "I prezzi della concorrenza coprono in parte infrastrutture telefoniche/SMS e sonde multi-regione che noi non manteniamo allo stesso modo.",
+      "speedTitle": "Controlli anche ogni 5 secondi",
+      "speedBody": "Starter controlla ogni 15 s, Pro ogni 10 s. Il piano a pagamento più economico di UptimeRobot arriva solo a 60 s.",
+      "seatsTitle": "Utenti illimitati, in ogni piano",
+      "seatsBody": "UptimeRobot fa pagare 15–19 $/mese per ogni membro del team oltre i primi tre. Qui è incluso l'intero team.",
+      "selfHostedTitle": "Self-hosted, se preferisci",
+      "selfHostedBody": "Eseguilo sul tuo server per una tariffa fissa. Nessuno dei cinque concorrenti analizzati offre questa opzione."
+    },
+    "pricing": {
+      "heading": "Prezzi",
+      "subtitle": "Al suo posto, una vera prova gratuita di 14 giorni con accesso completo — senza carta richiesta. Scegli un piano quando sei pronto, non prima.",
+      "monthly": "Mensile",
+      "annual": "Annuale",
+      "save20": "Risparmia il 20%",
+      "perMonth": "/mese",
+      "billedAnnually": "fatturato annualmente · {{price}} $/anno",
+      "starter": "Starter",
+      "pro": "Pro",
+      "business": "Business",
+      "mostTeams": "Più scelto",
+      "inTheMaking": "In arrivo",
+      "pricingTBD": "Prezzo da definire",
+      "monitors": "Monitor",
+      "checkInterval": "Intervallo di controllo",
+      "statusPages": "Pagine di stato",
+      "teamSeats": "Membri del team",
+      "history": "Cronologia",
+      "unlimited": "Illimitato",
+      "getStarted": "Inizia",
+      "getNotified": "Avvisami",
+      "businessNote": "SSO, log di audit e supporto prioritario sono ancora in fase di sviluppo. Lasciaci la tua email e ti avviseremo il giorno del lancio.",
+      "needMore": "Ti servono più di 1000 monitor o vuoi il self-hosting?",
+      "selfHostedLicense": "Chiedi informazioni su una licenza self-hosted."
+    },
+    "closing": {
+      "heading": "Quattordici giorni. Accesso completo. Nessuna carta.",
+      "cta": "Inizia la prova"
+    },
+    "footer": "I dati di stato provengono dall'API pubblica Statuspage di ciascun provider."
+  }
+}

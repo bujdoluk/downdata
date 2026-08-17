@@ -1,5 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import "@/lib/i18n/i18n";
 import PricingSection from "@/components/landing-page/PricingSection";
+import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 
 const mono = "font-mono";
 
@@ -35,43 +40,45 @@ function StackIcon({ className }: { className?: string }) {
   );
 }
 
-const features = [
-  {
-    icon: BoltIcon,
-    title: "Checks as fast as 5 seconds",
-    body: "Starter checks every 15s, Pro every 10s. UptimeRobot's cheapest paid plan only manages 60s.",
-  },
-  {
-    icon: UserGroupIcon,
-    title: "Unlimited seats, every plan",
-    body: "UptimeRobot charges $15–19/month per teammate past the first three. Here, the whole team is included.",
-  },
-  {
-    icon: StackIcon,
-    title: "Self-hosted, if you want",
-    body: "Run it on your own box for a flat fee. None of the five competitors we checked offer that at all.",
-  },
+// The mock dashboard's status text ("All Systems Operational", ...) is
+// deliberately left untranslated — it's meant to look like real Statuspage
+// API output, which is always English regardless of the viewer's language.
+const demoRows = [
+  { name: "GitHub", status: "All Systems Operational", ok: true },
+  { name: "Supabase", status: "Partially Degraded Service", ok: false },
+  { name: "Cloudflare", status: "All Systems Operational", ok: true },
 ];
 
 export default function LandingPage() {
+  const { t } = useTranslation();
+
+  const features = [
+    { icon: BoltIcon, title: t("landing.features.speedTitle"), body: t("landing.features.speedBody") },
+    { icon: UserGroupIcon, title: t("landing.features.seatsTitle"), body: t("landing.features.seatsBody") },
+    { icon: StackIcon, title: t("landing.features.selfHostedTitle"), body: t("landing.features.selfHostedBody") },
+  ];
+
   return (
     <div data-theme="dark" className="bg-base-100 text-base-content">
+      {/* Nav */}
       <nav className="border-base-300 border-b">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-5">
           <Link href="/" className="text-lg font-extrabold tracking-tight">
             <span className="text-primary">down</span>DATA
           </Link>
-          <div className="flex items-center gap-8 text-sm">
+          <div className="flex items-center gap-6 text-sm">
             <a href="#pricing" className="text-base-content/70 hover:text-base-content transition-colors">
-              Pricing
+              {t("landing.nav.pricing")}
             </a>
+            <LanguageSwitcher />
             <a href="#" className="btn btn-sm rounded-full">
-              Start free trial
+              {t("landing.nav.startTrial")}
             </a>
           </div>
         </div>
       </nav>
 
+      {/* Hero */}
       <header className="relative overflow-hidden">
         <div
           aria-hidden="true"
@@ -81,39 +88,38 @@ export default function LandingPage() {
           <div className="flex flex-col items-center gap-7 text-center lg:items-start lg:text-left">
             <div className={`badge badge-success badge-soft gap-2 py-4 text-[0.72rem] tracking-[0.1em] uppercase ${mono}`}>
               <span className="bg-success animate-signal-pulse h-[7px] w-[7px] rounded-full" />
-              All monitored services operational
+              {t("landing.hero.eyebrow")}
             </div>
 
             <h1 className="max-w-xl text-5xl leading-[1.05] font-black tracking-tight text-balance sm:text-6xl">
-              If it goes <span className="text-primary">down</span>, you&rsquo;ll know first.
+              {t("landing.hero.titlePrefix")}{" "}
+              <span className="text-primary">{t("landing.hero.titleDown")}</span>
+              {t("landing.hero.titleSuffix")}
             </h1>
 
             <p className="text-base-content/70 max-w-lg text-lg leading-relaxed">
-              downDATA watches the status pages you already depend on — GitHub, Supabase,
-              Cloudflare, and anything else on Atlassian Statuspage — checked as often as
-              every <span className={`${mono} text-base-content`}>5s</span>, starting at{" "}
-              <span className={`${mono} text-base-content`}>$5/month</span> where StatusGator
-              charges <span className={`${mono} text-base-content`}>$274</span> for the same job.
+              {t("landing.hero.body", { interval: "5s", price: "$5/month", competitorPrice: "$274" })}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
               <a href="#" className="btn btn-primary rounded-full shadow-lg">
-                Start your 14-day trial
+                {t("landing.hero.ctaTrial")}
               </a>
               <a href="#pricing" className="btn btn-outline rounded-full">
-                See pricing
+                {t("landing.hero.ctaPricing")}
               </a>
             </div>
-            <div className="text-base-content/50 text-sm">No credit card. Full access for 14 days.</div>
+            <div className="text-base-content/50 text-sm">{t("landing.hero.noCard")}</div>
           </div>
 
+          {/* Demo panel — the hero visual */}
           <div className="relative mx-auto w-full max-w-md lg:mx-0">
             <div className="bg-primary/10 absolute inset-0 translate-x-3 translate-y-3 rounded-2xl" aria-hidden="true" />
             <div className="card card-border bg-base-200 relative shadow-2xl">
               <div className="card-body gap-3 p-6">
                 <div className="flex items-center justify-between px-1 pb-1">
                   <span className={`text-base-content/50 text-[0.7rem] tracking-[0.1em] uppercase ${mono}`}>
-                    Live dashboard
+                    {t("landing.hero.liveDashboard")}
                   </span>
                   <span className="flex gap-1.5">
                     <span className="bg-base-content/10 h-2.5 w-2.5 rounded-full" />
@@ -121,11 +127,7 @@ export default function LandingPage() {
                     <span className="bg-base-content/10 h-2.5 w-2.5 rounded-full" />
                   </span>
                 </div>
-                {[
-                  { name: "GitHub", status: "All Systems Operational", ok: true },
-                  { name: "Supabase", status: "Partially Degraded Service", ok: false },
-                  { name: "Cloudflare", status: "All Systems Operational", ok: true },
-                ].map((row) => (
+                {demoRows.map((row) => (
                   <div
                     key={row.name}
                     className="border-base-300 bg-base-300/40 hover:border-base-content/20 flex items-center justify-between gap-4 rounded-xl border px-4 py-3.5 transition-colors"
@@ -155,12 +157,9 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-8">
           <div className="mx-auto mb-14 flex max-w-xl flex-col items-center gap-3 text-center">
             <h2 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
-              Cheaper because the bill behind it is smaller.
+              {t("landing.features.heading")}
             </h2>
-            <p className="text-base-content/70">
-              Competitor pricing partly pays for phone/SMS infrastructure and
-              multi-region probe networks we don&rsquo;t carry the same way.
-            </p>
+            <p className="text-base-content/70">{t("landing.features.subtitle")}</p>
           </div>
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
@@ -189,10 +188,10 @@ export default function LandingPage() {
         />
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-7 px-8">
           <h2 className="max-w-md text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
-            Fourteen days. Full access. No card.
+            {t("landing.closing.heading")}
           </h2>
           <a href="#" className="btn btn-primary rounded-full shadow-lg">
-            Start your trial
+            {t("landing.closing.cta")}
           </a>
         </div>
       </div>
@@ -202,7 +201,7 @@ export default function LandingPage() {
           <span className="font-bold">
             <span className="text-primary">down</span>DATA
           </span>
-          <span>Status data sourced from each provider&rsquo;s public Statuspage API.</span>
+          <span>{t("landing.footer")}</span>
         </div>
       </footer>
     </div>

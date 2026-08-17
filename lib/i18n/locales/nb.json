@@ -1,0 +1,103 @@
+{
+  "status": {
+    "operational": "I drift",
+    "minorIssues": "Mindre problemer",
+    "majorOutage": "Alvorlig driftsstans",
+    "criticalOutage": "Kritisk driftsstans",
+    "degradedPerformance": "Redusert ytelse",
+    "partialOutage": "Delvis driftsstans",
+    "underMaintenance": "Vedlikehold pågår",
+    "unknown": "Ukjent"
+  },
+  "nav": {
+    "services": "Tjenester",
+    "addService": "Legg til tjeneste",
+    "searchPlaceholder": "Søk etter tjenester…",
+    "noServicesFound": "Ingen tjenester funnet.",
+    "toggleTheme": "Bytt tema",
+    "language": "Språk"
+  },
+  "serviceCard": {
+    "checkingStatus": "Sjekker status…",
+    "unreachable": "Fikk ikke kontakt med status-API-et",
+    "outages24h_one": "{{count}} driftsstans siste 24 t",
+    "outages24h_other": "{{count}} driftsstanser siste 24 t"
+  },
+  "serviceDetail": {
+    "back": "← Tilbake",
+    "checkingStatus": "Sjekker status…",
+    "unreachable": "Fikk ikke kontakt med status-API-et",
+    "components": "Komponenter",
+    "incidents": "Hendelser",
+    "noIncidents": "Ingen hendelser rapportert.",
+    "updated": "oppdatert",
+    "lastUpdated": "Sist oppdatert {{time}}"
+  },
+  "addService": {
+    "back": "← Tilbake",
+    "title": "Legg til en tjeneste",
+    "subtitle": "Velg en tjeneste å begynne å overvåke.",
+    "allTracked": "Du overvåker allerede alt i katalogen.",
+    "add": "Legg til",
+    "adding": "Legger til…",
+    "somethingWrong": "Noe gikk galt."
+  },
+  "landing": {
+    "nav": {
+      "pricing": "Priser",
+      "startTrial": "Start gratis prøveperiode"
+    },
+    "hero": {
+      "eyebrow": "Alle overvåkede tjenester er i drift",
+      "titlePrefix": "Hvis noe",
+      "titleDown": "faller ut",
+      "titleSuffix": ", er du den første som får vite det.",
+      "body": "downDATA overvåker statussidene du allerede stoler på — GitHub, Supabase, Cloudflare og alle andre basert på Atlassian Statuspage — sjekket så ofte som hvert {{interval}}, fra {{price}}, mens StatusGator tar {{competitorPrice}} for det samme.",
+      "ctaTrial": "Start din 14 dagers gratis prøveperiode",
+      "ctaPricing": "Se priser",
+      "noCard": "Ingen kredittkort nødvendig. Full tilgang i 14 dager.",
+      "liveDashboard": "Sanntids dashbord"
+    },
+    "features": {
+      "heading": "Billigere fordi kostnadene bak kulissene er lavere.",
+      "subtitle": "Konkurrentenes priser dekker delvis telefon-/SMS-infrastruktur og sonder i flere regioner som vi ikke vedlikeholder på samme måte.",
+      "speedTitle": "Sjekker så ofte som hvert 5. sekund",
+      "speedBody": "Starter sjekker hvert 15. sekund, Pro hvert 10. sekund. UptimeRobots billigste betalte plan klarer kun 60 sekunder.",
+      "seatsTitle": "Ubegrensede brukere, i alle planer",
+      "seatsBody": "UptimeRobot tar 15–19 $/mnd per teammedlem utover de tre første. Her er hele teamet inkludert.",
+      "selfHostedTitle": "Selvhostet, hvis du foretrekker det",
+      "selfHostedBody": "Kjør det på din egen server for en fast pris. Ingen av de fem konkurrentene som ble undersøkt tilbyr dette."
+    },
+    "pricing": {
+      "heading": "Priser",
+      "subtitle": "I stedet en ekte 14-dagers prøveperiode med full tilgang — uten behov for kort. Velg en plan når du er klar, ikke før.",
+      "monthly": "Månedlig",
+      "annual": "Årlig",
+      "save20": "Spar 20 %",
+      "perMonth": "/mnd",
+      "billedAnnually": "fakturert årlig · {{price}} $/år",
+      "starter": "Starter",
+      "pro": "Pro",
+      "business": "Business",
+      "mostTeams": "Mest populær",
+      "inTheMaking": "Under utvikling",
+      "pricingTBD": "Pris ikke fastsatt",
+      "monitors": "Overvåkere",
+      "checkInterval": "Sjekkintervall",
+      "statusPages": "Statussider",
+      "teamSeats": "Teammedlemmer",
+      "history": "Historikk",
+      "unlimited": "Ubegrenset",
+      "getStarted": "Kom i gang",
+      "getNotified": "Varsle meg",
+      "businessNote": "SSO, revisjonslogger og prioritert support er fortsatt under utvikling. Legg igjen e-posten din, så varsler vi deg den dagen det lanseres.",
+      "needMore": "Trenger du flere enn 1000 overvåkere, eller vil du selvhoste?",
+      "selfHostedLicense": "Spør om en selvhostet lisens."
+    },
+    "closing": {
+      "heading": "Fjorten dager. Full tilgang. Ikke noe kort.",
+      "cta": "Start prøveperiode"
+    },
+    "footer": "Statusdata hentes fra hver leverandørs offentlige Statuspage-API."
+  }
+}

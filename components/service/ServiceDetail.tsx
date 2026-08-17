@@ -2,53 +2,19 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import "@/lib/i18n/i18n";
 import { formatDateTime, formatTime } from "@/lib/formatTime";
-import type { ServiceDefinition, ServiceSlug } from "@/lib/services";
+import type { ServiceSlug, ServiceSummaryResponse } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
-import {
-  INDICATOR_STYLES,
-  COMPONENT_STATUS_STYLES,
-  FALLBACK_STYLE,
-  type Indicator,
-  type ComponentStatus,
-} from "@/components/service/statusStyles";
-
-type Component = {
-  id: string;
-  name: string;
-  status: ComponentStatus;
-  position: number;
-  group_id: string | null;
-  showcase: boolean;
-};
-
-type Incident = {
-  id: string;
-  name: string;
-  status: string;
-  impact: string;
-  updated_at: string;
-  shortlink: string;
-};
-
-type SummaryResponse = {
-  service: ServiceDefinition;
-  page: {
-    updated_at: string;
-  };
-  status: {
-    indicator: Indicator;
-    description: string;
-  };
-  components: Component[];
-  incidents: Incident[];
-};
+import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 
 const POLL_INTERVAL_MS = 30_000;
 
 export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
-  const [data, setData] = useState<SummaryResponse | null>(null);
+  const { t } = useTranslation();
+  const [data, setData] = useState<ServiceSummaryResponse | null>(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -58,7 +24,7 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
       try {
         const res = await fetch(`/api/summary/${slug}`, { cache: "no-store" });
         if (!res.ok) throw new Error("bad response");
-        const json = (await res.json()) as SummaryResponse;
+        const json = (await res.json()) as ServiceSummaryResponse;
         if (!cancelled) {
           setData(json);
           setError(false);
@@ -87,7 +53,7 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
   return (
     <div className="w-full max-w-lg">
       <Link href="/" className="link link-hover text-base-content/50 hover:text-base-content mb-6 inline-block text-xs font-medium">
-        ← Back
+        {t("serviceDetail.back")}
       </Link>
 
       <div className="flex items-center gap-3 text-base-content">
@@ -107,9 +73,9 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
           />
           <p className={`text-sm font-medium ${error || isLoading ? "text-base-content/50" : overallStyle.text}`}>
             {isLoading
-              ? "Checking status…"
+              ? t("serviceDetail.checkingStatus")
               : error
-                ? "Unable to reach status API"
+                ? t("serviceDetail.unreachable")
                 : data?.status.description}
           </p>
         </div>
@@ -118,7 +84,7 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
       {data && (
         <>
           <h2 className="text-base-content/40 mt-8 mb-3 text-xs font-semibold tracking-wide uppercase">
-            Components
+            {t("serviceDetail.components")}
           </h2>
           <ul className="list bg-base-200 border-base-300 border">
             {components.map((c) => {
@@ -126,17 +92,17 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
               return (
                 <li key={c.id} className="list-row items-center py-2.5">
                   <span className="text-base-content text-sm">{c.name}</span>
-                  <span className={`badge badge-soft ${s.badge}`}>{s.label}</span>
+                  <span className={`badge badge-soft ${s.badge}`}>{t(s.labelKey)}</span>
                 </li>
               );
             })}
           </ul>
 
           <h2 className="text-base-content/40 mt-8 mb-3 text-xs font-semibold tracking-wide uppercase">
-            Incidents
+            {t("serviceDetail.incidents")}
           </h2>
           {data.incidents.length === 0 ? (
-            <p className="text-base-content/50 text-sm">No incidents reported.</p>
+            <p className="text-base-content/50 text-sm">{t("serviceDetail.noIncidents")}</p>
           ) : (
             <ul className="list bg-base-200 border-base-300 border">
               {data.incidents.map((incident) => (
@@ -151,7 +117,7 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
                       {incident.name}
                     </a>
                     <p className="text-base-content/50 mt-0.5 text-xs">
-                      {incident.status} · updated{" "}
+                      {incident.status} · {t("serviceDetail.updated")}{" "}
                       {formatDateTime(incident.updated_at)}
                     </p>
                   </div>
@@ -161,7 +127,7 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
           )}
 
           <p className="text-base-content/30 mt-6 text-[11px]">
-            Last updated {formatTime(data.page.updated_at)}
+            {t("serviceDetail.lastUpdated", { time: formatTime(data.page.updated_at) })}
           </p>
         </>
       )}

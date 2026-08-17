@@ -1,14 +1,4 @@
-// A curated list of well-known Atlassian Statuspage-based status pages —
-// the /add-service picker offers these instead of free-text entry, so
-// every option is guaranteed to actually work with /api/status and
-// /api/summary (both of which assume the Statuspage API shape). Every
-// host here has been verified to respond at /api/v2/status.json.
-
-export type CatalogEntry = {
-  slug: string;
-  name: string;
-  host: string;
-};
+import type { CatalogEntry } from "@/types/service";
 
 export const SERVICE_CATALOG: CatalogEntry[] = [
   { slug: "github", name: "GitHub", host: "www.githubstatus.com" },

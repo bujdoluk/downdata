@@ -1,0 +1,103 @@
+{
+  "status": {
+    "operational": "Operational",
+    "minorIssues": "Minor issues",
+    "majorOutage": "Major outage",
+    "criticalOutage": "Critical outage",
+    "degradedPerformance": "Degraded performance",
+    "partialOutage": "Partial outage",
+    "underMaintenance": "Under maintenance",
+    "unknown": "Unknown"
+  },
+  "nav": {
+    "services": "Services",
+    "addService": "Add service",
+    "searchPlaceholder": "Search services…",
+    "noServicesFound": "No services found.",
+    "toggleTheme": "Toggle theme",
+    "language": "Language"
+  },
+  "serviceCard": {
+    "checkingStatus": "Checking status…",
+    "unreachable": "Unable to reach status API",
+    "outages24h_one": "{{count}} outage in the last 24h",
+    "outages24h_other": "{{count}} outages in the last 24h"
+  },
+  "serviceDetail": {
+    "back": "← Back",
+    "checkingStatus": "Checking status…",
+    "unreachable": "Unable to reach status API",
+    "components": "Components",
+    "incidents": "Incidents",
+    "noIncidents": "No incidents reported.",
+    "updated": "updated",
+    "lastUpdated": "Last updated {{time}}"
+  },
+  "addService": {
+    "back": "← Back",
+    "title": "Add a service",
+    "subtitle": "Choose a service to start tracking it.",
+    "allTracked": "You're already tracking everything in the catalog.",
+    "add": "Add",
+    "adding": "Adding…",
+    "somethingWrong": "Something went wrong."
+  },
+  "landing": {
+    "nav": {
+      "pricing": "Pricing",
+      "startTrial": "Start free trial"
+    },
+    "hero": {
+      "eyebrow": "All monitored services operational",
+      "titlePrefix": "If it goes",
+      "titleDown": "down",
+      "titleSuffix": ", you'll know first.",
+      "body": "downDATA watches the status pages you already depend on — GitHub, Supabase, Cloudflare, and anything else on Atlassian Statuspage — checked as often as every {{interval}}, starting at {{price}} where StatusGator charges {{competitorPrice}} for the same job.",
+      "ctaTrial": "Start your 14-day trial",
+      "ctaPricing": "See pricing",
+      "noCard": "No credit card. Full access for 14 days.",
+      "liveDashboard": "Live dashboard"
+    },
+    "features": {
+      "heading": "Cheaper because the bill behind it is smaller.",
+      "subtitle": "Competitor pricing partly pays for phone/SMS infrastructure and multi-region probe networks we don't carry the same way.",
+      "speedTitle": "Checks as fast as 5 seconds",
+      "speedBody": "Starter checks every 15s, Pro every 10s. UptimeRobot's cheapest paid plan only manages 60s.",
+      "seatsTitle": "Unlimited seats, every plan",
+      "seatsBody": "UptimeRobot charges $15–19/month per teammate past the first three. Here, the whole team is included.",
+      "selfHostedTitle": "Self-hosted, if you want",
+      "selfHostedBody": "Run it on your own box for a flat fee. None of the five competitors we checked offer that at all."
+    },
+    "pricing": {
+      "heading": "Pricing",
+      "subtitle": "Instead, a real 14-day trial with full access — no card required. Pick a plan when you're ready, not before.",
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "save20": "Save 20%",
+      "perMonth": "/mo",
+      "billedAnnually": "billed annually · ${{price}}/yr",
+      "starter": "Starter",
+      "pro": "Pro",
+      "business": "Business",
+      "mostTeams": "Most teams",
+      "inTheMaking": "In the making",
+      "pricingTBD": "Pricing TBD",
+      "monitors": "Monitors",
+      "checkInterval": "Check interval",
+      "statusPages": "Status pages",
+      "teamSeats": "Team seats",
+      "history": "History",
+      "unlimited": "Unlimited",
+      "getStarted": "Get started",
+      "getNotified": "Get notified",
+      "businessNote": "SSO, audit logs, and priority support are still being built. Leave your email and we'll tell you the day it ships.",
+      "needMore": "Need more than 1,000 monitors, or want to run it yourself?",
+      "selfHostedLicense": "Ask about a self-hosted license."
+    },
+    "closing": {
+      "heading": "Fourteen days. Full access. No card.",
+      "cta": "Start your trial"
+    },
+    "footer": "Status data sourced from each provider's public Statuspage API."
+  }
+}

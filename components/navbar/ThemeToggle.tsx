@@ -1,5 +1,8 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
+import "@/lib/i18n/i18n";
+
 function SunIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" width={18} height={18} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" className={className} aria-hidden="true">
@@ -18,6 +21,8 @@ function MoonIcon({ className }: { className?: string }) {
 }
 
 export default function ThemeToggle() {
+  const { t } = useTranslation();
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const next = e.target.checked ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", next);
@@ -26,7 +31,7 @@ export default function ThemeToggle() {
 
   return (
     <label
-      aria-label="Toggle theme"
+      aria-label={t("nav.toggleTheme")}
       className="swap swap-rotate text-base-content/60 hover:bg-base-content/10 rounded-full p-2"
     >
       <input type="checkbox" value="light" className="theme-controller" onChange={handleChange} />

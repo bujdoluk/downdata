@@ -1,18 +1,13 @@
+"use client";
+
 import Link from "next/link";
-import type { ServiceSlug } from "@/lib/services";
+import { useTranslation } from "react-i18next";
+import "@/lib/i18n/i18n";
+import type { ServiceCardProps } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
-import { INDICATOR_STYLES, FALLBACK_STYLE, type Indicator } from "@/components/service/statusStyles";
+import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 
-type ServiceCardProps = {
-  slug: ServiceSlug;
-  name: string;
-  indicator?: Indicator;
-  description?: string;
-  outages24h?: number;
-  isLoading: boolean;
-  error: boolean;
-};
 
 export default function ServiceCard({
   slug,
@@ -23,6 +18,7 @@ export default function ServiceCard({
   isLoading,
   error,
 }: ServiceCardProps) {
+  const { t } = useTranslation();
   const style = indicator ? INDICATOR_STYLES[indicator] : undefined;
   const Logo = SERVICE_LOGOS[slug] ?? FallbackLogo;
   const stripeColor = isLoading || error ? "bg-base-content/10" : (style ?? FALLBACK_STYLE).dot;
@@ -54,20 +50,22 @@ export default function ServiceCard({
             }`}
           >
             {isLoading
-              ? "Checking status…"
+              ? t("serviceCard.checkingStatus")
               : error
-                ? "Unable to reach status API"
+                ? t("serviceCard.unreachable")
                 : description}
           </p>
         </div>
 
         {!isLoading && !error && outages24h !== undefined && (
           <p className="text-base-content/50 mt-2 text-[11px]">
-            {outages24h} outage{outages24h === 1 ? "" : "s"} in the last 24h
+            {t("serviceCard.outages24h", { count: outages24h })}
           </p>
         )}
       </div>
 
+      {/* Right 10% strip — color cue for current status. Full detail
+          (components, incident history) stays on the detail page. */}
       <div className={`w-[10%] shrink-0 ${stripeColor} ${isLoading ? "animate-pulse" : ""}`} aria-hidden="true" />
     </Link>
   );

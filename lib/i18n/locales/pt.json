@@ -1,0 +1,103 @@
+{
+  "status": {
+    "operational": "Operacional",
+    "minorIssues": "Problemas menores",
+    "majorOutage": "Falha grave",
+    "criticalOutage": "Falha crítica",
+    "degradedPerformance": "Desempenho degradado",
+    "partialOutage": "Falha parcial",
+    "underMaintenance": "Em manutenção",
+    "unknown": "Desconhecido"
+  },
+  "nav": {
+    "services": "Serviços",
+    "addService": "Adicionar serviço",
+    "searchPlaceholder": "Pesquisar serviços…",
+    "noServicesFound": "Nenhum serviço encontrado.",
+    "toggleTheme": "Alternar tema",
+    "language": "Idioma"
+  },
+  "serviceCard": {
+    "checkingStatus": "A verificar o estado…",
+    "unreachable": "Não foi possível aceder à API de estado",
+    "outages24h_one": "{{count}} falha nas últimas 24 h",
+    "outages24h_other": "{{count}} falhas nas últimas 24 h"
+  },
+  "serviceDetail": {
+    "back": "← Voltar",
+    "checkingStatus": "A verificar o estado…",
+    "unreachable": "Não foi possível aceder à API de estado",
+    "components": "Componentes",
+    "incidents": "Incidentes",
+    "noIncidents": "Nenhum incidente reportado.",
+    "updated": "atualizado",
+    "lastUpdated": "Última atualização {{time}}"
+  },
+  "addService": {
+    "back": "← Voltar",
+    "title": "Adicionar um serviço",
+    "subtitle": "Escolha um serviço para começar a monitorizá-lo.",
+    "allTracked": "Já está a monitorizar tudo o que consta no catálogo.",
+    "add": "Adicionar",
+    "adding": "A adicionar…",
+    "somethingWrong": "Algo correu mal."
+  },
+  "landing": {
+    "nav": {
+      "pricing": "Preços",
+      "startTrial": "Iniciar teste gratuito"
+    },
+    "hero": {
+      "eyebrow": "Todos os serviços monitorizados estão operacionais",
+      "titlePrefix": "Se algo",
+      "titleDown": "falhar",
+      "titleSuffix": ", é o primeiro a saber.",
+      "body": "A downDATA monitoriza as páginas de estado com que já conta — GitHub, Supabase, Cloudflare e qualquer outra baseada em Atlassian Statuspage — verificadas a cada {{interval}}, a partir de {{price}}, enquanto a StatusGator cobra {{competitorPrice}} pelo mesmo serviço.",
+      "ctaTrial": "Iniciar teste gratuito de 14 dias",
+      "ctaPricing": "Ver preços",
+      "noCard": "Sem cartão de crédito. Acesso total durante 14 dias.",
+      "liveDashboard": "Painel em direto"
+    },
+    "features": {
+      "heading": "Mais barato porque os custos por trás são menores.",
+      "subtitle": "Os preços da concorrência pagam em parte infraestrutura de telefone/SMS e sondas multirregião que nós não mantemos da mesma forma.",
+      "speedTitle": "Verificações a cada 5 segundos",
+      "speedBody": "O plano Starter verifica a cada 15 s, o Pro a cada 10 s. O plano pago mais barato da UptimeRobot só chega aos 60 s.",
+      "seatsTitle": "Utilizadores ilimitados, em todos os planos",
+      "seatsBody": "A UptimeRobot cobra 15–19 $/mês por cada membro da equipa além dos primeiros três. Aqui, toda a equipa está incluída.",
+      "selfHostedTitle": "Alojamento próprio, se preferir",
+      "selfHostedBody": "Execute-o no seu próprio servidor por uma taxa fixa. Nenhum dos cinco concorrentes analisados oferece isso."
+    },
+    "pricing": {
+      "heading": "Preços",
+      "subtitle": "Em vez disso, um verdadeiro período de teste de 14 dias com acesso total — sem necessidade de cartão. Escolha um plano quando estiver pronto, não antes.",
+      "monthly": "Mensal",
+      "annual": "Anual",
+      "save20": "Poupe 20%",
+      "perMonth": "/mês",
+      "billedAnnually": "faturado anualmente · {{price}} $/ano",
+      "starter": "Starter",
+      "pro": "Pro",
+      "business": "Business",
+      "mostTeams": "Mais popular",
+      "inTheMaking": "Em preparação",
+      "pricingTBD": "Preço a definir",
+      "monitors": "Monitores",
+      "checkInterval": "Intervalo de verificação",
+      "statusPages": "Páginas de estado",
+      "teamSeats": "Utilizadores da equipa",
+      "history": "Histórico",
+      "unlimited": "Ilimitado",
+      "getStarted": "Começar",
+      "getNotified": "Avisem-me",
+      "businessNote": "SSO, registos de auditoria e suporte prioritário ainda estão a ser desenvolvidos. Deixe o seu e-mail e avisamo-lo assim que estiver disponível.",
+      "needMore": "Precisa de mais de 1000 monitores ou quer alojamento próprio?",
+      "selfHostedLicense": "Informe-se sobre uma licença de alojamento próprio."
+    },
+    "closing": {
+      "heading": "Catorze dias. Acesso total. Sem cartão.",
+      "cta": "Iniciar teste gratuito"
+    },
+    "footer": "Os dados de estado têm origem na API pública do Statuspage de cada fornecedor."
+  }
+}

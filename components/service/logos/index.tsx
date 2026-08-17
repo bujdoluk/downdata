@@ -1,3 +1,4 @@
+import type { LogoComponent } from "@/types/logo";
 import GithubLogo from "@/components/service/logos/GithubLogo";
 import SupabaseLogo from "@/components/service/logos/SupabaseLogo";
 import CloudflareLogo from "@/components/service/logos/CloudflareLogo";
@@ -15,15 +16,6 @@ import MongodbLogo from "@/components/service/logos/MongodbLogo";
 import DatadogLogo from "@/components/service/logos/DatadogLogo";
 import CircleciLogo from "@/components/service/logos/CircleciLogo";
 
-type LogoProps = { size?: number; name: string };
-type LogoComponent = (props: LogoProps) => React.JSX.Element;
-
-// Hand-crafted logos for the services we know about; anything else (added
-// at runtime through /add-service, but not in the catalog) falls back to
-// a monogram — see FallbackLogo, applied at each call site via
-// `SERVICE_LOGOS[slug] ?? FallbackLogo` rather than a lookup function,
-// since the static-components lint rule wants component references
-// resolved via plain property access.
 export const SERVICE_LOGOS: Record<string, LogoComponent> = {
   github: GithubLogo,
   supabase: SupabaseLogo,

@@ -3,11 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { CatalogEntry } from "@/lib/serviceCatalog";
+import { useTranslation } from "react-i18next";
+import "@/lib/i18n/i18n";
+import type { CatalogEntry } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 
 export default function ServiceCatalogPicker({ catalog }: { catalog: CatalogEntry[] }) {
+  const { t } = useTranslation();
   const router = useRouter();
   const [available, setAvailable] = useState(catalog);
   const [pendingHost, setPendingHost] = useState<string | null>(null);
@@ -26,18 +29,16 @@ export default function ServiceCatalogPicker({ catalog }: { catalog: CatalogEntr
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error ?? "Something went wrong.");
+        setError(data.error ?? t("addService.somethingWrong"));
         setPendingHost(null);
         return;
       }
 
-      // Added — drop it from the pick list and refresh the router cache so
-      // the home page's server-fetched list picks it up next visit.
       setAvailable((prev) => prev.filter((e) => e.host !== entry.host));
       setPendingHost(null);
       router.refresh();
     } catch {
-      setError("Something went wrong.");
+      setError(t("addService.somethingWrong"));
       setPendingHost(null);
     }
   }
@@ -45,11 +46,11 @@ export default function ServiceCatalogPicker({ catalog }: { catalog: CatalogEntr
   return (
     <div className="w-full max-w-2xl">
       <Link href="/" className="link link-hover text-base-content/50 hover:text-base-content mb-6 inline-block text-xs font-medium">
-        ← Back
+        {t("addService.back")}
       </Link>
 
-      <h1 className="text-base-content text-lg font-semibold">Add a service</h1>
-      <p className="text-base-content/50 mt-1 text-xs">Choose a service to start tracking it.</p>
+      <h1 className="text-base-content text-lg font-semibold">{t("addService.title")}</h1>
+      <p className="text-base-content/50 mt-1 text-xs">{t("addService.subtitle")}</p>
 
       {error && (
         <div role="alert" className="alert alert-error alert-soft mt-3 py-2 text-xs">
@@ -58,9 +59,7 @@ export default function ServiceCatalogPicker({ catalog }: { catalog: CatalogEntr
       )}
 
       {available.length === 0 ? (
-        <p className="text-base-content/50 mt-4 text-sm">
-          You&rsquo;re already tracking everything in the catalog.
-        </p>
+        <p className="text-base-content/50 mt-4 text-sm">{t("addService.allTracked")}</p>
       ) : (
         <ul className="mt-4 grid grid-cols-3 gap-3">
           {available.map((entry) => {
@@ -77,7 +76,7 @@ export default function ServiceCatalogPicker({ catalog }: { catalog: CatalogEntr
                     onClick={() => handleAdd(entry)}
                     className="btn btn-outline btn-xs mt-1 w-full"
                   >
-                    {isPending ? "Adding…" : "Add"}
+                    {isPending ? t("addService.adding") : t("addService.add")}
                   </button>
                 </div>
               </li>

@@ -1,0 +1,103 @@
+{
+  "status": {
+    "operational": "Opérationnel",
+    "minorIssues": "Problèmes mineurs",
+    "majorOutage": "Panne majeure",
+    "criticalOutage": "Panne critique",
+    "degradedPerformance": "Performances dégradées",
+    "partialOutage": "Panne partielle",
+    "underMaintenance": "Maintenance en cours",
+    "unknown": "Inconnu"
+  },
+  "nav": {
+    "services": "Services",
+    "addService": "Ajouter un service",
+    "searchPlaceholder": "Rechercher des services…",
+    "noServicesFound": "Aucun service trouvé.",
+    "toggleTheme": "Changer de thème",
+    "language": "Langue"
+  },
+  "serviceCard": {
+    "checkingStatus": "Vérification du statut…",
+    "unreachable": "Impossible d'accéder à l'API de statut",
+    "outages24h_one": "{{count}} panne au cours des dernières 24 h",
+    "outages24h_other": "{{count}} pannes au cours des dernières 24 h"
+  },
+  "serviceDetail": {
+    "back": "← Retour",
+    "checkingStatus": "Vérification du statut…",
+    "unreachable": "Impossible d'accéder à l'API de statut",
+    "components": "Composants",
+    "incidents": "Incidents",
+    "noIncidents": "Aucun incident signalé.",
+    "updated": "mis à jour",
+    "lastUpdated": "Dernière mise à jour {{time}}"
+  },
+  "addService": {
+    "back": "← Retour",
+    "title": "Ajouter un service",
+    "subtitle": "Choisissez un service à surveiller.",
+    "allTracked": "Vous suivez déjà tout le catalogue.",
+    "add": "Ajouter",
+    "adding": "Ajout en cours…",
+    "somethingWrong": "Une erreur s'est produite."
+  },
+  "landing": {
+    "nav": {
+      "pricing": "Tarifs",
+      "startTrial": "Essai gratuit"
+    },
+    "hero": {
+      "eyebrow": "Tous les services surveillés sont opérationnels",
+      "titlePrefix": "Si quelque chose",
+      "titleDown": "tombe en panne",
+      "titleSuffix": ", vous serez le premier informé.",
+      "body": "downDATA surveille les pages de statut dont vous dépendez déjà — GitHub, Supabase, Cloudflare et tout autre service basé sur Atlassian Statuspage — vérifiées jusqu'à toutes les {{interval}}, à partir de {{price}}, alors que StatusGator facture {{competitorPrice}} pour le même service.",
+      "ctaTrial": "Démarrer l'essai gratuit de 14 jours",
+      "ctaPricing": "Voir les tarifs",
+      "noCard": "Sans carte bancaire. Accès complet pendant 14 jours.",
+      "liveDashboard": "Tableau de bord en direct"
+    },
+    "features": {
+      "heading": "Moins cher, car les coûts en coulisses sont plus bas.",
+      "subtitle": "Les tarifs de la concurrence financent en partie une infrastructure téléphonique/SMS et des sondes multi-régions que nous n'entretenons pas de la même façon.",
+      "speedTitle": "Vérifications jusqu'à toutes les 5 secondes",
+      "speedBody": "Starter vérifie toutes les 15 s, Pro toutes les 10 s. Le forfait payant le moins cher d'UptimeRobot ne descend qu'à 60 s.",
+      "seatsTitle": "Membres illimités, sur chaque forfait",
+      "seatsBody": "UptimeRobot facture 15–19 $/mois par membre d'équipe au-delà des trois premiers. Ici, toute l'équipe est incluse.",
+      "selfHostedTitle": "Auto-hébergé, si vous le souhaitez",
+      "selfHostedBody": "Exécutez-le sur votre propre serveur pour un tarif fixe. Aucun des cinq concurrents étudiés ne propose cela."
+    },
+    "pricing": {
+      "heading": "Tarifs",
+      "subtitle": "À la place, un véritable essai de 14 jours avec accès complet — sans carte requise. Choisissez un forfait quand vous serez prêt, pas avant.",
+      "monthly": "Mensuel",
+      "annual": "Annuel",
+      "save20": "Économisez 20 %",
+      "perMonth": "/mois",
+      "billedAnnually": "facturé annuellement · {{price}} $/an",
+      "starter": "Starter",
+      "pro": "Pro",
+      "business": "Business",
+      "mostTeams": "Le plus populaire",
+      "inTheMaking": "En préparation",
+      "pricingTBD": "Tarif à venir",
+      "monitors": "Moniteurs",
+      "checkInterval": "Intervalle de vérification",
+      "statusPages": "Pages de statut",
+      "teamSeats": "Membres de l'équipe",
+      "history": "Historique",
+      "unlimited": "Illimité",
+      "getStarted": "Commencer",
+      "getNotified": "Me prévenir",
+      "businessNote": "SSO, journaux d'audit et support prioritaire sont encore en développement. Laissez votre e-mail et nous vous préviendrons le jour du lancement.",
+      "needMore": "Besoin de plus de 1000 moniteurs ou d'un hébergement autonome ?",
+      "selfHostedLicense": "Renseignez-vous sur une licence auto-hébergée."
+    },
+    "closing": {
+      "heading": "Quatorze jours. Accès complet. Sans carte.",
+      "cta": "Démarrer l'essai"
+    },
+    "footer": "Les données de statut proviennent de l'API publique Statuspage de chaque fournisseur."
+  }
+}

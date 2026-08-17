@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { ServiceDefinition } from "@/lib/services";
+import { useTranslation } from "react-i18next";
+import "@/lib/i18n/i18n";
+import type { ServiceDefinition } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 
 export default function ServiceSearch({ services }: { services: ServiceDefinition[] }) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const trimmed = query.trim();
 
@@ -22,14 +25,14 @@ export default function ServiceSearch({ services }: { services: ServiceDefinitio
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search services…"
+        placeholder={t("nav.searchPlaceholder")}
         className="input input-bordered input-sm w-full"
       />
 
       {trimmed && (
         <ul className="menu menu-sm bg-base-100 border-base-300 absolute top-full left-0 z-20 mt-2 w-full flex-nowrap border p-1 shadow-xl">
           {results.length === 0 ? (
-            <li className="text-base-content/50 px-3 py-2.5 text-sm">No services found.</li>
+            <li className="text-base-content/50 px-3 py-2.5 text-sm">{t("nav.noServicesFound")}</li>
           ) : (
             results.map((service) => {
               const Logo = SERVICE_LOGOS[service.slug] ?? FallbackLogo;

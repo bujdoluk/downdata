@@ -1,20 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { ServiceDefinition, ServiceSlug } from "@/lib/services";
+import type { ServiceDefinition, ServiceStatusBatchResponse } from "@/types/service";
 import ServiceCard from "@/components/service/ServiceCard";
-import type { Indicator } from "@/components/service/statusStyles";
-
-type StatusEntry =
-  | { status: { indicator: Indicator; description: string }; outages24h?: number }
-  | { error: string };
-
-type BatchResponse = Partial<Record<ServiceSlug, StatusEntry>>;
 
 const POLL_INTERVAL_MS = 30_000;
 
 export default function ServiceGrid({ services }: { services: ServiceDefinition[] }) {
-  const [data, setData] = useState<BatchResponse | null>(null);
+  const [data, setData] = useState<ServiceStatusBatchResponse | null>(null);
   const [fetchFailed, setFetchFailed] = useState(false);
 
   useEffect(() => {
@@ -24,7 +17,7 @@ export default function ServiceGrid({ services }: { services: ServiceDefinition[
       try {
         const res = await fetch("/api/status", { cache: "no-store" });
         if (!res.ok) throw new Error("bad response");
-        const json = (await res.json()) as BatchResponse;
+        const json = (await res.json()) as ServiceStatusBatchResponse;
         if (!cancelled) {
           setData(json);
           setFetchFailed(false);

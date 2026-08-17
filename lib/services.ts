@@ -1,21 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import type { ServiceDefinition } from "@/types/service";
 
-// The service registry, persisted as a JSON file on disk instead of
-// hardcoded in source. This is what lets services be added at runtime
-// (see app/add-service) without a rebuild/redeploy. It's a plain file
-// rather than a real database because this app is meant to be self-hosted
-// on a normal VPS (Hetzner) with a persistent disk — no separate DB
-// service to run, and it's a trivial swap for SQLite/Postgres later if
-// the write-concurrency needs ever outgrow a JSON file.
-
-export type ServiceSlug = string;
-
-export type ServiceDefinition = {
-  slug: ServiceSlug;
-  name: string;
-  host: string;
-};
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const DATA_FILE = path.join(DATA_DIR, "services.json");

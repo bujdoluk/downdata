@@ -14,9 +14,12 @@
     "type-check": "next typegen && tsc --noEmit -p ."
   },
   "dependencies": {
+    "country-flag-icons": "1.6.20",
+    "i18next": "26.3.6",
     "next": "16.3.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "react-i18next": "17.0.11",
     "temporal-polyfill": "1.0.4"
   },
   "devDependencies": {

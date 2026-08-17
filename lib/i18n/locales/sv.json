@@ -1,0 +1,103 @@
+{
+  "status": {
+    "operational": "Fungerar",
+    "minorIssues": "Mindre problem",
+    "majorOutage": "Större driftstopp",
+    "criticalOutage": "Kritiskt driftstopp",
+    "degradedPerformance": "Försämrad prestanda",
+    "partialOutage": "Delvis driftstopp",
+    "underMaintenance": "Underhåll pågår",
+    "unknown": "Okänt"
+  },
+  "nav": {
+    "services": "Tjänster",
+    "addService": "Lägg till tjänst",
+    "searchPlaceholder": "Sök tjänster…",
+    "noServicesFound": "Inga tjänster hittades.",
+    "toggleTheme": "Växla tema",
+    "language": "Språk"
+  },
+  "serviceCard": {
+    "checkingStatus": "Kontrollerar status…",
+    "unreachable": "Status-API kunde inte nås",
+    "outages24h_one": "{{count}} driftstopp de senaste 24 tim",
+    "outages24h_other": "{{count}} driftstopp de senaste 24 tim"
+  },
+  "serviceDetail": {
+    "back": "← Tillbaka",
+    "checkingStatus": "Kontrollerar status…",
+    "unreachable": "Status-API kunde inte nås",
+    "components": "Komponenter",
+    "incidents": "Incidenter",
+    "noIncidents": "Inga incidenter rapporterade.",
+    "updated": "uppdaterad",
+    "lastUpdated": "Senast uppdaterad {{time}}"
+  },
+  "addService": {
+    "back": "← Tillbaka",
+    "title": "Lägg till en tjänst",
+    "subtitle": "Välj en tjänst att börja övervaka.",
+    "allTracked": "Du övervakar redan allt i katalogen.",
+    "add": "Lägg till",
+    "adding": "Lägger till…",
+    "somethingWrong": "Något gick fel."
+  },
+  "landing": {
+    "nav": {
+      "pricing": "Priser",
+      "startTrial": "Kostnadsfri provperiod"
+    },
+    "hero": {
+      "eyebrow": "Alla övervakade tjänster fungerar",
+      "titlePrefix": "Om något",
+      "titleDown": "går ner",
+      "titleSuffix": ", är du den förste som får veta.",
+      "body": "downDATA bevakar statussidorna du redan förlitar dig på — GitHub, Supabase, Cloudflare och alla andra baserade på Atlassian Statuspage — kontrollerade så ofta som var {{interval}}, från {{price}}, medan StatusGator tar {{competitorPrice}} för samma sak.",
+      "ctaTrial": "Starta din 14-dagars kostnadsfria provperiod",
+      "ctaPricing": "Se priser",
+      "noCard": "Inget kreditkort krävs. Full åtkomst i 14 dagar.",
+      "liveDashboard": "Direktuppdaterad instrumentpanel"
+    },
+    "features": {
+      "heading": "Billigare eftersom kostnaderna bakom kulisserna är lägre.",
+      "subtitle": "Konkurrenternas priser täcker delvis telefon-/SMS-infrastruktur och sonder i flera regioner som vi inte underhåller på samma sätt.",
+      "speedTitle": "Kontroller så ofta som var 5:e sekund",
+      "speedBody": "Starter kontrollerar var 15:e sekund, Pro var 10:e sekund. UptimeRobots billigaste betalplan klarar bara 60 sekunder.",
+      "seatsTitle": "Obegränsat antal användare, i alla planer",
+      "seatsBody": "UptimeRobot tar 15–19 $/mån per teammedlem utöver de tre första. Här ingår hela teamet.",
+      "selfHostedTitle": "Egen värdtjänst, om du föredrar det",
+      "selfHostedBody": "Kör den på din egen server för en fast avgift. Ingen av de fem granskade konkurrenterna erbjuder detta."
+    },
+    "pricing": {
+      "heading": "Priser",
+      "subtitle": "Istället en riktig 14-dagars provperiod med full åtkomst — inget kort krävs. Välj en plan när du är redo, inte innan.",
+      "monthly": "Månadsvis",
+      "annual": "Årsvis",
+      "save20": "Spara 20 %",
+      "perMonth": "/mån",
+      "billedAnnually": "faktureras årsvis · {{price}} $/år",
+      "starter": "Starter",
+      "pro": "Pro",
+      "business": "Business",
+      "mostTeams": "Mest populär",
+      "inTheMaking": "Under utveckling",
+      "pricingTBD": "Pris ej fastställt",
+      "monitors": "Övervakare",
+      "checkInterval": "Kontrollintervall",
+      "statusPages": "Statussidor",
+      "teamSeats": "Teammedlemmar",
+      "history": "Historik",
+      "unlimited": "Obegränsat",
+      "getStarted": "Kom igång",
+      "getNotified": "Meddela mig",
+      "businessNote": "SSO, granskningsloggar och prioriterad support är fortfarande under utveckling. Lämna din e-post så meddelar vi dig när det lanseras.",
+      "needMore": "Behöver du fler än 1000 övervakare eller vill du köra egen värdtjänst?",
+      "selfHostedLicense": "Fråga om en licens för egen värdtjänst."
+    },
+    "closing": {
+      "heading": "Fjorton dagar. Full åtkomst. Inget kort.",
+      "cta": "Starta provperiod"
+    },
+    "footer": "Statusdata hämtas från respektive leverantörs publika Statuspage-API."
+  }
+}

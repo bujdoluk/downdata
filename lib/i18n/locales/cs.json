@@ -1,0 +1,104 @@
+{
+  "status": {
+    "operational": "Funguje",
+    "minorIssues": "Menší problémy",
+    "majorOutage": "Velký výpadek",
+    "criticalOutage": "Kritický výpadek",
+    "degradedPerformance": "Snížený výkon",
+    "partialOutage": "Částečný výpadek",
+    "underMaintenance": "Probíhá údržba",
+    "unknown": "Neznámé"
+  },
+  "nav": {
+    "services": "Služby",
+    "addService": "Přidat službu",
+    "searchPlaceholder": "Hledat služby…",
+    "noServicesFound": "Nenalezeny žádné služby.",
+    "toggleTheme": "Přepnout motiv",
+    "language": "Jazyk"
+  },
+  "serviceCard": {
+    "checkingStatus": "Kontroluje se stav…",
+    "unreachable": "Stavové API není dostupné",
+    "outages24h_one": "{{count}} výpadek za posledních 24 h",
+    "outages24h_few": "{{count}} výpadky za posledních 24 h",
+    "outages24h_other": "{{count}} výpadků za posledních 24 h"
+  },
+  "serviceDetail": {
+    "back": "← Zpět",
+    "checkingStatus": "Kontroluje se stav…",
+    "unreachable": "Stavové API není dostupné",
+    "components": "Komponenty",
+    "incidents": "Incidenty",
+    "noIncidents": "Nebyly hlášeny žádné incidenty.",
+    "updated": "aktualizováno",
+    "lastUpdated": "Naposledy aktualizováno {{time}}"
+  },
+  "addService": {
+    "back": "← Zpět",
+    "title": "Přidat službu",
+    "subtitle": "Vyberte službu, kterou chcete sledovat.",
+    "allTracked": "Už sledujete vše z katalogu.",
+    "add": "Přidat",
+    "adding": "Přidává se…",
+    "somethingWrong": "Něco se pokazilo."
+  },
+  "landing": {
+    "nav": {
+      "pricing": "Ceník",
+      "startTrial": "Vyzkoušet zdarma"
+    },
+    "hero": {
+      "eyebrow": "Všechny sledované služby fungují",
+      "titlePrefix": "Když něco",
+      "titleDown": "vypadne",
+      "titleSuffix": ", dozvíte se to jako první.",
+      "body": "downDATA sleduje stavové stránky, na které se už spoléháte — GitHub, Supabase, Cloudflare a cokoli dalšího na Atlassian Statuspage — kontrolováno až každých {{interval}}, od {{price}}, zatímco StatusGator si za totéž účtuje {{competitorPrice}}.",
+      "ctaTrial": "Vyzkoušet 14 dní zdarma",
+      "ctaPricing": "Zobrazit ceník",
+      "noCard": "Bez platební karty. Plný přístup na 14 dní.",
+      "liveDashboard": "Živý přehled"
+    },
+    "features": {
+      "heading": "Levnější, protože náklady v pozadí jsou nižší.",
+      "subtitle": "Ceny konkurence částečně platí za telefonní/SMS infrastrukturu a víceregionální sondy, které my nemáme ve stejném rozsahu.",
+      "speedTitle": "Kontroly už za 5 sekund",
+      "speedBody": "Starter kontroluje každých 15 s, Pro každých 10 s. Nejlevnější placený plán UptimeRobot zvládne jen 60 s.",
+      "seatsTitle": "Neomezený počet členů v každém plánu",
+      "seatsBody": "UptimeRobot účtuje 15–19 USD/měsíc za každého dalšího člena nad rámec prvních tří. Zde je zahrnut celý tým.",
+      "selfHostedTitle": "Vlastní hosting, pokud chcete",
+      "selfHostedBody": "Spusťte si to na vlastním serveru za paušální poplatek. Žádný z pěti prověřených konkurentů to nenabízí."
+    },
+    "pricing": {
+      "heading": "Ceník",
+      "subtitle": "Místo toho skutečná 14denní zkušební verze s plným přístupem — bez nutnosti karty. Plán vyberte, až budete připraveni, ne dřív.",
+      "monthly": "Měsíčně",
+      "annual": "Ročně",
+      "save20": "Ušetříte 20 %",
+      "perMonth": "/měs.",
+      "billedAnnually": "fakturováno ročně · {{price}} USD/rok",
+      "starter": "Starter",
+      "pro": "Pro",
+      "business": "Business",
+      "mostTeams": "Nejoblíbenější",
+      "inTheMaking": "Připravuje se",
+      "pricingTBD": "Cena bude upřesněna",
+      "monitors": "Monitory",
+      "checkInterval": "Interval kontroly",
+      "statusPages": "Stavové stránky",
+      "teamSeats": "Členové týmu",
+      "history": "Historie",
+      "unlimited": "Neomezené",
+      "getStarted": "Začít",
+      "getNotified": "Chci upozornit",
+      "businessNote": "SSO, auditní záznamy a prioritní podpora se ještě připravují. Nechte nám e-mail a dáme vám vědět, až to spustíme.",
+      "needMore": "Potřebujete více než 1 000 monitorů, nebo chcete vlastní hosting?",
+      "selfHostedLicense": "Zeptejte se na licenci pro vlastní hosting."
+    },
+    "closing": {
+      "heading": "Čtrnáct dní. Plný přístup. Bez karty.",
+      "cta": "Vyzkoušet zdarma"
+    },
+    "footer": "Stavová data pocházejí z veřejného Statuspage API každého poskytovatele."
+  }
+}

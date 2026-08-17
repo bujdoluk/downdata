@@ -1,26 +1,32 @@
 import { NextResponse } from "next/server";
+import { Temporal } from "temporal-polyfill";
 import { getAllServices } from "@/lib/services";
 
-// Batched status endpoint: one request fans out to every registered
-// service's upstream in parallel, server-side, instead of each client
-// component polling its own /api/status/:slug independently. Each
-// individual upstream fetch is still cached per-URL for 30s (see
-// `next.revalidate` below), so this doesn't change how often we hit
-// upstream — it only collapses N client requests into 1.
 export async function GET() {
   const entries = await Promise.all(
     getAllServices().map(async (service) => {
       try {
-        const res = await fetch(`https://${service.host}/api/v2/status.json`, {
-          next: { revalidate: 30 },
-        });
+        const [statusRes, incidentsRes] = await Promise.all([
+          fetch(`https://${service.host}/api/v2/status.json`, { next: { revalidate: 30 } }),
+          fetch(`https://${service.host}/api/v2/incidents.json`, { next: { revalidate: 30 } }),
+        ]);
 
-        if (!res.ok) {
-          return [service.slug, { error: `Upstream returned ${res.status}` }] as const;
+        if (!statusRes.ok) {
+          return [service.slug, { error: `Upstream returned ${statusRes.status}` }] as const;
         }
 
-        const data = await res.json();
-        return [service.slug, { status: data.status }] as const;
+        const statusData = await statusRes.json();
+
+        let outages24h: number | undefined;
+        if (incidentsRes.ok) {
+          const incidentsData = await incidentsRes.json();
+          const cutoff = Temporal.Now.instant().subtract({ hours: 24 });
+          outages24h = (incidentsData.incidents as { created_at: string }[]).filter(
+            (incident) => Temporal.Instant.compare(Temporal.Instant.from(incident.created_at), cutoff) >= 0,
+          ).length;
+        }
+
+        return [service.slug, { status: statusData.status, outages24h }] as const;
       } catch {
         return [service.slug, { error: "Failed to reach status API" }] as const;
       }

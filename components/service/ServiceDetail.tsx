@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { formatDateTime, formatTime } from "@/lib/formatTime";
 import type { ServiceDefinition, ServiceSlug } from "@/lib/services";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
@@ -151,7 +152,7 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
                     </a>
                     <p className="text-base-content/50 mt-0.5 text-xs">
                       {incident.status} · updated{" "}
-                      {new Date(incident.updated_at).toLocaleString()}
+                      {formatDateTime(incident.updated_at)}
                     </p>
                   </div>
                 </li>
@@ -160,7 +161,7 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
           )}
 
           <p className="text-base-content/30 mt-6 text-[11px]">
-            Last updated {new Date(data.page.updated_at).toLocaleTimeString()}
+            Last updated {formatTime(data.page.updated_at)}
           </p>
         </>
       )}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PricingSection from "@/components/landing-page/PricingSection";
 
 const mono = "font-mono";
 
@@ -55,7 +56,6 @@ const features = [
 export default function LandingPage() {
   return (
     <div data-theme="dark" className="bg-base-100 text-base-content">
-      {/* Nav */}
       <nav className="border-base-300 border-b">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-5">
           <Link href="/" className="text-lg font-extrabold tracking-tight">
@@ -72,7 +72,6 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero */}
       <header className="relative overflow-hidden">
         <div
           aria-hidden="true"
@@ -108,7 +107,6 @@ export default function LandingPage() {
             <div className="text-base-content/50 text-sm">No credit card. Full access for 14 days.</div>
           </div>
 
-          {/* Demo panel — the hero visual */}
           <div className="relative mx-auto w-full max-w-md lg:mx-0">
             <div className="bg-primary/10 absolute inset-0 translate-x-3 translate-y-3 rounded-2xl" aria-hidden="true" />
             <div className="card card-border bg-base-200 relative shadow-2xl">
@@ -181,137 +179,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="py-24">
-        <div className="mx-auto max-w-6xl px-8">
-          <div className="mx-auto mb-14 flex max-w-xl flex-col items-center gap-3 text-center">
-            <h2 className="text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">Pricing</h2>
-            <p className="text-base-content/70">
-              Instead, a real 14-day trial with full access — no card required. Pick
-              a plan when you&rsquo;re ready, not before.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {/* Starter */}
-            <div className="card card-border bg-base-200">
-              <div className="card-body gap-6 p-8">
-                <div className="flex flex-col gap-1">
-                  <div className="text-base font-bold">Starter</div>
-                  <div className={`text-4xl font-bold ${mono}`}>
-                    $5<span className="text-base-content/50 text-base font-normal">/mo</span>
-                  </div>
-                </div>
-                <ul className="text-base-content/70 flex flex-1 flex-col gap-3 text-sm">
-                  <li className="flex justify-between gap-4">
-                    Monitors <span className={`${mono} text-base-content`}>50</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    Check interval <span className={`${mono} text-base-content`}>15s</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    Status pages <span className={`${mono} text-base-content`}>5</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    Team seats <span className={`${mono} text-base-content`}>Unlimited</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    History <span className={`${mono} text-base-content`}>6 mo</span>
-                  </li>
-                </ul>
-                <div className="card-actions">
-                  <a href="#" className="btn btn-outline w-full rounded-full">
-                    Get started
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Pro */}
-            <div className="card card-border border-primary/40 bg-base-200 shadow-2xl">
-              <div className="card-body gap-6 p-8">
-                <div className="flex flex-col gap-1">
-                  <div className="flex items-center justify-between text-base font-bold">
-                    Pro
-                    <span className={`badge badge-primary ${mono}`}>Most teams</span>
-                  </div>
-                  <div className={`text-4xl font-bold ${mono}`}>
-                    $15<span className="text-base-content/50 text-base font-normal">/mo</span>
-                  </div>
-                </div>
-                <ul className="text-base-content/70 flex flex-1 flex-col gap-3 text-sm">
-                  <li className="flex justify-between gap-4">
-                    Monitors <span className={`${mono} text-base-content`}>250</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    Check interval <span className={`${mono} text-base-content`}>10s</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    Status pages <span className={`${mono} text-base-content`}>Unlimited</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    Team seats <span className={`${mono} text-base-content`}>Unlimited</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    History <span className={`${mono} text-base-content`}>12 mo</span>
-                  </li>
-                </ul>
-                <div className="card-actions">
-                  <a href="#" className="btn btn-primary w-full rounded-full">
-                    Get started
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Business — in the making */}
-            <div className="card card-border card-dash bg-base-200/60">
-              <div className="card-body gap-6 p-8">
-                <div className="flex flex-col gap-1">
-                  <div className="text-base-content/70 flex items-center justify-between text-base font-bold">
-                    Business
-                    <span className={`badge badge-ghost ${mono}`}>In the making</span>
-                  </div>
-                  <div className="text-base-content/50 text-2xl font-bold">Pricing TBD</div>
-                </div>
-                <ul className="text-base-content/50 flex flex-1 flex-col gap-3 text-sm">
-                  <li className="flex justify-between gap-4">
-                    Monitors <span className={mono}>1,000</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    Check interval <span className={mono}>5s</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    Status pages <span className={mono}>Unlimited</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    Team seats <span className={mono}>Unlimited</span>
-                  </li>
-                  <li className="flex justify-between gap-4">
-                    History <span className={mono}>24 mo</span>
-                  </li>
-                </ul>
-                <div className="border-base-300 text-base-content/50 border-t border-dashed pt-4 text-xs">
-                  SSO, audit logs, and priority support are still being built. Leave your
-                  email and we&rsquo;ll tell you the day it ships.
-                </div>
-                <div className="card-actions">
-                  <button type="button" disabled className="btn btn-disabled w-full rounded-full">
-                    Get notified
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <p className="text-base-content/70 mt-10 text-center text-sm">
-            Need more than 1,000 monitors, or want to run it yourself?{" "}
-            <a href="#" className="link link-hover text-base-content font-medium">
-              Ask about a self-hosted license.
-            </a>
-          </p>
-        </div>
-      </section>
+      <PricingSection />
 
       {/* Closing CTA */}
       <div className="border-base-300 relative overflow-hidden border-t py-28 text-center">

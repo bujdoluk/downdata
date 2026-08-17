@@ -6,17 +6,13 @@ import ServiceCard from "@/components/service/ServiceCard";
 import type { Indicator } from "@/components/service/statusStyles";
 
 type StatusEntry =
-  | { status: { indicator: Indicator; description: string } }
+  | { status: { indicator: Indicator; description: string }; outages24h?: number }
   | { error: string };
 
 type BatchResponse = Partial<Record<ServiceSlug, StatusEntry>>;
 
 const POLL_INTERVAL_MS = 30_000;
 
-// Owns the single poll loop for the whole dashboard — one fetch, one
-// timer, no matter how many services are registered. Individual cards
-// are purely presentational (see ServiceCard). The service list itself
-// is fetched server-side and passed in as a prop.
 export default function ServiceGrid({ services }: { services: ServiceDefinition[] }) {
   const [data, setData] = useState<BatchResponse | null>(null);
   const [fetchFailed, setFetchFailed] = useState(false);
@@ -60,6 +56,7 @@ export default function ServiceGrid({ services }: { services: ServiceDefinition[
             error={entryFailed}
             indicator={entry && "status" in entry ? entry.status.indicator : undefined}
             description={entry && "status" in entry ? entry.status.description : undefined}
+            outages24h={entry && "status" in entry ? entry.outages24h : undefined}
           />
         );
       })}

@@ -1,12 +1,8 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  exclude: rootscrollgutter;
+}
 
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
-
-/* "down" red is the brand's one saturated color — used as daisyUI's
-   `primary` everywhere. success/warning/error are pinned to the exact
-   green/yellow/red the app already uses for live service status, so
-   badges/alerts read identically to the hand-drawn status dots. */
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
@@ -51,16 +47,47 @@
   --color-error-content: #ffffff;
 }
 
+[data-theme="light"] {
+  --color-primary: #ef4444 !important;
+  --color-primary-content: #ffffff !important;
+  --color-accent: #f97316 !important;
+  --color-accent-content: #ffffff !important;
+  --color-info: #3b82f6 !important;
+  --color-info-content: #ffffff !important;
+  --color-success: #10b981 !important;
+  --color-success-content: #ffffff !important;
+  --color-warning: #eab308 !important;
+  --color-warning-content: #1a1400 !important;
+  --color-error: #ef4444 !important;
+  --color-error-content: #ffffff !important;
+}
+
+[data-theme="dark"] {
+  --color-base-100: #0a0b10 !important;
+  --color-base-200: #13141b !important;
+  --color-base-300: #191b24 !important;
+  --color-base-content: #edeef4 !important;
+  --color-neutral: #191b24 !important;
+  --color-neutral-content: #edeef4 !important;
+  --color-primary: #ef4444 !important;
+  --color-primary-content: #ffffff !important;
+  --color-accent: #f97316 !important;
+  --color-accent-content: #ffffff !important;
+  --color-info: #3b82f6 !important;
+  --color-info-content: #ffffff !important;
+  --color-success: #10b981 !important;
+  --color-success-content: #ffffff !important;
+  --color-warning: #eab308 !important;
+  --color-warning-content: #1a1400 !important;
+  --color-error: #ef4444 !important;
+  --color-error-content: #ffffff !important;
+}
+
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-nunito);
   --font-mono: var(--font-geist-mono);
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* Used by the /landing hero's "live" status dot. */
 @keyframes signal-pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55);

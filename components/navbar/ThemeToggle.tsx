@@ -18,22 +18,20 @@ function MoonIcon({ className }: { className?: string }) {
 }
 
 export default function ThemeToggle() {
-  function toggle() {
-    const root = document.documentElement;
-    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", next);
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const next = e.target.checked ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
     localStorage.setItem("theme", next);
   }
 
   return (
-    <button
-      type="button"
-      onClick={toggle}
+    <label
       aria-label="Toggle theme"
-      className="rounded-full p-2 text-white/60 hover:bg-white/10"
+      className="swap swap-rotate text-base-content/60 hover:bg-base-content/10 rounded-full p-2"
     >
-      <SunIcon className="hidden dark:block" />
-      <MoonIcon className="dark:hidden" />
-    </button>
+      <input type="checkbox" value="light" className="theme-controller" onChange={handleChange} />
+      <SunIcon className="swap-on" />
+      <MoonIcon className="swap-off" />
+    </label>
   );
 }

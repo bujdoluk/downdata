@@ -25,6 +25,16 @@ export default function LanguageSwitcher() {
     }
   }, [i18n]);
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (detailsRef.current && !detailsRef.current.contains(event.target as Node)) {
+        detailsRef.current.open = false;
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   function handleChange(code: string) {
     i18n.changeLanguage(code);
     try {
@@ -57,8 +67,8 @@ export default function LanguageSwitcher() {
                 onClick={() => handleChange(language.code)}
                 aria-label={language.name}
                 title={language.name}
-                className={`block h-7 w-7 overflow-hidden rounded-full transition focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none ${
-                  isActive ? "ring-primary ring-2" : "hover:ring-base-content/30 hover:ring-2"
+                className={`block h-7 w-7 overflow-hidden rounded-full transition-transform duration-200 ease-out hover:z-10 hover:scale-125 focus-visible:ring-primary focus-visible:ring-2 focus-visible:outline-none ${
+                  isActive ? "ring-primary ring-2" : ""
                 }`}
               >
                 <Flag className="h-full w-full" />

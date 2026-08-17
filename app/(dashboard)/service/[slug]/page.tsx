@@ -14,7 +14,7 @@ export default async function ServicePage({
   }
 
   return (
-    <main className="flex flex-1 items-center justify-center p-6">
+    <main className="flex flex-1 items-center-safe justify-center p-6">
       <ServiceDetail slug={slug} />
     </main>
   );

@@ -20,8 +20,8 @@
   "serviceCard": {
     "checkingStatus": "Checking status…",
     "unreachable": "Unable to reach status API",
-    "outages24h_one": "{{count}} outage in the last 24h",
-    "outages24h_other": "{{count}} outages in the last 24h"
+    "outages24h_one": "{{count}} outage in the last 24 h",
+    "outages24h_other": "{{count}} outages in the last 24 h"
   },
   "serviceDetail": {
     "back": "← Back",

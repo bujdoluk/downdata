@@ -51,7 +51,7 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
   const Logo = SERVICE_LOGOS[slug] ?? FallbackLogo;
 
   return (
-    <div className="w-full max-w-lg">
+    <div className="w-full max-w-lg self-start">
       <Link href="/" className="link link-hover text-base-content/50 hover:text-base-content mb-6 inline-block text-xs font-medium">
         {t("serviceDetail.back")}
       </Link>

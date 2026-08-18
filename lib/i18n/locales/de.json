@@ -18,7 +18,8 @@
     "language": "Sprache",
     "menu": "Menü",
     "expandSidebar": "Seitenleiste einblenden",
-    "collapseSidebar": "Seitenleiste einklappen"
+    "collapseSidebar": "Seitenleiste einklappen",
+    "monitors": "Monitore"
   },
   "serviceCard": {
     "checkingStatus": "Status wird geprüft…",
@@ -42,7 +43,6 @@
   "addService": {
     "back": "← Zurück",
     "title": "Dienst hinzufügen",
-    "subtitle": "Wähle einen Dienst aus, den du überwachen möchtest.",
     "add": "Hinzufügen",
     "adding": "Wird hinzugefügt…",
     "somethingWrong": "Etwas ist schiefgelaufen.",
@@ -106,7 +106,12 @@
     },
     "footer": "Statusdaten stammen aus der öffentlichen Statuspage-API jedes Anbieters."
   },
-  "home": {
+  "monitors": {
+    "myServices": "Meine Dienste",
     "noServices": "Es werden noch keine Dienste überwacht. Füge einen hinzu, um loszulegen."
+  },
+  "services": {
+    "title": "Meine Dienste",
+    "monitoring": "Überwacht"
   }
 }

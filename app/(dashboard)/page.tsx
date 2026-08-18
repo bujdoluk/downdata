@@ -1,24 +1,14 @@
-import ServiceGrid from "@/components/service/ServiceGrid";
-import AddServiceButton from "@/components/service/AddServiceButton";
-import NoServicesMessage from "@/components/service/NoServicesMessage";
 import { getAllServices } from "@/lib/services";
+import { SERVICE_CATALOG } from "@/lib/serviceCatalog";
+import ServicesPageContent from "@/components/service/ServicesPageContent";
 
 export default function Home() {
-  const services = getAllServices();
+  const trackedHosts = getAllServices().map((service) => service.host);
 
   return (
-    <main className="flex flex-1 items-start justify-center p-6">
+    <main className="flex flex-1 justify-center p-6">
       <div className="w-full max-w-6xl">
-        <div className="mb-4 flex justify-end">
-          <AddServiceButton />
-        </div>
-        {services.length === 0 ? (
-          <NoServicesMessage />
-        ) : (
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-4">
-            <ServiceGrid services={services} />
-          </div>
-        )}
+        <ServicesPageContent catalog={SERVICE_CATALOG} trackedHosts={trackedHosts} />
       </div>
     </main>
   );

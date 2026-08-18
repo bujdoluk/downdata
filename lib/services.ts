@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import type { ServiceDefinition } from "@/types/service";
-
+import { SERVICE_CATALOG } from "@/lib/serviceCatalog";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const DATA_FILE = path.join(DATA_DIR, "services.json");
@@ -26,6 +26,10 @@ export function getAllServices(): ServiceDefinition[] {
 
 export function getServiceBySlug(slug: string): ServiceDefinition | undefined {
   return getAllServices().find((service) => service.slug === slug);
+}
+
+export function resolveServiceBySlug(slug: string): ServiceDefinition | undefined {
+  return getServiceBySlug(slug) ?? SERVICE_CATALOG.find((entry) => entry.slug === slug);
 }
 
 function slugify(name: string): string {

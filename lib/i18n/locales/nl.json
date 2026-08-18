@@ -18,7 +18,8 @@
     "language": "Taal",
     "menu": "Menu",
     "expandSidebar": "Zijbalk uitklappen",
-    "collapseSidebar": "Zijbalk inklappen"
+    "collapseSidebar": "Zijbalk inklappen",
+    "monitors": "Monitoren"
   },
   "serviceCard": {
     "checkingStatus": "Status controleren…",
@@ -42,7 +43,6 @@
   "addService": {
     "back": "← Terug",
     "title": "Een dienst toevoegen",
-    "subtitle": "Kies een dienst om te gaan volgen.",
     "add": "Toevoegen",
     "adding": "Bezig met toevoegen…",
     "somethingWrong": "Er is iets misgegaan.",
@@ -106,7 +106,12 @@
     },
     "footer": "Statusgegevens zijn afkomstig van de publieke Statuspage-API van elke provider."
   },
-  "home": {
+  "monitors": {
+    "myServices": "Mijn diensten",
     "noServices": "Er worden nog geen diensten gevolgd. Voeg er een toe om te beginnen."
+  },
+  "services": {
+    "title": "Mijn diensten",
+    "monitoring": "Gemonitord"
   }
 }

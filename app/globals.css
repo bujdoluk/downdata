@@ -26,6 +26,7 @@
   --color-warning-content: #1a1400;
   --color-error: #ef4444;
   --color-error-content: #ffffff;
+  --color-sidebar: #d9dee5;
 }
 
 @plugin "daisyui/theme" {
@@ -51,6 +52,7 @@
   --color-warning-content: #1a1400;
   --color-error: #ef4444;
   --color-error-content: #ffffff;
+  --color-sidebar: #0a0b10;
 }
 
 [data-theme="light"] {
@@ -72,6 +74,7 @@
   --color-warning-content: #1a1400 !important;
   --color-error: #ef4444 !important;
   --color-error-content: #ffffff !important;
+  --color-sidebar: #d9dee5 !important;
 }
 
 [data-theme="dark"] {
@@ -93,6 +96,7 @@
   --color-warning-content: #1a1400 !important;
   --color-error: #ef4444 !important;
   --color-error-content: #ffffff !important;
+  --color-sidebar: #0a0b10 !important;
 }
 
 @theme inline {

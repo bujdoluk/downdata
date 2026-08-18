@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getServiceBySlug } from "@/lib/services";
+import { resolveServiceBySlug } from "@/lib/services";
 import ServiceDetail from "@/components/service/ServiceDetail";
 
 export default async function ServicePage({
@@ -9,7 +9,7 @@ export default async function ServicePage({
 }) {
   const { slug } = await params;
 
-  if (!getServiceBySlug(slug)) {
+  if (!resolveServiceBySlug(slug)) {
     notFound();
   }
 

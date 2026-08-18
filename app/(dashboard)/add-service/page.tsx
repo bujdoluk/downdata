@@ -6,7 +6,7 @@ export default function AddServicePage() {
   const trackedHosts = getAllServices().map((service) => service.host);
 
   return (
-    <main className="flex flex-1 items-center justify-center p-6">
+    <main className="flex flex-1 justify-center p-6">
       <ServiceCatalogPicker catalog={SERVICE_CATALOG} trackedHosts={trackedHosts} />
     </main>
   );

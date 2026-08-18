@@ -18,7 +18,8 @@
     "language": "Språk",
     "menu": "Meny",
     "expandSidebar": "Expandera sidopanelen",
-    "collapseSidebar": "Fäll ihop sidopanelen"
+    "collapseSidebar": "Fäll ihop sidopanelen",
+    "monitors": "Övervakning"
   },
   "serviceCard": {
     "checkingStatus": "Kontrollerar status…",
@@ -42,7 +43,6 @@
   "addService": {
     "back": "← Tillbaka",
     "title": "Lägg till en tjänst",
-    "subtitle": "Välj en tjänst att börja övervaka.",
     "add": "Lägg till",
     "adding": "Lägger till…",
     "somethingWrong": "Något gick fel.",
@@ -106,7 +106,12 @@
     },
     "footer": "Statusdata hämtas från respektive leverantörs publika Statuspage-API."
   },
-  "home": {
+  "monitors": {
+    "myServices": "Mina tjänster",
     "noServices": "Inga tjänster övervakas ännu. Lägg till en för att komma igång."
+  },
+  "services": {
+    "title": "Mina tjänster",
+    "monitoring": "Övervakas"
   }
 }

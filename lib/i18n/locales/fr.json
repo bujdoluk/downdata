@@ -18,7 +18,8 @@
     "language": "Langue",
     "menu": "Menu",
     "expandSidebar": "Développer la barre latérale",
-    "collapseSidebar": "Réduire la barre latérale"
+    "collapseSidebar": "Réduire la barre latérale",
+    "monitors": "Moniteurs"
   },
   "serviceCard": {
     "checkingStatus": "Vérification du statut…",
@@ -42,7 +43,6 @@
   "addService": {
     "back": "← Retour",
     "title": "Ajouter un service",
-    "subtitle": "Choisissez un service à surveiller.",
     "add": "Ajouter",
     "adding": "Ajout en cours…",
     "somethingWrong": "Une erreur s'est produite.",
@@ -106,7 +106,12 @@
     },
     "footer": "Les données de statut proviennent de l'API publique Statuspage de chaque fournisseur."
   },
-  "home": {
+  "monitors": {
+    "myServices": "Mes services",
     "noServices": "Aucun service surveillé pour l'instant. Ajoutez-en un pour commencer."
+  },
+  "services": {
+    "title": "Mes services",
+    "monitoring": "Surveillé"
   }
 }

@@ -18,7 +18,8 @@
     "language": "Idioma",
     "menu": "Menu",
     "expandSidebar": "Expandir barra lateral",
-    "collapseSidebar": "Recolher barra lateral"
+    "collapseSidebar": "Recolher barra lateral",
+    "monitors": "Monitores"
   },
   "serviceCard": {
     "checkingStatus": "A verificar o estado…",
@@ -42,7 +43,6 @@
   "addService": {
     "back": "← Voltar",
     "title": "Adicionar um serviço",
-    "subtitle": "Escolha um serviço para começar a monitorizá-lo.",
     "add": "Adicionar",
     "adding": "A adicionar…",
     "somethingWrong": "Algo correu mal.",
@@ -106,7 +106,12 @@
     },
     "footer": "Os dados de estado têm origem na API pública do Statuspage de cada fornecedor."
   },
-  "home": {
+  "monitors": {
+    "myServices": "Meus serviços",
     "noServices": "Ainda não está a monitorizar nenhum serviço. Adicione um para começar."
+  },
+  "services": {
+    "title": "Meus serviços",
+    "monitoring": "Monitorando"
   }
 }

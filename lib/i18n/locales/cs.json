@@ -18,7 +18,8 @@
     "language": "Jazyk",
     "menu": "Nabídka",
     "expandSidebar": "Rozbalit postranní panel",
-    "collapseSidebar": "Sbalit postranní panel"
+    "collapseSidebar": "Sbalit postranní panel",
+    "monitors": "Monitory"
   },
   "serviceCard": {
     "checkingStatus": "Kontroluje se stav…",
@@ -43,7 +44,6 @@
   "addService": {
     "back": "← Zpět",
     "title": "Přidat službu",
-    "subtitle": "Vyberte službu, kterou chcete sledovat.",
     "add": "Přidat",
     "adding": "Přidává se…",
     "somethingWrong": "Něco se pokazilo.",
@@ -107,7 +107,12 @@
     },
     "footer": "Stavová data pocházejí z veřejného Statuspage API každého poskytovatele."
   },
-  "home": {
+  "monitors": {
+    "myServices": "Moje služby",
     "noServices": "Zatím nesledujete žádné služby. Přidejte první a začněte."
+  },
+  "services": {
+    "title": "Moje služby",
+    "monitoring": "Sledováno"
   }
 }

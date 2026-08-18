@@ -8,7 +8,7 @@ export default function NoServicesMessage() {
 
   return (
     <div className="border-base-300 flex flex-col items-center gap-1 rounded-box border border-dashed py-16 text-center">
-      <p className="text-base-content/60 text-sm">{t("home.noServices")}</p>
+      <p className="text-base-content/60 text-sm">{t("monitors.noServices")}</p>
     </div>
   );
 }

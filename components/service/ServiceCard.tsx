@@ -63,7 +63,7 @@ export default function ServiceCard({
   }
 
   return (
-    <div className="card card-border bg-base-200 hover:border-base-content/20 relative flex w-full min-w-0 flex-row overflow-hidden shadow-md transition-colors">
+    <div className="card card-border bg-base-200 hover:border-base-content/20 relative flex w-full max-w-[370px] min-w-0 flex-row overflow-hidden shadow-md transition-colors">
       <Link href={`/service/${slug}`} className="card-body min-w-0 flex-1 gap-0 p-4">
         <div className="flex items-center gap-3 pr-6 text-base-content">
           <Logo size={28} name={name} />

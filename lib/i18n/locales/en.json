@@ -18,7 +18,8 @@
     "language": "Language",
     "menu": "Menu",
     "expandSidebar": "Expand sidebar",
-    "collapseSidebar": "Collapse sidebar"
+    "collapseSidebar": "Collapse sidebar",
+    "monitors": "Monitors"
   },
   "serviceCard": {
     "checkingStatus": "Checking status…",
@@ -42,7 +43,6 @@
   "addService": {
     "back": "← Back",
     "title": "Add a service",
-    "subtitle": "Choose a service to start tracking it.",
     "add": "Add",
     "adding": "Adding…",
     "somethingWrong": "Something went wrong.",
@@ -106,7 +106,12 @@
     },
     "footer": "Status data sourced from each provider's public Statuspage API."
   },
-  "home": {
+  "monitors": {
+    "myServices": "My services",
     "noServices": "No services being monitored yet. Add one to get started."
+  },
+  "services": {
+    "title": "My services",
+    "monitoring": "Monitoring"
   }
 }

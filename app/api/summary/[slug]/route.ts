@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { getServiceBySlug } from "@/lib/services";
+import { resolveServiceBySlug } from "@/lib/services";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const service = resolveServiceBySlug(slug);
 
   if (!service) {
     return NextResponse.json({ error: "Unknown service" }, { status: 404 });

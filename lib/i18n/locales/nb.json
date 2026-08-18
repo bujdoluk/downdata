@@ -18,7 +18,8 @@
     "language": "Språk",
     "menu": "Meny",
     "expandSidebar": "Utvid sidepanelet",
-    "collapseSidebar": "Skjul sidepanelet"
+    "collapseSidebar": "Skjul sidepanelet",
+    "monitors": "Overvåking"
   },
   "serviceCard": {
     "checkingStatus": "Sjekker status…",
@@ -42,7 +43,6 @@
   "addService": {
     "back": "← Tilbake",
     "title": "Legg til en tjeneste",
-    "subtitle": "Velg en tjeneste å begynne å overvåke.",
     "add": "Legg til",
     "adding": "Legger til…",
     "somethingWrong": "Noe gikk galt.",
@@ -106,7 +106,12 @@
     },
     "footer": "Statusdata hentes fra hver leverandørs offentlige Statuspage-API."
   },
-  "home": {
+  "monitors": {
+    "myServices": "Mine tjenester",
     "noServices": "Ingen tjenester overvåkes ennå. Legg til en for å komme i gang."
+  },
+  "services": {
+    "title": "Mine tjenester",
+    "monitoring": "Overvåkes"
   }
 }

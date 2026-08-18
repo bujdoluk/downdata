@@ -1,8 +1,0 @@
-import { NextResponse } from "next/server";
-import { getAllServices } from "@/lib/services";
-import { fetchStatusBatch } from "@/lib/statusBatch";
-
-export async function GET() {
-  const data = await fetchStatusBatch(getAllServices());
-  return NextResponse.json(data);
-}

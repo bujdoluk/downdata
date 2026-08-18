@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { languages, getLanguage } from "@/lib/i18n/languages";
+import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 
 export default function LanguageSwitcher({
   dropdownClassName = "dropdown-end",
@@ -24,15 +25,7 @@ export default function LanguageSwitcher({
     }
   }, [i18n]);
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (detailsRef.current && !detailsRef.current.contains(event.target as Node)) {
-        detailsRef.current.open = false;
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  useCloseDetailsOnOutsideClick(detailsRef);
 
   function handleChange(code: string) {
     i18n.changeLanguage(code);

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
@@ -9,38 +8,11 @@ import type { ServiceSlug, ServiceSummaryResponse } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
-
-const POLL_INTERVAL_MS = 30_000;
+import { usePolledFetch } from "@/lib/usePolledFetch";
 
 export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
   const { t } = useTranslation();
-  const [data, setData] = useState<ServiceSummaryResponse | null>(null);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function poll() {
-      try {
-        const res = await fetch(`/api/summary/${slug}`, { cache: "no-store" });
-        if (!res.ok) throw new Error("bad response");
-        const json = (await res.json()) as ServiceSummaryResponse;
-        if (!cancelled) {
-          setData(json);
-          setError(false);
-        }
-      } catch {
-        if (!cancelled) setError(true);
-      }
-    }
-
-    poll();
-    const id = setInterval(poll, POLL_INTERVAL_MS);
-    return () => {
-      cancelled = true;
-      clearInterval(id);
-    };
-  }, [slug]);
+  const { data, error } = usePolledFetch<ServiceSummaryResponse>(`/api/summary/${slug}`);
 
   const isLoading = !data && !error;
   const overallStyle = INDICATOR_STYLES[data?.status.indicator ?? "unknown"] ?? FALLBACK_STYLE;

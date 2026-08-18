@@ -6,10 +6,10 @@ import { SERVICE_CATALOG } from "@/lib/serviceCatalog";
 const DATA_DIR = path.join(process.cwd(), "data");
 const DATA_FILE = path.join(DATA_DIR, "services.json");
 
-const BUILTIN_SERVICES: ServiceDefinition[] = [
-  { slug: "github", name: "GitHub", host: "www.githubstatus.com" },
-  { slug: "supabase", name: "Supabase", host: "status.supabase.com" },
-];
+const BUILTIN_SLUGS = ["github", "supabase"];
+const BUILTIN_SERVICES: ServiceDefinition[] = SERVICE_CATALOG.filter((entry) =>
+  BUILTIN_SLUGS.includes(entry.slug),
+);
 
 function ensureDataFile() {
   if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
@@ -24,12 +24,11 @@ export function getAllServices(): ServiceDefinition[] {
   return JSON.parse(raw) as ServiceDefinition[];
 }
 
-export function getServiceBySlug(slug: string): ServiceDefinition | undefined {
-  return getAllServices().find((service) => service.slug === slug);
-}
-
 export function resolveServiceBySlug(slug: string): ServiceDefinition | undefined {
-  return getServiceBySlug(slug) ?? SERVICE_CATALOG.find((entry) => entry.slug === slug);
+  return (
+    getAllServices().find((service) => service.slug === slug) ??
+    SERVICE_CATALOG.find((entry) => entry.slug === slug)
+  );
 }
 
 function slugify(name: string): string {

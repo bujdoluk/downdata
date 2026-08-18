@@ -57,6 +57,12 @@ export default function LandingPage() {
     { icon: StackIcon, title: t("landing.features.selfHostedTitle"), body: t("landing.features.selfHostedBody") },
   ];
 
+  const [heroBodyBefore, heroBodyAfter] = t("landing.hero.body", {
+    interval: "5s",
+    price: "$5/month",
+    competitorPrice: "$274",
+  }).split("downDATA");
+
   return (
     <div data-theme="dark" className="bg-base-100 text-base-content">
       {/* Nav */}
@@ -100,7 +106,10 @@ export default function LandingPage() {
             </h1>
 
             <p className="text-base-content/70 max-w-lg text-lg leading-relaxed">
-              {t("landing.hero.body", { interval: "5s", price: "$5/month", competitorPrice: "$274" })}
+              {heroBodyBefore}
+              <span className="text-primary font-bold">down</span>
+              <span className="text-base-content font-bold">DATA</span>
+              {heroBodyAfter}
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 lg:justify-start">

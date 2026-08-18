@@ -15,6 +15,37 @@ export default function PricingSection() {
   const { t } = useTranslation();
   const [annual, setAnnual] = useState(false);
 
+  const plans = [
+    {
+      key: "starter" as const,
+      price: 5,
+      badge: null as string | null,
+      ctaClass: "btn-outline",
+      cardClass: "",
+      rows: [
+        [t("landing.pricing.monitors"), "50"],
+        [t("landing.pricing.checkInterval"), "15s"],
+        [t("landing.pricing.statusPages"), "5"],
+        [t("landing.pricing.teamSeats"), t("landing.pricing.unlimited")],
+        [t("landing.pricing.history"), "6 mo"],
+      ],
+    },
+    {
+      key: "pro" as const,
+      price: 15,
+      badge: t("landing.pricing.mostTeams"),
+      ctaClass: "btn-primary",
+      cardClass: "border-primary/40 shadow-2xl",
+      rows: [
+        [t("landing.pricing.monitors"), "250"],
+        [t("landing.pricing.checkInterval"), "10s"],
+        [t("landing.pricing.statusPages"), t("landing.pricing.unlimited")],
+        [t("landing.pricing.teamSeats"), t("landing.pricing.unlimited")],
+        [t("landing.pricing.history"), "12 mo"],
+      ],
+    },
+  ];
+
   return (
     <section id="pricing" className="py-24">
       <div className="mx-auto max-w-6xl px-8">
@@ -41,84 +72,37 @@ export default function PricingSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {/* Starter */}
-          <div className="card card-border bg-base-200">
-            <div className="card-body gap-6 p-8">
-              <div className="flex flex-col gap-1">
-                <div className="text-base font-bold">{t("landing.pricing.starter")}</div>
-                <div className={`text-4xl font-bold ${mono}`}>
-                  ${annual ? annualMonthly(5) : 5}
-                  <span className="text-base-content/50 text-base font-normal">{t("landing.pricing.perMonth")}</span>
+          {plans.map((plan) => (
+            <div key={plan.key} className={`card card-border bg-base-200 ${plan.cardClass}`}>
+              <div className="card-body gap-6 p-8">
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center justify-between text-base font-bold">
+                    {t(`landing.pricing.${plan.key}`)}
+                    {plan.badge && <span className={`badge badge-primary ${mono}`}>{plan.badge}</span>}
+                  </div>
+                  <div className={`text-4xl font-bold ${mono}`}>
+                    ${annual ? annualMonthly(plan.price) : plan.price}
+                    <span className="text-base-content/50 text-base font-normal">{t("landing.pricing.perMonth")}</span>
+                  </div>
+                  <div className="text-base-content/50 h-4 text-xs">
+                    {annual && t("landing.pricing.billedAnnually", { price: annualMonthly(plan.price) * 12 })}
+                  </div>
                 </div>
-                <div className="text-base-content/50 h-4 text-xs">
-                  {annual && t("landing.pricing.billedAnnually", { price: annualMonthly(5) * 12 })}
+                <ul className="text-base-content/70 flex flex-1 flex-col gap-3 text-sm">
+                  {plan.rows.map(([label, value]) => (
+                    <li key={label} className="flex justify-between gap-4">
+                      {label} <span className={`${mono} text-base-content`}>{value}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="card-actions">
+                  <a href="#" className={`btn ${plan.ctaClass} w-full rounded-full`}>
+                    {t("landing.pricing.getStarted")}
+                  </a>
                 </div>
-              </div>
-              <ul className="text-base-content/70 flex flex-1 flex-col gap-3 text-sm">
-                <li className="flex justify-between gap-4">
-                  {t("landing.pricing.monitors")} <span className={`${mono} text-base-content`}>50</span>
-                </li>
-                <li className="flex justify-between gap-4">
-                  {t("landing.pricing.checkInterval")} <span className={`${mono} text-base-content`}>15s</span>
-                </li>
-                <li className="flex justify-between gap-4">
-                  {t("landing.pricing.statusPages")} <span className={`${mono} text-base-content`}>5</span>
-                </li>
-                <li className="flex justify-between gap-4">
-                  {t("landing.pricing.teamSeats")} <span className={`${mono} text-base-content`}>{t("landing.pricing.unlimited")}</span>
-                </li>
-                <li className="flex justify-between gap-4">
-                  {t("landing.pricing.history")} <span className={`${mono} text-base-content`}>6 mo</span>
-                </li>
-              </ul>
-              <div className="card-actions">
-                <a href="#" className="btn btn-outline w-full rounded-full">
-                  {t("landing.pricing.getStarted")}
-                </a>
               </div>
             </div>
-          </div>
-
-          {/* Pro */}
-          <div className="card card-border border-primary/40 bg-base-200 shadow-2xl">
-            <div className="card-body gap-6 p-8">
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center justify-between text-base font-bold">
-                  {t("landing.pricing.pro")}
-                  <span className={`badge badge-primary ${mono}`}>{t("landing.pricing.mostTeams")}</span>
-                </div>
-                <div className={`text-4xl font-bold ${mono}`}>
-                  ${annual ? annualMonthly(15) : 15}
-                  <span className="text-base-content/50 text-base font-normal">{t("landing.pricing.perMonth")}</span>
-                </div>
-                <div className="text-base-content/50 h-4 text-xs">
-                  {annual && t("landing.pricing.billedAnnually", { price: annualMonthly(15) * 12 })}
-                </div>
-              </div>
-              <ul className="text-base-content/70 flex flex-1 flex-col gap-3 text-sm">
-                <li className="flex justify-between gap-4">
-                  {t("landing.pricing.monitors")} <span className={`${mono} text-base-content`}>250</span>
-                </li>
-                <li className="flex justify-between gap-4">
-                  {t("landing.pricing.checkInterval")} <span className={`${mono} text-base-content`}>10s</span>
-                </li>
-                <li className="flex justify-between gap-4">
-                  {t("landing.pricing.statusPages")} <span className={`${mono} text-base-content`}>{t("landing.pricing.unlimited")}</span>
-                </li>
-                <li className="flex justify-between gap-4">
-                  {t("landing.pricing.teamSeats")} <span className={`${mono} text-base-content`}>{t("landing.pricing.unlimited")}</span>
-                </li>
-                <li className="flex justify-between gap-4">
-                  {t("landing.pricing.history")} <span className={`${mono} text-base-content`}>12 mo</span>
-                </li>
-              </ul>
-              <div className="card-actions">
-                <a href="#" className="btn btn-primary w-full rounded-full">
-                  {t("landing.pricing.getStarted")}
-                </a>
-              </div>
-            </div>
-          </div>
+          ))}
 
           {/* Business — in the making; unaffected by the billing toggle */}
           <div className="card card-border card-dash bg-base-200/60">

@@ -59,12 +59,3 @@ export type ServiceStatusEntry =
 
 export type ServiceStatusBatchResponse = Partial<Record<ServiceSlug, ServiceStatusEntry>>;
 
-export type ServiceCardProps = {
-  slug: ServiceSlug;
-  name: string;
-  indicator?: Indicator;
-  description?: string;
-  outages24h?: number;
-  isLoading: boolean;
-  error: boolean;
-};

@@ -15,7 +15,8 @@
     "searchPlaceholder": "Rechercher des services…",
     "noServicesFound": "Aucun service trouvé.",
     "toggleTheme": "Changer de thème",
-    "language": "Langue"
+    "language": "Langue",
+    "menu": "Menu"
   },
   "serviceCard": {
     "checkingStatus": "Vérification du statut…",

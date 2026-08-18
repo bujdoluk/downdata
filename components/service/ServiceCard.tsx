@@ -26,7 +26,7 @@ export default function ServiceCard({
   return (
     <Link
       href={`/service/${slug}`}
-      className="card card-border bg-base-200 hover:border-base-content/20 flex w-96 flex-row overflow-hidden shadow-md transition-colors"
+      className="card card-border bg-base-200 hover:border-base-content/20 flex w-full min-w-0 flex-row overflow-hidden shadow-md transition-colors"
     >
       <div className="card-body min-w-0 flex-1 gap-0 p-4">
         <div className="flex items-center gap-3 text-base-content">

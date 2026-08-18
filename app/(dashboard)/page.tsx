@@ -6,7 +6,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-1 items-start justify-center p-6">
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid w-full max-w-6xl grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-4">
         <ServiceGrid services={services} />
       </div>
     </main>

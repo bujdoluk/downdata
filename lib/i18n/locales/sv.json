@@ -15,7 +15,8 @@
     "searchPlaceholder": "Sök tjänster…",
     "noServicesFound": "Inga tjänster hittades.",
     "toggleTheme": "Växla tema",
-    "language": "Språk"
+    "language": "Språk",
+    "menu": "Meny"
   },
   "serviceCard": {
     "checkingStatus": "Kontrollerar status…",

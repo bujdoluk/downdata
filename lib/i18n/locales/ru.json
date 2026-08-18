@@ -15,7 +15,8 @@
     "searchPlaceholder": "Поиск сервисов…",
     "noServicesFound": "Сервисы не найдены.",
     "toggleTheme": "Сменить тему",
-    "language": "Язык"
+    "language": "Язык",
+    "menu": "Меню"
   },
   "serviceCard": {
     "checkingStatus": "Проверка статуса…",

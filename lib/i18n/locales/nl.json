@@ -15,7 +15,8 @@
     "searchPlaceholder": "Diensten zoeken…",
     "noServicesFound": "Geen diensten gevonden.",
     "toggleTheme": "Thema wisselen",
-    "language": "Taal"
+    "language": "Taal",
+    "menu": "Menu"
   },
   "serviceCard": {
     "checkingStatus": "Status controleren…",

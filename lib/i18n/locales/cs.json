@@ -15,7 +15,8 @@
     "searchPlaceholder": "Hledat služby…",
     "noServicesFound": "Nenalezeny žádné služby.",
     "toggleTheme": "Přepnout motiv",
-    "language": "Jazyk"
+    "language": "Jazyk",
+    "menu": "Nabídka"
   },
   "serviceCard": {
     "checkingStatus": "Kontroluje se stav…",

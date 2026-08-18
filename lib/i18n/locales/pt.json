@@ -15,7 +15,8 @@
     "searchPlaceholder": "Pesquisar serviços…",
     "noServicesFound": "Nenhum serviço encontrado.",
     "toggleTheme": "Alternar tema",
-    "language": "Idioma"
+    "language": "Idioma",
+    "menu": "Menu"
   },
   "serviceCard": {
     "checkingStatus": "A verificar o estado…",

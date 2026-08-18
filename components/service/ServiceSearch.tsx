@@ -20,7 +20,7 @@ export default function ServiceSearch({ services }: { services: ServiceDefinitio
     : [];
 
   return (
-    <div className="relative w-56">
+    <div className="relative w-56 min-w-56">
       <input
         type="text"
         value={query}

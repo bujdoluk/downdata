@@ -44,7 +44,7 @@ export default function ServiceCatalogPicker({ catalog }: { catalog: CatalogEntr
   }
 
   return (
-    <div className="w-full max-w-2xl">
+    <div className="w-full max-w-2xl self-start">
       <Link href="/" className="link link-hover text-base-content/50 hover:text-base-content mb-6 inline-block text-xs font-medium">
         {t("addService.back")}
       </Link>

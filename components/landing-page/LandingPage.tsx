@@ -43,8 +43,8 @@ function StackIcon({ className }: { className?: string }) {
 }
 
 const demoRows = [
-  { slug: "github", name: "GitHub", indicator: "none", description: "All Systems Operational", outages24h: 0 },
   { slug: "supabase", name: "Supabase", indicator: "minor", description: "Partially Degraded Service", outages24h: 1 },
+  { slug: "github", name: "GitHub", indicator: "none", description: "All Systems Operational", outages24h: 0 },
   { slug: "cloudflare", name: "Cloudflare", indicator: "none", description: "All Systems Operational", outages24h: 0 },
 ] as const;
 

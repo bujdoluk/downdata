@@ -67,7 +67,7 @@ export default function CatalogServiceCard({
   }, []);
 
   return (
-    <div className="card card-border bg-base-200 hover:border-base-content/20 relative flex w-full max-w-[370px] min-w-0 flex-col overflow-hidden shadow-md transition-colors">
+    <div className="card card-border bg-base-200 hover:border-base-content/20 relative flex w-full min-w-0 flex-col overflow-hidden shadow-md transition-colors lg:max-w-[370px]">
       {removable && (
         <div className="absolute top-2 right-7 z-10">
           <details ref={menuRef} className="dropdown dropdown-end">

@@ -82,7 +82,7 @@ export default function ServiceCatalogPicker({
       {visibleCatalog.length === 0 ? (
         <p className="text-base-content/50 col-start-2 mt-4 text-sm">{t("nav.noServicesFound")}</p>
       ) : (
-        <div className="col-start-2 mt-4 grid grid-cols-3 gap-4">
+        <div className="col-start-2 mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <CatalogServiceGrid
             catalog={visibleCatalog}
             trackedHosts={trackedHosts}

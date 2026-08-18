@@ -1,14 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import type { CatalogEntry, ServiceStatusBatchResponse } from "@/types/service";
 import CatalogServiceCard from "@/components/service/CatalogServiceCard";
 
-const POLL_INTERVAL_MS = 30_000;
+const INDICATOR_SEVERITY: Record<string, number> = {
+  critical: 3,
+  major: 2,
+  minor: 1,
+  none: 0,
+};
+
+function severityOf(entry: CatalogEntry, data: ServiceStatusBatchResponse | null): number {
+  const status = data?.[entry.slug];
+  if (!status || "error" in status) return -1;
+  return INDICATOR_SEVERITY[status.status.indicator] ?? 0;
+}
 
 export default function CatalogServiceGrid({
   catalog,
   trackedHosts,
+  data = null,
+  fetchFailed = false,
   pendingHost,
   addedHosts,
   onAdd,
@@ -17,6 +29,8 @@ export default function CatalogServiceGrid({
 }: {
   catalog: CatalogEntry[];
   trackedHosts: string[];
+  data?: ServiceStatusBatchResponse | null;
+  fetchFailed?: boolean;
   pendingHost?: string | null;
   addedHosts?: Set<string>;
   onAdd?: (entry: CatalogEntry) => void;
@@ -24,40 +38,15 @@ export default function CatalogServiceGrid({
   onRemove?: (entry: CatalogEntry) => void;
 }) {
   const isAddMode = Boolean(onAdd);
-  const [data, setData] = useState<ServiceStatusBatchResponse | null>(null);
-  const [fetchFailed, setFetchFailed] = useState(false);
   const monitoredHosts = new Set(trackedHosts);
 
-  useEffect(() => {
-    if (isAddMode) return;
-
-    let cancelled = false;
-
-    async function poll() {
-      try {
-        const res = await fetch("/api/status/catalog", { cache: "no-store" });
-        if (!res.ok) throw new Error("bad response");
-        const json = (await res.json()) as ServiceStatusBatchResponse;
-        if (!cancelled) {
-          setData(json);
-          setFetchFailed(false);
-        }
-      } catch {
-        if (!cancelled) setFetchFailed(true);
-      }
-    }
-
-    poll();
-    const id = setInterval(poll, POLL_INTERVAL_MS);
-    return () => {
-      cancelled = true;
-      clearInterval(id);
-    };
-  }, [isAddMode]);
+  const sortedCatalog = [...catalog].sort(
+    (a, b) => severityOf(b, data) - severityOf(a, data),
+  );
 
   return (
     <>
-      {catalog.map((entry) => {
+      {sortedCatalog.map((entry) => {
         const status = data?.[entry.slug];
         const entryFailed = fetchFailed || (status ? "error" in status : false);
         return (

@@ -12,14 +12,16 @@ export default function CatalogServiceGrid({
   pendingHost,
   addedHosts,
   onAdd,
+  removingSlug,
+  onRemove,
 }: {
   catalog: CatalogEntry[];
   trackedHosts: string[];
-  // Present only on the add-service page — cards skip status/outage/stripe
-  // entirely and show an Add/Adding/Added button instead.
   pendingHost?: string | null;
   addedHosts?: Set<string>;
   onAdd?: (entry: CatalogEntry) => void;
+  removingSlug?: string | null;
+  onRemove?: (entry: CatalogEntry) => void;
 }) {
   const isAddMode = Boolean(onAdd);
   const [data, setData] = useState<ServiceStatusBatchResponse | null>(null);
@@ -27,7 +29,6 @@ export default function CatalogServiceGrid({
   const monitoredHosts = new Set(trackedHosts);
 
   useEffect(() => {
-    // Add-mode cards don't display status at all, so skip the fetch.
     if (isAddMode) return;
 
     let cancelled = false;
@@ -76,6 +77,14 @@ export default function CatalogServiceGrid({
                     isPending: pendingHost === entry.host,
                     isAdded: addedHosts?.has(entry.host) ?? false,
                     onAdd: () => onAdd(entry),
+                  }
+                : undefined
+            }
+            removable={
+              onRemove
+                ? {
+                    removing: removingSlug === entry.slug,
+                    onRemove: () => onRemove(entry),
                   }
                 : undefined
             }

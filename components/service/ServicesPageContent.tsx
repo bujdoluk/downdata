@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { CatalogEntry } from "@/types/service";
@@ -15,7 +17,23 @@ export default function ServicesPageContent({
   trackedHosts: string[];
 }) {
   const { t } = useTranslation();
+  const router = useRouter();
+  const [removingSlug, setRemovingSlug] = useState<string | null>(null);
   const myServices = catalog.filter((entry) => trackedHosts.includes(entry.host));
+
+  async function handleRemove(entry: CatalogEntry) {
+    setRemovingSlug(entry.slug);
+    try {
+      const res = await fetch(`/api/services/${entry.slug}`, { method: "DELETE" });
+      if (res.ok) {
+        router.refresh();
+      } else {
+        setRemovingSlug(null);
+      }
+    } catch {
+      setRemovingSlug(null);
+    }
+  }
 
   return (
     <>
@@ -30,9 +48,12 @@ export default function ServicesPageContent({
         </div>
       ) : (
         <div className="mt-4 grid grid-cols-3 gap-4">
-          {/* trackedHosts={[]}: every card here is already tracked, so the
-              "Monitoring" badge would be redundant noise. */}
-          <CatalogServiceGrid catalog={myServices} trackedHosts={[]} />
+          <CatalogServiceGrid
+            catalog={myServices}
+            trackedHosts={[]}
+            removingSlug={removingSlug}
+            onRemove={handleRemove}
+          />
         </div>
       )}
     </>

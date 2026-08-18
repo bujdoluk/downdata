@@ -5,6 +5,8 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import PricingSection from "@/components/landing-page/PricingSection";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
+import Logo from "@/components/navbar/Logo";
+import CatalogServiceCard from "@/components/service/CatalogServiceCard";
 
 const mono = "font-mono";
 
@@ -40,14 +42,11 @@ function StackIcon({ className }: { className?: string }) {
   );
 }
 
-// The mock dashboard's status text ("All Systems Operational", ...) is
-// deliberately left untranslated — it's meant to look like real Statuspage
-// API output, which is always English regardless of the viewer's language.
 const demoRows = [
-  { name: "GitHub", status: "All Systems Operational", ok: true },
-  { name: "Supabase", status: "Partially Degraded Service", ok: false },
-  { name: "Cloudflare", status: "All Systems Operational", ok: true },
-];
+  { slug: "github", name: "GitHub", indicator: "none", description: "All Systems Operational", outages24h: 0 },
+  { slug: "supabase", name: "Supabase", indicator: "minor", description: "Partially Degraded Service", outages24h: 1 },
+  { slug: "cloudflare", name: "Cloudflare", indicator: "none", description: "All Systems Operational", outages24h: 0 },
+] as const;
 
 export default function LandingPage() {
   const { t } = useTranslation();
@@ -63,8 +62,11 @@ export default function LandingPage() {
       {/* Nav */}
       <nav className="border-base-300 border-b">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-5">
-          <Link href="/" className="text-lg font-extrabold tracking-tight">
-            <span className="text-primary">down</span>DATA
+          <Link href="/" className="flex items-center gap-2.5 text-lg font-extrabold tracking-tight">
+            <Logo className="h-6 w-6" />
+            <span>
+              <span className="text-primary">down</span>DATA
+            </span>
           </Link>
           <div className="flex items-center gap-6 text-sm">
             <a href="#pricing" className="text-base-content/70 hover:text-base-content transition-colors">
@@ -128,23 +130,17 @@ export default function LandingPage() {
                   </span>
                 </div>
                 {demoRows.map((row) => (
-                  <div
-                    key={row.name}
-                    className="border-base-300 bg-base-300/40 hover:border-base-content/20 flex items-center justify-between gap-4 rounded-xl border px-4 py-3.5 transition-colors"
-                  >
-                    <div className="flex items-center gap-3 text-sm font-semibold">
-                      <span className="flex h-5 w-5 shrink-0 overflow-hidden rounded-[5px]">
-                        <span className="bg-success flex-1" />
-                        <span className="bg-warning flex-1" />
-                        <span className="bg-error flex-1" />
-                      </span>
-                      {row.name}
-                    </div>
-                    <div className={`flex items-center gap-2 text-xs ${row.ok ? "text-success" : "text-warning"}`}>
-                      <span className={`h-2 w-2 shrink-0 rounded-full ${row.ok ? "bg-success" : "bg-warning"}`} />
-                      {row.status}
-                    </div>
-                  </div>
+                  <CatalogServiceCard
+                    key={row.slug}
+                    slug={row.slug}
+                    name={row.name}
+                    indicator={row.indicator}
+                    description={row.description}
+                    outages24h={row.outages24h}
+                    isLoading={false}
+                    error={false}
+                    isMonitored={false}
+                  />
                 ))}
               </div>
             </div>
@@ -198,8 +194,11 @@ export default function LandingPage() {
 
       <footer className="border-base-300 border-t py-10">
         <div className="text-base-content/50 mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-8 text-sm">
-          <span className="font-bold">
-            <span className="text-primary">down</span>DATA
+          <span className="flex items-center gap-2 font-bold">
+            <Logo className="h-4 w-4" />
+            <span>
+              <span className="text-primary">down</span>DATA
+            </span>
           </span>
           <span>{t("landing.footer")}</span>
         </div>

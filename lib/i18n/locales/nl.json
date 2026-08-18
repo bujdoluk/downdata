@@ -16,13 +16,18 @@
     "noServicesFound": "Geen diensten gevonden.",
     "toggleTheme": "Thema wisselen",
     "language": "Taal",
-    "menu": "Menu"
+    "menu": "Menu",
+    "expandSidebar": "Zijbalk uitklappen",
+    "collapseSidebar": "Zijbalk inklappen"
   },
   "serviceCard": {
     "checkingStatus": "Status controleren…",
     "unreachable": "Status-API niet bereikbaar",
     "outages24h_one": "{{count}} storing in de afgelopen 24 uur",
-    "outages24h_other": "{{count}} storingen in de afgelopen 24 uur"
+    "outages24h_other": "{{count}} storingen in de afgelopen 24 uur",
+    "remove": "Verwijderen",
+    "removing": "Verwijderen…",
+    "options": "Meer opties"
   },
   "serviceDetail": {
     "back": "← Terug",
@@ -38,10 +43,10 @@
     "back": "← Terug",
     "title": "Een dienst toevoegen",
     "subtitle": "Kies een dienst om te gaan volgen.",
-    "allTracked": "Je volgt al alles uit de catalogus.",
     "add": "Toevoegen",
     "adding": "Bezig met toevoegen…",
-    "somethingWrong": "Er is iets misgegaan."
+    "somethingWrong": "Er is iets misgegaan.",
+    "added": "Toegevoegd"
   },
   "landing": {
     "nav": {
@@ -100,5 +105,8 @@
       "cta": "Start proefperiode"
     },
     "footer": "Statusgegevens zijn afkomstig van de publieke Statuspage-API van elke provider."
+  },
+  "home": {
+    "noServices": "Er worden nog geen diensten gevolgd. Voeg er een toe om te beginnen."
   }
 }

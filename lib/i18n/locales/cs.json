@@ -16,14 +16,19 @@
     "noServicesFound": "Nenalezeny žádné služby.",
     "toggleTheme": "Přepnout motiv",
     "language": "Jazyk",
-    "menu": "Nabídka"
+    "menu": "Nabídka",
+    "expandSidebar": "Rozbalit postranní panel",
+    "collapseSidebar": "Sbalit postranní panel"
   },
   "serviceCard": {
     "checkingStatus": "Kontroluje se stav…",
     "unreachable": "Stavové API není dostupné",
     "outages24h_one": "{{count}} výpadek za posledních 24 h",
     "outages24h_few": "{{count}} výpadky za posledních 24 h",
-    "outages24h_other": "{{count}} výpadků za posledních 24 h"
+    "outages24h_other": "{{count}} výpadků za posledních 24 h",
+    "remove": "Odebrat",
+    "removing": "Odebírá se…",
+    "options": "Další možnosti"
   },
   "serviceDetail": {
     "back": "← Zpět",
@@ -39,10 +44,10 @@
     "back": "← Zpět",
     "title": "Přidat službu",
     "subtitle": "Vyberte službu, kterou chcete sledovat.",
-    "allTracked": "Už sledujete vše z katalogu.",
     "add": "Přidat",
     "adding": "Přidává se…",
-    "somethingWrong": "Něco se pokazilo."
+    "somethingWrong": "Něco se pokazilo.",
+    "added": "Přidáno"
   },
   "landing": {
     "nav": {
@@ -101,5 +106,8 @@
       "cta": "Vyzkoušet zdarma"
     },
     "footer": "Stavová data pocházejí z veřejného Statuspage API každého poskytovatele."
+  },
+  "home": {
+    "noServices": "Zatím nesledujete žádné služby. Přidejte první a začněte."
   }
 }

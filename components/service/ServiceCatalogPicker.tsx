@@ -9,10 +9,24 @@ import type { CatalogEntry } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 
-export default function ServiceCatalogPicker({ catalog }: { catalog: CatalogEntry[] }) {
+function CheckIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" width={12} height={12} fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" className={className} aria-hidden="true">
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
+
+export default function ServiceCatalogPicker({
+  catalog,
+  trackedHosts,
+}: {
+  catalog: CatalogEntry[];
+  trackedHosts: string[];
+}) {
   const { t } = useTranslation();
   const router = useRouter();
-  const [available, setAvailable] = useState(catalog);
+  const [addedHosts, setAddedHosts] = useState<Set<string>>(() => new Set(trackedHosts));
   const [pendingHost, setPendingHost] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,7 +48,7 @@ export default function ServiceCatalogPicker({ catalog }: { catalog: CatalogEntr
         return;
       }
 
-      setAvailable((prev) => prev.filter((e) => e.host !== entry.host));
+      setAddedHosts((prev) => new Set(prev).add(entry.host));
       setPendingHost(null);
       router.refresh();
     } catch {
@@ -58,32 +72,38 @@ export default function ServiceCatalogPicker({ catalog }: { catalog: CatalogEntr
         </div>
       )}
 
-      {available.length === 0 ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("addService.allTracked")}</p>
-      ) : (
-        <ul className="mt-4 grid grid-cols-3 gap-3">
-          {available.map((entry) => {
-            const Logo = SERVICE_LOGOS[entry.slug] ?? FallbackLogo;
-            const isPending = pendingHost === entry.host;
-            return (
-              <li key={entry.host} className="card card-border bg-base-200">
-                <div className="card-body items-center gap-2 p-3 text-center">
-                  <Logo size={24} name={entry.name} />
-                  <span className="text-base-content text-sm">{entry.name}</span>
-                  <button
-                    type="button"
-                    disabled={isPending}
-                    onClick={() => handleAdd(entry)}
-                    className="btn btn-outline btn-xs mt-1 w-full"
-                  >
-                    {isPending ? t("addService.adding") : t("addService.add")}
-                  </button>
-                </div>
-              </li>
-            );
-          })}
-        </ul>
-      )}
+      <ul className="mt-4 grid grid-cols-3 gap-3">
+        {catalog.map((entry) => {
+          const Logo = SERVICE_LOGOS[entry.slug] ?? FallbackLogo;
+          const isPending = pendingHost === entry.host;
+          const isAdded = addedHosts.has(entry.host);
+          return (
+            <li key={entry.host} className="card card-border bg-base-200">
+              <div className="card-body items-center gap-2 p-3 text-center">
+                <Logo size={24} name={entry.name} />
+                <span className="text-base-content text-sm">{entry.name}</span>
+                <button
+                  type="button"
+                  disabled={isPending || isAdded}
+                  onClick={() => handleAdd(entry)}
+                  className={`btn btn-xs mt-1 w-full ${isAdded ? "btn-success" : "btn-outline btn-info"}`}
+                >
+                  {isPending ? (
+                    t("addService.adding")
+                  ) : isAdded ? (
+                    <>
+                      <CheckIcon />
+                      {t("addService.added")}
+                    </>
+                  ) : (
+                    t("addService.add")
+                  )}
+                </button>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }

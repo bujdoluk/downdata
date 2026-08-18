@@ -16,13 +16,18 @@
     "noServicesFound": "Ingen tjenester funnet.",
     "toggleTheme": "Bytt tema",
     "language": "Språk",
-    "menu": "Meny"
+    "menu": "Meny",
+    "expandSidebar": "Utvid sidepanelet",
+    "collapseSidebar": "Skjul sidepanelet"
   },
   "serviceCard": {
     "checkingStatus": "Sjekker status…",
     "unreachable": "Fikk ikke kontakt med status-API-et",
     "outages24h_one": "{{count}} driftsstans siste 24 t",
-    "outages24h_other": "{{count}} driftsstanser siste 24 t"
+    "outages24h_other": "{{count}} driftsstanser siste 24 t",
+    "remove": "Fjern",
+    "removing": "Fjerner…",
+    "options": "Flere valg"
   },
   "serviceDetail": {
     "back": "← Tilbake",
@@ -38,10 +43,10 @@
     "back": "← Tilbake",
     "title": "Legg til en tjeneste",
     "subtitle": "Velg en tjeneste å begynne å overvåke.",
-    "allTracked": "Du overvåker allerede alt i katalogen.",
     "add": "Legg til",
     "adding": "Legger til…",
-    "somethingWrong": "Noe gikk galt."
+    "somethingWrong": "Noe gikk galt.",
+    "added": "Lagt til"
   },
   "landing": {
     "nav": {
@@ -100,5 +105,8 @@
       "cta": "Start prøveperiode"
     },
     "footer": "Statusdata hentes fra hver leverandørs offentlige Statuspage-API."
+  },
+  "home": {
+    "noServices": "Ingen tjenester overvåkes ennå. Legg til en for å komme i gang."
   }
 }

@@ -16,13 +16,18 @@
     "noServicesFound": "Inga tjänster hittades.",
     "toggleTheme": "Växla tema",
     "language": "Språk",
-    "menu": "Meny"
+    "menu": "Meny",
+    "expandSidebar": "Expandera sidopanelen",
+    "collapseSidebar": "Fäll ihop sidopanelen"
   },
   "serviceCard": {
     "checkingStatus": "Kontrollerar status…",
     "unreachable": "Status-API kunde inte nås",
     "outages24h_one": "{{count}} driftstopp de senaste 24 tim",
-    "outages24h_other": "{{count}} driftstopp de senaste 24 tim"
+    "outages24h_other": "{{count}} driftstopp de senaste 24 tim",
+    "remove": "Ta bort",
+    "removing": "Tar bort…",
+    "options": "Fler alternativ"
   },
   "serviceDetail": {
     "back": "← Tillbaka",
@@ -38,10 +43,10 @@
     "back": "← Tillbaka",
     "title": "Lägg till en tjänst",
     "subtitle": "Välj en tjänst att börja övervaka.",
-    "allTracked": "Du övervakar redan allt i katalogen.",
     "add": "Lägg till",
     "adding": "Lägger till…",
-    "somethingWrong": "Något gick fel."
+    "somethingWrong": "Något gick fel.",
+    "added": "Tillagd"
   },
   "landing": {
     "nav": {
@@ -100,5 +105,8 @@
       "cta": "Starta provperiod"
     },
     "footer": "Statusdata hämtas från respektive leverantörs publika Statuspage-API."
+  },
+  "home": {
+    "noServices": "Inga tjänster övervakas ännu. Lägg till en för att komma igång."
   }
 }

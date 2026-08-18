@@ -8,6 +8,12 @@
   default: true;
   color-scheme: light;
 
+  --color-base-100: #eef1f5;
+  --color-base-200: #ffffff;
+  --color-base-300: #d9dee5;
+  --color-base-content: #1c222b;
+  --color-neutral: #d9dee5;
+  --color-neutral-content: #1c222b;
   --color-primary: #ef4444;
   --color-primary-content: #ffffff;
   --color-accent: #f97316;
@@ -48,6 +54,12 @@
 }
 
 [data-theme="light"] {
+  --color-base-100: #eef1f5 !important;
+  --color-base-200: #ffffff !important;
+  --color-base-300: #d9dee5 !important;
+  --color-base-content: #1c222b !important;
+  --color-neutral: #d9dee5 !important;
+  --color-neutral-content: #1c222b !important;
   --color-primary: #ef4444 !important;
   --color-primary-content: #ffffff !important;
   --color-accent: #f97316 !important;

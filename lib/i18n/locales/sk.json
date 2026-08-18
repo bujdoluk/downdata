@@ -16,14 +16,19 @@
     "noServicesFound": "Nenašli sa žiadne služby.",
     "toggleTheme": "Prepnúť motív",
     "language": "Jazyk",
-    "menu": "Ponuka"
+    "menu": "Ponuka",
+    "expandSidebar": "Rozbaliť postranný panel",
+    "collapseSidebar": "Zbaliť postranný panel"
   },
   "serviceCard": {
     "checkingStatus": "Kontroluje sa stav…",
     "unreachable": "Stavové API nie je dostupné",
     "outages24h_one": "{{count}} výpadok za posledných 24 h",
     "outages24h_few": "{{count}} výpadky za posledných 24 h",
-    "outages24h_other": "{{count}} výpadkov za posledných 24 h"
+    "outages24h_other": "{{count}} výpadkov za posledných 24 h",
+    "remove": "Odstrániť",
+    "removing": "Odstraňuje sa…",
+    "options": "Ďalšie možnosti"
   },
   "serviceDetail": {
     "back": "← Späť",
@@ -39,10 +44,10 @@
     "back": "← Späť",
     "title": "Pridať službu",
     "subtitle": "Vyberte službu, ktorú chcete sledovať.",
-    "allTracked": "Už sledujete všetko z katalógu.",
     "add": "Pridať",
     "adding": "Pridáva sa…",
-    "somethingWrong": "Niečo sa pokazilo."
+    "somethingWrong": "Niečo sa pokazilo.",
+    "added": "Pridané"
   },
   "landing": {
     "nav": {
@@ -101,5 +106,8 @@
       "cta": "Vyskúšať zadarmo"
     },
     "footer": "Stavové dáta pochádzajú z verejného Statuspage API každého poskytovateľa."
+  },
+  "home": {
+    "noServices": "Zatiaľ nesledujete žiadne služby. Pridajte prvú a začnite."
   }
 }

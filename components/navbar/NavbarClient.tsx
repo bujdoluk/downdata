@@ -9,6 +9,7 @@ import Logo from "@/components/navbar/Logo";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ServiceSearch from "@/components/service/ServiceSearch";
+import ServicesHeader from "@/components/sidebar/ServicesHeader";
 
 function MenuIcon({ className }: { className?: string }) {
   return (
@@ -32,6 +33,7 @@ export default function NavbarClient({ services }: { services: ServiceDefinition
   const { t } = useTranslation();
   const menuRef = useRef<HTMLDetailsElement>(null);
 
+  // <details> doesn't close on outside click natively — close it ourselves.
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -60,17 +62,9 @@ export default function NavbarClient({ services }: { services: ServiceDefinition
             <ServiceSearch services={services} />
           </div>
 
-          <div className="navbar-end hidden gap-1 md:flex">
-            <Link href="/" className="btn btn-ghost btn-sm text-base-content/70">
-              {t("nav.services")}
-            </Link>
-            <Link href="/add-service" className="btn btn-ghost btn-sm text-base-content/70">
-              {t("nav.addService")}
-            </Link>
-            <LanguageSwitcher />
-            <ThemeToggle />
-          </div>
-
+          {/* Mobile hamburger — logo + search stay visible, everything else
+              (including what the sidebar shows on desktop, plus language/theme
+              which now live at the bottom of the sidebar) moves here. */}
           <div className="navbar-end md:hidden">
             <details ref={menuRef} className="dropdown dropdown-end">
               <summary
@@ -79,18 +73,11 @@ export default function NavbarClient({ services }: { services: ServiceDefinition
               >
                 <MenuIcon />
               </summary>
-              <ul className="dropdown-content menu menu-sm bg-base-100 border-base-300 z-30 mt-2 w-48 border shadow-xl">
+              <ul className="dropdown-content menu menu-sm bg-base-100 border-base-300 z-30 mt-2 w-56 border shadow-xl">
                 <li>
-                  <Link href="/" onClick={closeMenu} className="text-base-content/70">
-                    {t("nav.services")}
-                  </Link>
+                  <ServicesHeader onNavigate={closeMenu} />
                 </li>
-                <li>
-                  <Link href="/add-service" onClick={closeMenu} className="text-base-content/70">
-                    {t("nav.addService")}
-                  </Link>
-                </li>
-                <li className="mt-1">
+                <li className="border-base-300 mt-1 border-t pt-1">
                   <div className="flex items-center justify-between px-1 py-1">
                     <LanguageSwitcher />
                     <ThemeToggle />

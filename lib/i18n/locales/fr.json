@@ -16,13 +16,18 @@
     "noServicesFound": "Aucun service trouvé.",
     "toggleTheme": "Changer de thème",
     "language": "Langue",
-    "menu": "Menu"
+    "menu": "Menu",
+    "expandSidebar": "Développer la barre latérale",
+    "collapseSidebar": "Réduire la barre latérale"
   },
   "serviceCard": {
     "checkingStatus": "Vérification du statut…",
     "unreachable": "Impossible d'accéder à l'API de statut",
     "outages24h_one": "{{count}} panne au cours des dernières 24 h",
-    "outages24h_other": "{{count}} pannes au cours des dernières 24 h"
+    "outages24h_other": "{{count}} pannes au cours des dernières 24 h",
+    "remove": "Supprimer",
+    "removing": "Suppression…",
+    "options": "Plus d'options"
   },
   "serviceDetail": {
     "back": "← Retour",
@@ -38,10 +43,10 @@
     "back": "← Retour",
     "title": "Ajouter un service",
     "subtitle": "Choisissez un service à surveiller.",
-    "allTracked": "Vous suivez déjà tout le catalogue.",
     "add": "Ajouter",
     "adding": "Ajout en cours…",
-    "somethingWrong": "Une erreur s'est produite."
+    "somethingWrong": "Une erreur s'est produite.",
+    "added": "Ajouté"
   },
   "landing": {
     "nav": {
@@ -100,5 +105,8 @@
       "cta": "Démarrer l'essai"
     },
     "footer": "Les données de statut proviennent de l'API publique Statuspage de chaque fournisseur."
+  },
+  "home": {
+    "noServices": "Aucun service surveillé pour l'instant. Ajoutez-en un pour commencer."
   }
 }

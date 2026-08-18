@@ -51,3 +51,12 @@ export function addService(input: { name: string; host: string }): ServiceDefini
   writeFileSync(DATA_FILE, JSON.stringify(services, null, 2));
   return service;
 }
+
+export function removeService(slug: string): boolean {
+  const services = getAllServices();
+  const next = services.filter((service) => service.slug !== slug);
+  if (next.length === services.length) return false;
+
+  writeFileSync(DATA_FILE, JSON.stringify(next, null, 2));
+  return true;
+}

@@ -16,13 +16,18 @@
     "noServicesFound": "No services found.",
     "toggleTheme": "Toggle theme",
     "language": "Language",
-    "menu": "Menu"
+    "menu": "Menu",
+    "expandSidebar": "Expand sidebar",
+    "collapseSidebar": "Collapse sidebar"
   },
   "serviceCard": {
     "checkingStatus": "Checking status…",
     "unreachable": "Unable to reach status API",
     "outages24h_one": "{{count}} outage in the last 24 h",
-    "outages24h_other": "{{count}} outages in the last 24 h"
+    "outages24h_other": "{{count}} outages in the last 24 h",
+    "remove": "Remove",
+    "removing": "Removing…",
+    "options": "More options"
   },
   "serviceDetail": {
     "back": "← Back",
@@ -38,10 +43,10 @@
     "back": "← Back",
     "title": "Add a service",
     "subtitle": "Choose a service to start tracking it.",
-    "allTracked": "You're already tracking everything in the catalog.",
     "add": "Add",
     "adding": "Adding…",
-    "somethingWrong": "Something went wrong."
+    "somethingWrong": "Something went wrong.",
+    "added": "Added"
   },
   "landing": {
     "nav": {
@@ -100,5 +105,8 @@
       "cta": "Start your trial"
     },
     "footer": "Status data sourced from each provider's public Statuspage API."
+  },
+  "home": {
+    "noServices": "No services being monitored yet. Add one to get started."
   }
 }

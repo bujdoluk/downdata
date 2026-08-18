@@ -16,13 +16,18 @@
     "noServicesFound": "Nessun servizio trovato.",
     "toggleTheme": "Cambia tema",
     "language": "Lingua",
-    "menu": "Menu"
+    "menu": "Menu",
+    "expandSidebar": "Espandi barra laterale",
+    "collapseSidebar": "Comprimi barra laterale"
   },
   "serviceCard": {
     "checkingStatus": "Controllo dello stato…",
     "unreachable": "API di stato non raggiungibile",
     "outages24h_one": "{{count}} interruzione nelle ultime 24 h",
-    "outages24h_other": "{{count}} interruzioni nelle ultime 24 h"
+    "outages24h_other": "{{count}} interruzioni nelle ultime 24 h",
+    "remove": "Rimuovi",
+    "removing": "Rimozione…",
+    "options": "Altre opzioni"
   },
   "serviceDetail": {
     "back": "← Indietro",
@@ -38,10 +43,10 @@
     "back": "← Indietro",
     "title": "Aggiungi un servizio",
     "subtitle": "Scegli un servizio da iniziare a monitorare.",
-    "allTracked": "Stai già monitorando tutto ciò che è nel catalogo.",
     "add": "Aggiungi",
     "adding": "Aggiunta in corso…",
-    "somethingWrong": "Qualcosa è andato storto."
+    "somethingWrong": "Qualcosa è andato storto.",
+    "added": "Aggiunto"
   },
   "landing": {
     "nav": {
@@ -100,5 +105,8 @@
       "cta": "Inizia la prova"
     },
     "footer": "I dati di stato provengono dall'API pubblica Statuspage di ciascun provider."
+  },
+  "home": {
+    "noServices": "Non stai ancora monitorando nessun servizio. Aggiungine uno per iniziare."
   }
 }

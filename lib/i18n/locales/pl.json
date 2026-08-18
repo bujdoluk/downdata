@@ -16,7 +16,9 @@
     "noServicesFound": "Nie znaleziono usług.",
     "toggleTheme": "Przełącz motyw",
     "language": "Język",
-    "menu": "Menu"
+    "menu": "Menu",
+    "expandSidebar": "Rozwiń panel boczny",
+    "collapseSidebar": "Zwiń panel boczny"
   },
   "serviceCard": {
     "checkingStatus": "Sprawdzanie stanu…",
@@ -24,7 +26,10 @@
     "outages24h_one": "{{count}} awaria w ciągu ostatnich 24 godz.",
     "outages24h_few": "{{count}} awarie w ciągu ostatnich 24 godz.",
     "outages24h_many": "{{count}} awarii w ciągu ostatnich 24 godz.",
-    "outages24h_other": "{{count}} awarii w ciągu ostatnich 24 godz."
+    "outages24h_other": "{{count}} awarii w ciągu ostatnich 24 godz.",
+    "remove": "Usuń",
+    "removing": "Usuwanie…",
+    "options": "Więcej opcji"
   },
   "serviceDetail": {
     "back": "← Wstecz",
@@ -40,10 +45,10 @@
     "back": "← Wstecz",
     "title": "Dodaj usługę",
     "subtitle": "Wybierz usługę, którą chcesz monitorować.",
-    "allTracked": "Monitorujesz już wszystko z katalogu.",
     "add": "Dodaj",
     "adding": "Dodawanie…",
-    "somethingWrong": "Coś poszło nie tak."
+    "somethingWrong": "Coś poszło nie tak.",
+    "added": "Dodano"
   },
   "landing": {
     "nav": {
@@ -102,5 +107,8 @@
       "cta": "Wypróbuj za darmo"
     },
     "footer": "Dane o stanie pochodzą z publicznego API Statuspage każdego dostawcy."
+  },
+  "home": {
+    "noServices": "Nie monitorujesz jeszcze żadnych usług. Dodaj pierwszą, aby zacząć."
   }
 }

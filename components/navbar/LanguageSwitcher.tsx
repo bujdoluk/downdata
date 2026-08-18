@@ -5,17 +5,16 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { languages, getLanguage } from "@/lib/i18n/languages";
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher({
+  dropdownClassName = "dropdown-end",
+}: {
+  dropdownClassName?: string;
+}) {
   const { t, i18n } = useTranslation();
   const detailsRef = useRef<HTMLDetailsElement>(null);
   const current = getLanguage(i18n.language);
   const CurrentFlag = current.flag;
 
-  // Apply a previously-saved choice once mounted — the server always
-  // renders the default (English) since localStorage isn't available
-  // during SSR, so returning non-English users see a brief correction on
-  // load rather than a flash-free switch (same tradeoff accepted for the
-  // theme toggle, but text content can't be solved the same CSS-only way).
   useEffect(() => {
     try {
       const saved = localStorage.getItem("language");
@@ -46,7 +45,7 @@ export default function LanguageSwitcher() {
   }
 
   return (
-    <details ref={detailsRef} className="dropdown dropdown-end">
+    <details ref={detailsRef} className={`dropdown ${dropdownClassName}`}>
       <summary
         className="btn btn-ghost btn-circle btn-sm list-none"
         aria-label={t("nav.language")}

@@ -16,13 +16,18 @@
     "noServicesFound": "Keine Dienste gefunden.",
     "toggleTheme": "Design umschalten",
     "language": "Sprache",
-    "menu": "Menü"
+    "menu": "Menü",
+    "expandSidebar": "Seitenleiste einblenden",
+    "collapseSidebar": "Seitenleiste einklappen"
   },
   "serviceCard": {
     "checkingStatus": "Status wird geprüft…",
     "unreachable": "Status-API nicht erreichbar",
     "outages24h_one": "{{count}} Ausfall in den letzten 24 Std.",
-    "outages24h_other": "{{count}} Ausfälle in den letzten 24 Std."
+    "outages24h_other": "{{count}} Ausfälle in den letzten 24 Std.",
+    "remove": "Entfernen",
+    "removing": "Wird entfernt…",
+    "options": "Weitere Optionen"
   },
   "serviceDetail": {
     "back": "← Zurück",
@@ -38,10 +43,10 @@
     "back": "← Zurück",
     "title": "Dienst hinzufügen",
     "subtitle": "Wähle einen Dienst aus, den du überwachen möchtest.",
-    "allTracked": "Du verfolgst bereits alles aus dem Katalog.",
     "add": "Hinzufügen",
     "adding": "Wird hinzugefügt…",
-    "somethingWrong": "Etwas ist schiefgelaufen."
+    "somethingWrong": "Etwas ist schiefgelaufen.",
+    "added": "Hinzugefügt"
   },
   "landing": {
     "nav": {
@@ -100,5 +105,8 @@
       "cta": "Kostenlos testen"
     },
     "footer": "Statusdaten stammen aus der öffentlichen Statuspage-API jedes Anbieters."
+  },
+  "home": {
+    "noServices": "Es werden noch keine Dienste überwacht. Füge einen hinzu, um loszulegen."
   }
 }

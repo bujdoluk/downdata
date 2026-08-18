@@ -16,13 +16,18 @@
     "noServicesFound": "Nenhum serviço encontrado.",
     "toggleTheme": "Alternar tema",
     "language": "Idioma",
-    "menu": "Menu"
+    "menu": "Menu",
+    "expandSidebar": "Expandir barra lateral",
+    "collapseSidebar": "Recolher barra lateral"
   },
   "serviceCard": {
     "checkingStatus": "A verificar o estado…",
     "unreachable": "Não foi possível aceder à API de estado",
     "outages24h_one": "{{count}} falha nas últimas 24 h",
-    "outages24h_other": "{{count}} falhas nas últimas 24 h"
+    "outages24h_other": "{{count}} falhas nas últimas 24 h",
+    "remove": "Remover",
+    "removing": "A remover…",
+    "options": "Mais opções"
   },
   "serviceDetail": {
     "back": "← Voltar",
@@ -38,10 +43,10 @@
     "back": "← Voltar",
     "title": "Adicionar um serviço",
     "subtitle": "Escolha um serviço para começar a monitorizá-lo.",
-    "allTracked": "Já está a monitorizar tudo o que consta no catálogo.",
     "add": "Adicionar",
     "adding": "A adicionar…",
-    "somethingWrong": "Algo correu mal."
+    "somethingWrong": "Algo correu mal.",
+    "added": "Adicionado"
   },
   "landing": {
     "nav": {
@@ -100,5 +105,8 @@
       "cta": "Iniciar teste gratuito"
     },
     "footer": "Os dados de estado têm origem na API pública do Statuspage de cada fornecedor."
+  },
+  "home": {
+    "noServices": "Ainda não está a monitorizar nenhum serviço. Adicione um para começar."
   }
 }

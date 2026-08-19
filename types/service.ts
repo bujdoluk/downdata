@@ -29,6 +29,7 @@ export type StatuspageComponent = {
   position: number;
   group_id: string | null;
   showcase: boolean;
+  group: boolean;
 };
 
 export type IncidentUpdate = {

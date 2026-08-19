@@ -66,6 +66,11 @@
       "last7d": "Laatste 7 dagen",
       "last30d": "Laatste 30 dagen",
       "noMatches": "Geen incidenten komen overeen met dit filter."
+    },
+    "pagination": {
+      "previous": "Vorige pagina",
+      "next": "Volgende pagina",
+      "page": "Pagina {{page}} van {{totalPages}}"
     }
   },
   "maintenance": {

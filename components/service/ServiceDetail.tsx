@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, formatTime } from "@/lib/formatTime";
-import type { ServiceSlug, ServiceSummaryResponse } from "@/types/service";
+import type { ServiceSlug, ServiceSummaryResponse, StatuspageComponent } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
@@ -17,9 +17,23 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
 
   const isLoading = !data && !error;
   const overallStyle = INDICATOR_STYLES[data?.status.indicator ?? "unknown"] ?? FALLBACK_STYLE;
-  const components = (data?.components ?? [])
-    .filter((c) => c.group_id === null && c.showcase)
+  const allComponents = data?.components ?? [];
+  const componentCount = allComponents.filter((c) => !c.group).length;
+  const topLevelItems = allComponents
+    .filter((c) => c.group_id === null)
     .sort((a, b) => a.position - b.position);
+  const childrenOf = (groupId: string) =>
+    allComponents.filter((c) => c.group_id === groupId).sort((a, b) => a.position - b.position);
+
+  function componentRow(c: StatuspageComponent, indent = false) {
+    const s = COMPONENT_STATUS_STYLES[c.status] ?? FALLBACK_STYLE;
+    return (
+      <li key={c.id} className={`list-row items-center py-2.5 ${indent ? "pl-6" : ""}`}>
+        <span className="text-base-content text-sm">{c.name}</span>
+        <span className={`badge badge-soft ${s.badge}`}>{t(s.labelKey)}</span>
+      </li>
+    );
+  }
 
   const Logo = SERVICE_LOGOS[slug] ?? FallbackLogo;
 
@@ -81,18 +95,22 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
                 <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">
                   {t("serviceDetail.components")}
                 </h2>
-                <span className="text-base-content/40 text-xs font-semibold">({components.length})</span>
+                <span className="text-base-content/40 text-xs font-semibold">({componentCount})</span>
               </div>
               <ul className="list bg-base-200 border-base-300 border">
-                {components.map((c) => {
-                  const s = COMPONENT_STATUS_STYLES[c.status] ?? FALLBACK_STYLE;
-                  return (
-                    <li key={c.id} className="list-row items-center py-2.5">
-                      <span className="text-base-content text-sm">{c.name}</span>
-                      <span className={`badge badge-soft ${s.badge}`}>{t(s.labelKey)}</span>
-                    </li>
-                  );
-                })}
+                {topLevelItems.flatMap((item) =>
+                  item.group
+                    ? [
+                        <li
+                          key={item.id}
+                          className="bg-base-300/40 text-base-content/50 px-4 py-2 text-[11px] font-semibold tracking-wide uppercase"
+                        >
+                          {item.name}
+                        </li>,
+                        ...childrenOf(item.id).map((c) => componentRow(c, true)),
+                      ]
+                    : [componentRow(item)],
+                )}
               </ul>
             </div>
 

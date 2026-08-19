@@ -66,6 +66,11 @@
       "last7d": "Senaste 7 dagarna",
       "last30d": "Senaste 30 dagarna",
       "noMatches": "Inga incidenter matchar detta filter."
+    },
+    "pagination": {
+      "previous": "Föregående sida",
+      "next": "Nästa sida",
+      "page": "Sida {{page}} av {{totalPages}}"
     }
   },
   "maintenance": {

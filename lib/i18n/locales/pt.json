@@ -66,6 +66,11 @@
       "last7d": "Últimos 7 dias",
       "last30d": "Últimos 30 dias",
       "noMatches": "Nenhum incidente corresponde a este filtro."
+    },
+    "pagination": {
+      "previous": "Página anterior",
+      "next": "Página seguinte",
+      "page": "Página {{page}} de {{totalPages}}"
     }
   },
   "maintenance": {

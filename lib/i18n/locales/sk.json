@@ -67,6 +67,11 @@
       "last7d": "Posledných 7 dní",
       "last30d": "Posledných 30 dní",
       "noMatches": "Žiadne incidenty nezodpovedajú tomuto filtru."
+    },
+    "pagination": {
+      "previous": "Predchádzajúca strana",
+      "next": "Ďalšia strana",
+      "page": "Strana {{page}} z {{totalPages}}"
     }
   },
   "maintenance": {

@@ -22,6 +22,8 @@ const RANGE_MS: Record<Exclude<TimeRange, "all">, number> = {
   "30d": 30 * 24 * 60 * 60 * 1000,
 };
 
+const PAGE_SIZE = 25;
+
 function matchesStatus(incident: TrackedIncident, filter: StatusFilter): boolean {
   if (filter === "all") return true;
   if (filter === "active") return incident.status !== "monitoring" && incident.status !== "resolved";
@@ -35,6 +37,7 @@ export default function IncidentsPageContent() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [serviceFilter, setServiceFilter] = useState<string>("all");
   const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRange>("all");
+  const [page, setPage] = useState(1);
 
   const isLoading = !data && !error;
   const incidents = useMemo(() => data?.incidents ?? [], [data]);
@@ -53,6 +56,9 @@ export default function IncidentsPageContent() {
     .sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id)));
   const countForStatus = (filter: StatusFilter) =>
     incidents.filter((incident) => matchesStatus(incident, filter)).length;
+  const totalPages = Math.max(1, Math.ceil(filteredIncidents.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pageIncidents = filteredIncidents.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   return (
     <div className="w-full max-w-6xl self-start">
@@ -72,13 +78,17 @@ export default function IncidentsPageContent() {
               setStatusFilter("all");
               setServiceFilter("all");
               setTimeRangeFilter("all");
+              setPage(1);
             }}
           >
             <select
               className="select select-bordered select-sm w-40"
               aria-label={t("incidents.filter.service")}
               value={serviceFilter}
-              onChange={(e) => setServiceFilter(e.target.value)}
+              onChange={(e) => {
+                setServiceFilter(e.target.value);
+                setPage(1);
+              }}
             >
               <option value="all">{t("incidents.filter.allServices")}</option>
               {services.map((service) => (
@@ -91,7 +101,10 @@ export default function IncidentsPageContent() {
               className="select select-bordered select-sm w-40"
               aria-label={t("incidents.filter.timeRange")}
               value={timeRangeFilter}
-              onChange={(e) => setTimeRangeFilter(e.target.value as TimeRange)}
+              onChange={(e) => {
+                setTimeRangeFilter(e.target.value as TimeRange);
+                setPage(1);
+              }}
             >
               <option value="all">{t("incidents.filter.allTime")}</option>
               <option value="24h">{t("incidents.filter.last24h")}</option>
@@ -102,7 +115,10 @@ export default function IncidentsPageContent() {
               className="select select-bordered select-sm w-40"
               aria-label={t("incidents.filter.status")}
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+              onChange={(e) => {
+                setStatusFilter(e.target.value as StatusFilter);
+                setPage(1);
+              }}
             >
               <option value="all">
                 {t("incidents.filter.allStatuses")} ({countForStatus("all")})
@@ -124,7 +140,7 @@ export default function IncidentsPageContent() {
             <p className="text-base-content/50 mt-4 text-sm">{t("incidents.filter.noMatches")}</p>
           ) : (
             <ul className="mt-4 flex flex-col gap-3">
-              {filteredIncidents.map((incident) => {
+              {pageIncidents.map((incident) => {
                 const Logo = SERVICE_LOGOS[incident.service.slug] ?? FallbackLogo;
                 const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
                 return (
@@ -168,6 +184,32 @@ export default function IncidentsPageContent() {
                 );
               })}
             </ul>
+          )}
+
+          {totalPages > 1 && (
+            <div className="join mt-4">
+              <button
+                type="button"
+                className="btn join-item btn-sm"
+                disabled={currentPage <= 1}
+                onClick={() => setPage(currentPage - 1)}
+                aria-label={t("incidents.pagination.previous")}
+              >
+                «
+              </button>
+              <button type="button" className="btn join-item btn-sm pointer-events-none">
+                {t("incidents.pagination.page", { page: currentPage, totalPages })}
+              </button>
+              <button
+                type="button"
+                className="btn join-item btn-sm"
+                disabled={currentPage >= totalPages}
+                onClick={() => setPage(currentPage + 1)}
+                aria-label={t("incidents.pagination.next")}
+              >
+                »
+              </button>
+            </div>
           )}
         </>
       )}

@@ -68,6 +68,11 @@
       "last7d": "Ostatnie 7 dni",
       "last30d": "Ostatnie 30 dni",
       "noMatches": "Żaden incydent nie pasuje do tego filtra."
+    },
+    "pagination": {
+      "previous": "Poprzednia strona",
+      "next": "Następna strona",
+      "page": "Strona {{page}} z {{totalPages}}"
     }
   },
   "maintenance": {

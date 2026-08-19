@@ -66,6 +66,11 @@
       "last7d": "Siste 7 dager",
       "last30d": "Siste 30 dager",
       "noMatches": "Ingen hendelser samsvarer med dette filteret."
+    },
+    "pagination": {
+      "previous": "Forrige side",
+      "next": "Neste side",
+      "page": "Side {{page}} av {{totalPages}}"
     }
   },
   "maintenance": {

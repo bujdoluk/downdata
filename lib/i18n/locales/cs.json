@@ -90,7 +90,14 @@
     "add": "Přidat",
     "adding": "Přidává se…",
     "somethingWrong": "Něco se pokazilo.",
-    "added": "Přidáno"
+    "added": "Přidáno",
+    "category": {
+      "infrastructure": "Infrastruktura a hosting",
+      "devtools": "Vývojářské nástroje",
+      "database": "Databáze",
+      "communication": "Komunikace a spolupráce",
+      "ai": "AI"
+    }
   },
   "landing": {
     "nav": {

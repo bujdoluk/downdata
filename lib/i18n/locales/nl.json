@@ -89,7 +89,14 @@
     "add": "Toevoegen",
     "adding": "Bezig met toevoegen…",
     "somethingWrong": "Er is iets misgegaan.",
-    "added": "Toegevoegd"
+    "added": "Toegevoegd",
+    "category": {
+      "infrastructure": "Infrastructuur en hosting",
+      "devtools": "Ontwikkelaarstools",
+      "database": "Database",
+      "communication": "Communicatie en samenwerking",
+      "ai": "AI"
+    }
   },
   "landing": {
     "nav": {

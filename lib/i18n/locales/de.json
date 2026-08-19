@@ -89,7 +89,14 @@
     "add": "Hinzufügen",
     "adding": "Wird hinzugefügt…",
     "somethingWrong": "Etwas ist schiefgelaufen.",
-    "added": "Hinzugefügt"
+    "added": "Hinzugefügt",
+    "category": {
+      "infrastructure": "Infrastruktur & Hosting",
+      "devtools": "Entwicklertools",
+      "database": "Datenbank",
+      "communication": "Kommunikation & Zusammenarbeit",
+      "ai": "KI"
+    }
   },
   "landing": {
     "nav": {

@@ -89,7 +89,14 @@
     "add": "Añadir",
     "adding": "Añadiendo…",
     "somethingWrong": "Algo salió mal.",
-    "added": "Añadido"
+    "added": "Añadido",
+    "category": {
+      "infrastructure": "Infraestructura y alojamiento",
+      "devtools": "Herramientas de desarrollo",
+      "database": "Base de datos",
+      "communication": "Comunicación y colaboración",
+      "ai": "IA"
+    }
   },
   "landing": {
     "nav": {

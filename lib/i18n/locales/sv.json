@@ -89,7 +89,14 @@
     "add": "Lägg till",
     "adding": "Lägger till…",
     "somethingWrong": "Något gick fel.",
-    "added": "Tillagd"
+    "added": "Tillagd",
+    "category": {
+      "infrastructure": "Infrastruktur och hosting",
+      "devtools": "Utvecklarverktyg",
+      "database": "Databas",
+      "communication": "Kommunikation och samarbete",
+      "ai": "AI"
+    }
   },
   "landing": {
     "nav": {

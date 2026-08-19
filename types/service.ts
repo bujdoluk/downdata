@@ -6,10 +6,13 @@ export type ServiceDefinition = {
   host: string;
 };
 
+export type CatalogCategory = "infrastructure" | "devtools" | "database" | "communication" | "ai";
+
 export type CatalogEntry = {
   slug: string;
   name: string;
   host: string;
+  category: CatalogCategory;
 };
 
 export type Indicator = "none" | "minor" | "major" | "critical" | string;

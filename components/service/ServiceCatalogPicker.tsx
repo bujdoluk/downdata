@@ -5,8 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { CatalogEntry } from "@/types/service";
+import type { CatalogCategory, CatalogEntry } from "@/types/service";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
+
+const CATEGORY_ORDER: CatalogCategory[] = ["infrastructure", "devtools", "database", "communication", "ai"];
 
 export default function ServiceCatalogPicker({
   catalog,
@@ -26,6 +28,10 @@ export default function ServiceCatalogPicker({
   const visibleCatalog = trimmedQuery
     ? catalog.filter((entry) => entry.name.toLowerCase().includes(trimmedQuery))
     : catalog;
+  const groups = CATEGORY_ORDER.map((category) => ({
+    category,
+    entries: visibleCatalog.filter((entry) => entry.category === category),
+  })).filter((group) => group.entries.length > 0);
 
   async function handleAdd(entry: CatalogEntry) {
     setPendingHost(entry.host);
@@ -82,14 +88,23 @@ export default function ServiceCatalogPicker({
       {visibleCatalog.length === 0 ? (
         <p className="text-base-content/50 col-start-2 mt-4 text-sm">{t("nav.noServicesFound")}</p>
       ) : (
-        <div className="col-start-2 mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <CatalogServiceGrid
-            catalog={visibleCatalog}
-            trackedHosts={trackedHosts}
-            pendingHost={pendingHost}
-            addedHosts={addedHosts}
-            onAdd={handleAdd}
-          />
+        <div className="col-start-2 mt-4">
+          {groups.map(({ category, entries }) => (
+            <div key={category} className="mb-8">
+              <h2 className="text-base-content/40 mb-3 text-xs font-semibold tracking-wide uppercase">
+                {t(`addService.category.${category}`)}
+              </h2>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                <CatalogServiceGrid
+                  catalog={entries}
+                  trackedHosts={trackedHosts}
+                  pendingHost={pendingHost}
+                  addedHosts={addedHosts}
+                  onAdd={handleAdd}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

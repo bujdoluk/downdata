@@ -89,7 +89,14 @@
     "add": "Aggiungi",
     "adding": "Aggiunta in corso…",
     "somethingWrong": "Qualcosa è andato storto.",
-    "added": "Aggiunto"
+    "added": "Aggiunto",
+    "category": {
+      "infrastructure": "Infrastruttura e hosting",
+      "devtools": "Strumenti per sviluppatori",
+      "database": "Database",
+      "communication": "Comunicazione e collaborazione",
+      "ai": "IA"
+    }
   },
   "landing": {
     "nav": {

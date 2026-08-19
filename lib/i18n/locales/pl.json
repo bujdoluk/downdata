@@ -91,7 +91,14 @@
     "add": "Dodaj",
     "adding": "Dodawanie…",
     "somethingWrong": "Coś poszło nie tak.",
-    "added": "Dodano"
+    "added": "Dodano",
+    "category": {
+      "infrastructure": "Infrastruktura i hosting",
+      "devtools": "Narzędzia deweloperskie",
+      "database": "Baza danych",
+      "communication": "Komunikacja i współpraca",
+      "ai": "AI"
+    }
   },
   "landing": {
     "nav": {

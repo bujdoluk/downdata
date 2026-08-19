@@ -28,7 +28,7 @@ export default function SidebarNavLink({
       onClick={onNavigate}
       title={label}
       className={`flex items-center text-sm font-semibold tracking-wide uppercase transition-colors ${
-        collapsed ? "justify-center" : "w-full justify-center gap-2"
+        collapsed ? "justify-center" : "w-full justify-start gap-2"
       } ${isActive ? "text-base-content" : "text-base-content/40 hover:text-base-content/70"}`}
     >
       {icon}

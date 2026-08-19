@@ -70,9 +70,7 @@ export default function Sidebar() {
         <SidebarNavLink href="/monitors" icon={<ActivityIcon className="shrink-0" />} label={t("nav.monitors")} collapsed={collapsed} />
       </div>
 
-      <div
-        className={`mt-auto flex ${collapsed ? "flex-col items-center gap-2" : "items-center justify-center gap-3"}`}
-      >
+      <div className="mt-auto flex flex-col items-center gap-2">
         <LanguageSwitcher dropdownClassName="dropdown-start dropdown-top" />
         <ThemeToggle />
       </div>

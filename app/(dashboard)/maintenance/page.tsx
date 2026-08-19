@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import MaintenancePageContent from "@/components/service/MaintenancePageContent";
+
+export const metadata: Metadata = {
+  title: "Maintenance · downDATA",
+};
 
 export default function MaintenancePage() {
   return (

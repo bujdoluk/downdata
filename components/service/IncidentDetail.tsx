@@ -81,7 +81,7 @@ export default function IncidentDetail({ id }: { id: string }) {
                 <div className="timeline-middle">
                   <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
                 </div>
-                <div className="timeline-end timeline-box">
+                <div className="timeline-end timeline-box bg-base-200">
                   <p className="text-base-content text-sm font-medium">{update.status}</p>
                   <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
                 </div>

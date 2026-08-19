@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import { getAllServices } from "@/lib/services";
 import { SERVICE_CATALOG } from "@/lib/serviceCatalog";
 import ServicesPageContent from "@/components/service/ServicesPageContent";
+
+export const metadata: Metadata = {
+  title: "Services · downDATA",
+};
 
 export default function Home() {
   const trackedHosts = getAllServices().map((service) => service.host);

@@ -150,6 +150,7 @@ export default function LandingPage() {
                     isLoading={false}
                     error={false}
                     isMonitored={false}
+                    removable={{ removing: false, onRemove: () => {} }}
                   />
                 ))}
               </div>

@@ -20,7 +20,8 @@
     "expandSidebar": "Zijbalk uitklappen",
     "collapseSidebar": "Zijbalk inklappen",
     "monitors": "Monitoren",
-    "incidents": "Incidenten"
+    "incidents": "Incidenten",
+    "maintenance": "Onderhoud"
   },
   "serviceCard": {
     "checkingStatus": "Status controleren…",
@@ -47,6 +48,8 @@
     "unreachable": "Kan incidenten niet laden.",
     "notFound": "Incident niet gevonden.",
     "officialPage": "Bekijk officiële incidentpagina",
+    "pin": "Vastzetten",
+    "unpin": "Losmaken",
     "filter": {
       "active": "Actief",
       "monitoring": "Bewaking",
@@ -62,6 +65,15 @@
       "last30d": "Laatste 30 dagen",
       "noMatches": "Geen incidenten komen overeen met dit filter."
     }
+  },
+  "maintenance": {
+    "title": "Onderhoud",
+    "loading": "Gepland onderhoud laden…",
+    "unreachable": "Kan gepland onderhoud niet laden.",
+    "empty": "Geen aankomend onderhoud.",
+    "noMatches": "Geen onderhoud komt overeen met dit filter.",
+    "pin": "Vastzetten",
+    "unpin": "Losmaken"
   },
   "addService": {
     "back": "← Terug",

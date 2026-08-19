@@ -8,7 +8,7 @@ import Logo from "@/components/navbar/Logo";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
-import { GearIcon, ActivityIcon, AlertIcon } from "@/components/icons/NavIcons";
+import { GearIcon, ActivityIcon, AlertIcon, WrenchIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 
 function MenuIcon({ className }: { className?: string }) {
@@ -74,6 +74,14 @@ export default function NavbarClient() {
                     href="/incidents"
                     icon={<AlertIcon className="shrink-0" />}
                     label={t("nav.incidents")}
+                    onNavigate={closeMenu}
+                  />
+                </li>
+                <li>
+                  <SidebarNavLink
+                    href="/maintenance"
+                    icon={<WrenchIcon className="shrink-0" />}
+                    label={t("nav.maintenance")}
                     onNavigate={closeMenu}
                   />
                 </li>

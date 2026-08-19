@@ -20,7 +20,8 @@
     "expandSidebar": "Utvid sidepanelet",
     "collapseSidebar": "Skjul sidepanelet",
     "monitors": "Overvåking",
-    "incidents": "Hendelser"
+    "incidents": "Hendelser",
+    "maintenance": "Vedlikehold"
   },
   "serviceCard": {
     "checkingStatus": "Sjekker status…",
@@ -47,6 +48,8 @@
     "unreachable": "Kunne ikke laste inn hendelser.",
     "notFound": "Fant ikke hendelsen.",
     "officialPage": "Vis offisiell hendelsesside",
+    "pin": "Fest",
+    "unpin": "Løsne",
     "filter": {
       "active": "Aktiv",
       "monitoring": "Overvåking",
@@ -62,6 +65,15 @@
       "last30d": "Siste 30 dager",
       "noMatches": "Ingen hendelser samsvarer med dette filteret."
     }
+  },
+  "maintenance": {
+    "title": "Vedlikehold",
+    "loading": "Laster planlagt vedlikehold…",
+    "unreachable": "Kunne ikke laste planlagt vedlikehold.",
+    "empty": "Ikke noe planlagt vedlikehold.",
+    "noMatches": "Ingen vedlikehold samsvarer med dette filteret.",
+    "pin": "Fest",
+    "unpin": "Løsne"
   },
   "addService": {
     "back": "← Tilbake",

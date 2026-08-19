@@ -61,7 +61,7 @@ export default function IncidentDetail({ id }: { id: string }) {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={t("incidents.officialPage")}
-                  className="text-base-content/40 hover:text-base-content shrink-0"
+                  className="text-base-content/40 hover:text-base-content transition-transform hover:scale-110 active:scale-90 shrink-0"
                 >
                   <ExternalLinkIcon className="h-4 w-4" />
                 </a>

@@ -20,7 +20,8 @@
     "expandSidebar": "Seitenleiste einblenden",
     "collapseSidebar": "Seitenleiste einklappen",
     "monitors": "Monitore",
-    "incidents": "Vorfälle"
+    "incidents": "Vorfälle",
+    "maintenance": "Wartung"
   },
   "serviceCard": {
     "checkingStatus": "Status wird geprüft…",
@@ -47,6 +48,8 @@
     "unreachable": "Vorfälle konnten nicht geladen werden.",
     "notFound": "Vorfall nicht gefunden.",
     "officialPage": "Offizielle Vorfallseite ansehen",
+    "pin": "Anheften",
+    "unpin": "Lösen",
     "filter": {
       "active": "Aktiv",
       "monitoring": "Überwachung",
@@ -62,6 +65,15 @@
       "last30d": "Letzte 30 Tage",
       "noMatches": "Keine Vorfälle entsprechen diesem Filter."
     }
+  },
+  "maintenance": {
+    "title": "Wartung",
+    "loading": "Geplante Wartung wird geladen…",
+    "unreachable": "Geplante Wartung konnte nicht geladen werden.",
+    "empty": "Keine bevorstehende Wartung.",
+    "noMatches": "Keine Wartung entspricht diesem Filter.",
+    "pin": "Anheften",
+    "unpin": "Lösen"
   },
   "addService": {
     "back": "← Zurück",

@@ -9,8 +9,9 @@ import type { ServiceDefinition, TrackedIncident } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
-import { ExternalLinkIcon } from "@/components/icons/NavIcons";
+import { ExternalLinkIcon, PinIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
+import { usePinned } from "@/lib/usePinned";
 
 type StatusFilter = "all" | "active" | "monitoring" | "resolved";
 type TimeRange = "all" | "24h" | "7d" | "30d";
@@ -30,6 +31,7 @@ function matchesStatus(incident: TrackedIncident, filter: StatusFilter): boolean
 export default function IncidentsPageContent() {
   const { t } = useTranslation();
   const { data, error } = usePolledFetch<{ incidents: TrackedIncident[] }>("/api/incidents");
+  const { pinned, togglePin } = usePinned("pinnedIncidents");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [serviceFilter, setServiceFilter] = useState<string>("all");
   const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRange>("all");
@@ -41,12 +43,14 @@ export default function IncidentsPageContent() {
     for (const incident of incidents) map.set(incident.service.slug, incident.service);
     return [...map.values()].sort((a, b) => a.name.localeCompare(b.name));
   }, [incidents]);
-  const filteredIncidents = incidents.filter(
-    (incident) =>
-      matchesStatus(incident, statusFilter) &&
-      (serviceFilter === "all" || incident.service.slug === serviceFilter) &&
-      (timeRangeFilter === "all" || msSince(incident.updated_at) <= RANGE_MS[timeRangeFilter]),
-  );
+  const filteredIncidents = incidents
+    .filter(
+      (incident) =>
+        matchesStatus(incident, statusFilter) &&
+        (serviceFilter === "all" || incident.service.slug === serviceFilter) &&
+        (timeRangeFilter === "all" || msSince(incident.updated_at) <= RANGE_MS[timeRangeFilter]),
+    )
+    .sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id)));
   const countForStatus = (filter: StatusFilter) =>
     incidents.filter((incident) => matchesStatus(incident, filter)).length;
 
@@ -128,28 +132,36 @@ export default function IncidentsPageContent() {
                     key={incident.id}
                     className="card card-border bg-base-200 hover:border-base-content/20 relative flex w-full flex-row items-stretch overflow-hidden shadow-md transition-colors"
                   >
-                    <a
-                      href={incident.shortlink}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={t("incidents.officialPage")}
-                      className="text-base-content/40 hover:text-base-content absolute top-3 right-7 z-10"
-                    >
-                      <ExternalLinkIcon className="h-3.5 w-3.5" />
-                    </a>
+                    <div className="absolute top-3 right-7 z-10 flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => togglePin(incident.id)}
+                        aria-label={t(pinned.has(incident.id) ? "incidents.unpin" : "incidents.pin")}
+                        className="text-base-content/40 hover:text-base-content transition-transform hover:scale-110 active:scale-90"
+                      >
+                        <PinIcon className="h-4 w-4" filled={pinned.has(incident.id)} />
+                      </button>
+                      <a
+                        href={incident.shortlink}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={t("incidents.officialPage")}
+                        className="text-base-content/40 hover:text-base-content transition-transform hover:scale-110 active:scale-90"
+                      >
+                        <ExternalLinkIcon className="h-4 w-4" />
+                      </a>
+                    </div>
                     <Link href={`/incidents/${incident.id}`} className="flex min-w-0 flex-1 items-center gap-3 p-4">
                       <Logo size={24} name={incident.service.name} />
                       <div className="min-w-0 flex-1">
                         <p className="text-base-content/50 text-xs">{incident.service.name}</p>
                         <p className="text-base-content truncate text-sm font-medium">{incident.name}</p>
-                        <div className="mt-1 flex items-center justify-between gap-2">
+                        <div className="mt-1 flex items-center gap-2">
+                          <span className="text-base-content/50 text-xs">{incident.status}</span>
                           <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
-                          <div className="shrink-0 text-right">
-                            <p className="text-base-content/50 text-xs">{incident.status}</p>
-                            <p className="text-base-content/50 text-xs whitespace-nowrap">{formatDateTime(incident.updated_at)}</p>
-                          </div>
                         </div>
                       </div>
+                      <p className="text-base-content/50 self-end text-xs whitespace-nowrap">{formatDateTime(incident.updated_at)}</p>
                     </Link>
                     <div className={`w-3 shrink-0 self-stretch ${style.dot}`} aria-hidden="true" />
                   </li>

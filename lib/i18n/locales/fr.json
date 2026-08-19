@@ -20,7 +20,8 @@
     "expandSidebar": "Développer la barre latérale",
     "collapseSidebar": "Réduire la barre latérale",
     "monitors": "Moniteurs",
-    "incidents": "Incidents"
+    "incidents": "Incidents",
+    "maintenance": "Maintenance"
   },
   "serviceCard": {
     "checkingStatus": "Vérification du statut…",
@@ -47,6 +48,8 @@
     "unreachable": "Impossible de charger les incidents.",
     "notFound": "Incident introuvable.",
     "officialPage": "Voir la page officielle de l'incident",
+    "pin": "Épingler",
+    "unpin": "Désépingler",
     "filter": {
       "active": "Actif",
       "monitoring": "Surveillance",
@@ -62,6 +65,15 @@
       "last30d": "30 derniers jours",
       "noMatches": "Aucun incident ne correspond à ce filtre."
     }
+  },
+  "maintenance": {
+    "title": "Maintenance",
+    "loading": "Chargement de la maintenance planifiée…",
+    "unreachable": "Impossible de charger la maintenance planifiée.",
+    "empty": "Aucune maintenance à venir.",
+    "noMatches": "Aucune maintenance ne correspond à ce filtre.",
+    "pin": "Épingler",
+    "unpin": "Désépingler"
   },
   "addService": {
     "back": "← Retour",

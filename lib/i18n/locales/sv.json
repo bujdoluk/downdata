@@ -20,7 +20,8 @@
     "expandSidebar": "Expandera sidopanelen",
     "collapseSidebar": "Fäll ihop sidopanelen",
     "monitors": "Övervakning",
-    "incidents": "Incidenter"
+    "incidents": "Incidenter",
+    "maintenance": "Underhåll"
   },
   "serviceCard": {
     "checkingStatus": "Kontrollerar status…",
@@ -47,6 +48,8 @@
     "unreachable": "Det gick inte att läsa in incidenter.",
     "notFound": "Incidenten hittades inte.",
     "officialPage": "Visa officiell incidentsida",
+    "pin": "Fäst",
+    "unpin": "Lossa",
     "filter": {
       "active": "Aktiv",
       "monitoring": "Övervakning",
@@ -62,6 +65,15 @@
       "last30d": "Senaste 30 dagarna",
       "noMatches": "Inga incidenter matchar detta filter."
     }
+  },
+  "maintenance": {
+    "title": "Underhåll",
+    "loading": "Läser in planerat underhåll…",
+    "unreachable": "Det gick inte att läsa in planerat underhåll.",
+    "empty": "Inget kommande underhåll.",
+    "noMatches": "Inget underhåll matchar detta filter.",
+    "pin": "Fäst",
+    "unpin": "Lossa"
   },
   "addService": {
     "back": "← Tillbaka",

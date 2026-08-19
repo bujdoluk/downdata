@@ -63,6 +63,13 @@ export type ServiceSummaryResponse = {
 
 export type TrackedIncident = StatuspageIncident & { service: ServiceDefinition };
 
+export type ScheduledMaintenance = StatuspageIncident & {
+  scheduled_for: string;
+  scheduled_until: string;
+};
+
+export type TrackedMaintenance = ScheduledMaintenance & { service: ServiceDefinition };
+
 export type ServiceStatusEntry =
   | { status: { indicator: Indicator; description: string }; outages24h?: number }
   | { error: string };

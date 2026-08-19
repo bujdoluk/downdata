@@ -20,7 +20,8 @@
     "expandSidebar": "Expand sidebar",
     "collapseSidebar": "Collapse sidebar",
     "monitors": "Monitors",
-    "incidents": "Incidents"
+    "incidents": "Incidents",
+    "maintenance": "Maintenance"
   },
   "serviceCard": {
     "checkingStatus": "Checking status…",
@@ -47,6 +48,8 @@
     "unreachable": "Unable to load incidents.",
     "notFound": "Incident not found.",
     "officialPage": "View official incident page",
+    "pin": "Pin",
+    "unpin": "Unpin",
     "filter": {
       "active": "Active",
       "monitoring": "Monitoring",
@@ -62,6 +65,15 @@
       "last30d": "Last 30 days",
       "noMatches": "No incidents match this filter."
     }
+  },
+  "maintenance": {
+    "title": "Maintenance",
+    "loading": "Loading scheduled maintenance…",
+    "unreachable": "Unable to load scheduled maintenance.",
+    "empty": "No upcoming maintenance.",
+    "noMatches": "No maintenance matches this filter.",
+    "pin": "Pin",
+    "unpin": "Unpin"
   },
   "addService": {
     "back": "← Back",

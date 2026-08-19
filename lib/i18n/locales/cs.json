@@ -20,7 +20,8 @@
     "expandSidebar": "Rozbalit postranní panel",
     "collapseSidebar": "Sbalit postranní panel",
     "monitors": "Monitory",
-    "incidents": "Incidenty"
+    "incidents": "Incidenty",
+    "maintenance": "Údržba"
   },
   "serviceCard": {
     "checkingStatus": "Kontroluje se stav…",
@@ -48,6 +49,8 @@
     "unreachable": "Nepodařilo se načíst incidenty.",
     "notFound": "Incident nebyl nalezen.",
     "officialPage": "Zobrazit oficiální stránku incidentu",
+    "pin": "Připnout",
+    "unpin": "Odepnout",
     "filter": {
       "active": "Aktivní",
       "monitoring": "Monitorování",
@@ -63,6 +66,15 @@
       "last30d": "Posledních 30 dní",
       "noMatches": "Žádné incidenty neodpovídají tomuto filtru."
     }
+  },
+  "maintenance": {
+    "title": "Údržba",
+    "loading": "Načítá se plánovaná údržba…",
+    "unreachable": "Nepodařilo se načíst plánovanou údržbu.",
+    "empty": "Žádná nadcházející údržba.",
+    "noMatches": "Žádná údržba neodpovídá tomuto filtru.",
+    "pin": "Připnout",
+    "unpin": "Odepnout"
   },
   "addService": {
     "back": "← Zpět",

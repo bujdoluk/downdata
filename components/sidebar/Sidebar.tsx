@@ -6,7 +6,7 @@ import "@/lib/i18n/i18n";
 import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
-import { GearIcon, ActivityIcon, AlertIcon } from "@/components/icons/NavIcons";
+import { GearIcon, ActivityIcon, AlertIcon, WrenchIcon } from "@/components/icons/NavIcons";
 
 function ChevronIcon({ className, collapsed }: { className?: string; collapsed: boolean }) {
   return (
@@ -66,6 +66,7 @@ export default function Sidebar() {
       <div className={`flex ${collapsed ? "flex-col items-center gap-4" : "flex-col gap-3"}`}>
         <SidebarNavLink href="/" icon={<GearIcon className="shrink-0" />} label={t("nav.services")} collapsed={collapsed} />
         <SidebarNavLink href="/incidents" icon={<AlertIcon className="shrink-0" />} label={t("nav.incidents")} collapsed={collapsed} />
+        <SidebarNavLink href="/maintenance" icon={<WrenchIcon className="shrink-0" />} label={t("nav.maintenance")} collapsed={collapsed} />
         <SidebarNavLink href="/monitors" icon={<ActivityIcon className="shrink-0" />} label={t("nav.monitors")} collapsed={collapsed} />
       </div>
 

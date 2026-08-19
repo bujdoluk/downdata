@@ -50,7 +50,16 @@
     "filter": {
       "active": "Aktiv",
       "monitoring": "Overvåking",
+      "status": "Status",
+      "allStatuses": "Alle statuser",
       "resolved": "Løst",
+      "service": "Tjeneste",
+      "timeRange": "Tidsperiode",
+      "allServices": "Alle tjenester",
+      "allTime": "Hele perioden",
+      "last24h": "Siste 24 timer",
+      "last7d": "Siste 7 dager",
+      "last30d": "Siste 30 dager",
       "noMatches": "Ingen hendelser samsvarer med dette filteret."
     }
   },

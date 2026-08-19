@@ -52,7 +52,16 @@
     "filter": {
       "active": "Aktywne",
       "monitoring": "Monitorowanie",
+      "status": "Status",
+      "allStatuses": "Wszystkie statusy",
       "resolved": "Rozwiązane",
+      "service": "Usługa",
+      "timeRange": "Zakres czasu",
+      "allServices": "Wszystkie usługi",
+      "allTime": "Cały okres",
+      "last24h": "Ostatnie 24 godziny",
+      "last7d": "Ostatnie 7 dni",
+      "last30d": "Ostatnie 30 dni",
       "noMatches": "Żaden incydent nie pasuje do tego filtra."
     }
   },

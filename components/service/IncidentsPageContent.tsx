@@ -1,46 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import { formatDateTime } from "@/lib/formatTime";
-import type { TrackedIncident } from "@/types/service";
+import { formatDateTime, msSince } from "@/lib/formatTime";
+import type { ServiceDefinition, TrackedIncident } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import { ExternalLinkIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 
-type StatusFilter = "active" | "monitoring" | "resolved";
+type StatusFilter = "all" | "active" | "monitoring" | "resolved";
+type TimeRange = "all" | "24h" | "7d" | "30d";
 
-function matchesSingleFilter(incident: TrackedIncident, filter: StatusFilter): boolean {
+const RANGE_MS: Record<Exclude<TimeRange, "all">, number> = {
+  "24h": 24 * 60 * 60 * 1000,
+  "7d": 7 * 24 * 60 * 60 * 1000,
+  "30d": 30 * 24 * 60 * 60 * 1000,
+};
+
+function matchesStatus(incident: TrackedIncident, filter: StatusFilter): boolean {
+  if (filter === "all") return true;
   if (filter === "active") return incident.status !== "monitoring" && incident.status !== "resolved";
   return incident.status === filter;
-}
-
-function matchesFilters(incident: TrackedIncident, filters: Set<StatusFilter>): boolean {
-  return filters.size === 0 || [...filters].some((filter) => matchesSingleFilter(incident, filter));
 }
 
 export default function IncidentsPageContent() {
   const { t } = useTranslation();
   const { data, error } = usePolledFetch<{ incidents: TrackedIncident[] }>("/api/incidents");
-  const [statusFilters, setStatusFilters] = useState<Set<StatusFilter>>(new Set());
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [serviceFilter, setServiceFilter] = useState<string>("all");
+  const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRange>("all");
 
   const isLoading = !data && !error;
-  const incidents = data?.incidents ?? [];
-  const filteredIncidents = incidents.filter((incident) => matchesFilters(incident, statusFilters));
-  const countFor = (filter: StatusFilter) => incidents.filter((incident) => matchesSingleFilter(incident, filter)).length;
-
-  function toggleFilter(filter: StatusFilter) {
-    setStatusFilters((prev) => {
-      const next = new Set(prev);
-      if (next.has(filter)) next.delete(filter);
-      else next.add(filter);
-      return next;
-    });
-  }
+  const incidents = useMemo(() => data?.incidents ?? [], [data]);
+  const services = useMemo(() => {
+    const map = new Map<string, ServiceDefinition>();
+    for (const incident of incidents) map.set(incident.service.slug, incident.service);
+    return [...map.values()].sort((a, b) => a.name.localeCompare(b.name));
+  }, [incidents]);
+  const filteredIncidents = incidents.filter(
+    (incident) =>
+      matchesStatus(incident, statusFilter) &&
+      (serviceFilter === "all" || incident.service.slug === serviceFilter) &&
+      (timeRangeFilter === "all" || msSince(incident.updated_at) <= RANGE_MS[timeRangeFilter]),
+  );
+  const countForStatus = (filter: StatusFilter) =>
+    incidents.filter((incident) => matchesStatus(incident, filter)).length;
 
   return (
     <div className="w-full max-w-6xl self-start">
@@ -54,32 +62,58 @@ export default function IncidentsPageContent() {
         <p className="text-base-content/50 mt-4 text-sm">{t("serviceDetail.noIncidents")}</p>
       ) : (
         <>
-          <form className="filter mt-4" onReset={() => setStatusFilters(new Set())}>
-            <input
-              className="btn checked:[--btn-color:#a855f7] checked:[--btn-fg:#ffffff]"
-              type="checkbox"
-              name="incidentStatusFilter"
-              aria-label={`${t("incidents.filter.active")} (${countFor("active")})`}
-              checked={statusFilters.has("active")}
-              onChange={() => toggleFilter("active")}
-            />
-            <input
-              className="btn checked:[--btn-color:#a855f7] checked:[--btn-fg:#ffffff]"
-              type="checkbox"
-              name="incidentStatusFilter"
-              aria-label={`${t("incidents.filter.monitoring")} (${countFor("monitoring")})`}
-              checked={statusFilters.has("monitoring")}
-              onChange={() => toggleFilter("monitoring")}
-            />
-            <input
-              className="btn checked:[--btn-color:#a855f7] checked:[--btn-fg:#ffffff]"
-              type="checkbox"
-              name="incidentStatusFilter"
-              aria-label={`${t("incidents.filter.resolved")} (${countFor("resolved")})`}
-              checked={statusFilters.has("resolved")}
-              onChange={() => toggleFilter("resolved")}
-            />
-            <input className="btn btn-square" type="reset" value="×" />
+          <form
+            className="filter mt-4 flex-wrap items-center gap-2"
+            onReset={() => {
+              setStatusFilter("all");
+              setServiceFilter("all");
+              setTimeRangeFilter("all");
+            }}
+          >
+            <select
+              className="select select-bordered select-sm w-40"
+              aria-label={t("incidents.filter.service")}
+              value={serviceFilter}
+              onChange={(e) => setServiceFilter(e.target.value)}
+            >
+              <option value="all">{t("incidents.filter.allServices")}</option>
+              {services.map((service) => (
+                <option key={service.slug} value={service.slug}>
+                  {service.name}
+                </option>
+              ))}
+            </select>
+            <select
+              className="select select-bordered select-sm w-40"
+              aria-label={t("incidents.filter.timeRange")}
+              value={timeRangeFilter}
+              onChange={(e) => setTimeRangeFilter(e.target.value as TimeRange)}
+            >
+              <option value="all">{t("incidents.filter.allTime")}</option>
+              <option value="24h">{t("incidents.filter.last24h")}</option>
+              <option value="7d">{t("incidents.filter.last7d")}</option>
+              <option value="30d">{t("incidents.filter.last30d")}</option>
+            </select>
+            <select
+              className="select select-bordered select-sm w-40"
+              aria-label={t("incidents.filter.status")}
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+            >
+              <option value="all">
+                {t("incidents.filter.allStatuses")} ({countForStatus("all")})
+              </option>
+              <option value="active">
+                {t("incidents.filter.active")} ({countForStatus("active")})
+              </option>
+              <option value="monitoring">
+                {t("incidents.filter.monitoring")} ({countForStatus("monitoring")})
+              </option>
+              <option value="resolved">
+                {t("incidents.filter.resolved")} ({countForStatus("resolved")})
+              </option>
+            </select>
+            <input className="btn btn-square btn-sm" type="reset" value="×" />
           </form>
 
           {filteredIncidents.length === 0 ? (

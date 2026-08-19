@@ -51,7 +51,16 @@
     "filter": {
       "active": "Aktívne",
       "monitoring": "Monitorovanie",
+      "status": "Stav",
+      "allStatuses": "Všetky stavy",
       "resolved": "Vyriešené",
+      "service": "Služba",
+      "timeRange": "Časové obdobie",
+      "allServices": "Všetky služby",
+      "allTime": "Celé obdobie",
+      "last24h": "Posledných 24 hodín",
+      "last7d": "Posledných 7 dní",
+      "last30d": "Posledných 30 dní",
       "noMatches": "Žiadne incidenty nezodpovedajú tomuto filtru."
     }
   },

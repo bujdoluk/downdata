@@ -11,3 +11,7 @@ export function formatDateTime(iso: string): string {
 export function formatTime(iso: string): string {
   return toLocalZonedDateTime(iso).toLocaleString(undefined, { timeStyle: "medium" });
 }
+
+export function msSince(iso: string): number {
+  return Temporal.Now.instant().epochMilliseconds - Temporal.Instant.from(iso).epochMilliseconds;
+}

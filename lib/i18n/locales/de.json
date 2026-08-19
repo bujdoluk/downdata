@@ -50,7 +50,16 @@
     "filter": {
       "active": "Aktiv",
       "monitoring": "Überwachung",
+      "status": "Status",
+      "allStatuses": "Alle Status",
       "resolved": "Gelöst",
+      "service": "Dienst",
+      "timeRange": "Zeitraum",
+      "allServices": "Alle Dienste",
+      "allTime": "Gesamter Zeitraum",
+      "last24h": "Letzte 24 Stunden",
+      "last7d": "Letzte 7 Tage",
+      "last30d": "Letzte 30 Tage",
       "noMatches": "Keine Vorfälle entsprechen diesem Filter."
     }
   },

@@ -50,7 +50,16 @@
     "filter": {
       "active": "Aktiv",
       "monitoring": "Övervakning",
+      "status": "Status",
+      "allStatuses": "Alla statusar",
       "resolved": "Löst",
+      "service": "Tjänst",
+      "timeRange": "Tidsperiod",
+      "allServices": "Alla tjänster",
+      "allTime": "Hela perioden",
+      "last24h": "Senaste 24 timmarna",
+      "last7d": "Senaste 7 dagarna",
+      "last30d": "Senaste 30 dagarna",
       "noMatches": "Inga incidenter matchar detta filter."
     }
   },

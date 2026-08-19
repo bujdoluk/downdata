@@ -50,7 +50,16 @@
     "filter": {
       "active": "Activo",
       "monitoring": "Monitorización",
+      "status": "Estado",
+      "allStatuses": "Todos los estados",
       "resolved": "Resuelto",
+      "service": "Servicio",
+      "timeRange": "Periodo",
+      "allServices": "Todos los servicios",
+      "allTime": "Todo el periodo",
+      "last24h": "Últimas 24 horas",
+      "last7d": "Últimos 7 días",
+      "last30d": "Últimos 30 días",
       "noMatches": "Ningún incidente coincide con este filtro."
     }
   },

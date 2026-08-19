@@ -30,7 +30,9 @@
     "outages24h_other": "{{count}} driftsstanser siste 24 t",
     "remove": "Fjern",
     "removing": "Fjerner…",
-    "options": "Flere valg"
+    "options": "Flere valg",
+    "pin": "Fest",
+    "unpin": "Løsne"
   },
   "serviceDetail": {
     "back": "← Tilbake",

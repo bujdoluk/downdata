@@ -151,6 +151,7 @@ export default function LandingPage() {
                     error={false}
                     isMonitored={false}
                     removable={{ removing: false, onRemove: () => {} }}
+                    onTogglePin={() => {}}
                   />
                 ))}
               </div>

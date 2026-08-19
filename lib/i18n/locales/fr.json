@@ -30,7 +30,9 @@
     "outages24h_other": "{{count}} pannes au cours des dernières 24 h",
     "remove": "Supprimer",
     "removing": "Suppression…",
-    "options": "Plus d'options"
+    "options": "Plus d'options",
+    "pin": "Épingler",
+    "unpin": "Désépingler"
   },
   "serviceDetail": {
     "back": "← Retour",

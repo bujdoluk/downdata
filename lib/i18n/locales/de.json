@@ -30,7 +30,9 @@
     "outages24h_other": "{{count}} Ausfälle in den letzten 24 Std.",
     "remove": "Entfernen",
     "removing": "Wird entfernt…",
-    "options": "Weitere Optionen"
+    "options": "Weitere Optionen",
+    "pin": "Anheften",
+    "unpin": "Lösen"
   },
   "serviceDetail": {
     "back": "← Zurück",

@@ -8,6 +8,7 @@ import type { Indicator } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import { PinIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 
 function CheckIcon({ className }: { className?: string }) {
@@ -38,6 +39,8 @@ export default function CatalogServiceCard({
   isMonitored,
   addState,
   removable,
+  pinned,
+  onTogglePin,
 }: {
   slug: string;
   name: string;
@@ -48,6 +51,8 @@ export default function CatalogServiceCard({
   isMonitored: boolean;
   addState?: { isPending: boolean; isAdded: boolean; onAdd: () => void };
   removable?: { removing: boolean; onRemove: () => void };
+  pinned?: boolean;
+  onTogglePin?: () => void;
 }) {
   const { t } = useTranslation();
   const menuRef = useRef<HTMLDetailsElement>(null);
@@ -60,10 +65,20 @@ export default function CatalogServiceCard({
   return (
     <div className="card card-border bg-base-200 hover:border-base-content/20 relative flex w-full min-w-0 flex-col overflow-hidden shadow-md transition-colors lg:max-w-[370px]">
       {removable && (
-        <div className="absolute top-2 right-7 z-10">
+        <div className="absolute top-2 right-7 z-10 flex items-center gap-1">
+          {onTogglePin && (
+            <button
+              type="button"
+              onClick={onTogglePin}
+              aria-label={t(pinned ? "serviceCard.unpin" : "serviceCard.pin")}
+              className="btn btn-ghost btn-circle btn-xs text-base-content/60 hover:text-base-content transition-transform hover:scale-110 active:scale-90"
+            >
+              <PinIcon className="h-4 w-4" filled={pinned} />
+            </button>
+          )}
           <details ref={menuRef} className="dropdown dropdown-end">
             <summary
-              className="btn btn-ghost btn-circle btn-xs list-none"
+              className="btn btn-ghost btn-circle btn-xs list-none transition-transform hover:scale-110 active:scale-90"
               aria-label={t("serviceCard.options")}
             >
               <DotsIcon />

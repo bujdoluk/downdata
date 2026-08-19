@@ -30,7 +30,9 @@
     "outages24h_other": "{{count}} storingen in de afgelopen 24 uur",
     "remove": "Verwijderen",
     "removing": "Verwijderen…",
-    "options": "Meer opties"
+    "options": "Meer opties",
+    "pin": "Vastzetten",
+    "unpin": "Losmaken"
   },
   "serviceDetail": {
     "back": "← Terug",

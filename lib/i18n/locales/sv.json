@@ -30,7 +30,9 @@
     "outages24h_other": "{{count}} driftstopp de senaste 24 tim",
     "remove": "Ta bort",
     "removing": "Tar bort…",
-    "options": "Fler alternativ"
+    "options": "Fler alternativ",
+    "pin": "Fäst",
+    "unpin": "Lossa"
   },
   "serviceDetail": {
     "back": "← Tillbaka",

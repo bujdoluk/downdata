@@ -30,7 +30,9 @@
     "outages24h_other": "{{count}} falhas nas últimas 24 h",
     "remove": "Remover",
     "removing": "A remover…",
-    "options": "Mais opções"
+    "options": "Mais opções",
+    "pin": "Fixar",
+    "unpin": "Desafixar"
   },
   "serviceDetail": {
     "back": "← Voltar",

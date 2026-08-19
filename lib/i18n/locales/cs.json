@@ -31,7 +31,9 @@
     "outages24h_other": "{{count}} výpadků za posledních 24 h",
     "remove": "Odebrat",
     "removing": "Odebírá se…",
-    "options": "Další možnosti"
+    "options": "Další možnosti",
+    "pin": "Připnout",
+    "unpin": "Odepnout"
   },
   "serviceDetail": {
     "back": "← Zpět",

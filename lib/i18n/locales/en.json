@@ -30,7 +30,9 @@
     "outages24h_other": "{{count}} outages in the last 24 h",
     "remove": "Remove",
     "removing": "Removing…",
-    "options": "More options"
+    "options": "More options",
+    "pin": "Pin",
+    "unpin": "Unpin"
   },
   "serviceDetail": {
     "back": "← Back",

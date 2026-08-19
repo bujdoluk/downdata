@@ -32,7 +32,9 @@
     "outages24h_other": "{{count}} awarii w ciągu ostatnich 24 godz.",
     "remove": "Usuń",
     "removing": "Usuwanie…",
-    "options": "Więcej opcji"
+    "options": "Więcej opcji",
+    "pin": "Przypnij",
+    "unpin": "Odepnij"
   },
   "serviceDetail": {
     "back": "← Wstecz",

@@ -2,6 +2,7 @@
 
 import type { CatalogEntry, ServiceStatusBatchResponse } from "@/types/service";
 import CatalogServiceCard from "@/components/service/CatalogServiceCard";
+import { usePinned } from "@/lib/usePinned";
 
 const INDICATOR_SEVERITY: Record<string, number> = {
   critical: 3,
@@ -39,10 +40,12 @@ export default function CatalogServiceGrid({
 }) {
   const isAddMode = Boolean(onAdd);
   const monitoredHosts = new Set(trackedHosts);
+  const { pinned, togglePin } = usePinned("pinnedServices");
 
-  const sortedCatalog = [...catalog].sort(
-    (a, b) => severityOf(b, data) - severityOf(a, data),
-  );
+  const sortedCatalog = [...catalog].sort((a, b) => {
+    const pinDiff = Number(pinned.has(b.slug)) - Number(pinned.has(a.slug));
+    return pinDiff !== 0 ? pinDiff : severityOf(b, data) - severityOf(a, data);
+  });
 
   return (
     <>
@@ -76,6 +79,8 @@ export default function CatalogServiceGrid({
                   }
                 : undefined
             }
+            pinned={pinned.has(entry.slug)}
+            onTogglePin={onRemove ? () => togglePin(entry.slug) : undefined}
           />
         );
       })}

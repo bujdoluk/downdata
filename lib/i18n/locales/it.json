@@ -30,7 +30,9 @@
     "outages24h_other": "{{count}} interruzioni nelle ultime 24 h",
     "remove": "Rimuovi",
     "removing": "Rimozione…",
-    "options": "Altre opzioni"
+    "options": "Altre opzioni",
+    "pin": "Fissa",
+    "unpin": "Rimuovi fissaggio"
   },
   "serviceDetail": {
     "back": "← Indietro",

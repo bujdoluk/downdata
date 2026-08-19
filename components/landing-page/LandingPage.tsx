@@ -7,6 +7,7 @@ import PricingSection from "@/components/landing-page/PricingSection";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import Logo from "@/components/navbar/Logo";
 import CatalogServiceCard from "@/components/service/CatalogServiceCard";
+import { AlertIcon } from "@/components/icons/NavIcons";
 
 const mono = "font-mono";
 
@@ -43,9 +44,9 @@ function StackIcon({ className }: { className?: string }) {
 }
 
 const demoRows = [
-  { slug: "supabase", name: "Supabase", indicator: "minor", description: "Partially Degraded Service", outages24h: 1 },
-  { slug: "github", name: "GitHub", indicator: "none", description: "All Systems Operational", outages24h: 0 },
-  { slug: "cloudflare", name: "Cloudflare", indicator: "none", description: "All Systems Operational", outages24h: 0 },
+  { slug: "supabase", name: "Supabase", indicator: "minor", outages24h: 1 },
+  { slug: "github", name: "GitHub", indicator: "none", outages24h: 0 },
+  { slug: "cloudflare", name: "Cloudflare", indicator: "none", outages24h: 0 },
 ] as const;
 
 export default function LandingPage() {
@@ -53,12 +54,13 @@ export default function LandingPage() {
 
   const features = [
     { icon: BoltIcon, title: t("landing.features.speedTitle"), body: t("landing.features.speedBody") },
+    { icon: AlertIcon, title: t("landing.features.monitoringTitle"), body: t("landing.features.monitoringBody") },
     { icon: UserGroupIcon, title: t("landing.features.seatsTitle"), body: t("landing.features.seatsBody") },
     { icon: StackIcon, title: t("landing.features.selfHostedTitle"), body: t("landing.features.selfHostedBody") },
   ];
 
   const [heroBodyBefore, heroBodyAfter] = t("landing.hero.body", {
-    interval: "5s",
+    interval: "30s",
     price: "$5/month",
     competitorPrice: "$274",
   }).split("downDATA");
@@ -144,7 +146,6 @@ export default function LandingPage() {
                     slug={row.slug}
                     name={row.name}
                     indicator={row.indicator}
-                    description={row.description}
                     outages24h={row.outages24h}
                     isLoading={false}
                     error={false}
@@ -167,7 +168,7 @@ export default function LandingPage() {
             <p className="text-base-content/70">{t("landing.features.subtitle")}</p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {features.map(({ icon: Icon, title, body }) => (
               <div key={title} className="card card-border bg-base-200 hover:border-base-content/20 transition-colors">
                 <div className="card-body gap-4 p-7">

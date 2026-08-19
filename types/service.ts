@@ -31,6 +31,13 @@ export type StatuspageComponent = {
   showcase: boolean;
 };
 
+export type IncidentUpdate = {
+  id: string;
+  status: string;
+  body: string;
+  created_at: string;
+};
+
 export type StatuspageIncident = {
   id: string;
   name: string;
@@ -38,6 +45,7 @@ export type StatuspageIncident = {
   impact: string;
   updated_at: string;
   shortlink: string;
+  incident_updates: IncidentUpdate[];
 };
 
 export type ServiceSummaryResponse = {
@@ -52,6 +60,8 @@ export type ServiceSummaryResponse = {
   components: StatuspageComponent[];
   incidents: StatuspageIncident[];
 };
+
+export type TrackedIncident = StatuspageIncident & { service: ServiceDefinition };
 
 export type ServiceStatusEntry =
   | { status: { indicator: Indicator; description: string }; outages24h?: number }

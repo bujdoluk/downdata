@@ -1,9 +1,9 @@
 {
   "status": {
-    "operational": "I drift",
-    "minorIssues": "Mindre problemer",
-    "majorOutage": "Alvorlig driftsstans",
-    "criticalOutage": "Kritisk driftsstans",
+    "operational": "Fungerer",
+    "minorIssues": "Mindre",
+    "majorOutage": "Alvorlig",
+    "criticalOutage": "Kritisk",
     "degradedPerformance": "Redusert ytelse",
     "partialOutage": "Delvis driftsstans",
     "underMaintenance": "Vedlikehold pågår",
@@ -19,7 +19,8 @@
     "menu": "Meny",
     "expandSidebar": "Utvid sidepanelet",
     "collapseSidebar": "Skjul sidepanelet",
-    "monitors": "Overvåking"
+    "monitors": "Overvåking",
+    "incidents": "Hendelser"
   },
   "serviceCard": {
     "checkingStatus": "Sjekker status…",
@@ -39,6 +40,19 @@
     "noIncidents": "Ingen hendelser rapportert.",
     "updated": "oppdatert",
     "lastUpdated": "Sist oppdatert {{time}}"
+  },
+  "incidents": {
+    "title": "Hendelser",
+    "loading": "Laster hendelser…",
+    "unreachable": "Kunne ikke laste inn hendelser.",
+    "notFound": "Fant ikke hendelsen.",
+    "officialPage": "Vis offisiell hendelsesside",
+    "filter": {
+      "active": "Aktiv",
+      "monitoring": "Overvåking",
+      "resolved": "Løst",
+      "noMatches": "Ingen hendelser samsvarer med dette filteret."
+    }
   },
   "addService": {
     "back": "← Tilbake",
@@ -67,8 +81,10 @@
     "features": {
       "heading": "Billigere fordi kostnadene bak kulissene er lavere.",
       "subtitle": "Konkurrentenes priser dekker delvis telefon-/SMS-infrastruktur og sonder i flere regioner som vi ikke vedlikeholder på samme måte.",
-      "speedTitle": "Sjekker så ofte som hvert 5. sekund",
-      "speedBody": "Starter sjekker hvert 15. sekund, Pro hvert 10. sekund. UptimeRobots billigste betalte plan klarer kun 60 sekunder.",
+      "speedTitle": "Sjekker hvert 30. sekund",
+      "speedBody": "Hver overvåkede tjeneste sjekkes hvert 30. sekund — UptimeRobots billigste betalte plan klarer kun 60 sekunder.",
+      "monitoringTitle": "Overvåk tjenester, se hver hendelse",
+      "monitoringBody": "Legg til hvilken som helst tjeneste og følg statusen i sanntid. Klikk på en hendelse for å se hele tidslinjen, fra undersøkelse til løst.",
       "seatsTitle": "Ubegrensede brukere, i alle planer",
       "seatsBody": "UptimeRobot tar 15–19 $/mnd per teammedlem utover de tre første. Her er hele teamet inkludert.",
       "selfHostedTitle": "Selvhostet, hvis du foretrekker det",

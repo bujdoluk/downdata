@@ -1,9 +1,9 @@
 {
   "status": {
     "operational": "Operativo",
-    "minorIssues": "Problemas menores",
-    "majorOutage": "Interrupción grave",
-    "criticalOutage": "Interrupción crítica",
+    "minorIssues": "Menor",
+    "majorOutage": "Grave",
+    "criticalOutage": "Crítica",
     "degradedPerformance": "Rendimiento degradado",
     "partialOutage": "Interrupción parcial",
     "underMaintenance": "En mantenimiento",
@@ -19,7 +19,8 @@
     "menu": "Menú",
     "expandSidebar": "Expandir barra lateral",
     "collapseSidebar": "Contraer barra lateral",
-    "monitors": "Monitores"
+    "monitors": "Monitores",
+    "incidents": "Incidentes"
   },
   "serviceCard": {
     "checkingStatus": "Comprobando el estado…",
@@ -39,6 +40,19 @@
     "noIncidents": "No se han notificado incidentes.",
     "updated": "actualizado",
     "lastUpdated": "Última actualización {{time}}"
+  },
+  "incidents": {
+    "title": "Incidentes",
+    "loading": "Cargando incidentes…",
+    "unreachable": "No se pudieron cargar los incidentes.",
+    "notFound": "Incidente no encontrado.",
+    "officialPage": "Ver página oficial del incidente",
+    "filter": {
+      "active": "Activo",
+      "monitoring": "Monitorización",
+      "resolved": "Resuelto",
+      "noMatches": "Ningún incidente coincide con este filtro."
+    }
   },
   "addService": {
     "back": "← Atrás",
@@ -67,8 +81,10 @@
     "features": {
       "heading": "Más barato porque los costes de fondo son menores.",
       "subtitle": "Los precios de la competencia pagan en parte infraestructura de teléfono/SMS y sondas multirregión que nosotros no mantenemos igual.",
-      "speedTitle": "Comprobaciones hasta cada 5 segundos",
-      "speedBody": "Starter comprueba cada 15 s, Pro cada 10 s. El plan de pago más barato de UptimeRobot solo llega a 60 s.",
+      "speedTitle": "Comprobaciones cada 30 segundos",
+      "speedBody": "Cada servicio monitorizado se comprueba cada 30 segundos — el plan de pago más barato de UptimeRobot solo llega a 60 s.",
+      "monitoringTitle": "Monitoriza servicios, ve cada incidente",
+      "monitoringBody": "Añade cualquier servicio y sigue su estado en tiempo real. Haz clic en un incidente para ver su cronología completa, desde la investigación hasta la resolución.",
       "seatsTitle": "Usuarios ilimitados en todos los planes",
       "seatsBody": "UptimeRobot cobra 15–19 $/mes por cada miembro del equipo a partir del cuarto. Aquí se incluye todo el equipo.",
       "selfHostedTitle": "Autoalojado, si lo prefieres",

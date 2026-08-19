@@ -1,9 +1,9 @@
 {
   "status": {
     "operational": "Funktionsfähig",
-    "minorIssues": "Kleinere Probleme",
-    "majorOutage": "Größerer Ausfall",
-    "criticalOutage": "Kritischer Ausfall",
+    "minorIssues": "Gering",
+    "majorOutage": "Erheblich",
+    "criticalOutage": "Kritisch",
     "degradedPerformance": "Eingeschränkte Leistung",
     "partialOutage": "Teilausfall",
     "underMaintenance": "Wartung läuft",
@@ -19,7 +19,8 @@
     "menu": "Menü",
     "expandSidebar": "Seitenleiste einblenden",
     "collapseSidebar": "Seitenleiste einklappen",
-    "monitors": "Monitore"
+    "monitors": "Monitore",
+    "incidents": "Vorfälle"
   },
   "serviceCard": {
     "checkingStatus": "Status wird geprüft…",
@@ -39,6 +40,19 @@
     "noIncidents": "Keine Vorfälle gemeldet.",
     "updated": "aktualisiert",
     "lastUpdated": "Zuletzt aktualisiert {{time}}"
+  },
+  "incidents": {
+    "title": "Vorfälle",
+    "loading": "Vorfälle werden geladen…",
+    "unreachable": "Vorfälle konnten nicht geladen werden.",
+    "notFound": "Vorfall nicht gefunden.",
+    "officialPage": "Offizielle Vorfallseite ansehen",
+    "filter": {
+      "active": "Aktiv",
+      "monitoring": "Überwachung",
+      "resolved": "Gelöst",
+      "noMatches": "Keine Vorfälle entsprechen diesem Filter."
+    }
   },
   "addService": {
     "back": "← Zurück",
@@ -67,8 +81,10 @@
     "features": {
       "heading": "Günstiger, weil im Hintergrund weniger Kosten anfallen.",
       "subtitle": "Die Preise der Konkurrenz decken teils Telefon-/SMS-Infrastruktur und Multi-Region-Sonden ab, die wir nicht im gleichen Umfang betreiben.",
-      "speedTitle": "Prüfungen bis zu alle 5 Sekunden",
-      "speedBody": "Starter prüft alle 15 s, Pro alle 10 s. Der günstigste bezahlte Plan von UptimeRobot schafft nur 60 s.",
+      "speedTitle": "Prüfungen alle 30 Sekunden",
+      "speedBody": "Jeder überwachte Dienst wird alle 30 Sekunden geprüft — der günstigste bezahlte Plan von UptimeRobot schafft nur 60 s.",
+      "monitoringTitle": "Dienste überwachen, Vorfälle im Detail",
+      "monitoringBody": "Füge einen beliebigen Dienst hinzu und verfolge seinen Live-Status in Echtzeit. Klicke auf einen Vorfall, um den vollständigen Verlauf zu sehen — von der Untersuchung bis zur Lösung.",
       "seatsTitle": "Unbegrenzte Nutzer, in jedem Plan",
       "seatsBody": "UptimeRobot verlangt 15–19 $/Monat für jedes Teammitglied ab dem vierten. Hier ist das ganze Team inbegriffen.",
       "selfHostedTitle": "Selbst gehostet, wenn du möchtest",

@@ -32,7 +32,6 @@ export default function CatalogServiceCard({
   slug,
   name,
   indicator,
-  description,
   outages24h,
   isLoading,
   error,
@@ -43,7 +42,6 @@ export default function CatalogServiceCard({
   slug: string;
   name: string;
   indicator?: Indicator;
-  description?: string;
   outages24h?: number;
   isLoading: boolean;
   error: boolean;
@@ -96,28 +94,20 @@ export default function CatalogServiceCard({
           {!addState && (
             <div className="mt-3 flex items-center gap-2.5">
               <span
-                className={`h-2 w-2 shrink-0 rounded-full ${
+                className={`badge shrink-0 ${
                   isLoading
-                    ? "bg-base-content/20 animate-pulse"
+                    ? `${FALLBACK_STYLE.badge} animate-pulse`
                     : error
-                      ? "bg-base-content/20"
-                      : (style ?? FALLBACK_STYLE).dot
-                }`}
-              />
-              <p
-                className={`min-w-0 flex-1 truncate text-xs font-medium ${
-                  error || isLoading ? "text-base-content/50" : (style ?? FALLBACK_STYLE).text
+                      ? FALLBACK_STYLE.badge
+                      : `${(style ?? FALLBACK_STYLE).badge} text-white`
                 }`}
               >
                 {isLoading
                   ? t("serviceCard.checkingStatus")
                   : error
                     ? t("serviceCard.unreachable")
-                    : description}
-              </p>
-              {/* Reserved here — not conditionally mounted — so the card's
-                  height never changes once data arrives, avoiding layout
-                  shift. Sits on the status line so it reads level with it. */}
+                    : t((style ?? FALLBACK_STYLE).labelKey)}
+              </span>
               <span
                 className={`ml-auto shrink-0 text-[11px] whitespace-nowrap ${
                   isLoading ? "text-base-content/30 animate-pulse" : "text-base-content/50"

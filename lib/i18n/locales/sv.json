@@ -1,9 +1,9 @@
 {
   "status": {
     "operational": "Fungerar",
-    "minorIssues": "Mindre problem",
-    "majorOutage": "Större driftstopp",
-    "criticalOutage": "Kritiskt driftstopp",
+    "minorIssues": "Mindre",
+    "majorOutage": "Större",
+    "criticalOutage": "Kritiskt",
     "degradedPerformance": "Försämrad prestanda",
     "partialOutage": "Delvis driftstopp",
     "underMaintenance": "Underhåll pågår",
@@ -19,7 +19,8 @@
     "menu": "Meny",
     "expandSidebar": "Expandera sidopanelen",
     "collapseSidebar": "Fäll ihop sidopanelen",
-    "monitors": "Övervakning"
+    "monitors": "Övervakning",
+    "incidents": "Incidenter"
   },
   "serviceCard": {
     "checkingStatus": "Kontrollerar status…",
@@ -39,6 +40,19 @@
     "noIncidents": "Inga incidenter rapporterade.",
     "updated": "uppdaterad",
     "lastUpdated": "Senast uppdaterad {{time}}"
+  },
+  "incidents": {
+    "title": "Incidenter",
+    "loading": "Läser in incidenter…",
+    "unreachable": "Det gick inte att läsa in incidenter.",
+    "notFound": "Incidenten hittades inte.",
+    "officialPage": "Visa officiell incidentsida",
+    "filter": {
+      "active": "Aktiv",
+      "monitoring": "Övervakning",
+      "resolved": "Löst",
+      "noMatches": "Inga incidenter matchar detta filter."
+    }
   },
   "addService": {
     "back": "← Tillbaka",
@@ -67,8 +81,10 @@
     "features": {
       "heading": "Billigare eftersom kostnaderna bakom kulisserna är lägre.",
       "subtitle": "Konkurrenternas priser täcker delvis telefon-/SMS-infrastruktur och sonder i flera regioner som vi inte underhåller på samma sätt.",
-      "speedTitle": "Kontroller så ofta som var 5:e sekund",
-      "speedBody": "Starter kontrollerar var 15:e sekund, Pro var 10:e sekund. UptimeRobots billigaste betalplan klarar bara 60 sekunder.",
+      "speedTitle": "Kontroller var 30:e sekund",
+      "speedBody": "Varje övervakad tjänst kontrolleras var 30:e sekund — UptimeRobots billigaste betalplan klarar bara 60 sekunder.",
+      "monitoringTitle": "Övervaka tjänster, se varje incident",
+      "monitoringBody": "Lägg till valfri tjänst och följ dess status i realtid. Klicka på en incident för att se hela tidslinjen, från utredning till löst.",
       "seatsTitle": "Obegränsat antal användare, i alla planer",
       "seatsBody": "UptimeRobot tar 15–19 $/mån per teammedlem utöver de tre första. Här ingår hela teamet.",
       "selfHostedTitle": "Egen värdtjänst, om du föredrar det",

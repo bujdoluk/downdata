@@ -1,9 +1,9 @@
 {
   "status": {
     "operational": "Operationeel",
-    "minorIssues": "Kleine problemen",
-    "majorOutage": "Grote storing",
-    "criticalOutage": "Kritieke storing",
+    "minorIssues": "Klein",
+    "majorOutage": "Groot",
+    "criticalOutage": "Kritiek",
     "degradedPerformance": "Verminderde prestaties",
     "partialOutage": "Gedeeltelijke storing",
     "underMaintenance": "In onderhoud",
@@ -19,7 +19,8 @@
     "menu": "Menu",
     "expandSidebar": "Zijbalk uitklappen",
     "collapseSidebar": "Zijbalk inklappen",
-    "monitors": "Monitoren"
+    "monitors": "Monitoren",
+    "incidents": "Incidenten"
   },
   "serviceCard": {
     "checkingStatus": "Status controleren…",
@@ -39,6 +40,19 @@
     "noIncidents": "Geen incidenten gemeld.",
     "updated": "bijgewerkt",
     "lastUpdated": "Laatst bijgewerkt {{time}}"
+  },
+  "incidents": {
+    "title": "Incidenten",
+    "loading": "Incidenten laden…",
+    "unreachable": "Kan incidenten niet laden.",
+    "notFound": "Incident niet gevonden.",
+    "officialPage": "Bekijk officiële incidentpagina",
+    "filter": {
+      "active": "Actief",
+      "monitoring": "Bewaking",
+      "resolved": "Opgelost",
+      "noMatches": "Geen incidenten komen overeen met dit filter."
+    }
   },
   "addService": {
     "back": "← Terug",
@@ -67,8 +81,10 @@
     "features": {
       "heading": "Goedkoper omdat de kosten achter de schermen lager zijn.",
       "subtitle": "De prijzen van concurrenten dekken deels telefoon-/sms-infrastructuur en multi-regio sondes die wij niet op dezelfde manier onderhouden.",
-      "speedTitle": "Controles tot wel elke 5 seconden",
-      "speedBody": "Starter controleert elke 15 s, Pro elke 10 s. Het goedkoopste betaalde plan van UptimeRobot komt maar tot 60 s.",
+      "speedTitle": "Controles elke 30 seconden",
+      "speedBody": "Elke gevolgde dienst wordt elke 30 seconden gecontroleerd — het goedkoopste betaalde plan van UptimeRobot komt maar tot 60 s.",
+      "monitoringTitle": "Volg diensten, bekijk elk incident",
+      "monitoringBody": "Voeg een willekeurige dienst toe en volg de status live. Klik op een incident voor de volledige tijdlijn, van onderzoek tot opgelost.",
       "seatsTitle": "Onbeperkt aantal gebruikers, bij elk plan",
       "seatsBody": "UptimeRobot rekent 15–19 $/maand per teamlid boven de eerste drie. Hier is het hele team inbegrepen.",
       "selfHostedTitle": "Self-hosted, als je dat liever hebt",

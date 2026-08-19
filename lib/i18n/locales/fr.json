@@ -1,9 +1,9 @@
 {
   "status": {
     "operational": "Opérationnel",
-    "minorIssues": "Problèmes mineurs",
-    "majorOutage": "Panne majeure",
-    "criticalOutage": "Panne critique",
+    "minorIssues": "Mineur",
+    "majorOutage": "Majeure",
+    "criticalOutage": "Critique",
     "degradedPerformance": "Performances dégradées",
     "partialOutage": "Panne partielle",
     "underMaintenance": "Maintenance en cours",
@@ -19,7 +19,8 @@
     "menu": "Menu",
     "expandSidebar": "Développer la barre latérale",
     "collapseSidebar": "Réduire la barre latérale",
-    "monitors": "Moniteurs"
+    "monitors": "Moniteurs",
+    "incidents": "Incidents"
   },
   "serviceCard": {
     "checkingStatus": "Vérification du statut…",
@@ -39,6 +40,19 @@
     "noIncidents": "Aucun incident signalé.",
     "updated": "mis à jour",
     "lastUpdated": "Dernière mise à jour {{time}}"
+  },
+  "incidents": {
+    "title": "Incidents",
+    "loading": "Chargement des incidents…",
+    "unreachable": "Impossible de charger les incidents.",
+    "notFound": "Incident introuvable.",
+    "officialPage": "Voir la page officielle de l'incident",
+    "filter": {
+      "active": "Actif",
+      "monitoring": "Surveillance",
+      "resolved": "Résolu",
+      "noMatches": "Aucun incident ne correspond à ce filtre."
+    }
   },
   "addService": {
     "back": "← Retour",
@@ -67,8 +81,10 @@
     "features": {
       "heading": "Moins cher, car les coûts en coulisses sont plus bas.",
       "subtitle": "Les tarifs de la concurrence financent en partie une infrastructure téléphonique/SMS et des sondes multi-régions que nous n'entretenons pas de la même façon.",
-      "speedTitle": "Vérifications jusqu'à toutes les 5 secondes",
-      "speedBody": "Starter vérifie toutes les 15 s, Pro toutes les 10 s. Le forfait payant le moins cher d'UptimeRobot ne descend qu'à 60 s.",
+      "speedTitle": "Vérifications toutes les 30 secondes",
+      "speedBody": "Chaque service surveillé est vérifié toutes les 30 secondes — le forfait payant le moins cher d'UptimeRobot ne descend qu'à 60 s.",
+      "monitoringTitle": "Surveillez vos services, suivez chaque incident",
+      "monitoringBody": "Ajoutez n'importe quel service et suivez son statut en temps réel. Cliquez sur un incident pour voir sa chronologie complète, de l'investigation à la résolution.",
       "seatsTitle": "Membres illimités, sur chaque forfait",
       "seatsBody": "UptimeRobot facture 15–19 $/mois par membre d'équipe au-delà des trois premiers. Ici, toute l'équipe est incluse.",
       "selfHostedTitle": "Auto-hébergé, si vous le souhaitez",

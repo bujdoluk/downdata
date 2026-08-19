@@ -57,7 +57,6 @@ export default function CatalogServiceGrid({
             isLoading={!isAddMode && !data && !fetchFailed}
             error={entryFailed}
             indicator={status && "status" in status ? status.status.indicator : undefined}
-            description={status && "status" in status ? status.status.description : undefined}
             outages24h={status && "status" in status ? status.outages24h : undefined}
             isMonitored={monitoredHosts.has(entry.host)}
             addState={

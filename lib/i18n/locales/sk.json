@@ -1,9 +1,9 @@
 {
   "status": {
     "operational": "Funguje",
-    "minorIssues": "Menšie problémy",
-    "majorOutage": "Väčší výpadok",
-    "criticalOutage": "Kritický výpadok",
+    "minorIssues": "Menšie",
+    "majorOutage": "Väčšie",
+    "criticalOutage": "Kritické",
     "degradedPerformance": "Znížený výkon",
     "partialOutage": "Čiastočný výpadok",
     "underMaintenance": "Prebieha údržba",
@@ -19,7 +19,8 @@
     "menu": "Ponuka",
     "expandSidebar": "Rozbaliť postranný panel",
     "collapseSidebar": "Zbaliť postranný panel",
-    "monitors": "Monitory"
+    "monitors": "Monitory",
+    "incidents": "Incidenty"
   },
   "serviceCard": {
     "checkingStatus": "Kontroluje sa stav…",
@@ -40,6 +41,19 @@
     "noIncidents": "Neboli hlásené žiadne incidenty.",
     "updated": "aktualizované",
     "lastUpdated": "Naposledy aktualizované {{time}}"
+  },
+  "incidents": {
+    "title": "Incidenty",
+    "loading": "Načítavajú sa incidenty…",
+    "unreachable": "Nepodarilo sa načítať incidenty.",
+    "notFound": "Incident sa nenašiel.",
+    "officialPage": "Zobraziť oficiálnu stránku incidentu",
+    "filter": {
+      "active": "Aktívne",
+      "monitoring": "Monitorovanie",
+      "resolved": "Vyriešené",
+      "noMatches": "Žiadne incidenty nezodpovedajú tomuto filtru."
+    }
   },
   "addService": {
     "back": "← Späť",
@@ -68,8 +82,10 @@
     "features": {
       "heading": "Lacnejšie, pretože náklady v pozadí sú nižšie.",
       "subtitle": "Ceny konkurencie čiastočne platia za telefónnu/SMS infraštruktúru a viacregionálne sondy, ktoré my nemáme v rovnakom rozsahu.",
-      "speedTitle": "Kontroly už za 5 sekúnd",
-      "speedBody": "Starter kontroluje každých 15 s, Pro každých 10 s. Najlacnejší platený plán UptimeRobot zvládne len 60 s.",
+      "speedTitle": "Kontroly každých 30 sekúnd",
+      "speedBody": "Každá sledovaná služba sa kontroluje každých 30 sekúnd — najlacnejší platený plán UptimeRobot zvládne len 60 s.",
+      "monitoringTitle": "Sledovanie služieb a detail incidentov",
+      "monitoringBody": "Pridajte ľubovoľnú službu a sledujte jej stav naživo. Kliknutím na incident zobrazíte celú časovú os — od vyšetrovania až po vyriešenie.",
       "seatsTitle": "Neobmedzený počet členov v každom pláne",
       "seatsBody": "UptimeRobot účtuje 15 – 19 USD/mesiac za každého ďalšieho člena nad rámec prvých troch. Tu je zahrnutý celý tím.",
       "selfHostedTitle": "Vlastný hosting, ak chcete",

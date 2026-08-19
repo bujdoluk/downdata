@@ -1,9 +1,9 @@
 {
   "status": {
-    "operational": "Działa poprawnie",
-    "minorIssues": "Drobne problemy",
-    "majorOutage": "Poważna awaria",
-    "criticalOutage": "Krytyczna awaria",
+    "operational": "Sprawny",
+    "minorIssues": "Drobne",
+    "majorOutage": "Poważne",
+    "criticalOutage": "Krytyczne",
     "degradedPerformance": "Obniżona wydajność",
     "partialOutage": "Częściowa awaria",
     "underMaintenance": "Trwa konserwacja",
@@ -19,7 +19,8 @@
     "menu": "Menu",
     "expandSidebar": "Rozwiń panel boczny",
     "collapseSidebar": "Zwiń panel boczny",
-    "monitors": "Monitory"
+    "monitors": "Monitory",
+    "incidents": "Incydenty"
   },
   "serviceCard": {
     "checkingStatus": "Sprawdzanie stanu…",
@@ -41,6 +42,19 @@
     "noIncidents": "Brak zgłoszonych incydentów.",
     "updated": "zaktualizowano",
     "lastUpdated": "Ostatnia aktualizacja {{time}}"
+  },
+  "incidents": {
+    "title": "Incydenty",
+    "loading": "Ładowanie incydentów…",
+    "unreachable": "Nie udało się załadować incydentów.",
+    "notFound": "Nie znaleziono incydentu.",
+    "officialPage": "Zobacz oficjalną stronę incydentu",
+    "filter": {
+      "active": "Aktywne",
+      "monitoring": "Monitorowanie",
+      "resolved": "Rozwiązane",
+      "noMatches": "Żaden incydent nie pasuje do tego filtra."
+    }
   },
   "addService": {
     "back": "← Wstecz",
@@ -69,8 +83,10 @@
     "features": {
       "heading": "Taniej, bo koszty w tle są mniejsze.",
       "subtitle": "Ceny konkurencji częściowo pokrywają infrastrukturę telefoniczną/SMS oraz sondy w wielu regionach, których my nie utrzymujemy w takim zakresie.",
-      "speedTitle": "Sprawdzanie nawet co 5 sekund",
-      "speedBody": "Starter sprawdza co 15 s, Pro co 10 s. Najtańszy płatny plan UptimeRobot oferuje tylko 60 s.",
+      "speedTitle": "Sprawdzanie co 30 sekund",
+      "speedBody": "Każda monitorowana usługa jest sprawdzana co 30 sekund — najtańszy płatny plan UptimeRobot oferuje tylko 60 s.",
+      "monitoringTitle": "Monitorowanie usług i szczegóły incydentów",
+      "monitoringBody": "Dodaj dowolną usługę i obserwuj jej status na żywo. Kliknij incydent, aby zobaczyć pełną oś czasu — od badania aż po rozwiązanie.",
       "seatsTitle": "Nielimitowana liczba użytkowników w każdym planie",
       "seatsBody": "UptimeRobot pobiera 15–19 USD/miesiąc za każdego kolejnego członka zespołu powyżej trzech. Tutaj cały zespół jest wliczony w cenę.",
       "selfHostedTitle": "Możliwość własnego hostingu",

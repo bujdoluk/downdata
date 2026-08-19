@@ -1,9 +1,9 @@
 {
   "status": {
     "operational": "Operational",
-    "minorIssues": "Minor issues",
-    "majorOutage": "Major outage",
-    "criticalOutage": "Critical outage",
+    "minorIssues": "Minor",
+    "majorOutage": "Major",
+    "criticalOutage": "Critical",
     "degradedPerformance": "Degraded performance",
     "partialOutage": "Partial outage",
     "underMaintenance": "Under maintenance",
@@ -19,7 +19,8 @@
     "menu": "Menu",
     "expandSidebar": "Expand sidebar",
     "collapseSidebar": "Collapse sidebar",
-    "monitors": "Monitors"
+    "monitors": "Monitors",
+    "incidents": "Incidents"
   },
   "serviceCard": {
     "checkingStatus": "Checking status…",
@@ -39,6 +40,19 @@
     "noIncidents": "No incidents reported.",
     "updated": "updated",
     "lastUpdated": "Last updated {{time}}"
+  },
+  "incidents": {
+    "title": "Incidents",
+    "loading": "Loading incidents…",
+    "unreachable": "Unable to load incidents.",
+    "notFound": "Incident not found.",
+    "officialPage": "View official incident page",
+    "filter": {
+      "active": "Active",
+      "monitoring": "Monitoring",
+      "resolved": "Resolved",
+      "noMatches": "No incidents match this filter."
+    }
   },
   "addService": {
     "back": "← Back",
@@ -67,8 +81,10 @@
     "features": {
       "heading": "Cheaper because the bill behind it is smaller.",
       "subtitle": "Competitor pricing partly pays for phone/SMS infrastructure and multi-region probe networks we don't carry the same way.",
-      "speedTitle": "Checks as fast as 5 seconds",
-      "speedBody": "Starter checks every 15s, Pro every 10s. UptimeRobot's cheapest paid plan only manages 60s.",
+      "speedTitle": "Checks every 30 seconds",
+      "speedBody": "Every tracked service is checked every 30 seconds — UptimeRobot's cheapest paid plan only manages 60s.",
+      "monitoringTitle": "Monitor services, see every incident",
+      "monitoringBody": "Add any service and watch its live status update in real time. Click into any incident to see its full timeline, from investigating to resolved.",
       "seatsTitle": "Unlimited seats, every plan",
       "seatsBody": "UptimeRobot charges $15–19/month per teammate past the first three. Here, the whole team is included.",
       "selfHostedTitle": "Self-hosted, if you want",

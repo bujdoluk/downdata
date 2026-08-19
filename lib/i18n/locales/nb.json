@@ -36,12 +36,12 @@
   },
   "serviceDetail": {
     "back": "← Tilbake",
+    "officialPage": "Vis offisiell statusside",
     "checkingStatus": "Sjekker status…",
     "unreachable": "Fikk ikke kontakt med status-API-et",
     "components": "Komponenter",
     "incidents": "Hendelser",
     "noIncidents": "Ingen hendelser rapportert.",
-    "updated": "oppdatert",
     "lastUpdated": "Sist oppdatert {{time}}"
   },
   "incidents": {
@@ -73,6 +73,7 @@
     "loading": "Laster planlagt vedlikehold…",
     "unreachable": "Kunne ikke laste planlagt vedlikehold.",
     "empty": "Ikke noe planlagt vedlikehold.",
+    "inProgress": "Pågår",
     "noMatches": "Ingen vedlikehold samsvarer med dette filteret.",
     "pin": "Fest",
     "unpin": "Løsne"

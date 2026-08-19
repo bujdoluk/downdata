@@ -36,12 +36,12 @@
   },
   "serviceDetail": {
     "back": "← Zurück",
+    "officialPage": "Offizielle Statusseite ansehen",
     "checkingStatus": "Status wird geprüft…",
     "unreachable": "Status-API nicht erreichbar",
     "components": "Komponenten",
     "incidents": "Vorfälle",
     "noIncidents": "Keine Vorfälle gemeldet.",
-    "updated": "aktualisiert",
     "lastUpdated": "Zuletzt aktualisiert {{time}}"
   },
   "incidents": {
@@ -73,6 +73,7 @@
     "loading": "Geplante Wartung wird geladen…",
     "unreachable": "Geplante Wartung konnte nicht geladen werden.",
     "empty": "Keine bevorstehende Wartung.",
+    "inProgress": "Läuft gerade",
     "noMatches": "Keine Wartung entspricht diesem Filter.",
     "pin": "Anheften",
     "unpin": "Lösen"

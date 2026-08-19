@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime } from "@/lib/formatTime";
@@ -11,22 +11,22 @@ import { ExternalLinkIcon, PinIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
 
-export default function MaintenancePageContent() {
+export default function MaintenancePageContent({ trackedServices }: { trackedServices: ServiceDefinition[] }) {
   const { t } = useTranslation();
   const { data, error } = usePolledFetch<{ maintenances: TrackedMaintenance[] }>("/api/maintenance");
   const { pinned, togglePin } = usePinned("pinnedMaintenance");
   const [serviceFilter, setServiceFilter] = useState<string>("all");
 
   const isLoading = !data && !error;
-  const maintenances = useMemo(() => data?.maintenances ?? [], [data]);
-  const services = useMemo(() => {
-    const map = new Map<string, ServiceDefinition>();
-    for (const maintenance of maintenances) map.set(maintenance.service.slug, maintenance.service);
-    return [...map.values()].sort((a, b) => a.name.localeCompare(b.name));
-  }, [maintenances]);
+  const maintenances = data?.maintenances ?? [];
+  const services = [...trackedServices].sort((a, b) => a.name.localeCompare(b.name));
   const filteredMaintenances = maintenances
     .filter((maintenance) => serviceFilter === "all" || maintenance.service.slug === serviceFilter)
-    .sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id)));
+    .sort((a, b) => {
+      const pinDiff = Number(pinned.has(b.id)) - Number(pinned.has(a.id));
+      if (pinDiff !== 0) return pinDiff;
+      return Number(b.status === "in_progress") - Number(a.status === "in_progress");
+    });
 
   return (
     <div className="w-full max-w-6xl self-start">
@@ -60,20 +60,30 @@ export default function MaintenancePageContent() {
             <ul className="mt-4 flex flex-col gap-3">
               {filteredMaintenances.map((maintenance) => {
                 const Logo = SERVICE_LOGOS[maintenance.service.slug] ?? FallbackLogo;
+                const isActive = maintenance.status === "in_progress";
                 return (
                   <li key={maintenance.id} className="relative">
                     <a
                       href={maintenance.shortlink}
                       target="_blank"
                       rel="noreferrer"
-                      className="card card-border bg-base-200 hover:border-base-content/20 relative flex w-full flex-row items-center gap-3 overflow-hidden p-4 shadow-md transition-colors"
+                      className={`card card-border bg-base-200 hover:border-base-content/20 relative flex w-full flex-row items-center gap-3 overflow-hidden p-4 shadow-md transition-colors ${
+                        isActive ? "border-warning" : ""
+                      }`}
                     >
                       <ExternalLinkIcon className="text-base-content/40 hover:text-base-content absolute top-3 right-3 h-4 w-4 transition-transform hover:scale-110" />
                       <Logo size={24} name={maintenance.service.name} />
                       <div className="min-w-0 flex-1">
                         <p className="text-base-content/50 text-xs">{maintenance.service.name}</p>
                         <p className="text-base-content truncate text-sm font-medium">{maintenance.name}</p>
-                        <p className="text-base-content/50 text-xs">{maintenance.status}</p>
+                        {isActive ? (
+                          <span className="badge badge-warning badge-xs mt-1 gap-1.5">
+                            <span className="bg-warning-content text-warning-content animate-pulse-ring h-1.5 w-1.5 rounded-full" />
+                            {t("maintenance.inProgress")}
+                          </span>
+                        ) : (
+                          <p className="text-base-content/50 text-xs">{maintenance.status}</p>
+                        )}
                       </div>
                       <p className="text-base-content/50 self-end text-xs whitespace-nowrap">
                         {formatDateTime(maintenance.scheduled_for)} – {formatDateTime(maintenance.scheduled_until)}

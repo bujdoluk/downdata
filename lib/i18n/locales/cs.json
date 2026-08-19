@@ -37,12 +37,12 @@
   },
   "serviceDetail": {
     "back": "← Zpět",
+    "officialPage": "Zobrazit oficiální stránku stavu",
     "checkingStatus": "Kontroluje se stav…",
     "unreachable": "Stavové API není dostupné",
     "components": "Komponenty",
     "incidents": "Incidenty",
     "noIncidents": "Nebyly hlášeny žádné incidenty.",
-    "updated": "aktualizováno",
     "lastUpdated": "Naposledy aktualizováno {{time}}"
   },
   "incidents": {
@@ -74,6 +74,7 @@
     "loading": "Načítá se plánovaná údržba…",
     "unreachable": "Nepodařilo se načíst plánovanou údržbu.",
     "empty": "Žádná nadcházející údržba.",
+    "inProgress": "Probíhá",
     "noMatches": "Žádná údržba neodpovídá tomuto filtru.",
     "pin": "Připnout",
     "unpin": "Odepnout"

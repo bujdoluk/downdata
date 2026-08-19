@@ -36,12 +36,12 @@
   },
   "serviceDetail": {
     "back": "← Back",
+    "officialPage": "View official status page",
     "checkingStatus": "Checking status…",
     "unreachable": "Unable to reach status API",
     "components": "Components",
     "incidents": "Incidents",
     "noIncidents": "No incidents reported.",
-    "updated": "updated",
     "lastUpdated": "Last updated {{time}}"
   },
   "incidents": {
@@ -73,6 +73,7 @@
     "loading": "Loading scheduled maintenance…",
     "unreachable": "Unable to load scheduled maintenance.",
     "empty": "No upcoming maintenance.",
+    "inProgress": "In progress",
     "noMatches": "No maintenance matches this filter.",
     "pin": "Pin",
     "unpin": "Unpin"

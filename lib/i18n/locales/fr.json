@@ -36,12 +36,12 @@
   },
   "serviceDetail": {
     "back": "← Retour",
+    "officialPage": "Voir la page de statut officielle",
     "checkingStatus": "Vérification du statut…",
     "unreachable": "Impossible d'accéder à l'API de statut",
     "components": "Composants",
     "incidents": "Incidents",
     "noIncidents": "Aucun incident signalé.",
-    "updated": "mis à jour",
     "lastUpdated": "Dernière mise à jour {{time}}"
   },
   "incidents": {
@@ -73,6 +73,7 @@
     "loading": "Chargement de la maintenance planifiée…",
     "unreachable": "Impossible de charger la maintenance planifiée.",
     "empty": "Aucune maintenance à venir.",
+    "inProgress": "En cours",
     "noMatches": "Aucune maintenance ne correspond à ce filtre.",
     "pin": "Épingler",
     "unpin": "Désépingler"

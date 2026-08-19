@@ -36,12 +36,12 @@
   },
   "serviceDetail": {
     "back": "← Volver",
+    "officialPage": "Ver página oficial de estado",
     "checkingStatus": "Comprobando el estado…",
     "unreachable": "No se pudo acceder a la API de estado",
     "components": "Componentes",
     "incidents": "Incidentes",
     "noIncidents": "No se han notificado incidentes.",
-    "updated": "actualizado",
     "lastUpdated": "Última actualización {{time}}"
   },
   "incidents": {
@@ -73,6 +73,7 @@
     "loading": "Cargando mantenimiento programado…",
     "unreachable": "No se pudo cargar el mantenimiento programado.",
     "empty": "No hay mantenimiento próximo.",
+    "inProgress": "En curso",
     "noMatches": "Ningún mantenimiento coincide con este filtro.",
     "pin": "Fijar",
     "unpin": "Dejar de fijar"

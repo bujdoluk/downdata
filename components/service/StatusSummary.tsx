@@ -21,11 +21,8 @@ export default function StatusSummary({
         const style = INDICATOR_STYLES[key] ?? FALLBACK_STYLE;
         return (
           <div key={key} className="stat py-3">
-            <div className="stat-title flex items-center gap-1.5 text-xs">
-              <span className={`h-2 w-2 shrink-0 rounded-full ${style.dot}`} aria-hidden="true" />
-              {t(style.labelKey)}
-            </div>
-            <div className={`stat-value text-2xl ${isLoading ? "text-base-content/20 animate-pulse" : style.text}`}>
+            <div className="stat-title text-xs">{t(style.labelKey)}</div>
+            <div className={`stat-value text-4xl ${isLoading ? "text-base-content/20 animate-pulse" : style.text}`}>
               {isLoading ? "–" : counts[key]}
             </div>
           </div>

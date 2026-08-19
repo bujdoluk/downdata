@@ -36,12 +36,12 @@
   },
   "serviceDetail": {
     "back": "← Terug",
+    "officialPage": "Bekijk officiële statuspagina",
     "checkingStatus": "Status controleren…",
     "unreachable": "Status-API niet bereikbaar",
     "components": "Onderdelen",
     "incidents": "Incidenten",
     "noIncidents": "Geen incidenten gemeld.",
-    "updated": "bijgewerkt",
     "lastUpdated": "Laatst bijgewerkt {{time}}"
   },
   "incidents": {
@@ -73,6 +73,7 @@
     "loading": "Gepland onderhoud laden…",
     "unreachable": "Kan gepland onderhoud niet laden.",
     "empty": "Geen aankomend onderhoud.",
+    "inProgress": "Bezig",
     "noMatches": "Geen onderhoud komt overeen met dit filter.",
     "pin": "Vastzetten",
     "unpin": "Losmaken"

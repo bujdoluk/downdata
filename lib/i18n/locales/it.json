@@ -36,12 +36,12 @@
   },
   "serviceDetail": {
     "back": "← Indietro",
+    "officialPage": "Visualizza la pagina di stato ufficiale",
     "checkingStatus": "Controllo dello stato…",
     "unreachable": "API di stato non raggiungibile",
     "components": "Componenti",
     "incidents": "Incidenti",
     "noIncidents": "Nessun incidente segnalato.",
-    "updated": "aggiornato",
     "lastUpdated": "Ultimo aggiornamento {{time}}"
   },
   "incidents": {
@@ -73,6 +73,7 @@
     "loading": "Caricamento della manutenzione programmata…",
     "unreachable": "Impossibile caricare la manutenzione programmata.",
     "empty": "Nessuna manutenzione imminente.",
+    "inProgress": "In corso",
     "noMatches": "Nessuna manutenzione corrisponde a questo filtro.",
     "pin": "Fissa",
     "unpin": "Rimuovi fissaggio"

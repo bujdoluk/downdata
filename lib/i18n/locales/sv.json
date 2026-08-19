@@ -36,12 +36,12 @@
   },
   "serviceDetail": {
     "back": "← Tillbaka",
+    "officialPage": "Visa officiell statussida",
     "checkingStatus": "Kontrollerar status…",
     "unreachable": "Status-API kunde inte nås",
     "components": "Komponenter",
     "incidents": "Incidenter",
     "noIncidents": "Inga incidenter rapporterade.",
-    "updated": "uppdaterad",
     "lastUpdated": "Senast uppdaterad {{time}}"
   },
   "incidents": {
@@ -73,6 +73,7 @@
     "loading": "Läser in planerat underhåll…",
     "unreachable": "Det gick inte att läsa in planerat underhåll.",
     "empty": "Inget kommande underhåll.",
+    "inProgress": "Pågår",
     "noMatches": "Inget underhåll matchar detta filter.",
     "pin": "Fäst",
     "unpin": "Lossa"

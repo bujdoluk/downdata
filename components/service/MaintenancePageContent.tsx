@@ -10,6 +10,7 @@ import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { ExternalLinkIcon, PinIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
+import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
 
 export default function MaintenancePageContent({ trackedServices }: { trackedServices: ServiceDefinition[] }) {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ export default function MaintenancePageContent({ trackedServices }: { trackedSer
     .sort((a, b) => {
       const pinDiff = Number(pinned.has(b.id)) - Number(pinned.has(a.id));
       if (pinDiff !== 0) return pinDiff;
-      return Number(b.status === "in_progress") - Number(a.status === "in_progress");
+      return Number(isInProgressMaintenance(b)) - Number(isInProgressMaintenance(a));
     });
 
   return (
@@ -60,7 +61,7 @@ export default function MaintenancePageContent({ trackedServices }: { trackedSer
             <ul className="mt-4 flex flex-col gap-3">
               {filteredMaintenances.map((maintenance) => {
                 const Logo = SERVICE_LOGOS[maintenance.service.slug] ?? FallbackLogo;
-                const isActive = maintenance.status === "in_progress";
+                const isActive = isInProgressMaintenance(maintenance);
                 return (
                   <li key={maintenance.id} className="relative">
                     <a

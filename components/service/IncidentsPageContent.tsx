@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, msSince } from "@/lib/formatTime";
+import { isActiveIncident } from "@/lib/isActiveIncident";
 import type { ServiceDefinition, TrackedIncident } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
@@ -26,7 +27,7 @@ const PAGE_SIZE = 25;
 
 function matchesStatus(incident: TrackedIncident, filter: StatusFilter): boolean {
   if (filter === "all") return true;
-  if (filter === "active") return incident.status !== "monitoring" && incident.status !== "resolved";
+  if (filter === "active") return isActiveIncident(incident);
   return incident.status === filter;
 }
 

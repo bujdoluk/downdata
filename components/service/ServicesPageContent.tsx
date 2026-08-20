@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { CatalogEntry } from "@/types/service";
 import { useCatalogStatus } from "@/lib/useCatalogStatus";
+import { notifyServicesChanged } from "@/lib/servicesChanged";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 import AddServiceButton from "@/components/service/AddServiceButton";
 import NoServicesMessage from "@/components/service/NoServicesMessage";
@@ -41,6 +42,7 @@ export default function ServicesPageContent({
     try {
       const res = await fetch(`/api/services/${entry.slug}`, { method: "DELETE" });
       if (res.ok) {
+        notifyServicesChanged();
         router.refresh();
       } else {
         setRemovingSlug(null);

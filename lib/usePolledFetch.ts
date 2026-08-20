@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { onServicesChanged } from "@/lib/servicesChanged";
 
 const POLL_INTERVAL_MS = 30_000;
 
@@ -27,9 +28,11 @@ export function usePolledFetch<T>(url: string) {
 
     poll();
     const id = setInterval(poll, POLL_INTERVAL_MS);
+    const unsubscribe = onServicesChanged(poll);
     return () => {
       cancelled = true;
       clearInterval(id);
+      unsubscribe();
     };
   }, [url]);
 

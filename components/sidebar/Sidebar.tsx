@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
@@ -8,6 +8,10 @@ import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
 import { GearIcon, GridIcon, ActivityIcon, AlertIcon, WrenchIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
+import { usePolledFetch } from "@/lib/usePolledFetch";
+import { isActiveIncident } from "@/lib/isActiveIncident";
+import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
+import type { TrackedIncident, TrackedMaintenance } from "@/types/service";
 
 function ChevronIcon({ className, collapsed }: { className?: string; collapsed: boolean }) {
   return (
@@ -35,6 +39,16 @@ export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const settingsRef = useRef<HTMLDetailsElement>(null);
   const preferencesRef = useRef<HTMLDialogElement>(null);
+  const { data: incidentsData } = usePolledFetch<{ incidents: TrackedIncident[] }>("/api/incidents");
+  const activeIncidentCount = useMemo(
+    () => incidentsData?.incidents.filter(isActiveIncident).length ?? 0,
+    [incidentsData],
+  );
+  const { data: maintenanceData } = usePolledFetch<{ maintenances: TrackedMaintenance[] }>("/api/maintenance");
+  const inProgressMaintenanceCount = useMemo(
+    () => maintenanceData?.maintenances.filter(isInProgressMaintenance).length ?? 0,
+    [maintenanceData],
+  );
 
   useCloseDetailsOnOutsideClick(settingsRef);
 
@@ -73,8 +87,20 @@ export default function Sidebar() {
     >
       <div className={`flex ${collapsed ? "flex-col items-center gap-4" : "flex-col gap-3"}`}>
         <SidebarNavLink href="/" icon={<GridIcon className="shrink-0" />} label={t("nav.services")} collapsed={collapsed} />
-        <SidebarNavLink href="/incidents" icon={<AlertIcon className="shrink-0" />} label={t("nav.incidents")} collapsed={collapsed} />
-        <SidebarNavLink href="/maintenance" icon={<WrenchIcon className="shrink-0" />} label={t("nav.maintenance")} collapsed={collapsed} />
+        <SidebarNavLink
+          href="/incidents"
+          icon={<AlertIcon className="shrink-0" />}
+          label={t("nav.incidents")}
+          collapsed={collapsed}
+          badge={activeIncidentCount}
+        />
+        <SidebarNavLink
+          href="/maintenance"
+          icon={<WrenchIcon className="shrink-0" />}
+          label={t("nav.maintenance")}
+          collapsed={collapsed}
+          badge={inProgressMaintenanceCount}
+        />
         <SidebarNavLink href="/monitors" icon={<ActivityIcon className="shrink-0" />} label={t("nav.monitors")} collapsed={collapsed} />
       </div>
 

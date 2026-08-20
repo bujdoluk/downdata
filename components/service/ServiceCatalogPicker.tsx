@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { CatalogCategory, CatalogEntry } from "@/types/service";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
+import { notifyServicesChanged } from "@/lib/servicesChanged";
 
 const CATEGORY_ORDER: CatalogCategory[] = ["infrastructure", "devtools", "database", "communication", "ai"];
 
@@ -53,6 +54,7 @@ export default function ServiceCatalogPicker({
 
       setAddedHosts((prev) => new Set(prev).add(entry.host));
       setPendingHost(null);
+      notifyServicesChanged();
       router.refresh();
     } catch {
       setError(t("addService.somethingWrong"));

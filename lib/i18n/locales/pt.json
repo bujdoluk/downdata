@@ -21,7 +21,11 @@
     "collapseSidebar": "Recolher barra lateral",
     "monitors": "Monitores",
     "incidents": "Incidentes",
-    "maintenance": "Manutenção"
+    "maintenance": "Manutenção",
+    "settings": "Definições",
+    "preferences": "Preferências",
+    "theme": "Tema",
+    "close": "Fechar"
   },
   "serviceCard": {
     "checkingStatus": "A verificar o estado…",

@@ -21,7 +21,11 @@
     "collapseSidebar": "Свернуть боковую панель",
     "monitors": "Мониторы",
     "incidents": "Инциденты",
-    "maintenance": "Обслуживание"
+    "maintenance": "Обслуживание",
+    "settings": "Настройки",
+    "preferences": "Параметры",
+    "theme": "Тема",
+    "close": "Закрыть"
   },
   "serviceCard": {
     "checkingStatus": "Проверка статуса…",

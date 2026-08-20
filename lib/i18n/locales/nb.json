@@ -21,7 +21,11 @@
     "collapseSidebar": "Skjul sidepanelet",
     "monitors": "Overvåking",
     "incidents": "Hendelser",
-    "maintenance": "Vedlikehold"
+    "maintenance": "Vedlikehold",
+    "settings": "Innstillinger",
+    "preferences": "Preferanser",
+    "theme": "Tema",
+    "close": "Lukk"
   },
   "serviceCard": {
     "checkingStatus": "Sjekker status…",

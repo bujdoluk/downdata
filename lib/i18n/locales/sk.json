@@ -21,7 +21,11 @@
     "collapseSidebar": "Zbaliť postranný panel",
     "monitors": "Monitory",
     "incidents": "Incidenty",
-    "maintenance": "Údržba"
+    "maintenance": "Údržba",
+    "settings": "Nastavenia",
+    "preferences": "Predvoľby",
+    "theme": "Motív",
+    "close": "Zavrieť"
   },
   "serviceCard": {
     "checkingStatus": "Kontroluje sa stav…",

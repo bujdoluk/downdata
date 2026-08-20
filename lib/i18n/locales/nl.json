@@ -21,7 +21,11 @@
     "collapseSidebar": "Zijbalk inklappen",
     "monitors": "Monitoren",
     "incidents": "Incidenten",
-    "maintenance": "Onderhoud"
+    "maintenance": "Onderhoud",
+    "settings": "Instellingen",
+    "preferences": "Voorkeuren",
+    "theme": "Thema",
+    "close": "Sluiten"
   },
   "serviceCard": {
     "checkingStatus": "Status controleren…",

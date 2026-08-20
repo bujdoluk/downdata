@@ -21,7 +21,11 @@
     "collapseSidebar": "Collapse sidebar",
     "monitors": "Monitors",
     "incidents": "Incidents",
-    "maintenance": "Maintenance"
+    "maintenance": "Maintenance",
+    "settings": "Settings",
+    "preferences": "Preferences",
+    "theme": "Theme",
+    "close": "Close"
   },
   "serviceCard": {
     "checkingStatus": "Checking status…",

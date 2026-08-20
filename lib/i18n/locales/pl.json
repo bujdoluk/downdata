@@ -21,7 +21,11 @@
     "collapseSidebar": "Zwiń panel boczny",
     "monitors": "Monitory",
     "incidents": "Incydenty",
-    "maintenance": "Konserwacja"
+    "maintenance": "Konserwacja",
+    "settings": "Ustawienia",
+    "preferences": "Preferencje",
+    "theme": "Motyw",
+    "close": "Zamknij"
   },
   "serviceCard": {
     "checkingStatus": "Sprawdzanie stanu…",

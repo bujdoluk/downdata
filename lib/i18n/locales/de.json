@@ -21,7 +21,11 @@
     "collapseSidebar": "Seitenleiste einklappen",
     "monitors": "Monitore",
     "incidents": "Vorfälle",
-    "maintenance": "Wartung"
+    "maintenance": "Wartung",
+    "settings": "Einstellungen",
+    "preferences": "Präferenzen",
+    "theme": "Design",
+    "close": "Schließen"
   },
   "serviceCard": {
     "checkingStatus": "Status wird geprüft…",

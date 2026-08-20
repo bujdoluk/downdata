@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
-import { GearIcon, ActivityIcon, AlertIcon, WrenchIcon } from "@/components/icons/NavIcons";
+import { GearIcon, GridIcon, ActivityIcon, AlertIcon, WrenchIcon } from "@/components/icons/NavIcons";
+import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 
 function ChevronIcon({ className, collapsed }: { className?: string; collapsed: boolean }) {
   return (
@@ -27,13 +28,20 @@ function ChevronIcon({ className, collapsed }: { className?: string; collapsed: 
   );
 }
 
-// Bumped to v2 so anyone with a stale "collapsed" value saved from earlier
-// testing resets to the open-by-default state; still persists going forward.
 const STORAGE_KEY = "sidebarCollapsed:v2";
 
 export default function Sidebar() {
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(false);
+  const settingsRef = useRef<HTMLDetailsElement>(null);
+  const preferencesRef = useRef<HTMLDialogElement>(null);
+
+  useCloseDetailsOnOutsideClick(settingsRef);
+
+  function openPreferences() {
+    if (settingsRef.current) settingsRef.current.open = false;
+    preferencesRef.current?.showModal();
+  }
 
   useEffect(() => {
     try {
@@ -64,16 +72,61 @@ export default function Sidebar() {
       }`}
     >
       <div className={`flex ${collapsed ? "flex-col items-center gap-4" : "flex-col gap-3"}`}>
-        <SidebarNavLink href="/" icon={<GearIcon className="shrink-0" />} label={t("nav.services")} collapsed={collapsed} />
+        <SidebarNavLink href="/" icon={<GridIcon className="shrink-0" />} label={t("nav.services")} collapsed={collapsed} />
         <SidebarNavLink href="/incidents" icon={<AlertIcon className="shrink-0" />} label={t("nav.incidents")} collapsed={collapsed} />
         <SidebarNavLink href="/maintenance" icon={<WrenchIcon className="shrink-0" />} label={t("nav.maintenance")} collapsed={collapsed} />
         <SidebarNavLink href="/monitors" icon={<ActivityIcon className="shrink-0" />} label={t("nav.monitors")} collapsed={collapsed} />
       </div>
 
-      <div className="mt-auto flex flex-col items-center gap-2">
-        <LanguageSwitcher dropdownClassName="dropdown-start dropdown-top" />
-        <ThemeToggle />
+      <div className={`mt-auto flex ${collapsed ? "flex-col items-center" : "flex-col"}`}>
+        <details ref={settingsRef} className="dropdown dropdown-top dropdown-start w-full">
+          <summary
+            title={t("nav.settings")}
+            className={`flex cursor-pointer list-none items-center text-sm font-semibold tracking-wide uppercase text-base-content/40 transition-colors hover:text-base-content/70 ${
+              collapsed ? "justify-center" : "w-full justify-start gap-2"
+            }`}
+          >
+            <GearIcon className="shrink-0" />
+            {!collapsed && t("nav.settings")}
+          </summary>
+          <ul className="dropdown-content menu menu-sm z-30 mt-2 w-40 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl">
+            <li>
+              <button type="button" onClick={openPreferences}>
+                {t("nav.preferences")}
+              </button>
+            </li>
+          </ul>
+        </details>
       </div>
+
+      <dialog ref={preferencesRef} className="modal">
+        <div className="modal-box">
+          <h3 className="text-lg font-bold">{t("nav.preferences")}</h3>
+
+          <div className="mt-4">
+            <h4 className="text-xs font-semibold tracking-wide text-base-content/60 uppercase">{t("nav.theme")}</h4>
+            <div className="mt-2">
+              <ThemeToggle />
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <h4 className="text-xs font-semibold tracking-wide text-base-content/60 uppercase">{t("nav.language")}</h4>
+            <div className="mt-2">
+              <LanguageSwitcher inline />
+            </div>
+          </div>
+
+          <div className="modal-action">
+            <form method="dialog">
+              <button className="btn btn-sm">{t("nav.close")}</button>
+            </form>
+          </div>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>{t("nav.close")}</button>
+        </form>
+      </dialog>
 
       <button
         type="button"

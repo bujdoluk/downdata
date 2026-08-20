@@ -21,7 +21,11 @@
     "collapseSidebar": "Fäll ihop sidopanelen",
     "monitors": "Övervakning",
     "incidents": "Incidenter",
-    "maintenance": "Underhåll"
+    "maintenance": "Underhåll",
+    "settings": "Inställningar",
+    "preferences": "Inställningsalternativ",
+    "theme": "Tema",
+    "close": "Stäng"
   },
   "serviceCard": {
     "checkingStatus": "Kontrollerar status…",

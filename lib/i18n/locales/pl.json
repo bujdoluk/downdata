@@ -16,12 +16,12 @@
     "noServicesFound": "Nie znaleziono usług.",
     "toggleTheme": "Przełącz motyw",
     "language": "Język",
-    "menu": "Menu",
     "expandSidebar": "Rozwiń panel boczny",
     "collapseSidebar": "Zwiń panel boczny",
     "monitors": "Monitory",
     "incidents": "Incydenty",
     "maintenances": "Konserwacje",
+    "integrations": "Integracje",
     "settings": "Ustawienia",
     "preferences": "Preferencje",
     "theme": "Motyw",
@@ -88,6 +88,16 @@
     "noMatches": "Żadne konserwacje nie pasują do tego filtra.",
     "pin": "Przypnij",
     "unpin": "Odepnij"
+  },
+  "integrations": {
+    "title": "Integracje",
+    "subtitle": "Wysyłaj aktualizacje stanu na kanał, który Twój zespół już obserwuje.",
+    "connect": "Połącz",
+    "connected": "Połączono",
+    "disconnect": "Rozłącz",
+    "disconnecting": "Rozłączanie…",
+    "options": "Więcej opcji",
+    "somethingWrong": "Coś poszło nie tak."
   },
   "addService": {
     "back": "← Wstecz",

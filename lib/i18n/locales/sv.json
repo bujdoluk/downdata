@@ -16,12 +16,12 @@
     "noServicesFound": "Inga tjänster hittades.",
     "toggleTheme": "Växla tema",
     "language": "Språk",
-    "menu": "Meny",
     "expandSidebar": "Expandera sidopanelen",
     "collapseSidebar": "Fäll ihop sidopanelen",
     "monitors": "Övervakning",
     "incidents": "Incidenter",
     "maintenances": "Underhåll",
+    "integrations": "Integrationer",
     "settings": "Inställningar",
     "preferences": "Inställningsalternativ",
     "theme": "Tema",
@@ -86,6 +86,16 @@
     "noMatches": "Inget underhåll matchar detta filter.",
     "pin": "Fäst",
     "unpin": "Lossa"
+  },
+  "integrations": {
+    "title": "Integrationer",
+    "subtitle": "Skicka statusuppdateringar till en kanal som ditt team redan bevakar.",
+    "connect": "Anslut",
+    "connected": "Ansluten",
+    "disconnect": "Koppla från",
+    "disconnecting": "Kopplar från…",
+    "options": "Fler alternativ",
+    "somethingWrong": "Något gick fel."
   },
   "addService": {
     "back": "← Tillbaka",

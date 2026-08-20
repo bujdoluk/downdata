@@ -121,6 +121,28 @@ export function PinIcon({ className, filled }: { className?: string; filled?: bo
   );
 }
 
+export function PlugIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={20}
+      height={20}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M12 22v-5" />
+      <path d="M9 8V2" />
+      <path d="M15 8V2" />
+      <path d="M18 8a4 4 0 0 1-1.17 2.83l-1.66 1.66a4 4 0 0 0-1.17 2.83V17H9.98v-1.68a4 4 0 0 0-1.17-2.83l-1.66-1.66A4 4 0 0 1 6 8Z" />
+    </svg>
+  );
+}
+
 export function ActivityIcon({ className }: { className?: string }) {
   return (
     <svg

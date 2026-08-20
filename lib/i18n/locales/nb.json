@@ -16,12 +16,12 @@
     "noServicesFound": "Ingen tjenester funnet.",
     "toggleTheme": "Bytt tema",
     "language": "Språk",
-    "menu": "Meny",
     "expandSidebar": "Utvid sidepanelet",
     "collapseSidebar": "Skjul sidepanelet",
     "monitors": "Overvåking",
     "incidents": "Hendelser",
     "maintenances": "Vedlikehold",
+    "integrations": "Integrasjoner",
     "settings": "Innstillinger",
     "preferences": "Preferanser",
     "theme": "Tema",
@@ -86,6 +86,16 @@
     "noMatches": "Ingen vedlikehold samsvarer med dette filteret.",
     "pin": "Fest",
     "unpin": "Løsne"
+  },
+  "integrations": {
+    "title": "Integrasjoner",
+    "subtitle": "Send statusoppdateringer til en kanal teamet ditt allerede følger med på.",
+    "connect": "Koble til",
+    "connected": "Tilkoblet",
+    "disconnect": "Koble fra",
+    "disconnecting": "Kobler fra…",
+    "options": "Flere valg",
+    "somethingWrong": "Noe gikk galt."
   },
   "addService": {
     "back": "← Tilbake",

@@ -16,12 +16,12 @@
     "noServicesFound": "No services found.",
     "toggleTheme": "Toggle theme",
     "language": "Language",
-    "menu": "Menu",
     "expandSidebar": "Expand sidebar",
     "collapseSidebar": "Collapse sidebar",
     "monitors": "Monitors",
     "incidents": "Incidents",
     "maintenances": "Maintenances",
+    "integrations": "Integrations",
     "settings": "Settings",
     "preferences": "Preferences",
     "theme": "Theme",
@@ -86,6 +86,16 @@
     "noMatches": "No maintenances match this filter.",
     "pin": "Pin",
     "unpin": "Unpin"
+  },
+  "integrations": {
+    "title": "Integrations",
+    "subtitle": "Send status updates to a channel your team already watches.",
+    "connect": "Connect",
+    "connected": "Connected",
+    "disconnect": "Disconnect",
+    "disconnecting": "Disconnecting…",
+    "options": "More options",
+    "somethingWrong": "Something went wrong."
   },
   "addService": {
     "back": "← Back",

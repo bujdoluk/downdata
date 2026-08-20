@@ -16,12 +16,12 @@
     "noServicesFound": "Keine Dienste gefunden.",
     "toggleTheme": "Design umschalten",
     "language": "Sprache",
-    "menu": "Menü",
     "expandSidebar": "Seitenleiste einblenden",
     "collapseSidebar": "Seitenleiste einklappen",
     "monitors": "Monitore",
     "incidents": "Vorfälle",
     "maintenances": "Wartungen",
+    "integrations": "Integrationen",
     "settings": "Einstellungen",
     "preferences": "Präferenzen",
     "theme": "Design",
@@ -86,6 +86,16 @@
     "noMatches": "Keine Wartungen entsprechen diesem Filter.",
     "pin": "Anheften",
     "unpin": "Lösen"
+  },
+  "integrations": {
+    "title": "Integrationen",
+    "subtitle": "Sende Statusupdates an einen Kanal, den dein Team bereits nutzt.",
+    "connect": "Verbinden",
+    "connected": "Verbunden",
+    "disconnect": "Trennen",
+    "disconnecting": "Wird getrennt…",
+    "options": "Weitere Optionen",
+    "somethingWrong": "Etwas ist schiefgelaufen."
   },
   "addService": {
     "back": "← Zurück",

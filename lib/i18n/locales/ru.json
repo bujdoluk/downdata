@@ -16,12 +16,12 @@
     "noServicesFound": "Сервисы не найдены.",
     "toggleTheme": "Сменить тему",
     "language": "Язык",
-    "menu": "Меню",
     "expandSidebar": "Развернуть боковую панель",
     "collapseSidebar": "Свернуть боковую панель",
     "monitors": "Мониторы",
     "incidents": "Инциденты",
     "maintenances": "Обслуживания",
+    "integrations": "Интеграции",
     "settings": "Настройки",
     "preferences": "Параметры",
     "theme": "Тема",
@@ -88,6 +88,16 @@
     "noMatches": "Нет обслуживаний, соответствующих этому фильтру.",
     "pin": "Закрепить",
     "unpin": "Открепить"
+  },
+  "integrations": {
+    "title": "Интеграции",
+    "subtitle": "Отправляйте обновления статуса в канал, который уже отслеживает ваша команда.",
+    "connect": "Подключить",
+    "connected": "Подключено",
+    "disconnect": "Отключить",
+    "disconnecting": "Отключение…",
+    "options": "Дополнительные параметры",
+    "somethingWrong": "Что-то пошло не так."
   },
   "addService": {
     "back": "← Назад",

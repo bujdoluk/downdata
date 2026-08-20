@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
+import Logo from "@/components/navbar/Logo";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
-import { GearIcon, GridIcon, ActivityIcon, AlertIcon, WrenchIcon } from "@/components/icons/NavIcons";
+import { GearIcon, GridIcon, ActivityIcon, AlertIcon, WrenchIcon, PlugIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { isActiveIncident } from "@/lib/isActiveIncident";
@@ -81,11 +83,23 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`border-base-content/10 bg-[var(--color-sidebar)] sticky top-16 relative hidden h-[calc(100vh-4rem)] shrink-0 flex-col border-r transition-[width] duration-200 md:flex ${
-        collapsed ? "w-20 items-center py-3" : "w-60 p-4"
+      className={`border-base-content/10 bg-[var(--color-sidebar)] sticky top-0 relative flex h-screen w-20 shrink-0 flex-col items-center border-r py-3 transition-[width] duration-200 ${
+        collapsed ? "md:w-20 md:items-center md:py-3" : "md:w-60 md:items-stretch md:p-4"
       }`}
     >
-      <div className={`flex ${collapsed ? "flex-col items-center gap-4" : "flex-col gap-3"}`}>
+      <Link
+        href="/"
+        className={`mb-4 flex w-full items-center justify-center gap-2 md:mb-6 ${collapsed ? "" : "md:justify-start"}`}
+      >
+        <Logo className="h-6 w-6 shrink-0" />
+        {!collapsed && (
+          <span className="hidden text-base font-semibold tracking-tight text-base-content md:inline">
+            <span className="text-primary">down</span>DATA
+          </span>
+        )}
+      </Link>
+
+      <div className={`flex w-full flex-col items-center gap-4 ${collapsed ? "" : "md:items-stretch md:gap-3"}`}>
         <SidebarNavLink href="/" icon={<GridIcon className="shrink-0" />} label={t("nav.services")} collapsed={collapsed} />
         <SidebarNavLink
           href="/incidents"
@@ -102,18 +116,19 @@ export default function Sidebar() {
           badge={inProgressMaintenanceCount}
         />
         <SidebarNavLink href="/monitors" icon={<ActivityIcon className="shrink-0" />} label={t("nav.monitors")} collapsed={collapsed} />
+        <SidebarNavLink href="/integrations" icon={<PlugIcon className="shrink-0" />} label={t("nav.integrations")} collapsed={collapsed} />
       </div>
 
-      <div className={`mt-auto flex ${collapsed ? "flex-col items-center" : "flex-col"}`}>
+      <div className="mt-auto flex w-full flex-col">
         <details ref={settingsRef} className="dropdown dropdown-top dropdown-start w-full">
           <summary
             title={t("nav.settings")}
-            className={`flex cursor-pointer list-none items-center text-sm font-semibold tracking-wide uppercase text-base-content/40 transition-colors hover:text-base-content/70 ${
-              collapsed ? "justify-center" : "w-full justify-start gap-2"
+            className={`flex cursor-pointer list-none items-center justify-center gap-2 text-sm font-semibold tracking-wide uppercase text-base-content/40 transition-colors hover:text-base-content/70 ${
+              collapsed ? "" : "md:justify-start"
             }`}
           >
             <GearIcon className="shrink-0" />
-            {!collapsed && t("nav.settings")}
+            {!collapsed && <span className="hidden md:inline">{t("nav.settings")}</span>}
           </summary>
           <ul className="dropdown-content menu menu-sm z-30 mt-2 w-40 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl">
             <li>
@@ -159,7 +174,7 @@ export default function Sidebar() {
         onClick={toggle}
         aria-label={collapsed ? t("nav.expandSidebar") : t("nav.collapseSidebar")}
         title={collapsed ? t("nav.expandSidebar") : t("nav.collapseSidebar")}
-        className="btn btn-circle btn-sm border-base-content/10 bg-base-100 absolute top-1/2 -right-4 z-10 -translate-y-1/2 border shadow-md"
+        className="btn btn-circle btn-sm border-base-content/10 bg-base-100 absolute top-1/2 -right-4 z-10 hidden -translate-y-1/2 border shadow-md md:flex"
       >
         <ChevronIcon collapsed={collapsed} />
       </button>

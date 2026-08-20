@@ -16,12 +16,12 @@
     "noServicesFound": "Nenhum serviço encontrado.",
     "toggleTheme": "Alternar tema",
     "language": "Idioma",
-    "menu": "Menu",
     "expandSidebar": "Expandir barra lateral",
     "collapseSidebar": "Recolher barra lateral",
     "monitors": "Monitores",
     "incidents": "Incidentes",
     "maintenances": "Manutenções",
+    "integrations": "Integrações",
     "settings": "Definições",
     "preferences": "Preferências",
     "theme": "Tema",
@@ -86,6 +86,16 @@
     "noMatches": "Nenhumas manutenções correspondem a este filtro.",
     "pin": "Fixar",
     "unpin": "Desafixar"
+  },
+  "integrations": {
+    "title": "Integrações",
+    "subtitle": "Envie atualizações de estado para um canal que a sua equipa já acompanha.",
+    "connect": "Ligar",
+    "connected": "Ligado",
+    "disconnect": "Desligar",
+    "disconnecting": "A desligar…",
+    "options": "Mais opções",
+    "somethingWrong": "Algo correu mal."
   },
   "addService": {
     "back": "← Voltar",

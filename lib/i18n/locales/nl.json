@@ -16,12 +16,12 @@
     "noServicesFound": "Geen diensten gevonden.",
     "toggleTheme": "Thema wisselen",
     "language": "Taal",
-    "menu": "Menu",
     "expandSidebar": "Zijbalk uitklappen",
     "collapseSidebar": "Zijbalk inklappen",
     "monitors": "Monitoren",
     "incidents": "Incidenten",
     "maintenances": "Onderhoud",
+    "integrations": "Integraties",
     "settings": "Instellingen",
     "preferences": "Voorkeuren",
     "theme": "Thema",
@@ -86,6 +86,16 @@
     "noMatches": "Geen onderhoud komt overeen met dit filter.",
     "pin": "Vastzetten",
     "unpin": "Losmaken"
+  },
+  "integrations": {
+    "title": "Integraties",
+    "subtitle": "Stuur statusupdates naar een kanaal dat je team al in de gaten houdt.",
+    "connect": "Verbinden",
+    "connected": "Verbonden",
+    "disconnect": "Verbinding verbreken",
+    "disconnecting": "Verbinding verbreken…",
+    "options": "Meer opties",
+    "somethingWrong": "Er is iets misgegaan."
   },
   "addService": {
     "back": "← Terug",

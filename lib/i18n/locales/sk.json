@@ -16,12 +16,12 @@
     "noServicesFound": "Nenašli sa žiadne služby.",
     "toggleTheme": "Prepnúť motív",
     "language": "Jazyk",
-    "menu": "Ponuka",
     "expandSidebar": "Rozbaliť postranný panel",
     "collapseSidebar": "Zbaliť postranný panel",
     "monitors": "Monitory",
     "incidents": "Incidenty",
     "maintenances": "Údržby",
+    "integrations": "Integrácie",
     "settings": "Nastavenia",
     "preferences": "Predvoľby",
     "theme": "Motív",
@@ -87,6 +87,16 @@
     "noMatches": "Žiadne údržby nezodpovedajú tomuto filtru.",
     "pin": "Pripnúť",
     "unpin": "Odopnúť"
+  },
+  "integrations": {
+    "title": "Integrácie",
+    "subtitle": "Posielajte stavové aktualizácie do kanála, ktorý už váš tím sleduje.",
+    "connect": "Pripojiť",
+    "connected": "Pripojené",
+    "disconnect": "Odpojiť",
+    "disconnecting": "Odpája sa…",
+    "options": "Ďalšie možnosti",
+    "somethingWrong": "Niečo sa pokazilo."
   },
   "addService": {
     "back": "← Späť",

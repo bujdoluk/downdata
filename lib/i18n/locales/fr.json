@@ -16,12 +16,12 @@
     "noServicesFound": "Aucun service trouvé.",
     "toggleTheme": "Changer de thème",
     "language": "Langue",
-    "menu": "Menu",
     "expandSidebar": "Développer la barre latérale",
     "collapseSidebar": "Réduire la barre latérale",
     "monitors": "Moniteurs",
     "incidents": "Incidents",
     "maintenances": "Maintenances",
+    "integrations": "Intégrations",
     "settings": "Paramètres",
     "preferences": "Préférences",
     "theme": "Thème",
@@ -86,6 +86,16 @@
     "noMatches": "Aucune des maintenances ne correspond à ce filtre.",
     "pin": "Épingler",
     "unpin": "Désépingler"
+  },
+  "integrations": {
+    "title": "Intégrations",
+    "subtitle": "Envoyez les mises à jour de statut vers un canal déjà suivi par votre équipe.",
+    "connect": "Connecter",
+    "connected": "Connecté",
+    "disconnect": "Déconnecter",
+    "disconnecting": "Déconnexion…",
+    "options": "Plus d'options",
+    "somethingWrong": "Une erreur s'est produite."
   },
   "addService": {
     "back": "← Retour",

@@ -16,12 +16,12 @@
     "noServicesFound": "Nessun servizio trovato.",
     "toggleTheme": "Cambia tema",
     "language": "Lingua",
-    "menu": "Menu",
     "expandSidebar": "Espandi barra laterale",
     "collapseSidebar": "Comprimi barra laterale",
     "monitors": "Monitor",
     "incidents": "Incidenti",
     "maintenances": "Manutenzioni",
+    "integrations": "Integrazioni",
     "settings": "Impostazioni",
     "preferences": "Preferenze",
     "theme": "Tema",
@@ -86,6 +86,16 @@
     "noMatches": "Nessuna delle manutenzioni corrisponde a questo filtro.",
     "pin": "Fissa",
     "unpin": "Rimuovi fissaggio"
+  },
+  "integrations": {
+    "title": "Integrazioni",
+    "subtitle": "Invia aggiornamenti di stato a un canale già seguito dal tuo team.",
+    "connect": "Connetti",
+    "connected": "Connesso",
+    "disconnect": "Disconnetti",
+    "disconnecting": "Disconnessione…",
+    "options": "Altre opzioni",
+    "somethingWrong": "Qualcosa è andato storto."
   },
   "addService": {
     "back": "← Indietro",

@@ -27,16 +27,17 @@ export default function SidebarNavLink({
       href={href}
       onClick={onNavigate}
       title={label}
-      className={`flex items-center text-sm font-semibold tracking-wide uppercase transition-colors ${
-        collapsed ? "justify-center" : "w-full justify-start gap-2"
+      className={`flex items-center justify-center gap-2 text-sm font-semibold tracking-wide uppercase transition-colors ${
+        collapsed ? "" : "md:w-full md:justify-start"
       } ${isActive ? "text-base-content" : "text-base-content/40 hover:text-base-content/70"}`}
     >
       {icon}
+      {/* Below md the sidebar is always icon-only — there's no separate mobile nav anymore. */}
       {!collapsed && (
-        <>
+        <span className="hidden items-center gap-2 md:inline-flex">
           {label}
           {!!badge && <span className="badge badge-info badge-sm">{badge}</span>}
-        </>
+        </span>
       )}
     </Link>
   );

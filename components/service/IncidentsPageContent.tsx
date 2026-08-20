@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, msSince } from "@/lib/formatTime";
-import { isActiveIncident } from "@/lib/isActiveIncident";
 import type { ServiceDefinition, TrackedIncident } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
@@ -14,7 +13,7 @@ import { ExternalLinkIcon, PinIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
 
-type StatusFilter = "all" | "active" | "monitoring" | "resolved";
+type StatusFilter = "all" | "investigating" | "identified" | "monitoring" | "resolved" | "postmortem";
 type TimeRange = "all" | "24h" | "7d" | "30d";
 
 const RANGE_MS: Record<Exclude<TimeRange, "all">, number> = {
@@ -26,9 +25,7 @@ const RANGE_MS: Record<Exclude<TimeRange, "all">, number> = {
 const PAGE_SIZE = 25;
 
 function matchesStatus(incident: TrackedIncident, filter: StatusFilter): boolean {
-  if (filter === "all") return true;
-  if (filter === "active") return isActiveIncident(incident);
-  return incident.status === filter;
+  return filter === "all" || incident.status === filter;
 }
 
 export default function IncidentsPageContent() {
@@ -124,14 +121,20 @@ export default function IncidentsPageContent() {
               <option value="all">
                 {t("incidents.filter.allStatuses")} ({countForStatus("all")})
               </option>
-              <option value="active">
-                {t("incidents.filter.active")} ({countForStatus("active")})
+              <option value="investigating">
+                {t("incidents.filter.investigating")} ({countForStatus("investigating")})
+              </option>
+              <option value="identified">
+                {t("incidents.filter.identified")} ({countForStatus("identified")})
               </option>
               <option value="monitoring">
                 {t("incidents.filter.monitoring")} ({countForStatus("monitoring")})
               </option>
               <option value="resolved">
                 {t("incidents.filter.resolved")} ({countForStatus("resolved")})
+              </option>
+              <option value="postmortem">
+                {t("incidents.filter.postmortem")} ({countForStatus("postmortem")})
               </option>
             </select>
             <input className="btn btn-square btn-sm" type="reset" value="×" />

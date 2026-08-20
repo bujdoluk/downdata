@@ -9,10 +9,7 @@ import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import { usePolledFetch } from "@/lib/usePolledFetch";
-
-function stripHtml(body: string): string {
-  return body.replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]*>/g, "");
-}
+import { stripHtml } from "@/lib/stripHtml";
 
 export default function IncidentDetail({ id }: { id: string }) {
   const { t } = useTranslation();

@@ -110,7 +110,16 @@
     "selectService": "Välj en tjänst…",
     "loading": "Läser in historik…",
     "unreachable": "Det gick inte att läsa in incidenthistoriken.",
-    "empty": "Inga incidenter de senaste 12 månaderna."
+    "empty": "Inga incidenter de senaste 12 månaderna.",
+    "summary": {
+      "incidents_one": "{{count}} incident",
+      "incidents_other": "{{count}} incidenter",
+      "daysAffected_one": "{{count}} dag med en incident",
+      "daysAffected_other": "{{count}} dagar med en incident",
+      "avgResolution": "Genomsnittlig lösningstid: {{hours}} tim"
+    },
+    "resolutionTime": "Löst på {{hours}} tim",
+    "stillOngoing": "Fortfarande pågående"
   },
   "addService": {
     "back": "← Tillbaka",

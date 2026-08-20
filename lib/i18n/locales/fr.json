@@ -110,7 +110,16 @@
     "selectService": "Sélectionner un service…",
     "loading": "Chargement de l'historique…",
     "unreachable": "Impossible de charger l'historique des incidents.",
-    "empty": "Aucun incident au cours des 12 derniers mois."
+    "empty": "Aucun incident au cours des 12 derniers mois.",
+    "summary": {
+      "incidents_one": "{{count}} incident",
+      "incidents_other": "{{count}} incidents",
+      "daysAffected_one": "{{count}} jour avec un incident",
+      "daysAffected_other": "{{count}} jours avec un incident",
+      "avgResolution": "Temps moyen de résolution : {{hours}} h"
+    },
+    "resolutionTime": "Résolu en {{hours}} h",
+    "stillOngoing": "Toujours en cours"
   },
   "addService": {
     "back": "← Retour",

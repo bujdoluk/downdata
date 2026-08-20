@@ -110,7 +110,16 @@
     "selectService": "Selecciona un servicio…",
     "loading": "Cargando historial…",
     "unreachable": "No se pudo cargar el historial de incidentes.",
-    "empty": "No hay incidentes en los últimos 12 meses."
+    "empty": "No hay incidentes en los últimos 12 meses.",
+    "summary": {
+      "incidents_one": "{{count}} incidente",
+      "incidents_other": "{{count}} incidentes",
+      "daysAffected_one": "{{count}} día con un incidente",
+      "daysAffected_other": "{{count}} días con un incidente",
+      "avgResolution": "Tiempo medio de resolución: {{hours}} h"
+    },
+    "resolutionTime": "Resuelto en {{hours}} h",
+    "stillOngoing": "Aún en curso"
   },
   "addService": {
     "back": "← Atrás",

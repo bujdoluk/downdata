@@ -111,7 +111,18 @@
     "selectService": "Vyberte službu…",
     "loading": "Načítava sa história…",
     "unreachable": "Nepodarilo sa načítať históriu incidentov.",
-    "empty": "Žiadne incidenty za posledných 12 mesiacov."
+    "empty": "Žiadne incidenty za posledných 12 mesiacov.",
+    "summary": {
+      "incidents_one": "{{count}} incident",
+      "incidents_few": "{{count}} incidenty",
+      "incidents_other": "{{count}} incidentov",
+      "daysAffected_one": "{{count}} deň s incidentom",
+      "daysAffected_few": "{{count}} dni s incidentom",
+      "daysAffected_other": "{{count}} dní s incidentom",
+      "avgResolution": "Priemerný čas riešenia: {{hours}} h"
+    },
+    "resolutionTime": "Vyriešené za {{hours}} h",
+    "stillOngoing": "Stále trvá"
   },
   "addService": {
     "back": "← Späť",

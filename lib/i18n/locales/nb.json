@@ -110,7 +110,16 @@
     "selectService": "Velg en tjeneste…",
     "loading": "Laster historikk…",
     "unreachable": "Kunne ikke laste hendelseshistorikken.",
-    "empty": "Ingen hendelser de siste 12 månedene."
+    "empty": "Ingen hendelser de siste 12 månedene.",
+    "summary": {
+      "incidents_one": "{{count}} hendelse",
+      "incidents_other": "{{count}} hendelser",
+      "daysAffected_one": "{{count}} dag med en hendelse",
+      "daysAffected_other": "{{count}} dager med en hendelse",
+      "avgResolution": "Gjennomsnittlig løsningstid: {{hours}} t"
+    },
+    "resolutionTime": "Løst på {{hours}} t",
+    "stillOngoing": "Fortsatt pågående"
   },
   "addService": {
     "back": "← Tilbake",

@@ -1,10 +1,20 @@
+import { Temporal } from "temporal-polyfill";
 import { formatDate } from "@/lib/formatTime";
 import { INDICATOR_STYLES } from "@/components/service/statusStyles";
 import type { IncidentCalendarData } from "@/lib/buildIncidentCalendar";
 
 const EMPTY_DAY_COLOR = "bg-base-content/10";
+const TODAY = Temporal.Now.plainDateISO().toString();
 
-export default function IncidentCalendar({ calendar }: { calendar: IncidentCalendarData }) {
+export default function IncidentCalendar({
+  calendar,
+  selectedDate,
+  onSelectDay,
+}: {
+  calendar: IncidentCalendarData;
+  selectedDate: string | null;
+  onSelectDay: (date: string) => void;
+}) {
   const { weeks, days, monthLabels } = calendar;
 
   return (
@@ -24,16 +34,22 @@ export default function IncidentCalendar({ calendar }: { calendar: IncidentCalen
 
       {days.map((day) => {
         const color = day.impact ? (INDICATOR_STYLES[day.impact]?.dot ?? EMPTY_DAY_COLOR) : EMPTY_DAY_COLOR;
+        const hasIncidents = day.incidents.length > 0;
 
         return (
           <div key={day.date} className="tooltip w-full" style={{ gridColumn: day.week + 1, gridRow: day.dow + 2 }}>
             <div className="tooltip-content max-w-56">
-              {day.incidents.length > 0 && (
-                <div className="text-left">{day.incidents.map((incident) => incident.name).join("; ")}</div>
-              )}
+              {hasIncidents && <div className="text-left">{day.incidents.map((incident) => incident.name).join("; ")}</div>}
               <div className="text-right">{formatDate(day.date)}</div>
             </div>
-            <div className={`aspect-square w-full rounded-sm ${color}`} />
+            <button
+              type="button"
+              disabled={!hasIncidents}
+              onClick={() => onSelectDay(day.date)}
+              className={`aspect-square w-full rounded-sm ${color} ${hasIncidents ? "cursor-pointer" : "cursor-default"} ${
+                day.date === selectedDate ? "ring-primary ring-2" : ""
+              } ${day.date === TODAY ? "outline-base-content/40 outline-2 outline-offset-1" : ""}`}
+            />
           </div>
         );
       })}

@@ -110,7 +110,16 @@
     "selectService": "Seleziona un servizio…",
     "loading": "Caricamento della cronologia…",
     "unreachable": "Impossibile caricare la cronologia degli incidenti.",
-    "empty": "Nessun incidente negli ultimi 12 mesi."
+    "empty": "Nessun incidente negli ultimi 12 mesi.",
+    "summary": {
+      "incidents_one": "{{count}} incidente",
+      "incidents_other": "{{count}} incidenti",
+      "daysAffected_one": "{{count}} giorno con un incidente",
+      "daysAffected_other": "{{count}} giorni con un incidente",
+      "avgResolution": "Tempo medio di risoluzione: {{hours}} h"
+    },
+    "resolutionTime": "Risolto in {{hours}} h",
+    "stillOngoing": "Ancora in corso"
   },
   "addService": {
     "back": "← Indietro",

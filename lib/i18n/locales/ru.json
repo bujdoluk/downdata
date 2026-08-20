@@ -112,7 +112,20 @@
     "selectService": "Выберите сервис…",
     "loading": "Загрузка истории…",
     "unreachable": "Не удалось загрузить историю инцидентов.",
-    "empty": "Нет инцидентов за последние 12 месяцев."
+    "empty": "Нет инцидентов за последние 12 месяцев.",
+    "summary": {
+      "incidents_one": "{{count}} инцидент",
+      "incidents_few": "{{count}} инцидента",
+      "incidents_many": "{{count}} инцидентов",
+      "incidents_other": "{{count}} инцидента",
+      "daysAffected_one": "{{count}} день с инцидентом",
+      "daysAffected_few": "{{count}} дня с инцидентом",
+      "daysAffected_many": "{{count}} дней с инцидентом",
+      "daysAffected_other": "{{count}} дня с инцидентом",
+      "avgResolution": "Среднее время решения: {{hours}} ч"
+    },
+    "resolutionTime": "Решено за {{hours}} ч",
+    "stillOngoing": "Всё ещё продолжается"
   },
   "addService": {
     "back": "← Назад",

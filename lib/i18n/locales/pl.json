@@ -112,7 +112,20 @@
     "selectService": "Wybierz usługę…",
     "loading": "Ładowanie historii…",
     "unreachable": "Nie udało się załadować historii incydentów.",
-    "empty": "Brak incydentów w ciągu ostatnich 12 miesięcy."
+    "empty": "Brak incydentów w ciągu ostatnich 12 miesięcy.",
+    "summary": {
+      "incidents_one": "{{count}} incydent",
+      "incidents_few": "{{count}} incydenty",
+      "incidents_many": "{{count}} incydentów",
+      "incidents_other": "{{count}} incydentów",
+      "daysAffected_one": "{{count}} dzień z incydentem",
+      "daysAffected_few": "{{count}} dni z incydentem",
+      "daysAffected_many": "{{count}} dni z incydentem",
+      "daysAffected_other": "{{count}} dni z incydentem",
+      "avgResolution": "Średni czas rozwiązania: {{hours}} godz."
+    },
+    "resolutionTime": "Rozwiązano w {{hours}} godz.",
+    "stillOngoing": "Nadal trwa"
   },
   "addService": {
     "back": "← Wstecz",

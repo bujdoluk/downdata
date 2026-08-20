@@ -110,7 +110,16 @@
     "selectService": "Selecteer een dienst…",
     "loading": "Geschiedenis laden…",
     "unreachable": "Kan de incidentgeschiedenis niet laden.",
-    "empty": "Geen incidenten in de afgelopen 12 maanden."
+    "empty": "Geen incidenten in de afgelopen 12 maanden.",
+    "summary": {
+      "incidents_one": "{{count}} incident",
+      "incidents_other": "{{count}} incidenten",
+      "daysAffected_one": "{{count}} dag met een incident",
+      "daysAffected_other": "{{count}} dagen met een incident",
+      "avgResolution": "Gemiddelde oplostijd: {{hours}} u"
+    },
+    "resolutionTime": "Opgelost in {{hours}} u",
+    "stillOngoing": "Nog gaande"
   },
   "addService": {
     "back": "← Terug",

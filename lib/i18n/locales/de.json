@@ -110,7 +110,16 @@
     "selectService": "Dienst auswählen…",
     "loading": "Verlauf wird geladen…",
     "unreachable": "Vorfallverlauf konnte nicht geladen werden.",
-    "empty": "Keine Vorfälle in den letzten 12 Monaten."
+    "empty": "Keine Vorfälle in den letzten 12 Monaten.",
+    "summary": {
+      "incidents_one": "{{count}} Vorfall",
+      "incidents_other": "{{count}} Vorfälle",
+      "daysAffected_one": "{{count}} Tag mit einem Vorfall",
+      "daysAffected_other": "{{count}} Tage mit einem Vorfall",
+      "avgResolution": "Mittlere Lösungszeit: {{hours}} Std."
+    },
+    "resolutionTime": "Gelöst in {{hours}} Std.",
+    "stillOngoing": "Noch andauernd"
   },
   "addService": {
     "back": "← Zurück",

@@ -55,6 +55,7 @@
     "unreachable": "Kan incidenten niet laden.",
     "notFound": "Incident niet gevonden.",
     "officialPage": "Bekijk officiële incidentpagina",
+    "officialPageLabel": "Officiële pagina:",
     "pin": "Vastzetten",
     "unpin": "Losmaken",
     "filter": {

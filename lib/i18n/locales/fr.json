@@ -55,6 +55,7 @@
     "unreachable": "Impossible de charger les incidents.",
     "notFound": "Incident introuvable.",
     "officialPage": "Voir la page officielle de l'incident",
+    "officialPageLabel": "Page officielle :",
     "pin": "Épingler",
     "unpin": "Désépingler",
     "filter": {

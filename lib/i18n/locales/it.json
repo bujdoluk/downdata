@@ -55,6 +55,7 @@
     "unreachable": "Impossibile caricare gli incidenti.",
     "notFound": "Incidente non trovato.",
     "officialPage": "Visualizza la pagina ufficiale dell'incidente",
+    "officialPageLabel": "Pagina ufficiale:",
     "pin": "Fissa",
     "unpin": "Rimuovi fissaggio",
     "filter": {

@@ -56,6 +56,7 @@
     "unreachable": "Nepodarilo sa načítať incidenty.",
     "notFound": "Incident sa nenašiel.",
     "officialPage": "Zobraziť oficiálnu stránku incidentu",
+    "officialPageLabel": "Oficiálna stránka:",
     "pin": "Pripnúť",
     "unpin": "Odopnúť",
     "filter": {

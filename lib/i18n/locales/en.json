@@ -55,6 +55,7 @@
     "unreachable": "Unable to load incidents.",
     "notFound": "Incident not found.",
     "officialPage": "View official incident page",
+    "officialPageLabel": "Official page:",
     "pin": "Pin",
     "unpin": "Unpin",
     "filter": {

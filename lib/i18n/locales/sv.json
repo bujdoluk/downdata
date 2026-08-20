@@ -55,6 +55,7 @@
     "unreachable": "Det gick inte att läsa in incidenter.",
     "notFound": "Incidenten hittades inte.",
     "officialPage": "Visa officiell incidentsida",
+    "officialPageLabel": "Officiell sida:",
     "pin": "Fäst",
     "unpin": "Lossa",
     "filter": {

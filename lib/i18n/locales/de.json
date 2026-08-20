@@ -55,6 +55,7 @@
     "unreachable": "Vorfälle konnten nicht geladen werden.",
     "notFound": "Vorfall nicht gefunden.",
     "officialPage": "Offizielle Vorfallseite ansehen",
+    "officialPageLabel": "Offizielle Seite:",
     "pin": "Anheften",
     "unpin": "Lösen",
     "filter": {

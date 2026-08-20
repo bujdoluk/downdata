@@ -8,7 +8,6 @@ import type { TrackedIncident } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
-import { ExternalLinkIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 
 function stripHtml(body: string): string {
@@ -54,19 +53,14 @@ export default function IncidentDetail({ id }: { id: string }) {
             {backLink}
             <Logo size={36} name={incident.service.name} />
             <div>
-              <h1 className="flex items-center gap-2 text-xl font-semibold">
-                {incident.name}
-                <a
-                  href={incident.shortlink}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={t("incidents.officialPage")}
-                  className="text-base-content/40 hover:text-base-content transition-transform hover:scale-110 active:scale-90 shrink-0"
-                >
-                  <ExternalLinkIcon className="h-4 w-4" />
-                </a>
-              </h1>
               <p className="text-base-content/50 text-xs">{incident.service.name}</p>
+              <h1 className="text-xl font-semibold">{incident.name}</h1>
+              <p className="text-base-content/40 text-xs">
+                {t("incidents.officialPageLabel")}{" "}
+                <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
+                  {incident.shortlink}
+                </a>
+              </p>
             </div>
             <span className={`badge ml-auto ${impactStyle.badge} text-white`}>{t(impactStyle.labelKey)}</span>
           </div>

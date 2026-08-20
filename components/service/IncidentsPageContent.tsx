@@ -9,7 +9,7 @@ import type { ServiceDefinition, TrackedIncident } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
-import { ExternalLinkIcon, PinIcon } from "@/components/icons/NavIcons";
+import { PinIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
 
@@ -153,24 +153,15 @@ export default function IncidentsPageContent() {
                     key={incident.id}
                     className="card card-border bg-base-200 hover:border-base-content/20 relative flex w-full flex-row items-stretch overflow-hidden shadow-md transition-colors"
                   >
-                    <div className="absolute top-3 right-7 z-10 flex items-center gap-2">
+                    <div className="absolute top-3 right-4 z-10 flex items-center gap-2">
                       <button
                         type="button"
                         onClick={() => togglePin(incident.id)}
                         aria-label={t(pinned.has(incident.id) ? "incidents.unpin" : "incidents.pin")}
                         className="text-base-content/40 hover:text-base-content transition-transform hover:scale-110 active:scale-90"
                       >
-                        <PinIcon className="h-4 w-4" filled={pinned.has(incident.id)} />
+                        <PinIcon className="h-4 w-8" filled={pinned.has(incident.id)} />
                       </button>
-                      <a
-                        href={incident.shortlink}
-                        target="_blank"
-                        rel="noreferrer"
-                        aria-label={t("incidents.officialPage")}
-                        className="text-base-content/40 hover:text-base-content transition-transform hover:scale-110 active:scale-90"
-                      >
-                        <ExternalLinkIcon className="h-4 w-4" />
-                      </a>
                     </div>
                     <Link href={`/incidents/${incident.id}`} className="flex min-w-0 flex-1 items-center gap-3 p-4">
                       <Logo size={24} name={incident.service.name} />

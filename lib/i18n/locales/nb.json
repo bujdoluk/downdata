@@ -55,6 +55,7 @@
     "unreachable": "Kunne ikke laste inn hendelser.",
     "notFound": "Fant ikke hendelsen.",
     "officialPage": "Vis offisiell hendelsesside",
+    "officialPageLabel": "Offisiell side:",
     "pin": "Fest",
     "unpin": "Løsne",
     "filter": {

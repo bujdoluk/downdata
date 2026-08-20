@@ -57,6 +57,7 @@
     "unreachable": "Nie udało się załadować incydentów.",
     "notFound": "Nie znaleziono incydentu.",
     "officialPage": "Zobacz oficjalną stronę incydentu",
+    "officialPageLabel": "Oficjalna strona:",
     "pin": "Przypnij",
     "unpin": "Odepnij",
     "filter": {

@@ -21,7 +21,7 @@
     "collapseSidebar": "Recolher barra lateral",
     "monitors": "Monitores",
     "incidents": "Incidentes",
-    "maintenance": "Manutenção",
+    "maintenances": "Manutenções",
     "settings": "Definições",
     "preferences": "Preferências",
     "theme": "Tema",
@@ -77,13 +77,13 @@
       "page": "Página {{page}} de {{totalPages}}"
     }
   },
-  "maintenance": {
-    "title": "Manutenção",
-    "loading": "A carregar manutenção agendada…",
-    "unreachable": "Não foi possível carregar a manutenção agendada.",
-    "empty": "Sem manutenção agendada futura.",
+  "maintenances": {
+    "title": "Manutenções",
+    "loading": "A carregar manutenções agendadas…",
+    "unreachable": "Não foi possível carregar as manutenções agendadas.",
+    "empty": "Sem manutenções futuras agendadas.",
     "inProgress": "Em curso",
-    "noMatches": "Nenhuma manutenção corresponde a este filtro.",
+    "noMatches": "Nenhumas manutenções correspondem a este filtro.",
     "pin": "Fixar",
     "unpin": "Desafixar"
   },

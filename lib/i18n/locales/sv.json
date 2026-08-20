@@ -21,7 +21,7 @@
     "collapseSidebar": "Fäll ihop sidopanelen",
     "monitors": "Övervakning",
     "incidents": "Incidenter",
-    "maintenance": "Underhåll",
+    "maintenances": "Underhåll",
     "settings": "Inställningar",
     "preferences": "Inställningsalternativ",
     "theme": "Tema",
@@ -77,7 +77,7 @@
       "page": "Sida {{page}} av {{totalPages}}"
     }
   },
-  "maintenance": {
+  "maintenances": {
     "title": "Underhåll",
     "loading": "Läser in planerat underhåll…",
     "unreachable": "Det gick inte att läsa in planerat underhåll.",

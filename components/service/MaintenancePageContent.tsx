@@ -31,14 +31,14 @@ export default function MaintenancePageContent({ trackedServices }: { trackedSer
 
   return (
     <div className="w-full max-w-6xl self-start">
-      <h1 className="text-xl font-semibold text-base-content">{t("maintenance.title")}</h1>
+      <h1 className="text-xl font-semibold text-base-content">{t("maintenances.title")}</h1>
 
       {isLoading ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("maintenance.loading")}</p>
+        <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.loading")}</p>
       ) : error ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("maintenance.unreachable")}</p>
+        <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.unreachable")}</p>
       ) : maintenances.length === 0 ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("maintenance.empty")}</p>
+        <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.empty")}</p>
       ) : (
         <>
           <select
@@ -56,7 +56,7 @@ export default function MaintenancePageContent({ trackedServices }: { trackedSer
           </select>
 
           {filteredMaintenances.length === 0 ? (
-            <p className="text-base-content/50 mt-4 text-sm">{t("maintenance.noMatches")}</p>
+            <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.noMatches")}</p>
           ) : (
             <ul className="mt-4 flex flex-col gap-3">
               {filteredMaintenances.map((maintenance) => {
@@ -80,7 +80,7 @@ export default function MaintenancePageContent({ trackedServices }: { trackedSer
                         {isActive ? (
                           <span className="badge badge-warning badge-xs mt-1 gap-1.5">
                             <span className="bg-warning-content text-warning-content animate-pulse-ring h-1.5 w-1.5 rounded-full" />
-                            {t("maintenance.inProgress")}
+                            {t("maintenances.inProgress")}
                           </span>
                         ) : (
                           <p className="text-base-content/50 text-xs">{maintenance.status}</p>
@@ -93,7 +93,7 @@ export default function MaintenancePageContent({ trackedServices }: { trackedSer
                     <button
                       type="button"
                       onClick={() => togglePin(maintenance.id)}
-                      aria-label={t(pinned.has(maintenance.id) ? "maintenance.unpin" : "maintenance.pin")}
+                      aria-label={t(pinned.has(maintenance.id) ? "maintenances.unpin" : "maintenances.pin")}
                       className="text-base-content/40 hover:text-base-content absolute top-3 right-9 z-10 transition-transform hover:scale-110 active:scale-90"
                     >
                       <PinIcon className="h-4 w-4" filled={pinned.has(maintenance.id)} />

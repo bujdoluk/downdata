@@ -21,7 +21,7 @@
     "collapseSidebar": "Skjul sidepanelet",
     "monitors": "Overvåking",
     "incidents": "Hendelser",
-    "maintenance": "Vedlikehold",
+    "maintenances": "Vedlikehold",
     "settings": "Innstillinger",
     "preferences": "Preferanser",
     "theme": "Tema",
@@ -77,7 +77,7 @@
       "page": "Side {{page}} av {{totalPages}}"
     }
   },
-  "maintenance": {
+  "maintenances": {
     "title": "Vedlikehold",
     "loading": "Laster planlagt vedlikehold…",
     "unreachable": "Kunne ikke laste planlagt vedlikehold.",

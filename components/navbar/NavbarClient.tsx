@@ -81,7 +81,7 @@ export default function NavbarClient() {
                   <SidebarNavLink
                     href="/maintenance"
                     icon={<WrenchIcon className="shrink-0" />}
-                    label={t("nav.maintenance")}
+                    label={t("nav.maintenances")}
                     onNavigate={closeMenu}
                   />
                 </li>

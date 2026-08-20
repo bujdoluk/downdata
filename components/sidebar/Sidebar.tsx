@@ -97,7 +97,7 @@ export default function Sidebar() {
         <SidebarNavLink
           href="/maintenance"
           icon={<WrenchIcon className="shrink-0" />}
-          label={t("nav.maintenance")}
+          label={t("nav.maintenances")}
           collapsed={collapsed}
           badge={inProgressMaintenanceCount}
         />

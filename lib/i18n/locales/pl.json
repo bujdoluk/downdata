@@ -21,7 +21,7 @@
     "collapseSidebar": "Zwiń panel boczny",
     "monitors": "Monitory",
     "incidents": "Incydenty",
-    "maintenance": "Konserwacja",
+    "maintenances": "Konserwacje",
     "settings": "Ustawienia",
     "preferences": "Preferencje",
     "theme": "Motyw",
@@ -79,13 +79,13 @@
       "page": "Strona {{page}} z {{totalPages}}"
     }
   },
-  "maintenance": {
-    "title": "Konserwacja",
-    "loading": "Ładowanie zaplanowanej konserwacji…",
-    "unreachable": "Nie udało się załadować zaplanowanej konserwacji.",
-    "empty": "Brak nadchodzącej konserwacji.",
+  "maintenances": {
+    "title": "Konserwacje",
+    "loading": "Ładowanie zaplanowanych konserwacji…",
+    "unreachable": "Nie udało się załadować zaplanowanych konserwacji.",
+    "empty": "Brak nadchodzących konserwacji.",
     "inProgress": "W trakcie",
-    "noMatches": "Żadna konserwacja nie pasuje do tego filtra.",
+    "noMatches": "Żadne konserwacje nie pasują do tego filtra.",
     "pin": "Przypnij",
     "unpin": "Odepnij"
   },

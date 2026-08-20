@@ -3,7 +3,7 @@ import { getAllServices } from "@/lib/services";
 import MaintenancePageContent from "@/components/service/MaintenancePageContent";
 
 export const metadata: Metadata = {
-  title: "Maintenance · downDATA",
+  title: "Maintenances · downDATA",
 };
 
 export default function MaintenancePage() {

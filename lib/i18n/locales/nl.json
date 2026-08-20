@@ -21,7 +21,7 @@
     "collapseSidebar": "Zijbalk inklappen",
     "monitors": "Monitoren",
     "incidents": "Incidenten",
-    "maintenance": "Onderhoud",
+    "maintenances": "Onderhoud",
     "settings": "Instellingen",
     "preferences": "Voorkeuren",
     "theme": "Thema",
@@ -77,7 +77,7 @@
       "page": "Pagina {{page}} van {{totalPages}}"
     }
   },
-  "maintenance": {
+  "maintenances": {
     "title": "Onderhoud",
     "loading": "Gepland onderhoud laden…",
     "unreachable": "Kan gepland onderhoud niet laden.",

@@ -21,7 +21,7 @@
     "collapseSidebar": "Collapse sidebar",
     "monitors": "Monitors",
     "incidents": "Incidents",
-    "maintenance": "Maintenance",
+    "maintenances": "Maintenances",
     "settings": "Settings",
     "preferences": "Preferences",
     "theme": "Theme",
@@ -77,13 +77,13 @@
       "page": "Page {{page}} of {{totalPages}}"
     }
   },
-  "maintenance": {
-    "title": "Maintenance",
-    "loading": "Loading scheduled maintenance…",
-    "unreachable": "Unable to load scheduled maintenance.",
-    "empty": "No upcoming maintenance.",
+  "maintenances": {
+    "title": "Maintenances",
+    "loading": "Loading scheduled maintenances…",
+    "unreachable": "Unable to load scheduled maintenances.",
+    "empty": "No upcoming maintenances.",
     "inProgress": "In progress",
-    "noMatches": "No maintenance matches this filter.",
+    "noMatches": "No maintenances match this filter.",
     "pin": "Pin",
     "unpin": "Unpin"
   },

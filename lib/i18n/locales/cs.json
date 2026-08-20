@@ -21,7 +21,7 @@
     "collapseSidebar": "Sbalit postranní panel",
     "monitors": "Monitory",
     "incidents": "Incidenty",
-    "maintenance": "Údržba",
+    "maintenances": "Údržby",
     "settings": "Nastavení",
     "preferences": "Předvolby",
     "theme": "Motiv",
@@ -78,13 +78,13 @@
       "page": "Strana {{page}} z {{totalPages}}"
     }
   },
-  "maintenance": {
-    "title": "Údržba",
-    "loading": "Načítá se plánovaná údržba…",
-    "unreachable": "Nepodařilo se načíst plánovanou údržbu.",
-    "empty": "Žádná nadcházející údržba.",
+  "maintenances": {
+    "title": "Údržby",
+    "loading": "Načítají se plánované údržby…",
+    "unreachable": "Nepodařilo se načíst plánované údržby.",
+    "empty": "Žádné nadcházející údržby.",
     "inProgress": "Probíhá",
-    "noMatches": "Žádná údržba neodpovídá tomuto filtru.",
+    "noMatches": "Žádné údržby neodpovídají tomuto filtru.",
     "pin": "Připnout",
     "unpin": "Odepnout"
   },

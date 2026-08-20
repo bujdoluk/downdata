@@ -21,7 +21,7 @@
     "collapseSidebar": "Contraer barra lateral",
     "monitors": "Monitores",
     "incidents": "Incidentes",
-    "maintenance": "Mantenimiento",
+    "maintenances": "Mantenimientos",
     "settings": "Ajustes",
     "preferences": "Preferencias",
     "theme": "Tema",
@@ -77,13 +77,13 @@
       "page": "Página {{page}} de {{totalPages}}"
     }
   },
-  "maintenance": {
-    "title": "Mantenimiento",
-    "loading": "Cargando mantenimiento programado…",
-    "unreachable": "No se pudo cargar el mantenimiento programado.",
-    "empty": "No hay mantenimiento próximo.",
+  "maintenances": {
+    "title": "Mantenimientos",
+    "loading": "Cargando mantenimientos programados…",
+    "unreachable": "No se pudieron cargar los mantenimientos programados.",
+    "empty": "No hay mantenimientos próximos.",
     "inProgress": "En curso",
-    "noMatches": "Ningún mantenimiento coincide con este filtro.",
+    "noMatches": "No hay mantenimientos que coincidan con este filtro.",
     "pin": "Fijar",
     "unpin": "Dejar de fijar"
   },

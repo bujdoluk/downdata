@@ -21,7 +21,7 @@
     "collapseSidebar": "Réduire la barre latérale",
     "monitors": "Moniteurs",
     "incidents": "Incidents",
-    "maintenance": "Maintenance",
+    "maintenances": "Maintenances",
     "settings": "Paramètres",
     "preferences": "Préférences",
     "theme": "Thème",
@@ -77,13 +77,13 @@
       "page": "Page {{page}} sur {{totalPages}}"
     }
   },
-  "maintenance": {
-    "title": "Maintenance",
-    "loading": "Chargement de la maintenance planifiée…",
-    "unreachable": "Impossible de charger la maintenance planifiée.",
-    "empty": "Aucune maintenance à venir.",
+  "maintenances": {
+    "title": "Maintenances",
+    "loading": "Chargement des maintenances planifiées…",
+    "unreachable": "Impossible de charger les maintenances planifiées.",
+    "empty": "Pas de maintenances à venir.",
     "inProgress": "En cours",
-    "noMatches": "Aucune maintenance ne correspond à ce filtre.",
+    "noMatches": "Aucune des maintenances ne correspond à ce filtre.",
     "pin": "Épingler",
     "unpin": "Désépingler"
   },

@@ -21,7 +21,7 @@
     "collapseSidebar": "Seitenleiste einklappen",
     "monitors": "Monitore",
     "incidents": "Vorfälle",
-    "maintenance": "Wartung",
+    "maintenances": "Wartungen",
     "settings": "Einstellungen",
     "preferences": "Präferenzen",
     "theme": "Design",
@@ -77,13 +77,13 @@
       "page": "Seite {{page}} von {{totalPages}}"
     }
   },
-  "maintenance": {
-    "title": "Wartung",
-    "loading": "Geplante Wartung wird geladen…",
-    "unreachable": "Geplante Wartung konnte nicht geladen werden.",
-    "empty": "Keine bevorstehende Wartung.",
+  "maintenances": {
+    "title": "Wartungen",
+    "loading": "Geplante Wartungen werden geladen…",
+    "unreachable": "Geplante Wartungen konnten nicht geladen werden.",
+    "empty": "Keine bevorstehenden Wartungen.",
     "inProgress": "Läuft gerade",
-    "noMatches": "Keine Wartung entspricht diesem Filter.",
+    "noMatches": "Keine Wartungen entsprechen diesem Filter.",
     "pin": "Anheften",
     "unpin": "Lösen"
   },

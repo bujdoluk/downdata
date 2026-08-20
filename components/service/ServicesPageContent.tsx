@@ -58,6 +58,7 @@ export default function ServicesPageContent({
         <h1 className="text-base-content text-lg font-semibold">{t("services.title")}</h1>
         <AddServiceButton />
       </div>
+      <p className="text-base-content/60 mt-1 text-sm">{t("services.subtitle")}</p>
 
       {myServices.length === 0 ? (
         <div className="mt-4">

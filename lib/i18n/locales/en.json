@@ -22,6 +22,7 @@
     "incidents": "Incidents",
     "maintenances": "Maintenances",
     "integrations": "Integrations",
+    "history": "History",
     "settings": "Settings",
     "preferences": "Preferences",
     "theme": "Theme",
@@ -77,7 +78,8 @@
       "previous": "Previous page",
       "next": "Next page",
       "page": "Page {{page}} of {{totalPages}}"
-    }
+    },
+    "subtitle": "A unified timeline of incidents across every tracked service."
   },
   "maintenances": {
     "title": "Maintenances",
@@ -87,7 +89,8 @@
     "inProgress": "In progress",
     "noMatches": "No maintenances match this filter.",
     "pin": "Pin",
-    "unpin": "Unpin"
+    "unpin": "Unpin",
+    "subtitle": "Scheduled and in-progress maintenance windows across your tracked services."
   },
   "integrations": {
     "title": "Integrations",
@@ -98,6 +101,15 @@
     "disconnecting": "Disconnecting…",
     "options": "More options",
     "somethingWrong": "Something went wrong."
+  },
+  "history": {
+    "title": "History",
+    "subtitle": "Pick a service to see its incident history over the last 12 months.",
+    "servicePicker": "Service",
+    "selectService": "Select a service…",
+    "loading": "Loading history…",
+    "unreachable": "Unable to load incident history.",
+    "empty": "No incidents in the last 12 months."
   },
   "addService": {
     "back": "← Back",
@@ -112,7 +124,8 @@
       "database": "Database",
       "communication": "Communication & Collaboration",
       "ai": "AI"
-    }
+    },
+    "subtitle": "Browse the catalog and start tracking a new service."
   },
   "landing": {
     "nav": {
@@ -180,6 +193,7 @@
   },
   "services": {
     "title": "My services",
-    "monitoring": "Monitoring"
+    "monitoring": "Monitoring",
+    "subtitle": "Track the live status of the services your team depends on."
   }
 }

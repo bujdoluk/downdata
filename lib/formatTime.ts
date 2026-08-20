@@ -15,3 +15,7 @@ export function formatTime(iso: string): string {
 export function msSince(iso: string): number {
   return Temporal.Now.instant().epochMilliseconds - Temporal.Instant.from(iso).epochMilliseconds;
 }
+
+export function formatDate(isoDate: string): string {
+  return Temporal.PlainDate.from(isoDate).toLocaleString(undefined, { dateStyle: "medium" });
+}

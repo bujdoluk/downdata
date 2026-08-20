@@ -22,6 +22,7 @@
     "incidents": "Incidents",
     "maintenances": "Maintenances",
     "integrations": "Intégrations",
+    "history": "Historique",
     "settings": "Paramètres",
     "preferences": "Préférences",
     "theme": "Thème",
@@ -77,7 +78,8 @@
       "previous": "Page précédente",
       "next": "Page suivante",
       "page": "Page {{page}} sur {{totalPages}}"
-    }
+    },
+    "subtitle": "Une chronologie unifiée des incidents sur tous les services surveillés."
   },
   "maintenances": {
     "title": "Maintenances",
@@ -87,7 +89,8 @@
     "inProgress": "En cours",
     "noMatches": "Aucune des maintenances ne correspond à ce filtre.",
     "pin": "Épingler",
-    "unpin": "Désépingler"
+    "unpin": "Désépingler",
+    "subtitle": "Fenêtres de maintenance planifiées et en cours sur tous vos services surveillés."
   },
   "integrations": {
     "title": "Intégrations",
@@ -98,6 +101,15 @@
     "disconnecting": "Déconnexion…",
     "options": "Plus d'options",
     "somethingWrong": "Une erreur s'est produite."
+  },
+  "history": {
+    "title": "Historique",
+    "subtitle": "Choisissez un service pour voir son historique d'incidents des 12 derniers mois.",
+    "servicePicker": "Service",
+    "selectService": "Sélectionner un service…",
+    "loading": "Chargement de l'historique…",
+    "unreachable": "Impossible de charger l'historique des incidents.",
+    "empty": "Aucun incident au cours des 12 derniers mois."
   },
   "addService": {
     "back": "← Retour",
@@ -112,7 +124,8 @@
       "database": "Base de données",
       "communication": "Communication et collaboration",
       "ai": "IA"
-    }
+    },
+    "subtitle": "Parcourez le catalogue et commencez à surveiller un nouveau service."
   },
   "landing": {
     "nav": {
@@ -180,6 +193,7 @@
   },
   "services": {
     "title": "Mes services",
-    "monitoring": "Surveillé"
+    "monitoring": "Surveillé",
+    "subtitle": "Suivez en temps réel le statut des services dont dépend votre équipe."
   }
 }

@@ -22,6 +22,7 @@
     "incidents": "Incydenty",
     "maintenances": "Konserwacje",
     "integrations": "Integracje",
+    "history": "Historia",
     "settings": "Ustawienia",
     "preferences": "Preferencje",
     "theme": "Motyw",
@@ -79,7 +80,8 @@
       "previous": "Poprzednia strona",
       "next": "Następna strona",
       "page": "Strona {{page}} z {{totalPages}}"
-    }
+    },
+    "subtitle": "Ujednolicona oś czasu incydentów we wszystkich monitorowanych usługach."
   },
   "maintenances": {
     "title": "Konserwacje",
@@ -89,7 +91,8 @@
     "inProgress": "W trakcie",
     "noMatches": "Żadne konserwacje nie pasują do tego filtra.",
     "pin": "Przypnij",
-    "unpin": "Odepnij"
+    "unpin": "Odepnij",
+    "subtitle": "Zaplanowane i trwające okna konserwacji we wszystkich monitorowanych usługach."
   },
   "integrations": {
     "title": "Integracje",
@@ -100,6 +103,15 @@
     "disconnecting": "Rozłączanie…",
     "options": "Więcej opcji",
     "somethingWrong": "Coś poszło nie tak."
+  },
+  "history": {
+    "title": "Historia",
+    "subtitle": "Wybierz usługę, aby zobaczyć historię incydentów z ostatnich 12 miesięcy.",
+    "servicePicker": "Usługa",
+    "selectService": "Wybierz usługę…",
+    "loading": "Ładowanie historii…",
+    "unreachable": "Nie udało się załadować historii incydentów.",
+    "empty": "Brak incydentów w ciągu ostatnich 12 miesięcy."
   },
   "addService": {
     "back": "← Wstecz",
@@ -114,7 +126,8 @@
       "database": "Baza danych",
       "communication": "Komunikacja i współpraca",
       "ai": "AI"
-    }
+    },
+    "subtitle": "Przeglądaj katalog i zacznij monitorować nową usługę."
   },
   "landing": {
     "nav": {
@@ -182,6 +195,7 @@
   },
   "services": {
     "title": "Moje usługi",
-    "monitoring": "Monitorowane"
+    "monitoring": "Monitorowane",
+    "subtitle": "Śledź na żywo stan usług, od których zależy Twój zespół."
   }
 }

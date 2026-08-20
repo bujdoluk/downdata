@@ -22,6 +22,7 @@
     "incidents": "Incidenty",
     "maintenances": "Údržby",
     "integrations": "Integrácie",
+    "history": "História",
     "settings": "Nastavenia",
     "preferences": "Predvoľby",
     "theme": "Motív",
@@ -78,7 +79,8 @@
       "previous": "Predchádzajúca strana",
       "next": "Ďalšia strana",
       "page": "Strana {{page}} z {{totalPages}}"
-    }
+    },
+    "subtitle": "Jednotná časová os incidentov naprieč všetkými sledovanými službami."
   },
   "maintenances": {
     "title": "Údržby",
@@ -88,7 +90,8 @@
     "inProgress": "Prebieha",
     "noMatches": "Žiadne údržby nezodpovedajú tomuto filtru.",
     "pin": "Pripnúť",
-    "unpin": "Odopnúť"
+    "unpin": "Odopnúť",
+    "subtitle": "Plánované a prebiehajúce údržby naprieč vašimi sledovanými službami."
   },
   "integrations": {
     "title": "Integrácie",
@@ -99,6 +102,15 @@
     "disconnecting": "Odpája sa…",
     "options": "Ďalšie možnosti",
     "somethingWrong": "Niečo sa pokazilo."
+  },
+  "history": {
+    "title": "História",
+    "subtitle": "Vyberte službu a zobrazte si históriu incidentov za posledných 12 mesiacov.",
+    "servicePicker": "Služba",
+    "selectService": "Vyberte službu…",
+    "loading": "Načítava sa história…",
+    "unreachable": "Nepodarilo sa načítať históriu incidentov.",
+    "empty": "Žiadne incidenty za posledných 12 mesiacov."
   },
   "addService": {
     "back": "← Späť",
@@ -113,7 +125,8 @@
       "database": "Databáza",
       "communication": "Komunikácia a spolupráca",
       "ai": "AI"
-    }
+    },
+    "subtitle": "Prezrite si katalóg a začnite sledovať novú službu."
   },
   "landing": {
     "nav": {
@@ -181,6 +194,7 @@
   },
   "services": {
     "title": "Moje služby",
-    "monitoring": "Sledované"
+    "monitoring": "Sledované",
+    "subtitle": "Sledujte stav služieb, na ktorých závisí váš tím."
   }
 }

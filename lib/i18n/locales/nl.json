@@ -22,6 +22,7 @@
     "incidents": "Incidenten",
     "maintenances": "Onderhoud",
     "integrations": "Integraties",
+    "history": "Geschiedenis",
     "settings": "Instellingen",
     "preferences": "Voorkeuren",
     "theme": "Thema",
@@ -77,7 +78,8 @@
       "previous": "Vorige pagina",
       "next": "Volgende pagina",
       "page": "Pagina {{page}} van {{totalPages}}"
-    }
+    },
+    "subtitle": "Eén overzichtelijke tijdlijn van incidenten voor alle gevolgde diensten."
   },
   "maintenances": {
     "title": "Onderhoud",
@@ -87,7 +89,8 @@
     "inProgress": "Bezig",
     "noMatches": "Geen onderhoud komt overeen met dit filter.",
     "pin": "Vastzetten",
-    "unpin": "Losmaken"
+    "unpin": "Losmaken",
+    "subtitle": "Geplande en lopende onderhoudsvensters voor al je gevolgde diensten."
   },
   "integrations": {
     "title": "Integraties",
@@ -98,6 +101,15 @@
     "disconnecting": "Verbinding verbreken…",
     "options": "Meer opties",
     "somethingWrong": "Er is iets misgegaan."
+  },
+  "history": {
+    "title": "Geschiedenis",
+    "subtitle": "Kies een dienst om de incidentgeschiedenis van de afgelopen 12 maanden te bekijken.",
+    "servicePicker": "Dienst",
+    "selectService": "Selecteer een dienst…",
+    "loading": "Geschiedenis laden…",
+    "unreachable": "Kan de incidentgeschiedenis niet laden.",
+    "empty": "Geen incidenten in de afgelopen 12 maanden."
   },
   "addService": {
     "back": "← Terug",
@@ -112,7 +124,8 @@
       "database": "Database",
       "communication": "Communicatie en samenwerking",
       "ai": "AI"
-    }
+    },
+    "subtitle": "Blader door de catalogus en begin een nieuwe dienst te volgen."
   },
   "landing": {
     "nav": {
@@ -180,6 +193,7 @@
   },
   "services": {
     "title": "Mijn diensten",
-    "monitoring": "Gemonitord"
+    "monitoring": "Gemonitord",
+    "subtitle": "Volg live de status van de diensten waar je team op vertrouwt."
   }
 }

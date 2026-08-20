@@ -8,7 +8,7 @@ import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
 import Logo from "@/components/navbar/Logo";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
-import { GearIcon, GridIcon, ActivityIcon, AlertIcon, WrenchIcon, PlugIcon } from "@/components/icons/NavIcons";
+import { GearIcon, GridIcon, ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, HistoryIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { isActiveIncident } from "@/lib/isActiveIncident";
@@ -117,6 +117,7 @@ export default function Sidebar() {
         />
         <SidebarNavLink href="/monitors" icon={<ActivityIcon className="shrink-0" />} label={t("nav.monitors")} collapsed={collapsed} />
         <SidebarNavLink href="/integrations" icon={<PlugIcon className="shrink-0" />} label={t("nav.integrations")} collapsed={collapsed} />
+        <SidebarNavLink href="/history" icon={<HistoryIcon className="shrink-0" />} label={t("nav.history")} collapsed={collapsed} />
       </div>
 
       <div className="mt-auto flex w-full flex-col">

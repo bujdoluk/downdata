@@ -47,6 +47,8 @@ export type StatuspageIncident = {
   name: string;
   status: string;
   impact: string;
+  created_at: string;
+  resolved_at: string | null;
   updated_at: string;
   shortlink: string;
   incident_updates: IncidentUpdate[];

@@ -22,6 +22,7 @@
     "incidents": "Hendelser",
     "maintenances": "Vedlikehold",
     "integrations": "Integrasjoner",
+    "history": "Historikk",
     "settings": "Innstillinger",
     "preferences": "Preferanser",
     "theme": "Tema",
@@ -77,7 +78,8 @@
       "previous": "Forrige side",
       "next": "Neste side",
       "page": "Side {{page}} av {{totalPages}}"
-    }
+    },
+    "subtitle": "En samlet tidslinje over hendelser på tvers av alle overvåkede tjenester."
   },
   "maintenances": {
     "title": "Vedlikehold",
@@ -87,7 +89,8 @@
     "inProgress": "Pågår",
     "noMatches": "Ingen vedlikehold samsvarer med dette filteret.",
     "pin": "Fest",
-    "unpin": "Løsne"
+    "unpin": "Løsne",
+    "subtitle": "Planlagt og pågående vedlikehold på tvers av alle overvåkede tjenester."
   },
   "integrations": {
     "title": "Integrasjoner",
@@ -98,6 +101,15 @@
     "disconnecting": "Kobler fra…",
     "options": "Flere valg",
     "somethingWrong": "Noe gikk galt."
+  },
+  "history": {
+    "title": "Historikk",
+    "subtitle": "Velg en tjeneste for å se hendelseshistorikken for de siste 12 månedene.",
+    "servicePicker": "Tjeneste",
+    "selectService": "Velg en tjeneste…",
+    "loading": "Laster historikk…",
+    "unreachable": "Kunne ikke laste hendelseshistorikken.",
+    "empty": "Ingen hendelser de siste 12 månedene."
   },
   "addService": {
     "back": "← Tilbake",
@@ -112,7 +124,8 @@
       "database": "Database",
       "communication": "Kommunikasjon og samarbeid",
       "ai": "AI"
-    }
+    },
+    "subtitle": "Bla gjennom katalogen og begynn å overvåke en ny tjeneste."
   },
   "landing": {
     "nav": {
@@ -180,6 +193,7 @@
   },
   "services": {
     "title": "Mine tjenester",
-    "monitoring": "Overvåkes"
+    "monitoring": "Overvåkes",
+    "subtitle": "Følg statusen i sanntid for tjenestene teamet ditt er avhengig av."
   }
 }

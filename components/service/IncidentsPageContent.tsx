@@ -61,6 +61,7 @@ export default function IncidentsPageContent() {
   return (
     <div className="w-full max-w-6xl self-start">
       <h1 className="text-xl font-semibold text-base-content">{t("incidents.title")}</h1>
+      <p className="text-base-content/60 mt-1 text-sm">{t("incidents.subtitle")}</p>
 
       {isLoading ? (
         <p className="text-base-content/50 mt-4 text-sm">{t("incidents.loading")}</p>

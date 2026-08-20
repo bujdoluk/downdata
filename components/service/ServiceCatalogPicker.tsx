@@ -72,6 +72,7 @@ export default function ServiceCatalogPicker({
       </Link>
 
       <h1 className="text-base-content col-start-2 text-lg font-semibold">{t("addService.title")}</h1>
+      <p className="text-base-content/60 col-start-2 mt-1 text-sm">{t("addService.subtitle")}</p>
 
       <input
         type="text"

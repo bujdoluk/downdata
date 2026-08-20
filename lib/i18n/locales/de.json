@@ -22,6 +22,7 @@
     "incidents": "Vorfälle",
     "maintenances": "Wartungen",
     "integrations": "Integrationen",
+    "history": "Verlauf",
     "settings": "Einstellungen",
     "preferences": "Präferenzen",
     "theme": "Design",
@@ -77,7 +78,8 @@
       "previous": "Vorherige Seite",
       "next": "Nächste Seite",
       "page": "Seite {{page}} von {{totalPages}}"
-    }
+    },
+    "subtitle": "Eine einheitliche Zeitleiste der Vorfälle über alle überwachten Dienste hinweg."
   },
   "maintenances": {
     "title": "Wartungen",
@@ -87,7 +89,8 @@
     "inProgress": "Läuft gerade",
     "noMatches": "Keine Wartungen entsprechen diesem Filter.",
     "pin": "Anheften",
-    "unpin": "Lösen"
+    "unpin": "Lösen",
+    "subtitle": "Geplante und laufende Wartungsfenster für alle überwachten Dienste."
   },
   "integrations": {
     "title": "Integrationen",
@@ -98,6 +101,15 @@
     "disconnecting": "Wird getrennt…",
     "options": "Weitere Optionen",
     "somethingWrong": "Etwas ist schiefgelaufen."
+  },
+  "history": {
+    "title": "Verlauf",
+    "subtitle": "Wähle einen Dienst, um dessen Vorfallverlauf der letzten 12 Monate zu sehen.",
+    "servicePicker": "Dienst",
+    "selectService": "Dienst auswählen…",
+    "loading": "Verlauf wird geladen…",
+    "unreachable": "Vorfallverlauf konnte nicht geladen werden.",
+    "empty": "Keine Vorfälle in den letzten 12 Monaten."
   },
   "addService": {
     "back": "← Zurück",
@@ -112,7 +124,8 @@
       "database": "Datenbank",
       "communication": "Kommunikation & Zusammenarbeit",
       "ai": "KI"
-    }
+    },
+    "subtitle": "Durchsuche den Katalog und beginne, einen neuen Dienst zu überwachen."
   },
   "landing": {
     "nav": {
@@ -180,6 +193,7 @@
   },
   "services": {
     "title": "Meine Dienste",
-    "monitoring": "Überwacht"
+    "monitoring": "Überwacht",
+    "subtitle": "Behalte den Status der Dienste im Blick, auf die dein Team angewiesen ist."
   }
 }

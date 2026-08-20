@@ -22,6 +22,7 @@
     "incidents": "Incidenti",
     "maintenances": "Manutenzioni",
     "integrations": "Integrazioni",
+    "history": "Cronologia",
     "settings": "Impostazioni",
     "preferences": "Preferenze",
     "theme": "Tema",
@@ -77,7 +78,8 @@
       "previous": "Pagina precedente",
       "next": "Pagina successiva",
       "page": "Pagina {{page}} di {{totalPages}}"
-    }
+    },
+    "subtitle": "Una cronologia unificata degli incidenti in tutti i servizi monitorati."
   },
   "maintenances": {
     "title": "Manutenzioni",
@@ -87,7 +89,8 @@
     "inProgress": "In corso",
     "noMatches": "Nessuna delle manutenzioni corrisponde a questo filtro.",
     "pin": "Fissa",
-    "unpin": "Rimuovi fissaggio"
+    "unpin": "Rimuovi fissaggio",
+    "subtitle": "Finestre di manutenzione pianificate e in corso in tutti i tuoi servizi monitorati."
   },
   "integrations": {
     "title": "Integrazioni",
@@ -98,6 +101,15 @@
     "disconnecting": "Disconnessione…",
     "options": "Altre opzioni",
     "somethingWrong": "Qualcosa è andato storto."
+  },
+  "history": {
+    "title": "Cronologia",
+    "subtitle": "Scegli un servizio per vedere la cronologia degli incidenti degli ultimi 12 mesi.",
+    "servicePicker": "Servizio",
+    "selectService": "Seleziona un servizio…",
+    "loading": "Caricamento della cronologia…",
+    "unreachable": "Impossibile caricare la cronologia degli incidenti.",
+    "empty": "Nessun incidente negli ultimi 12 mesi."
   },
   "addService": {
     "back": "← Indietro",
@@ -112,7 +124,8 @@
       "database": "Database",
       "communication": "Comunicazione e collaborazione",
       "ai": "IA"
-    }
+    },
+    "subtitle": "Sfoglia il catalogo e inizia a monitorare un nuovo servizio."
   },
   "landing": {
     "nav": {
@@ -180,6 +193,7 @@
   },
   "services": {
     "title": "I miei servizi",
-    "monitoring": "In monitoraggio"
+    "monitoring": "In monitoraggio",
+    "subtitle": "Monitora in tempo reale lo stato dei servizi da cui dipende il tuo team."
   }
 }

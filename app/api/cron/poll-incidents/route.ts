@@ -1,10 +1,15 @@
 import { timingSafeEqual } from "node:crypto";
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { getSupabaseClient } from "@/lib/supabase";
 import { pollAllIncidents } from "@/lib/pollIncidents";
 import { notifyPendingEvents } from "@/lib/notifyIncidentEvents";
 
 const LOCK_STALE_MS = 5 * 60 * 1000;
+
+// A full poll+notify cycle can take longer than free external cron
+// services' request timeout (e.g. cron-job.org's free plan cuts off at
+// 30s). This lets the run keep going past that via after() below.
+export const maxDuration = 60;
 
 function isAuthorized(request: Request): boolean {
   const secret = process.env.CRON_SECRET;
@@ -40,16 +45,22 @@ export async function GET(request: Request) {
     return NextResponse.json({ skipped: "already running" });
   }
 
-  try {
-    // Sequential, not Promise.all'd: the backfill markers written during
-    // polling must exist before the notifier's query runs, or the
-    // flood-prevention design silently breaks.
-    const pollResult = await pollAllIncidents();
-    await notifyPendingEvents();
-    return NextResponse.json(pollResult);
-  } catch {
-    return NextResponse.json({ error: "Poll run failed" }, { status: 502 });
-  } finally {
-    await supabase.from("poll_run_lock").update({ running: false }).eq("id", true);
-  }
+  // Respond immediately instead of waiting for the run to finish — the
+  // caller (an external cron pinger) only needs to know the run started,
+  // and after() keeps this function alive past the response to actually
+  // do the work, so a slow cycle can't get killed by the caller's own
+  // request timeout.
+  after(async () => {
+    try {
+      // Sequential, not Promise.all'd: the backfill markers written during
+      // polling must exist before the notifier's query runs, or the
+      // flood-prevention design silently breaks.
+      await pollAllIncidents();
+      await notifyPendingEvents();
+    } finally {
+      await supabase.from("poll_run_lock").update({ running: false }).eq("id", true);
+    }
+  });
+
+  return NextResponse.json({ started: true });
 }

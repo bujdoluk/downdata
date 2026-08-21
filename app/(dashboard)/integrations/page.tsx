@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: "Integrations · downDATA",
 };
 
-export default function IntegrationsPage() {
-  const integrations = getAllIntegrations();
+export default async function IntegrationsPage() {
+  const integrations = await getAllIntegrations();
 
   return (
     <main className="flex flex-1 justify-center p-6">

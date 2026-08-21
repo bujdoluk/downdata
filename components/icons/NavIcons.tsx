@@ -168,6 +168,30 @@ export function HistoryIcon({ className }: { className?: string }) {
   );
 }
 
+export function BoardIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={20}
+      height={20}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M9 4v16" />
+      <path d="M15 4v16" />
+      <path d="M6 8v3" />
+      <path d="M12 8v6" />
+      <path d="M18 8v9" />
+    </svg>
+  );
+}
+
 export function ActivityIcon({ className }: { className?: string }) {
   return (
     <svg

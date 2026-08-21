@@ -10,6 +10,7 @@
     "unknown": "Unbekannt"
   },
   "nav": {
+    "boards": "Boards",
     "services": "Dienste",
     "addService": "Dienst hinzufügen",
     "searchPlaceholder": "Dienste suchen…",
@@ -58,6 +59,7 @@
     "officialPageLabel": "Offizielle Seite:",
     "pin": "Anheften",
     "unpin": "Lösen",
+    "new": "Neu",
     "filter": {
       "investigating": "Untersuchung",
       "identified": "Identifiziert",
@@ -120,6 +122,21 @@
     },
     "resolutionTime": "Gelöst in {{hours}} Std.",
     "stillOngoing": "Noch andauernd"
+  },
+  "boards": {
+    "title": "Boards",
+    "subtitle": "Gruppiere deine getrackten Dienste in Boards für verschiedene Teams.",
+    "namePlaceholder": "DevOps, Backend, Frontend…",
+    "create": "Board erstellen",
+    "empty": "Noch keine Boards. Erstelle eines, um Dienste zu gruppieren.",
+    "delete": "Löschen",
+    "deleting": "Wird gelöscht…",
+    "serviceCount_one": "{{count}} Dienst",
+    "serviceCount_other": "{{count}} Dienste",
+    "rename": "Umbenennen",
+    "onBoard": "Auf diesem Board",
+    "addServices": "Getrackte Dienste hinzufügen",
+    "noServicesOnBoard": "Noch keine Dienste auf diesem Board."
   },
   "addService": {
     "back": "← Zurück",

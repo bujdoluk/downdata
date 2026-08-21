@@ -3,9 +3,13 @@ import { notFound } from "next/navigation";
 import { resolveServiceBySlug } from "@/lib/services";
 import ServiceDetail from "@/components/service/ServiceDetail";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
-  const service = resolveServiceBySlug(slug);
+  const service = await resolveServiceBySlug(slug);
   return { title: `${service?.name ?? "Service"} · downDATA` };
 }
 
@@ -16,7 +20,7 @@ export default async function ServicePage({
 }) {
   const { slug } = await params;
 
-  if (!resolveServiceBySlug(slug)) {
+  if (!(await resolveServiceBySlug(slug))) {
     notFound();
   }
 

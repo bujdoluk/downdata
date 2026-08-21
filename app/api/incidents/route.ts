@@ -3,12 +3,12 @@ import { getAllServices } from "@/lib/services";
 import type { StatuspageIncident, TrackedIncident } from "@/types/service";
 
 export async function GET() {
-  const services = getAllServices();
+  const services = await getAllServices();
 
   const results = await Promise.all(
     services.map(async (service): Promise<TrackedIncident[]> => {
       try {
-        const res = await fetch(`https://${service.host}/api/v2/incidents.json`, { next: { revalidate: 30 } });
+        const res = await fetch(`https://${service.host}/api/v2/incidents.json`, { next: { revalidate: 60 } });
         if (!res.ok) return [];
 
         const data = await res.json();

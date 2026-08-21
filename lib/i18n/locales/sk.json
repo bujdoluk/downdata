@@ -10,6 +10,7 @@
     "unknown": "Neznáme"
   },
   "nav": {
+    "boards": "Nástenky",
     "services": "Služby",
     "addService": "Pridať službu",
     "searchPlaceholder": "Hľadať služby…",
@@ -59,6 +60,7 @@
     "officialPageLabel": "Oficiálna stránka:",
     "pin": "Pripnúť",
     "unpin": "Odopnúť",
+    "new": "Nové",
     "filter": {
       "investigating": "Vyšetrovanie",
       "identified": "Identifikované",
@@ -123,6 +125,22 @@
     },
     "resolutionTime": "Vyriešené za {{hours}} h",
     "stillOngoing": "Stále trvá"
+  },
+  "boards": {
+    "title": "Nástenky",
+    "subtitle": "Zoskupte svoje sledované služby do nástenok pre rôzne tímy.",
+    "namePlaceholder": "DevOps, Backend, Frontend…",
+    "create": "Vytvoriť nástenku",
+    "empty": "Zatiaľ žiadne nástenky. Vytvorte jednu a začnite zoskupovať služby.",
+    "delete": "Odstrániť",
+    "deleting": "Odstraňovanie…",
+    "serviceCount_one": "{{count}} služba",
+    "serviceCount_few": "{{count}} služby",
+    "serviceCount_other": "{{count}} služieb",
+    "rename": "Premenovať",
+    "onBoard": "Na tejto nástenke",
+    "addServices": "Pridať sledované služby",
+    "noServicesOnBoard": "Na tejto nástenke zatiaľ nie sú žiadne služby."
   },
   "addService": {
     "back": "← Späť",

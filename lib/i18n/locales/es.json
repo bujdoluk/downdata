@@ -10,6 +10,7 @@
     "unknown": "Desconocido"
   },
   "nav": {
+    "boards": "Tableros",
     "services": "Servicios",
     "addService": "Añadir servicio",
     "searchPlaceholder": "Buscar servicios…",
@@ -58,6 +59,7 @@
     "officialPageLabel": "Página oficial:",
     "pin": "Fijar",
     "unpin": "Dejar de fijar",
+    "new": "Nuevo",
     "filter": {
       "investigating": "Investigación",
       "identified": "Identificado",
@@ -120,6 +122,21 @@
     },
     "resolutionTime": "Resuelto en {{hours}} h",
     "stillOngoing": "Aún en curso"
+  },
+  "boards": {
+    "title": "Tableros",
+    "subtitle": "Agrupa tus servicios monitorizados en tableros para distintos equipos.",
+    "namePlaceholder": "DevOps, Backend, Frontend…",
+    "create": "Crear tablero",
+    "empty": "Aún no hay tableros. Crea uno para empezar a agrupar servicios.",
+    "delete": "Eliminar",
+    "deleting": "Eliminando…",
+    "serviceCount_one": "{{count}} servicio",
+    "serviceCount_other": "{{count}} servicios",
+    "rename": "Renombrar",
+    "onBoard": "En este tablero",
+    "addServices": "Añadir servicios monitorizados",
+    "noServicesOnBoard": "Aún no hay servicios en este tablero."
   },
   "addService": {
     "back": "← Atrás",

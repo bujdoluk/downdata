@@ -10,6 +10,7 @@
     "unknown": "Ukjent"
   },
   "nav": {
+    "boards": "Tavler",
     "services": "Tjenester",
     "addService": "Legg til tjeneste",
     "searchPlaceholder": "Søk etter tjenester…",
@@ -58,6 +59,7 @@
     "officialPageLabel": "Offisiell side:",
     "pin": "Fest",
     "unpin": "Løsne",
+    "new": "Ny",
     "filter": {
       "investigating": "Undersøkelse",
       "identified": "Identifisert",
@@ -120,6 +122,21 @@
     },
     "resolutionTime": "Løst på {{hours}} t",
     "stillOngoing": "Fortsatt pågående"
+  },
+  "boards": {
+    "title": "Tavler",
+    "subtitle": "Grupper dine sporede tjenester i tavler for ulike team.",
+    "namePlaceholder": "DevOps, Backend, Frontend…",
+    "create": "Opprett tavle",
+    "empty": "Ingen tavler ennå. Opprett en for å begynne å gruppere tjenester.",
+    "delete": "Slett",
+    "deleting": "Sletter…",
+    "serviceCount_one": "{{count}} tjeneste",
+    "serviceCount_other": "{{count}} tjenester",
+    "rename": "Gi nytt navn",
+    "onBoard": "På denne tavlen",
+    "addServices": "Legg til sporede tjenester",
+    "noServicesOnBoard": "Ingen tjenester på denne tavlen ennå."
   },
   "addService": {
     "back": "← Tilbake",

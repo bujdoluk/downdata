@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getAllServices, addService } from "@/lib/services";
 
 export async function GET() {
-  return NextResponse.json(getAllServices());
+  return NextResponse.json(await getAllServices());
 }
 
 export async function POST(request: Request) {
@@ -41,6 +41,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const service = addService({ name, host });
+  const service = await addService({ name, host });
   return NextResponse.json(service, { status: 201 });
 }

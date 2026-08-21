@@ -10,6 +10,7 @@
     "unknown": "Nieznany"
   },
   "nav": {
+    "boards": "Tablice",
     "services": "Usługi",
     "addService": "Dodaj usługę",
     "searchPlaceholder": "Szukaj usług…",
@@ -60,6 +61,7 @@
     "officialPageLabel": "Oficjalna strona:",
     "pin": "Przypnij",
     "unpin": "Odepnij",
+    "new": "Nowe",
     "filter": {
       "investigating": "Badanie",
       "identified": "Zidentyfikowane",
@@ -126,6 +128,23 @@
     },
     "resolutionTime": "Rozwiązano w {{hours}} godz.",
     "stillOngoing": "Nadal trwa"
+  },
+  "boards": {
+    "title": "Tablice",
+    "subtitle": "Grupuj monitorowane usługi w tablice dla różnych zespołów.",
+    "namePlaceholder": "DevOps, Backend, Frontend…",
+    "create": "Utwórz tablicę",
+    "empty": "Brak tablic. Utwórz jedną, aby zacząć grupować usługi.",
+    "delete": "Usuń",
+    "deleting": "Usuwanie…",
+    "serviceCount_one": "{{count}} usługa",
+    "serviceCount_few": "{{count}} usługi",
+    "serviceCount_many": "{{count}} usług",
+    "serviceCount_other": "{{count}} usługi",
+    "rename": "Zmień nazwę",
+    "onBoard": "Na tej tablicy",
+    "addServices": "Dodaj monitorowane usługi",
+    "noServicesOnBoard": "Na tej tablicy nie ma jeszcze żadnych usług."
   },
   "addService": {
     "back": "← Wstecz",

@@ -7,8 +7,9 @@ export const metadata: Metadata = {
   title: "Add Service · downDATA",
 };
 
-export default function AddServicePage() {
-  const trackedHosts = getAllServices().map((service) => service.host);
+export default async function AddServicePage() {
+  const services = await getAllServices();
+  const trackedHosts = services.map((service) => service.host);
 
   return (
     <main className="flex flex-1 justify-center p-6">

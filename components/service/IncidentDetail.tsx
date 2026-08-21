@@ -10,10 +10,14 @@ import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { stripHtml } from "@/lib/stripHtml";
+import { useIncidentsLastViewed } from "@/lib/useIncidentsLastViewed";
 
 export default function IncidentDetail({ id }: { id: string }) {
   const { t } = useTranslation();
   const { data, error } = usePolledFetch<{ incidents: TrackedIncident[] }>("/api/incidents");
+  // Read-only: opening one incident shouldn't clear the "New" badge on a
+  // different, unrelated incident back on the list.
+  const lastViewed = useIncidentsLastViewed(false);
 
   const isLoading = !data && !error;
   const incident = data?.incidents.find((i) => i.id === id);
@@ -73,7 +77,12 @@ export default function IncidentDetail({ id }: { id: string }) {
                   <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
                 </div>
                 <div className="timeline-end timeline-box bg-base-200">
-                  <p className="text-base-content text-sm font-medium">{update.status}</p>
+                  <p className="flex items-center gap-2 text-base-content text-sm font-medium">
+                    {update.status}
+                    {new Date(update.created_at).getTime() > lastViewed && (
+                      <span className="badge badge-xs badge-primary">{t("incidents.new")}</span>
+                    )}
+                  </p>
                   <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
                 </div>
                 {i < incident.incident_updates.length - 1 && <hr />}

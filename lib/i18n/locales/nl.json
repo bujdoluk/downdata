@@ -10,6 +10,7 @@
     "unknown": "Onbekend"
   },
   "nav": {
+    "boards": "Borden",
     "services": "Diensten",
     "addService": "Dienst toevoegen",
     "searchPlaceholder": "Diensten zoeken…",
@@ -58,6 +59,7 @@
     "officialPageLabel": "Officiële pagina:",
     "pin": "Vastzetten",
     "unpin": "Losmaken",
+    "new": "Nieuw",
     "filter": {
       "investigating": "Onderzoek",
       "identified": "Geïdentificeerd",
@@ -120,6 +122,21 @@
     },
     "resolutionTime": "Opgelost in {{hours}} u",
     "stillOngoing": "Nog gaande"
+  },
+  "boards": {
+    "title": "Borden",
+    "subtitle": "Groepeer je gevolgde diensten in borden voor verschillende teams.",
+    "namePlaceholder": "DevOps, Backend, Frontend…",
+    "create": "Bord aanmaken",
+    "empty": "Nog geen borden. Maak er een om diensten te groeperen.",
+    "delete": "Verwijderen",
+    "deleting": "Verwijderen…",
+    "serviceCount_one": "{{count}} dienst",
+    "serviceCount_other": "{{count}} diensten",
+    "rename": "Hernoemen",
+    "onBoard": "Op dit bord",
+    "addServices": "Gevolgde diensten toevoegen",
+    "noServicesOnBoard": "Nog geen diensten op dit bord."
   },
   "addService": {
     "back": "← Terug",

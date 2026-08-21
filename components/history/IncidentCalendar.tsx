@@ -20,7 +20,7 @@ export default function IncidentCalendar({
   return (
     <div
       className="grid w-full gap-[3px]"
-      style={{ gridTemplateColumns: `repeat(${weeks}, minmax(0, 1fr))`, gridTemplateRows: "auto repeat(7, minmax(0, 1fr))" }}
+      style={{ gridTemplateColumns: `repeat(${weeks}, 1rem)`, gridTemplateRows: "auto repeat(7, 1rem)" }}
     >
       {monthLabels.map((month) => (
         <span
@@ -46,7 +46,7 @@ export default function IncidentCalendar({
               type="button"
               disabled={!hasIncidents}
               onClick={() => onSelectDay(day.date)}
-              className={`aspect-square w-full rounded-sm ${color} ${hasIncidents ? "cursor-pointer" : "cursor-default"} ${
+              className={`h-4 w-4 rounded-sm ${color} ${hasIncidents ? "cursor-pointer" : "cursor-default"} ${
                 day.date === selectedDate ? "ring-primary ring-2" : ""
               } ${day.date === TODAY ? "outline-base-content/40 outline-2 outline-offset-1" : ""}`}
             />

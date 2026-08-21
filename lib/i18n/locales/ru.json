@@ -10,6 +10,7 @@
     "unknown": "Неизвестно"
   },
   "nav": {
+    "boards": "Доски",
     "services": "Сервисы",
     "addService": "Добавить сервис",
     "searchPlaceholder": "Поиск сервисов…",
@@ -60,6 +61,7 @@
     "officialPageLabel": "Официальная страница:",
     "pin": "Закрепить",
     "unpin": "Открепить",
+    "new": "Новое",
     "filter": {
       "investigating": "Расследование",
       "identified": "Определено",
@@ -126,6 +128,23 @@
     },
     "resolutionTime": "Решено за {{hours}} ч",
     "stillOngoing": "Всё ещё продолжается"
+  },
+  "boards": {
+    "title": "Доски",
+    "subtitle": "Группируйте отслеживаемые сервисы по доскам для разных команд.",
+    "namePlaceholder": "DevOps, Backend, Frontend…",
+    "create": "Создать доску",
+    "empty": "Пока нет досок. Создайте одну, чтобы начать группировать сервисы.",
+    "delete": "Удалить",
+    "deleting": "Удаление…",
+    "serviceCount_one": "{{count}} сервис",
+    "serviceCount_few": "{{count}} сервиса",
+    "serviceCount_many": "{{count}} сервисов",
+    "serviceCount_other": "{{count}} сервиса",
+    "rename": "Переименовать",
+    "onBoard": "На этой доске",
+    "addServices": "Добавить отслеживаемые сервисы",
+    "noServicesOnBoard": "На этой доске пока нет сервисов."
   },
   "addService": {
     "back": "← Назад",

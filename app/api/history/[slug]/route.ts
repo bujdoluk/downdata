@@ -4,7 +4,7 @@ import type { StatuspageIncident } from "@/types/service";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const service = resolveServiceBySlug(slug);
+  const service = await resolveServiceBySlug(slug);
 
   if (!service) {
     return NextResponse.json({ error: "Unknown service" }, { status: 404 });
@@ -12,7 +12,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
 
   try {
     const res = await fetch(`https://${service.host}/api/v2/incidents.json`, {
-      next: { revalidate: 30 },
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) {

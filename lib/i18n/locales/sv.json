@@ -10,6 +10,7 @@
     "unknown": "Okänt"
   },
   "nav": {
+    "boards": "Tavlor",
     "services": "Tjänster",
     "addService": "Lägg till tjänst",
     "searchPlaceholder": "Sök tjänster…",
@@ -58,6 +59,7 @@
     "officialPageLabel": "Officiell sida:",
     "pin": "Fäst",
     "unpin": "Lossa",
+    "new": "Nytt",
     "filter": {
       "investigating": "Undersökning",
       "identified": "Identifierad",
@@ -120,6 +122,21 @@
     },
     "resolutionTime": "Löst på {{hours}} tim",
     "stillOngoing": "Fortfarande pågående"
+  },
+  "boards": {
+    "title": "Tavlor",
+    "subtitle": "Gruppera dina spårade tjänster i tavlor för olika team.",
+    "namePlaceholder": "DevOps, Backend, Frontend…",
+    "create": "Skapa tavla",
+    "empty": "Inga tavlor ännu. Skapa en för att börja gruppera tjänster.",
+    "delete": "Ta bort",
+    "deleting": "Tar bort…",
+    "serviceCount_one": "{{count}} tjänst",
+    "serviceCount_other": "{{count}} tjänster",
+    "rename": "Byt namn",
+    "onBoard": "På denna tavla",
+    "addServices": "Lägg till spårade tjänster",
+    "noServicesOnBoard": "Inga tjänster på denna tavla än."
   },
   "addService": {
     "back": "← Tillbaka",

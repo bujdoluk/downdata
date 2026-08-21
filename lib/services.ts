@@ -1,34 +1,17 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import path from "node:path";
+import { getSupabaseClient } from "@/lib/supabase";
 import type { ServiceDefinition } from "@/types/service";
 import { SERVICE_CATALOG } from "@/lib/serviceCatalog";
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const DATA_FILE = path.join(DATA_DIR, "services.json");
-
-const BUILTIN_SLUGS = ["github", "supabase"];
-const BUILTIN_SERVICES: ServiceDefinition[] = SERVICE_CATALOG.filter((entry) =>
-  BUILTIN_SLUGS.includes(entry.slug),
-);
-
-function ensureDataFile() {
-  if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
-  if (!existsSync(DATA_FILE)) {
-    writeFileSync(DATA_FILE, JSON.stringify(BUILTIN_SERVICES, null, 2));
-  }
+export async function getAllServices(): Promise<ServiceDefinition[]> {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase.from("services").select("slug, name, host").order("name");
+  if (error) throw error;
+  return data ?? [];
 }
 
-export function getAllServices(): ServiceDefinition[] {
-  ensureDataFile();
-  const raw = readFileSync(DATA_FILE, "utf-8");
-  return JSON.parse(raw) as ServiceDefinition[];
-}
-
-export function resolveServiceBySlug(slug: string): ServiceDefinition | undefined {
-  return (
-    getAllServices().find((service) => service.slug === slug) ??
-    SERVICE_CATALOG.find((entry) => entry.slug === slug)
-  );
+export async function resolveServiceBySlug(slug: string): Promise<ServiceDefinition | undefined> {
+  const services = await getAllServices();
+  return services.find((service) => service.slug === slug) ?? SERVICE_CATALOG.find((entry) => entry.slug === slug);
 }
 
 function slugify(name: string): string {
@@ -39,8 +22,8 @@ function slugify(name: string): string {
     .replace(/(^-|-$)/g, "");
 }
 
-export function addService(input: { name: string; host: string }): ServiceDefinition {
-  const services = getAllServices();
+export async function addService(input: { name: string; host: string }): Promise<ServiceDefinition> {
+  const services = await getAllServices();
   const baseSlug = slugify(input.name) || "service";
 
   let slug = baseSlug;
@@ -50,16 +33,15 @@ export function addService(input: { name: string; host: string }): ServiceDefini
   }
 
   const service: ServiceDefinition = { slug, name: input.name.trim(), host: input.host.trim() };
-  services.push(service);
-  writeFileSync(DATA_FILE, JSON.stringify(services, null, 2));
+  const supabase = getSupabaseClient();
+  const { error } = await supabase.from("services").insert(service);
+  if (error) throw error;
   return service;
 }
 
-export function removeService(slug: string): boolean {
-  const services = getAllServices();
-  const next = services.filter((service) => service.slug !== slug);
-  if (next.length === services.length) return false;
-
-  writeFileSync(DATA_FILE, JSON.stringify(next, null, 2));
-  return true;
+export async function removeService(slug: string): Promise<boolean> {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase.from("services").delete().eq("slug", slug).select();
+  if (error) throw error;
+  return (data?.length ?? 0) > 0;
 }

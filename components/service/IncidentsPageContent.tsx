@@ -12,6 +12,7 @@ import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusSty
 import { PinIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
+import { useIncidentsLastViewed } from "@/lib/useIncidentsLastViewed";
 
 type StatusFilter = "all" | "investigating" | "identified" | "monitoring" | "resolved" | "postmortem";
 type TimeRange = "all" | "24h" | "7d" | "30d";
@@ -32,6 +33,7 @@ export default function IncidentsPageContent() {
   const { t } = useTranslation();
   const { data, error } = usePolledFetch<{ incidents: TrackedIncident[] }>("/api/incidents");
   const { pinned, togglePin } = usePinned("pinnedIncidents");
+  const lastViewed = useIncidentsLastViewed(true);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [serviceFilter, setServiceFilter] = useState<string>("all");
   const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRange>("all");
@@ -148,6 +150,7 @@ export default function IncidentsPageContent() {
               {pageIncidents.map((incident) => {
                 const Logo = SERVICE_LOGOS[incident.service.slug] ?? FallbackLogo;
                 const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
+                const isNew = new Date(incident.updated_at).getTime() > lastViewed;
                 return (
                   <li
                     key={incident.id}
@@ -171,6 +174,7 @@ export default function IncidentsPageContent() {
                         <div className="mt-1 flex items-center gap-2">
                           <span className="text-base-content/50 text-xs">{incident.status}</span>
                           <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
+                          {isNew && <span className="badge badge-xs badge-primary">{t("incidents.new")}</span>}
                         </div>
                       </div>
                       <p className="text-base-content/50 self-end text-xs whitespace-nowrap">{formatDateTime(incident.updated_at)}</p>

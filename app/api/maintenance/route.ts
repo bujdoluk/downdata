@@ -3,13 +3,13 @@ import { getAllServices } from "@/lib/services";
 import type { ScheduledMaintenance, TrackedMaintenance } from "@/types/service";
 
 export async function GET() {
-  const services = getAllServices();
+  const services = await getAllServices();
 
   const results = await Promise.all(
     services.map(async (service): Promise<TrackedMaintenance[]> => {
       try {
         const res = await fetch(`https://${service.host}/api/v2/scheduled-maintenances/upcoming.json`, {
-          next: { revalidate: 30 },
+          next: { revalidate: 60 },
         });
         if (!res.ok) return [];
 

@@ -8,7 +8,16 @@ import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
 import Logo from "@/components/navbar/Logo";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
-import { GearIcon, GridIcon, ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, HistoryIcon } from "@/components/icons/NavIcons";
+import {
+  GearIcon,
+  GridIcon,
+  ActivityIcon,
+  AlertIcon,
+  WrenchIcon,
+  PlugIcon,
+  HistoryIcon,
+  BoardIcon,
+} from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { isActiveIncident } from "@/lib/isActiveIncident";
@@ -100,6 +109,7 @@ export default function Sidebar() {
       </Link>
 
       <div className={`flex w-full flex-col items-center gap-4 ${collapsed ? "" : "md:items-stretch md:gap-3"}`}>
+        <SidebarNavLink href="/boards" icon={<BoardIcon className="shrink-0" />} label={t("nav.boards")} collapsed={collapsed} />
         <SidebarNavLink href="/" icon={<GridIcon className="shrink-0" />} label={t("nav.services")} collapsed={collapsed} />
         <SidebarNavLink
           href="/incidents"

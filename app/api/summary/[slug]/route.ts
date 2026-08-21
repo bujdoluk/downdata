@@ -3,14 +3,14 @@ import { resolveServiceBySlug } from "@/lib/services";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const service = resolveServiceBySlug(slug);
+  const service = await resolveServiceBySlug(slug);
 
   if (!service) {
     return NextResponse.json({ error: "Unknown service" }, { status: 404 });
   }
 
   try {
-    const res = await fetch(`https://${service.host}/api/v2/summary.json`, { next: { revalidate: 30 } });
+    const res = await fetch(`https://${service.host}/api/v2/summary.json`, { next: { revalidate: 60 } });
 
     if (!res.ok) {
       return NextResponse.json(

@@ -10,6 +10,7 @@
     "unknown": "Neznámé"
   },
   "nav": {
+    "boards": "Nástěnky",
     "services": "Služby",
     "addService": "Přidat službu",
     "searchPlaceholder": "Hledat služby…",
@@ -59,6 +60,7 @@
     "officialPageLabel": "Oficiální stránka:",
     "pin": "Připnout",
     "unpin": "Odepnout",
+    "new": "Nové",
     "filter": {
       "investigating": "Vyšetřování",
       "identified": "Identifikováno",
@@ -123,6 +125,22 @@
     },
     "resolutionTime": "Vyřešeno za {{hours}} h",
     "stillOngoing": "Stále trvá"
+  },
+  "boards": {
+    "title": "Nástěnky",
+    "subtitle": "Seskupte své sledované služby do nástěnek pro různé týmy.",
+    "namePlaceholder": "DevOps, Backend, Frontend…",
+    "create": "Vytvořit nástěnku",
+    "empty": "Zatím žádné nástěnky. Vytvořte jednu a začněte seskupovat služby.",
+    "delete": "Smazat",
+    "deleting": "Mazání…",
+    "serviceCount_one": "{{count}} služba",
+    "serviceCount_few": "{{count}} služby",
+    "serviceCount_other": "{{count}} služeb",
+    "rename": "Přejmenovat",
+    "onBoard": "Na této nástěnce",
+    "addServices": "Přidat sledované služby",
+    "noServicesOnBoard": "Na této nástěnce zatím nejsou žádné služby."
   },
   "addService": {
     "back": "← Zpět",

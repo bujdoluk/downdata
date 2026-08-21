@@ -1,36 +1,31 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import path from "node:path";
+import { getSupabaseClient } from "@/lib/supabase";
 import type { IntegrationDefinition } from "@/types/integration";
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const DATA_FILE = path.join(DATA_DIR, "integrations.json");
+type IntegrationRow = { slug: string; name: string; webhook_url: string };
 
-function ensureDataFile() {
-  if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
-  if (!existsSync(DATA_FILE)) {
-    writeFileSync(DATA_FILE, JSON.stringify([], null, 2));
-  }
+function toIntegration(row: IntegrationRow): IntegrationDefinition {
+  return { slug: row.slug, name: row.name, webhookUrl: row.webhook_url };
 }
 
-export function getAllIntegrations(): IntegrationDefinition[] {
-  ensureDataFile();
-  const raw = readFileSync(DATA_FILE, "utf-8");
-  return JSON.parse(raw) as IntegrationDefinition[];
+export async function getAllIntegrations(): Promise<IntegrationDefinition[]> {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase.from("integrations").select("slug, name, webhook_url");
+  if (error) throw error;
+  return (data as IntegrationRow[] | null)?.map(toIntegration) ?? [];
 }
 
-export function addIntegration(input: { slug: string; name: string; webhookUrl: string }): IntegrationDefinition {
-  const integrations = getAllIntegrations().filter((integration) => integration.slug !== input.slug);
-  const integration: IntegrationDefinition = { slug: input.slug, name: input.name, webhookUrl: input.webhookUrl };
-  integrations.push(integration);
-  writeFileSync(DATA_FILE, JSON.stringify(integrations, null, 2));
-  return integration;
+export async function addIntegration(input: { slug: string; name: string; webhookUrl: string }): Promise<IntegrationDefinition> {
+  const supabase = getSupabaseClient();
+  const { error } = await supabase
+    .from("integrations")
+    .upsert({ slug: input.slug, name: input.name, webhook_url: input.webhookUrl });
+  if (error) throw error;
+  return input;
 }
 
-export function removeIntegration(slug: string): boolean {
-  const integrations = getAllIntegrations();
-  const next = integrations.filter((integration) => integration.slug !== slug);
-  if (next.length === integrations.length) return false;
-
-  writeFileSync(DATA_FILE, JSON.stringify(next, null, 2));
-  return true;
+export async function removeIntegration(slug: string): Promise<boolean> {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase.from("integrations").delete().eq("slug", slug).select();
+  if (error) throw error;
+  return (data?.length ?? 0) > 0;
 }

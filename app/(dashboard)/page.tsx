@@ -7,8 +7,9 @@ export const metadata: Metadata = {
   title: "Services · downDATA",
 };
 
-export default function Home() {
-  const trackedHosts = getAllServices().map((service) => service.host);
+export default async function Home() {
+  const services = await getAllServices();
+  const trackedHosts = services.map((service) => service.host);
 
   return (
     <main className="flex flex-1 justify-center p-6">

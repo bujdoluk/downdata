@@ -14,12 +14,14 @@
     "prepare": "husky",
     "type-check": "next typegen && tsc --noEmit -p .",
     "analyze": "next experimental-analyze",
-    "docs:components": "node scripts/generate-docs.mjs"
+    "docs:components": "node scripts/generate-docs.mjs",
+    "poll:incidents": "node --env-file=.env scripts/poll-incidents.mjs"
   },
   "lint-staged": {
     "*.{js,jsx,mjs,ts,tsx}": "eslint --fix"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.112.3",
     "country-flag-icons": "1.6.20",
     "i18next": "26.3.6",
     "next": "16.3.0",

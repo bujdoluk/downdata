@@ -6,10 +6,12 @@ export const metadata: Metadata = {
   title: "History · downDATA",
 };
 
-export default function HistoryPage() {
+export default async function HistoryPage() {
+  const trackedServices = await getAllServices();
+
   return (
     <main className="flex flex-1 justify-center p-6">
-      <HistoryPageContent trackedServices={getAllServices()} />
+      <HistoryPageContent trackedServices={trackedServices} />
     </main>
   );
 }

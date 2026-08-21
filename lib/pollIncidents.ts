@@ -1,0 +1,142 @@
+import { getAllServices } from "@/lib/services";
+import { getAllIntegrations } from "@/lib/integrations";
+import { getSupabaseClient } from "@/lib/supabase";
+import { runInBatches } from "@/lib/runInBatches";
+
+// The full upstream Statuspage payload — deliberately not types/service.ts's
+// StatuspageIncident, which only ever modeled what the current UI reads and
+// is read structurally across service/, history/, incidents/ (see AGENTS.md).
+// This type is local to the poller on purpose.
+type RawComponent = { id: string; name: string; status: string };
+
+type RawIncidentUpdate = {
+  id: string;
+  incident_id: string;
+  status: string;
+  body: string;
+  affected_components: RawComponent[] | null;
+  created_at: string;
+  updated_at: string;
+  display_at: string | null;
+  deliver_notifications: boolean;
+  custom_tweet: string | null;
+  tweet_id: string | null;
+};
+
+type RawIncident = {
+  id: string;
+  name: string;
+  status: string;
+  impact: string;
+  created_at: string;
+  updated_at: string;
+  monitoring_at: string | null;
+  resolved_at: string | null;
+  shortlink: string;
+  components: RawComponent[] | null;
+  incident_updates: RawIncidentUpdate[];
+};
+
+const FETCH_CONCURRENCY = 200;
+
+async function upsertIncident(serviceSlug: string, incident: RawIncident) {
+  const supabase = getSupabaseClient();
+  const { error } = await supabase.rpc("upsert_incident", {
+    p_service_slug: serviceSlug,
+    p_id: incident.id,
+    p_name: incident.name,
+    p_status: incident.status,
+    p_impact: incident.impact,
+    p_created_at: incident.created_at,
+    p_updated_at: incident.updated_at,
+    p_monitoring_at: incident.monitoring_at,
+    p_resolved_at: incident.resolved_at,
+    p_shortlink: incident.shortlink,
+    p_components: incident.components,
+  });
+  if (error) throw error;
+
+  for (const update of incident.incident_updates) {
+    const { error: updateError } = await supabase.rpc("upsert_incident_update", {
+      p_service_slug: serviceSlug,
+      p_incident_id: incident.id,
+      p_id: update.id,
+      p_status: update.status,
+      p_body: update.body,
+      p_affected_components: update.affected_components,
+      p_created_at: update.created_at,
+      p_updated_at: update.updated_at,
+      p_display_at: update.display_at,
+      p_deliver_notifications: update.deliver_notifications,
+      p_custom_tweet: update.custom_tweet,
+      p_tweet_id: update.tweet_id,
+    });
+    if (updateError) throw updateError;
+  }
+}
+
+// Returns how many of this service's incidents failed to upsert — used to
+// decide whether this service's first poll is clean enough to mark seeded.
+async function pollOneService(service: { slug: string; host: string }): Promise<{ incidentCount: number; failed: number }> {
+  const res = await fetch(`https://${service.host}/api/v2/incidents.json`, { signal: AbortSignal.timeout(8_000) });
+  if (!res.ok) throw new Error(`Upstream returned ${res.status}`);
+
+  const data = await res.json();
+  const incidents = (data.incidents ?? []) as RawIncident[];
+
+  let failed = 0;
+  for (const incident of incidents) {
+    // Isolated per incident: one malformed incident (bad timestamp,
+    // unexpected null) can't take its otherwise-healthy siblings down.
+    try {
+      await upsertIncident(service.slug, incident);
+    } catch {
+      failed++;
+    }
+  }
+
+  return { incidentCount: incidents.length, failed };
+}
+
+async function backfillIfFirstPoll(serviceSlug: string, failed: number) {
+  const supabase = getSupabaseClient();
+  const { data: seen } = await supabase.from("polled_services").select("service_slug").eq("service_slug", serviceSlug).maybeSingle();
+  if (seen) return;
+
+  // First time this service has ever been polled: mark everything it just
+  // produced as already-delivered to every currently connected integration,
+  // so this initial backfill of pre-existing history never gets notified.
+  const { data: events } = await supabase.from("incident_events").select("id").eq("service_slug", serviceSlug);
+  const integrations = await getAllIntegrations();
+  const rows = (events ?? []).flatMap((event) => integrations.map((integration) => ({ event_id: event.id, integration_slug: integration.slug })));
+  if (rows.length > 0) {
+    await supabase.from("incident_event_deliveries").upsert(rows, { onConflict: "event_id,integration_slug", ignoreDuplicates: true });
+  }
+
+  // Only mark it seeded once a pass had zero per-incident failures — a
+  // failure that succeeds on a later retry is still backfilled history,
+  // not a new event, so it still deserves suppression rather than
+  // slipping through as "new" just because it failed once first.
+  if (failed === 0) {
+    await supabase.from("polled_services").insert({ service_slug: serviceSlug });
+  }
+}
+
+export async function pollAllIncidents(): Promise<{ servicesPolled: number; incidentsUpserted: number; failed: number }> {
+  const services = await getAllServices();
+  let incidentsUpserted = 0;
+  let failedTotal = 0;
+
+  await runInBatches(services, FETCH_CONCURRENCY, async (service) => {
+    try {
+      const { incidentCount, failed } = await pollOneService(service);
+      incidentsUpserted += incidentCount - failed;
+      failedTotal += failed;
+      await backfillIfFirstPoll(service.slug, failed);
+    } catch {
+      failedTotal++;
+    }
+  });
+
+  return { servicesPolled: services.length, incidentsUpserted, failed: failedTotal };
+}

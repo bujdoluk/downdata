@@ -27,9 +27,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Runtime/UI**: React 19
 - **Styling**: Tailwind CSS v4 + daisyUI 5 (config lives in `app/globals.css` via `@import "tailwindcss"` / `@plugin "daisyui"` — there is no `tailwind.config.ts`)
 - **Component library**: none — hand-rolled components styled with daisyUI classes + Tailwind utilities
-- **Data layer**: none — no database. Tracked services live in a flat JSON file (`data/services.json`, gitignored, seeded on first run) read/written synchronously by `lib/services.ts`. Live status itself is never stored — it's fetched from each tracked host's public Atlassian Statuspage JSON endpoints on every request/poll
+- **Data layer**: Supabase (Postgres). Tracked services/boards/integrations live in `services`/`boards`/`integrations` tables, read/written via `lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts` — all async now (they used to be synchronous `fs` reads/writes against `data/*.json`, which broke entirely on Vercel's read-only deployed filesystem; see the Failure log). Incident history for the 1-minute poller lives in `incidents`/`incident_updates`/`incident_events`/`incident_event_deliveries` (see `supabase/migrations/`). Live status itself is still never stored server-side beyond that — it's fetched from each tracked host's public Atlassian Statuspage JSON endpoints on every request/poll (`revalidate: 60`)
 - **Auth**: none — single-user app, no accounts, no login
-- **External services**: none requiring credentials — no `.env` file exists or is needed. The only outbound calls are to the public, unauthenticated Statuspage API (`/api/v2/status.json`, `/api/v2/summary.json`, `/api/v2/incidents.json`) of whatever host a service tracks
+- **External services**: Supabase (`SUPABASE_URL`/`SUPABASE_SERVICE_ROLE_KEY`, server-only, never exposed to the client) and Slack (OAuth "Add to Slack", `SLACK_CLIENT_ID`/`SLACK_CLIENT_SECRET`). A real `.env` now exists (gitignored; see `.env.example`) — this is no longer a zero-secrets app. Outbound calls: the public, unauthenticated Statuspage API (`/api/v2/status.json`, `/api/v2/summary.json`, `/api/v2/incidents.json`) of whatever host a service tracks, plus Supabase and Slack's own APIs
 - **i18n**: `i18next` + `react-i18next`, 13 locales
 - **Testing**: none configured — no test runner, no `__tests__`/`e2e` folder, no test script in `package.json`. Verify changes with `npm run type-check` and `npm run lint`, plus the `run` skill (or a manual check) — don't assume a test suite exists
 - **Linting**: ESLint 9 flat config (`eslint-config-next` core-web-vitals + typescript rules)
@@ -65,7 +65,12 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   ├── sidebar/                      # Sidebar.tsx (desktop nav), SidebarNavLink.tsx (shared with navbar's mobile menu)
 │   └── icons/                        # small icon components shared across navbar/sidebar
 ├── lib/
-│   ├── services.ts                   # data/services.json CRUD — getAllServices/addService/removeService/resolveServiceBySlug
+│   ├── services.ts                   # Supabase `services` table CRUD (async) — getAllServices/addService/removeService/resolveServiceBySlug
+│   ├── boards.ts                     # Supabase `boards` table CRUD (async) — getAllBoards/addBoard/renameBoard/removeBoard/addServiceToBoard/removeServiceFromBoard
+│   ├── integrations.ts               # Supabase `integrations` table CRUD (async) — getAllIntegrations/addIntegration/removeIntegration
+│   ├── supabase.ts                   # getSupabaseClient() — lazy, server-only, service-role key
+│   ├── pollIncidents.ts              # pollAllIncidents() — the 1-minute incident poller, diff-only writes (see supabase/migrations/)
+│   ├── notifyIncidentEvents.ts       # notifyPendingEvents() — Slack notification fan-out over incident_events
 │   ├── serviceCatalog.ts             # SERVICE_CATALOG — the fixed list of known services (slug/name/host)
 │   ├── statusBatch.ts                # fetchStatusBatch() — parallel-fetches status+incidents for a set of services
 │   ├── usePolledFetch.ts             # generic "poll this URL every 30s" hook
@@ -75,10 +80,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   └── i18n/
 │       ├── i18n.ts                    # the one i18next instance, used app-wide
 │       └── locales/                   # 13 locale JSON files: en, sk, cs, de, pl, pt, ru, es, it, fr, sv, nb, nl
-├── types/                            # service.ts, logo.ts, i18n.ts — re-exported from index.ts
-├── data/services.json                # gitignored, runtime-created — the tracked-services registry
+├── types/                            # service.ts, board.ts, integration.ts, logo.ts, i18n.ts — re-exported from index.ts
+├── supabase/migrations/               # numbered .sql files, run manually in Supabase's SQL editor (no CLI in this repo)
 ├── docs/COMPONENTS.md                # generated prop reference for every component (npm run docs:components)
 ├── scripts/generate-docs.mjs         # generates docs/COMPONENTS.md via react-docgen-typescript
+├── scripts/poll-incidents.mjs        # npm run poll:incidents — one-shot trigger for the cron poll+notify endpoint
 ├── .husky/pre-commit                 # runs lint-staged
 └── package.json
 ```
@@ -101,9 +107,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## 🔄 Data Flow
 
-- No database, no server-side cache layer. `lib/services.ts` is the only persistence — synchronous `fs` reads/writes against `data/services.json`, reseeded from a small `BUILTIN_SERVICES` subset of `SERVICE_CATALOG` the first time the file doesn't exist
-- Live status is never stored — every page/poll calls the tracked service's own Atlassian Statuspage JSON endpoints directly (`lib/statusBatch.ts`, or inline in `app/api/summary/[slug]/route.ts`), relying on Next's `fetch` `{ next: { revalidate: 30 } }` for caching
-- Client-side polling goes through `lib/usePolledFetch.ts` (30s interval) — reuse it for any new "keep this JSON fresh" need instead of hand-rolling another `useEffect`/`setInterval` pair
+- Supabase (Postgres) is the persistence layer for tracked services/boards/integrations (`lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts`, all async — see the Failure log for why they used to be synchronous `fs` calls and no longer are) and for incident history (`lib/pollIncidents.ts`, populated by its own 1-minute cron cycle, not by page views — see `app/api/cron/poll-incidents/route.ts` and `supabase/migrations/`)
+- Live status is never *cached in the database* — every page/poll still calls the tracked service's own Atlassian Statuspage JSON endpoints directly (`lib/statusBatch.ts`, or inline in `app/api/summary/[slug]/route.ts`), relying on Next's `fetch` `{ next: { revalidate: 60 } }` for caching. Incident *history* specifically also gets durably stored by the separate poller above, independent of this on-demand path
+- Client-side polling goes through `lib/usePolledFetch.ts` (60s interval) — reuse it for any new "keep this JSON fresh" need instead of hand-rolling another `useEffect`/`setInterval` pair
 
 ## 🧱 Component & Styling Guidelines
 
@@ -166,7 +172,8 @@ One word per concept — reuse the existing one, don't coin a new one.
 
 - `POST /api/services` fetches whatever hostname the client submits (`https://${host}/api/v2/status.json`) to confirm it's a real Statuspage before tracking it — that's a user-controlled server-side fetch (SSRF-shaped surface, though scoped to HTTPS and an expected JSON shape). Apply the same host-validation pattern to any new feature that accepts a user-supplied URL/hostname
 - `next.config.ts` sets no CSP or security headers currently — don't assume any are in place
-- No secrets, no `.env` file — nothing here needs one today. If a future integration adds one, it's already covered by the `.env*` gitignore pattern (`!.env.example` is carved out for a committed example file, should one ever be added)
+- Real secrets now exist in a gitignored `.env` (`SUPABASE_SERVICE_ROLE_KEY`, `SLACK_CLIENT_SECRET`, `CRON_SECRET`) — see `.env.example` for the full list. `SUPABASE_SERVICE_ROLE_KEY` bypasses Row Level Security entirely; it must only ever be read server-side (`lib/supabase.ts`) and never prefixed `NEXT_PUBLIC_` or otherwise exposed to the client
+- `/api/cron/poll-incidents` is guarded by a constant-time comparison against `CRON_SECRET`, not a plain `!==` — apply the same care to any other endpoint that should only be triggered by a trusted caller, not a logged-in user (this app still has no auth/accounts)
 
 ## Keeping this file current
 
@@ -179,4 +186,5 @@ This file records what actually went wrong or turned out non-obvious, not aspira
 
 - This repo has shipped dead code from a refactor before, more than once — `Navbar.tsx` kept fetching and forwarding a `services` prop nothing read after `<ServiceSearch>` was cut from its JSX; `MyServicesSection`/`ServiceGrid`/`ServiceCard` (plus `app/api/status/route.ts`) survived being fully superseded by `ServicesPageContent`/`CatalogServiceGrid`/`CatalogServiceCard`; `lib/i18n/i18nCore.ts` duplicated `i18n.ts` with zero importers. When a component stops rendering something, grep every remaining reference to what it imported and delete what's now unreachable — don't leave the import/prop/route behind
 - `GearIcon`/`ActivityIcon` were independently redefined, byte-for-byte, in both `navbar/NavbarClient.tsx` and `sidebar/Sidebar.tsx` before being pulled into `components/icons/NavIcons.tsx`. Check that folder (and the sibling feature folder) before writing a new inline SVG icon
+- The original `lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts` wrote to `data/*.json` via synchronous `fs` calls, seeded on first run via `mkdirSync`/`writeFileSync` if the file didn't exist. That works under `next dev`/`next start` on a normal machine but broke every page on the first Vercel deployment — Vercel's deployed functions run against a read-only filesystem (`ENOENT`/`EROFS` trying to `mkdir '/var/task/data'`), and `data/` is gitignored so it never even exists there to begin with. Local-filesystem writes at request time are fundamentally incompatible with serverless deployment; that persistence moved to Supabase for exactly this reason. If a future feature is tempted to write to a local file at runtime, it won't survive a real deployment either
 - Don't paste a config file's contents (tsconfig, eslint, etc.) verbatim into this doc — the file itself is the source of truth and a pasted copy just drifts. Describe the practical consequence of the non-default settings instead

@@ -10,6 +10,7 @@
     "unknown": "Desconhecido"
   },
   "nav": {
+    "boards": "Painéis",
     "services": "Serviços",
     "addService": "Adicionar serviço",
     "searchPlaceholder": "Pesquisar serviços…",
@@ -58,6 +59,7 @@
     "officialPageLabel": "Página oficial:",
     "pin": "Fixar",
     "unpin": "Desafixar",
+    "new": "Novo",
     "filter": {
       "investigating": "Investigação",
       "identified": "Identificado",
@@ -120,6 +122,21 @@
     },
     "resolutionTime": "Resolvido em {{hours}} h",
     "stillOngoing": "Ainda em curso"
+  },
+  "boards": {
+    "title": "Painéis",
+    "subtitle": "Agrupe os seus serviços monitorizados em painéis para equipas diferentes.",
+    "namePlaceholder": "DevOps, Backend, Frontend…",
+    "create": "Criar painel",
+    "empty": "Ainda não há painéis. Crie um para começar a agrupar serviços.",
+    "delete": "Eliminar",
+    "deleting": "A eliminar…",
+    "serviceCount_one": "{{count}} serviço",
+    "serviceCount_other": "{{count}} serviços",
+    "rename": "Renomear",
+    "onBoard": "Neste painel",
+    "addServices": "Adicionar serviços monitorizados",
+    "noServicesOnBoard": "Ainda não há serviços neste painel."
   },
   "addService": {
     "back": "← Voltar",

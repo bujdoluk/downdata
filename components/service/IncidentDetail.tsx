@@ -66,7 +66,7 @@ export default function IncidentDetail({ id }: { id: string }) {
             {incident.incident_updates.map((update, i) => (
               <li key={update.id}>
                 {i > 0 && <hr />}
-                <div className="timeline-start text-base-content/50 text-xs whitespace-nowrap">
+                <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
                   {formatDateTime(update.created_at)}
                 </div>
                 <div className="timeline-middle">

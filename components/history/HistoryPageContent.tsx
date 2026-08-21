@@ -196,39 +196,45 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
                   const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
                   return (
                     <li key={incident.id} className="border-base-content/10 border-t pt-3 first:border-t-0 first:pt-0">
-                      <div className="flex items-center gap-2">
-                        <p className="text-base-content text-base font-semibold">{incident.name}</p>
-                        <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
-                      </div>
-                      <p className="text-base-content/40 mt-1 text-xs">
-                        {t("incidents.officialPageLabel")}{" "}
-                        <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
-                          {incident.shortlink}
-                        </a>
-                      </p>
-                      <p className="text-base-content/50 mt-1 text-xs">
-                        {incident.resolved_at
-                          ? t("history.resolutionTime", { hours: hoursBetween(incident.created_at, incident.resolved_at).toFixed(1) })
-                          : t("history.stillOngoing")}
-                      </p>
-                      <ul className="timeline timeline-vertical mt-2 [--timeline-col-start:auto]">
-                        {incident.incident_updates.map((update, i) => (
-                          <li key={update.id}>
-                            {i > 0 && <hr />}
-                            <div className="timeline-start text-base-content/50 text-xs whitespace-nowrap">
-                              {formatDateTime(update.created_at)}
-                            </div>
-                            <div className="timeline-middle">
-                              <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
-                            </div>
-                            <div className="timeline-end timeline-box bg-base-200">
-                              <p className="text-base-content text-sm font-medium">{update.status}</p>
-                              <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
-                            </div>
-                            {i < incident.incident_updates.length - 1 && <hr />}
-                          </li>
-                        ))}
-                      </ul>
+                      <details open className="collapse collapse-arrow">
+                        <summary className="collapse-title flex min-h-0 items-center gap-2 p-0 pr-6">
+                          <p className="text-base-content text-base font-semibold">{incident.name}</p>
+                          <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
+                        </summary>
+                        <div className="collapse-content p-0">
+                          <p className="text-base-content/40 mt-1 text-xs">
+                            {t("incidents.officialPageLabel")}{" "}
+                            <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
+                              {incident.shortlink}
+                            </a>
+                          </p>
+                          <p className="text-base-content/50 mt-1 text-xs">
+                            {incident.resolved_at
+                              ? t("history.resolutionTime", {
+                                  hours: hoursBetween(incident.created_at, incident.resolved_at).toFixed(1),
+                                })
+                              : t("history.stillOngoing")}
+                          </p>
+                          <ul className="timeline timeline-vertical mt-2 [--timeline-col-start:auto]">
+                            {incident.incident_updates.map((update, i) => (
+                              <li key={update.id}>
+                                {i > 0 && <hr />}
+                                <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
+                                  {formatDateTime(update.created_at)}
+                                </div>
+                                <div className="timeline-middle">
+                                  <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
+                                </div>
+                                <div className="timeline-end timeline-box bg-base-200">
+                                  <p className="text-base-content text-sm font-medium">{update.status}</p>
+                                  <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
+                                </div>
+                                {i < incident.incident_updates.length - 1 && <hr />}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </details>
                     </li>
                   );
                 })}

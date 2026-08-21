@@ -1,25 +1,16 @@
 import { NextResponse } from "next/server";
 import { getAllServices } from "@/lib/services";
-import type { StatuspageIncident, TrackedIncident } from "@/types/service";
+import { getAllStoredIncidents, toIncidentApiShape } from "@/lib/getStoredIncident";
+import type { TrackedIncident } from "@/types/service";
 
 export async function GET() {
-  const services = await getAllServices();
+  const [services, incidents] = await Promise.all([getAllServices(), getAllStoredIncidents()]);
+  const serviceBySlug = new Map(services.map((service) => [service.slug, service]));
 
-  const results = await Promise.all(
-    services.map(async (service): Promise<TrackedIncident[]> => {
-      try {
-        const res = await fetch(`https://${service.host}/api/v2/incidents.json`, { next: { revalidate: 60 } });
-        if (!res.ok) return [];
+  const results: TrackedIncident[] = incidents.flatMap((incident) => {
+    const service = serviceBySlug.get(incident.service_slug);
+    return service ? [{ ...toIncidentApiShape(incident), service }] : [];
+  });
 
-        const data = await res.json();
-        return (data.incidents as StatuspageIncident[]).map((incident) => ({ ...incident, service }));
-      } catch {
-        return [];
-      }
-    }),
-  );
-
-  const incidents = results.flat().sort((a, b) => (a.updated_at < b.updated_at ? 1 : -1));
-
-  return NextResponse.json({ incidents });
+  return NextResponse.json({ incidents: results });
 }

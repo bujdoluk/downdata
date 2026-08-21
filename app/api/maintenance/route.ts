@@ -9,7 +9,7 @@ export async function GET() {
     services.map(async (service): Promise<TrackedMaintenance[]> => {
       try {
         const res = await fetch(`https://${service.host}/api/v2/scheduled-maintenances/upcoming.json`, {
-          next: { revalidate: 300 },
+          next: { revalidate: 60 },
         });
         if (!res.ok) return [];
 

@@ -60,7 +60,7 @@ export async function notifyPendingEvents(): Promise<void> {
 
   // No time-window cutoff — that would silently drop anything older than
   // the window if a cycle is ever delayed. Oldest-first with a bounded
-  // limit instead: a huge backlog just takes a few extra 5-minute cycles
+  // limit instead: a huge backlog just takes a few extra 1-minute cycles
   // to clear, nothing is ever dropped. The delivery anti-join below is
   // what actually guarantees "already handled" per channel.
   const { data: events } = await supabase

@@ -23,7 +23,7 @@ const RANGE_MS: Record<Exclude<TimeRange, "all">, number> = {
   "30d": 30 * 24 * 60 * 60 * 1000,
 };
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 7;
 
 function matchesStatus(incident: TrackedIncident, filter: StatusFilter): boolean {
   return filter === "all" || incident.status === filter;

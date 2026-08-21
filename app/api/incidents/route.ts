@@ -8,7 +8,7 @@ export async function GET() {
   const results = await Promise.all(
     services.map(async (service): Promise<TrackedIncident[]> => {
       try {
-        const res = await fetch(`https://${service.host}/api/v2/incidents.json`, { next: { revalidate: 60 } });
+        const res = await fetch(`https://${service.host}/api/v2/incidents.json`, { next: { revalidate: 300 } });
         if (!res.ok) return [];
 
         const data = await res.json();

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { onServicesChanged } from "@/lib/servicesChanged";
 
-const POLL_INTERVAL_MS = 60_000;
+const POLL_INTERVAL_MS = 300_000;
 
 export function usePolledFetch<T>(url: string) {
   const [data, setData] = useState<T | null>(null);

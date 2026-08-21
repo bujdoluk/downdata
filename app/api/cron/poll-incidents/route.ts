@@ -4,7 +4,7 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { pollAllIncidents } from "@/lib/pollIncidents";
 import { notifyPendingEvents } from "@/lib/notifyIncidentEvents";
 
-const LOCK_STALE_MS = 5 * 60 * 1000;
+const LOCK_STALE_MS = 15 * 60 * 1000;
 
 function isAuthorized(request: Request): boolean {
   const secret = process.env.CRON_SECRET;

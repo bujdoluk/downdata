@@ -12,7 +12,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
 
   try {
     const res = await fetch(`https://${service.host}/api/v2/incidents.json`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 300 },
     });
 
     if (!res.ok) {

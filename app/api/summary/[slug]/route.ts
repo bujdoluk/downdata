@@ -10,7 +10,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   }
 
   try {
-    const res = await fetch(`https://${service.host}/api/v2/summary.json`, { next: { revalidate: 60 } });
+    const res = await fetch(`https://${service.host}/api/v2/summary.json`, { next: { revalidate: 300 } });
 
     if (!res.ok) {
       return NextResponse.json(

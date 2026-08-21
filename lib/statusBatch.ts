@@ -8,8 +8,8 @@ export async function fetchStatusBatch(
     services.map(async (service) => {
       try {
         const [statusRes, incidentsRes] = await Promise.all([
-          fetch(`https://${service.host}/api/v2/status.json`, { next: { revalidate: 60 } }),
-          fetch(`https://${service.host}/api/v2/incidents.json`, { next: { revalidate: 60 } }),
+          fetch(`https://${service.host}/api/v2/status.json`, { next: { revalidate: 300 } }),
+          fetch(`https://${service.host}/api/v2/incidents.json`, { next: { revalidate: 300 } }),
         ]);
 
         if (!statusRes.ok) {

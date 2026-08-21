@@ -27,7 +27,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Runtime/UI**: React 19
 - **Styling**: Tailwind CSS v4 + daisyUI 5 (config lives in `app/globals.css` via `@import "tailwindcss"` / `@plugin "daisyui"` — there is no `tailwind.config.ts`)
 - **Component library**: none — hand-rolled components styled with daisyUI classes + Tailwind utilities
-- **Data layer**: Supabase (Postgres). Tracked services/boards/integrations live in `services`/`boards`/`integrations` tables, read/written via `lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts` — all async now (they used to be synchronous `fs` reads/writes against `data/*.json`, which broke entirely on Vercel's read-only deployed filesystem; see the Failure log). Incident history for the 1-minute poller lives in `incidents`/`incident_updates`/`incident_events`/`incident_event_deliveries` (see `supabase/migrations/`). Live status itself is still never stored server-side beyond that — it's fetched from each tracked host's public Atlassian Statuspage JSON endpoints on every request/poll (`revalidate: 60`)
+- **Data layer**: Supabase (Postgres). Tracked services/boards/integrations live in `services`/`boards`/`integrations` tables, read/written via `lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts` — all async now (they used to be synchronous `fs` reads/writes against `data/*.json`, which broke entirely on Vercel's read-only deployed filesystem; see the Failure log). Incident history for the 5-minute poller lives in `incidents`/`incident_updates`/`incident_events`/`incident_event_deliveries` (see `supabase/migrations/`). Live status itself is still never stored server-side beyond that — it's fetched from each tracked host's public Atlassian Statuspage JSON endpoints on every request/poll (`revalidate: 300`)
 - **Auth**: none — single-user app, no accounts, no login
 - **External services**: Supabase (`SUPABASE_URL`/`SUPABASE_SERVICE_ROLE_KEY`, server-only, never exposed to the client) and Slack (OAuth "Add to Slack", `SLACK_CLIENT_ID`/`SLACK_CLIENT_SECRET`). A real `.env` now exists (gitignored; see `.env.example`) — this is no longer a zero-secrets app. Outbound calls: the public, unauthenticated Statuspage API (`/api/v2/status.json`, `/api/v2/summary.json`, `/api/v2/incidents.json`) of whatever host a service tracks, plus Supabase and Slack's own APIs
 - **i18n**: `i18next` + `react-i18next`, 13 locales
@@ -69,7 +69,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   ├── boards.ts                     # Supabase `boards` table CRUD (async) — getAllBoards/addBoard/renameBoard/removeBoard/addServiceToBoard/removeServiceFromBoard
 │   ├── integrations.ts               # Supabase `integrations` table CRUD (async) — getAllIntegrations/addIntegration/removeIntegration
 │   ├── supabase.ts                   # getSupabaseClient() — lazy, server-only, service-role key
-│   ├── pollIncidents.ts              # pollAllIncidents() — the 1-minute incident poller, diff-only writes (see supabase/migrations/)
+│   ├── pollIncidents.ts              # pollAllIncidents() — the 5-minute incident poller, diff-only writes (see supabase/migrations/)
 │   ├── notifyIncidentEvents.ts       # notifyPendingEvents() — Slack notification fan-out over incident_events
 │   ├── serviceCatalog.ts             # SERVICE_CATALOG — the fixed list of known services (slug/name/host)
 │   ├── statusBatch.ts                # fetchStatusBatch() — parallel-fetches status+incidents for a set of services
@@ -107,7 +107,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## 🔄 Data Flow
 
-- Supabase (Postgres) is the persistence layer for tracked services/boards/integrations (`lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts`, all async — see the Failure log for why they used to be synchronous `fs` calls and no longer are) and for incident history (`lib/pollIncidents.ts`, populated by its own 1-minute cron cycle, not by page views — see `app/api/cron/poll-incidents/route.ts` and `supabase/migrations/`)
+- Supabase (Postgres) is the persistence layer for tracked services/boards/integrations (`lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts`, all async — see the Failure log for why they used to be synchronous `fs` calls and no longer are) and for incident history (`lib/pollIncidents.ts`, populated by its own 5-minute cron cycle, not by page views — see `app/api/cron/poll-incidents/route.ts` and `supabase/migrations/`)
 - Live status is never *cached in the database* — every page/poll still calls the tracked service's own Atlassian Statuspage JSON endpoints directly (`lib/statusBatch.ts`, or inline in `app/api/summary/[slug]/route.ts`), relying on Next's `fetch` `{ next: { revalidate: 60 } }` for caching. Incident *history* specifically also gets durably stored by the separate poller above, independent of this on-demand path
 - Client-side polling goes through `lib/usePolledFetch.ts` (60s interval) — reuse it for any new "keep this JSON fresh" need instead of hand-rolling another `useEffect`/`setInterval` pair
 

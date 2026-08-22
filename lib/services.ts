@@ -1,6 +1,6 @@
 import { getSupabaseClient } from "@/lib/supabase";
 import type { ServiceDefinition } from "@/types/service";
-import { SERVICE_CATALOG } from "@/lib/serviceCatalog";
+import { getCatalog } from "@/lib/catalog";
 
 export async function getAllServices(): Promise<ServiceDefinition[]> {
   const supabase = getSupabaseClient();
@@ -11,7 +11,10 @@ export async function getAllServices(): Promise<ServiceDefinition[]> {
 
 export async function resolveServiceBySlug(slug: string): Promise<ServiceDefinition | undefined> {
   const services = await getAllServices();
-  return services.find((service) => service.slug === slug) ?? SERVICE_CATALOG.find((entry) => entry.slug === slug);
+  const tracked = services.find((service) => service.slug === slug);
+  if (tracked) return tracked;
+  const catalog = await getCatalog();
+  return catalog.find((entry) => entry.slug === slug);
 }
 
 function slugify(name: string): string {
@@ -36,6 +39,17 @@ export async function addService(input: { name: string; host: string }): Promise
   const supabase = getSupabaseClient();
   const { error } = await supabase.from("services").insert(service);
   if (error) throw error;
+
+  // Best-effort: the service is already tracked at this point (the insert
+  // above succeeded) — a catalog-membership hiccup (e.g. a host uniqueness
+  // collision with a different slug already in the catalog) shouldn't fail
+  // the whole tracking flow the user is waiting on. Logged, not thrown: the
+  // catalog poller just won't pick this host up until it's fixed.
+  const { error: catalogError } = await supabase
+    .from("catalog")
+    .upsert({ slug: service.slug, name: service.name, host: service.host }, { onConflict: "slug", ignoreDuplicates: true });
+  if (catalogError) console.error(`addService: failed to add "${service.slug}" to catalog:`, catalogError);
+
   return service;
 }
 

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { SERVICE_CATALOG } from "@/lib/serviceCatalog";
+import { getCatalog } from "@/lib/catalog";
 import { fetchStatusBatch } from "@/lib/statusBatch";
 
 export async function GET() {
-  const data = await fetchStatusBatch(SERVICE_CATALOG);
+  const data = await fetchStatusBatch(await getCatalog());
   return NextResponse.json(data);
 }

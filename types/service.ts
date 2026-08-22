@@ -6,7 +6,7 @@ export type ServiceDefinition = {
   host: string;
 };
 
-export type CatalogCategory = "infrastructure" | "devtools" | "database" | "communication" | "ai";
+export type CatalogCategory = "infrastructure" | "devtools" | "database" | "communication" | "ai" | "other";
 
 export type CatalogEntry = {
   slug: string;

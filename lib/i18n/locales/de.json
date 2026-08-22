@@ -150,7 +150,8 @@
       "devtools": "Entwicklertools",
       "database": "Datenbank",
       "communication": "Kommunikation & Zusammenarbeit",
-      "ai": "KI"
+      "ai": "KI",
+      "other": "Sonstiges"
     },
     "subtitle": "Durchsuche den Katalog und beginne, einen neuen Dienst zu überwachen."
   },

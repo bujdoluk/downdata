@@ -1,4 +1,5 @@
 import { getAllIntegrations } from "@/lib/integrations";
+import { getAllServices } from "@/lib/services";
 import { getSupabaseClient } from "@/lib/supabase";
 import { getStoredIncidentWithUpdates } from "@/lib/getStoredIncident";
 import { runInBatches } from "@/lib/runInBatches";
@@ -58,6 +59,13 @@ export async function notifyPendingEvents(): Promise<void> {
   const integrations = await getAllIntegrations();
   if (integrations.length === 0) return;
 
+  // Catalog-wide polling means incident_events now spans every polled
+  // host, not just tracked ones — scope to tracked slugs *in the query*
+  // (not after fetching) so an untracked-host backlog can never crowd
+  // tracked events out of the 1000-row window below.
+  const trackedSlugs = (await getAllServices()).map((service) => service.slug);
+  if (trackedSlugs.length === 0) return;
+
   // No time-window cutoff — that would silently drop anything older than
   // the window if a cycle is ever delayed. Oldest-first with a bounded
   // limit instead: a huge backlog just takes a few extra 1-minute cycles
@@ -66,6 +74,7 @@ export async function notifyPendingEvents(): Promise<void> {
   const { data: events } = await supabase
     .from("incident_events")
     .select("*")
+    .in("service_slug", trackedSlugs)
     .order("occurred_at", { ascending: true })
     .limit(1000);
   if (!events?.length) return;

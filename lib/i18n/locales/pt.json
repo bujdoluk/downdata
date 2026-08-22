@@ -150,7 +150,8 @@
       "devtools": "Ferramentas de programação",
       "database": "Base de dados",
       "communication": "Comunicação e colaboração",
-      "ai": "IA"
+      "ai": "IA",
+      "other": "Outros"
     },
     "subtitle": "Explore o catálogo e comece a monitorizar um novo serviço."
   },

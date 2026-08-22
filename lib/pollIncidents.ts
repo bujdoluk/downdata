@@ -1,4 +1,4 @@
-import { getAllServices } from "@/lib/services";
+import { getCatalog } from "@/lib/catalog";
 import { getAllIntegrations } from "@/lib/integrations";
 import { getSupabaseClient } from "@/lib/supabase";
 import { runInBatches } from "@/lib/runInBatches";
@@ -110,7 +110,17 @@ async function backfillIfFirstPoll(serviceSlug: string, failed: number) {
   const integrations = await getAllIntegrations();
   const rows = (events ?? []).flatMap((event) => integrations.map((integration) => ({ event_id: event.id, integration_slug: integration.slug })));
   if (rows.length > 0) {
-    await supabase.from("incident_event_deliveries").upsert(rows, { onConflict: "event_id,integration_slug", ignoreDuplicates: true });
+    const { error: deliveryError } = await supabase
+      .from("incident_event_deliveries")
+      .upsert(rows, { onConflict: "event_id,integration_slug", ignoreDuplicates: true });
+    if (deliveryError) {
+      // Don't mark seeded below if the suppression rows didn't actually
+      // land — a silent failure here followed by a "seeded" marker would
+      // let this service's whole backlog flood every integration on the
+      // next notify cycle instead. Retry backfill next poll cycle instead.
+      console.error(`backfillIfFirstPoll: failed to backfill deliveries for "${serviceSlug}":`, deliveryError);
+      return;
+    }
   }
 
   // Only mark it seeded once a pass had zero per-incident failures — a
@@ -122,8 +132,20 @@ async function backfillIfFirstPoll(serviceSlug: string, failed: number) {
   }
 }
 
-export async function pollAllIncidents(): Promise<{ servicesPolled: number; incidentsUpserted: number; failed: number }> {
-  const services = await getAllServices();
+// djb2 — deterministic per slug, independent of catalog table order or
+// size, unlike an array-index modulo which reshuffles shard membership
+// every time a row is inserted before an existing one alphabetically.
+function hashSlug(slug: string): number {
+  let hash = 5381;
+  for (let i = 0; i < slug.length; i++) hash = (hash * 33) ^ slug.charCodeAt(i);
+  return hash >>> 0;
+}
+
+export async function pollAllIncidents(
+  shard?: { index: number; count: number },
+): Promise<{ servicesPolled: number; incidentsUpserted: number; failed: number }> {
+  const all = await getCatalog();
+  const services = shard ? all.filter((service) => hashSlug(service.slug) % shard.count === shard.index) : all;
   let incidentsUpserted = 0;
   let failedTotal = 0;
 

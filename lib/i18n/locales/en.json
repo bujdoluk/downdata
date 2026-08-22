@@ -150,7 +150,8 @@
       "devtools": "Developer Tools",
       "database": "Database",
       "communication": "Communication & Collaboration",
-      "ai": "AI"
+      "ai": "AI",
+      "other": "Other"
     },
     "subtitle": "Browse the catalog and start tracking a new service."
   },

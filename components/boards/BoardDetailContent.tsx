@@ -11,7 +11,7 @@ import { useCatalogStatus } from "@/lib/useCatalogStatus";
 import { notifyServicesChanged } from "@/lib/servicesChanged";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 
-const CATEGORY_ORDER: CatalogCategory[] = ["infrastructure", "devtools", "database", "communication", "ai"];
+const CATEGORY_ORDER: CatalogCategory[] = ["infrastructure", "devtools", "database", "communication", "ai", "other"];
 
 export default function BoardDetailContent({
   board,

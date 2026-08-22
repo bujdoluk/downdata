@@ -150,7 +150,8 @@
       "devtools": "Ontwikkelaarstools",
       "database": "Database",
       "communication": "Communicatie en samenwerking",
-      "ai": "AI"
+      "ai": "AI",
+      "other": "Overig"
     },
     "subtitle": "Blader door de catalogus en begin een nieuwe dienst te volgen."
   },

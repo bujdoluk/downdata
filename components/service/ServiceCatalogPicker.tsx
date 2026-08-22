@@ -9,7 +9,7 @@ import type { CatalogCategory, CatalogEntry } from "@/types/service";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 import { notifyServicesChanged } from "@/lib/servicesChanged";
 
-const CATEGORY_ORDER: CatalogCategory[] = ["infrastructure", "devtools", "database", "communication", "ai"];
+const CATEGORY_ORDER: CatalogCategory[] = ["infrastructure", "devtools", "database", "communication", "ai", "other"];
 
 export default function ServiceCatalogPicker({
   catalog,

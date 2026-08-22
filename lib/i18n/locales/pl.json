@@ -158,7 +158,8 @@
       "devtools": "Narzędzia deweloperskie",
       "database": "Baza danych",
       "communication": "Komunikacja i współpraca",
-      "ai": "AI"
+      "ai": "AI",
+      "other": "Inne"
     },
     "subtitle": "Przeglądaj katalog i zacznij monitorować nową usługę."
   },

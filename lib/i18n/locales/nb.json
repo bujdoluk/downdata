@@ -68,9 +68,8 @@
       "allStatuses": "Alle statuser",
       "resolved": "Løst",
       "postmortem": "Postmortem",
-      "service": "Tjeneste",
       "timeRange": "Tidsperiode",
-      "allServices": "Alle tjenester",
+      "searchService": "Søk etter tjeneste…",
       "allTime": "Hele perioden",
       "last24h": "Siste 24 timer",
       "last7d": "Siste 7 dager",
@@ -108,7 +107,6 @@
   "history": {
     "title": "Historikk",
     "subtitle": "Velg en tjeneste for å se hendelseshistorikken for de siste 12 månedene.",
-    "servicePicker": "Tjeneste",
     "selectService": "Velg en tjeneste…",
     "loading": "Laster historikk…",
     "unreachable": "Kunne ikke laste hendelseshistorikken.",

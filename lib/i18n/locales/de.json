@@ -68,9 +68,8 @@
       "allStatuses": "Alle Status",
       "resolved": "Gelöst",
       "postmortem": "Postmortem",
-      "service": "Dienst",
       "timeRange": "Zeitraum",
-      "allServices": "Alle Dienste",
+      "searchService": "Dienst suchen…",
       "allTime": "Gesamter Zeitraum",
       "last24h": "Letzte 24 Stunden",
       "last7d": "Letzte 7 Tage",
@@ -108,7 +107,6 @@
   "history": {
     "title": "Verlauf",
     "subtitle": "Wähle einen Dienst, um dessen Vorfallverlauf der letzten 12 Monate zu sehen.",
-    "servicePicker": "Dienst",
     "selectService": "Dienst auswählen…",
     "loading": "Verlauf wird geladen…",
     "unreachable": "Vorfallverlauf konnte nicht geladen werden.",

@@ -68,9 +68,8 @@
       "allStatuses": "Alle statussen",
       "resolved": "Opgelost",
       "postmortem": "Postmortem",
-      "service": "Dienst",
       "timeRange": "Periode",
-      "allServices": "Alle diensten",
+      "searchService": "Dienst zoeken…",
       "allTime": "Hele periode",
       "last24h": "Laatste 24 uur",
       "last7d": "Laatste 7 dagen",
@@ -108,7 +107,6 @@
   "history": {
     "title": "Geschiedenis",
     "subtitle": "Kies een dienst om de incidentgeschiedenis van de afgelopen 12 maanden te bekijken.",
-    "servicePicker": "Dienst",
     "selectService": "Selecteer een dienst…",
     "loading": "Geschiedenis laden…",
     "unreachable": "Kan de incidentgeschiedenis niet laden.",

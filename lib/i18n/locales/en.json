@@ -68,9 +68,8 @@
       "allStatuses": "All statuses",
       "resolved": "Resolved",
       "postmortem": "Postmortem",
-      "service": "Service",
       "timeRange": "Time range",
-      "allServices": "All services",
+      "searchService": "Search by service…",
       "allTime": "All time",
       "last24h": "Last 24 hours",
       "last7d": "Last 7 days",
@@ -108,7 +107,6 @@
   "history": {
     "title": "History",
     "subtitle": "Pick a service to see its incident history over the last 12 months.",
-    "servicePicker": "Service",
     "selectService": "Select a service…",
     "loading": "Loading history…",
     "unreachable": "Unable to load incident history.",

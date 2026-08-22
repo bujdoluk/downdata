@@ -69,9 +69,8 @@
       "allStatuses": "Všetky stavy",
       "resolved": "Vyriešené",
       "postmortem": "Postmortem",
-      "service": "Služba",
       "timeRange": "Časové obdobie",
-      "allServices": "Všetky služby",
+      "searchService": "Hľadať službu…",
       "allTime": "Celé obdobie",
       "last24h": "Posledných 24 hodín",
       "last7d": "Posledných 7 dní",
@@ -109,7 +108,6 @@
   "history": {
     "title": "História",
     "subtitle": "Vyberte službu a zobrazte si históriu incidentov za posledných 12 mesiacov.",
-    "servicePicker": "Služba",
     "selectService": "Vyberte službu…",
     "loading": "Načítava sa história…",
     "unreachable": "Nepodarilo sa načítať históriu incidentov.",

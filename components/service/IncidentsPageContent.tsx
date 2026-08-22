@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, msSince } from "@/lib/formatTime";
-import type { ServiceDefinition, TrackedIncident } from "@/types/service";
+import type { TrackedIncident } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
@@ -35,22 +35,18 @@ export default function IncidentsPageContent() {
   const { pinned, togglePin } = usePinned("pinnedIncidents");
   const lastViewed = useIncidentsLastViewed(true);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
-  const [serviceFilter, setServiceFilter] = useState<string>("all");
+  const [serviceQuery, setServiceQuery] = useState("");
   const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRange>("all");
   const [page, setPage] = useState(1);
 
   const isLoading = !data && !error;
   const incidents = useMemo(() => data?.incidents ?? [], [data]);
-  const services = useMemo(() => {
-    const map = new Map<string, ServiceDefinition>();
-    for (const incident of incidents) map.set(incident.service.slug, incident.service);
-    return [...map.values()].sort((a, b) => a.name.localeCompare(b.name));
-  }, [incidents]);
+  const trimmedServiceQuery = serviceQuery.trim().toLowerCase();
   const filteredIncidents = incidents
     .filter(
       (incident) =>
         matchesStatus(incident, statusFilter) &&
-        (serviceFilter === "all" || incident.service.slug === serviceFilter) &&
+        (!trimmedServiceQuery || incident.service.name.toLowerCase().includes(trimmedServiceQuery)) &&
         (timeRangeFilter === "all" || msSince(incident.updated_at) <= RANGE_MS[timeRangeFilter]),
     )
     .sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id)));
@@ -74,30 +70,25 @@ export default function IncidentsPageContent() {
       ) : (
         <>
           <form
-            className="filter mt-4 flex-wrap items-center gap-2"
+            className="mt-4 flex flex-wrap items-center gap-2"
             onReset={() => {
               setStatusFilter("all");
-              setServiceFilter("all");
+              setServiceQuery("");
               setTimeRangeFilter("all");
               setPage(1);
             }}
           >
-            <select
-              className="select select-bordered select-sm w-40"
-              aria-label={t("incidents.filter.service")}
-              value={serviceFilter}
+            <input
+              type="text"
+              className="input input-bordered input-sm w-40"
+              aria-label={t("incidents.filter.searchService")}
+              placeholder={t("incidents.filter.searchService")}
+              value={serviceQuery}
               onChange={(e) => {
-                setServiceFilter(e.target.value);
+                setServiceQuery(e.target.value);
                 setPage(1);
               }}
-            >
-              <option value="all">{t("incidents.filter.allServices")}</option>
-              {services.map((service) => (
-                <option key={service.slug} value={service.slug}>
-                  {service.name}
-                </option>
-              ))}
-            </select>
+            />
             <select
               className="select select-bordered select-sm w-40"
               aria-label={t("incidents.filter.timeRange")}

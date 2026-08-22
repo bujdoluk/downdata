@@ -68,9 +68,8 @@
       "allStatuses": "Alla statusar",
       "resolved": "Löst",
       "postmortem": "Postmortem",
-      "service": "Tjänst",
       "timeRange": "Tidsperiod",
-      "allServices": "Alla tjänster",
+      "searchService": "Sök tjänst…",
       "allTime": "Hela perioden",
       "last24h": "Senaste 24 timmarna",
       "last7d": "Senaste 7 dagarna",
@@ -108,7 +107,6 @@
   "history": {
     "title": "Historik",
     "subtitle": "Välj en tjänst för att se dess incidenthistorik för de senaste 12 månaderna.",
-    "servicePicker": "Tjänst",
     "selectService": "Välj en tjänst…",
     "loading": "Läser in historik…",
     "unreachable": "Det gick inte att läsa in incidenthistoriken.",

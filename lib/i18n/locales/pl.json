@@ -70,9 +70,8 @@
       "allStatuses": "Wszystkie statusy",
       "resolved": "Rozwiązane",
       "postmortem": "Postmortem",
-      "service": "Usługa",
       "timeRange": "Zakres czasu",
-      "allServices": "Wszystkie usługi",
+      "searchService": "Szukaj usługi…",
       "allTime": "Cały okres",
       "last24h": "Ostatnie 24 godziny",
       "last7d": "Ostatnie 7 dni",
@@ -110,7 +109,6 @@
   "history": {
     "title": "Historia",
     "subtitle": "Wybierz usługę, aby zobaczyć historię incydentów z ostatnich 12 miesięcy.",
-    "servicePicker": "Usługa",
     "selectService": "Wybierz usługę…",
     "loading": "Ładowanie historii…",
     "unreachable": "Nie udało się załadować historii incydentów.",

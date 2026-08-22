@@ -68,9 +68,8 @@
       "allStatuses": "Tutti gli stati",
       "resolved": "Risolto",
       "postmortem": "Postmortem",
-      "service": "Servizio",
       "timeRange": "Periodo",
-      "allServices": "Tutti i servizi",
+      "searchService": "Cerca servizio…",
       "allTime": "Tutto il periodo",
       "last24h": "Ultime 24 ore",
       "last7d": "Ultimi 7 giorni",
@@ -108,7 +107,6 @@
   "history": {
     "title": "Cronologia",
     "subtitle": "Scegli un servizio per vedere la cronologia degli incidenti degli ultimi 12 mesi.",
-    "servicePicker": "Servizio",
     "selectService": "Seleziona un servizio…",
     "loading": "Caricamento della cronologia…",
     "unreachable": "Impossibile caricare la cronologia degli incidenti.",

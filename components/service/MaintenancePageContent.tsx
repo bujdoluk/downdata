@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime } from "@/lib/formatTime";
-import type { ServiceDefinition, TrackedMaintenance } from "@/types/service";
+import type { TrackedMaintenance } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { ExternalLinkIcon, PinIcon } from "@/components/icons/NavIcons";
@@ -12,17 +12,17 @@ import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
 import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
 
-export default function MaintenancePageContent({ trackedServices }: { trackedServices: ServiceDefinition[] }) {
+export default function MaintenancePageContent() {
   const { t } = useTranslation();
   const { data, error } = usePolledFetch<{ maintenances: TrackedMaintenance[] }>("/api/maintenance");
   const { pinned, togglePin } = usePinned("pinnedMaintenance");
-  const [serviceFilter, setServiceFilter] = useState<string>("all");
+  const [serviceQuery, setServiceQuery] = useState("");
 
   const isLoading = !data && !error;
   const maintenances = data?.maintenances ?? [];
-  const services = [...trackedServices].sort((a, b) => a.name.localeCompare(b.name));
+  const trimmedServiceQuery = serviceQuery.trim().toLowerCase();
   const filteredMaintenances = maintenances
-    .filter((maintenance) => serviceFilter === "all" || maintenance.service.slug === serviceFilter)
+    .filter((maintenance) => !trimmedServiceQuery || maintenance.service.name.toLowerCase().includes(trimmedServiceQuery))
     .sort((a, b) => {
       const pinDiff = Number(pinned.has(b.id)) - Number(pinned.has(a.id));
       if (pinDiff !== 0) return pinDiff;
@@ -42,19 +42,14 @@ export default function MaintenancePageContent({ trackedServices }: { trackedSer
         <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.empty")}</p>
       ) : (
         <>
-          <select
-            className="select select-bordered select-sm mt-4 w-40"
-            aria-label={t("incidents.filter.service")}
-            value={serviceFilter}
-            onChange={(e) => setServiceFilter(e.target.value)}
-          >
-            <option value="all">{t("incidents.filter.allServices")}</option>
-            {services.map((service) => (
-              <option key={service.slug} value={service.slug}>
-                {service.name}
-              </option>
-            ))}
-          </select>
+          <input
+            type="text"
+            className="input input-bordered input-sm mt-4 w-40"
+            aria-label={t("incidents.filter.searchService")}
+            placeholder={t("incidents.filter.searchService")}
+            value={serviceQuery}
+            onChange={(e) => setServiceQuery(e.target.value)}
+          />
 
           {filteredMaintenances.length === 0 ? (
             <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.noMatches")}</p>

@@ -7,6 +7,7 @@ import "@/lib/i18n/i18n";
 import type { ServiceDefinition, StatuspageIncident } from "@/types/service";
 import { buildIncidentCalendar } from "@/lib/buildIncidentCalendar";
 import IncidentCalendar from "@/components/history/IncidentCalendar";
+import ServiceSearchPicker from "@/components/service/ServiceSearchPicker";
 import { formatDateTime } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
@@ -115,22 +116,15 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
       <p className="text-base-content/60 mt-1 text-sm">{t("history.subtitle")}</p>
 
       <div className="mt-4 flex flex-wrap items-center gap-4">
-        <select
-          className="select select-bordered select-sm w-56"
-          aria-label={t("history.servicePicker")}
+        <ServiceSearchPicker
+          services={services}
           value={slug}
-          onChange={(e) => {
-            setSlug(e.target.value);
+          onChange={(newSlug) => {
+            setSlug(newSlug);
             setSelectedDate(null);
           }}
-        >
-          <option value="">{t("history.selectService")}</option>
-          {services.map((service) => (
-            <option key={service.slug} value={service.slug}>
-              {service.name}
-            </option>
-          ))}
-        </select>
+          placeholder={t("history.selectService")}
+        />
       </div>
 
       {!slug ? null : isLoading ? (

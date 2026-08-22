@@ -248,6 +248,10 @@ export async function pollAllIncidents(
       await backfillIfFirstPoll(service.slug, failed);
     } else {
       failedTotal++;
+      // Otherwise a whole service's incident poll failing (bad host
+      // response, timeout) is completely invisible — pollAllIncidents's
+      // return value is never logged or inspected by its caller.
+      console.error(`pollOneServiceIncidents failed for "${service.slug}":`, incidentResult.reason);
     }
 
     if (maintenanceResult.status === "fulfilled") {
@@ -256,6 +260,7 @@ export async function pollAllIncidents(
       maintenancesFailedTotal += failed;
     } else {
       maintenancesFailedTotal++;
+      console.error(`pollOneServiceMaintenances failed for "${service.slug}":`, maintenanceResult.reason);
     }
   });
 

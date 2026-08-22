@@ -21,6 +21,7 @@
     "collapseSidebar": "Zbaliť postranný panel",
     "monitors": "Monitory",
     "incidents": "Incidenty",
+    "incidentsBadgeTooltip": "Vyšetrované alebo identifikované incidenty",
     "maintenances": "Údržby",
     "integrations": "Integrácie",
     "history": "História",

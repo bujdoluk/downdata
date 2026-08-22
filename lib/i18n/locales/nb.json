@@ -21,6 +21,7 @@
     "collapseSidebar": "Skjul sidepanelet",
     "monitors": "Overvåking",
     "incidents": "Hendelser",
+    "incidentsBadgeTooltip": "Hendelser under undersøkelse eller identifisert",
     "maintenances": "Vedlikehold",
     "integrations": "Integrasjoner",
     "history": "Historikk",

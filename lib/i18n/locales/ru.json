@@ -21,6 +21,7 @@
     "collapseSidebar": "Свернуть боковую панель",
     "monitors": "Мониторы",
     "incidents": "Инциденты",
+    "incidentsBadgeTooltip": "Расследуемые или определённые инциденты",
     "maintenances": "Обслуживания",
     "integrations": "Интеграции",
     "history": "История",

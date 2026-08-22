@@ -117,6 +117,7 @@ export default function Sidebar() {
           label={t("nav.incidents")}
           collapsed={collapsed}
           badge={activeIncidentCount}
+          badgeTitle={t("nav.incidentsBadgeTooltip")}
         />
         <SidebarNavLink
           href="/maintenance"

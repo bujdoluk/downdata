@@ -21,6 +21,7 @@
     "collapseSidebar": "Seitenleiste einklappen",
     "monitors": "Monitore",
     "incidents": "Vorfälle",
+    "incidentsBadgeTooltip": "Vorfälle in Untersuchung oder identifiziert",
     "maintenances": "Wartungen",
     "integrations": "Integrationen",
     "history": "Verlauf",

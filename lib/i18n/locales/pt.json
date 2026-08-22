@@ -21,6 +21,7 @@
     "collapseSidebar": "Recolher barra lateral",
     "monitors": "Monitores",
     "incidents": "Incidentes",
+    "incidentsBadgeTooltip": "Incidentes em investigação ou identificados",
     "maintenances": "Manutenções",
     "integrations": "Integrações",
     "history": "Histórico",

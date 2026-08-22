@@ -21,6 +21,7 @@
     "collapseSidebar": "Zijbalk inklappen",
     "monitors": "Monitoren",
     "incidents": "Incidenten",
+    "incidentsBadgeTooltip": "Incidenten in onderzoek of geïdentificeerd",
     "maintenances": "Onderhoud",
     "integrations": "Integraties",
     "history": "Geschiedenis",

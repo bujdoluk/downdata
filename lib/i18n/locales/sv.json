@@ -21,6 +21,7 @@
     "collapseSidebar": "Fäll ihop sidopanelen",
     "monitors": "Övervakning",
     "incidents": "Incidenter",
+    "incidentsBadgeTooltip": "Undersökta eller identifierade incidenter",
     "maintenances": "Underhåll",
     "integrations": "Integrationer",
     "history": "Historik",

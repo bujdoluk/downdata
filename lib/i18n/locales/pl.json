@@ -21,6 +21,7 @@
     "collapseSidebar": "Zwiń panel boczny",
     "monitors": "Monitory",
     "incidents": "Incydenty",
+    "incidentsBadgeTooltip": "Incydenty badane lub zidentyfikowane",
     "maintenances": "Konserwacje",
     "integrations": "Integracje",
     "history": "Historia",

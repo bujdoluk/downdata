@@ -10,6 +10,7 @@ export default function SidebarNavLink({
   label,
   collapsed = false,
   badge,
+  badgeTitle,
   onNavigate,
 }: {
   href: string;
@@ -17,6 +18,7 @@ export default function SidebarNavLink({
   label: string;
   collapsed?: boolean;
   badge?: number;
+  badgeTitle?: string;
   onNavigate?: () => void;
 }) {
   const pathname = usePathname();
@@ -32,11 +34,14 @@ export default function SidebarNavLink({
       } ${isActive ? "text-base-content" : "text-base-content/40 hover:text-base-content/70"}`}
     >
       {icon}
-      {/* Below md the sidebar is always icon-only — there's no separate mobile nav anymore. */}
       {!collapsed && (
         <span className="hidden items-center gap-2 md:inline-flex">
           {label}
-          {!!badge && <span className="badge badge-info badge-sm">{badge}</span>}
+          {!!badge && (
+            <span className="badge badge-info badge-sm" title={badgeTitle}>
+              {badge}
+            </span>
+          )}
         </span>
       )}
     </Link>

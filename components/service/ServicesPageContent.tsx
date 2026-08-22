@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { CatalogEntry } from "@/types/service";
 import { useCatalogStatus } from "@/lib/useCatalogStatus";
+import { useFirstVisitRedirect } from "@/lib/useFirstVisitRedirect";
 import { notifyServicesChanged } from "@/lib/servicesChanged";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 import AddServiceButton from "@/components/service/AddServiceButton";
@@ -21,6 +22,7 @@ export default function ServicesPageContent({
 }) {
   const { t } = useTranslation();
   const router = useRouter();
+  useFirstVisitRedirect("/boards");
   const [removingSlug, setRemovingSlug] = useState<string | null>(null);
   const myServices = catalog.filter((entry) => trackedHosts.includes(entry.host));
   const { data, fetchFailed } = useCatalogStatus();

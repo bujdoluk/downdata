@@ -5,9 +5,12 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
+import type { TrackedIncident, TrackedMaintenance } from "@/types/service";
 import BoardCard from "@/components/boards/BoardCard";
 import CreateBoardForm from "@/components/boards/CreateBoardForm";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
+import { usePolledFetch } from "@/lib/usePolledFetch";
+import { isActiveIncident } from "@/lib/isActiveIncident";
 
 function PlusIcon({ className }: { className?: string }) {
   return (
@@ -22,8 +25,21 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const createRef = useRef<HTMLDetailsElement>(null);
+  // Same URLs Sidebar already polls globally — usePolledFetch shares one
+  // request per URL across every component asking for it, so this adds no
+  // extra network traffic on top of what's already happening.
+  const { data: incidentsData } = usePolledFetch<{ incidents: TrackedIncident[] }>("/api/incidents");
+  const { data: maintenanceData } = usePolledFetch<{ maintenances: TrackedMaintenance[] }>("/api/maintenance");
 
   useCloseDetailsOnOutsideClick(createRef);
+
+  function countsFor(board: Board) {
+    const slugs = new Set(board.serviceSlugs);
+    return {
+      incidentCount: incidentsData?.incidents.filter((i) => isActiveIncident(i) && slugs.has(i.service.slug)).length ?? 0,
+      maintenanceCount: maintenanceData?.maintenances.filter((m) => slugs.has(m.service.slug)).length ?? 0,
+    };
+  }
 
   async function handleDelete(id: string) {
     setDeletingId(id);
@@ -42,7 +58,7 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
         <details ref={createRef} className="dropdown dropdown-end">
           <summary className="btn btn-info btn-sm list-none">
             <PlusIcon />
-            {t("boards.create")}
+            {t("boards.addBoard")}
           </summary>
           <div className="dropdown-content bg-base-100 border-base-300 z-30 mt-2 w-72 rounded-box border p-3 shadow-xl">
             <CreateBoardForm onCreated={(board) => router.push(`/boards/${board.id}`)} />
@@ -58,7 +74,13 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
       ) : (
         <ul className="mt-4 flex flex-col gap-3">
           {boards.map((board) => (
-            <BoardCard key={board.id} board={board} deleting={deletingId === board.id} onDelete={() => handleDelete(board.id)} />
+            <BoardCard
+              key={board.id}
+              board={board}
+              {...countsFor(board)}
+              deleting={deletingId === board.id}
+              onDelete={() => handleDelete(board.id)}
+            />
           ))}
         </ul>
       )}

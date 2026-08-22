@@ -40,16 +40,21 @@ export default function CreateBoardForm({ onCreated }: { onCreated: (board: Boar
 
   return (
     <div>
-      <form onSubmit={handleCreate} className="flex flex-wrap items-center gap-2">
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder={t("boards.namePlaceholder")}
-          className="input input-bordered input-sm w-56"
-        />
-        <button type="submit" disabled={creating || !name.trim()} className="btn btn-info btn-sm">
-          {t("boards.create")}
+      <form onSubmit={handleCreate} onReset={() => setName("")} className="flex flex-col gap-2">
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder={t("boards.namePlaceholder")}
+            className="input input-bordered input-sm flex-1"
+          />
+          <button type="reset" className="btn btn-square btn-sm" aria-label={t("boards.clearName")}>
+            ×
+          </button>
+        </div>
+        <button type="submit" disabled={creating || !name.trim()} className="btn btn-info btn-sm self-end">
+          {t("boards.createSubmit")}
         </button>
       </form>
 

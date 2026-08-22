@@ -95,6 +95,8 @@
     "noMatches": "Keine Wartungen entsprechen diesem Filter.",
     "pin": "Anheften",
     "unpin": "Lösen",
+    "selectPrompt": "Wähle links eine Wartung aus, um Details anzuzeigen.",
+    "scheduledLabel": "Geplant:",
     "subtitle": "Geplante und laufende Wartungsfenster für alle überwachten Dienste."
   },
   "integrations": {

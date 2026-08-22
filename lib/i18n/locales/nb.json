@@ -95,6 +95,8 @@
     "noMatches": "Ingen vedlikehold samsvarer med dette filteret.",
     "pin": "Fest",
     "unpin": "Løsne",
+    "selectPrompt": "Velg et vedlikehold til venstre for å se detaljene.",
+    "scheduledLabel": "Planlagt:",
     "subtitle": "Planlagt og pågående vedlikehold på tvers av alle overvåkede tjenester."
   },
   "integrations": {

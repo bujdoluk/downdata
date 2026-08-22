@@ -39,7 +39,7 @@ export default function IncidentsPageContent() {
   const lastViewed = useIncidentsLastViewed(true);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [serviceQuery, setServiceQuery] = useState("");
-  const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRange>("all");
+  const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRange>("30d");
   const [page, setPage] = useState(1);
 
   const isLoading = !data && !error;
@@ -92,7 +92,7 @@ export default function IncidentsPageContent() {
               onReset={() => {
                 setStatusFilter("all");
                 setServiceQuery("");
-                setTimeRangeFilter("all");
+                setTimeRangeFilter("30d");
                 setPage(1);
               }}
             >
@@ -230,7 +230,11 @@ export default function IncidentsPageContent() {
           </div>
 
           <div className="card card-border bg-base-200 p-4">
-            <IncidentDetail incident={selectedIncident} />
+            {selectedIncident ? (
+              <IncidentDetail incident={selectedIncident} lastViewed={lastViewed} />
+            ) : (
+              <p className="text-base-content/50 text-sm">{t("incidents.selectPrompt")}</p>
+            )}
           </div>
         </div>
       )}

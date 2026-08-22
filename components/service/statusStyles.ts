@@ -6,6 +6,7 @@ export const INDICATOR_STYLES: Record<
   minor: { dot: "bg-warning", text: "text-warning", badge: "badge-warning", labelKey: "status.minorIssues" },
   major: { dot: "bg-accent", text: "text-accent", badge: "badge-accent", labelKey: "status.majorOutage" },
   critical: { dot: "bg-error", text: "text-error", badge: "badge-error", labelKey: "status.criticalOutage" },
+  maintenance: { dot: "bg-info", text: "text-info", badge: "badge-info", labelKey: "status.underMaintenance" },
 };
 
 export const COMPONENT_STATUS_STYLES: Record<

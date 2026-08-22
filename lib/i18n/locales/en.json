@@ -95,6 +95,8 @@
     "noMatches": "No maintenances match this filter.",
     "pin": "Pin",
     "unpin": "Unpin",
+    "selectPrompt": "Select a maintenance on the left to see its details.",
+    "scheduledLabel": "Scheduled:",
     "subtitle": "Scheduled and in-progress maintenance windows across your tracked services."
   },
   "integrations": {

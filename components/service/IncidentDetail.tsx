@@ -3,22 +3,26 @@
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime } from "@/lib/formatTime";
-import type { TrackedIncident } from "@/types/service";
+import type { TrackedIncident, TrackedMaintenance } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import { stripHtml } from "@/lib/stripHtml";
-import { useIncidentsLastViewed } from "@/lib/useIncidentsLastViewed";
 
-export default function IncidentDetail({ incident }: { incident: TrackedIncident | undefined }) {
+// Shared by the Incidents and Maintenance pages' detail column —
+// TrackedMaintenance is a strict superset of TrackedIncident (see
+// types/service.ts), so one component renders both. lastViewed is
+// incident-specific "New" badge state owned by whichever page has it
+// (only the Incidents page does today); callers that don't pass one get
+// no "New" badges, matching the Maintenance page's existing behavior.
+export default function IncidentDetail({
+  incident,
+  lastViewed,
+}: {
+  incident: TrackedIncident | TrackedMaintenance;
+  lastViewed?: number;
+}) {
   const { t } = useTranslation();
-  // Read-only: opening one incident shouldn't clear the "New" badge on a
-  // different, unrelated incident back on the list.
-  const lastViewed = useIncidentsLastViewed(false);
-
-  if (!incident) {
-    return <p className="text-base-content/50 text-sm">{t("incidents.selectPrompt")}</p>;
-  }
 
   const impactStyle = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
   const Logo = SERVICE_LOGOS[incident.service.slug] ?? FallbackLogo;
@@ -30,6 +34,11 @@ export default function IncidentDetail({ incident }: { incident: TrackedIncident
         <div>
           <p className="text-base-content/50 text-xs">{incident.service.name}</p>
           <h2 className="text-lg font-semibold">{incident.name}</h2>
+          {"scheduled_for" in incident && (
+            <p className="text-base-content/40 text-xs">
+              {t("maintenances.scheduledLabel")} {formatDateTime(incident.scheduled_for)} – {formatDateTime(incident.scheduled_until)}
+            </p>
+          )}
           <p className="text-base-content/40 text-xs">
             {t("incidents.officialPageLabel")}{" "}
             <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
@@ -56,7 +65,7 @@ export default function IncidentDetail({ incident }: { incident: TrackedIncident
               <div className="timeline-end timeline-box bg-base-200">
                 <p className="flex items-center gap-2 text-base-content text-sm font-medium">
                   {update.status}
-                  {new Date(update.created_at).getTime() > lastViewed && (
+                  {lastViewed !== undefined && new Date(update.created_at).getTime() > lastViewed && (
                     <span className="badge badge-xs badge-primary">{t("incidents.new")}</span>
                   )}
                 </p>

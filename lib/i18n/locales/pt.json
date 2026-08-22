@@ -95,6 +95,8 @@
     "noMatches": "Nenhumas manutenções correspondem a este filtro.",
     "pin": "Fixar",
     "unpin": "Desafixar",
+    "selectPrompt": "Selecione uma manutenção à esquerda para ver os detalhes.",
+    "scheduledLabel": "Agendada:",
     "subtitle": "Janelas de manutenção agendadas e em curso em todos os seus serviços monitorizados."
   },
   "integrations": {

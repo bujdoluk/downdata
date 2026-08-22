@@ -97,6 +97,8 @@
     "noMatches": "Żadne konserwacje nie pasują do tego filtra.",
     "pin": "Przypnij",
     "unpin": "Odepnij",
+    "selectPrompt": "Wybierz konserwację po lewej, aby zobaczyć szczegóły.",
+    "scheduledLabel": "Zaplanowano:",
     "subtitle": "Zaplanowane i trwające okna konserwacji we wszystkich monitorowanych usługach."
   },
   "integrations": {

@@ -95,6 +95,8 @@
     "noMatches": "No hay mantenimientos que coincidan con este filtro.",
     "pin": "Fijar",
     "unpin": "Dejar de fijar",
+    "selectPrompt": "Selecciona un mantenimiento a la izquierda para ver sus detalles.",
+    "scheduledLabel": "Programado:",
     "subtitle": "Ventanas de mantenimiento programadas y en curso en todos tus servicios monitorizados."
   },
   "integrations": {

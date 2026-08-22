@@ -95,6 +95,8 @@
     "noMatches": "Nessuna delle manutenzioni corrisponde a questo filtro.",
     "pin": "Fissa",
     "unpin": "Rimuovi fissaggio",
+    "selectPrompt": "Seleziona una manutenzione a sinistra per vederne i dettagli.",
+    "scheduledLabel": "Programmata:",
     "subtitle": "Finestre di manutenzione pianificate e in corso in tutti i tuoi servizi monitorati."
   },
   "integrations": {

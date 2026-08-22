@@ -96,6 +96,8 @@
     "noMatches": "Žádné údržby neodpovídají tomuto filtru.",
     "pin": "Připnout",
     "unpin": "Odepnout",
+    "selectPrompt": "Vyberte údržbu vlevo pro zobrazení podrobností.",
+    "scheduledLabel": "Naplánováno:",
     "subtitle": "Plánované a probíhající údržby napříč vašimi sledovanými službami."
   },
   "integrations": {

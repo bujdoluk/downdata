@@ -95,6 +95,8 @@
     "noMatches": "Aucune des maintenances ne correspond à ce filtre.",
     "pin": "Épingler",
     "unpin": "Désépingler",
+    "selectPrompt": "Sélectionnez une maintenance à gauche pour voir ses détails.",
+    "scheduledLabel": "Planifiée :",
     "subtitle": "Fenêtres de maintenance planifiées et en cours sur tous vos services surveillés."
   },
   "integrations": {

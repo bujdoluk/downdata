@@ -95,6 +95,8 @@
     "noMatches": "Inget underhåll matchar detta filter.",
     "pin": "Fäst",
     "unpin": "Lossa",
+    "selectPrompt": "Välj ett underhåll till vänster för att se detaljerna.",
+    "scheduledLabel": "Schemalagt:",
     "subtitle": "Planerade och pågående underhållsfönster för alla dina övervakade tjänster."
   },
   "integrations": {

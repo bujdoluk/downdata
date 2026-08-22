@@ -95,6 +95,8 @@
     "noMatches": "Geen onderhoud komt overeen met dit filter.",
     "pin": "Vastzetten",
     "unpin": "Losmaken",
+    "selectPrompt": "Selecteer links een onderhoud om de details te bekijken.",
+    "scheduledLabel": "Gepland:",
     "subtitle": "Geplande en lopende onderhoudsvensters voor al je gevolgde diensten."
   },
   "integrations": {

@@ -56,6 +56,8 @@
     "loading": "Loading incidents…",
     "unreachable": "Unable to load incidents.",
     "notFound": "Incident not found.",
+    "selectPrompt": "Select an incident on the left to see its details.",
+    "noUpdates": "No updates yet.",
     "officialPage": "View official incident page",
     "officialPageLabel": "Official page:",
     "pin": "Pin",

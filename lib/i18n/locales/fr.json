@@ -56,6 +56,8 @@
     "loading": "Chargement des incidents…",
     "unreachable": "Impossible de charger les incidents.",
     "notFound": "Incident introuvable.",
+    "selectPrompt": "Sélectionnez un incident à gauche pour voir ses détails.",
+    "noUpdates": "Aucune mise à jour pour le moment.",
     "officialPage": "Voir la page officielle de l'incident",
     "officialPageLabel": "Page officielle :",
     "pin": "Épingler",

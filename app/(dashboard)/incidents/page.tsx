@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 export default function IncidentsPage() {
   return (
     <main className="flex flex-1 justify-center p-6">
-      <div className="w-full max-w-6xl">
+      <div className="w-full">
         <IncidentsPageContent />
       </div>
     </main>

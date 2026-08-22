@@ -1,3 +1,4 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabaseClient } from "@/lib/supabase";
 import type { StatuspageIncident } from "@/types/service";
 
@@ -69,6 +70,41 @@ function groupUpdatesByIncident(updates: StoredIncidentUpdate[]): Map<string, St
   return map;
 }
 
+// PostgREST silently caps any unbounded select() at its configured
+// max-rows (1000 here) — catalog-wide polling grew incident_updates well
+// past that, so a plain `.select("*")` was quietly dropping updates for
+// whichever incidents didn't make it into that first page. Fetch only the
+// updates belonging to the incidents actually in play, in explicit
+// PAGE_SIZE pages, so growth in unrelated incidents' history never starves
+// this response again. incident_id is chunked through .in() (not the
+// service_slug/incident_id pair) for the same accepted reason
+// groupUpdatesByIncident groups on the composite key below: a short id
+// colliding across services just pulls in a few harmless extra rows that
+// get discarded when nothing maps to their key.
+const CHUNK_SIZE = 200;
+const PAGE_SIZE = 1000;
+
+async function fetchUpdatesForIncidentIds(
+  supabase: SupabaseClient,
+  incidentIds: string[],
+  serviceSlug?: string,
+): Promise<StoredIncidentUpdate[]> {
+  const results: StoredIncidentUpdate[] = [];
+  for (let i = 0; i < incidentIds.length; i += CHUNK_SIZE) {
+    const chunk = incidentIds.slice(i, i + CHUNK_SIZE);
+    let from = 0;
+    for (;;) {
+      let query = supabase.from("incident_updates").select("*").in("incident_id", chunk);
+      if (serviceSlug) query = query.eq("service_slug", serviceSlug);
+      const { data } = await query.range(from, from + PAGE_SIZE - 1);
+      results.push(...((data as StoredIncidentUpdate[]) ?? []));
+      if (!data || data.length < PAGE_SIZE) break;
+      from += PAGE_SIZE;
+    }
+  }
+  return results;
+}
+
 // All tracked services' incidents, newest-updated first — powers
 // /api/incidents. Two flat queries instead of one per incident, same shape
 // as the notifier's existing batch-query pattern; capped at 1000 rows like
@@ -79,8 +115,11 @@ export async function getAllStoredIncidents(): Promise<StoredIncident[]> {
   const { data: incidents } = await supabase.from("incidents").select("*").order("updated_at", { ascending: false }).limit(1000);
   if (!incidents?.length) return [];
 
-  const { data: updates } = await supabase.from("incident_updates").select("*");
-  const grouped = groupUpdatesByIncident((updates as StoredIncidentUpdate[]) ?? []);
+  const updates = await fetchUpdatesForIncidentIds(
+    supabase,
+    incidents.map((incident) => incident.id as string),
+  );
+  const grouped = groupUpdatesByIncident(updates);
 
   return (incidents as Omit<StoredIncident, "incident_updates">[]).map((incident) => ({
     ...incident,
@@ -100,8 +139,12 @@ export async function getStoredIncidentsForService(serviceSlug: string): Promise
     .order("updated_at", { ascending: false });
   if (!incidents?.length) return [];
 
-  const { data: updates } = await supabase.from("incident_updates").select("*").eq("service_slug", serviceSlug);
-  const grouped = groupUpdatesByIncident((updates as StoredIncidentUpdate[]) ?? []);
+  const updates = await fetchUpdatesForIncidentIds(
+    supabase,
+    incidents.map((incident) => incident.id as string),
+    serviceSlug,
+  );
+  const grouped = groupUpdatesByIncident(updates);
 
   return (incidents as Omit<StoredIncident, "incident_updates">[]).map((incident) => ({
     ...incident,

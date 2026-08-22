@@ -56,6 +56,8 @@
     "loading": "Caricamento incidenti…",
     "unreachable": "Impossibile caricare gli incidenti.",
     "notFound": "Incidente non trovato.",
+    "selectPrompt": "Seleziona un incidente a sinistra per vederne i dettagli.",
+    "noUpdates": "Ancora nessun aggiornamento.",
     "officialPage": "Visualizza la pagina ufficiale dell'incidente",
     "officialPageLabel": "Pagina ufficiale:",
     "pin": "Fissa",

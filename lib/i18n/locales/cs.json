@@ -57,6 +57,8 @@
     "loading": "Načítají se incidenty…",
     "unreachable": "Nepodařilo se načíst incidenty.",
     "notFound": "Incident nebyl nalezen.",
+    "selectPrompt": "Vyberte incident vlevo pro zobrazení podrobností.",
+    "noUpdates": "Zatím žádné aktualizace.",
     "officialPage": "Zobrazit oficiální stránku incidentu",
     "officialPageLabel": "Oficiální stránka:",
     "pin": "Připnout",

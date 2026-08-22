@@ -56,6 +56,8 @@
     "loading": "Vorfälle werden geladen…",
     "unreachable": "Vorfälle konnten nicht geladen werden.",
     "notFound": "Vorfall nicht gefunden.",
+    "selectPrompt": "Wähle links einen Vorfall aus, um Details anzuzeigen.",
+    "noUpdates": "Noch keine Updates.",
     "officialPage": "Offizielle Vorfallseite ansehen",
     "officialPageLabel": "Offizielle Seite:",
     "pin": "Anheften",

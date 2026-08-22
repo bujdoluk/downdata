@@ -58,6 +58,8 @@
     "loading": "Ładowanie incydentów…",
     "unreachable": "Nie udało się załadować incydentów.",
     "notFound": "Nie znaleziono incydentu.",
+    "selectPrompt": "Wybierz incydent po lewej, aby zobaczyć szczegóły.",
+    "noUpdates": "Brak aktualizacji.",
     "officialPage": "Zobacz oficjalną stronę incydentu",
     "officialPageLabel": "Oficjalna strona:",
     "pin": "Przypnij",

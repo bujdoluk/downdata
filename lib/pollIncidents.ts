@@ -37,6 +37,14 @@ type RawIncident = {
   incident_updates: RawIncidentUpdate[];
 };
 
+// Statuspage models a scheduled maintenance as an incident-shaped object
+// plus a scheduling window — its own API reuses the `incident_updates`
+// field name even here, not `maintenance_updates`.
+type RawMaintenance = RawIncident & {
+  scheduled_for: string;
+  scheduled_until: string;
+};
+
 const FETCH_CONCURRENCY = 200;
 
 async function upsertIncident(serviceSlug: string, incident: RawIncident) {
@@ -75,9 +83,47 @@ async function upsertIncident(serviceSlug: string, incident: RawIncident) {
   }
 }
 
+async function upsertMaintenance(serviceSlug: string, maintenance: RawMaintenance) {
+  const supabase = getSupabaseClient();
+  const { error } = await supabase.rpc("upsert_maintenance", {
+    p_service_slug: serviceSlug,
+    p_id: maintenance.id,
+    p_name: maintenance.name,
+    p_status: maintenance.status,
+    p_impact: maintenance.impact,
+    p_created_at: maintenance.created_at,
+    p_updated_at: maintenance.updated_at,
+    p_monitoring_at: maintenance.monitoring_at,
+    p_resolved_at: maintenance.resolved_at,
+    p_scheduled_for: maintenance.scheduled_for,
+    p_scheduled_until: maintenance.scheduled_until,
+    p_shortlink: maintenance.shortlink,
+    p_components: maintenance.components,
+  });
+  if (error) throw error;
+
+  for (const update of maintenance.incident_updates) {
+    const { error: updateError } = await supabase.rpc("upsert_maintenance_update", {
+      p_service_slug: serviceSlug,
+      p_maintenance_id: maintenance.id,
+      p_id: update.id,
+      p_status: update.status,
+      p_body: update.body,
+      p_affected_components: update.affected_components,
+      p_created_at: update.created_at,
+      p_updated_at: update.updated_at,
+      p_display_at: update.display_at,
+      p_deliver_notifications: update.deliver_notifications,
+      p_custom_tweet: update.custom_tweet,
+      p_tweet_id: update.tweet_id,
+    });
+    if (updateError) throw updateError;
+  }
+}
+
 // Returns how many of this service's incidents failed to upsert — used to
 // decide whether this service's first poll is clean enough to mark seeded.
-async function pollOneService(service: { slug: string; host: string }): Promise<{ incidentCount: number; failed: number }> {
+async function pollOneServiceIncidents(service: { slug: string; host: string }): Promise<{ incidentCount: number; failed: number }> {
   const res = await fetch(`https://${service.host}/api/v2/incidents.json`, { signal: AbortSignal.timeout(8_000) });
   if (!res.ok) throw new Error(`Upstream returned ${res.status}`);
 
@@ -96,6 +142,32 @@ async function pollOneService(service: { slug: string; host: string }): Promise<
   }
 
   return { incidentCount: incidents.length, failed };
+}
+
+// Sibling to pollOneServiceIncidents, not a branch inside it — kept as a
+// fully independent function so a maintenance-fetch failure can never take
+// that service's incident poll down with it (see how the two are run via
+// Promise.allSettled in pollAllIncidents below). No backfill/notification
+// concerns here unlike incidents — nothing notifies about maintenances.
+async function pollOneServiceMaintenances(service: { slug: string; host: string }): Promise<{ maintenanceCount: number; failed: number }> {
+  const res = await fetch(`https://${service.host}/api/v2/scheduled-maintenances/upcoming.json`, {
+    signal: AbortSignal.timeout(8_000),
+  });
+  if (!res.ok) throw new Error(`Upstream returned ${res.status}`);
+
+  const data = await res.json();
+  const maintenances = (data.scheduled_maintenances ?? []) as RawMaintenance[];
+
+  let failed = 0;
+  for (const maintenance of maintenances) {
+    try {
+      await upsertMaintenance(service.slug, maintenance);
+    } catch {
+      failed++;
+    }
+  }
+
+  return { maintenanceCount: maintenances.length, failed };
 }
 
 async function backfillIfFirstPoll(serviceSlug: string, failed: number) {
@@ -143,22 +215,55 @@ function hashSlug(slug: string): number {
 
 export async function pollAllIncidents(
   shard?: { index: number; count: number },
-): Promise<{ servicesPolled: number; incidentsUpserted: number; failed: number }> {
+): Promise<{
+  servicesPolled: number;
+  incidentsUpserted: number;
+  failed: number;
+  maintenancesUpserted: number;
+  maintenancesFailed: number;
+}> {
   const all = await getCatalog();
   const services = shard ? all.filter((service) => hashSlug(service.slug) % shard.count === shard.index) : all;
   let incidentsUpserted = 0;
   let failedTotal = 0;
+  let maintenancesUpserted = 0;
+  let maintenancesFailedTotal = 0;
 
   await runInBatches(services, FETCH_CONCURRENCY, async (service) => {
-    try {
-      const { incidentCount, failed } = await pollOneService(service);
+    // allSettled, not all: incidents and maintenances are fetched from
+    // different upstream endpoints and written to different tables, so one
+    // failing (a host that 404s scheduled-maintenances, say) must never
+    // prevent the other from completing or being counted — and running
+    // both concurrently instead of one-after-the-other roughly halves this
+    // service's share of the poll cycle's wall-clock time.
+    const [incidentResult, maintenanceResult] = await Promise.allSettled([
+      pollOneServiceIncidents(service),
+      pollOneServiceMaintenances(service),
+    ]);
+
+    if (incidentResult.status === "fulfilled") {
+      const { incidentCount, failed } = incidentResult.value;
       incidentsUpserted += incidentCount - failed;
       failedTotal += failed;
       await backfillIfFirstPoll(service.slug, failed);
-    } catch {
+    } else {
       failedTotal++;
+    }
+
+    if (maintenanceResult.status === "fulfilled") {
+      const { maintenanceCount, failed } = maintenanceResult.value;
+      maintenancesUpserted += maintenanceCount - failed;
+      maintenancesFailedTotal += failed;
+    } else {
+      maintenancesFailedTotal++;
     }
   });
 
-  return { servicesPolled: services.length, incidentsUpserted, failed: failedTotal };
+  return {
+    servicesPolled: services.length,
+    incidentsUpserted,
+    failed: failedTotal,
+    maintenancesUpserted,
+    maintenancesFailed: maintenancesFailedTotal,
+  };
 }

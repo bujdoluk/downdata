@@ -45,7 +45,6 @@
   },
   "serviceDetail": {
     "back": "← Wstecz",
-    "officialPage": "Zobacz oficjalną stronę statusu",
     "checkingStatus": "Sprawdzanie stanu…",
     "unreachable": "Brak dostępu do API stanu",
     "components": "Komponenty",

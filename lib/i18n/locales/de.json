@@ -43,7 +43,6 @@
   },
   "serviceDetail": {
     "back": "← Zurück",
-    "officialPage": "Offizielle Statusseite ansehen",
     "checkingStatus": "Status wird geprüft…",
     "unreachable": "Status-API nicht erreichbar",
     "components": "Komponenten",

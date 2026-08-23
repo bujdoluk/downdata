@@ -67,7 +67,7 @@ export default function CatalogBrowser({
               type="button"
               onClick={() => setSelectedCategory(category)}
               className={`flex items-center justify-between rounded-btn px-3 py-2 text-left text-sm transition-colors ${
-                isSelected ? "bg-primary text-primary-content" : "text-base-content/70 hover:bg-base-200"
+                isSelected ? "bg-info text-info-content" : "text-base-content/70 hover:bg-base-200"
               }`}
             >
               <span>{t(`addService.category.${category}`)}</span>

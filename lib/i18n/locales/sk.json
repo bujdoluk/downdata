@@ -44,7 +44,6 @@
   },
   "serviceDetail": {
     "back": "← Späť",
-    "officialPage": "Zobraziť oficiálnu stránku stavu",
     "checkingStatus": "Kontroluje sa stav…",
     "unreachable": "Stavové API nie je dostupné",
     "components": "Komponenty",

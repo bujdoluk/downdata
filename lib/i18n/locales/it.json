@@ -43,7 +43,6 @@
   },
   "serviceDetail": {
     "back": "← Indietro",
-    "officialPage": "Visualizza la pagina di stato ufficiale",
     "checkingStatus": "Controllo dello stato…",
     "unreachable": "API di stato non raggiungibile",
     "components": "Componenti",

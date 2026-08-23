@@ -43,7 +43,6 @@
   },
   "serviceDetail": {
     "back": "← Volver",
-    "officialPage": "Ver página oficial de estado",
     "checkingStatus": "Comprobando el estado…",
     "unreachable": "No se pudo acceder a la API de estado",
     "components": "Componentes",

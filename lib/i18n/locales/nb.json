@@ -43,7 +43,6 @@
   },
   "serviceDetail": {
     "back": "← Tilbake",
-    "officialPage": "Vis offisiell statusside",
     "checkingStatus": "Sjekker status…",
     "unreachable": "Fikk ikke kontakt med status-API-et",
     "components": "Komponenter",

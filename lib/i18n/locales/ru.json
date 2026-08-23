@@ -45,7 +45,6 @@
   },
   "serviceDetail": {
     "back": "← Назад",
-    "officialPage": "Открыть официальную страницу статуса",
     "checkingStatus": "Проверка статуса…",
     "unreachable": "API статуса недоступен",
     "components": "Компоненты",

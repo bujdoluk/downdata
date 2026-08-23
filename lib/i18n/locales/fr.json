@@ -43,7 +43,6 @@
   },
   "serviceDetail": {
     "back": "← Retour",
-    "officialPage": "Voir la page de statut officielle",
     "checkingStatus": "Vérification du statut…",
     "unreachable": "Impossible d'accéder à l'API de statut",
     "components": "Composants",

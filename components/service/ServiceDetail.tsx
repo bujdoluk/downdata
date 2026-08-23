@@ -8,7 +8,6 @@ import type { ServiceSlug, ServiceSummaryResponse, StatuspageComponent } from "@
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
-import { ExternalLinkIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import Spinner from "@/components/Spinner";
 
@@ -40,10 +39,11 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
 
   return (
     <div className="w-full max-w-6xl self-start">
-      <div className="flex items-center gap-3 text-base-content">
-        <Link href="/" className="link link-hover text-base-content/50 hover:text-base-content shrink-0 text-xs font-medium">
-          {t("serviceDetail.back")}
-        </Link>
+      <Link href="/" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
+        {t("serviceDetail.back")}
+      </Link>
+
+      <div className="mt-2 flex items-center gap-3 text-base-content">
         <Logo size={36} name={data?.service.name ?? slug} />
         <div>
           <h1 className="text-xl font-semibold">{data?.service.name ?? slug}</h1>
@@ -58,17 +58,6 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
             </a>
           )}
         </div>
-        {data?.service.host && (
-          <a
-            href={`https://${data.service.host}`}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={t("serviceDetail.officialPage")}
-            className="text-base-content/40 hover:text-base-content ml-auto shrink-0 transition-transform hover:scale-110 active:scale-90"
-          >
-            <ExternalLinkIcon className="h-5 w-5" />
-          </a>
-        )}
       </div>
 
       <div className="card card-border bg-base-200 mt-4">

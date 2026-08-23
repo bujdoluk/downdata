@@ -43,7 +43,6 @@
   },
   "serviceDetail": {
     "back": "← Tillbaka",
-    "officialPage": "Visa officiell statussida",
     "checkingStatus": "Kontrollerar status…",
     "unreachable": "Status-API kunde inte nås",
     "components": "Komponenter",

@@ -104,6 +104,11 @@
       "allStatuses": "Všetky stavy",
       "scheduled": "Naplánované"
     },
+    "pagination": {
+      "previous": "Predchádzajúca strana",
+      "next": "Ďalšia strana",
+      "page": "Strana {{page}} z {{totalPages}}"
+    },
     "subtitle": "Plánované a prebiehajúce údržby naprieč vašimi sledovanými službami."
   },
   "integrations": {
@@ -136,7 +141,8 @@
       "hoursMinutes": "{{h}} h {{m}} min"
     },
     "resolutionTime": "Vyriešené za {{duration}}",
-    "stillOngoing": "Stále trvá"
+    "stillOngoing": "Stále trvá",
+    "selectPrompt": "Kliknite na deň v kalendári a zobrazte jeho incidenty."
   },
   "boards": {
     "title": "Nástenky",

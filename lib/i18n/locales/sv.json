@@ -103,6 +103,11 @@
       "allStatuses": "Alla statusar",
       "scheduled": "Schemalagt"
     },
+    "pagination": {
+      "previous": "Föregående sida",
+      "next": "Nästa sida",
+      "page": "Sida {{page}} av {{totalPages}}"
+    },
     "subtitle": "Planerade och pågående underhållsfönster för alla dina övervakade tjänster."
   },
   "integrations": {
@@ -134,7 +139,8 @@
       "hoursMinutes": "{{h}} tim {{m}} min"
     },
     "resolutionTime": "Löst på {{duration}}",
-    "stillOngoing": "Fortfarande pågående"
+    "stillOngoing": "Fortfarande pågående",
+    "selectPrompt": "Klicka på en dag i kalendern för att se dess incidenter."
   },
   "boards": {
     "title": "Tavlor",

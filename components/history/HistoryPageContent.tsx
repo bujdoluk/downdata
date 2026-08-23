@@ -140,14 +140,14 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
         <>
           <div className="text-base-content/60 mt-4 flex flex-wrap gap-4 text-base">
             <span>
-              <Trans i18nKey="history.summary.incidents" count={summary.incidentCount} components={[<span key="0" className="text-white text-1xl font-extrabold" />]} />
+              <Trans i18nKey="history.summary.incidents" count={summary.incidentCount} components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]} />
             </span>
             {summary.avgResolutionMinutes !== null && (
               <span>
                 <Trans
                   i18nKey="history.summary.avgResolution"
                   values={{ duration: formatDuration(summary.avgResolutionMinutes, t) }}
-                  components={[<span key="0" className="text-white text-1xl font-extrabold" />]}
+                  components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]}
                 />
               </span>
             )}
@@ -167,7 +167,7 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
               </label>
             ))}
             <span className="label gap-2 text-sm">
-              <span className="bg-base-content/10 outline-base-content/40 h-4 w-4 rounded-sm outline-2 outline-offset-1" />
+              <span className="bg-base-content/10 outline-info h-4 w-4 rounded-sm outline-2 outline-offset-1" />
               {t("history.today")}
             </span>
           </div>
@@ -197,7 +197,7 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
             </div>
           </div>
 
-          {selectedDay && selectedDay.incidents.length > 0 && (
+          {selectedDay && selectedDay.incidents.length > 0 ? (
             <div className="card card-border bg-base-200 mt-4 p-4">
               <ul className="flex flex-col gap-3">
                 {selectedDay.incidents.map((incident) => {
@@ -248,6 +248,8 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
                 })}
               </ul>
             </div>
+          ) : (
+            <p className="text-base-content/50 mt-4 text-sm">{t("history.selectPrompt")}</p>
           )}
         </>
       ) : null}

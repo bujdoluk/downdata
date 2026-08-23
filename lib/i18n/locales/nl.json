@@ -103,6 +103,11 @@
       "allStatuses": "Alle statussen",
       "scheduled": "Gepland"
     },
+    "pagination": {
+      "previous": "Vorige pagina",
+      "next": "Volgende pagina",
+      "page": "Pagina {{page}} van {{totalPages}}"
+    },
     "subtitle": "Geplande en lopende onderhoudsvensters voor al je gevolgde diensten."
   },
   "integrations": {
@@ -134,7 +139,8 @@
       "hoursMinutes": "{{h}} u {{m}} min"
     },
     "resolutionTime": "Opgelost in {{duration}}",
-    "stillOngoing": "Nog gaande"
+    "stillOngoing": "Nog gaande",
+    "selectPrompt": "Klik op een dag in de kalender om de incidenten te bekijken."
   },
   "boards": {
     "title": "Borden",

@@ -103,6 +103,11 @@
       "allStatuses": "All statuses",
       "scheduled": "Scheduled"
     },
+    "pagination": {
+      "previous": "Previous page",
+      "next": "Next page",
+      "page": "Page {{page}} of {{totalPages}}"
+    },
     "subtitle": "Scheduled and in-progress maintenance windows across your tracked services."
   },
   "integrations": {
@@ -134,7 +139,8 @@
       "hoursMinutes": "{{h}}h {{m}}m"
     },
     "resolutionTime": "Resolved in {{duration}}",
-    "stillOngoing": "Still ongoing"
+    "stillOngoing": "Still ongoing",
+    "selectPrompt": "Click a day on the calendar to see its incidents."
   },
   "boards": {
     "title": "Boards",

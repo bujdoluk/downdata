@@ -103,6 +103,11 @@
       "allStatuses": "Tous les statuts",
       "scheduled": "Planifiée"
     },
+    "pagination": {
+      "previous": "Page précédente",
+      "next": "Page suivante",
+      "page": "Page {{page}} sur {{totalPages}}"
+    },
     "subtitle": "Fenêtres de maintenance planifiées et en cours sur tous vos services surveillés."
   },
   "integrations": {
@@ -134,7 +139,8 @@
       "hoursMinutes": "{{h}} h {{m}} min"
     },
     "resolutionTime": "Résolu en {{duration}}",
-    "stillOngoing": "Toujours en cours"
+    "stillOngoing": "Toujours en cours",
+    "selectPrompt": "Cliquez sur un jour du calendrier pour voir ses incidents."
   },
   "boards": {
     "title": "Tableaux",

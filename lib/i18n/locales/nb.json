@@ -103,6 +103,11 @@
       "allStatuses": "Alle statuser",
       "scheduled": "Planlagt"
     },
+    "pagination": {
+      "previous": "Forrige side",
+      "next": "Neste side",
+      "page": "Side {{page}} av {{totalPages}}"
+    },
     "subtitle": "Planlagt og pågående vedlikehold på tvers av alle overvåkede tjenester."
   },
   "integrations": {
@@ -134,7 +139,8 @@
       "hoursMinutes": "{{h}} t {{m}} min"
     },
     "resolutionTime": "Løst på {{duration}}",
-    "stillOngoing": "Fortsatt pågående"
+    "stillOngoing": "Fortsatt pågående",
+    "selectPrompt": "Klikk på en dag i kalenderen for å se hendelsene."
   },
   "boards": {
     "title": "Tavler",

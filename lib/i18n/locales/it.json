@@ -103,6 +103,11 @@
       "allStatuses": "Tutti gli stati",
       "scheduled": "Programmata"
     },
+    "pagination": {
+      "previous": "Pagina precedente",
+      "next": "Pagina successiva",
+      "page": "Pagina {{page}} di {{totalPages}}"
+    },
     "subtitle": "Finestre di manutenzione pianificate e in corso in tutti i tuoi servizi monitorati."
   },
   "integrations": {
@@ -134,7 +139,8 @@
       "hoursMinutes": "{{h}} h {{m}} min"
     },
     "resolutionTime": "Risolto in {{duration}}",
-    "stillOngoing": "Ancora in corso"
+    "stillOngoing": "Ancora in corso",
+    "selectPrompt": "Fai clic su un giorno nel calendario per vedere i suoi incidenti."
   },
   "boards": {
     "title": "Bacheche",

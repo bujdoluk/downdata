@@ -63,7 +63,7 @@ export default function IncidentCalendar({
               onClick={() => onSelectDay(day.date)}
               className={`h-4 w-4 rounded-sm ${color} ${hasIncidents ? "cursor-pointer" : "cursor-default"} ${
                 day.date === selectedDate ? "ring-primary ring-2" : ""
-              } ${day.date === TODAY ? "outline-base-content/40 outline-2 outline-offset-1" : ""}`}
+              } ${day.date === TODAY ? "outline-info outline-2 outline-offset-1" : ""}`}
             />
           </div>
         );

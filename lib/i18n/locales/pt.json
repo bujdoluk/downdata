@@ -103,6 +103,11 @@
       "allStatuses": "Todos os estados",
       "scheduled": "Agendada"
     },
+    "pagination": {
+      "previous": "Página anterior",
+      "next": "Página seguinte",
+      "page": "Página {{page}} de {{totalPages}}"
+    },
     "subtitle": "Janelas de manutenção agendadas e em curso em todos os seus serviços monitorizados."
   },
   "integrations": {
@@ -134,7 +139,8 @@
       "hoursMinutes": "{{h}} h {{m}} min"
     },
     "resolutionTime": "Resolvido em {{duration}}",
-    "stillOngoing": "Ainda em curso"
+    "stillOngoing": "Ainda em curso",
+    "selectPrompt": "Clique num dia do calendário para ver os seus incidentes."
   },
   "boards": {
     "title": "Painéis",

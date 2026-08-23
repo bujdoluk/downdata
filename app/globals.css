@@ -77,6 +77,12 @@
   --color-sidebar: #d9dee5 !important;
 }
 
+[data-theme="light"] .input,
+[data-theme="light"] .select,
+[data-theme="light"] .textarea {
+  background-color: var(--color-base-200);
+}
+
 [data-theme="dark"] {
   --color-base-100: #0a0b10 !important;
   --color-base-200: #13141b !important;

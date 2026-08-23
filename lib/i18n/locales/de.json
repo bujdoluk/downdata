@@ -103,6 +103,11 @@
       "allStatuses": "Alle Status",
       "scheduled": "Geplant"
     },
+    "pagination": {
+      "previous": "Vorherige Seite",
+      "next": "Nächste Seite",
+      "page": "Seite {{page}} von {{totalPages}}"
+    },
     "subtitle": "Geplante und laufende Wartungsfenster für alle überwachten Dienste."
   },
   "integrations": {
@@ -134,7 +139,8 @@
       "hoursMinutes": "{{h}} Std. {{m}} Min."
     },
     "resolutionTime": "Gelöst in {{duration}}",
-    "stillOngoing": "Noch andauernd"
+    "stillOngoing": "Noch andauernd",
+    "selectPrompt": "Klicke auf einen Tag im Kalender, um seine Vorfälle zu sehen."
   },
   "boards": {
     "title": "Boards",

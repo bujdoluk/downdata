@@ -103,6 +103,11 @@
       "allStatuses": "Todos los estados",
       "scheduled": "Programado"
     },
+    "pagination": {
+      "previous": "Página anterior",
+      "next": "Página siguiente",
+      "page": "Página {{page}} de {{totalPages}}"
+    },
     "subtitle": "Ventanas de mantenimiento programadas y en curso en todos tus servicios monitorizados."
   },
   "integrations": {
@@ -134,7 +139,8 @@
       "hoursMinutes": "{{h}} h {{m}} min"
     },
     "resolutionTime": "Resuelto en {{duration}}",
-    "stillOngoing": "Aún en curso"
+    "stillOngoing": "Aún en curso",
+    "selectPrompt": "Haz clic en un día del calendario para ver sus incidentes."
   },
   "boards": {
     "title": "Tableros",

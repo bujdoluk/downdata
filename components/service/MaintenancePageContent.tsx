@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
@@ -17,6 +17,8 @@ import IncidentDetail from "@/components/service/IncidentDetail";
 
 type StatusFilter = "all" | "scheduled" | "in_progress";
 
+const PAGE_SIZE = 7;
+
 function matchesStatus(maintenance: TrackedMaintenanceSummary, filter: StatusFilter): boolean {
   return filter === "all" || maintenance.status === filter;
 }
@@ -29,7 +31,10 @@ export default function MaintenancePageContent() {
   const { pinned, togglePin } = usePinned("pinnedMaintenance");
   const [serviceQuery, setServiceQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [page, setPage] = useState(1);
   const [result, setResult] = useState<{ id: string; maintenance: TrackedMaintenance } | { id: string; error: true } | null>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const [minListHeight, setMinListHeight] = useState<number>();
 
   const isLoading = !data && !error;
   const maintenances = useMemo(() => data?.maintenances ?? [], [data]);
@@ -85,6 +90,18 @@ export default function MaintenancePageContent() {
     });
   const countForStatus = (filter: StatusFilter) =>
     maintenances.filter((maintenance) => matchesStatus(maintenance, filter)).length;
+  const totalPages = Math.max(1, Math.ceil(filteredMaintenances.length / PAGE_SIZE));
+  const currentPage = Math.min(page, totalPages);
+  const pageMaintenances = filteredMaintenances.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  // See IncidentsPageContent's identical effect for the full reasoning: lock
+  // in a full page's real height so the pagination controls don't jump up
+  // on a shorter last page.
+  useEffect(() => {
+    if (listRef.current && pageMaintenances.length === PAGE_SIZE) {
+      setMinListHeight(listRef.current.scrollHeight);
+    }
+  }, [pageMaintenances]);
 
   return (
     <div className="w-full self-start">
@@ -110,13 +127,19 @@ export default function MaintenancePageContent() {
                 aria-label={t("incidents.filter.searchService")}
                 placeholder={t("incidents.filter.searchService")}
                 value={serviceQuery}
-                onChange={(e) => setServiceQuery(e.target.value)}
+                onChange={(e) => {
+                  setServiceQuery(e.target.value);
+                  setPage(1);
+                }}
               />
               <select
                 className="select select-bordered select-sm w-40"
                 aria-label={t("maintenances.filter.status")}
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+                onChange={(e) => {
+                  setStatusFilter(e.target.value as StatusFilter);
+                  setPage(1);
+                }}
               >
                 <option value="all">
                   {t("maintenances.filter.allStatuses")} ({countForStatus("all")})
@@ -133,8 +156,12 @@ export default function MaintenancePageContent() {
             {filteredMaintenances.length === 0 ? (
               <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.noMatches")}</p>
             ) : (
-              <ul className="mt-4 flex flex-col gap-3">
-                {filteredMaintenances.map((maintenance) => {
+              <ul
+                ref={listRef}
+                style={{ minHeight: totalPages > 1 ? minListHeight : undefined }}
+                className="mt-4 flex flex-col gap-3"
+              >
+                {pageMaintenances.map((maintenance) => {
                   const Logo = SERVICE_LOGOS[maintenance.service.slug] ?? FallbackLogo;
                   const isActive = isInProgressMaintenance(maintenance);
                   const isSelected = maintenance.id === selectedId;
@@ -176,6 +203,32 @@ export default function MaintenancePageContent() {
                   );
                 })}
               </ul>
+            )}
+
+            {totalPages > 1 && (
+              <div className="join mt-4">
+                <button
+                  type="button"
+                  className="btn join-item btn-sm"
+                  disabled={currentPage <= 1}
+                  onClick={() => setPage(currentPage - 1)}
+                  aria-label={t("maintenances.pagination.previous")}
+                >
+                  «
+                </button>
+                <button type="button" className="btn join-item btn-sm pointer-events-none">
+                  {t("maintenances.pagination.page", { page: currentPage, totalPages })}
+                </button>
+                <button
+                  type="button"
+                  className="btn join-item btn-sm"
+                  disabled={currentPage >= totalPages}
+                  onClick={() => setPage(currentPage + 1)}
+                  aria-label={t("maintenances.pagination.next")}
+                >
+                  »
+                </button>
+              </div>
             )}
           </div>
 

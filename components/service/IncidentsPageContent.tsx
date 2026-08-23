@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
@@ -43,6 +43,8 @@ export default function IncidentsPageContent() {
   const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRange>("30d");
   const [page, setPage] = useState(1);
   const [result, setResult] = useState<{ id: string; incident: TrackedIncident } | { id: string; error: true } | null>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+  const [minListHeight, setMinListHeight] = useState<number>();
 
   const isLoading = !data && !error;
   const incidents = useMemo(() => data?.incidents ?? [], [data]);
@@ -102,6 +104,16 @@ export default function IncidentsPageContent() {
   const totalPages = Math.max(1, Math.ceil(filteredIncidents.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const pageIncidents = filteredIncidents.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  // A full page's real rendered height, locked in once, keeps the pagination
+  // controls from jumping up when a later (shorter) page has fewer rows —
+  // page 1 always has PAGE_SIZE rows whenever pagination is even visible, so
+  // this measures before the user could ever see a short page.
+  useEffect(() => {
+    if (listRef.current && pageIncidents.length === PAGE_SIZE) {
+      setMinListHeight(listRef.current.scrollHeight);
+    }
+  }, [pageIncidents]);
 
   return (
     <div className="w-full self-start">
@@ -179,7 +191,11 @@ export default function IncidentsPageContent() {
             {filteredIncidents.length === 0 ? (
               <p className="text-base-content/50 mt-4 text-sm">{t("incidents.filter.noMatches")}</p>
             ) : (
-              <ul className="mt-4 flex flex-col gap-3">
+              <ul
+                ref={listRef}
+                style={{ minHeight: totalPages > 1 ? minListHeight : undefined }}
+                className="mt-4 flex flex-col gap-3"
+              >
                 {pageIncidents.map((incident) => {
                   const Logo = SERVICE_LOGOS[incident.service.slug] ?? FallbackLogo;
                   const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;

@@ -3,35 +3,33 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { Board } from "@/types/board";
 import type { CatalogCategory, CatalogEntry, ServiceStatusBatchResponse } from "@/types/service";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 
 const CATEGORY_ORDER: CatalogCategory[] = ["infrastructure", "devtools", "database", "communication", "ai", "other"];
 
-// Categories column + services-in-category column — the browsing half of
-// "add a service to this board". The third column (what's already on the
-// board) stays in BoardDetailContent, since it's independent of whatever's
-// selected/searched here.
-export default function AddServiceColumns({
-  board,
+// Categories column + services-in-category column — the shared "browse the
+// catalog and add a service" UI, used both by the add-service page and by a
+// board's "add a service to this board" flow. A caller-specific third column
+// (e.g. BoardDetailContent's "On board" list) stays with the caller, since
+// it's independent of whatever's selected/searched here.
+export default function CatalogBrowser({
   catalog,
   trackedHosts,
-  data,
-  fetchFailed,
+  data = null,
+  fetchFailed = false,
   pendingHost,
   addedHosts,
   onAdd,
   query,
 }: {
-  board: Board;
   catalog: CatalogEntry[];
   trackedHosts: string[];
-  data: ServiceStatusBatchResponse | null;
-  fetchFailed: boolean;
-  pendingHost: string | null;
-  addedHosts: Set<string>;
-  onAdd: (entry: CatalogEntry) => void;
+  data?: ServiceStatusBatchResponse | null;
+  fetchFailed?: boolean;
+  pendingHost?: string | null;
+  addedHosts?: Set<string>;
+  onAdd?: (entry: CatalogEntry) => void;
   query: string;
 }) {
   const { t } = useTranslation();
@@ -51,20 +49,12 @@ export default function AddServiceColumns({
   );
 
   const trimmedQuery = query.trim().toLowerCase();
-  // A non-empty search overrides category browsing entirely — matches
-  // across the whole catalog, same as ServiceCatalogPicker's own search.
+  // A non-empty search overrides category browsing entirely.
   const visibleEntries = trimmedQuery
     ? catalog.filter((entry) => entry.name.toLowerCase().includes(trimmedQuery))
     : selectedCategory
       ? catalog.filter((entry) => entry.category === selectedCategory)
       : [];
-
-  // Already-on-the-board entries are shown too, not filtered out — merging
-  // board membership into the "added" set is what makes CatalogServiceCard's
-  // existing disabled-"Added" state stick permanently instead of the card
-  // just vanishing once the board actually contains it.
-  const onBoardHosts = catalog.filter((entry) => board.serviceSlugs.includes(entry.slug)).map((entry) => entry.host);
-  const mergedAddedHosts = new Set([...addedHosts, ...onBoardHosts]);
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-[200px_1fr]">
@@ -98,7 +88,7 @@ export default function AddServiceColumns({
               data={data}
               fetchFailed={fetchFailed}
               pendingHost={pendingHost}
-              addedHosts={mergedAddedHosts}
+              addedHosts={addedHosts}
               onAdd={onAdd}
             />
           </div>

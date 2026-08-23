@@ -81,9 +81,9 @@ export default function LandingPage() {
               {t("landing.nav.pricing")}
             </a>
             <LanguageSwitcher />
-            <a href="#" className="btn btn-sm rounded-full">
+            <Link href="/boards" className="btn btn-sm rounded-full">
               {t("landing.nav.startTrial")}
-            </a>
+            </Link>
           </div>
         </div>
       </nav>
@@ -115,9 +115,9 @@ export default function LandingPage() {
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
-              <a href="#" className="btn btn-primary rounded-full shadow-lg">
+              <Link href="/boards" className="btn btn-primary rounded-full shadow-lg">
                 {t("landing.hero.ctaTrial")}
-              </a>
+              </Link>
               <a href="#pricing" className="btn btn-outline rounded-full">
                 {t("landing.hero.ctaPricing")}
               </a>
@@ -198,9 +198,9 @@ export default function LandingPage() {
           <h2 className="max-w-md text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
             {t("landing.closing.heading")}
           </h2>
-          <a href="#" className="btn btn-primary rounded-full shadow-lg">
+          <Link href="/boards" className="btn btn-primary rounded-full shadow-lg">
             {t("landing.closing.cta")}
-          </a>
+          </Link>
         </div>
       </div>
 

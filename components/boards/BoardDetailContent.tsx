@@ -11,7 +11,7 @@ import { useCatalogStatus } from "@/lib/useCatalogStatus";
 import { notifyServicesChanged } from "@/lib/servicesChanged";
 import { useBoardRename } from "@/lib/useBoardRename";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
-import AddServiceColumns from "@/components/boards/AddServiceColumns";
+import CatalogBrowser from "@/components/service/CatalogBrowser";
 import Spinner from "@/components/Spinner";
 
 export default function BoardDetailContent({
@@ -35,6 +35,13 @@ export default function BoardDetailContent({
   const confirmRef = useRef<HTMLDialogElement>(null);
 
   const onBoardEntries = catalog.filter((entry) => board.serviceSlugs.includes(entry.slug));
+
+  // Already-on-the-board entries are shown in the browse column too, not
+  // filtered out — merging board membership into the "added" set is what
+  // makes CatalogServiceCard's existing disabled-"Added" state stick
+  // permanently instead of the card just vanishing once the board actually
+  // contains it.
+  const mergedAddedHosts = new Set([...addedHosts, ...onBoardEntries.map((entry) => entry.host)]);
 
   async function handleAdd(entry: CatalogEntry) {
     setPendingHost(entry.host);
@@ -182,14 +189,13 @@ export default function BoardDetailContent({
             order stays heading-then-cards so mobile's single-column stack
             still reads top to bottom correctly; only lg: reassigns rows. */}
         <div className="lg:col-start-1 lg:col-span-2 lg:row-start-2">
-          <AddServiceColumns
-            board={board}
+          <CatalogBrowser
             catalog={catalog}
             trackedHosts={trackedHosts}
             data={data}
             fetchFailed={fetchFailed}
             pendingHost={pendingHost}
-            addedHosts={addedHosts}
+            addedHosts={mergedAddedHosts}
             onAdd={handleAdd}
             query={query}
           />

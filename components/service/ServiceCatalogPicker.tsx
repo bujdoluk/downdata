@@ -5,11 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { CatalogCategory, CatalogEntry } from "@/types/service";
-import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
+import type { CatalogEntry } from "@/types/service";
+import CatalogBrowser from "@/components/service/CatalogBrowser";
 import { notifyServicesChanged } from "@/lib/servicesChanged";
-
-const CATEGORY_ORDER: CatalogCategory[] = ["infrastructure", "devtools", "database", "communication", "ai", "other"];
 
 export default function ServiceCatalogPicker({
   catalog,
@@ -24,15 +22,6 @@ export default function ServiceCatalogPicker({
   const [pendingHost, setPendingHost] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
-
-  const trimmedQuery = query.trim().toLowerCase();
-  const visibleCatalog = trimmedQuery
-    ? catalog.filter((entry) => entry.name.toLowerCase().includes(trimmedQuery))
-    : catalog;
-  const groups = CATEGORY_ORDER.map((category) => ({
-    category,
-    entries: visibleCatalog.filter((entry) => entry.category === category),
-  })).filter((group) => group.entries.length > 0);
 
   async function handleAdd(entry: CatalogEntry) {
     setPendingHost(entry.host);
@@ -89,28 +78,16 @@ export default function ServiceCatalogPicker({
         </div>
       )}
 
-      {visibleCatalog.length === 0 ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("nav.noServicesFound")}</p>
-      ) : (
-        <div className="mt-4">
-          {groups.map(({ category, entries }) => (
-            <div key={category} className="mb-8">
-              <h2 className="text-base-content/40 mb-3 text-xs font-semibold tracking-wide uppercase">
-                {t(`addService.category.${category}`)}
-              </h2>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                <CatalogServiceGrid
-                  catalog={entries}
-                  trackedHosts={trackedHosts}
-                  pendingHost={pendingHost}
-                  addedHosts={addedHosts}
-                  onAdd={handleAdd}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+      <div className="mt-4">
+        <CatalogBrowser
+          catalog={catalog}
+          trackedHosts={trackedHosts}
+          pendingHost={pendingHost}
+          addedHosts={addedHosts}
+          onAdd={handleAdd}
+          query={query}
+        />
+      </div>
     </div>
   );
 }

@@ -61,6 +61,7 @@
     "selectPrompt": "Wybierz incydent po lewej, aby zobaczyć szczegóły.",
     "noUpdates": "Brak aktualizacji.",
     "officialPage": "Zobacz oficjalną stronę incydentu",
+    "dateLabel": "Data:",
     "officialPageLabel": "Oficjalna strona:",
     "pin": "Przypnij",
     "unpin": "Odepnij",
@@ -99,6 +100,11 @@
     "unpin": "Odepnij",
     "selectPrompt": "Wybierz konserwację po lewej, aby zobaczyć szczegóły.",
     "scheduledLabel": "Zaplanowano:",
+    "filter": {
+      "status": "Status",
+      "allStatuses": "Wszystkie statusy",
+      "scheduled": "Zaplanowano"
+    },
     "subtitle": "Zaplanowane i trwające okna konserwacji we wszystkich monitorowanych usługach."
   },
   "integrations": {

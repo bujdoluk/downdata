@@ -60,6 +60,7 @@
     "selectPrompt": "Vyberte incident vlevo pro zobrazení podrobností.",
     "noUpdates": "Zatím žádné aktualizace.",
     "officialPage": "Zobrazit oficiální stránku incidentu",
+    "dateLabel": "Datum:",
     "officialPageLabel": "Oficiální stránka:",
     "pin": "Připnout",
     "unpin": "Odepnout",
@@ -98,6 +99,11 @@
     "unpin": "Odepnout",
     "selectPrompt": "Vyberte údržbu vlevo pro zobrazení podrobností.",
     "scheduledLabel": "Naplánováno:",
+    "filter": {
+      "status": "Stav",
+      "allStatuses": "Všechny stavy",
+      "scheduled": "Naplánováno"
+    },
     "subtitle": "Plánované a probíhající údržby napříč vašimi sledovanými službami."
   },
   "integrations": {

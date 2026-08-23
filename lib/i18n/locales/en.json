@@ -59,6 +59,7 @@
     "selectPrompt": "Select an incident on the left to see its details.",
     "noUpdates": "No updates yet.",
     "officialPage": "View official incident page",
+    "dateLabel": "Date:",
     "officialPageLabel": "Official page:",
     "pin": "Pin",
     "unpin": "Unpin",
@@ -97,6 +98,11 @@
     "unpin": "Unpin",
     "selectPrompt": "Select a maintenance on the left to see its details.",
     "scheduledLabel": "Scheduled:",
+    "filter": {
+      "status": "Status",
+      "allStatuses": "All statuses",
+      "scheduled": "Scheduled"
+    },
     "subtitle": "Scheduled and in-progress maintenance windows across your tracked services."
   },
   "integrations": {

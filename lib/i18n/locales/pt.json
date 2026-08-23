@@ -59,6 +59,7 @@
     "selectPrompt": "Selecione um incidente à esquerda para ver os detalhes.",
     "noUpdates": "Ainda sem atualizações.",
     "officialPage": "Ver página oficial do incidente",
+    "dateLabel": "Data:",
     "officialPageLabel": "Página oficial:",
     "pin": "Fixar",
     "unpin": "Desafixar",
@@ -97,6 +98,11 @@
     "unpin": "Desafixar",
     "selectPrompt": "Selecione uma manutenção à esquerda para ver os detalhes.",
     "scheduledLabel": "Agendada:",
+    "filter": {
+      "status": "Estado",
+      "allStatuses": "Todos os estados",
+      "scheduled": "Agendada"
+    },
     "subtitle": "Janelas de manutenção agendadas e em curso em todos os seus serviços monitorizados."
   },
   "integrations": {

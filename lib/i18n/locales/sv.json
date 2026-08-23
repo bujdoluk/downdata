@@ -59,6 +59,7 @@
     "selectPrompt": "Välj en incident till vänster för att se detaljerna.",
     "noUpdates": "Inga uppdateringar än.",
     "officialPage": "Visa officiell incidentsida",
+    "dateLabel": "Datum:",
     "officialPageLabel": "Officiell sida:",
     "pin": "Fäst",
     "unpin": "Lossa",
@@ -97,6 +98,11 @@
     "unpin": "Lossa",
     "selectPrompt": "Välj ett underhåll till vänster för att se detaljerna.",
     "scheduledLabel": "Schemalagt:",
+    "filter": {
+      "status": "Status",
+      "allStatuses": "Alla statusar",
+      "scheduled": "Schemalagt"
+    },
     "subtitle": "Planerade och pågående underhållsfönster för alla dina övervakade tjänster."
   },
   "integrations": {

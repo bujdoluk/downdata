@@ -59,6 +59,7 @@
     "selectPrompt": "Velg en hendelse til venstre for å se detaljene.",
     "noUpdates": "Ingen oppdateringer ennå.",
     "officialPage": "Vis offisiell hendelsesside",
+    "dateLabel": "Dato:",
     "officialPageLabel": "Offisiell side:",
     "pin": "Fest",
     "unpin": "Løsne",
@@ -97,6 +98,11 @@
     "unpin": "Løsne",
     "selectPrompt": "Velg et vedlikehold til venstre for å se detaljene.",
     "scheduledLabel": "Planlagt:",
+    "filter": {
+      "status": "Status",
+      "allStatuses": "Alle statuser",
+      "scheduled": "Planlagt"
+    },
     "subtitle": "Planlagt og pågående vedlikehold på tvers av alle overvåkede tjenester."
   },
   "integrations": {

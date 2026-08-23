@@ -34,9 +34,13 @@ export default function IncidentDetail({
         <div>
           <p className="text-base-content/50 text-xs">{incident.service.name}</p>
           <h2 className="text-lg font-semibold">{incident.name}</h2>
-          {"scheduled_for" in incident && (
+          {"scheduled_for" in incident ? (
             <p className="text-base-content/40 text-xs">
               {t("maintenances.scheduledLabel")} {formatDateTime(incident.scheduled_for)} – {formatDateTime(incident.scheduled_until)}
+            </p>
+          ) : (
+            <p className="text-base-content/40 text-xs">
+              {t("incidents.dateLabel")} {formatDateTime(incident.created_at)}
             </p>
           )}
           <p className="text-base-content/40 text-xs">

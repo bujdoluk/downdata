@@ -59,6 +59,7 @@
     "selectPrompt": "Sélectionnez un incident à gauche pour voir ses détails.",
     "noUpdates": "Aucune mise à jour pour le moment.",
     "officialPage": "Voir la page officielle de l'incident",
+    "dateLabel": "Date :",
     "officialPageLabel": "Page officielle :",
     "pin": "Épingler",
     "unpin": "Désépingler",
@@ -97,6 +98,11 @@
     "unpin": "Désépingler",
     "selectPrompt": "Sélectionnez une maintenance à gauche pour voir ses détails.",
     "scheduledLabel": "Planifiée :",
+    "filter": {
+      "status": "Statut",
+      "allStatuses": "Tous les statuts",
+      "scheduled": "Planifiée"
+    },
     "subtitle": "Fenêtres de maintenance planifiées et en cours sur tous vos services surveillés."
   },
   "integrations": {

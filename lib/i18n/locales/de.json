@@ -59,6 +59,7 @@
     "selectPrompt": "Wähle links einen Vorfall aus, um Details anzuzeigen.",
     "noUpdates": "Noch keine Updates.",
     "officialPage": "Offizielle Vorfallseite ansehen",
+    "dateLabel": "Datum:",
     "officialPageLabel": "Offizielle Seite:",
     "pin": "Anheften",
     "unpin": "Lösen",
@@ -97,6 +98,11 @@
     "unpin": "Lösen",
     "selectPrompt": "Wähle links eine Wartung aus, um Details anzuzeigen.",
     "scheduledLabel": "Geplant:",
+    "filter": {
+      "status": "Status",
+      "allStatuses": "Alle Status",
+      "scheduled": "Geplant"
+    },
     "subtitle": "Geplante und laufende Wartungsfenster für alle überwachten Dienste."
   },
   "integrations": {

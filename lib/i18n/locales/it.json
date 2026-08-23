@@ -59,6 +59,7 @@
     "selectPrompt": "Seleziona un incidente a sinistra per vederne i dettagli.",
     "noUpdates": "Ancora nessun aggiornamento.",
     "officialPage": "Visualizza la pagina ufficiale dell'incidente",
+    "dateLabel": "Data:",
     "officialPageLabel": "Pagina ufficiale:",
     "pin": "Fissa",
     "unpin": "Rimuovi fissaggio",
@@ -97,6 +98,11 @@
     "unpin": "Rimuovi fissaggio",
     "selectPrompt": "Seleziona una manutenzione a sinistra per vederne i dettagli.",
     "scheduledLabel": "Programmata:",
+    "filter": {
+      "status": "Stato",
+      "allStatuses": "Tutti gli stati",
+      "scheduled": "Programmata"
+    },
     "subtitle": "Finestre di manutenzione pianificate e in corso in tutti i tuoi servizi monitorati."
   },
   "integrations": {

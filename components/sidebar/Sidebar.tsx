@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
@@ -20,9 +20,6 @@ import {
 } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 import { usePolledFetch } from "@/lib/usePolledFetch";
-import { isActiveIncident } from "@/lib/isActiveIncident";
-import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
-import type { TrackedIncident, TrackedMaintenance } from "@/types/service";
 
 function ChevronIcon({ className, collapsed }: { className?: string; collapsed: boolean }) {
   return (
@@ -50,16 +47,15 @@ export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const settingsRef = useRef<HTMLDetailsElement>(null);
   const preferencesRef = useRef<HTMLDialogElement>(null);
-  const { data: incidentsData } = usePolledFetch<{ incidents: TrackedIncident[] }>("/api/incidents");
-  const activeIncidentCount = useMemo(
-    () => incidentsData?.incidents.filter(isActiveIncident).length ?? 0,
-    [incidentsData],
-  );
-  const { data: maintenanceData } = usePolledFetch<{ maintenances: TrackedMaintenance[] }>("/api/maintenance");
-  const inProgressMaintenanceCount = useMemo(
-    () => maintenanceData?.maintenances.filter(isInProgressMaintenance).length ?? 0,
-    [maintenanceData],
-  );
+  // Head-only count endpoints, not the full /api/incidents /
+  // /api/maintenance payloads: the sidebar is mounted on every dashboard
+  // page and polls every 60s, so pulling full incident/maintenance history
+  // (with all update bodies) just to show a badge number drove most of
+  // this app's Supabase egress.
+  const { data: incidentsData } = usePolledFetch<{ count: number }>("/api/incidents/count");
+  const activeIncidentCount = incidentsData?.count ?? 0;
+  const { data: maintenanceData } = usePolledFetch<{ count: number }>("/api/maintenance/count");
+  const inProgressMaintenanceCount = maintenanceData?.count ?? 0;
 
   useCloseDetailsOnOutsideClick(settingsRef);
 

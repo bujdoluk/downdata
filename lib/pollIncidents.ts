@@ -149,8 +149,16 @@ async function pollOneServiceIncidents(service: { slug: string; host: string }):
 // that service's incident poll down with it (see how the two are run via
 // Promise.allSettled in pollAllIncidents below). No backfill/notification
 // concerns here unlike incidents — nothing notifies about maintenances.
+//
+// Deliberately the plain (unfiltered) endpoint, not /upcoming.json: a
+// maintenance stops being "upcoming" the instant it goes in_progress, so
+// polling that endpoint would silently stop seeing a maintenance right as
+// it starts — its status and updates would freeze at whatever they were
+// pre-start forever. This endpoint returns the last ~50 regardless of
+// status (scheduled/in_progress/completed); getAllStoredMaintenances
+// already filters completed/stale ones back out at read time.
 async function pollOneServiceMaintenances(service: { slug: string; host: string }): Promise<{ maintenanceCount: number; failed: number }> {
-  const res = await fetch(`https://${service.host}/api/v2/scheduled-maintenances/upcoming.json`, {
+  const res = await fetch(`https://${service.host}/api/v2/scheduled-maintenances.json`, {
     signal: AbortSignal.timeout(8_000),
   });
   if (!res.ok) throw new Error(`Upstream returned ${res.status}`);

@@ -14,6 +14,12 @@ import { usePinned } from "@/lib/usePinned";
 import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
 import IncidentDetail from "@/components/service/IncidentDetail";
 
+type StatusFilter = "all" | "scheduled" | "in_progress";
+
+function matchesStatus(maintenance: TrackedMaintenance, filter: StatusFilter): boolean {
+  return filter === "all" || maintenance.status === filter;
+}
+
 export default function MaintenancePageContent() {
   const { t } = useTranslation();
   const router = useRouter();
@@ -21,6 +27,7 @@ export default function MaintenancePageContent() {
   const { data, error } = usePolledFetch<{ maintenances: TrackedMaintenance[] }>("/api/maintenance");
   const { pinned, togglePin } = usePinned("pinnedMaintenance");
   const [serviceQuery, setServiceQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
 
   const isLoading = !data && !error;
   const maintenances = useMemo(() => data?.maintenances ?? [], [data]);
@@ -40,12 +47,18 @@ export default function MaintenancePageContent() {
 
   const trimmedServiceQuery = serviceQuery.trim().toLowerCase();
   const filteredMaintenances = maintenances
-    .filter((maintenance) => !trimmedServiceQuery || maintenance.service.name.toLowerCase().includes(trimmedServiceQuery))
+    .filter(
+      (maintenance) =>
+        matchesStatus(maintenance, statusFilter) &&
+        (!trimmedServiceQuery || maintenance.service.name.toLowerCase().includes(trimmedServiceQuery)),
+    )
     .sort((a, b) => {
       const pinDiff = Number(pinned.has(b.id)) - Number(pinned.has(a.id));
       if (pinDiff !== 0) return pinDiff;
       return Number(isInProgressMaintenance(b)) - Number(isInProgressMaintenance(a));
     });
+  const countForStatus = (filter: StatusFilter) =>
+    maintenances.filter((maintenance) => matchesStatus(maintenance, filter)).length;
 
   return (
     <div className="w-full self-start">
@@ -61,14 +74,39 @@ export default function MaintenancePageContent() {
       ) : (
         <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div>
-            <input
-              type="text"
-              className="input input-bordered input-sm w-40"
-              aria-label={t("incidents.filter.searchService")}
-              placeholder={t("incidents.filter.searchService")}
-              value={serviceQuery}
-              onChange={(e) => setServiceQuery(e.target.value)}
-            />
+            <form
+              className="flex flex-wrap items-center gap-2"
+              onReset={() => {
+                setServiceQuery("");
+                setStatusFilter("all");
+              }}
+            >
+              <input
+                type="text"
+                className="input input-bordered input-sm w-40"
+                aria-label={t("incidents.filter.searchService")}
+                placeholder={t("incidents.filter.searchService")}
+                value={serviceQuery}
+                onChange={(e) => setServiceQuery(e.target.value)}
+              />
+              <select
+                className="select select-bordered select-sm w-40"
+                aria-label={t("maintenances.filter.status")}
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
+              >
+                <option value="all">
+                  {t("maintenances.filter.allStatuses")} ({countForStatus("all")})
+                </option>
+                <option value="scheduled">
+                  {t("maintenances.filter.scheduled")} ({countForStatus("scheduled")})
+                </option>
+                <option value="in_progress">
+                  {t("maintenances.inProgress")} ({countForStatus("in_progress")})
+                </option>
+              </select>
+              <input className="btn btn-square btn-sm" type="reset" value="×" />
+            </form>
 
             {filteredMaintenances.length === 0 ? (
               <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.noMatches")}</p>

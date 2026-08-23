@@ -59,6 +59,7 @@
     "selectPrompt": "Selecteer links een incident om de details te bekijken.",
     "noUpdates": "Nog geen updates.",
     "officialPage": "Bekijk officiële incidentpagina",
+    "dateLabel": "Datum:",
     "officialPageLabel": "Officiële pagina:",
     "pin": "Vastzetten",
     "unpin": "Losmaken",
@@ -97,6 +98,11 @@
     "unpin": "Losmaken",
     "selectPrompt": "Selecteer links een onderhoud om de details te bekijken.",
     "scheduledLabel": "Gepland:",
+    "filter": {
+      "status": "Status",
+      "allStatuses": "Alle statussen",
+      "scheduled": "Gepland"
+    },
     "subtitle": "Geplande en lopende onderhoudsvensters voor al je gevolgde diensten."
   },
   "integrations": {

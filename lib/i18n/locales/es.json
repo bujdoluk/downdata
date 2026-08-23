@@ -59,6 +59,7 @@
     "selectPrompt": "Selecciona un incidente a la izquierda para ver sus detalles.",
     "noUpdates": "Todavía no hay actualizaciones.",
     "officialPage": "Ver página oficial del incidente",
+    "dateLabel": "Fecha:",
     "officialPageLabel": "Página oficial:",
     "pin": "Fijar",
     "unpin": "Dejar de fijar",
@@ -97,6 +98,11 @@
     "unpin": "Dejar de fijar",
     "selectPrompt": "Selecciona un mantenimiento a la izquierda para ver sus detalles.",
     "scheduledLabel": "Programado:",
+    "filter": {
+      "status": "Estado",
+      "allStatuses": "Todos los estados",
+      "scheduled": "Programado"
+    },
     "subtitle": "Ventanas de mantenimiento programadas y en curso en todos tus servicios monitorizados."
   },
   "integrations": {

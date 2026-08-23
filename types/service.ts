@@ -69,12 +69,22 @@ export type ServiceSummaryResponse = {
 
 export type TrackedIncident = StatuspageIncident & { service: ServiceDefinition };
 
+// Same as StatuspageIncident/TrackedIncident but without incident_updates —
+// what the polled list endpoints (/api/incidents, /api/maintenance) return,
+// since only whichever one item is currently selected ever needs its full
+// timeline (fetched separately, see app/api/incidents/[slug]/[id]).
+export type StatuspageIncidentSummary = Omit<StatuspageIncident, "incident_updates">;
+export type TrackedIncidentSummary = StatuspageIncidentSummary & { service: ServiceDefinition };
+
 export type ScheduledMaintenance = StatuspageIncident & {
   scheduled_for: string;
   scheduled_until: string;
 };
 
 export type TrackedMaintenance = ScheduledMaintenance & { service: ServiceDefinition };
+
+export type ScheduledMaintenanceSummary = Omit<ScheduledMaintenance, "incident_updates">;
+export type TrackedMaintenanceSummary = ScheduledMaintenanceSummary & { service: ServiceDefinition };
 
 export type ServiceStatusEntry =
   | { status: { indicator: Indicator; description: string }; outages24h?: number }

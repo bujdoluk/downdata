@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabaseClient } from "@/lib/supabase";
-import type { StatuspageIncident } from "@/types/service";
+import type { StatuspageIncident, StatuspageIncidentSummary } from "@/types/service";
 
 export type StoredIncidentUpdate = {
   service_slug: string;
@@ -105,6 +105,17 @@ async function fetchUpdatesForIncidentIds(
   return results;
 }
 
+// Same rows as getAllStoredIncidents but no incident_updates query at all —
+// powers /api/incidents' list response, polled every 60s by several pages
+// that only ever render one incident's full timeline at a time. Not just
+// trimming the response: skipping this query means that data never leaves
+// Postgres in the first place.
+export async function getAllStoredIncidentSummaries(): Promise<Omit<StoredIncident, "incident_updates">[]> {
+  const supabase = getSupabaseClient();
+  const { data } = await supabase.from("incidents").select("*").order("updated_at", { ascending: false }).limit(1000);
+  return (data as Omit<StoredIncident, "incident_updates">[]) ?? [];
+}
+
 // All tracked services' incidents, newest-updated first — powers
 // /api/incidents. Two flat queries instead of one per incident, same shape
 // as the notifier's existing batch-query pattern; capped at 1000 rows like
@@ -150,6 +161,21 @@ export async function getStoredIncidentsForService(serviceSlug: string): Promise
     ...incident,
     incident_updates: grouped.get(`${incident.service_slug}:${incident.id}`) ?? [],
   }));
+}
+
+// Same mapping as toIncidentApiShape, minus incident_updates — for the
+// summary rows getAllStoredIncidentSummaries() returns (no updates to map).
+export function toIncidentSummaryApiShape(incident: Omit<StoredIncident, "incident_updates">): StatuspageIncidentSummary {
+  return {
+    id: incident.id,
+    name: incident.name,
+    status: incident.status,
+    impact: incident.impact,
+    created_at: incident.created_at,
+    resolved_at: incident.resolved_at,
+    updated_at: incident.updated_at,
+    shortlink: incident.shortlink ?? "",
+  };
 }
 
 // Maps the DB's stored shape (extra fields: service_slug, monitoring_at,

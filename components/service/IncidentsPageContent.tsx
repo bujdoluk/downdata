@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, msSince } from "@/lib/formatTime";
-import type { TrackedIncident } from "@/types/service";
+import type { TrackedIncident, TrackedIncidentSummary } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
@@ -27,7 +27,7 @@ const RANGE_MS: Record<Exclude<TimeRange, "all">, number> = {
 
 const PAGE_SIZE = 7;
 
-function matchesStatus(incident: TrackedIncident, filter: StatusFilter): boolean {
+function matchesStatus(incident: TrackedIncidentSummary, filter: StatusFilter): boolean {
   return filter === "all" || incident.status === filter;
 }
 
@@ -35,18 +35,47 @@ export default function IncidentsPageContent() {
   const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data, error } = usePolledFetch<{ incidents: TrackedIncident[] }>("/api/incidents");
+  const { data, error } = usePolledFetch<{ incidents: TrackedIncidentSummary[] }>("/api/incidents");
   const { pinned, togglePin } = usePinned("pinnedIncidents");
   const lastViewed = useIncidentsLastViewed(true);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
   const [serviceQuery, setServiceQuery] = useState("");
   const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRange>("30d");
   const [page, setPage] = useState(1);
+  const [result, setResult] = useState<{ id: string; incident: TrackedIncident } | { id: string; error: true } | null>(null);
 
   const isLoading = !data && !error;
   const incidents = useMemo(() => data?.incidents ?? [], [data]);
   const selectedId = searchParams.get("id");
   const selectedIncident = incidents.find((incident) => incident.id === selectedId);
+  const selectedServiceSlug = selectedIncident?.service.slug;
+
+  // Full timeline for whichever incident is selected, fetched separately —
+  // the list response deliberately omits incident_updates (see
+  // app/api/incidents/route.ts). One-shot per selection, not polled: an
+  // already-open incident's timeline won't live-update, only refreshes on
+  // reselection. The list itself keeps polling every 60s regardless.
+  // id-tagged result compared against the current selection below (same
+  // pattern HistoryPageContent uses) instead of resetting state up front.
+  useEffect(() => {
+    if (!selectedServiceSlug || !selectedId) return;
+    let cancelled = false;
+    fetch(`/api/incidents/${selectedServiceSlug}/${selectedId}`)
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("bad response"))))
+      .then((incident) => {
+        if (!cancelled) setResult({ id: selectedId, incident });
+      })
+      .catch(() => {
+        if (!cancelled) setResult({ id: selectedId, error: true });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedServiceSlug, selectedId]);
+
+  const currentResult = result?.id === selectedId ? result : null;
+  const detail = currentResult && "incident" in currentResult ? currentResult.incident : null;
+  const detailError = currentResult ? "error" in currentResult : false;
 
   useEffect(() => {
     // incidents[0] is safe — length > 0 is checked first
@@ -225,8 +254,15 @@ export default function IncidentsPageContent() {
           </div>
 
           <div className="card card-border bg-base-200 p-4">
-            {selectedIncident ? (
-              <IncidentDetail incident={selectedIncident} lastViewed={lastViewed} />
+            {detail ? (
+              <IncidentDetail incident={detail} lastViewed={lastViewed} />
+            ) : detailError ? (
+              <p className="text-base-content/50 text-sm">{t("incidents.unreachable")}</p>
+            ) : selectedIncident ? (
+              <p className="text-base-content/50 flex items-center gap-2 text-sm">
+                <Spinner size="sm" />
+                {t("incidents.loading")}
+              </p>
             ) : (
               <p className="text-base-content/50 text-sm">{t("incidents.selectPrompt")}</p>
             )}

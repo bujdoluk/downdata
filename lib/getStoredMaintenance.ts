@@ -1,5 +1,5 @@
 import { getSupabaseClient } from "@/lib/supabase";
-import type { ScheduledMaintenance } from "@/types/service";
+import type { ScheduledMaintenance, ScheduledMaintenanceSummary } from "@/types/service";
 
 export type StoredMaintenanceUpdate = {
   service_slug: string;
@@ -81,6 +81,67 @@ export async function getAllStoredMaintenances(trackedSlugs: string[]): Promise<
     ...maintenance,
     maintenance_updates: grouped.get(`${maintenance.service_slug}:${maintenance.id}`) ?? [],
   }));
+}
+
+// Same "still relevant" filter as getAllStoredMaintenances, no
+// maintenance_updates query — powers /api/maintenance's list response,
+// polled every 60s by pages that only ever render one maintenance's full
+// timeline at a time. See getAllStoredIncidentSummaries's reasoning.
+export async function getAllStoredMaintenanceSummaries(trackedSlugs: string[]): Promise<Omit<StoredMaintenance, "maintenance_updates">[]> {
+  if (trackedSlugs.length === 0) return [];
+  const supabase = getSupabaseClient();
+  const nowIso = new Date().toISOString();
+
+  const { data } = await supabase
+    .from("maintenances")
+    .select("*")
+    .in("service_slug", trackedSlugs)
+    .neq("status", "completed")
+    .or(`scheduled_until.gte.${nowIso},status.eq.in_progress`)
+    .order("scheduled_for", { ascending: true });
+
+  return (data as Omit<StoredMaintenance, "maintenance_updates">[]) ?? [];
+}
+
+// One maintenance with its full update timeline — mirrors
+// getStoredIncident.ts's getStoredIncidentWithUpdates, backing the
+// per-item detail route (app/api/maintenance/[slug]/[id]).
+export async function getStoredMaintenanceWithUpdates(serviceSlug: string, maintenanceId: string): Promise<StoredMaintenance | null> {
+  const supabase = getSupabaseClient();
+
+  const { data: maintenance } = await supabase
+    .from("maintenances")
+    .select("*")
+    .eq("service_slug", serviceSlug)
+    .eq("id", maintenanceId)
+    .maybeSingle();
+  if (!maintenance) return null;
+
+  const { data: updates } = await supabase
+    .from("maintenance_updates")
+    .select("*")
+    .eq("service_slug", serviceSlug)
+    .eq("maintenance_id", maintenanceId)
+    .order("created_at", { ascending: false });
+
+  return { ...(maintenance as Omit<StoredMaintenance, "maintenance_updates">), maintenance_updates: (updates as StoredMaintenanceUpdate[]) ?? [] };
+}
+
+// Same mapping as toMaintenanceApiShape, minus the update timeline — for
+// the summary rows getAllStoredMaintenanceSummaries() returns.
+export function toMaintenanceSummaryApiShape(maintenance: Omit<StoredMaintenance, "maintenance_updates">): ScheduledMaintenanceSummary {
+  return {
+    id: maintenance.id,
+    name: maintenance.name,
+    status: maintenance.status,
+    impact: maintenance.impact,
+    created_at: maintenance.created_at,
+    resolved_at: maintenance.resolved_at,
+    updated_at: maintenance.updated_at,
+    shortlink: maintenance.shortlink ?? "",
+    scheduled_for: maintenance.scheduled_for,
+    scheduled_until: maintenance.scheduled_until,
+  };
 }
 
 // Maps the DB's stored shape down to the ScheduledMaintenance shape the UI

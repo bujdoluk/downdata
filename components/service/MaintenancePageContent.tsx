@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime } from "@/lib/formatTime";
-import type { TrackedMaintenance } from "@/types/service";
+import type { TrackedMaintenance, TrackedMaintenanceSummary } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { PinIcon } from "@/components/icons/NavIcons";
@@ -17,7 +17,7 @@ import IncidentDetail from "@/components/service/IncidentDetail";
 
 type StatusFilter = "all" | "scheduled" | "in_progress";
 
-function matchesStatus(maintenance: TrackedMaintenance, filter: StatusFilter): boolean {
+function matchesStatus(maintenance: TrackedMaintenanceSummary, filter: StatusFilter): boolean {
   return filter === "all" || maintenance.status === filter;
 }
 
@@ -25,15 +25,40 @@ export default function MaintenancePageContent() {
   const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data, error } = usePolledFetch<{ maintenances: TrackedMaintenance[] }>("/api/maintenance");
+  const { data, error } = usePolledFetch<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance");
   const { pinned, togglePin } = usePinned("pinnedMaintenance");
   const [serviceQuery, setServiceQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [result, setResult] = useState<{ id: string; maintenance: TrackedMaintenance } | { id: string; error: true } | null>(null);
 
   const isLoading = !data && !error;
   const maintenances = useMemo(() => data?.maintenances ?? [], [data]);
   const selectedId = searchParams.get("id");
   const selectedMaintenance = maintenances.find((maintenance) => maintenance.id === selectedId);
+  const selectedServiceSlug = selectedMaintenance?.service.slug;
+
+  // Full timeline for whichever maintenance is selected, fetched
+  // separately — see IncidentsPageContent's identical detail-fetch effect
+  // for the full reasoning.
+  useEffect(() => {
+    if (!selectedServiceSlug || !selectedId) return;
+    let cancelled = false;
+    fetch(`/api/maintenance/${selectedServiceSlug}/${selectedId}`)
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("bad response"))))
+      .then((maintenance) => {
+        if (!cancelled) setResult({ id: selectedId, maintenance });
+      })
+      .catch(() => {
+        if (!cancelled) setResult({ id: selectedId, error: true });
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedServiceSlug, selectedId]);
+
+  const currentResult = result?.id === selectedId ? result : null;
+  const detail = currentResult && "maintenance" in currentResult ? currentResult.maintenance : null;
+  const detailError = currentResult ? "error" in currentResult : false;
 
   useEffect(() => {
     // maintenances[0] is safe — length > 0 is checked first
@@ -155,8 +180,15 @@ export default function MaintenancePageContent() {
           </div>
 
           <div className="card card-border bg-base-200 p-4">
-            {selectedMaintenance ? (
-              <IncidentDetail incident={selectedMaintenance} />
+            {detail ? (
+              <IncidentDetail incident={detail} />
+            ) : detailError ? (
+              <p className="text-base-content/50 text-sm">{t("maintenances.unreachable")}</p>
+            ) : selectedMaintenance ? (
+              <p className="text-base-content/50 flex items-center gap-2 text-sm">
+                <Spinner size="sm" />
+                {t("maintenances.loading")}
+              </p>
             ) : (
               <p className="text-base-content/50 text-sm">{t("maintenances.selectPrompt")}</p>
             )}

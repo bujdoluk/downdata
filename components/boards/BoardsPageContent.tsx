@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
-import type { TrackedIncident, TrackedMaintenance } from "@/types/service";
+import type { TrackedIncidentSummary, TrackedMaintenanceSummary } from "@/types/service";
 import BoardCard from "@/components/boards/BoardCard";
 import CreateBoardForm from "@/components/boards/CreateBoardForm";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
@@ -27,8 +27,8 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   // Same URLs Sidebar already polls globally — usePolledFetch shares one
   // request per URL across every component asking for it, so this adds no
   // extra network traffic on top of what's already happening.
-  const { data: incidentsData } = usePolledFetch<{ incidents: TrackedIncident[] }>("/api/incidents");
-  const { data: maintenanceData } = usePolledFetch<{ maintenances: TrackedMaintenance[] }>("/api/maintenance");
+  const { data: incidentsData } = usePolledFetch<{ incidents: TrackedIncidentSummary[] }>("/api/incidents");
+  const { data: maintenanceData } = usePolledFetch<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance");
 
   useCloseDetailsOnOutsideClick(createRef);
 

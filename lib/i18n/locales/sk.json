@@ -123,14 +123,12 @@
     "loading": "Načítava sa história…",
     "unreachable": "Nepodarilo sa načítať históriu incidentov.",
     "empty": "Žiadne incidenty za posledných 12 mesiacov.",
+    "today": "Dnes",
     "summary": {
-      "incidents_one": "{{count}} incident",
+      "incidents_one": "<0>{{count}}</0> incident",
       "incidents_few": "{{count}} incidenty",
-      "incidents_other": "{{count}} incidentov",
-      "daysAffected_one": "{{count}} deň s incidentom",
-      "daysAffected_few": "{{count}} dni s incidentom",
-      "daysAffected_other": "{{count}} dní s incidentom",
-      "avgResolution": "Priemerný čas riešenia: {{hours}} h"
+      "incidents_other": "<0>{{count}}</0> incidentov",
+      "avgResolution": "Priemerný čas riešenia: <0>{{hours}}</0> h"
     },
     "resolutionTime": "Vyriešené za {{hours}} h",
     "stillOngoing": "Stále trvá"
@@ -145,6 +143,9 @@
     "empty": "Zatiaľ žiadne nástenky. Vytvorte jednu a začnite zoskupovať služby.",
     "delete": "Odstrániť",
     "deleting": "Odstraňovanie…",
+    "deleteConfirmTitle": "Odstrániť nástenku?",
+    "deleteConfirmMessage": "Týmto natrvalo odstránite „{{name}}“. Túto akciu nemožno vrátiť späť.",
+    "cancel": "Zrušiť",
     "serviceCountLabel_one": "služba",
     "serviceCountLabel_few": "služby",
     "serviceCountLabel_other": "služieb",

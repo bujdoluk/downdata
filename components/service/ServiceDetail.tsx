@@ -10,6 +10,7 @@ import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import { ExternalLinkIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
+import Spinner from "@/components/Spinner";
 
 export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
   const { t } = useTranslation();
@@ -72,11 +73,11 @@ export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
 
       <div className="card card-border bg-base-200 mt-4">
         <div className="card-body flex-row items-center gap-2.5 p-3">
-          <span
-            className={`h-2.5 w-2.5 shrink-0 rounded-full ${
-              isLoading || error ? "bg-base-content/20" : overallStyle.dot
-            } ${isLoading ? "animate-pulse" : ""}`}
-          />
+          {isLoading ? (
+            <Spinner size="xs" className="text-base-content/40" />
+          ) : (
+            <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${error ? "bg-base-content/20" : overallStyle.dot}`} />
+          )}
           <p className={`text-sm font-medium ${error || isLoading ? "text-base-content/50" : overallStyle.text}`}>
             {isLoading
               ? t("serviceDetail.checkingStatus")

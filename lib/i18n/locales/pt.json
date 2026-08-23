@@ -122,12 +122,11 @@
     "loading": "A carregar histórico…",
     "unreachable": "Não foi possível carregar o histórico de incidentes.",
     "empty": "Sem incidentes nos últimos 12 meses.",
+    "today": "Hoje",
     "summary": {
-      "incidents_one": "{{count}} incidente",
-      "incidents_other": "{{count}} incidentes",
-      "daysAffected_one": "{{count}} dia com um incidente",
-      "daysAffected_other": "{{count}} dias com um incidente",
-      "avgResolution": "Tempo médio de resolução: {{hours}} h"
+      "incidents_one": "<0>{{count}}</0> incidente",
+      "incidents_other": "<0>{{count}}</0> incidentes",
+      "avgResolution": "Tempo médio de resolução: <0>{{hours}}</0> h"
     },
     "resolutionTime": "Resolvido em {{hours}} h",
     "stillOngoing": "Ainda em curso"
@@ -142,6 +141,9 @@
     "empty": "Ainda não há painéis. Crie um para começar a agrupar serviços.",
     "delete": "Eliminar",
     "deleting": "A eliminar…",
+    "deleteConfirmTitle": "Eliminar painel?",
+    "deleteConfirmMessage": "Isto irá eliminar permanentemente \"{{name}}\". Esta ação não pode ser anulada.",
+    "cancel": "Cancelar",
     "serviceCountLabel_one": "serviço",
     "serviceCountLabel_other": "serviços",
     "incidentCountLabel_one": "incidente",

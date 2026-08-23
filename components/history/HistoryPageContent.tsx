@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Temporal } from "temporal-polyfill";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { ServiceDefinition, StatuspageIncident } from "@/types/service";
 import { buildIncidentCalendar } from "@/lib/buildIncidentCalendar";
@@ -11,15 +11,19 @@ import ServiceSearchPicker from "@/components/service/ServiceSearchPicker";
 import { formatDateTime } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import Spinner from "@/components/Spinner";
 
 const CURRENT_YEAR = Temporal.Now.plainDateISO().year;
-const ALL_IMPACTS = Object.keys(INDICATOR_STYLES);
 const IMPACT_CHECKBOX_COLOR: Record<string, string> = {
   none: "checkbox-success",
   minor: "checkbox-warning",
   major: "checkbox-accent",
   critical: "checkbox-error",
 };
+// Deliberately not Object.keys(INDICATOR_STYLES) — that map also carries a
+// "maintenance" entry for the Maintenance page's badge, but no incident
+// here ever has that impact, so it must not leak into this filter.
+const ALL_IMPACTS = Object.keys(IMPACT_CHECKBOX_COLOR);
 
 function hoursBetween(startIso: string, endIso: string): number {
   return Temporal.Instant.from(endIso).since(Temporal.Instant.from(startIso)).total("hours");
@@ -97,9 +101,7 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
   // Derived purely from the already-fetched incidents — no extra requests.
   const summary = useMemo(() => {
     const uniqueIncidents = new Map<string, StatuspageIncident>();
-    let daysWithIncident = 0;
     for (const day of calendar.days) {
-      if (day.incidents.length > 0) daysWithIncident++;
       for (const incident of day.incidents) uniqueIncidents.set(incident.id, incident);
     }
     const resolved = [...uniqueIncidents.values()].filter((incident) => incident.resolved_at);
@@ -107,7 +109,7 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
       resolved.length > 0
         ? resolved.reduce((sum, incident) => sum + hoursBetween(incident.created_at, incident.resolved_at!), 0) / resolved.length
         : null;
-    return { incidentCount: uniqueIncidents.size, daysWithIncident, avgResolutionHours };
+    return { incidentCount: uniqueIncidents.size, avgResolutionHours };
   }, [calendar.days]);
 
   return (
@@ -128,7 +130,10 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
       </div>
 
       {!slug ? null : isLoading ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("history.loading")}</p>
+        <p className="text-base-content/50 mt-4 flex items-center gap-2 text-sm">
+          <Spinner size="sm" />
+          {t("history.loading")}
+        </p>
       ) : error ? (
         <p className="text-base-content/50 mt-4 text-sm">{t("history.unreachable")}</p>
       ) : incidents && incidents.length === 0 ? (
@@ -136,10 +141,17 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
       ) : incidents ? (
         <>
           <div className="text-base-content/60 mt-4 flex flex-wrap gap-4 text-base">
-            <span>{t("history.summary.incidents", { count: summary.incidentCount })}</span>
-            <span>{t("history.summary.daysAffected", { count: summary.daysWithIncident })}</span>
+            <span>
+              <Trans i18nKey="history.summary.incidents" count={summary.incidentCount} components={[<span key="0" className="text-white text-1xl font-extrabold" />]} />
+            </span>
             {summary.avgResolutionHours !== null && (
-              <span>{t("history.summary.avgResolution", { hours: summary.avgResolutionHours.toFixed(1) })}</span>
+              <span>
+                <Trans
+                  i18nKey="history.summary.avgResolution"
+                  values={{ hours: summary.avgResolutionHours.toFixed(1) }}
+                  components={[<span key="0" className="text-white text-1xl font-extrabold" />]}
+                />
+              </span>
             )}
           </div>
 
@@ -152,10 +164,14 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
                   checked={selectedImpacts.has(impact)}
                   onChange={() => toggleImpact(impact)}
                 />
-                {/* impact comes from Object.keys(INDICATOR_STYLES), so the lookup always hits */}
+                {/* impact comes from Object.keys(IMPACT_CHECKBOX_COLOR), a subset of INDICATOR_STYLES's keys, so the lookup always hits */}
                 {t(INDICATOR_STYLES[impact]!.labelKey)}
               </label>
             ))}
+            <span className="label gap-2 text-sm">
+              <span className="bg-base-content/10 outline-base-content/40 h-4 w-4 rounded-sm outline-2 outline-offset-1" />
+              {t("history.today")}
+            </span>
           </div>
 
           <div className="mt-2 flex items-start gap-4">

@@ -9,6 +9,7 @@ import type { TrackedMaintenance } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { PinIcon } from "@/components/icons/NavIcons";
+import Spinner from "@/components/Spinner";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
 import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
@@ -66,7 +67,10 @@ export default function MaintenancePageContent() {
       <p className="text-base-content/60 mt-1 text-sm">{t("maintenances.subtitle")}</p>
 
       {isLoading ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.loading")}</p>
+        <p className="text-base-content/50 mt-4 flex items-center gap-2 text-sm">
+          <Spinner size="sm" />
+          {t("maintenances.loading")}
+        </p>
       ) : error ? (
         <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.unreachable")}</p>
       ) : maintenances.length === 0 ? (
@@ -122,7 +126,7 @@ export default function MaintenancePageContent() {
                         type="button"
                         onClick={() => selectMaintenance(maintenance.id)}
                         className={`card card-border bg-base-200 relative flex w-full flex-row items-center gap-3 overflow-hidden p-4 text-left shadow-md transition-colors ${
-                          isSelected ? "border-primary" : isActive ? "border-warning" : "hover:border-base-content/20"
+                          isSelected ? "border-primary" : isActive ? "border-info" : "hover:border-base-content/20"
                         }`}
                       >
                         <Logo size={24} name={maintenance.service.name} />
@@ -130,8 +134,8 @@ export default function MaintenancePageContent() {
                           <p className="text-base-content/50 text-xs">{maintenance.service.name}</p>
                           <p className="text-base-content truncate text-sm font-medium">{maintenance.name}</p>
                           {isActive ? (
-                            <span className="badge badge-warning badge-xs mt-1 gap-1.5">
-                              <span className="bg-warning-content text-warning-content animate-pulse-ring h-1.5 w-1.5 rounded-full" />
+                            <span className="badge badge-info badge-xs mt-1 gap-1.5">
+                              <span className="bg-info-content text-info-content animate-pulse-ring h-1.5 w-1.5 rounded-full" />
                               {t("maintenances.inProgress")}
                             </span>
                           ) : (

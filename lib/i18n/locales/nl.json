@@ -122,12 +122,11 @@
     "loading": "Geschiedenis laden…",
     "unreachable": "Kan de incidentgeschiedenis niet laden.",
     "empty": "Geen incidenten in de afgelopen 12 maanden.",
+    "today": "Vandaag",
     "summary": {
-      "incidents_one": "{{count}} incident",
-      "incidents_other": "{{count}} incidenten",
-      "daysAffected_one": "{{count}} dag met een incident",
-      "daysAffected_other": "{{count}} dagen met een incident",
-      "avgResolution": "Gemiddelde oplostijd: {{hours}} u"
+      "incidents_one": "<0>{{count}}</0> incident",
+      "incidents_other": "<0>{{count}}</0> incidenten",
+      "avgResolution": "Gemiddelde oplostijd: <0>{{hours}}</0> u"
     },
     "resolutionTime": "Opgelost in {{hours}} u",
     "stillOngoing": "Nog gaande"
@@ -142,6 +141,9 @@
     "empty": "Nog geen borden. Maak er een om diensten te groeperen.",
     "delete": "Verwijderen",
     "deleting": "Verwijderen…",
+    "deleteConfirmTitle": "Bord verwijderen?",
+    "deleteConfirmMessage": "Dit verwijdert \"{{name}}\" permanent. Dit kan niet ongedaan worden gemaakt.",
+    "cancel": "Annuleren",
     "serviceCountLabel_one": "dienst",
     "serviceCountLabel_other": "diensten",
     "incidentCountLabel_one": "incident",

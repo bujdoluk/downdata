@@ -122,12 +122,11 @@
     "loading": "Laster historikk…",
     "unreachable": "Kunne ikke laste hendelseshistorikken.",
     "empty": "Ingen hendelser de siste 12 månedene.",
+    "today": "I dag",
     "summary": {
-      "incidents_one": "{{count}} hendelse",
-      "incidents_other": "{{count}} hendelser",
-      "daysAffected_one": "{{count}} dag med en hendelse",
-      "daysAffected_other": "{{count}} dager med en hendelse",
-      "avgResolution": "Gjennomsnittlig løsningstid: {{hours}} t"
+      "incidents_one": "<0>{{count}}</0> hendelse",
+      "incidents_other": "<0>{{count}}</0> hendelser",
+      "avgResolution": "Gjennomsnittlig løsningstid: <0>{{hours}}</0> t"
     },
     "resolutionTime": "Løst på {{hours}} t",
     "stillOngoing": "Fortsatt pågående"
@@ -142,6 +141,9 @@
     "empty": "Ingen tavler ennå. Opprett en for å begynne å gruppere tjenester.",
     "delete": "Slett",
     "deleting": "Sletter…",
+    "deleteConfirmTitle": "Slette tavlen?",
+    "deleteConfirmMessage": "Dette vil slette «{{name}}» permanent. Denne handlingen kan ikke angres.",
+    "cancel": "Avbryt",
     "serviceCountLabel_one": "tjeneste",
     "serviceCountLabel_other": "tjenester",
     "incidentCountLabel_one": "hendelse",

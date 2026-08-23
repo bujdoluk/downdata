@@ -123,14 +123,12 @@
     "loading": "Načítá se historie…",
     "unreachable": "Nepodařilo se načíst historii incidentů.",
     "empty": "Žádné incidenty za posledních 12 měsíců.",
+    "today": "Dnes",
     "summary": {
-      "incidents_one": "{{count}} incident",
+      "incidents_one": "<0>{{count}}</0> incident",
       "incidents_few": "{{count}} incidenty",
-      "incidents_other": "{{count}} incidentů",
-      "daysAffected_one": "{{count}} den s incidentem",
-      "daysAffected_few": "{{count}} dny s incidentem",
-      "daysAffected_other": "{{count}} dní s incidentem",
-      "avgResolution": "Průměrná doba řešení: {{hours}} h"
+      "incidents_other": "<0>{{count}}</0> incidentů",
+      "avgResolution": "Průměrná doba řešení: <0>{{hours}}</0> h"
     },
     "resolutionTime": "Vyřešeno za {{hours}} h",
     "stillOngoing": "Stále trvá"
@@ -145,6 +143,9 @@
     "empty": "Zatím žádné nástěnky. Vytvořte jednu a začněte seskupovat služby.",
     "delete": "Smazat",
     "deleting": "Mazání…",
+    "deleteConfirmTitle": "Smazat nástěnku?",
+    "deleteConfirmMessage": "Tímto trvale smažete „{{name}}“. Tuto akci nelze vrátit zpět.",
+    "cancel": "Zrušit",
     "serviceCountLabel_one": "služba",
     "serviceCountLabel_few": "služby",
     "serviceCountLabel_other": "služeb",

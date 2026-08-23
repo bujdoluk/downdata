@@ -9,6 +9,7 @@ import type { TrackedIncident } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import Spinner from "@/components/Spinner";
 import { PinIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
@@ -79,7 +80,10 @@ export default function IncidentsPageContent() {
       <p className="text-base-content/60 mt-1 text-sm">{t("incidents.subtitle")}</p>
 
       {isLoading ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("incidents.loading")}</p>
+        <p className="text-base-content/50 mt-4 flex items-center gap-2 text-sm">
+          <Spinner size="sm" />
+          {t("incidents.loading")}
+        </p>
       ) : error ? (
         <p className="text-base-content/50 mt-4 text-sm">{t("incidents.unreachable")}</p>
       ) : incidents.length === 0 ? (

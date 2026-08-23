@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
@@ -23,7 +23,6 @@ function PlusIcon({ className }: { className?: string }) {
 export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
   const router = useRouter();
-  const [deletingId, setDeletingId] = useState<string | null>(null);
   const createRef = useRef<HTMLDetailsElement>(null);
   // Same URLs Sidebar already polls globally — usePolledFetch shares one
   // request per URL across every component asking for it, so this adds no
@@ -39,16 +38,6 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
       incidentCount: incidentsData?.incidents.filter((i) => isActiveIncident(i) && slugs.has(i.service.slug)).length ?? 0,
       maintenanceCount: maintenanceData?.maintenances.filter((m) => slugs.has(m.service.slug)).length ?? 0,
     };
-  }
-
-  async function handleDelete(id: string) {
-    setDeletingId(id);
-    try {
-      const res = await fetch(`/api/boards/${id}`, { method: "DELETE" });
-      if (res.ok) router.refresh();
-    } finally {
-      setDeletingId(null);
-    }
   }
 
   return (
@@ -74,13 +63,7 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
       ) : (
         <ul className="mt-4 flex flex-col gap-3">
           {boards.map((board) => (
-            <BoardCard
-              key={board.id}
-              board={board}
-              {...countsFor(board)}
-              deleting={deletingId === board.id}
-              onDelete={() => handleDelete(board.id)}
-            />
+            <BoardCard key={board.id} board={board} {...countsFor(board)} />
           ))}
         </ul>
       )}

@@ -10,6 +10,7 @@ import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import { PinIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
+import Spinner from "@/components/Spinner";
 
 function CheckIcon({ className }: { className?: string }) {
   return (
@@ -86,7 +87,14 @@ export default function CatalogServiceCard({
             <ul className="dropdown-content menu menu-sm bg-base-100 border-base-300 z-30 mt-2 w-36 border shadow-xl">
               <li>
                 <button type="button" disabled={removable.removing} onClick={removable.onRemove} className="text-error">
-                  {removable.removing ? t("serviceCard.removing") : t("serviceCard.remove")}
+                  {removable.removing ? (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Spinner size="xs" />
+                      {t("serviceCard.removing")}
+                    </span>
+                  ) : (
+                    t("serviceCard.remove")
+                  )}
                 </button>
               </li>
             </ul>
@@ -109,14 +117,15 @@ export default function CatalogServiceCard({
           {!addState && (
             <div className="mt-3 flex items-center gap-2.5">
               <span
-                className={`badge shrink-0 ${
+                className={`badge shrink-0 gap-1.5 ${
                   isLoading
-                    ? `${FALLBACK_STYLE.badge} animate-pulse`
+                    ? FALLBACK_STYLE.badge
                     : error
                       ? FALLBACK_STYLE.badge
                       : `${(style ?? FALLBACK_STYLE).badge} text-white`
                 }`}
               >
+                {isLoading && <Spinner size="xs" />}
                 {isLoading
                   ? t("serviceCard.checkingStatus")
                   : error
@@ -143,7 +152,10 @@ export default function CatalogServiceCard({
               className={`btn btn-xs ${addState.isAdded ? "btn-success" : "btn-outline btn-info"}`}
             >
               {addState.isPending ? (
-                t("addService.adding")
+                <span className="inline-flex items-center gap-1.5">
+                  <Spinner size="xs" />
+                  {t("addService.adding")}
+                </span>
               ) : addState.isAdded ? (
                 <>
                   <CheckIcon />

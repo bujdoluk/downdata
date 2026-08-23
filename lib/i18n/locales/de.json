@@ -122,12 +122,11 @@
     "loading": "Verlauf wird geladen…",
     "unreachable": "Vorfallverlauf konnte nicht geladen werden.",
     "empty": "Keine Vorfälle in den letzten 12 Monaten.",
+    "today": "Heute",
     "summary": {
-      "incidents_one": "{{count}} Vorfall",
-      "incidents_other": "{{count}} Vorfälle",
-      "daysAffected_one": "{{count}} Tag mit einem Vorfall",
-      "daysAffected_other": "{{count}} Tage mit einem Vorfall",
-      "avgResolution": "Mittlere Lösungszeit: {{hours}} Std."
+      "incidents_one": "<0>{{count}}</0> Vorfall",
+      "incidents_other": "<0>{{count}}</0> Vorfälle",
+      "avgResolution": "Mittlere Lösungszeit: <0>{{hours}}</0> Std."
     },
     "resolutionTime": "Gelöst in {{hours}} Std.",
     "stillOngoing": "Noch andauernd"
@@ -142,6 +141,9 @@
     "empty": "Noch keine Boards. Erstelle eines, um Dienste zu gruppieren.",
     "delete": "Löschen",
     "deleting": "Wird gelöscht…",
+    "deleteConfirmTitle": "Board löschen?",
+    "deleteConfirmMessage": "Dadurch wird „{{name}}“ dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
+    "cancel": "Abbrechen",
     "serviceCountLabel_one": "Dienst",
     "serviceCountLabel_other": "Dienste",
     "incidentCountLabel_one": "Vorfall",

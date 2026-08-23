@@ -122,12 +122,11 @@
     "loading": "Caricamento della cronologia…",
     "unreachable": "Impossibile caricare la cronologia degli incidenti.",
     "empty": "Nessun incidente negli ultimi 12 mesi.",
+    "today": "Oggi",
     "summary": {
-      "incidents_one": "{{count}} incidente",
-      "incidents_other": "{{count}} incidenti",
-      "daysAffected_one": "{{count}} giorno con un incidente",
-      "daysAffected_other": "{{count}} giorni con un incidente",
-      "avgResolution": "Tempo medio di risoluzione: {{hours}} h"
+      "incidents_one": "<0>{{count}}</0> incidente",
+      "incidents_other": "<0>{{count}}</0> incidenti",
+      "avgResolution": "Tempo medio di risoluzione: <0>{{hours}}</0> h"
     },
     "resolutionTime": "Risolto in {{hours}} h",
     "stillOngoing": "Ancora in corso"
@@ -142,6 +141,9 @@
     "empty": "Nessuna bacheca ancora. Creane una per iniziare a raggruppare i servizi.",
     "delete": "Elimina",
     "deleting": "Eliminazione…",
+    "deleteConfirmTitle": "Eliminare la bacheca?",
+    "deleteConfirmMessage": "Questa azione eliminerà definitivamente «{{name}}». Non potrà essere annullata.",
+    "cancel": "Annulla",
     "serviceCountLabel_one": "servizio",
     "serviceCountLabel_other": "servizi",
     "incidentCountLabel_one": "incidente",

@@ -3,6 +3,7 @@
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import Spinner from "@/components/Spinner";
 
 const TIER_ORDER = ["critical", "major", "minor", "none"] as const;
 
@@ -22,8 +23,8 @@ export default function StatusSummary({
         return (
           <div key={key} className="stat py-3">
             <div className="stat-title text-xs">{t(style.labelKey)}</div>
-            <div className={`stat-value text-4xl ${isLoading ? "text-base-content/20 animate-pulse" : style.text}`}>
-              {isLoading ? "–" : counts[key]}
+            <div className={`stat-value text-4xl ${isLoading ? "text-base-content/20" : style.text}`}>
+              {isLoading ? <Spinner size="sm" /> : counts[key]}
             </div>
           </div>
         );

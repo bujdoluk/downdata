@@ -122,12 +122,11 @@
     "loading": "Loading history…",
     "unreachable": "Unable to load incident history.",
     "empty": "No incidents in the last 12 months.",
+    "today": "Today",
     "summary": {
-      "incidents_one": "{{count}} incident",
-      "incidents_other": "{{count}} incidents",
-      "daysAffected_one": "{{count}} day with an incident",
-      "daysAffected_other": "{{count}} days with an incident",
-      "avgResolution": "Mean time to resolution: {{hours}}h"
+      "incidents_one": "<0>{{count}}</0> incident",
+      "incidents_other": "<0>{{count}}</0> incidents",
+      "avgResolution": "Mean time to resolution: <0>{{hours}}</0> h"
     },
     "resolutionTime": "Resolved in {{hours}}h",
     "stillOngoing": "Still ongoing"
@@ -142,6 +141,9 @@
     "empty": "No boards yet. Create one to start grouping services.",
     "delete": "Delete",
     "deleting": "Deleting…",
+    "deleteConfirmTitle": "Delete board?",
+    "deleteConfirmMessage": "This will permanently delete \"{{name}}\". This can't be undone.",
+    "cancel": "Cancel",
     "serviceCountLabel_one": "service",
     "serviceCountLabel_other": "services",
     "incidentCountLabel_one": "incident",

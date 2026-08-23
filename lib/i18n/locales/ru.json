@@ -124,16 +124,13 @@
     "loading": "Загрузка истории…",
     "unreachable": "Не удалось загрузить историю инцидентов.",
     "empty": "Нет инцидентов за последние 12 месяцев.",
+    "today": "Сегодня",
     "summary": {
-      "incidents_one": "{{count}} инцидент",
+      "incidents_one": "<0>{{count}}</0> инцидент",
       "incidents_few": "{{count}} инцидента",
       "incidents_many": "{{count}} инцидентов",
-      "incidents_other": "{{count}} инцидента",
-      "daysAffected_one": "{{count}} день с инцидентом",
-      "daysAffected_few": "{{count}} дня с инцидентом",
-      "daysAffected_many": "{{count}} дней с инцидентом",
-      "daysAffected_other": "{{count}} дня с инцидентом",
-      "avgResolution": "Среднее время решения: {{hours}} ч"
+      "incidents_other": "<0>{{count}}</0> инцидента",
+      "avgResolution": "Среднее время решения: <0>{{hours}}</0> ч"
     },
     "resolutionTime": "Решено за {{hours}} ч",
     "stillOngoing": "Всё ещё продолжается"
@@ -148,6 +145,9 @@
     "empty": "Пока нет досок. Создайте одну, чтобы начать группировать сервисы.",
     "delete": "Удалить",
     "deleting": "Удаление…",
+    "deleteConfirmTitle": "Удалить доску?",
+    "deleteConfirmMessage": "Это навсегда удалит «{{name}}». Это действие нельзя отменить.",
+    "cancel": "Отмена",
     "serviceCountLabel_one": "сервис",
     "serviceCountLabel_few": "сервиса",
     "serviceCountLabel_many": "сервисов",

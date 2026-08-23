@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { ReactNode } from "react";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
+import Spinner from "@/components/Spinner";
 
 function DotsIcon({ className }: { className?: string }) {
   return (
@@ -48,7 +49,14 @@ export default function IntegrationCard({
             <ul className="dropdown-content menu menu-sm bg-base-100 border-base-300 z-30 mt-2 w-40 border shadow-xl">
               <li>
                 <button type="button" disabled={removable.isRemoving} onClick={removable.onRemove} className="text-error">
-                  {removable.isRemoving ? t("integrations.disconnecting") : t("integrations.disconnect")}
+                  {removable.isRemoving ? (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Spinner size="xs" />
+                      {t("integrations.disconnecting")}
+                    </span>
+                  ) : (
+                    t("integrations.disconnect")
+                  )}
                 </button>
               </li>
             </ul>

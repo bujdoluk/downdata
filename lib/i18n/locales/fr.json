@@ -122,12 +122,11 @@
     "loading": "Chargement de l'historique…",
     "unreachable": "Impossible de charger l'historique des incidents.",
     "empty": "Aucun incident au cours des 12 derniers mois.",
+    "today": "Aujourd'hui",
     "summary": {
-      "incidents_one": "{{count}} incident",
-      "incidents_other": "{{count}} incidents",
-      "daysAffected_one": "{{count}} jour avec un incident",
-      "daysAffected_other": "{{count}} jours avec un incident",
-      "avgResolution": "Temps moyen de résolution : {{hours}} h"
+      "incidents_one": "<0>{{count}}</0> incident",
+      "incidents_other": "<0>{{count}}</0> incidents",
+      "avgResolution": "Temps moyen de résolution : <0>{{hours}}</0> h"
     },
     "resolutionTime": "Résolu en {{hours}} h",
     "stillOngoing": "Toujours en cours"
@@ -142,6 +141,9 @@
     "empty": "Aucun tableau pour le moment. Créez-en un pour commencer à regrouper des services.",
     "delete": "Supprimer",
     "deleting": "Suppression…",
+    "deleteConfirmTitle": "Supprimer le tableau ?",
+    "deleteConfirmMessage": "Cette action supprimera définitivement « {{name}} ». Elle est irréversible.",
+    "cancel": "Annuler",
     "serviceCountLabel_one": "service",
     "serviceCountLabel_other": "services",
     "incidentCountLabel_one": "incident",

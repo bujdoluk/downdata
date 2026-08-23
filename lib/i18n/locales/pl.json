@@ -124,16 +124,13 @@
     "loading": "Ładowanie historii…",
     "unreachable": "Nie udało się załadować historii incydentów.",
     "empty": "Brak incydentów w ciągu ostatnich 12 miesięcy.",
+    "today": "Dziś",
     "summary": {
-      "incidents_one": "{{count}} incydent",
+      "incidents_one": "<0>{{count}}</0> incydent",
       "incidents_few": "{{count}} incydenty",
       "incidents_many": "{{count}} incydentów",
-      "incidents_other": "{{count}} incydentów",
-      "daysAffected_one": "{{count}} dzień z incydentem",
-      "daysAffected_few": "{{count}} dni z incydentem",
-      "daysAffected_many": "{{count}} dni z incydentem",
-      "daysAffected_other": "{{count}} dni z incydentem",
-      "avgResolution": "Średni czas rozwiązania: {{hours}} godz."
+      "incidents_other": "<0>{{count}}</0> incydentów",
+      "avgResolution": "Średni czas rozwiązania: <0>{{hours}}</0> godz."
     },
     "resolutionTime": "Rozwiązano w {{hours}} godz.",
     "stillOngoing": "Nadal trwa"
@@ -148,6 +145,9 @@
     "empty": "Brak tablic. Utwórz jedną, aby zacząć grupować usługi.",
     "delete": "Usuń",
     "deleting": "Usuwanie…",
+    "deleteConfirmTitle": "Usunąć tablicę?",
+    "deleteConfirmMessage": "Spowoduje to trwałe usunięcie „{{name}}”. Tej czynności nie można cofnąć.",
+    "cancel": "Anuluj",
     "serviceCountLabel_one": "usługa",
     "serviceCountLabel_few": "usługi",
     "serviceCountLabel_many": "usług",

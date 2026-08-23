@@ -122,12 +122,11 @@
     "loading": "Läser in historik…",
     "unreachable": "Det gick inte att läsa in incidenthistoriken.",
     "empty": "Inga incidenter de senaste 12 månaderna.",
+    "today": "Idag",
     "summary": {
-      "incidents_one": "{{count}} incident",
-      "incidents_other": "{{count}} incidenter",
-      "daysAffected_one": "{{count}} dag med en incident",
-      "daysAffected_other": "{{count}} dagar med en incident",
-      "avgResolution": "Genomsnittlig lösningstid: {{hours}} tim"
+      "incidents_one": "<0>{{count}}</0> incident",
+      "incidents_other": "<0>{{count}}</0> incidenter",
+      "avgResolution": "Genomsnittlig lösningstid: <0>{{hours}}</0> tim"
     },
     "resolutionTime": "Löst på {{hours}} tim",
     "stillOngoing": "Fortfarande pågående"
@@ -142,6 +141,9 @@
     "empty": "Inga tavlor ännu. Skapa en för att börja gruppera tjänster.",
     "delete": "Ta bort",
     "deleting": "Tar bort…",
+    "deleteConfirmTitle": "Ta bort tavlan?",
+    "deleteConfirmMessage": "Detta tar bort \"{{name}}\" permanent. Åtgärden kan inte ångras.",
+    "cancel": "Avbryt",
     "serviceCountLabel_one": "tjänst",
     "serviceCountLabel_other": "tjänster",
     "incidentCountLabel_one": "incident",

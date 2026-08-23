@@ -44,7 +44,15 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
     <div className="w-full max-w-6xl self-start">
       <div className="flex items-start justify-between gap-4">
         <h1 className="text-base-content text-lg font-semibold">{t("boards.title")}</h1>
-        <details ref={createRef} className="dropdown dropdown-end">
+        <details
+          ref={createRef}
+          className="dropdown dropdown-end"
+          onToggle={(e) => {
+            if (e.currentTarget.open) {
+              e.currentTarget.querySelector("input")?.focus();
+            }
+          }}
+        >
           <summary className="btn btn-info btn-sm list-none">
             <PlusIcon />
             {t("boards.addBoard")}

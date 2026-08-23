@@ -128,9 +128,14 @@
       "incidents_one": "<0>{{count}}</0> incident",
       "incidents_few": "{{count}} incidenty",
       "incidents_other": "<0>{{count}}</0> incidentů",
-      "avgResolution": "Průměrná doba řešení: <0>{{hours}}</0> h"
+      "avgResolution": "<0>{{duration}}</0> průměrná doba řešení"
     },
-    "resolutionTime": "Vyřešeno za {{hours}} h",
+    "duration": {
+      "hours": "{{h}} h",
+      "minutes": "{{m}} min",
+      "hoursMinutes": "{{h}} h {{m}} min"
+    },
+    "resolutionTime": "Vyřešeno za {{duration}}",
     "stillOngoing": "Stále trvá"
   },
   "boards": {

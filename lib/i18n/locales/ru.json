@@ -130,9 +130,14 @@
       "incidents_few": "{{count}} инцидента",
       "incidents_many": "{{count}} инцидентов",
       "incidents_other": "<0>{{count}}</0> инцидента",
-      "avgResolution": "Среднее время решения: <0>{{hours}}</0> ч"
+      "avgResolution": "<0>{{duration}}</0> среднее время решения"
     },
-    "resolutionTime": "Решено за {{hours}} ч",
+    "duration": {
+      "hours": "{{h}} ч",
+      "minutes": "{{m}} мин",
+      "hoursMinutes": "{{h}} ч {{m}} мин"
+    },
+    "resolutionTime": "Решено за {{duration}}",
     "stillOngoing": "Всё ещё продолжается"
   },
   "boards": {

@@ -130,9 +130,14 @@
       "incidents_few": "{{count}} incydenty",
       "incidents_many": "{{count}} incydentów",
       "incidents_other": "<0>{{count}}</0> incydentów",
-      "avgResolution": "Średni czas rozwiązania: <0>{{hours}}</0> godz."
+      "avgResolution": "<0>{{duration}}</0> średni czas rozwiązania"
     },
-    "resolutionTime": "Rozwiązano w {{hours}} godz.",
+    "duration": {
+      "hours": "{{h}} godz.",
+      "minutes": "{{m}} min",
+      "hoursMinutes": "{{h}} godz. {{m}} min"
+    },
+    "resolutionTime": "Rozwiązano w {{duration}}",
     "stillOngoing": "Nadal trwa"
   },
   "boards": {

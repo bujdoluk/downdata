@@ -126,9 +126,14 @@
     "summary": {
       "incidents_one": "<0>{{count}}</0> incident",
       "incidents_other": "<0>{{count}}</0> incidents",
-      "avgResolution": "Temps moyen de résolution : <0>{{hours}}</0> h"
+      "avgResolution": "<0>{{duration}}</0> de résolution moyenne"
     },
-    "resolutionTime": "Résolu en {{hours}} h",
+    "duration": {
+      "hours": "{{h}} h",
+      "minutes": "{{m}} min",
+      "hoursMinutes": "{{h}} h {{m}} min"
+    },
+    "resolutionTime": "Résolu en {{duration}}",
     "stillOngoing": "Toujours en cours"
   },
   "boards": {

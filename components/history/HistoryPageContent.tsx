@@ -8,7 +8,7 @@ import type { ServiceDefinition, StatuspageIncident } from "@/types/service";
 import { buildIncidentCalendar } from "@/lib/buildIncidentCalendar";
 import IncidentCalendar from "@/components/history/IncidentCalendar";
 import ServiceSearchPicker from "@/components/service/ServiceSearchPicker";
-import { formatDateTime } from "@/lib/formatTime";
+import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import Spinner from "@/components/Spinner";
@@ -24,10 +24,6 @@ const IMPACT_CHECKBOX_COLOR: Record<string, string> = {
 // "maintenance" entry for the Maintenance page's badge, but no incident
 // here ever has that impact, so it must not leak into this filter.
 const ALL_IMPACTS = Object.keys(IMPACT_CHECKBOX_COLOR);
-
-function hoursBetween(startIso: string, endIso: string): number {
-  return Temporal.Instant.from(endIso).since(Temporal.Instant.from(startIso)).total("hours");
-}
 
 export default function HistoryPageContent({ trackedServices }: { trackedServices: ServiceDefinition[] }) {
   const { t, i18n } = useTranslation();
@@ -105,11 +101,13 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
       for (const incident of day.incidents) uniqueIncidents.set(incident.id, incident);
     }
     const resolved = [...uniqueIncidents.values()].filter((incident) => incident.resolved_at);
-    const avgResolutionHours =
+    const avgResolutionMinutes =
       resolved.length > 0
-        ? resolved.reduce((sum, incident) => sum + hoursBetween(incident.created_at, incident.resolved_at!), 0) / resolved.length
+        ? Math.round(
+            resolved.reduce((sum, incident) => sum + minutesBetween(incident.created_at, incident.resolved_at!), 0) / resolved.length,
+          )
         : null;
-    return { incidentCount: uniqueIncidents.size, avgResolutionHours };
+    return { incidentCount: uniqueIncidents.size, avgResolutionMinutes };
   }, [calendar.days]);
 
   return (
@@ -144,11 +142,11 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
             <span>
               <Trans i18nKey="history.summary.incidents" count={summary.incidentCount} components={[<span key="0" className="text-white text-1xl font-extrabold" />]} />
             </span>
-            {summary.avgResolutionHours !== null && (
+            {summary.avgResolutionMinutes !== null && (
               <span>
                 <Trans
                   i18nKey="history.summary.avgResolution"
-                  values={{ hours: summary.avgResolutionHours.toFixed(1) }}
+                  values={{ duration: formatDuration(summary.avgResolutionMinutes, t) }}
                   components={[<span key="0" className="text-white text-1xl font-extrabold" />]}
                 />
               </span>
@@ -221,7 +219,7 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
                           <p className="text-base-content/50 mt-1 text-xs">
                             {incident.resolved_at
                               ? t("history.resolutionTime", {
-                                  hours: hoursBetween(incident.created_at, incident.resolved_at).toFixed(1),
+                                  duration: formatDuration(minutesBetween(incident.created_at, incident.resolved_at), t),
                                 })
                               : t("history.stillOngoing")}
                           </p>

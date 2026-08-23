@@ -91,15 +91,7 @@ export default function IncidentsPageContent() {
       ) : (
         <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div>
-            <form
-              className="flex flex-wrap items-center gap-2"
-              onReset={() => {
-                setStatusFilter("all");
-                setServiceQuery("");
-                setTimeRangeFilter("30d");
-                setPage(1);
-              }}
-            >
+            <form className="flex flex-wrap items-center gap-2">
               <input
                 type="text"
                 className="input input-bordered input-sm w-40"
@@ -153,7 +145,6 @@ export default function IncidentsPageContent() {
                   {t("incidents.filter.postmortem")} ({countForStatus("postmortem")})
                 </option>
               </select>
-              <input className="btn btn-square btn-sm" type="reset" value="×" />
             </form>
 
             {filteredIncidents.length === 0 ? (

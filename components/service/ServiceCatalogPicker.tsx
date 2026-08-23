@@ -63,35 +63,36 @@ export default function ServiceCatalogPicker({
   }
 
   return (
-    <div className="grid w-full max-w-6xl grid-cols-[auto_1fr] gap-x-3 self-start">
+    <div className="flex w-full max-w-6xl flex-col self-start">
       <Link
         href="/"
-        className="link link-hover text-base-content/50 hover:text-base-content col-start-1 row-start-1 self-center text-xs font-medium"
+        className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium"
       >
         {t("addService.back")}
       </Link>
 
-      <h1 className="text-base-content col-start-2 text-lg font-semibold">{t("addService.title")}</h1>
-      <p className="text-base-content/60 col-start-2 mt-1 text-sm">{t("addService.subtitle")}</p>
+      <h1 className="text-base-content mt-2 text-lg font-semibold">{t("addService.title")}</h1>
+      <p className="text-base-content/60 mt-1 text-sm">{t("addService.subtitle")}</p>
 
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={t("nav.searchPlaceholder")}
-        className="input input-bordered input-sm col-start-2 mt-4 w-full max-w-sm"
+        className="input input-bordered input-sm mt-4 w-full max-w-sm"
+        autoFocus
       />
 
       {error && (
-        <div role="alert" className="alert alert-error alert-soft col-start-2 mt-3 py-2 text-xs">
+        <div role="alert" className="alert alert-error alert-soft mt-3 py-2 text-xs">
           <span>{error}</span>
         </div>
       )}
 
       {visibleCatalog.length === 0 ? (
-        <p className="text-base-content/50 col-start-2 mt-4 text-sm">{t("nav.noServicesFound")}</p>
+        <p className="text-base-content/50 mt-4 text-sm">{t("nav.noServicesFound")}</p>
       ) : (
-        <div className="col-start-2 mt-4">
+        <div className="mt-4">
           {groups.map(({ category, entries }) => (
             <div key={category} className="mb-8">
               <h2 className="text-base-content/40 mb-3 text-xs font-semibold tracking-wide uppercase">

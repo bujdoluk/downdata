@@ -1,5 +1,7 @@
 import { Temporal } from "temporal-polyfill";
-import { formatDate } from "@/lib/formatTime";
+import { useTranslation } from "react-i18next";
+import "@/lib/i18n/i18n";
+import { formatDate, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { INDICATOR_STYLES } from "@/components/service/statusStyles";
 import type { IncidentCalendarData } from "@/lib/buildIncidentCalendar";
 
@@ -15,6 +17,7 @@ export default function IncidentCalendar({
   selectedDate: string | null;
   onSelectDay: (date: string) => void;
 }) {
+  const { t } = useTranslation();
   const { weeks, days, monthLabels } = calendar;
 
   return (
@@ -35,12 +38,24 @@ export default function IncidentCalendar({
       {days.map((day) => {
         const color = day.impact ? (INDICATOR_STYLES[day.impact]?.dot ?? EMPTY_DAY_COLOR) : EMPTY_DAY_COLOR;
         const hasIncidents = day.incidents.length > 0;
+        const resolvedIncidents = day.incidents.filter((incident) => incident.resolved_at);
+        const totalResolutionMinutes = resolvedIncidents.reduce(
+          (sum, incident) => sum + minutesBetween(incident.created_at, incident.resolved_at!),
+          0,
+        );
 
         return (
           <div key={day.date} className="tooltip w-full" style={{ gridColumn: day.week + 1, gridRow: day.dow + 2 }}>
             <div className="tooltip-content max-w-56">
               {hasIncidents && <div className="text-left">{day.incidents.map((incident) => incident.name).join("; ")}</div>}
               <div className="text-right">{formatDate(day.date)}</div>
+              {hasIncidents && (
+                <div className="text-right">
+                  {resolvedIncidents.length > 0
+                    ? t("history.resolutionTime", { duration: formatDuration(totalResolutionMinutes, t) })
+                    : t("history.stillOngoing")}
+                </div>
+              )}
             </div>
             <button
               type="button"

@@ -126,9 +126,14 @@
     "summary": {
       "incidents_one": "<0>{{count}}</0> hendelse",
       "incidents_other": "<0>{{count}}</0> hendelser",
-      "avgResolution": "Gjennomsnittlig løsningstid: <0>{{hours}}</0> t"
+      "avgResolution": "<0>{{duration}}</0> gjennomsnittlig løsningstid"
     },
-    "resolutionTime": "Løst på {{hours}} t",
+    "duration": {
+      "hours": "{{h}} t",
+      "minutes": "{{m}} min",
+      "hoursMinutes": "{{h}} t {{m}} min"
+    },
+    "resolutionTime": "Løst på {{duration}}",
     "stillOngoing": "Fortsatt pågående"
   },
   "boards": {

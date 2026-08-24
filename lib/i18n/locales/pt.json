@@ -146,11 +146,13 @@
   "boards": {
     "title": "Painéis",
     "subtitle": "Agrupe os seus serviços monitorizados em painéis para equipas diferentes.",
+    "searchPlaceholder": "Pesquisar painéis…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Adicionar painel",
     "createSubmit": "Criar",
     "clearName": "Limpar",
     "empty": "Ainda não há painéis. Crie um para começar a agrupar serviços.",
+    "noMatches": "Nenhum painel encontrado.",
     "delete": "Eliminar",
     "deleting": "A eliminar…",
     "deleteConfirmTitle": "Eliminar painel?",

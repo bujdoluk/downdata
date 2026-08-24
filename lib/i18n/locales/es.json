@@ -146,11 +146,13 @@
   "boards": {
     "title": "Tableros",
     "subtitle": "Agrupa tus servicios monitorizados en tableros para distintos equipos.",
+    "searchPlaceholder": "Buscar tableros…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Añadir tablero",
     "createSubmit": "Crear",
     "clearName": "Borrar",
     "empty": "Aún no hay tableros. Crea uno para empezar a agrupar servicios.",
+    "noMatches": "No se encontraron tableros.",
     "delete": "Eliminar",
     "deleting": "Eliminando…",
     "deleteConfirmTitle": "¿Eliminar tablero?",

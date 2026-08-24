@@ -146,11 +146,13 @@
   "boards": {
     "title": "Boards",
     "subtitle": "Group your tracked services into boards for different teams.",
+    "searchPlaceholder": "Search boards…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Add board",
     "createSubmit": "Create",
     "clearName": "Clear",
     "empty": "No boards yet. Create one to start grouping services.",
+    "noMatches": "No boards found.",
     "delete": "Delete",
     "deleting": "Deleting…",
     "deleteConfirmTitle": "Delete board?",

@@ -146,11 +146,13 @@
   "boards": {
     "title": "Tavler",
     "subtitle": "Grupper dine sporede tjenester i tavler for ulike team.",
+    "searchPlaceholder": "Søk etter tavler…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Legg til tavle",
     "createSubmit": "Opprett",
     "clearName": "Tøm",
     "empty": "Ingen tavler ennå. Opprett en for å begynne å gruppere tjenester.",
+    "noMatches": "Ingen tavler funnet.",
     "delete": "Slett",
     "deleting": "Sletter…",
     "deleteConfirmTitle": "Slette tavlen?",

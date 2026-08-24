@@ -146,11 +146,13 @@
   "boards": {
     "title": "Tavlor",
     "subtitle": "Gruppera dina spårade tjänster i tavlor för olika team.",
+    "searchPlaceholder": "Sök tavlor…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Lägg till tavla",
     "createSubmit": "Skapa",
     "clearName": "Rensa",
     "empty": "Inga tavlor ännu. Skapa en för att börja gruppera tjänster.",
+    "noMatches": "Inga tavlor hittades.",
     "delete": "Ta bort",
     "deleting": "Tar bort…",
     "deleteConfirmTitle": "Ta bort tavlan?",

@@ -146,11 +146,13 @@
   "boards": {
     "title": "Borden",
     "subtitle": "Groepeer je gevolgde diensten in borden voor verschillende teams.",
+    "searchPlaceholder": "Borden zoeken…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Bord toevoegen",
     "createSubmit": "Aanmaken",
     "clearName": "Wissen",
     "empty": "Nog geen borden. Maak er een om diensten te groeperen.",
+    "noMatches": "Geen borden gevonden.",
     "delete": "Verwijderen",
     "deleting": "Verwijderen…",
     "deleteConfirmTitle": "Bord verwijderen?",

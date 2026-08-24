@@ -150,11 +150,13 @@
   "boards": {
     "title": "Tablice",
     "subtitle": "Grupuj monitorowane usługi w tablice dla różnych zespołów.",
+    "searchPlaceholder": "Szukaj tablic…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Dodaj tablicę",
     "createSubmit": "Utwórz",
     "clearName": "Wyczyść",
     "empty": "Brak tablic. Utwórz jedną, aby zacząć grupować usługi.",
+    "noMatches": "Nie znaleziono tablic.",
     "delete": "Usuń",
     "deleting": "Usuwanie…",
     "deleteConfirmTitle": "Usunąć tablicę?",

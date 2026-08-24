@@ -146,11 +146,13 @@
   "boards": {
     "title": "Tableaux",
     "subtitle": "Regroupez vos services suivis en tableaux pour différentes équipes.",
+    "searchPlaceholder": "Rechercher des tableaux…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Ajouter un tableau",
     "createSubmit": "Créer",
     "clearName": "Effacer",
     "empty": "Aucun tableau pour le moment. Créez-en un pour commencer à regrouper des services.",
+    "noMatches": "Aucun tableau trouvé.",
     "delete": "Supprimer",
     "deleting": "Suppression…",
     "deleteConfirmTitle": "Supprimer le tableau ?",

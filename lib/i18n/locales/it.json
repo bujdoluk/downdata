@@ -146,11 +146,13 @@
   "boards": {
     "title": "Bacheche",
     "subtitle": "Raggruppa i servizi monitorati in bacheche per team diversi.",
+    "searchPlaceholder": "Cerca bacheche…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Aggiungi bacheca",
     "createSubmit": "Crea",
     "clearName": "Cancella",
     "empty": "Nessuna bacheca ancora. Creane una per iniziare a raggruppare i servizi.",
+    "noMatches": "Nessuna bacheca trovata.",
     "delete": "Elimina",
     "deleting": "Eliminazione…",
     "deleteConfirmTitle": "Eliminare la bacheca?",

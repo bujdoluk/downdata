@@ -150,11 +150,13 @@
   "boards": {
     "title": "Доски",
     "subtitle": "Группируйте отслеживаемые сервисы по доскам для разных команд.",
+    "searchPlaceholder": "Поиск досок…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Добавить доску",
     "createSubmit": "Создать",
     "clearName": "Очистить",
     "empty": "Пока нет досок. Создайте одну, чтобы начать группировать сервисы.",
+    "noMatches": "Доски не найдены.",
     "delete": "Удалить",
     "deleting": "Удаление…",
     "deleteConfirmTitle": "Удалить доску?",

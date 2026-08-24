@@ -148,11 +148,13 @@
   "boards": {
     "title": "Nástěnky",
     "subtitle": "Seskupte své sledované služby do nástěnek pro různé týmy.",
+    "searchPlaceholder": "Hledat nástěnky…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Přidat nástěnku",
     "createSubmit": "Vytvořit",
     "clearName": "Vymazat",
     "empty": "Zatím žádné nástěnky. Vytvořte jednu a začněte seskupovat služby.",
+    "noMatches": "Nenalezeny žádné nástěnky.",
     "delete": "Smazat",
     "deleting": "Mazání…",
     "deleteConfirmTitle": "Smazat nástěnku?",

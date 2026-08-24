@@ -47,6 +47,13 @@ type RawMaintenance = RawIncident & {
 
 const FETCH_CONCURRENCY = 200;
 
+// Caps how many upsert RPC calls run at once within a single service's
+// incidents/maintenances (and within a single incident/maintenance's
+// updates) — conservative enough not to hammer Supabase's pooler even for
+// a host with a long history, generous enough to turn hundreds of
+// sequential round-trips into a handful of concurrent batches instead.
+const RPC_CONCURRENCY = 20;
+
 // Shared with app/api/cron/health/route.ts so the lock's own self-heal
 // window and the health check's staleness threshold can't drift apart.
 export const LOCK_STALE_MS = 5 * 60 * 1000;
@@ -68,7 +75,14 @@ async function upsertIncident(serviceSlug: string, incident: RawIncident) {
   });
   if (error) throw error;
 
-  for (const update of incident.incident_updates) {
+  // Batched, not sequential: a service with a long incident history can
+  // have hundreds of updates, and awaiting each RPC round-trip one at a
+  // time was the actual cause of poll cycles exceeding the route's 60s
+  // budget and getting killed mid-flight. A failed update no longer
+  // aborts the rest — they're all attempted, and the incident still
+  // throws (counted as failed by the caller) if any of them failed.
+  let updateFailed = false;
+  await runInBatches(incident.incident_updates, RPC_CONCURRENCY, async (update) => {
     const { error: updateError } = await supabase.rpc("upsert_incident_update", {
       p_service_slug: serviceSlug,
       p_incident_id: incident.id,
@@ -83,8 +97,9 @@ async function upsertIncident(serviceSlug: string, incident: RawIncident) {
       p_custom_tweet: update.custom_tweet,
       p_tweet_id: update.tweet_id,
     });
-    if (updateError) throw updateError;
-  }
+    if (updateError) updateFailed = true;
+  });
+  if (updateFailed) throw new Error(`One or more updates failed to upsert for incident "${incident.id}"`);
 }
 
 async function upsertMaintenance(serviceSlug: string, maintenance: RawMaintenance) {
@@ -106,7 +121,10 @@ async function upsertMaintenance(serviceSlug: string, maintenance: RawMaintenanc
   });
   if (error) throw error;
 
-  for (const update of maintenance.incident_updates) {
+  // See the matching comment in upsertIncident — batched for the same
+  // reason (avoid hundreds of sequential RPC round-trips per maintenance).
+  let updateFailed = false;
+  await runInBatches(maintenance.incident_updates, RPC_CONCURRENCY, async (update) => {
     const { error: updateError } = await supabase.rpc("upsert_maintenance_update", {
       p_service_slug: serviceSlug,
       p_maintenance_id: maintenance.id,
@@ -121,8 +139,9 @@ async function upsertMaintenance(serviceSlug: string, maintenance: RawMaintenanc
       p_custom_tweet: update.custom_tweet,
       p_tweet_id: update.tweet_id,
     });
-    if (updateError) throw updateError;
-  }
+    if (updateError) updateFailed = true;
+  });
+  if (updateFailed) throw new Error(`One or more updates failed to upsert for maintenance "${maintenance.id}"`);
 }
 
 // Returns how many of this service's incidents failed to upsert — used to
@@ -135,15 +154,17 @@ async function pollOneServiceIncidents(service: { slug: string; host: string }):
   const incidents = (data.incidents ?? []) as RawIncident[];
 
   let failed = 0;
-  for (const incident of incidents) {
-    // Isolated per incident: one malformed incident (bad timestamp,
-    // unexpected null) can't take its otherwise-healthy siblings down.
+  // Batched, not sequential — same reasoning as the update loops inside
+  // upsertIncident. Still isolated per incident: one malformed incident
+  // (bad timestamp, unexpected null) can't take its otherwise-healthy
+  // siblings down, it just fails within its own batch slot.
+  await runInBatches(incidents, RPC_CONCURRENCY, async (incident) => {
     try {
       await upsertIncident(service.slug, incident);
     } catch {
       failed++;
     }
-  }
+  });
 
   return { incidentCount: incidents.length, failed };
 }
@@ -171,13 +192,13 @@ async function pollOneServiceMaintenances(service: { slug: string; host: string 
   const maintenances = (data.scheduled_maintenances ?? []) as RawMaintenance[];
 
   let failed = 0;
-  for (const maintenance of maintenances) {
+  await runInBatches(maintenances, RPC_CONCURRENCY, async (maintenance) => {
     try {
       await upsertMaintenance(service.slug, maintenance);
     } catch {
       failed++;
     }
-  }
+  });
 
   return { maintenanceCount: maintenances.length, failed };
 }

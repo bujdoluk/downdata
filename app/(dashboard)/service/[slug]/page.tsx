@@ -13,11 +13,7 @@ export async function generateMetadata({
   return { title: `${service?.name ?? "Service"} · downDATA` };
 }
 
-export default async function ServicePage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 
   if (!(await resolveServiceBySlug(slug))) {

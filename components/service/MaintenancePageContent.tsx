@@ -12,15 +12,46 @@ import { PinIcon } from "@/components/icons/NavIcons";
 import Spinner from "@/components/Spinner";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
+import { useDebouncedValue } from "@/lib/useDebouncedValue";
+import { mergeParams } from "@/lib/mergeParams";
+import { usePagination } from "@/lib/usePagination";
+import Pagination from "@/components/Pagination";
 import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
 import IncidentDetail from "@/components/service/IncidentDetail";
 
 type StatusFilter = "all" | "scheduled" | "in_progress";
+type DebouncedGroup = { status: StatusFilter; q: string };
 
 const PAGE_SIZE = 7;
+const DEBOUNCE_MS = 300;
 
 function matchesStatus(maintenance: TrackedMaintenanceSummary, filter: StatusFilter): boolean {
   return filter === "all" || maintenance.status === filter;
+}
+
+function parseGroupFromSearchParams(searchParams: URLSearchParams): DebouncedGroup {
+  return {
+    status: (searchParams.get("status") as StatusFilter | null) ?? "all",
+    q: searchParams.get("q") ?? "",
+  };
+}
+
+// Content fingerprint of the debounced group, used to tell "we just wrote
+// this ourselves" apart from "the URL genuinely changed" (back/forward, a
+// pasted link) — see the two sync effects below.
+function serializeGroup(g: DebouncedGroup): string {
+  return JSON.stringify([g.status, g.q]);
+}
+
+// Every field omits itself from the URL at its default value, for a clean
+// URL when nothing's actually filtered. Always resets pagination — a
+// settled filter change invalidates whatever page the user was on.
+function debouncedGroupPatch(g: DebouncedGroup): Record<string, string | null> {
+  return {
+    status: g.status === "all" ? null : g.status,
+    q: g.q.trim() === "" ? null : g.q.trim(),
+    page: null,
+  };
 }
 
 export default function MaintenancePageContent() {
@@ -29,18 +60,39 @@ export default function MaintenancePageContent() {
   const searchParams = useSearchParams();
   const { data, error } = usePolledFetch<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance");
   const { pinned, togglePin } = usePinned("pinnedMaintenance");
-  const [serviceQuery, setServiceQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
-  const [page, setPage] = useState(1);
+
+  const [pendingFilters, setPendingFilters] = useState<DebouncedGroup>(() => parseGroupFromSearchParams(searchParams));
+  const lastWrittenRef = useRef(serializeGroup(pendingFilters));
+  const debounced = useDebouncedValue(pendingFilters, DEBOUNCE_MS);
+
   const [result, setResult] = useState<{ id: string; maintenance: TrackedMaintenance } | { id: string; error: true } | null>(null);
-  const listRef = useRef<HTMLUListElement>(null);
-  const [minListHeight, setMinListHeight] = useState<number>();
+  const detailRef = useRef<HTMLDivElement>(null);
 
   const isLoading = !data && !error;
   const maintenances = useMemo(() => data?.maintenances ?? [], [data]);
   const selectedId = searchParams.get("id");
+  const page = Number(searchParams.get("page") ?? "1");
   const selectedMaintenance = maintenances.find((maintenance) => maintenance.id === selectedId);
   const selectedServiceSlug = selectedMaintenance?.service.slug;
+
+  // pendingFilters -> URL, only once it's settled for DEBOUNCE_MS.
+  useEffect(() => {
+    const serialized = serializeGroup(debounced);
+    if (serialized === lastWrittenRef.current) return;
+    lastWrittenRef.current = serialized;
+    const next = mergeParams(searchParams, debouncedGroupPatch(debounced));
+    router.replace(`/maintenance?${next.toString()}`, { scroll: false });
+  }, [debounced, searchParams, router]);
+
+  // URL -> pendingFilters, for changes we didn't just make ourselves
+  // (back/forward button, a pasted link with filters already in it).
+  useEffect(() => {
+    const parsed = parseGroupFromSearchParams(searchParams);
+    const serialized = serializeGroup(parsed);
+    if (serialized === lastWrittenRef.current) return;
+    lastWrittenRef.current = serialized;
+    setPendingFilters(parsed);
+  }, [searchParams]);
 
   // Full timeline for whichever maintenance is selected, fetched
   // separately — see IncidentsPageContent's identical detail-fetch effect
@@ -65,43 +117,68 @@ export default function MaintenancePageContent() {
   const detail = currentResult && "maintenance" in currentResult ? currentResult.maintenance : null;
   const detailError = currentResult ? "error" in currentResult : false;
 
+  const trimmedServiceQuery = pendingFilters.q.trim().toLowerCase();
+  const filteredMaintenances = useMemo(
+    () =>
+      maintenances
+        .filter(
+          (maintenance) =>
+            matchesStatus(maintenance, pendingFilters.status) &&
+            (!trimmedServiceQuery || maintenance.service.name.toLowerCase().includes(trimmedServiceQuery)),
+        )
+        .sort((a, b) => {
+          const pinDiff = Number(pinned.has(b.id)) - Number(pinned.has(a.id));
+          if (pinDiff !== 0) return pinDiff;
+          return Number(isInProgressMaintenance(b)) - Number(isInProgressMaintenance(a));
+        }),
+    [maintenances, pendingFilters, trimmedServiceQuery, pinned],
+  );
+
+  // Auto-selects the first *visible* maintenance, and only ever touches
+  // `id` — merged into the existing query string so a filter set from a
+  // shared link survives landing on the page with nothing selected yet.
   useEffect(() => {
-    // maintenances[0] is safe — length > 0 is checked first
-    if (!selectedId && maintenances.length > 0) {
-      router.replace(`/maintenance?id=${maintenances[0]!.id}`, { scroll: false });
+    if (!selectedId && filteredMaintenances.length > 0) {
+      const next = mergeParams(searchParams, { id: filteredMaintenances[0]!.id });
+      router.replace(`/maintenance?${next.toString()}`, { scroll: false });
     }
-  }, [selectedId, maintenances, router]);
+  }, [selectedId, filteredMaintenances, searchParams, router]);
 
   function selectMaintenance(id: string) {
-    router.push(`/maintenance?id=${id}`, { scroll: false });
+    const next = mergeParams(searchParams, { id });
+    router.push(`/maintenance?${next.toString()}`, { scroll: false });
+    // Below the lg breakpoint the list and detail stack vertically — without
+    // this, picking a maintenance near the top of the list leaves the
+    // detail pane rendering off-screen with nothing to indicate it changed.
+    if (window.innerWidth < 1024) {
+      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 
-  const trimmedServiceQuery = serviceQuery.trim().toLowerCase();
-  const filteredMaintenances = maintenances
-    .filter(
-      (maintenance) =>
-        matchesStatus(maintenance, statusFilter) &&
-        (!trimmedServiceQuery || maintenance.service.name.toLowerCase().includes(trimmedServiceQuery)),
-    )
-    .sort((a, b) => {
-      const pinDiff = Number(pinned.has(b.id)) - Number(pinned.has(a.id));
-      if (pinDiff !== 0) return pinDiff;
-      return Number(isInProgressMaintenance(b)) - Number(isInProgressMaintenance(a));
-    });
+  function updateParams(patch: Record<string, string | null>) {
+    router.replace(`/maintenance?${mergeParams(searchParams, patch).toString()}`, { scroll: false });
+  }
+
+  const hasActiveFilters = pendingFilters.status !== "all" || pendingFilters.q.trim() !== "";
+
+  function clearFilters() {
+    setPendingFilters({ status: "all", q: "" });
+    updateParams({ page: null });
+  }
+
   const countForStatus = (filter: StatusFilter) =>
     maintenances.filter((maintenance) => matchesStatus(maintenance, filter)).length;
-  const totalPages = Math.max(1, Math.ceil(filteredMaintenances.length / PAGE_SIZE));
-  const currentPage = Math.min(page, totalPages);
-  const pageMaintenances = filteredMaintenances.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const showScheduled = countForStatus("scheduled") > 0 || pendingFilters.status === "scheduled";
+  const showInProgress = countForStatus("in_progress") > 0 || pendingFilters.status === "in_progress";
+  const { listRef, minListHeight, totalPages, currentPage, pageItems: pageMaintenances } = usePagination(
+    filteredMaintenances,
+    page,
+    PAGE_SIZE,
+  );
 
-  // See IncidentsPageContent's identical effect for the full reasoning: lock
-  // in a full page's real height so the pagination controls don't jump up
-  // on a shorter last page.
-  useEffect(() => {
-    if (listRef.current && pageMaintenances.length === PAGE_SIZE) {
-      setMinListHeight(listRef.current.scrollHeight);
-    }
-  }, [pageMaintenances]);
+  function goToPage(next: number) {
+    updateParams({ page: next === 1 ? null : String(next) });
+  }
 
   return (
     <div className="w-full self-start">
@@ -126,31 +203,34 @@ export default function MaintenancePageContent() {
                 className="input input-bordered input-sm w-40"
                 aria-label={t("incidents.filter.searchService")}
                 placeholder={t("incidents.filter.searchService")}
-                value={serviceQuery}
-                onChange={(e) => {
-                  setServiceQuery(e.target.value);
-                  setPage(1);
-                }}
+                value={pendingFilters.q}
+                onChange={(e) => setPendingFilters((prev) => ({ ...prev, q: e.target.value }))}
               />
               <select
                 className="select select-bordered select-sm w-40"
                 aria-label={t("maintenances.filter.status")}
-                value={statusFilter}
-                onChange={(e) => {
-                  setStatusFilter(e.target.value as StatusFilter);
-                  setPage(1);
-                }}
+                value={pendingFilters.status}
+                onChange={(e) => setPendingFilters((prev) => ({ ...prev, status: e.target.value as StatusFilter }))}
               >
                 <option value="all">
                   {t("maintenances.filter.allStatuses")} ({countForStatus("all")})
                 </option>
-                <option value="scheduled">
-                  {t("maintenances.filter.scheduled")} ({countForStatus("scheduled")})
-                </option>
-                <option value="in_progress">
-                  {t("maintenances.inProgress")} ({countForStatus("in_progress")})
-                </option>
+                {showScheduled && (
+                  <option value="scheduled">
+                    {t("maintenances.filter.scheduled")} ({countForStatus("scheduled")})
+                  </option>
+                )}
+                {showInProgress && (
+                  <option value="in_progress">
+                    {t("maintenances.inProgress")} ({countForStatus("in_progress")})
+                  </option>
+                )}
               </select>
+              {hasActiveFilters && (
+                <button type="button" onClick={clearFilters} className="btn btn-ghost btn-xs">
+                  {t("incidents.filter.clearFilters")}
+                </button>
+              )}
             </form>
 
             {filteredMaintenances.length === 0 ? (
@@ -205,34 +285,17 @@ export default function MaintenancePageContent() {
               </ul>
             )}
 
-            {totalPages > 1 && (
-              <div className="join mt-4">
-                <button
-                  type="button"
-                  className="btn join-item btn-sm"
-                  disabled={currentPage <= 1}
-                  onClick={() => setPage(currentPage - 1)}
-                  aria-label={t("maintenances.pagination.previous")}
-                >
-                  «
-                </button>
-                <button type="button" className="btn join-item btn-sm pointer-events-none">
-                  {t("maintenances.pagination.page", { page: currentPage, totalPages })}
-                </button>
-                <button
-                  type="button"
-                  className="btn join-item btn-sm"
-                  disabled={currentPage >= totalPages}
-                  onClick={() => setPage(currentPage + 1)}
-                  aria-label={t("maintenances.pagination.next")}
-                >
-                  »
-                </button>
-              </div>
-            )}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onChange={goToPage}
+              prevLabel={t("maintenances.pagination.previous")}
+              nextLabel={t("maintenances.pagination.next")}
+              pageLabel={t("maintenances.pagination.page", { page: currentPage, totalPages })}
+            />
           </div>
 
-          <div className="card card-border bg-base-200 p-4">
+          <div ref={detailRef} className="card card-border bg-base-200 p-4">
             {detail ? (
               <IncidentDetail incident={detail} />
             ) : detailError ? (

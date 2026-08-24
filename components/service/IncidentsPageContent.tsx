@@ -15,6 +15,9 @@ import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
 import { useIncidentsLastViewed } from "@/lib/useIncidentsLastViewed";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
+import { mergeParams } from "@/lib/mergeParams";
+import { usePagination } from "@/lib/usePagination";
+import Pagination from "@/components/Pagination";
 import IncidentDetail from "@/components/service/IncidentDetail";
 
 type StatusFilter = "all" | "investigating" | "identified" | "monitoring" | "resolved" | "postmortem";
@@ -41,21 +44,6 @@ const STATUS_LABEL_KEY: Record<StatusFilter, string> = {
 
 function matchesStatus(incident: TrackedIncidentSummary, filter: StatusFilter): boolean {
   return filter === "all" || incident.status === filter;
-}
-
-// Merges a patch into the *existing* query string instead of replacing it —
-// every URL write on this page goes through this, so selecting an incident
-// or flipping one filter never wipes out every other param. Deleting a key
-// happens by passing null; nothing resets pagination as a side effect —
-// callers that are genuinely a filter change include `page: null` in their
-// own patch explicitly (see debouncedGroupPatch/toggleOnlyNew below).
-function mergeParams(current: URLSearchParams, patch: Record<string, string | null>): URLSearchParams {
-  const next = new URLSearchParams(current.toString());
-  for (const [key, value] of Object.entries(patch)) {
-    if (value === null) next.delete(key);
-    else next.set(key, value);
-  }
-  return next;
 }
 
 function parseImpacts(searchParams: URLSearchParams): Set<string> {
@@ -109,9 +97,7 @@ export default function IncidentsPageContent() {
   const debounced = useDebouncedValue(pendingFilters, DEBOUNCE_MS);
 
   const [result, setResult] = useState<{ id: string; incident: TrackedIncident } | { id: string; error: true } | null>(null);
-  const listRef = useRef<HTMLUListElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
-  const [minListHeight, setMinListHeight] = useState<number>();
 
   const isLoading = !data && !error;
   const incidents = useMemo(() => data?.incidents ?? [], [data]);
@@ -235,23 +221,15 @@ export default function IncidentsPageContent() {
 
   const countForStatus = (filter: StatusFilter) => incidents.filter((incident) => matchesStatus(incident, filter)).length;
   const newCount = incidents.filter((incident) => new Date(incident.updated_at).getTime() > lastViewed).length;
-  const totalPages = Math.max(1, Math.ceil(filteredIncidents.length / PAGE_SIZE));
-  const currentPage = Math.min(page, totalPages);
-  const pageIncidents = filteredIncidents.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const { listRef, minListHeight, totalPages, currentPage, pageItems: pageIncidents } = usePagination(
+    filteredIncidents,
+    page,
+    PAGE_SIZE,
+  );
 
   function goToPage(next: number) {
     updateParams({ page: next === 1 ? null : String(next) });
   }
-
-  // A full page's real rendered height, locked in once, keeps the pagination
-  // controls from jumping up when a later (shorter) page has fewer rows —
-  // page 1 always has PAGE_SIZE rows whenever pagination is even visible, so
-  // this measures before the user could ever see a short page.
-  useEffect(() => {
-    if (listRef.current && pageIncidents.length === PAGE_SIZE) {
-      setMinListHeight(listRef.current.scrollHeight);
-    }
-  }, [pageIncidents]);
 
   return (
     <div className="w-full self-start">
@@ -398,31 +376,14 @@ export default function IncidentsPageContent() {
               </ul>
             )}
 
-            {totalPages > 1 && (
-              <div className="join mt-4">
-                <button
-                  type="button"
-                  className="btn join-item btn-sm"
-                  disabled={currentPage <= 1}
-                  onClick={() => goToPage(currentPage - 1)}
-                  aria-label={t("incidents.pagination.previous")}
-                >
-                  «
-                </button>
-                <button type="button" className="btn join-item btn-sm pointer-events-none">
-                  {t("incidents.pagination.page", { page: currentPage, totalPages })}
-                </button>
-                <button
-                  type="button"
-                  className="btn join-item btn-sm"
-                  disabled={currentPage >= totalPages}
-                  onClick={() => goToPage(currentPage + 1)}
-                  aria-label={t("incidents.pagination.next")}
-                >
-                  »
-                </button>
-              </div>
-            )}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onChange={goToPage}
+              prevLabel={t("incidents.pagination.previous")}
+              nextLabel={t("incidents.pagination.next")}
+              pageLabel={t("incidents.pagination.page", { page: currentPage, totalPages })}
+            />
           </div>
 
           <div ref={detailRef} className="card card-border bg-base-200 p-4">

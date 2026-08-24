@@ -1,10 +1,8 @@
 import { timingSafeEqual } from "node:crypto";
 import { NextResponse, after } from "next/server";
 import { getSupabaseClient } from "@/lib/supabase";
-import { pollAllIncidents } from "@/lib/pollIncidents";
+import { pollAllIncidents, LOCK_STALE_MS } from "@/lib/pollIncidents";
 import { notifyPendingEvents } from "@/lib/notifyIncidentEvents";
-
-const LOCK_STALE_MS = 5 * 60 * 1000;
 
 // A full poll+notify cycle can take longer than free external cron
 // services' request timeout (e.g. cron-job.org's free plan cuts off at
@@ -85,7 +83,23 @@ export async function GET(request: Request) {
       // Sequential, not Promise.all'd: the backfill markers written during
       // polling must exist before the notifier's query runs, or the
       // flood-prevention design silently breaks.
-      await pollAllIncidents(shard ?? undefined);
+      const result = await pollAllIncidents(shard ?? undefined);
+
+      // Written before notifyPendingEvents runs and independent of its
+      // outcome — notification delivery already self-heals (an undelivered
+      // event just gets retried next cycle), so a Slack-side failure must
+      // never mark actual data capture as unhealthy. Gated on the failure
+      // rate across both incidents and maintenances, not just "did this
+      // throw" — pollAllIncidents already swallows and counts per-service
+      // failures instead of throwing, so even a near-total outage (a broken
+      // upsert RPC, say) would otherwise still look like a clean run.
+      const totalFailed = result.failed + result.maintenancesFailed;
+      const totalAttempted = result.incidentsUpserted + result.failed + result.maintenancesUpserted + result.maintenancesFailed;
+      const acceptable = totalFailed === 0 || totalFailed / totalAttempted < 0.5;
+      if (acceptable) {
+        await supabase.from("poll_run_lock").update({ last_success_at: new Date().toISOString() }).eq("shard_key", shardKey);
+      }
+
       // Only the first shard of whatever split is configured triggers
       // notifications — every shard writes to the same incident_events
       // table, so notifying from all of them would be both redundant and

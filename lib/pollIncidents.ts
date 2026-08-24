@@ -47,6 +47,10 @@ type RawMaintenance = RawIncident & {
 
 const FETCH_CONCURRENCY = 200;
 
+// Shared with app/api/cron/health/route.ts so the lock's own self-heal
+// window and the health check's staleness threshold can't drift apart.
+export const LOCK_STALE_MS = 5 * 60 * 1000;
+
 async function upsertIncident(serviceSlug: string, incident: RawIncident) {
   const supabase = getSupabaseClient();
   const { error } = await supabase.rpc("upsert_incident", {

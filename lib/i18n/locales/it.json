@@ -250,5 +250,23 @@
     "title": "I miei servizi",
     "monitoring": "In monitoraggio",
     "subtitle": "Monitora in tempo reale lo stato dei servizi da cui dipende il tuo team."
+  },
+  "auth": {
+    "signIn": "Accedi",
+    "signUp": "Registrati",
+    "email": "Email",
+    "password": "Password",
+    "submitting": "Un momento…",
+    "or": "oppure",
+    "continueWithGoogle": "Continua con Google",
+    "error": {
+      "invalid_credentials": "Email o password non corretti.",
+      "user_already_exists": "Esiste già un account con questa email.",
+      "weak_password": "La password deve contenere almeno 6 caratteri.",
+      "generic": "Qualcosa è andato storto. Riprova."
+    },
+    "message": {
+      "confirmEmailSent": "Controlla la tua email per confermare l'account."
+    }
   }
 }

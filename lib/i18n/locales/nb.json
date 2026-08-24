@@ -250,5 +250,23 @@
     "title": "Mine tjenester",
     "monitoring": "Overvåkes",
     "subtitle": "Følg statusen i sanntid for tjenestene teamet ditt er avhengig av."
+  },
+  "auth": {
+    "signIn": "Logg inn",
+    "signUp": "Registrer deg",
+    "email": "E-post",
+    "password": "Passord",
+    "submitting": "Et øyeblikk…",
+    "or": "eller",
+    "continueWithGoogle": "Fortsett med Google",
+    "error": {
+      "invalid_credentials": "Feil e-post eller passord.",
+      "user_already_exists": "Det finnes allerede en konto med denne e-postadressen.",
+      "weak_password": "Passordet må være minst 6 tegn.",
+      "generic": "Noe gikk galt. Prøv igjen."
+    },
+    "message": {
+      "confirmEmailSent": "Sjekk e-posten din for å bekrefte kontoen."
+    }
   }
 }

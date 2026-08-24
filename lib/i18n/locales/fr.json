@@ -250,5 +250,23 @@
     "title": "Mes services",
     "monitoring": "Surveillé",
     "subtitle": "Suivez en temps réel le statut des services dont dépend votre équipe."
+  },
+  "auth": {
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "submitting": "Un instant…",
+    "or": "ou",
+    "continueWithGoogle": "Continuer avec Google",
+    "error": {
+      "invalid_credentials": "E-mail ou mot de passe incorrect.",
+      "user_already_exists": "Un compte existe déjà avec cette adresse e-mail.",
+      "weak_password": "Le mot de passe doit contenir au moins 6 caractères.",
+      "generic": "Une erreur s'est produite. Veuillez réessayer."
+    },
+    "message": {
+      "confirmEmailSent": "Consultez votre e-mail pour confirmer votre compte."
+    }
   }
 }

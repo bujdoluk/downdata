@@ -255,5 +255,23 @@
     "title": "Moje služby",
     "monitoring": "Sledováno",
     "subtitle": "Sledujte stav služeb, na kterých závisí váš tým."
+  },
+  "auth": {
+    "signIn": "Přihlásit se",
+    "signUp": "Zaregistrovat se",
+    "email": "E-mail",
+    "password": "Heslo",
+    "submitting": "Chvíli strpení…",
+    "or": "nebo",
+    "continueWithGoogle": "Pokračovat přes Google",
+    "error": {
+      "invalid_credentials": "Nesprávný e-mail nebo heslo.",
+      "user_already_exists": "Účet s tímto e-mailem už existuje.",
+      "weak_password": "Heslo musí mít alespoň 6 znaků.",
+      "generic": "Něco se pokazilo. Zkuste to prosím znovu."
+    },
+    "message": {
+      "confirmEmailSent": "Zkontrolujte e-mail a potvrďte svůj účet."
+    }
   }
 }

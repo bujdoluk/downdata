@@ -250,5 +250,23 @@
     "title": "Meine Dienste",
     "monitoring": "Überwacht",
     "subtitle": "Behalte den Status der Dienste im Blick, auf die dein Team angewiesen ist."
+  },
+  "auth": {
+    "signIn": "Anmelden",
+    "signUp": "Registrieren",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "submitting": "Einen Moment…",
+    "or": "oder",
+    "continueWithGoogle": "Mit Google fortfahren",
+    "error": {
+      "invalid_credentials": "Falsche E-Mail-Adresse oder falsches Passwort.",
+      "user_already_exists": "Für diese E-Mail-Adresse existiert bereits ein Konto.",
+      "weak_password": "Das Passwort muss mindestens 6 Zeichen lang sein.",
+      "generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+    },
+    "message": {
+      "confirmEmailSent": "Bestätige dein Konto über den Link in deiner E-Mail."
+    }
   }
 }

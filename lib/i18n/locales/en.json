@@ -250,5 +250,23 @@
     "title": "My services",
     "monitoring": "Monitoring",
     "subtitle": "Track the live status of the services your team depends on."
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "email": "Email",
+    "password": "Password",
+    "submitting": "Please wait…",
+    "or": "or",
+    "continueWithGoogle": "Continue with Google",
+    "error": {
+      "invalid_credentials": "Incorrect email or password.",
+      "user_already_exists": "An account with that email already exists.",
+      "weak_password": "Password must be at least 6 characters.",
+      "generic": "Something went wrong. Please try again."
+    },
+    "message": {
+      "confirmEmailSent": "Check your email to confirm your account."
+    }
   }
 }

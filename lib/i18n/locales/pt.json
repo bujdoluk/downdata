@@ -250,5 +250,23 @@
     "title": "Meus serviços",
     "monitoring": "Monitorando",
     "subtitle": "Acompanhe em tempo real o estado dos serviços de que a sua equipa depende."
+  },
+  "auth": {
+    "signIn": "Iniciar sessão",
+    "signUp": "Criar conta",
+    "email": "E-mail",
+    "password": "Palavra-passe",
+    "submitting": "Aguarde…",
+    "or": "ou",
+    "continueWithGoogle": "Continuar com o Google",
+    "error": {
+      "invalid_credentials": "E-mail ou palavra-passe incorretos.",
+      "user_already_exists": "Já existe uma conta com este e-mail.",
+      "weak_password": "A palavra-passe deve ter pelo menos 6 carateres.",
+      "generic": "Algo correu mal. Tente novamente."
+    },
+    "message": {
+      "confirmEmailSent": "Verifique o seu e-mail para confirmar a conta."
+    }
   }
 }

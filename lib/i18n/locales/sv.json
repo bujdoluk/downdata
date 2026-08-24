@@ -250,5 +250,23 @@
     "title": "Mina tjänster",
     "monitoring": "Övervakas",
     "subtitle": "Följ statusen i realtid för tjänsterna ditt team är beroende av."
+  },
+  "auth": {
+    "signIn": "Logga in",
+    "signUp": "Registrera dig",
+    "email": "E-post",
+    "password": "Lösenord",
+    "submitting": "Ett ögonblick…",
+    "or": "eller",
+    "continueWithGoogle": "Fortsätt med Google",
+    "error": {
+      "invalid_credentials": "Fel e-postadress eller lösenord.",
+      "user_already_exists": "Det finns redan ett konto med den här e-postadressen.",
+      "weak_password": "Lösenordet måste vara minst 6 tecken.",
+      "generic": "Något gick fel. Försök igen."
+    },
+    "message": {
+      "confirmEmailSent": "Kontrollera din e-post för att bekräfta ditt konto."
+    }
   }
 }

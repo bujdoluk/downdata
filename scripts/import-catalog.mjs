@@ -14,10 +14,10 @@ if (!path) {
   process.exit(1);
 }
 
-const url = process.env.SUPABASE_URL;
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 if (!url || !key) {
-  console.error("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set — see .env.example.");
+  console.error("NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set — see .env.example.");
   process.exit(1);
 }
 

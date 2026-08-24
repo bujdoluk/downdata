@@ -250,5 +250,23 @@
     "title": "Mis servicios",
     "monitoring": "Monitoreando",
     "subtitle": "Sigue en tiempo real el estado de los servicios de los que depende tu equipo."
+  },
+  "auth": {
+    "signIn": "Iniciar sesión",
+    "signUp": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "submitting": "Un momento…",
+    "or": "o",
+    "continueWithGoogle": "Continuar con Google",
+    "error": {
+      "invalid_credentials": "Correo electrónico o contraseña incorrectos.",
+      "user_already_exists": "Ya existe una cuenta con ese correo electrónico.",
+      "weak_password": "La contraseña debe tener al menos 6 caracteres.",
+      "generic": "Algo salió mal. Inténtalo de nuevo."
+    },
+    "message": {
+      "confirmEmailSent": "Revisa tu correo para confirmar tu cuenta."
+    }
   }
 }

@@ -250,5 +250,23 @@
     "title": "Mijn diensten",
     "monitoring": "Gemonitord",
     "subtitle": "Volg live de status van de diensten waar je team op vertrouwt."
+  },
+  "auth": {
+    "signIn": "Inloggen",
+    "signUp": "Registreren",
+    "email": "E-mail",
+    "password": "Wachtwoord",
+    "submitting": "Een moment…",
+    "or": "of",
+    "continueWithGoogle": "Doorgaan met Google",
+    "error": {
+      "invalid_credentials": "Onjuiste e-mail of wachtwoord.",
+      "user_already_exists": "Er bestaat al een account met dit e-mailadres.",
+      "weak_password": "Wachtwoord moet minimaal 6 tekens bevatten.",
+      "generic": "Er is iets misgegaan. Probeer het opnieuw."
+    },
+    "message": {
+      "confirmEmailSent": "Controleer je e-mail om je account te bevestigen."
+    }
   }
 }

@@ -131,133 +131,139 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
       <h1 className="text-base-content text-lg font-semibold">{t("history.title")}</h1>
       <p className="text-base-content/60 mt-1 text-sm">{t("history.subtitle")}</p>
 
-      {services.length > 0 && (
-        <IncidentCountsChart services={services} counts={countsData?.counts ?? []} selectedSlug={slug} onSelectService={selectService} />
-      )}
+      <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div>
+          <div className="flex flex-wrap items-center gap-4">
+            <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
+          </div>
 
-      <div className="mt-4 flex flex-wrap items-center gap-4">
-        <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
+          {!slug ? null : isLoading ? (
+            <p className="text-base-content/50 mt-4 flex items-center gap-2 text-sm">
+              <Spinner size="sm" />
+              {t("history.loading")}
+            </p>
+          ) : error ? (
+            <p className="text-base-content/50 mt-4 text-sm">{t("history.unreachable")}</p>
+          ) : incidents && incidents.length === 0 ? (
+            <p className="text-base-content/50 mt-4 text-sm">{t("history.empty")}</p>
+          ) : incidents ? (
+            <>
+              <div className="text-base-content/60 mt-4 flex flex-wrap gap-4 text-base">
+                <span>
+                  <Trans i18nKey="history.summary.incidents" count={summary.incidentCount} components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]} />
+                </span>
+                {summary.avgResolutionMinutes !== null && (
+                  <span>
+                    <Trans
+                      i18nKey="history.summary.avgResolution"
+                      values={{ duration: formatDuration(summary.avgResolutionMinutes, t) }}
+                      components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]}
+                    />
+                  </span>
+                )}
+              </div>
+
+              <div className="mt-4 flex flex-wrap justify-end gap-3">
+                {ALL_IMPACTS.map((impact) => (
+                  <label key={impact} className="label cursor-pointer gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      className={`checkbox checkbox-sm text-white ${IMPACT_CHECKBOX_COLOR[impact]}`}
+                      checked={selectedImpacts.has(impact)}
+                      onChange={() => toggleImpact(impact)}
+                    />
+                    {/* impact comes from Object.keys(IMPACT_CHECKBOX_COLOR), a subset of INDICATOR_STYLES's keys, so the lookup always hits */}
+                    {t(INDICATOR_STYLES[impact]!.labelKey)}
+                  </label>
+                ))}
+                <span className="label gap-2 text-sm">
+                  <span className="bg-base-content/10 outline-info h-4 w-4 rounded-sm outline-2 outline-offset-1" />
+                  {t("history.today")}
+                </span>
+              </div>
+
+              <div className="mt-2 flex items-start gap-4 overflow-x-auto pb-1">
+                <div className="min-w-0 flex-1">
+                  <IncidentCalendar calendar={calendar} selectedDate={selectedDate} onSelectDay={selectDay} />
+                </div>
+                <div className="flex shrink-0 flex-col gap-0.5">
+                  {years.map((y) => (
+                    <button
+                      key={y}
+                      type="button"
+                      onClick={() => selectYear(y)}
+                      className={`btn btn-ghost btn-sm justify-start ${y === year ? "btn-active" : ""}`}
+                    >
+                      {y}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {selectedDay && selectedDay.incidents.length > 0 ? (
+                <div className="card card-border bg-base-200 mt-4 p-4">
+                  <ul className="flex flex-col gap-3">
+                    {selectedDay.incidents.map((incident) => {
+                      const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
+                      return (
+                        <li key={incident.id} className="border-base-content/10 border-t pt-3 first:border-t-0 first:pt-0">
+                          <details open className="collapse collapse-arrow">
+                            <summary className="collapse-title flex min-h-0 items-center gap-2 p-0 pr-6">
+                              <p className="text-base-content text-base font-semibold">{incident.name}</p>
+                              <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
+                            </summary>
+                            <div className="collapse-content p-0">
+                              <p className="text-base-content/40 mt-1 text-xs">
+                                {t("incidents.officialPageLabel")}{" "}
+                                <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
+                                  {incident.shortlink}
+                                </a>
+                              </p>
+                              <p className="text-base-content/50 mt-1 text-xs">
+                                {incident.resolved_at
+                                  ? t("history.resolutionTime", {
+                                      duration: formatDuration(minutesBetween(incident.created_at, incident.resolved_at), t),
+                                    })
+                                  : t("history.stillOngoing")}
+                              </p>
+                              <ul className="timeline timeline-vertical mt-2 [--timeline-col-start:auto]">
+                                {incident.incident_updates.map((update, i) => (
+                                  <li key={update.id}>
+                                    {i > 0 && <hr />}
+                                    <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
+                                      {formatDateTime(update.created_at)}
+                                    </div>
+                                    <div className="timeline-middle">
+                                      <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
+                                    </div>
+                                    <div className="timeline-end timeline-box bg-base-200">
+                                      <p className="text-base-content text-sm font-medium">{update.status}</p>
+                                      <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
+                                    </div>
+                                    {i < incident.incident_updates.length - 1 && <hr />}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </details>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              ) : (
+                <p className="text-base-content/50 mt-4 text-sm">{t("history.selectPrompt")}</p>
+              )}
+            </>
+          ) : null}
+        </div>
+
+        {services.length > 0 && (
+          <div>
+            <IncidentCountsChart services={services} counts={countsData?.counts ?? []} selectedSlug={slug} onSelectService={selectService} />
+          </div>
+        )}
       </div>
-
-      {!slug ? null : isLoading ? (
-        <p className="text-base-content/50 mt-4 flex items-center gap-2 text-sm">
-          <Spinner size="sm" />
-          {t("history.loading")}
-        </p>
-      ) : error ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("history.unreachable")}</p>
-      ) : incidents && incidents.length === 0 ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("history.empty")}</p>
-      ) : incidents ? (
-        <>
-          <div className="text-base-content/60 mt-4 flex flex-wrap gap-4 text-base">
-            <span>
-              <Trans i18nKey="history.summary.incidents" count={summary.incidentCount} components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]} />
-            </span>
-            {summary.avgResolutionMinutes !== null && (
-              <span>
-                <Trans
-                  i18nKey="history.summary.avgResolution"
-                  values={{ duration: formatDuration(summary.avgResolutionMinutes, t) }}
-                  components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]}
-                />
-              </span>
-            )}
-          </div>
-
-          <div className="mt-4 flex flex-wrap justify-end gap-3">
-            {ALL_IMPACTS.map((impact) => (
-              <label key={impact} className="label cursor-pointer gap-2 text-sm">
-                <input
-                  type="checkbox"
-                  className={`checkbox checkbox-sm text-white ${IMPACT_CHECKBOX_COLOR[impact]}`}
-                  checked={selectedImpacts.has(impact)}
-                  onChange={() => toggleImpact(impact)}
-                />
-                {/* impact comes from Object.keys(IMPACT_CHECKBOX_COLOR), a subset of INDICATOR_STYLES's keys, so the lookup always hits */}
-                {t(INDICATOR_STYLES[impact]!.labelKey)}
-              </label>
-            ))}
-            <span className="label gap-2 text-sm">
-              <span className="bg-base-content/10 outline-info h-4 w-4 rounded-sm outline-2 outline-offset-1" />
-              {t("history.today")}
-            </span>
-          </div>
-
-          <div className="mt-2 flex items-start gap-4">
-            <div className="min-w-0 flex-1">
-              <IncidentCalendar calendar={calendar} selectedDate={selectedDate} onSelectDay={selectDay} />
-            </div>
-            <div className="flex shrink-0 flex-col gap-0.5">
-              {years.map((y) => (
-                <button
-                  key={y}
-                  type="button"
-                  onClick={() => selectYear(y)}
-                  className={`btn btn-ghost btn-sm justify-start ${y === year ? "btn-active" : ""}`}
-                >
-                  {y}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {selectedDay && selectedDay.incidents.length > 0 ? (
-            <div className="card card-border bg-base-200 mt-4 p-4">
-              <ul className="flex flex-col gap-3">
-                {selectedDay.incidents.map((incident) => {
-                  const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
-                  return (
-                    <li key={incident.id} className="border-base-content/10 border-t pt-3 first:border-t-0 first:pt-0">
-                      <details open className="collapse collapse-arrow">
-                        <summary className="collapse-title flex min-h-0 items-center gap-2 p-0 pr-6">
-                          <p className="text-base-content text-base font-semibold">{incident.name}</p>
-                          <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
-                        </summary>
-                        <div className="collapse-content p-0">
-                          <p className="text-base-content/40 mt-1 text-xs">
-                            {t("incidents.officialPageLabel")}{" "}
-                            <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
-                              {incident.shortlink}
-                            </a>
-                          </p>
-                          <p className="text-base-content/50 mt-1 text-xs">
-                            {incident.resolved_at
-                              ? t("history.resolutionTime", {
-                                  duration: formatDuration(minutesBetween(incident.created_at, incident.resolved_at), t),
-                                })
-                              : t("history.stillOngoing")}
-                          </p>
-                          <ul className="timeline timeline-vertical mt-2 [--timeline-col-start:auto]">
-                            {incident.incident_updates.map((update, i) => (
-                              <li key={update.id}>
-                                {i > 0 && <hr />}
-                                <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
-                                  {formatDateTime(update.created_at)}
-                                </div>
-                                <div className="timeline-middle">
-                                  <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
-                                </div>
-                                <div className="timeline-end timeline-box bg-base-200">
-                                  <p className="text-base-content text-sm font-medium">{update.status}</p>
-                                  <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
-                                </div>
-                                {i < incident.incident_updates.length - 1 && <hr />}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </details>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ) : (
-            <p className="text-base-content/50 mt-4 text-sm">{t("history.selectPrompt")}</p>
-          )}
-        </>
-      ) : null}
     </div>
   );
 }

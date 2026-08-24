@@ -144,8 +144,9 @@
     "selectPrompt": "Klikk på en dag i kalenderen for å se hendelsene.",
     "overview": {
       "title": "Hendelser per tjeneste",
-      "incidentCount_one": "{{count}} hendelse",
-      "incidentCount_other": "{{count}} hendelser"
+      "titleTop": "Topp {{max}} hendelser per tjeneste",
+      "moreServices_one": "+{{count}} tjeneste til vises ikke",
+      "moreServices_other": "+{{count}} tjenester til vises ikke"
     }
   },
   "boards": {

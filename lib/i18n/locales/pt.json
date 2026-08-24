@@ -144,8 +144,9 @@
     "selectPrompt": "Clique num dia do calendário para ver os seus incidentes.",
     "overview": {
       "title": "Incidentes por serviço",
-      "incidentCount_one": "{{count}} incidente",
-      "incidentCount_other": "{{count}} incidentes"
+      "titleTop": "Top {{max}} incidentes por serviço",
+      "moreServices_one": "+{{count}} outro serviço não mostrado",
+      "moreServices_other": "+{{count}} outros serviços não mostrados"
     }
   },
   "boards": {

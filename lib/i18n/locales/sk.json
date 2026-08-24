@@ -146,9 +146,10 @@
     "selectPrompt": "Kliknite na deň v kalendári a zobrazte jeho incidenty.",
     "overview": {
       "title": "Incidenty podľa služby",
-      "incidentCount_one": "{{count}} incident",
-      "incidentCount_few": "{{count}} incidenty",
-      "incidentCount_other": "{{count}} incidentov"
+      "titleTop": "Top {{max}} incidentov podľa služby",
+      "moreServices_one": "+{{count}} ďalšia služba nezobrazená",
+      "moreServices_few": "+{{count}} ďalšie služby nezobrazené",
+      "moreServices_other": "+{{count}} ďalších služieb nezobrazených"
     }
   },
   "boards": {

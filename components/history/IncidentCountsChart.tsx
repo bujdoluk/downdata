@@ -3,7 +3,9 @@ import "@/lib/i18n/i18n";
 import type { ServiceDefinition } from "@/types/service";
 import type { IncidentCountByService } from "@/lib/getStoredIncident";
 
-const BAR_HEIGHT_PX = 96;
+// A "quick overview" stops being one past a screenful of rows — cap to the
+// worst offenders instead of forcing a long scroll through everyone.
+const MAX_BARS = 20;
 
 export default function IncidentCountsChart({
   services,
@@ -22,34 +24,37 @@ export default function IncidentCountsChart({
   // Built from `services` (already alphabetized by the caller), not from the
   // RPC's own row order, so the count-descending sort below tie-breaks
   // alphabetically and stays stable poll to poll.
-  const bars = services
-    .map((service) => ({ service, count: countBySlug.get(service.slug) ?? 0 }))
-    .sort((a, b) => b.count - a.count);
+  const sorted = services.map((service) => ({ service, count: countBySlug.get(service.slug) ?? 0 })).sort((a, b) => b.count - a.count);
+  const bars = sorted.slice(0, MAX_BARS);
+  const hiddenCount = sorted.length - bars.length;
   const maxCount = Math.max(0, ...bars.map((bar) => bar.count));
 
   return (
-    <div className="card card-border bg-base-200 mt-4 p-4">
-      <p className="text-base-content/60 text-sm font-medium">{t("history.overview.title")}</p>
-      <div className="mt-3 flex gap-3 overflow-x-auto pb-1">
+    <div className="card card-border bg-base-200 p-4">
+      <p className="text-base-content/60 text-sm font-medium">
+        {hiddenCount > 0 ? t("history.overview.titleTop", { max: MAX_BARS }) : t("history.overview.title")}
+      </p>
+      <ul className="mt-3 flex flex-col gap-1.5">
         {bars.map(({ service, count }) => (
-          <button
-            key={service.slug}
-            type="button"
-            onClick={() => onSelectService(service.slug)}
-            className="tooltip flex w-16 shrink-0 flex-col items-center gap-1"
-            style={{ height: BAR_HEIGHT_PX }}
-          >
-            <div className="tooltip-content">{t("history.overview.incidentCount", { count })}</div>
-            <div className="flex w-full flex-1 items-end">
-              <div
-                className={`w-full rounded-t-sm ${service.slug === selectedSlug ? "bg-primary" : "bg-primary/50"}`}
-                style={{ height: maxCount > 0 ? `${(count / maxCount) * 100}%` : 0 }}
-              />
-            </div>
-            <span className="text-base-content/70 w-full truncate text-center text-xs">{service.name}</span>
-          </button>
+          <li key={service.slug}>
+            <button
+              type="button"
+              onClick={() => onSelectService(service.slug)}
+              className="flex w-full items-center gap-2"
+            >
+              <span className="text-base-content/70 w-24 shrink-0 truncate text-right text-xs">{service.name}</span>
+              <span className="bg-base-content/10 h-4 flex-1 rounded-sm">
+                <span
+                  className={`block h-full rounded-sm ${service.slug === selectedSlug ? "bg-primary" : "bg-primary/50"}`}
+                  style={{ width: maxCount > 0 ? `${(count / maxCount) * 100}%` : 0 }}
+                />
+              </span>
+              <span className="text-base-content/70 w-6 shrink-0 text-left text-xs tabular-nums">{count}</span>
+            </button>
+          </li>
         ))}
-      </div>
+      </ul>
+      {hiddenCount > 0 && <p className="text-base-content/40 mt-2 text-xs">{t("history.overview.moreServices", { count: hiddenCount })}</p>}
     </div>
   );
 }

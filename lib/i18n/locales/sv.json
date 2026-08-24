@@ -144,8 +144,9 @@
     "selectPrompt": "Klicka på en dag i kalendern för att se dess incidenter.",
     "overview": {
       "title": "Incidenter per tjänst",
-      "incidentCount_one": "{{count}} incident",
-      "incidentCount_other": "{{count}} incidenter"
+      "titleTop": "Topp {{max}} incidenter per tjänst",
+      "moreServices_one": "+{{count}} tjänst till visas inte",
+      "moreServices_other": "+{{count}} tjänster till visas inte"
     }
   },
   "boards": {

@@ -148,10 +148,11 @@
     "selectPrompt": "Kliknij dzień w kalendarzu, aby zobaczyć jego incydenty.",
     "overview": {
       "title": "Incydenty według usługi",
-      "incidentCount_one": "{{count}} incydent",
-      "incidentCount_few": "{{count}} incydenty",
-      "incidentCount_many": "{{count}} incydentów",
-      "incidentCount_other": "{{count}} incydentów"
+      "titleTop": "Top {{max}} incydentów według usługi",
+      "moreServices_one": "+{{count}} kolejna usługa nie jest wyświetlana",
+      "moreServices_few": "+{{count}} kolejne usługi nie są wyświetlane",
+      "moreServices_many": "+{{count}} kolejnych usług nie jest wyświetlanych",
+      "moreServices_other": "+{{count}} kolejnych usług nie jest wyświetlanych"
     }
   },
   "boards": {

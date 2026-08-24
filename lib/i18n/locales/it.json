@@ -144,8 +144,9 @@
     "selectPrompt": "Fai clic su un giorno nel calendario per vedere i suoi incidenti.",
     "overview": {
       "title": "Incidenti per servizio",
-      "incidentCount_one": "{{count}} incidente",
-      "incidentCount_other": "{{count}} incidenti"
+      "titleTop": "Top {{max}} incidenti per servizio",
+      "moreServices_one": "+{{count}} altro servizio non mostrato",
+      "moreServices_other": "+{{count}} altri servizi non mostrati"
     }
   },
   "boards": {

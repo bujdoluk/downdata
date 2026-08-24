@@ -144,8 +144,9 @@
     "selectPrompt": "Klik op een dag in de kalender om de incidenten te bekijken.",
     "overview": {
       "title": "Incidenten per dienst",
-      "incidentCount_one": "{{count}} incident",
-      "incidentCount_other": "{{count}} incidenten"
+      "titleTop": "Top {{max}} incidenten per dienst",
+      "moreServices_one": "+{{count}} dienst niet weergegeven",
+      "moreServices_other": "+{{count}} diensten niet weergegeven"
     }
   },
   "boards": {

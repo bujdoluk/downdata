@@ -144,8 +144,9 @@
     "selectPrompt": "Klicke auf einen Tag im Kalender, um seine Vorfälle zu sehen.",
     "overview": {
       "title": "Vorfälle nach Dienst",
-      "incidentCount_one": "{{count}} Vorfall",
-      "incidentCount_other": "{{count}} Vorfälle"
+      "titleTop": "Top {{max}} Vorfälle nach Dienst",
+      "moreServices_one": "+{{count}} weiterer Dienst nicht angezeigt",
+      "moreServices_other": "+{{count}} weitere Dienste nicht angezeigt"
     }
   },
   "boards": {

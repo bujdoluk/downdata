@@ -148,10 +148,11 @@
     "selectPrompt": "Нажмите на день в календаре, чтобы увидеть его инциденты.",
     "overview": {
       "title": "Инциденты по сервисам",
-      "incidentCount_one": "{{count}} инцидент",
-      "incidentCount_few": "{{count}} инцидента",
-      "incidentCount_many": "{{count}} инцидентов",
-      "incidentCount_other": "{{count}} инцидента"
+      "titleTop": "Топ-{{max}} инцидентов по сервисам",
+      "moreServices_one": "+{{count}} сервис не показан",
+      "moreServices_few": "+{{count}} сервиса не показаны",
+      "moreServices_many": "+{{count}} сервисов не показано",
+      "moreServices_other": "+{{count}} сервиса не показано"
     }
   },
   "boards": {

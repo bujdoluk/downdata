@@ -141,7 +141,12 @@
     },
     "resolutionTime": "Opgelost in {{duration}}",
     "stillOngoing": "Nog gaande",
-    "selectPrompt": "Klik op een dag in de kalender om de incidenten te bekijken."
+    "selectPrompt": "Klik op een dag in de kalender om de incidenten te bekijken.",
+    "overview": {
+      "title": "Incidenten per dienst",
+      "incidentCount_one": "{{count}} incident",
+      "incidentCount_other": "{{count}} incidenten"
+    }
   },
   "boards": {
     "title": "Borden",

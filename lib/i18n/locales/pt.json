@@ -141,7 +141,12 @@
     },
     "resolutionTime": "Resolvido em {{duration}}",
     "stillOngoing": "Ainda em curso",
-    "selectPrompt": "Clique num dia do calendário para ver os seus incidentes."
+    "selectPrompt": "Clique num dia do calendário para ver os seus incidentes.",
+    "overview": {
+      "title": "Incidentes por serviço",
+      "incidentCount_one": "{{count}} incidente",
+      "incidentCount_other": "{{count}} incidentes"
+    }
   },
   "boards": {
     "title": "Painéis",

@@ -141,7 +141,12 @@
     },
     "resolutionTime": "Løst på {{duration}}",
     "stillOngoing": "Fortsatt pågående",
-    "selectPrompt": "Klikk på en dag i kalenderen for å se hendelsene."
+    "selectPrompt": "Klikk på en dag i kalenderen for å se hendelsene.",
+    "overview": {
+      "title": "Hendelser per tjeneste",
+      "incidentCount_one": "{{count}} hendelse",
+      "incidentCount_other": "{{count}} hendelser"
+    }
   },
   "boards": {
     "title": "Tavler",

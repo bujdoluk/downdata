@@ -143,7 +143,13 @@
     },
     "resolutionTime": "Vyriešené za {{duration}}",
     "stillOngoing": "Stále trvá",
-    "selectPrompt": "Kliknite na deň v kalendári a zobrazte jeho incidenty."
+    "selectPrompt": "Kliknite na deň v kalendári a zobrazte jeho incidenty.",
+    "overview": {
+      "title": "Incidenty podľa služby",
+      "incidentCount_one": "{{count}} incident",
+      "incidentCount_few": "{{count}} incidenty",
+      "incidentCount_other": "{{count}} incidentov"
+    }
   },
   "boards": {
     "title": "Nástenky",

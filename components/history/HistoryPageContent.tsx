@@ -9,7 +9,10 @@ import type { ServiceDefinition, StatuspageIncident } from "@/types/service";
 import { buildIncidentCalendar } from "@/lib/buildIncidentCalendar";
 import { mergeParams } from "@/lib/mergeParams";
 import { parseImpacts, serializeImpacts } from "@/lib/impactsParam";
+import { usePolledFetch } from "@/lib/usePolledFetch";
+import type { IncidentCountByService } from "@/lib/getStoredIncident";
 import IncidentCalendar from "@/components/history/IncidentCalendar";
+import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import ServiceSearchPicker from "@/components/service/ServiceSearchPicker";
 import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
@@ -23,6 +26,7 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
   const router = useRouter();
   const searchParams = useSearchParams();
   const services = [...trackedServices].sort((a, b) => a.name.localeCompare(b.name));
+  const { data: countsData } = usePolledFetch<{ counts: IncidentCountByService[] }>("/api/history/counts");
 
   const slug = searchParams.get("service") ?? "";
   const selectedYear = Number(searchParams.get("year") ?? CURRENT_YEAR);
@@ -123,9 +127,13 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
   }, [calendar.days]);
 
   return (
-    <div className="w-full max-w-6xl self-start">
+    <div className="w-full self-start">
       <h1 className="text-base-content text-lg font-semibold">{t("history.title")}</h1>
       <p className="text-base-content/60 mt-1 text-sm">{t("history.subtitle")}</p>
+
+      {services.length > 0 && (
+        <IncidentCountsChart services={services} counts={countsData?.counts ?? []} selectedSlug={slug} onSelectService={selectService} />
+      )}
 
       <div className="mt-4 flex flex-wrap items-center gap-4">
         <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />

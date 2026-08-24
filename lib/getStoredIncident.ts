@@ -159,6 +159,17 @@ export async function getStoredIncidentsForService(serviceSlug: string, options?
   }));
 }
 
+export type IncidentCountByService = { service_slug: string; count: number };
+
+// Total incident count per service, for the history page's overview chart —
+// aggregated in Postgres (incident_counts_by_service()), not by pulling every
+// incident row into JS just to count them.
+export async function getIncidentCountsByService(): Promise<IncidentCountByService[]> {
+  const supabase = getSupabaseClient();
+  const { data } = await supabase.rpc("incident_counts_by_service");
+  return (data as IncidentCountByService[]) ?? [];
+}
+
 // Same mapping as toIncidentApiShape, minus incident_updates — for the
 // summary rows getAllStoredIncidentSummaries() returns (no updates to map).
 export function toIncidentSummaryApiShape(incident: Omit<StoredIncident, "incident_updates">): StatuspageIncidentSummary {

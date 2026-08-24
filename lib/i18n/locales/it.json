@@ -141,7 +141,12 @@
     },
     "resolutionTime": "Risolto in {{duration}}",
     "stillOngoing": "Ancora in corso",
-    "selectPrompt": "Fai clic su un giorno nel calendario per vedere i suoi incidenti."
+    "selectPrompt": "Fai clic su un giorno nel calendario per vedere i suoi incidenti.",
+    "overview": {
+      "title": "Incidenti per servizio",
+      "incidentCount_one": "{{count}} incidente",
+      "incidentCount_other": "{{count}} incidenti"
+    }
   },
   "boards": {
     "title": "Bacheche",

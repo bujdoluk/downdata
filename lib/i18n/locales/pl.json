@@ -145,7 +145,14 @@
     },
     "resolutionTime": "Rozwiązano w {{duration}}",
     "stillOngoing": "Nadal trwa",
-    "selectPrompt": "Kliknij dzień w kalendarzu, aby zobaczyć jego incydenty."
+    "selectPrompt": "Kliknij dzień w kalendarzu, aby zobaczyć jego incydenty.",
+    "overview": {
+      "title": "Incydenty według usługi",
+      "incidentCount_one": "{{count}} incydent",
+      "incidentCount_few": "{{count}} incydenty",
+      "incidentCount_many": "{{count}} incydentów",
+      "incidentCount_other": "{{count}} incydentów"
+    }
   },
   "boards": {
     "title": "Tablice",

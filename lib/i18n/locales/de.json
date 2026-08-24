@@ -141,7 +141,12 @@
     },
     "resolutionTime": "Gelöst in {{duration}}",
     "stillOngoing": "Noch andauernd",
-    "selectPrompt": "Klicke auf einen Tag im Kalender, um seine Vorfälle zu sehen."
+    "selectPrompt": "Klicke auf einen Tag im Kalender, um seine Vorfälle zu sehen.",
+    "overview": {
+      "title": "Vorfälle nach Dienst",
+      "incidentCount_one": "{{count}} Vorfall",
+      "incidentCount_other": "{{count}} Vorfälle"
+    }
   },
   "boards": {
     "title": "Boards",

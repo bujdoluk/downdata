@@ -145,7 +145,14 @@
     },
     "resolutionTime": "Решено за {{duration}}",
     "stillOngoing": "Всё ещё продолжается",
-    "selectPrompt": "Нажмите на день в календаре, чтобы увидеть его инциденты."
+    "selectPrompt": "Нажмите на день в календаре, чтобы увидеть его инциденты.",
+    "overview": {
+      "title": "Инциденты по сервисам",
+      "incidentCount_one": "{{count}} инцидент",
+      "incidentCount_few": "{{count}} инцидента",
+      "incidentCount_many": "{{count}} инцидентов",
+      "incidentCount_other": "{{count}} инцидента"
+    }
   },
   "boards": {
     "title": "Доски",

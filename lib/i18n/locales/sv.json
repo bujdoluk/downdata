@@ -141,7 +141,12 @@
     },
     "resolutionTime": "Löst på {{duration}}",
     "stillOngoing": "Fortfarande pågående",
-    "selectPrompt": "Klicka på en dag i kalendern för att se dess incidenter."
+    "selectPrompt": "Klicka på en dag i kalendern för att se dess incidenter.",
+    "overview": {
+      "title": "Incidenter per tjänst",
+      "incidentCount_one": "{{count}} incident",
+      "incidentCount_other": "{{count}} incidenter"
+    }
   },
   "boards": {
     "title": "Tavlor",

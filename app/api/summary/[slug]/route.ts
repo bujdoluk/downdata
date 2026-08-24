@@ -11,8 +11,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
   }
 
   try {
-    // status/components have no DB equivalent — still live. incidents does,
-    // and is replaced below with the stored copy.
     const res = await fetch(`https://${service.host}/api/v2/summary.json`, { next: { revalidate: 60 } });
 
     if (!res.ok) {
@@ -23,7 +21,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     }
 
     const data = await res.json();
-    const incidents = (await getStoredIncidentsForService(slug)).map(toIncidentApiShape);
+    const incidents = (await getStoredIncidentsForService(slug, { limit: 10 })).map(toIncidentApiShape);
     return NextResponse.json({ ...data, incidents, service });
   } catch {
     return NextResponse.json(

@@ -33,6 +33,15 @@ export type StoredMaintenance = {
   maintenance_updates: StoredMaintenanceUpdate[];
 };
 
+// Columns toMaintenanceApiShape/toMaintenanceSummaryApiShape actually read,
+// plus service_slug (needed for the grouping join, never in the mapped
+// response) — same reasoning as getStoredIncident.ts's trimmed columns.
+// getStoredMaintenanceWithUpdates below stays "*": general-purpose, not
+// polled, no single shape-mapper to trim against.
+const MAINTENANCE_SUMMARY_COLUMNS =
+  "id, service_slug, name, status, impact, created_at, resolved_at, updated_at, shortlink, scheduled_for, scheduled_until";
+const MAINTENANCE_UPDATE_COLUMNS = "id, maintenance_id, service_slug, status, body, created_at";
+
 // maintenance_updates.maintenance_id alone isn't guaranteed unique across
 // services, same reasoning as getStoredIncident.ts's grouping helper.
 function groupUpdatesByMaintenance(updates: StoredMaintenanceUpdate[]): Map<string, StoredMaintenanceUpdate[]> {
@@ -67,14 +76,14 @@ export async function getAllStoredMaintenances(trackedSlugs: string[]): Promise<
 
   const { data: maintenances } = await supabase
     .from("maintenances")
-    .select("*")
+    .select(MAINTENANCE_SUMMARY_COLUMNS)
     .in("service_slug", trackedSlugs)
     .neq("status", "completed")
     .or(`scheduled_until.gte.${nowIso},status.eq.in_progress`)
     .order("scheduled_for", { ascending: true });
   if (!maintenances?.length) return [];
 
-  const { data: updates } = await supabase.from("maintenance_updates").select("*").in("service_slug", trackedSlugs);
+  const { data: updates } = await supabase.from("maintenance_updates").select(MAINTENANCE_UPDATE_COLUMNS).in("service_slug", trackedSlugs);
   const grouped = groupUpdatesByMaintenance((updates as StoredMaintenanceUpdate[]) ?? []);
 
   return (maintenances as Omit<StoredMaintenance, "maintenance_updates">[]).map((maintenance) => ({
@@ -94,7 +103,7 @@ export async function getAllStoredMaintenanceSummaries(trackedSlugs: string[]): 
 
   const { data } = await supabase
     .from("maintenances")
-    .select("*")
+    .select(MAINTENANCE_SUMMARY_COLUMNS)
     .in("service_slug", trackedSlugs)
     .neq("status", "completed")
     .or(`scheduled_until.gte.${nowIso},status.eq.in_progress`)

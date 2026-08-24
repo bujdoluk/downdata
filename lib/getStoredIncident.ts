@@ -32,8 +32,20 @@ export type StoredIncident = {
   incident_updates: StoredIncidentUpdate[];
 };
 
+// The columns toIncidentApiShape/toIncidentSummaryApiShape actually read,
+// plus service_slug (needed for the grouping join below, even though it
+// never appears in the mapped API response). monitoring_at/components are
+// real StoredIncident fields — general-purpose readers below still select
+// "*" — but nothing on this list-and-map path uses them, and these queries
+// are polled every 60s, so selecting them was pure wasted egress.
+const INCIDENT_SUMMARY_COLUMNS = "id, service_slug, name, status, impact, created_at, resolved_at, updated_at, shortlink";
+const INCIDENT_UPDATE_COLUMNS = "id, incident_id, service_slug, status, body, created_at";
+
 // The one place anything (the Slack notifier today, anything else later)
 // reads a stored incident back out of Supabase with its updates attached.
+// Deliberately "*", not the trimmed column lists above — this is a
+// general-purpose accessor, not paired with one known shape-mapper, and
+// it's not polled, so there's no meaningful egress payoff to narrowing it.
 export async function getStoredIncidentWithUpdates(serviceSlug: string, incidentId: string): Promise<StoredIncident | null> {
   const supabase = getSupabaseClient();
 
@@ -94,7 +106,7 @@ async function fetchUpdatesForIncidentIds(
     const chunk = incidentIds.slice(i, i + CHUNK_SIZE);
     let from = 0;
     for (;;) {
-      let query = supabase.from("incident_updates").select("*").in("incident_id", chunk);
+      let query = supabase.from("incident_updates").select(INCIDENT_UPDATE_COLUMNS).in("incident_id", chunk);
       if (serviceSlug) query = query.eq("service_slug", serviceSlug);
       const { data } = await query.range(from, from + PAGE_SIZE - 1);
       results.push(...((data as StoredIncidentUpdate[]) ?? []));
@@ -105,49 +117,33 @@ async function fetchUpdatesForIncidentIds(
   return results;
 }
 
-// Same rows as getAllStoredIncidents but no incident_updates query at all —
-// powers /api/incidents' list response, polled every 60s by several pages
-// that only ever render one incident's full timeline at a time. Not just
-// trimming the response: skipping this query means that data never leaves
-// Postgres in the first place.
+// Same rows as getStoredIncidentsForService but no incident_updates query at
+// all — powers /api/incidents' list response, polled every 60s by several
+// pages that only ever render one incident's full timeline at a time. Not
+// just trimming the response: skipping this query means that data never
+// leaves Postgres in the first place.
 export async function getAllStoredIncidentSummaries(): Promise<Omit<StoredIncident, "incident_updates">[]> {
   const supabase = getSupabaseClient();
-  const { data } = await supabase.from("incidents").select("*").order("updated_at", { ascending: false }).limit(1000);
+  const { data } = await supabase.from("incidents").select(INCIDENT_SUMMARY_COLUMNS).order("updated_at", { ascending: false }).limit(1000);
   return (data as Omit<StoredIncident, "incident_updates">[]) ?? [];
 }
 
-// All tracked services' incidents, newest-updated first — powers
-// /api/incidents. Two flat queries instead of one per incident, same shape
-// as the notifier's existing batch-query pattern; capped at 1000 rows like
-// lib/notifyIncidentEvents.ts's own event query.
-export async function getAllStoredIncidents(): Promise<StoredIncident[]> {
-  const supabase = getSupabaseClient();
-
-  const { data: incidents } = await supabase.from("incidents").select("*").order("updated_at", { ascending: false }).limit(1000);
-  if (!incidents?.length) return [];
-
-  const updates = await fetchUpdatesForIncidentIds(
-    supabase,
-    incidents.map((incident) => incident.id as string),
-  );
-  const grouped = groupUpdatesByIncident(updates);
-
-  return (incidents as Omit<StoredIncident, "incident_updates">[]).map((incident) => ({
-    ...incident,
-    incident_updates: grouped.get(`${incident.service_slug}:${incident.id}`) ?? [],
-  }));
-}
-
 // One service's incidents, newest-updated first — powers /api/history/[slug]
-// and /api/summary/[slug].
-export async function getStoredIncidentsForService(serviceSlug: string): Promise<StoredIncident[]> {
+// (unbounded: that page lets you browse any past year, so it genuinely
+// needs full history) and /api/summary/[slug] (passes a small `limit` — a
+// live status page showing a service's entire incident history, re-fetched
+// every 60s, is neither useful UX nor worth the egress; recent incidents
+// only, same idea as a real status page pointing elsewhere for history).
+export async function getStoredIncidentsForService(serviceSlug: string, options?: { limit?: number }): Promise<StoredIncident[]> {
   const supabase = getSupabaseClient();
 
-  const { data: incidents } = await supabase
+  let query = supabase
     .from("incidents")
-    .select("*")
+    .select(INCIDENT_SUMMARY_COLUMNS)
     .eq("service_slug", serviceSlug)
     .order("updated_at", { ascending: false });
+  if (options?.limit) query = query.limit(options.limit);
+  const { data: incidents } = await query;
   if (!incidents?.length) return [];
 
   const updates = await fetchUpdatesForIncidentIds(

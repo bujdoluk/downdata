@@ -26,3 +26,16 @@ export const FALLBACK_STYLE = {
   badge: "badge-ghost",
   labelKey: "status.unknown",
 };
+
+// Shared by the History page's calendar filter and the Incidents page's
+// severity filter — both let you check/uncheck which impacts to show.
+// Keyed off INDICATOR_STYLES's impact entries, but deliberately not
+// Object.keys(INDICATOR_STYLES) — that map also carries a "maintenance"
+// entry no incident/maintenance ever has as its own impact.
+export const IMPACT_CHECKBOX_COLOR: Record<string, string> = {
+  none: "checkbox-success",
+  minor: "checkbox-warning",
+  major: "checkbox-accent",
+  critical: "checkbox-error",
+};
+export const ALL_IMPACTS = Object.keys(IMPACT_CHECKBOX_COLOR);

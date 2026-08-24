@@ -79,7 +79,9 @@
       "last24h": "Ostatnie 24 godziny",
       "last7d": "Ostatnie 7 dni",
       "last30d": "Ostatnie 30 dni",
-      "noMatches": "Żaden incydent nie pasuje do tego filtra."
+      "noMatches": "Żaden incydent nie pasuje do tego filtra.",
+      "new": "Nowe",
+      "clearFilters": "Wyczyść filtry"
     },
     "pagination": {
       "previous": "Poprzednia strona",

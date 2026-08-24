@@ -10,20 +10,10 @@ import IncidentCalendar from "@/components/history/IncidentCalendar";
 import ServiceSearchPicker from "@/components/service/ServiceSearchPicker";
 import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
-import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import { INDICATOR_STYLES, FALLBACK_STYLE, IMPACT_CHECKBOX_COLOR, ALL_IMPACTS } from "@/components/service/statusStyles";
 import Spinner from "@/components/Spinner";
 
 const CURRENT_YEAR = Temporal.Now.plainDateISO().year;
-const IMPACT_CHECKBOX_COLOR: Record<string, string> = {
-  none: "checkbox-success",
-  minor: "checkbox-warning",
-  major: "checkbox-accent",
-  critical: "checkbox-error",
-};
-// Deliberately not Object.keys(INDICATOR_STYLES) — that map also carries a
-// "maintenance" entry for the Maintenance page's badge, but no incident
-// here ever has that impact, so it must not leak into this filter.
-const ALL_IMPACTS = Object.keys(IMPACT_CHECKBOX_COLOR);
 
 export default function HistoryPageContent({ trackedServices }: { trackedServices: ServiceDefinition[] }) {
   const { t, i18n } = useTranslation();

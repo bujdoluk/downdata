@@ -2,7 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import { formatDateTime } from "@/lib/formatTime";
+import { formatDateTime, formatDuration, minutesBetween } from "@/lib/formatTime";
 import type { TrackedIncident, TrackedMaintenance } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
@@ -39,9 +39,18 @@ export default function IncidentDetail({
               {t("maintenances.scheduledLabel")} {formatDateTime(incident.scheduled_for)} – {formatDateTime(incident.scheduled_until)}
             </p>
           ) : (
-            <p className="text-base-content/40 text-xs">
-              {t("incidents.dateLabel")} {formatDateTime(incident.created_at)}
-            </p>
+            <>
+              <p className="text-base-content/40 text-xs">
+                {t("incidents.dateLabel")} {formatDateTime(incident.created_at)}
+              </p>
+              {incident.resolved_at && (
+                <p className="text-base-content/40 text-xs">
+                  {t("history.resolutionTime", {
+                    duration: formatDuration(minutesBetween(incident.created_at, incident.resolved_at), t),
+                  })}
+                </p>
+              )}
+            </>
           )}
           <p className="text-base-content/40 text-xs">
             {t("incidents.officialPageLabel")}{" "}

@@ -77,7 +77,9 @@
       "last24h": "Laatste 24 uur",
       "last7d": "Laatste 7 dagen",
       "last30d": "Laatste 30 dagen",
-      "noMatches": "Geen incidenten komen overeen met dit filter."
+      "noMatches": "Geen incidenten komen overeen met dit filter.",
+      "new": "Nieuw",
+      "clearFilters": "Filters wissen"
     },
     "pagination": {
       "previous": "Vorige pagina",

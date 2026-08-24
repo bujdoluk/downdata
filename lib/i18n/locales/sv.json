@@ -77,7 +77,9 @@
       "last24h": "Senaste 24 timmarna",
       "last7d": "Senaste 7 dagarna",
       "last30d": "Senaste 30 dagarna",
-      "noMatches": "Inga incidenter matchar detta filter."
+      "noMatches": "Inga incidenter matchar detta filter.",
+      "new": "Nytt",
+      "clearFilters": "Rensa filter"
     },
     "pagination": {
       "previous": "Föregående sida",

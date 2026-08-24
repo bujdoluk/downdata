@@ -4,20 +4,22 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import { formatDateTime, msSince } from "@/lib/formatTime";
+import { formatDateTime, formatDuration, minutesBetween, msSince } from "@/lib/formatTime";
 import type { TrackedIncident, TrackedIncidentSummary } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
-import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import { INDICATOR_STYLES, FALLBACK_STYLE, IMPACT_CHECKBOX_COLOR, ALL_IMPACTS } from "@/components/service/statusStyles";
 import Spinner from "@/components/Spinner";
 import { PinIcon } from "@/components/icons/NavIcons";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
 import { useIncidentsLastViewed } from "@/lib/useIncidentsLastViewed";
+import { useDebouncedValue } from "@/lib/useDebouncedValue";
 import IncidentDetail from "@/components/service/IncidentDetail";
 
 type StatusFilter = "all" | "investigating" | "identified" | "monitoring" | "resolved" | "postmortem";
 type TimeRange = "all" | "24h" | "7d" | "30d";
+type DebouncedGroup = { status: StatusFilter; q: string; range: TimeRange; impacts: Set<string> };
 
 const RANGE_MS: Record<Exclude<TimeRange, "all">, number> = {
   "24h": 24 * 60 * 60 * 1000,
@@ -26,9 +28,72 @@ const RANGE_MS: Record<Exclude<TimeRange, "all">, number> = {
 };
 
 const PAGE_SIZE = 7;
+const DEBOUNCE_MS = 300;
+const ALL_STATUSES: StatusFilter[] = ["all", "investigating", "identified", "monitoring", "resolved", "postmortem"];
+const STATUS_LABEL_KEY: Record<StatusFilter, string> = {
+  all: "allStatuses",
+  investigating: "investigating",
+  identified: "identified",
+  monitoring: "monitoring",
+  resolved: "resolved",
+  postmortem: "postmortem",
+};
 
 function matchesStatus(incident: TrackedIncidentSummary, filter: StatusFilter): boolean {
   return filter === "all" || incident.status === filter;
+}
+
+// Merges a patch into the *existing* query string instead of replacing it —
+// every URL write on this page goes through this, so selecting an incident
+// or flipping one filter never wipes out every other param. Deleting a key
+// happens by passing null; nothing resets pagination as a side effect —
+// callers that are genuinely a filter change include `page: null` in their
+// own patch explicitly (see debouncedGroupPatch/toggleOnlyNew below).
+function mergeParams(current: URLSearchParams, patch: Record<string, string | null>): URLSearchParams {
+  const next = new URLSearchParams(current.toString());
+  for (const [key, value] of Object.entries(patch)) {
+    if (value === null) next.delete(key);
+    else next.set(key, value);
+  }
+  return next;
+}
+
+function parseImpacts(searchParams: URLSearchParams): Set<string> {
+  const raw = searchParams.get("impacts");
+  // Absent = default = everything. Present-but-empty ("impacts=") means the
+  // user unchecked every box — must stay an empty set, not fall back to
+  // "everything", or clearing every checkbox would silently show it all.
+  if (raw === null) return new Set(ALL_IMPACTS);
+  return new Set(raw.split(",").filter(Boolean));
+}
+
+function parseGroupFromSearchParams(searchParams: URLSearchParams): DebouncedGroup {
+  return {
+    status: (searchParams.get("status") as StatusFilter | null) ?? "all",
+    q: searchParams.get("q") ?? "",
+    range: (searchParams.get("range") as TimeRange | null) ?? "30d",
+    impacts: parseImpacts(searchParams),
+  };
+}
+
+// Content fingerprint of the debounced group, used to tell "we just wrote
+// this ourselves" apart from "the URL genuinely changed" (back/forward, a
+// pasted link) — see the two sync effects below.
+function serializeGroup(g: DebouncedGroup): string {
+  return JSON.stringify([g.status, g.q, g.range, [...g.impacts].sort().join(",")]);
+}
+
+// Every field omits itself from the URL at its default value, for a clean
+// URL when nothing's actually filtered — impacts already worked this way;
+// status/range now match it instead of always being written explicitly.
+function debouncedGroupPatch(g: DebouncedGroup): Record<string, string | null> {
+  return {
+    status: g.status === "all" ? null : g.status,
+    q: g.q.trim() === "" ? null : g.q.trim(),
+    range: g.range === "30d" ? null : g.range,
+    impacts: g.impacts.size === ALL_IMPACTS.length ? null : [...g.impacts].sort().join(","),
+    page: null,
+  };
 }
 
 export default function IncidentsPageContent() {
@@ -38,19 +103,42 @@ export default function IncidentsPageContent() {
   const { data, error } = usePolledFetch<{ incidents: TrackedIncidentSummary[] }>("/api/incidents");
   const { pinned, togglePin } = usePinned("pinnedIncidents");
   const lastViewed = useIncidentsLastViewed(true);
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
-  const [serviceQuery, setServiceQuery] = useState("");
-  const [timeRangeFilter, setTimeRangeFilter] = useState<TimeRange>("30d");
-  const [page, setPage] = useState(1);
+
+  const [pendingFilters, setPendingFilters] = useState<DebouncedGroup>(() => parseGroupFromSearchParams(searchParams));
+  const lastWrittenRef = useRef(serializeGroup(pendingFilters));
+  const debounced = useDebouncedValue(pendingFilters, DEBOUNCE_MS);
+
   const [result, setResult] = useState<{ id: string; incident: TrackedIncident } | { id: string; error: true } | null>(null);
   const listRef = useRef<HTMLUListElement>(null);
+  const detailRef = useRef<HTMLDivElement>(null);
   const [minListHeight, setMinListHeight] = useState<number>();
 
   const isLoading = !data && !error;
   const incidents = useMemo(() => data?.incidents ?? [], [data]);
   const selectedId = searchParams.get("id");
+  const page = Number(searchParams.get("page") ?? "1");
+  const onlyNew = searchParams.get("new") === "1";
   const selectedIncident = incidents.find((incident) => incident.id === selectedId);
   const selectedServiceSlug = selectedIncident?.service.slug;
+
+  // pendingFilters -> URL, only once it's settled for DEBOUNCE_MS.
+  useEffect(() => {
+    const serialized = serializeGroup(debounced);
+    if (serialized === lastWrittenRef.current) return;
+    lastWrittenRef.current = serialized;
+    const next = mergeParams(searchParams, debouncedGroupPatch(debounced));
+    router.replace(`/incidents?${next.toString()}`, { scroll: false });
+  }, [debounced, searchParams, router]);
+
+  // URL -> pendingFilters, for changes we didn't just make ourselves
+  // (back/forward button, a pasted link with filters already in it).
+  useEffect(() => {
+    const parsed = parseGroupFromSearchParams(searchParams);
+    const serialized = serializeGroup(parsed);
+    if (serialized === lastWrittenRef.current) return;
+    lastWrittenRef.current = serialized;
+    setPendingFilters(parsed);
+  }, [searchParams]);
 
   // Full timeline for whichever incident is selected, fetched separately —
   // the list response deliberately omits incident_updates (see
@@ -79,31 +167,81 @@ export default function IncidentsPageContent() {
   const detail = currentResult && "incident" in currentResult ? currentResult.incident : null;
   const detailError = currentResult ? "error" in currentResult : false;
 
+  const trimmedServiceQuery = pendingFilters.q.trim().toLowerCase();
+  const filteredIncidents = useMemo(
+    () =>
+      incidents
+        .filter(
+          (incident) =>
+            matchesStatus(incident, pendingFilters.status) &&
+            pendingFilters.impacts.has(incident.impact) &&
+            (!trimmedServiceQuery || incident.service.name.toLowerCase().includes(trimmedServiceQuery)) &&
+            (pendingFilters.range === "all" || msSince(incident.updated_at) <= RANGE_MS[pendingFilters.range]) &&
+            (!onlyNew || new Date(incident.updated_at).getTime() > lastViewed),
+        )
+        .sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id))),
+    [incidents, pendingFilters, trimmedServiceQuery, onlyNew, lastViewed, pinned],
+  );
+
+  // Auto-selects the first *visible* incident, and only ever touches `id` —
+  // merged into the existing query string so a filter set from a shared
+  // link survives landing on the page with nothing selected yet.
   useEffect(() => {
-    // incidents[0] is safe — length > 0 is checked first
-    if (!selectedId && incidents.length > 0) {
-      router.replace(`/incidents?id=${incidents[0]!.id}`, { scroll: false });
+    if (!selectedId && filteredIncidents.length > 0) {
+      const next = mergeParams(searchParams, { id: filteredIncidents[0]!.id });
+      router.replace(`/incidents?${next.toString()}`, { scroll: false });
     }
-  }, [selectedId, incidents, router]);
+  }, [selectedId, filteredIncidents, searchParams, router]);
 
   function selectIncident(id: string) {
-    router.push(`/incidents?id=${id}`, { scroll: false });
+    const next = mergeParams(searchParams, { id });
+    router.push(`/incidents?${next.toString()}`, { scroll: false });
+    // Below the lg breakpoint the list and detail stack vertically — without
+    // this, picking an incident near the top of the list leaves the detail
+    // pane rendering off-screen with nothing to indicate it changed.
+    if (window.innerWidth < 1024) {
+      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
 
-  const trimmedServiceQuery = serviceQuery.trim().toLowerCase();
-  const filteredIncidents = incidents
-    .filter(
-      (incident) =>
-        matchesStatus(incident, statusFilter) &&
-        (!trimmedServiceQuery || incident.service.name.toLowerCase().includes(trimmedServiceQuery)) &&
-        (timeRangeFilter === "all" || msSince(incident.updated_at) <= RANGE_MS[timeRangeFilter]),
-    )
-    .sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id)));
-  const countForStatus = (filter: StatusFilter) =>
-    incidents.filter((incident) => matchesStatus(incident, filter)).length;
+  function updateParams(patch: Record<string, string | null>) {
+    router.replace(`/incidents?${mergeParams(searchParams, patch).toString()}`, { scroll: false });
+  }
+
+  function toggleImpact(impact: string) {
+    setPendingFilters((prev) => {
+      const next = new Set(prev.impacts);
+      if (next.has(impact)) next.delete(impact);
+      else next.add(impact);
+      return { ...prev, impacts: next };
+    });
+  }
+
+  function toggleOnlyNew() {
+    updateParams({ new: onlyNew ? null : "1", page: null });
+  }
+
+  const hasActiveFilters =
+    pendingFilters.status !== "all" ||
+    pendingFilters.q.trim() !== "" ||
+    pendingFilters.range !== "30d" ||
+    pendingFilters.impacts.size !== ALL_IMPACTS.length ||
+    onlyNew;
+
+  function clearFilters() {
+    setPendingFilters({ status: "all", q: "", range: "30d", impacts: new Set(ALL_IMPACTS) });
+    updateParams({ new: null, page: null });
+  }
+
+  const countForStatus = (filter: StatusFilter) => incidents.filter((incident) => matchesStatus(incident, filter)).length;
+  const newCount = incidents.filter((incident) => new Date(incident.updated_at).getTime() > lastViewed).length;
   const totalPages = Math.max(1, Math.ceil(filteredIncidents.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
   const pageIncidents = filteredIncidents.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  function goToPage(next: number) {
+    updateParams({ page: next === 1 ? null : String(next) });
+  }
 
   // A full page's real rendered height, locked in once, keeps the pagination
   // controls from jumping up when a later (shorter) page has fewer rows —
@@ -138,20 +276,14 @@ export default function IncidentsPageContent() {
                 className="input input-bordered input-sm w-40"
                 aria-label={t("incidents.filter.searchService")}
                 placeholder={t("incidents.filter.searchService")}
-                value={serviceQuery}
-                onChange={(e) => {
-                  setServiceQuery(e.target.value);
-                  setPage(1);
-                }}
+                value={pendingFilters.q}
+                onChange={(e) => setPendingFilters((prev) => ({ ...prev, q: e.target.value }))}
               />
               <select
                 className="select select-bordered select-sm w-40"
                 aria-label={t("incidents.filter.timeRange")}
-                value={timeRangeFilter}
-                onChange={(e) => {
-                  setTimeRangeFilter(e.target.value as TimeRange);
-                  setPage(1);
-                }}
+                value={pendingFilters.range}
+                onChange={(e) => setPendingFilters((prev) => ({ ...prev, range: e.target.value as TimeRange }))}
               >
                 <option value="all">{t("incidents.filter.allTime")}</option>
                 <option value="24h">{t("incidents.filter.last24h")}</option>
@@ -161,32 +293,47 @@ export default function IncidentsPageContent() {
               <select
                 className="select select-bordered select-sm w-40"
                 aria-label={t("incidents.filter.status")}
-                value={statusFilter}
-                onChange={(e) => {
-                  setStatusFilter(e.target.value as StatusFilter);
-                  setPage(1);
-                }}
+                value={pendingFilters.status}
+                onChange={(e) => setPendingFilters((prev) => ({ ...prev, status: e.target.value as StatusFilter }))}
               >
-                <option value="all">
-                  {t("incidents.filter.allStatuses")} ({countForStatus("all")})
-                </option>
-                <option value="investigating">
-                  {t("incidents.filter.investigating")} ({countForStatus("investigating")})
-                </option>
-                <option value="identified">
-                  {t("incidents.filter.identified")} ({countForStatus("identified")})
-                </option>
-                <option value="monitoring">
-                  {t("incidents.filter.monitoring")} ({countForStatus("monitoring")})
-                </option>
-                <option value="resolved">
-                  {t("incidents.filter.resolved")} ({countForStatus("resolved")})
-                </option>
-                <option value="postmortem">
-                  {t("incidents.filter.postmortem")} ({countForStatus("postmortem")})
-                </option>
+                {ALL_STATUSES.filter(
+                  (status) => status === "all" || countForStatus(status) > 0 || status === pendingFilters.status,
+                ).map((status) => (
+                  <option key={status} value={status}>
+                    {t(`incidents.filter.${STATUS_LABEL_KEY[status]}`)} ({countForStatus(status)})
+                  </option>
+                ))}
               </select>
+              {newCount > 0 && (
+                <button
+                  type="button"
+                  onClick={toggleOnlyNew}
+                  className={`btn btn-xs ${onlyNew ? "btn-primary" : "btn-ghost"}`}
+                >
+                  {t("incidents.filter.new")} ({newCount})
+                </button>
+              )}
+              {hasActiveFilters && (
+                <button type="button" onClick={clearFilters} className="btn btn-ghost btn-xs">
+                  {t("incidents.filter.clearFilters")}
+                </button>
+              )}
             </form>
+
+            <div className="mt-2 flex flex-wrap justify-end gap-3">
+              {ALL_IMPACTS.map((impact) => (
+                <label key={impact} className="label cursor-pointer gap-2 text-sm">
+                  <input
+                    type="checkbox"
+                    className={`checkbox checkbox-sm text-white ${IMPACT_CHECKBOX_COLOR[impact]}`}
+                    checked={pendingFilters.impacts.has(impact)}
+                    onChange={() => toggleImpact(impact)}
+                  />
+                  {/* impact comes from ALL_IMPACTS, a subset of INDICATOR_STYLES's keys, so the lookup always hits */}
+                  {t(INDICATOR_STYLES[impact]!.labelKey)}
+                </label>
+              ))}
+            </div>
 
             {filteredIncidents.length === 0 ? (
               <p className="text-base-content/50 mt-4 text-sm">{t("incidents.filter.noMatches")}</p>
@@ -233,7 +380,16 @@ export default function IncidentsPageContent() {
                             {isNew && <span className="badge badge-xs badge-primary">{t("incidents.new")}</span>}
                           </div>
                         </div>
-                        <p className="text-base-content/50 self-end text-xs whitespace-nowrap">{formatDateTime(incident.updated_at)}</p>
+                        <div className="text-base-content/50 self-end text-right text-xs whitespace-nowrap">
+                          <p>{formatDateTime(incident.updated_at)}</p>
+                          {incident.resolved_at && (
+                            <p>
+                              {t("history.resolutionTime", {
+                                duration: formatDuration(minutesBetween(incident.created_at, incident.resolved_at), t),
+                              })}
+                            </p>
+                          )}
+                        </div>
                       </button>
                       <div className={`w-3 shrink-0 self-stretch ${style.dot}`} aria-hidden="true" />
                     </li>
@@ -248,7 +404,7 @@ export default function IncidentsPageContent() {
                   type="button"
                   className="btn join-item btn-sm"
                   disabled={currentPage <= 1}
-                  onClick={() => setPage(currentPage - 1)}
+                  onClick={() => goToPage(currentPage - 1)}
                   aria-label={t("incidents.pagination.previous")}
                 >
                   «
@@ -260,7 +416,7 @@ export default function IncidentsPageContent() {
                   type="button"
                   className="btn join-item btn-sm"
                   disabled={currentPage >= totalPages}
-                  onClick={() => setPage(currentPage + 1)}
+                  onClick={() => goToPage(currentPage + 1)}
                   aria-label={t("incidents.pagination.next")}
                 >
                   »
@@ -269,7 +425,7 @@ export default function IncidentsPageContent() {
             )}
           </div>
 
-          <div className="card card-border bg-base-200 p-4">
+          <div ref={detailRef} className="card card-border bg-base-200 p-4">
             {detail ? (
               <IncidentDetail incident={detail} lastViewed={lastViewed} />
             ) : detailError ? (

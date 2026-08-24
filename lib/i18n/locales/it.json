@@ -77,7 +77,9 @@
       "last24h": "Ultime 24 ore",
       "last7d": "Ultimi 7 giorni",
       "last30d": "Ultimi 30 giorni",
-      "noMatches": "Nessun incidente corrisponde a questo filtro."
+      "noMatches": "Nessun incidente corrisponde a questo filtro.",
+      "new": "Nuovo",
+      "clearFilters": "Cancella filtri"
     },
     "pagination": {
       "previous": "Pagina precedente",

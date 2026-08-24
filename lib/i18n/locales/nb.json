@@ -77,7 +77,9 @@
       "last24h": "Siste 24 timer",
       "last7d": "Siste 7 dager",
       "last30d": "Siste 30 dager",
-      "noMatches": "Ingen hendelser samsvarer med dette filteret."
+      "noMatches": "Ingen hendelser samsvarer med dette filteret.",
+      "new": "Ny",
+      "clearFilters": "Fjern filtre"
     },
     "pagination": {
       "previous": "Forrige side",

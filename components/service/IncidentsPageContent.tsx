@@ -16,6 +16,7 @@ import { usePinned } from "@/lib/usePinned";
 import { useIncidentsLastViewed } from "@/lib/useIncidentsLastViewed";
 import { useDebouncedValue } from "@/lib/useDebouncedValue";
 import { mergeParams } from "@/lib/mergeParams";
+import { parseImpacts, serializeImpacts } from "@/lib/impactsParam";
 import { usePagination } from "@/lib/usePagination";
 import Pagination from "@/components/Pagination";
 import IncidentDetail from "@/components/service/IncidentDetail";
@@ -46,21 +47,12 @@ function matchesStatus(incident: TrackedIncidentSummary, filter: StatusFilter): 
   return filter === "all" || incident.status === filter;
 }
 
-function parseImpacts(searchParams: URLSearchParams): Set<string> {
-  const raw = searchParams.get("impacts");
-  // Absent = default = everything. Present-but-empty ("impacts=") means the
-  // user unchecked every box — must stay an empty set, not fall back to
-  // "everything", or clearing every checkbox would silently show it all.
-  if (raw === null) return new Set(ALL_IMPACTS);
-  return new Set(raw.split(",").filter(Boolean));
-}
-
 function parseGroupFromSearchParams(searchParams: URLSearchParams): DebouncedGroup {
   return {
     status: (searchParams.get("status") as StatusFilter | null) ?? "all",
     q: searchParams.get("q") ?? "",
     range: (searchParams.get("range") as TimeRange | null) ?? "30d",
-    impacts: parseImpacts(searchParams),
+    impacts: parseImpacts(searchParams, ALL_IMPACTS),
   };
 }
 
@@ -79,7 +71,7 @@ function debouncedGroupPatch(g: DebouncedGroup): Record<string, string | null> {
     status: g.status === "all" ? null : g.status,
     q: g.q.trim() === "" ? null : g.q.trim(),
     range: g.range === "30d" ? null : g.range,
-    impacts: g.impacts.size === ALL_IMPACTS.length ? null : [...g.impacts].sort().join(","),
+    impacts: serializeImpacts(g.impacts, ALL_IMPACTS),
     page: null,
   };
 }

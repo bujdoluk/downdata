@@ -1,11 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Temporal } from "temporal-polyfill";
 import { Trans, useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { ServiceDefinition, StatuspageIncident } from "@/types/service";
 import { buildIncidentCalendar } from "@/lib/buildIncidentCalendar";
+import { mergeParams } from "@/lib/mergeParams";
+import { parseImpacts, serializeImpacts } from "@/lib/impactsParam";
 import IncidentCalendar from "@/components/history/IncidentCalendar";
 import ServiceSearchPicker from "@/components/service/ServiceSearchPicker";
 import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
@@ -17,14 +20,18 @@ const CURRENT_YEAR = Temporal.Now.plainDateISO().year;
 
 export default function HistoryPageContent({ trackedServices }: { trackedServices: ServiceDefinition[] }) {
   const { t, i18n } = useTranslation();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const services = [...trackedServices].sort((a, b) => a.name.localeCompare(b.name));
-  const [slug, setSlug] = useState("");
+
+  const slug = searchParams.get("service") ?? "";
+  const selectedYear = Number(searchParams.get("year") ?? CURRENT_YEAR);
+  const selectedImpacts = parseImpacts(searchParams, ALL_IMPACTS);
+  const selectedDate = searchParams.get("date");
+
   const [result, setResult] = useState<{ slug: string; incidents: StatuspageIncident[] } | { slug: string; error: true } | null>(
     null,
   );
-  const [selectedYear, setSelectedYear] = useState(CURRENT_YEAR);
-  const [selectedImpacts, setSelectedImpacts] = useState<Set<string>>(new Set(ALL_IMPACTS));
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   useEffect(() => {
     if (!slug) return;
@@ -50,6 +57,14 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
   const error = current && "error" in current;
   const incidents = current && "incidents" in current ? current.incidents : null;
 
+  function updateParams(patch: Record<string, string | null>) {
+    router.replace(`/history?${mergeParams(searchParams, patch).toString()}`, { scroll: false });
+  }
+
+  function selectService(newSlug: string) {
+    router.push(`/history?${mergeParams(searchParams, { service: newSlug, date: null }).toString()}`, { scroll: false });
+  }
+
   // Years with any incident, newest first, always including the current
   // year even with zero incidents so there's always at least one to pick.
   const years = useMemo(() => {
@@ -60,9 +75,13 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
     set.add(CURRENT_YEAR);
     return [...set].sort((a, b) => b - a);
   }, [incidents]);
-  // Falls back to the current year if the previously selected one doesn't
-  // apply to whatever service is now loaded — no reset-on-slug-change effect needed.
+  // Falls back to the current year if the selected one doesn't apply to
+  // whatever service is now loaded, or came from a malformed URL.
   const year = years.includes(selectedYear) ? selectedYear : CURRENT_YEAR;
+
+  function selectYear(y: number) {
+    updateParams({ year: y === CURRENT_YEAR ? null : String(y), date: null });
+  }
 
   const relevantIncidents = useMemo(
     () => (incidents ?? []).filter((incident) => selectedImpacts.has(incident.impact)),
@@ -70,12 +89,10 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
   );
 
   function toggleImpact(impact: string) {
-    setSelectedImpacts((current) => {
-      const next = new Set(current);
-      if (next.has(impact)) next.delete(impact);
-      else next.add(impact);
-      return next;
-    });
+    const next = new Set(selectedImpacts);
+    if (next.has(impact)) next.delete(impact);
+    else next.add(impact);
+    updateParams({ impacts: serializeImpacts(next, ALL_IMPACTS) });
   }
 
   const calendar = useMemo(
@@ -83,6 +100,10 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
     [relevantIncidents, year, i18n.language],
   );
   const selectedDay = selectedDate ? calendar.days.find((day) => day.date === selectedDate) : null;
+
+  function selectDay(date: string) {
+    updateParams({ date: date === selectedDate ? null : date });
+  }
 
   // Derived purely from the already-fetched incidents — no extra requests.
   const summary = useMemo(() => {
@@ -94,6 +115,7 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
     const avgResolutionMinutes =
       resolved.length > 0
         ? Math.round(
+            // resolved_at is guaranteed here — resolved was filtered on its truthiness above
             resolved.reduce((sum, incident) => sum + minutesBetween(incident.created_at, incident.resolved_at!), 0) / resolved.length,
           )
         : null;
@@ -106,15 +128,7 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
       <p className="text-base-content/60 mt-1 text-sm">{t("history.subtitle")}</p>
 
       <div className="mt-4 flex flex-wrap items-center gap-4">
-        <ServiceSearchPicker
-          services={services}
-          value={slug}
-          onChange={(newSlug) => {
-            setSlug(newSlug);
-            setSelectedDate(null);
-          }}
-          placeholder={t("history.selectService")}
-        />
+        <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
       </div>
 
       {!slug ? null : isLoading ? (
@@ -164,21 +178,14 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
 
           <div className="mt-2 flex items-start gap-4">
             <div className="min-w-0 flex-1">
-              <IncidentCalendar
-                calendar={calendar}
-                selectedDate={selectedDate}
-                onSelectDay={(date) => setSelectedDate((current) => (current === date ? null : date))}
-              />
+              <IncidentCalendar calendar={calendar} selectedDate={selectedDate} onSelectDay={selectDay} />
             </div>
             <div className="flex shrink-0 flex-col gap-0.5">
               {years.map((y) => (
                 <button
                   key={y}
                   type="button"
-                  onClick={() => {
-                    setSelectedYear(y);
-                    setSelectedDate(null);
-                  }}
+                  onClick={() => selectYear(y)}
                   className={`btn btn-ghost btn-sm justify-start ${y === year ? "btn-active" : ""}`}
                 >
                   {y}

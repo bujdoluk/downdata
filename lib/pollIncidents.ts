@@ -47,126 +47,63 @@ type RawMaintenance = RawIncident & {
 
 const FETCH_CONCURRENCY = 200;
 
-// Caps how many upsert RPC calls run at once within a single service's
-// incidents/maintenances (and within a single incident/maintenance's
-// updates) — conservative enough not to hammer Supabase's pooler even for
-// a host with a long history, generous enough to turn hundreds of
-// sequential round-trips into a handful of concurrent batches instead.
-const RPC_CONCURRENCY = 20;
-
 // Shared with app/api/cron/health/route.ts so the lock's own self-heal
 // window and the health check's staleness threshold can't drift apart.
 export const LOCK_STALE_MS = 5 * 60 * 1000;
 
-async function upsertIncident(serviceSlug: string, incident: RawIncident) {
-  const supabase = getSupabaseClient();
-  const { error } = await supabase.rpc("upsert_incident", {
-    p_service_slug: serviceSlug,
-    p_id: incident.id,
-    p_name: incident.name,
-    p_status: incident.status,
-    p_impact: incident.impact,
-    p_created_at: incident.created_at,
-    p_updated_at: incident.updated_at,
-    p_monitoring_at: incident.monitoring_at,
-    p_resolved_at: incident.resolved_at,
-    p_shortlink: incident.shortlink,
-    p_components: incident.components,
-  });
-  if (error) throw error;
-
-  // Batched, not sequential: a service with a long incident history can
-  // have hundreds of updates, and awaiting each RPC round-trip one at a
-  // time was the actual cause of poll cycles exceeding the route's 60s
-  // budget and getting killed mid-flight. A failed update no longer
-  // aborts the rest — they're all attempted, and the incident still
-  // throws (counted as failed by the caller) if any of them failed.
-  let updateFailed = false;
-  await runInBatches(incident.incident_updates, RPC_CONCURRENCY, async (update) => {
-    const { error: updateError } = await supabase.rpc("upsert_incident_update", {
-      p_service_slug: serviceSlug,
-      p_incident_id: incident.id,
-      p_id: update.id,
-      p_status: update.status,
-      p_body: update.body,
-      p_affected_components: update.affected_components,
-      p_created_at: update.created_at,
-      p_updated_at: update.updated_at,
-      p_display_at: update.display_at,
-      p_deliver_notifications: update.deliver_notifications,
-      p_custom_tweet: update.custom_tweet,
-      p_tweet_id: update.tweet_id,
-    });
-    if (updateError) updateFailed = true;
-  });
-  if (updateFailed) throw new Error(`One or more updates failed to upsert for incident "${incident.id}"`);
-}
-
-async function upsertMaintenance(serviceSlug: string, maintenance: RawMaintenance) {
-  const supabase = getSupabaseClient();
-  const { error } = await supabase.rpc("upsert_maintenance", {
-    p_service_slug: serviceSlug,
-    p_id: maintenance.id,
-    p_name: maintenance.name,
-    p_status: maintenance.status,
-    p_impact: maintenance.impact,
-    p_created_at: maintenance.created_at,
-    p_updated_at: maintenance.updated_at,
-    p_monitoring_at: maintenance.monitoring_at,
-    p_resolved_at: maintenance.resolved_at,
-    p_scheduled_for: maintenance.scheduled_for,
-    p_scheduled_until: maintenance.scheduled_until,
-    p_shortlink: maintenance.shortlink,
-    p_components: maintenance.components,
-  });
-  if (error) throw error;
-
-  // See the matching comment in upsertIncident — batched for the same
-  // reason (avoid hundreds of sequential RPC round-trips per maintenance).
-  let updateFailed = false;
-  await runInBatches(maintenance.incident_updates, RPC_CONCURRENCY, async (update) => {
-    const { error: updateError } = await supabase.rpc("upsert_maintenance_update", {
-      p_service_slug: serviceSlug,
-      p_maintenance_id: maintenance.id,
-      p_id: update.id,
-      p_status: update.status,
-      p_body: update.body,
-      p_affected_components: update.affected_components,
-      p_created_at: update.created_at,
-      p_updated_at: update.updated_at,
-      p_display_at: update.display_at,
-      p_deliver_notifications: update.deliver_notifications,
-      p_custom_tweet: update.custom_tweet,
-      p_tweet_id: update.tweet_id,
-    });
-    if (updateError) updateFailed = true;
-  });
-  if (updateFailed) throw new Error(`One or more updates failed to upsert for maintenance "${maintenance.id}"`);
-}
-
-// Returns how many of this service's incidents failed to upsert — used to
-// decide whether this service's first poll is clean enough to mark seeded.
+// Returns how many of this service's incidents (rows + their updates)
+// failed to upsert — used to decide whether this service's first poll is
+// clean enough to mark seeded. One bulk RPC call per data type instead of
+// one per row: re-sending the full feed every 60s cycle (even when nothing
+// changed, thanks to the diff guard already inside upsert_incident/
+// upsert_incident_update) was thousands of round-trips per cycle, which is
+// what was actually exceeding the poll route's 60s budget — not
+// serialization, volume. See supabase/migrations/0007_bulk_upsert_functions.sql.
 async function pollOneServiceIncidents(service: { slug: string; host: string }): Promise<{ incidentCount: number; failed: number }> {
   const res = await fetch(`https://${service.host}/api/v2/incidents.json`, { signal: AbortSignal.timeout(8_000) });
   if (!res.ok) throw new Error(`Upstream returned ${res.status}`);
 
   const data = await res.json();
   const incidents = (data.incidents ?? []) as RawIncident[];
+  if (incidents.length === 0) return { incidentCount: 0, failed: 0 };
 
-  let failed = 0;
-  // Batched, not sequential — same reasoning as the update loops inside
-  // upsertIncident. Still isolated per incident: one malformed incident
-  // (bad timestamp, unexpected null) can't take its otherwise-healthy
-  // siblings down, it just fails within its own batch slot.
-  await runInBatches(incidents, RPC_CONCURRENCY, async (incident) => {
-    try {
-      await upsertIncident(service.slug, incident);
-    } catch {
-      failed++;
-    }
+  const supabase = getSupabaseClient();
+
+  const incidentRows = incidents.map((incident) => ({
+    id: incident.id,
+    name: incident.name,
+    status: incident.status,
+    impact: incident.impact,
+    created_at: incident.created_at,
+    updated_at: incident.updated_at,
+    monitoring_at: incident.monitoring_at,
+    resolved_at: incident.resolved_at,
+    shortlink: incident.shortlink,
+    components: incident.components,
+  }));
+  const { data: incidentFailed, error: incidentError } = await supabase.rpc("upsert_incidents_bulk", {
+    p_service_slug: service.slug,
+    p_incidents: incidentRows,
   });
+  if (incidentError) throw incidentError;
 
-  return { incidentCount: incidents.length, failed };
+  // incident_id set explicitly from the parent, not trusted off the
+  // update's own (redundant) incident_id field — matches the original
+  // per-row loop's behavior.
+  const updateRows = incidents.flatMap((incident) =>
+    incident.incident_updates.map((update) => ({ ...update, incident_id: incident.id })),
+  );
+  let updateFailed = 0;
+  if (updateRows.length > 0) {
+    const { data: failedCount, error: updateError } = await supabase.rpc("upsert_incident_updates_bulk", {
+      p_service_slug: service.slug,
+      p_updates: updateRows,
+    });
+    if (updateError) throw updateError;
+    updateFailed = failedCount ?? 0;
+  }
+
+  return { incidentCount: incidents.length, failed: (incidentFailed ?? 0) + updateFailed };
 }
 
 // Sibling to pollOneServiceIncidents, not a branch inside it — kept as a
@@ -190,17 +127,44 @@ async function pollOneServiceMaintenances(service: { slug: string; host: string 
 
   const data = await res.json();
   const maintenances = (data.scheduled_maintenances ?? []) as RawMaintenance[];
+  if (maintenances.length === 0) return { maintenanceCount: 0, failed: 0 };
 
-  let failed = 0;
-  await runInBatches(maintenances, RPC_CONCURRENCY, async (maintenance) => {
-    try {
-      await upsertMaintenance(service.slug, maintenance);
-    } catch {
-      failed++;
-    }
+  const supabase = getSupabaseClient();
+
+  const maintenanceRows = maintenances.map((maintenance) => ({
+    id: maintenance.id,
+    name: maintenance.name,
+    status: maintenance.status,
+    impact: maintenance.impact,
+    created_at: maintenance.created_at,
+    updated_at: maintenance.updated_at,
+    monitoring_at: maintenance.monitoring_at,
+    resolved_at: maintenance.resolved_at,
+    scheduled_for: maintenance.scheduled_for,
+    scheduled_until: maintenance.scheduled_until,
+    shortlink: maintenance.shortlink,
+    components: maintenance.components,
+  }));
+  const { data: maintenanceFailed, error: maintenanceError } = await supabase.rpc("upsert_maintenances_bulk", {
+    p_service_slug: service.slug,
+    p_maintenances: maintenanceRows,
   });
+  if (maintenanceError) throw maintenanceError;
 
-  return { maintenanceCount: maintenances.length, failed };
+  const updateRows = maintenances.flatMap((maintenance) =>
+    maintenance.incident_updates.map((update) => ({ ...update, maintenance_id: maintenance.id })),
+  );
+  let updateFailed = 0;
+  if (updateRows.length > 0) {
+    const { data: failedCount, error: updateError } = await supabase.rpc("upsert_maintenance_updates_bulk", {
+      p_service_slug: service.slug,
+      p_updates: updateRows,
+    });
+    if (updateError) throw updateError;
+    updateFailed = failedCount ?? 0;
+  }
+
+  return { maintenanceCount: maintenances.length, failed: (maintenanceFailed ?? 0) + updateFailed };
 }
 
 async function backfillIfFirstPoll(serviceSlug: string, failed: number) {
@@ -276,7 +240,10 @@ export async function pollAllIncidents(
 
     if (incidentResult.status === "fulfilled") {
       const { incidentCount, failed } = incidentResult.value;
-      incidentsUpserted += incidentCount - failed;
+      // failed now also counts update-row failures, not just incident-row
+      // ones (see pollOneServiceIncidents) — clamp so a service with more
+      // failed updates than incidents can't push this display stat negative.
+      incidentsUpserted += Math.max(0, incidentCount - failed);
       failedTotal += failed;
       await backfillIfFirstPoll(service.slug, failed);
     } else {
@@ -289,7 +256,7 @@ export async function pollAllIncidents(
 
     if (maintenanceResult.status === "fulfilled") {
       const { maintenanceCount, failed } = maintenanceResult.value;
-      maintenancesUpserted += maintenanceCount - failed;
+      maintenancesUpserted += Math.max(0, maintenanceCount - failed);
       maintenancesFailedTotal += failed;
     } else {
       maintenancesFailedTotal++;

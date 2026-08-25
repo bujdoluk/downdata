@@ -156,6 +156,8 @@
     "searchPlaceholder": "Borden zoeken…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Bord toevoegen",
+    "yourFirstBoard": "Je eerste bord",
+    "newBoardName": "Geef je nieuwe bord een naam",
     "createSubmit": "Aanmaken",
     "clearName": "Wissen",
     "empty": "Nog geen borden. Maak er een om diensten te groeperen.",
@@ -174,7 +176,20 @@
     "rename": "Hernoemen",
     "onBoard": "Op dit bord",
     "pickCategory": "Selecteer een categorie om diensten te doorbladeren.",
-    "noServicesOnBoard": "Nog geen diensten op dit bord."
+    "noServicesOnBoard": "Nog geen diensten op dit bord.",
+    "activity": {
+      "incidentsTitle": "Actieve incidenten",
+      "maintenanceTitle": "Actief onderhoud",
+      "viewAll": "Alles bekijken",
+      "noIncidents": "Geen actieve incidenten",
+      "noMaintenance": "Geen actief onderhoud",
+      "allClear": "Alles in orde — geen actieve incidenten of onderhoud"
+    },
+    "viewHistory": "Geschiedenis van dit bord bekijken",
+    "lastIncident": {
+      "title": "Recente incidenten",
+      "none": "Geen incidentgeschiedenis"
+    }
   },
   "addService": {
     "back": "← Terug",

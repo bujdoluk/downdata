@@ -115,13 +115,13 @@ export async function getAllStoredMaintenanceSummaries(trackedSlugs: string[]): 
 // One maintenance with its full update timeline — mirrors
 // getStoredIncident.ts's getStoredIncidentWithUpdates, backing the
 // per-item detail route (app/api/maintenance/[slug]/[id]).
-export async function getStoredMaintenanceWithUpdates(serviceSlug: string, maintenanceId: string): Promise<StoredMaintenance | null> {
+export async function getStoredMaintenanceWithUpdates(Slug: string, maintenanceId: string): Promise<StoredMaintenance | null> {
   const supabase = getSupabaseClient();
 
   const { data: maintenance } = await supabase
     .from("maintenances")
     .select("*")
-    .eq("service_slug", serviceSlug)
+    .eq("service_slug", Slug)
     .eq("id", maintenanceId)
     .maybeSingle();
   if (!maintenance) return null;
@@ -129,7 +129,7 @@ export async function getStoredMaintenanceWithUpdates(serviceSlug: string, maint
   const { data: updates } = await supabase
     .from("maintenance_updates")
     .select("*")
-    .eq("service_slug", serviceSlug)
+    .eq("service_slug", Slug)
     .eq("maintenance_id", maintenanceId)
     .order("created_at", { ascending: false });
 

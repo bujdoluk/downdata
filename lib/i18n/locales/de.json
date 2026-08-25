@@ -156,6 +156,8 @@
     "searchPlaceholder": "Boards suchen…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Board hinzufügen",
+    "yourFirstBoard": "Ihr erstes Board",
+    "newBoardName": "Benennen Sie Ihr neues Board",
     "createSubmit": "Erstellen",
     "clearName": "Leeren",
     "empty": "Noch keine Boards. Erstelle eines, um Dienste zu gruppieren.",
@@ -174,7 +176,20 @@
     "rename": "Umbenennen",
     "onBoard": "Auf diesem Board",
     "pickCategory": "Wähle eine Kategorie, um Dienste zu durchsuchen.",
-    "noServicesOnBoard": "Noch keine Dienste auf diesem Board."
+    "noServicesOnBoard": "Noch keine Dienste auf diesem Board.",
+    "activity": {
+      "incidentsTitle": "Aktive Vorfälle",
+      "maintenanceTitle": "Aktive Wartungen",
+      "viewAll": "Alle anzeigen",
+      "noIncidents": "Keine aktiven Vorfälle",
+      "noMaintenance": "Keine aktive Wartung",
+      "allClear": "Alles in Ordnung — keine aktiven Vorfälle oder Wartungsarbeiten"
+    },
+    "viewHistory": "Verlauf dieses Boards anzeigen",
+    "lastIncident": {
+      "title": "Letzte Vorfälle",
+      "none": "Kein Vorfallsverlauf"
+    }
   },
   "addService": {
     "back": "← Zurück",

@@ -30,7 +30,5 @@ export const languages: LanguageOption[] = languageDefinitions.map(
 export const defaultLanguageCode = "en";
 
 export function getLanguage(code: string): LanguageOption {
-  // `languages` is a fixed, non-empty literal array, so the fallback is
-  // always safe.
   return languages.find((language) => language.code === code) ?? languages[0]!;
 }

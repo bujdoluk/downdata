@@ -1,10 +1,10 @@
 import { Temporal } from "temporal-polyfill";
-import type { StatuspageIncident } from "@/types/service";
+import type { Incident } from "@/types/service";
 
 export type CalendarDay = {
   date: string;
   impact: string | null;
-  incidents: StatuspageIncident[];
+  incidents: Incident[];
   week: number; // 0-based column index across the whole grid
   dow: number; // 0 (Sunday) .. 6 (Saturday) — row index
 };
@@ -22,7 +22,7 @@ export type IncidentCalendarData = {
 
 const IMPACT_RANK = ["critical", "major", "minor", "none"];
 
-function worstImpact(incidents: StatuspageIncident[]): string | null {
+function worstImpact(incidents: Incident[]): string | null {
   if (incidents.length === 0) return null;
   let best = incidents[0]!.impact;
   let bestRank = IMPACT_RANK.indexOf(best);
@@ -38,7 +38,7 @@ function worstImpact(incidents: StatuspageIncident[]): string | null {
   return best;
 }
 
-export function buildIncidentCalendar(incidents: StatuspageIncident[], year: number, locale: string): IncidentCalendarData {
+export function buildIncidentCalendar(incidents: Incident[], year: number, locale: string): IncidentCalendarData {
   const timeZone = Temporal.Now.timeZoneId();
   const today = Temporal.Now.zonedDateTimeISO(timeZone).toPlainDate();
   const yearStart = Temporal.PlainDate.from({ year, month: 1, day: 1 });

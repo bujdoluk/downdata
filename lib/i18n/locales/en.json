@@ -156,6 +156,8 @@
     "searchPlaceholder": "Search boards…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Add board",
+    "yourFirstBoard": "Your first board",
+    "newBoardName": "Name your new board",
     "createSubmit": "Create",
     "clearName": "Clear",
     "empty": "No boards yet. Create one to start grouping services.",
@@ -174,7 +176,20 @@
     "rename": "Rename",
     "onBoard": "On this board",
     "pickCategory": "Select a category to browse services.",
-    "noServicesOnBoard": "No services on this board yet."
+    "noServicesOnBoard": "No services on this board yet.",
+    "activity": {
+      "incidentsTitle": "Active Incidents",
+      "maintenanceTitle": "Active Maintenance",
+      "viewAll": "View all",
+      "noIncidents": "No active incidents",
+      "noMaintenance": "No active maintenance",
+      "allClear": "All clear — no active incidents or maintenance"
+    },
+    "viewHistory": "View history for this board",
+    "lastIncident": {
+      "title": "Recent Incidents",
+      "none": "No incident history"
+    }
   },
   "addService": {
     "back": "← Back",

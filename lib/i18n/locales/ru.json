@@ -162,6 +162,8 @@
     "searchPlaceholder": "Поиск досок…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Добавить доску",
+    "yourFirstBoard": "Ваша первая доска",
+    "newBoardName": "Название новой доски",
     "createSubmit": "Создать",
     "clearName": "Очистить",
     "empty": "Пока нет досок. Создайте одну, чтобы начать группировать сервисы.",
@@ -186,7 +188,20 @@
     "rename": "Переименовать",
     "onBoard": "На этой доске",
     "pickCategory": "Выберите категорию, чтобы просмотреть сервисы.",
-    "noServicesOnBoard": "На этой доске пока нет сервисов."
+    "noServicesOnBoard": "На этой доске пока нет сервисов.",
+    "activity": {
+      "incidentsTitle": "Активные инциденты",
+      "maintenanceTitle": "Активные обслуживания",
+      "viewAll": "Смотреть все",
+      "noIncidents": "Нет активных инцидентов",
+      "noMaintenance": "Нет активного обслуживания",
+      "allClear": "Всё в порядке — нет активных инцидентов или обслуживания"
+    },
+    "viewHistory": "Показать историю этой доски",
+    "lastIncident": {
+      "title": "Недавние инциденты",
+      "none": "Нет истории инцидентов"
+    }
   },
   "addService": {
     "back": "← Назад",

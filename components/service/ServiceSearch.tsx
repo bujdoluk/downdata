@@ -4,11 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { ServiceDefinition } from "@/types/service";
+import type { Service } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 
-export default function ServiceSearch({ services }: { services: ServiceDefinition[] }) {
+export default function ServiceSearch({ services }: { services: Service[] }) {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const trimmed = query.trim();

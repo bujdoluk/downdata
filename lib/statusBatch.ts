@@ -1,13 +1,13 @@
 import { Temporal } from "temporal-polyfill";
 import { getSupabaseClient } from "@/lib/supabase";
-import type { ServiceSlug, ServiceStatusBatchResponse } from "@/types/service";
+import type { Slug, ServiceStatusBatchResponse } from "@/types/service";
 
 // One batched DB read instead of N live incidents.json fetches — the
 // catalog poller already stores every one of these hosts' incidents, so
 // there's no need to hit each host's API a second time just to count
 // recent ones. status.json (the current indicator) still has no DB table
 // backing it and stays a live per-host fetch below.
-async function fetchOutagesLast24h(slugs: ServiceSlug[]): Promise<Record<string, number>> {
+async function fetchOutagesLast24h(slugs: Slug[]): Promise<Record<string, number>> {
   if (slugs.length === 0) return {};
   const supabase = getSupabaseClient();
   const cutoff = Temporal.Now.instant().subtract({ hours: 24 }).toString();
@@ -19,7 +19,7 @@ async function fetchOutagesLast24h(slugs: ServiceSlug[]): Promise<Record<string,
 }
 
 export async function fetchStatusBatch(
-  services: { slug: ServiceSlug; host: string }[],
+  services: { slug: Slug; host: string }[],
 ): Promise<ServiceStatusBatchResponse> {
   const outagesBySlug = await fetchOutagesLast24h(services.map((service) => service.slug));
 

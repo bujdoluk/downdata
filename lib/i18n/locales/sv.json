@@ -156,6 +156,8 @@
     "searchPlaceholder": "Sök tavlor…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Lägg till tavla",
+    "yourFirstBoard": "Din första tavla",
+    "newBoardName": "Namnge din nya tavla",
     "createSubmit": "Skapa",
     "clearName": "Rensa",
     "empty": "Inga tavlor ännu. Skapa en för att börja gruppera tjänster.",
@@ -174,7 +176,20 @@
     "rename": "Byt namn",
     "onBoard": "På denna tavla",
     "pickCategory": "Välj en kategori för att bläddra bland tjänster.",
-    "noServicesOnBoard": "Inga tjänster på denna tavla än."
+    "noServicesOnBoard": "Inga tjänster på denna tavla än.",
+    "activity": {
+      "incidentsTitle": "Aktiva incidenter",
+      "maintenanceTitle": "Aktivt underhåll",
+      "viewAll": "Visa alla",
+      "noIncidents": "Inga aktiva incidenter",
+      "noMaintenance": "Inget aktivt underhåll",
+      "allClear": "Allt är okej — inga aktiva incidenter eller underhåll"
+    },
+    "viewHistory": "Visa historik för den här tavlan",
+    "lastIncident": {
+      "title": "Senaste incidenter",
+      "none": "Ingen incidenthistorik"
+    }
   },
   "addService": {
     "back": "← Tillbaka",

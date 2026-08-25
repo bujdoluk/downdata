@@ -156,6 +156,8 @@
     "searchPlaceholder": "Pesquisar painéis…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Adicionar painel",
+    "yourFirstBoard": "O seu primeiro painel",
+    "newBoardName": "Dê um nome ao novo painel",
     "createSubmit": "Criar",
     "clearName": "Limpar",
     "empty": "Ainda não há painéis. Crie um para começar a agrupar serviços.",
@@ -174,7 +176,20 @@
     "rename": "Renomear",
     "onBoard": "Neste painel",
     "pickCategory": "Selecione uma categoria para explorar os serviços.",
-    "noServicesOnBoard": "Ainda não há serviços neste painel."
+    "noServicesOnBoard": "Ainda não há serviços neste painel.",
+    "activity": {
+      "incidentsTitle": "Incidentes ativos",
+      "maintenanceTitle": "Manutenções ativas",
+      "viewAll": "Ver tudo",
+      "noIncidents": "Nenhum incidente ativo",
+      "noMaintenance": "Nenhuma manutenção ativa",
+      "allClear": "Tudo certo — nenhum incidente ou manutenção ativos"
+    },
+    "viewHistory": "Ver histórico deste painel",
+    "lastIncident": {
+      "title": "Incidentes recentes",
+      "none": "Sem histórico de incidentes"
+    }
   },
   "addService": {
     "back": "← Voltar",

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { CatalogEntry } from "@/types/service";
+import type { Catalog } from "@/types/service";
 import CatalogBrowser from "@/components/service/CatalogBrowser";
 import CustomServiceForm from "@/components/service/CustomServiceForm";
 import { notifyServicesChanged } from "@/lib/servicesChanged";
@@ -16,7 +16,7 @@ export default function ServiceCatalogPicker({
   catalog,
   trackedHosts,
 }: {
-  catalog: CatalogEntry[];
+  catalog: Catalog[];
   trackedHosts: string[];
 }) {
   const { t } = useTranslation();
@@ -27,7 +27,7 @@ export default function ServiceCatalogPicker({
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
-  async function handleAdd(entry: CatalogEntry) {
+  async function handleAdd(entry: Catalog) {
     setPendingHost(entry.host);
     setError(null);
 

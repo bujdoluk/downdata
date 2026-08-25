@@ -6,8 +6,6 @@ const SPINNER_SIZE_CLASSES: Record<"xs" | "sm" | "md" | "lg" | "xl", string> = {
   xl: "loading-xl",
 };
 
-// Decorative next to a loading message already announced by its own text —
-// aria-hidden so screen readers don't double up on "loading" state.
 export default function Spinner({
   size = "sm",
   className = "",

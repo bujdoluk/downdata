@@ -1,6 +1,15 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+// Everything else requires a session — dashboard pages and every /api/*
+// route read/write per-account data now that boards are RLS-scoped.
+const PUBLIC_EXACT = new Set(["/landing-page", "/login", "/reset-password"]);
+const PUBLIC_PREFIXES = ["/auth/", "/api/cron/"];
+
+function isPublicPath(pathname: string): boolean {
+  return PUBLIC_EXACT.has(pathname) || PUBLIC_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+}
+
 export async function proxy(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
@@ -23,7 +32,17 @@ export async function proxy(request: NextRequest) {
     },
   });
 
-  await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getClaims();
+  const pathname = request.nextUrl.pathname;
+
+  if (!data?.claims && !isPublicPath(pathname)) {
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ error: "Authentication required." }, { status: 401 });
+    }
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("next", pathname);
+    return NextResponse.redirect(loginUrl);
+  }
 
   return supabaseResponse;
 }

@@ -5,7 +5,7 @@ import "@/lib/i18n/i18n";
 import { ALL_IMPACTS, IMPACT_CHECKBOX_COLOR, INDICATOR_STYLES } from "@/components/service/statusStyles";
 
 // Identical impact-checkbox row was copy-pasted between Incidents and
-// History page content — both filter the same StatuspageIncident.impact
+// History page content — both filter the same Incident.impact
 // values through the same ALL_IMPACTS/IMPACT_CHECKBOX_COLOR maps.
 export default function ImpactFilterCheckboxes({
   selected,

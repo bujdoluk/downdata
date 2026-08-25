@@ -156,6 +156,8 @@
     "searchPlaceholder": "Buscar tableros…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Añadir tablero",
+    "yourFirstBoard": "Tu primer tablero",
+    "newBoardName": "Asigna un nombre a tu nuevo tablero",
     "createSubmit": "Crear",
     "clearName": "Borrar",
     "empty": "Aún no hay tableros. Crea uno para empezar a agrupar servicios.",
@@ -174,7 +176,20 @@
     "rename": "Renombrar",
     "onBoard": "En este tablero",
     "pickCategory": "Selecciona una categoría para explorar los servicios.",
-    "noServicesOnBoard": "Aún no hay servicios en este tablero."
+    "noServicesOnBoard": "Aún no hay servicios en este tablero.",
+    "activity": {
+      "incidentsTitle": "Incidentes activos",
+      "maintenanceTitle": "Mantenimientos activos",
+      "viewAll": "Ver todo",
+      "noIncidents": "Sin incidentes activos",
+      "noMaintenance": "Sin mantenimiento activo",
+      "allClear": "Todo correcto — sin incidentes ni mantenimiento activos"
+    },
+    "viewHistory": "Ver historial de este tablero",
+    "lastIncident": {
+      "title": "Incidentes recientes",
+      "none": "Sin historial de incidentes"
+    }
   },
   "addService": {
     "back": "← Atrás",

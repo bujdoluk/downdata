@@ -159,6 +159,8 @@
     "searchPlaceholder": "Hledat nástěnky…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Přidat nástěnku",
+    "yourFirstBoard": "Vaše první nástěnka",
+    "newBoardName": "Pojmenujte novou nástěnku",
     "createSubmit": "Vytvořit",
     "clearName": "Vymazat",
     "empty": "Zatím žádné nástěnky. Vytvořte jednu a začněte seskupovat služby.",
@@ -180,7 +182,20 @@
     "rename": "Přejmenovat",
     "onBoard": "Na této nástěnce",
     "pickCategory": "Vyberte kategorii pro procházení služeb.",
-    "noServicesOnBoard": "Na této nástěnce zatím nejsou žádné služby."
+    "noServicesOnBoard": "Na této nástěnce zatím nejsou žádné služby.",
+    "activity": {
+      "incidentsTitle": "Aktivní incidenty",
+      "maintenanceTitle": "Aktivní údržby",
+      "viewAll": "Zobrazit vše",
+      "noIncidents": "Žádné aktivní incidenty",
+      "noMaintenance": "Žádná aktivní údržba",
+      "allClear": "Vše v pořádku — žádné aktivní incidenty ani údržba"
+    },
+    "viewHistory": "Zobrazit historii této nástěnky",
+    "lastIncident": {
+      "title": "Nedávné incidenty",
+      "none": "Žádná historie incidentů"
+    }
   },
   "addService": {
     "back": "← Zpět",

@@ -156,6 +156,8 @@
     "searchPlaceholder": "Cerca bacheche…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Aggiungi bacheca",
+    "yourFirstBoard": "La tua prima bacheca",
+    "newBoardName": "Assegna un nome alla nuova bacheca",
     "createSubmit": "Crea",
     "clearName": "Cancella",
     "empty": "Nessuna bacheca ancora. Creane una per iniziare a raggruppare i servizi.",
@@ -174,7 +176,20 @@
     "rename": "Rinomina",
     "onBoard": "In questa bacheca",
     "pickCategory": "Seleziona una categoria per sfogliare i servizi.",
-    "noServicesOnBoard": "Nessun servizio in questa bacheca."
+    "noServicesOnBoard": "Nessun servizio in questa bacheca.",
+    "activity": {
+      "incidentsTitle": "Incidenti attivi",
+      "maintenanceTitle": "Manutenzioni attive",
+      "viewAll": "Vedi tutto",
+      "noIncidents": "Nessun incidente attivo",
+      "noMaintenance": "Nessuna manutenzione attiva",
+      "allClear": "Tutto a posto — nessun incidente o manutenzione attivi"
+    },
+    "viewHistory": "Visualizza la cronologia di questa bacheca",
+    "lastIncident": {
+      "title": "Incidenti recenti",
+      "none": "Nessuna cronologia incidenti"
+    }
   },
   "addService": {
     "back": "← Indietro",

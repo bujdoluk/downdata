@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import type { ServiceDefinition } from "@/types/service";
+import type { Service } from "@/types/service";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 
 // A <select>'s "pick exactly one from a list" can't come from a bare text
@@ -17,7 +17,7 @@ export default function ServiceSearchPicker({
   onChange,
   placeholder,
 }: {
-  services: ServiceDefinition[];
+  services: Service[];
   value: string;
   onChange: (slug: string) => void;
   placeholder: string;
@@ -32,7 +32,7 @@ export default function ServiceSearchPicker({
     ? services.filter((service) => service.name.toLowerCase().includes(trimmedQuery))
     : services;
 
-  function handleSelect(service: ServiceDefinition) {
+  function handleSelect(service: Service) {
     onChange(service.slug);
     setQuery("");
     if (detailsRef.current) detailsRef.current.open = false;

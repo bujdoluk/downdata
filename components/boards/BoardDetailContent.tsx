@@ -6,11 +6,17 @@ import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
-import type { CatalogEntry } from "@/types/service";
+import type { Catalog, TrackedIncidentSummary, TrackedMaintenanceSummary } from "@/types/service";
+import type { IncidentCountByService } from "@/lib/getStoredIncident";
 import { useCatalogStatus } from "@/lib/useCatalogStatus";
 import { useBoardRename } from "@/lib/useBoardRename";
+import { usePolledFetch } from "@/lib/usePolledFetch";
+import { isActiveIncident } from "@/lib/isActiveIncident";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 import StatusSummary from "@/components/service/StatusSummary";
+import BoardActivityPanel from "@/components/boards/BoardActivityPanel";
+import BoardLastIncidentTable from "@/components/boards/BoardLastIncidentTable";
+import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
 
 export default function BoardDetailContent({
@@ -18,7 +24,7 @@ export default function BoardDetailContent({
   catalog,
 }: {
   board: Board;
-  catalog: CatalogEntry[];
+  catalog: Catalog[];
 }) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -28,7 +34,11 @@ export default function BoardDetailContent({
   const [deleting, setDeleting] = useState(false);
   const confirmRef = useRef<HTMLDialogElement>(null);
 
-  const onBoardEntries = catalog.filter((entry) => board.serviceSlugs.includes(entry.slug));
+  const { data: incidentsData } = usePolledFetch<{ incidents: TrackedIncidentSummary[] }>("/api/incidents");
+  const { data: maintenanceData } = usePolledFetch<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance");
+  const { data: countsData } = usePolledFetch<{ counts: IncidentCountByService[] }>("/api/history/counts");
+
+  const onBoardEntries = catalog.filter((entry) => board.Slugs.includes(entry.slug));
 
   const overviewCounts = { critical: 0, major: 0, minor: 0, none: 0 };
   if (data) {
@@ -42,7 +52,20 @@ export default function BoardDetailContent({
     }
   }
 
-  async function handleRemove(entry: CatalogEntry) {
+  const boardSlugs = new Set(board.Slugs);
+  const boardIncidents = (incidentsData?.incidents ?? []).filter((incident) => boardSlugs.has(incident.service.slug));
+  const boardMaintenances = (maintenanceData?.maintenances ?? []).filter((maintenance) => boardSlugs.has(maintenance.service.slug));
+  const activeIncidents = boardIncidents.filter(isActiveIncident);
+
+  const activeSlugs = new Set(activeIncidents.map((incident) => incident.service.slug));
+  const calmEntries = onBoardEntries
+    .filter((entry) => !activeSlugs.has(entry.slug))
+    .map((entry) => ({
+      service: entry,
+      lastIncident: boardIncidents.find((incident) => incident.service.slug === entry.slug) ?? null,
+    }));
+
+  async function handleRemove(entry: Catalog) {
     setRemovingSlug(entry.slug);
     try {
       const res = await fetch(`/api/boards/${board.id}/services/${entry.slug}`, { method: "DELETE" });
@@ -141,7 +164,29 @@ export default function BoardDetailContent({
         </form>
       </dialog>
 
-      {onBoardEntries.length > 0 && <StatusSummary counts={overviewCounts} isLoading={!data && !fetchFailed} />}
+      {onBoardEntries.length > 0 && (
+        <>
+          <StatusSummary counts={overviewCounts} isLoading={!data && !fetchFailed} />
+          <div className="mt-2 flex justify-end">
+            <Link
+              href={`/history?board=${board.id}`}
+              className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium"
+            >
+              {t("boards.viewHistory")}
+            </Link>
+          </div>
+          <BoardActivityPanel boardId={board.id} activeIncidents={activeIncidents} maintenances={boardMaintenances} />
+          <div className="mt-6">
+            <IncidentCountsChart
+              services={onBoardEntries}
+              counts={countsData?.counts ?? []}
+              selectedSlug=""
+              onSelectService={(slug) => router.push(`/history?board=${board.id}&service=${slug}`)}
+            />
+          </div>
+          <BoardLastIncidentTable entries={calmEntries} />
+        </>
+      )}
 
       <div className="mt-6">
         <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("boards.onBoard")}</h2>

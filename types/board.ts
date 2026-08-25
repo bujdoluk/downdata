@@ -1,5 +1,5 @@
 export type Board = {
   id: string;
   name: string;
-  serviceSlugs: string[];
+  Slugs: string[];
 };

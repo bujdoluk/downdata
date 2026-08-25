@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabaseClient } from "@/lib/supabase";
-import type { StatuspageIncident, StatuspageIncidentSummary } from "@/types/service";
+import type { Incident, StatuspageIncidentSummary } from "@/types/service";
 
 export type StoredIncidentUpdate = {
   service_slug: string;
@@ -46,13 +46,13 @@ const INCIDENT_UPDATE_COLUMNS = "id, incident_id, service_slug, status, body, cr
 // Deliberately "*", not the trimmed column lists above — this is a
 // general-purpose accessor, not paired with one known shape-mapper, and
 // it's not polled, so there's no meaningful egress payoff to narrowing it.
-export async function getStoredIncidentWithUpdates(serviceSlug: string, incidentId: string): Promise<StoredIncident | null> {
+export async function getStoredIncidentWithUpdates(Slug: string, incidentId: string): Promise<StoredIncident | null> {
   const supabase = getSupabaseClient();
 
   const { data: incident } = await supabase
     .from("incidents")
     .select("*")
-    .eq("service_slug", serviceSlug)
+    .eq("service_slug", Slug)
     .eq("id", incidentId)
     .maybeSingle();
   if (!incident) return null;
@@ -60,7 +60,7 @@ export async function getStoredIncidentWithUpdates(serviceSlug: string, incident
   const { data: updates } = await supabase
     .from("incident_updates")
     .select("*")
-    .eq("service_slug", serviceSlug)
+    .eq("service_slug", Slug)
     .eq("incident_id", incidentId)
     .order("created_at", { ascending: false });
 
@@ -99,7 +99,7 @@ const PAGE_SIZE = 1000;
 async function fetchUpdatesForIncidentIds(
   supabase: SupabaseClient,
   incidentIds: string[],
-  serviceSlug?: string,
+  Slug?: string,
 ): Promise<StoredIncidentUpdate[]> {
   const results: StoredIncidentUpdate[] = [];
   for (let i = 0; i < incidentIds.length; i += CHUNK_SIZE) {
@@ -107,7 +107,7 @@ async function fetchUpdatesForIncidentIds(
     let from = 0;
     for (;;) {
       let query = supabase.from("incident_updates").select(INCIDENT_UPDATE_COLUMNS).in("incident_id", chunk);
-      if (serviceSlug) query = query.eq("service_slug", serviceSlug);
+      if (Slug) query = query.eq("service_slug", Slug);
       const { data } = await query.range(from, from + PAGE_SIZE - 1);
       results.push(...((data as StoredIncidentUpdate[]) ?? []));
       if (!data || data.length < PAGE_SIZE) break;
@@ -147,13 +147,13 @@ export async function getAllStoredIncidentSummaries(trackedSlugs: string[]): Pro
 // live status page showing a service's entire incident history, re-fetched
 // every 60s, is neither useful UX nor worth the egress; recent incidents
 // only, same idea as a real status page pointing elsewhere for history).
-export async function getStoredIncidentsForService(serviceSlug: string, options?: { limit?: number }): Promise<StoredIncident[]> {
+export async function getStoredIncidentsForService(Slug: string, options?: { limit?: number }): Promise<StoredIncident[]> {
   const supabase = getSupabaseClient();
 
   let query = supabase
     .from("incidents")
     .select(INCIDENT_SUMMARY_COLUMNS)
-    .eq("service_slug", serviceSlug)
+    .eq("service_slug", Slug)
     .order("updated_at", { ascending: false });
   if (options?.limit) query = query.limit(options.limit);
   const { data: incidents } = await query;
@@ -162,7 +162,7 @@ export async function getStoredIncidentsForService(serviceSlug: string, options?
   const updates = await fetchUpdatesForIncidentIds(
     supabase,
     incidents.map((incident) => incident.id as string),
-    serviceSlug,
+    Slug,
   );
   const grouped = groupUpdatesByIncident(updates);
 
@@ -199,11 +199,11 @@ export function toIncidentSummaryApiShape(incident: Omit<StoredIncident, "incide
 }
 
 // Maps the DB's stored shape (extra fields: service_slug, monitoring_at,
-// components) down to the StatuspageIncident shape the UI already expects.
+// components) down to the Incident shape the UI already expects.
 // shortlink is nullable in the DB but not in that type — real Statuspage
 // incidents always have one, so "" only ever shows up if that assumption
 // is ever wrong.
-export function toIncidentApiShape(incident: StoredIncident): StatuspageIncident {
+export function toIncidentApiShape(incident: StoredIncident): Incident {
   return {
     id: incident.id,
     name: incident.name,

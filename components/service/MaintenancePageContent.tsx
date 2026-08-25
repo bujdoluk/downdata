@@ -80,15 +80,15 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   const selectedId = searchParams.get("id");
   const page = Number(searchParams.get("page") ?? "1");
   const selectedMaintenance = maintenances.find((maintenance) => maintenance.id === selectedId);
-  const selectedServiceSlug = selectedMaintenance?.service.slug;
+  const selectedSlug = selectedMaintenance?.service.slug;
 
   // Full timeline for whichever maintenance is selected, fetched
   // separately — see IncidentsPageContent's identical detail-fetch effect
   // for the full reasoning.
   useEffect(() => {
-    if (!selectedServiceSlug || !selectedId) return;
+    if (!selectedSlug || !selectedId) return;
     let cancelled = false;
-    fetch(`/api/maintenance/${selectedServiceSlug}/${selectedId}`)
+    fetch(`/api/maintenance/${selectedSlug}/${selectedId}`)
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error("bad response"))))
       .then((maintenance) => {
         if (!cancelled) setResult({ id: selectedId, maintenance });
@@ -99,7 +99,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
     return () => {
       cancelled = true;
     };
-  }, [selectedServiceSlug, selectedId]);
+  }, [selectedSlug, selectedId]);
 
   const currentResult = result?.id === selectedId ? result : null;
   const detail = currentResult && "maintenance" in currentResult ? currentResult.maintenance : null;
@@ -107,7 +107,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
 
   const trimmedServiceQuery = pendingFilters.q.trim().toLowerCase();
   const selectedBoard = boards.find((board) => board.id === pendingFilters.board);
-  const boardSlugs = useMemo(() => (selectedBoard ? new Set(selectedBoard.serviceSlugs) : null), [selectedBoard]);
+  const boardSlugs = useMemo(() => (selectedBoard ? new Set(selectedBoard.Slugs) : null), [selectedBoard]);
   const filteredMaintenances = useMemo(
     () =>
       maintenances

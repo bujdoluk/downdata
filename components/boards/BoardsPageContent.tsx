@@ -34,7 +34,7 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
     .sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id)));
 
   function countsFor(board: Board) {
-    const slugs = new Set(board.serviceSlugs);
+    const slugs = new Set(board.Slugs);
     return {
       incidentCount: incidentsData?.incidents.filter((i) => isActiveIncident(i) && slugs.has(i.service.slug)).length ?? 0,
       maintenanceCount: maintenanceData?.maintenances.filter((m) => slugs.has(m.service.slug)).length ?? 0,

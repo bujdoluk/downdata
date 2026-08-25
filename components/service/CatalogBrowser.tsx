@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { CatalogCategory, CatalogEntry, ServiceStatusBatchResponse } from "@/types/service";
+import type { Category, Catalog, ServiceStatusBatchResponse } from "@/types/service";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 
-const CATEGORY_ORDER: CatalogCategory[] = [
+const CATEGORY_ORDER: Category[] = [
   "infrastructure",
   "devtools",
   "database",
@@ -33,13 +33,13 @@ export default function CatalogBrowser({
   onAdd,
   query,
 }: {
-  catalog: CatalogEntry[];
+  catalog: Catalog[];
   trackedHosts: string[];
   data?: ServiceStatusBatchResponse | null;
   fetchFailed?: boolean;
   pendingHost?: string | null;
   addedHosts?: Set<string>;
-  onAdd?: (entry: CatalogEntry) => void;
+  onAdd?: (entry: Catalog) => void;
   query: string;
 }) {
   const { t } = useTranslation();
@@ -54,7 +54,7 @@ export default function CatalogBrowser({
 
   // Defaults to the first non-empty category so column 2 shows something
   // useful the moment you land on the page, instead of an empty prompt.
-  const [selectedCategory, setSelectedCategory] = useState<CatalogCategory | null>(
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     () => categoryCounts[0]?.category ?? null,
   );
 

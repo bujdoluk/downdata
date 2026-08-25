@@ -1,8 +1,8 @@
-export type IntegrationCatalogEntry = {
+export type Integration = {
   slug: string;
   name: string;
 };
 
-export type IntegrationDefinition = IntegrationCatalogEntry & {
+export type IntegrationDefinition = Integration & {
   webhookUrl: string;
 };

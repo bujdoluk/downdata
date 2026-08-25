@@ -105,7 +105,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   const page = Number(searchParams.get("page") ?? "1");
   const onlyNew = searchParams.get("new") === "1";
   const selectedIncident = incidents.find((incident) => incident.id === selectedId);
-  const selectedServiceSlug = selectedIncident?.service.slug;
+  const selectedSlug = selectedIncident?.service.slug;
 
   // Full timeline for whichever incident is selected, fetched separately —
   // the list response deliberately omits incident_updates (see
@@ -115,9 +115,9 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   // id-tagged result compared against the current selection below (same
   // pattern HistoryPageContent uses) instead of resetting state up front.
   useEffect(() => {
-    if (!selectedServiceSlug || !selectedId) return;
+    if (!selectedSlug || !selectedId) return;
     let cancelled = false;
-    fetch(`/api/incidents/${selectedServiceSlug}/${selectedId}`)
+    fetch(`/api/incidents/${selectedSlug}/${selectedId}`)
       .then((res) => (res.ok ? res.json() : Promise.reject(new Error("bad response"))))
       .then((incident) => {
         if (!cancelled) setResult({ id: selectedId, incident });
@@ -128,7 +128,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
     return () => {
       cancelled = true;
     };
-  }, [selectedServiceSlug, selectedId]);
+  }, [selectedSlug, selectedId]);
 
   const currentResult = result?.id === selectedId ? result : null;
   const detail = currentResult && "incident" in currentResult ? currentResult.incident : null;
@@ -136,7 +136,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
 
   const trimmedServiceQuery = pendingFilters.q.trim().toLowerCase();
   const selectedBoard = boards.find((board) => board.id === pendingFilters.board);
-  const boardSlugs = useMemo(() => (selectedBoard ? new Set(selectedBoard.serviceSlugs) : null), [selectedBoard]);
+  const boardSlugs = useMemo(() => (selectedBoard ? new Set(selectedBoard.Slugs) : null), [selectedBoard]);
   const filteredIncidents = useMemo(
     () =>
       incidents

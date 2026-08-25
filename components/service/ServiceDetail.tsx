@@ -4,14 +4,14 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, formatTime } from "@/lib/formatTime";
-import type { ServiceSlug, ServiceSummaryResponse, StatuspageComponent } from "@/types/service";
+import type { Slug, ServiceSummaryResponse, StatuspageComponent } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import Spinner from "@/components/Spinner";
 
-export default function ServiceDetail({ slug }: { slug: ServiceSlug }) {
+export default function ServiceDetail({ slug }: { slug: Slug }) {
   const { t } = useTranslation();
   const { data, error } = usePolledFetch<ServiceSummaryResponse>(`/api/summary/${slug}`);
 

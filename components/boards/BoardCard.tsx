@@ -31,8 +31,8 @@ export default function BoardCard({
           <p className="text-base-content truncate text-base font-semibold">{board.name}</p>
           <div className="text-base-content/50 mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs">
             <span>
-              <span className="text-base-content text-sm font-bold">{board.serviceSlugs.length}</span>{" "}
-              {t("boards.serviceCountLabel", { count: board.serviceSlugs.length })}
+              <span className="text-base-content text-sm font-bold">{board.Slugs.length}</span>{" "}
+              {t("boards.serviceCountLabel", { count: board.Slugs.length })}
             </span>
             <span>
               <span className="text-base-content text-sm font-bold">{incidentCount}</span>{" "}

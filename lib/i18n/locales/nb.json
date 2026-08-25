@@ -156,6 +156,8 @@
     "searchPlaceholder": "Søk etter tavler…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Legg til tavle",
+    "yourFirstBoard": "Din første tavle",
+    "newBoardName": "Gi navn til den nye tavlen",
     "createSubmit": "Opprett",
     "clearName": "Tøm",
     "empty": "Ingen tavler ennå. Opprett en for å begynne å gruppere tjenester.",
@@ -174,7 +176,20 @@
     "rename": "Gi nytt navn",
     "onBoard": "På denne tavlen",
     "pickCategory": "Velg en kategori for å bla gjennom tjenester.",
-    "noServicesOnBoard": "Ingen tjenester på denne tavlen ennå."
+    "noServicesOnBoard": "Ingen tjenester på denne tavlen ennå.",
+    "activity": {
+      "incidentsTitle": "Aktive hendelser",
+      "maintenanceTitle": "Aktivt vedlikehold",
+      "viewAll": "Vis alle",
+      "noIncidents": "Ingen aktive hendelser",
+      "noMaintenance": "Ikke noe aktivt vedlikehold",
+      "allClear": "Alt er i orden — ingen aktive hendelser eller vedlikehold"
+    },
+    "viewHistory": "Vis historikk for denne tavlen",
+    "lastIncident": {
+      "title": "Nylige hendelser",
+      "none": "Ingen hendelseshistorikk"
+    }
   },
   "addService": {
     "back": "← Tilbake",

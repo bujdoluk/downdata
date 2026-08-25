@@ -4,7 +4,7 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { runInBatches } from "@/lib/runInBatches";
 
 // The full upstream Statuspage payload — deliberately not types/service.ts's
-// StatuspageIncident, which only ever modeled what the current UI reads and
+// Incident, which only ever modeled what the current UI reads and
 // is read structurally across service/, history/, incidents/ (see AGENTS.md).
 // This type is local to the poller on purpose.
 type RawComponent = { id: string; name: string; status: string };
@@ -167,15 +167,15 @@ async function pollOneServiceMaintenances(service: { slug: string; host: string 
   return { maintenanceCount: maintenances.length, failed: (maintenanceFailed ?? 0) + updateFailed };
 }
 
-async function backfillIfFirstPoll(serviceSlug: string, failed: number) {
+async function backfillIfFirstPoll(Slug: string, failed: number) {
   const supabase = getSupabaseClient();
-  const { data: seen } = await supabase.from("polled_services").select("service_slug").eq("service_slug", serviceSlug).maybeSingle();
+  const { data: seen } = await supabase.from("polled_services").select("service_slug").eq("service_slug", Slug).maybeSingle();
   if (seen) return;
 
   // First time this service has ever been polled: mark everything it just
   // produced as already-delivered to every currently connected integration,
   // so this initial backfill of pre-existing history never gets notified.
-  const { data: events } = await supabase.from("incident_events").select("id").eq("service_slug", serviceSlug);
+  const { data: events } = await supabase.from("incident_events").select("id").eq("service_slug", Slug);
   const integrations = await getAllIntegrations();
   const rows = (events ?? []).flatMap((event) => integrations.map((integration) => ({ event_id: event.id, integration_slug: integration.slug })));
   if (rows.length > 0) {
@@ -187,7 +187,7 @@ async function backfillIfFirstPoll(serviceSlug: string, failed: number) {
       // land — a silent failure here followed by a "seeded" marker would
       // let this service's whole backlog flood every integration on the
       // next notify cycle instead. Retry backfill next poll cycle instead.
-      console.error(`backfillIfFirstPoll: failed to backfill deliveries for "${serviceSlug}":`, deliveryError);
+      console.error(`backfillIfFirstPoll: failed to backfill deliveries for "${Slug}":`, deliveryError);
       return;
     }
   }
@@ -197,7 +197,7 @@ async function backfillIfFirstPoll(serviceSlug: string, failed: number) {
   // not a new event, so it still deserves suppression rather than
   // slipping through as "new" just because it failed once first.
   if (failed === 0) {
-    await supabase.from("polled_services").insert({ service_slug: serviceSlug });
+    await supabase.from("polled_services").insert({ service_slug: Slug });
   }
 }
 

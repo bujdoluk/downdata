@@ -1,6 +1,6 @@
 "use client";
 
-import type { CatalogEntry, ServiceStatusBatchResponse } from "@/types/service";
+import type { Catalog, ServiceStatusBatchResponse } from "@/types/service";
 import CatalogServiceCard from "@/components/service/CatalogServiceCard";
 import { usePinned } from "@/lib/usePinned";
 
@@ -11,7 +11,7 @@ const INDICATOR_SEVERITY: Record<string, number> = {
   none: 0,
 };
 
-function severityOf(entry: CatalogEntry, data: ServiceStatusBatchResponse | null): number {
+function severityOf(entry: Catalog, data: ServiceStatusBatchResponse | null): number {
   const status = data?.[entry.slug];
   if (!status || "error" in status) return -1;
   return INDICATOR_SEVERITY[status.status.indicator] ?? 0;
@@ -28,15 +28,15 @@ export default function CatalogServiceGrid({
   removingSlug,
   onRemove,
 }: {
-  catalog: CatalogEntry[];
+  catalog: Catalog[];
   trackedHosts: string[];
   data?: ServiceStatusBatchResponse | null;
   fetchFailed?: boolean;
   pendingHost?: string | null;
   addedHosts?: Set<string>;
-  onAdd?: (entry: CatalogEntry) => void;
+  onAdd?: (entry: Catalog) => void;
   removingSlug?: string | null;
-  onRemove?: (entry: CatalogEntry) => void;
+  onRemove?: (entry: Catalog) => void;
 }) {
   const isAddMode = Boolean(onAdd);
   const monitoredHosts = new Set(trackedHosts);

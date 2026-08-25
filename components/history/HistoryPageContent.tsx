@@ -6,7 +6,7 @@ import { Temporal } from "temporal-polyfill";
 import { Trans, useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
-import type { ServiceDefinition, StatuspageIncident } from "@/types/service";
+import type { Service, Incident } from "@/types/service";
 import { buildIncidentCalendar } from "@/lib/buildIncidentCalendar";
 import { mergeParams } from "@/lib/mergeParams";
 import { parseImpacts, serializeImpacts } from "@/lib/impactsParam";
@@ -28,7 +28,7 @@ export default function HistoryPageContent({
   trackedServices,
   boards,
 }: {
-  trackedServices: ServiceDefinition[];
+  trackedServices: Service[];
   boards: Board[];
 }) {
   const { t, i18n } = useTranslation();
@@ -39,7 +39,7 @@ export default function HistoryPageContent({
   const boardId = searchParams.get("board") ?? "";
   const selectedBoard = boards.find((board) => board.id === boardId);
   const services = [...trackedServices]
-    .filter((service) => !selectedBoard || selectedBoard.serviceSlugs.includes(service.slug))
+    .filter((service) => !selectedBoard || selectedBoard.Slugs.includes(service.slug))
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const slug = searchParams.get("service") ?? "";
@@ -47,7 +47,7 @@ export default function HistoryPageContent({
   const selectedImpacts = parseImpacts(searchParams, ALL_IMPACTS);
   const selectedDate = searchParams.get("date");
 
-  const [result, setResult] = useState<{ slug: string; incidents: StatuspageIncident[] } | { slug: string; error: true } | null>(
+  const [result, setResult] = useState<{ slug: string; incidents: Incident[] } | { slug: string; error: true } | null>(
     null,
   );
 
@@ -88,7 +88,7 @@ export default function HistoryPageContent({
     // Dropping the currently-selected service if it's outside the newly
     // picked board — otherwise the calendar keeps showing a service that's
     // no longer offered by ServiceSearchPicker's now-filtered list.
-    const clearService = slug && board && !board.serviceSlugs.includes(slug);
+    const clearService = slug && board && !board.Slugs.includes(slug);
     const patch: Record<string, string | null> = { board: newBoardId || null, date: null };
     if (clearService) patch.service = null;
     router.push(`/history?${mergeParams(searchParams, patch).toString()}`, { scroll: false });
@@ -136,7 +136,7 @@ export default function HistoryPageContent({
 
   // Derived purely from the already-fetched incidents — no extra requests.
   const summary = useMemo(() => {
-    const uniqueIncidents = new Map<string, StatuspageIncident>();
+    const uniqueIncidents = new Map<string, Incident>();
     for (const day of calendar.days) {
       for (const incident of day.incidents) uniqueIncidents.set(incident.id, incident);
     }
@@ -159,8 +159,8 @@ export default function HistoryPageContent({
       <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div>
           <div className="flex flex-wrap items-center gap-4">
-            <BoardFilterSelect boards={boards} value={boardId} onChange={selectBoard} />
             <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
+            <BoardFilterSelect boards={boards} value={boardId} onChange={selectBoard} />
           </div>
 
           {!slug ? null : isLoading ? (

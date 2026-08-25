@@ -1,12 +1,12 @@
-export type ServiceSlug = string;
+export type Slug = string;
 
-export type ServiceDefinition = {
-  slug: ServiceSlug;
+export type Service = {
+  slug: Slug;
   name: string;
   host: string;
 };
 
-export type CatalogCategory =
+export type Category =
   | "infrastructure"
   | "devtools"
   | "database"
@@ -17,16 +17,16 @@ export type CatalogCategory =
   | "projectManagement"
   | "other";
 
-export type CatalogEntry = {
+export type Catalog = {
   slug: string;
   name: string;
   host: string;
-  category: CatalogCategory;
+  category: Category;
 };
 
 export type Indicator = "none" | "minor" | "major" | "critical" | string;
 
-export type ComponentStatus =
+export type Status =
   | "operational"
   | "degraded_performance"
   | "partial_outage"
@@ -37,7 +37,7 @@ export type ComponentStatus =
 export type StatuspageComponent = {
   id: string;
   name: string;
-  status: ComponentStatus;
+  status: Status;
   position: number;
   group_id: string | null;
   showcase: boolean;
@@ -51,7 +51,7 @@ export type IncidentUpdate = {
   created_at: string;
 };
 
-export type StatuspageIncident = {
+export type Incident = {
   id: string;
   name: string;
   status: string;
@@ -64,7 +64,7 @@ export type StatuspageIncident = {
 };
 
 export type ServiceSummaryResponse = {
-  service: ServiceDefinition;
+  service: Service;
   page: {
     updated_at: string;
   };
@@ -73,31 +73,31 @@ export type ServiceSummaryResponse = {
     description: string;
   };
   components: StatuspageComponent[];
-  incidents: StatuspageIncident[];
+  incidents: Incident[];
 };
 
-export type TrackedIncident = StatuspageIncident & { service: ServiceDefinition };
+export type TrackedIncident = Incident & { service: Service };
 
-// Same as StatuspageIncident/TrackedIncident but without incident_updates —
+// Same as Incident/TrackedIncident but without incident_updates —
 // what the polled list endpoints (/api/incidents, /api/maintenance) return,
 // since only whichever one item is currently selected ever needs its full
 // timeline (fetched separately, see app/api/incidents/[slug]/[id]).
-export type StatuspageIncidentSummary = Omit<StatuspageIncident, "incident_updates">;
-export type TrackedIncidentSummary = StatuspageIncidentSummary & { service: ServiceDefinition };
+export type StatuspageIncidentSummary = Omit<Incident, "incident_updates">;
+export type TrackedIncidentSummary = StatuspageIncidentSummary & { service: Service };
 
-export type ScheduledMaintenance = StatuspageIncident & {
+export type ScheduledMaintenance = Incident & {
   scheduled_for: string;
   scheduled_until: string;
 };
 
-export type TrackedMaintenance = ScheduledMaintenance & { service: ServiceDefinition };
+export type TrackedMaintenance = ScheduledMaintenance & { service: Service };
 
 export type ScheduledMaintenanceSummary = Omit<ScheduledMaintenance, "incident_updates">;
-export type TrackedMaintenanceSummary = ScheduledMaintenanceSummary & { service: ServiceDefinition };
+export type TrackedMaintenanceSummary = ScheduledMaintenanceSummary & { service: Service };
 
 export type ServiceStatusEntry =
   | { status: { indicator: Indicator; description: string }; outages24h?: number }
   | { error: string };
 
-export type ServiceStatusBatchResponse = Partial<Record<ServiceSlug, ServiceStatusEntry>>;
+export type ServiceStatusBatchResponse = Partial<Record<Slug, ServiceStatusEntry>>;
 

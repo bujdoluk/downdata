@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { ServiceDefinition } from "@/types/service";
+import type { Service } from "@/types/service";
 import type { IncidentCountByService } from "@/lib/getStoredIncident";
 
 // A "quick overview" stops being one past a screenful of rows — cap to the
@@ -13,7 +13,7 @@ export default function IncidentCountsChart({
   selectedSlug,
   onSelectService,
 }: {
-  services: ServiceDefinition[];
+  services: Service[];
   counts: IncidentCountByService[];
   selectedSlug: string;
   onSelectService: (slug: string) => void;

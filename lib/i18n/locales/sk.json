@@ -159,6 +159,8 @@
     "searchPlaceholder": "Hľadať nástenky…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Pridať nástenku",
+    "yourFirstBoard": "Vaša prvá nástenka",
+    "newBoardName": "Pomenujte novú nástenku",
     "createSubmit": "Vytvoriť",
     "clearName": "Vymazať",
     "empty": "Zatiaľ žiadne nástenky. Vytvorte jednu a začnite zoskupovať služby.",
@@ -180,7 +182,20 @@
     "rename": "Premenovať",
     "onBoard": "Na tejto nástenke",
     "pickCategory": "Vyberte kategóriu na prehliadanie služieb.",
-    "noServicesOnBoard": "Na tejto nástenke zatiaľ nie sú žiadne služby."
+    "noServicesOnBoard": "Na tejto nástenke zatiaľ nie sú žiadne služby.",
+    "activity": {
+      "incidentsTitle": "Aktívne incidenty",
+      "maintenanceTitle": "Aktívne údržby",
+      "viewAll": "Zobraziť všetko",
+      "noIncidents": "Žiadne aktívne incidenty",
+      "noMaintenance": "Žiadna aktívna údržba",
+      "allClear": "Všetko v poriadku — žiadne aktívne incidenty ani údržba"
+    },
+    "viewHistory": "Zobraziť históriu tejto nástenky",
+    "lastIncident": {
+      "title": "Nedávne incidenty",
+      "none": "Žiadna história incidentov"
+    }
   },
   "addService": {
     "back": "← Späť",

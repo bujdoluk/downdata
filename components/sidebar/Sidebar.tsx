@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
+import BoardSelect from "@/components/sidebar/BoardSelect";
 import Logo from "@/components/navbar/Logo";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
-import { GearIcon, ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, HistoryIcon, BoardIcon } from "@/components/icons/NavIcons";
+import { GearIcon, ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, HistoryIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 
@@ -96,7 +97,7 @@ export default function Sidebar() {
       </Link>
 
       <div className={`flex w-full flex-col items-center gap-4 ${collapsed ? "" : "md:items-stretch md:gap-3"}`}>
-        <SidebarNavLink href="/boards" icon={<BoardIcon className="shrink-0" />} label={t("nav.boards")} collapsed={collapsed} />
+        <BoardSelect collapsed={collapsed} />
         <SidebarNavLink href="/monitors" icon={<ActivityIcon className="shrink-0" />} label={t("nav.monitors")} collapsed={collapsed} />
         <SidebarNavLink
           href="/incidents"

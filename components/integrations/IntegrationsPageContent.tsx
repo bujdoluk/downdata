@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { IntegrationCatalogEntry, IntegrationDefinition } from "@/types/integration";
+import type { IntegrationCatalog, IntegrationDefinition } from "@/types/integration";
 import IntegrationCard from "@/components/integrations/IntegrationCard";
 import SlackLogo from "@/components/integrations/SlackLogo";
 
@@ -22,7 +22,7 @@ export default function IntegrationsPageContent({
   catalog,
   integrations,
 }: {
-  catalog: IntegrationCatalogEntry[];
+  catalog: IntegrationCatalog[];
   integrations: IntegrationDefinition[];
 }) {
   const { t } = useTranslation();
@@ -35,7 +35,7 @@ export default function IntegrationsPageContent({
     if (hasError) router.replace("/integrations");
   }, [hasError, router]);
 
-  async function handleDisconnect(entry: IntegrationCatalogEntry) {
+  async function handleDisconnect(entry: IntegrationCatalog) {
     setRemovingSlug(entry.slug);
     try {
       const res = await fetch(`/api/integrations/${entry.slug}`, { method: "DELETE" });

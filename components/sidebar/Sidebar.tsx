@@ -2,16 +2,20 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
 import BoardSelect from "@/components/sidebar/BoardSelect";
+import AvatarUpload from "@/components/sidebar/AvatarUpload";
 import Logo from "@/components/navbar/Logo";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
-import { GearIcon, ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, HistoryIcon } from "@/components/icons/NavIcons";
+import { ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, HistoryIcon, UserIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 import { usePolledFetch } from "@/lib/usePolledFetch";
+import { createClient } from "@/lib/supabase/client";
+import { logOut } from "@/lib/supabase/auth";
 
 function ChevronIcon({ className, collapsed }: { className?: string; collapsed: boolean }) {
   return (
@@ -36,7 +40,10 @@ const STORAGE_KEY = "sidebarCollapsed:v2";
 
 export default function Sidebar() {
   const { t } = useTranslation();
+  const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
+  const [supabase] = useState(() => createClient());
+  const [account, setAccount] = useState<{ id: string; email: string; avatarUrl: string | null } | null>(null);
   const settingsRef = useRef<HTMLDetailsElement>(null);
   const preferencesRef = useRef<HTMLDialogElement>(null);
   // Head-only count endpoints, not the full /api/incidents /
@@ -51,9 +58,25 @@ export default function Sidebar() {
 
   useCloseDetailsOnOutsideClick(settingsRef);
 
+  useEffect(() => {
+    // One-shot, not polled — the account menu only needs to reflect who's
+    // signed in right now, not stay live-synced.
+    supabase.auth.getUser().then(({ data }) => {
+      if (!data.user) return;
+      const avatarUrl = data.user.user_metadata.avatar_url ?? data.user.user_metadata.picture ?? null;
+      setAccount({ id: data.user.id, email: data.user.email ?? "", avatarUrl });
+    });
+  }, [supabase]);
+
   function openPreferences() {
     if (settingsRef.current) settingsRef.current.open = false;
     preferencesRef.current?.showModal();
+  }
+
+  async function handleLogout() {
+    if (settingsRef.current) settingsRef.current.open = false;
+    await logOut(supabase);
+    router.push("/login");
   }
 
   useEffect(() => {
@@ -121,18 +144,36 @@ export default function Sidebar() {
       <div className="mt-auto flex w-full flex-col">
         <details ref={settingsRef} className="dropdown dropdown-top dropdown-start w-full">
           <summary
-            title={t("nav.settings")}
+            title={account?.email ?? t("nav.settings")}
             className={`flex cursor-pointer list-none items-center justify-center gap-2 text-sm font-semibold tracking-wide uppercase text-base-content/40 transition-colors hover:text-base-content/70 ${
               collapsed ? "" : "md:justify-start"
             }`}
           >
-            <GearIcon className="shrink-0" />
-            {!collapsed && <span className="hidden md:inline">{t("nav.settings")}</span>}
+            {account?.avatarUrl ? (
+              <div className="avatar shrink-0">
+                <div className="w-6 rounded-full">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- external, unpredictable-host avatar URL; next/image's domain allowlist doesn't fit an arbitrary OAuth provider */}
+                  <img src={account.avatarUrl} alt="" />
+                </div>
+              </div>
+            ) : (
+              <div className="avatar avatar-placeholder shrink-0">
+                <div className="bg-neutral text-neutral-content w-6 rounded-full">
+                  <UserIcon className="h-3.5 w-3.5" />
+                </div>
+              </div>
+            )}
+            {!collapsed && <span className="hidden truncate md:inline">{account?.email ?? t("nav.settings")}</span>}
           </summary>
           <ul className="dropdown-content menu menu-sm z-30 mt-2 w-40 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl">
             <li>
               <button type="button" onClick={openPreferences}>
                 {t("nav.preferences")}
+              </button>
+            </li>
+            <li>
+              <button type="button" onClick={handleLogout}>
+                {t("nav.logout")}
               </button>
             </li>
           </ul>
@@ -142,6 +183,20 @@ export default function Sidebar() {
       <dialog ref={preferencesRef} className="modal">
         <div className="modal-box">
           <h3 className="text-lg font-bold">{t("nav.preferences")}</h3>
+
+          {account && (
+            <div className="mt-4">
+              <h4 className="text-xs font-semibold tracking-wide text-base-content/60 uppercase">{t("nav.avatar")}</h4>
+              <div className="mt-2">
+                <AvatarUpload
+                  supabase={supabase}
+                  userId={account.id}
+                  avatarUrl={account.avatarUrl}
+                  onChange={(avatarUrl) => setAccount((prev) => (prev ? { ...prev, avatarUrl } : prev))}
+                />
+              </div>
+            </div>
+          )}
 
           <div className="mt-4">
             <h4 className="text-xs font-semibold tracking-wide text-base-content/60 uppercase">{t("nav.theme")}</h4>

@@ -26,6 +26,13 @@
     "history": "Historie",
     "settings": "Nastavení",
     "preferences": "Předvolby",
+    "logout": "Odhlásit se",
+    "avatar": "Profilový obrázek",
+    "avatarChoose": "Vybrat fotku",
+    "avatarRemove": "Odebrat",
+    "avatarInvalidType": "Vyberte prosím obrázek.",
+    "avatarTooLarge": "Obrázek musí být menší než 2 MB.",
+    "avatarUploadFailed": "Obrázek se nepodařilo aktualizovat. Zkuste to znovu.",
     "theme": "Motiv",
     "close": "Zavřít"
   },

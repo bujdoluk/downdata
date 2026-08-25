@@ -26,6 +26,13 @@
     "history": "Geschiedenis",
     "settings": "Instellingen",
     "preferences": "Voorkeuren",
+    "logout": "Uitloggen",
+    "avatar": "Profielfoto",
+    "avatarChoose": "Foto kiezen",
+    "avatarRemove": "Verwijderen",
+    "avatarInvalidType": "Kies een afbeeldingsbestand.",
+    "avatarTooLarge": "De afbeelding moet kleiner zijn dan 2 MB.",
+    "avatarUploadFailed": "Kan de afbeelding niet bijwerken. Probeer het opnieuw.",
     "theme": "Thema",
     "close": "Sluiten"
   },

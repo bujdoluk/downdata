@@ -26,6 +26,13 @@
     "history": "Historik",
     "settings": "Inställningar",
     "preferences": "Inställningsalternativ",
+    "logout": "Logga ut",
+    "avatar": "Profilbild",
+    "avatarChoose": "Välj bild",
+    "avatarRemove": "Ta bort",
+    "avatarInvalidType": "Välj en bildfil.",
+    "avatarTooLarge": "Bilden måste vara mindre än 2 MB.",
+    "avatarUploadFailed": "Det gick inte att uppdatera bilden. Försök igen.",
     "theme": "Tema",
     "close": "Stäng"
   },

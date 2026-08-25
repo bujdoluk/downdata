@@ -48,6 +48,11 @@ export async function signUp(
   return !!session?.user;
 }
 
+export async function logOut(supabase: SupabaseClient): Promise<void> {
+  const { error } = await supabase.auth.signOut();
+  if (error) throw new AuthActionError("generic", error);
+}
+
 export async function continueWithGoogle(supabase: SupabaseClient, redirectTo: string): Promise<void> {
   const { error } = await supabase.auth.signInWithOAuth({ provider: "google", options: { redirectTo } });
   if (error) throw new AuthActionError("generic", error);

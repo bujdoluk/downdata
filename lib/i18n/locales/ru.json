@@ -26,6 +26,13 @@
     "history": "История",
     "settings": "Настройки",
     "preferences": "Параметры",
+    "logout": "Выйти",
+    "avatar": "Фото профиля",
+    "avatarChoose": "Выбрать фото",
+    "avatarRemove": "Удалить",
+    "avatarInvalidType": "Выберите файл изображения.",
+    "avatarTooLarge": "Изображение должно быть меньше 2 МБ.",
+    "avatarUploadFailed": "Не удалось обновить изображение. Попробуйте снова.",
     "theme": "Тема",
     "close": "Закрыть"
   },

@@ -26,6 +26,13 @@
     "history": "Cronologia",
     "settings": "Impostazioni",
     "preferences": "Preferenze",
+    "logout": "Esci",
+    "avatar": "Foto profilo",
+    "avatarChoose": "Scegli foto",
+    "avatarRemove": "Rimuovi",
+    "avatarInvalidType": "Scegli un file immagine.",
+    "avatarTooLarge": "L'immagine deve essere inferiore a 2 MB.",
+    "avatarUploadFailed": "Impossibile aggiornare l'immagine. Riprova.",
     "theme": "Tema",
     "close": "Chiudi"
   },

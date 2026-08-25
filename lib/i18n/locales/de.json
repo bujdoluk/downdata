@@ -26,6 +26,13 @@
     "history": "Verlauf",
     "settings": "Einstellungen",
     "preferences": "Präferenzen",
+    "logout": "Abmelden",
+    "avatar": "Profilbild",
+    "avatarChoose": "Foto auswählen",
+    "avatarRemove": "Entfernen",
+    "avatarInvalidType": "Bitte wählen Sie eine Bilddatei aus.",
+    "avatarTooLarge": "Das Bild muss kleiner als 2 MB sein.",
+    "avatarUploadFailed": "Bild konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.",
     "theme": "Design",
     "close": "Schließen"
   },

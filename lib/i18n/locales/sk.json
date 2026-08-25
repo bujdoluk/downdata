@@ -194,6 +194,9 @@
       "database": "Databáza",
       "communication": "Komunikácia a spolupráca",
       "ai": "AI",
+      "payments": "Platby",
+      "auth": "Autentifikácia",
+      "projectManagement": "Riadenie projektov",
       "other": "Ostatné"
     },
     "subtitle": "Prezrite si katalóg a začnite sledovať novú službu."

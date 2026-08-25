@@ -6,7 +6,17 @@ import "@/lib/i18n/i18n";
 import type { CatalogCategory, CatalogEntry, ServiceStatusBatchResponse } from "@/types/service";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 
-const CATEGORY_ORDER: CatalogCategory[] = ["infrastructure", "devtools", "database", "communication", "ai", "other"];
+const CATEGORY_ORDER: CatalogCategory[] = [
+  "infrastructure",
+  "devtools",
+  "database",
+  "communication",
+  "ai",
+  "payments",
+  "auth",
+  "projectManagement",
+  "other",
+];
 
 // Categories column + services-in-category column — the shared "browse the
 // catalog and add a service" UI, used both by the add-service page and by a

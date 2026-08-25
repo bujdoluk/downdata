@@ -200,6 +200,9 @@
       "database": "Baza danych",
       "communication": "Komunikacja i współpraca",
       "ai": "AI",
+      "payments": "Płatności",
+      "auth": "Uwierzytelnianie",
+      "projectManagement": "Zarządzanie projektami",
       "other": "Inne"
     },
     "subtitle": "Przeglądaj katalog i zacznij monitorować nową usługę."

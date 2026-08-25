@@ -188,6 +188,9 @@
       "database": "Database",
       "communication": "Communication & Collaboration",
       "ai": "AI",
+      "payments": "Payments",
+      "auth": "Auth",
+      "projectManagement": "Project Management",
       "other": "Other"
     },
     "subtitle": "Browse the catalog and start tracking a new service."

@@ -6,7 +6,16 @@ export type ServiceDefinition = {
   host: string;
 };
 
-export type CatalogCategory = "infrastructure" | "devtools" | "database" | "communication" | "ai" | "other";
+export type CatalogCategory =
+  | "infrastructure"
+  | "devtools"
+  | "database"
+  | "communication"
+  | "ai"
+  | "payments"
+  | "auth"
+  | "projectManagement"
+  | "other";
 
 export type CatalogEntry = {
   slug: string;

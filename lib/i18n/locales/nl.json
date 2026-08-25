@@ -188,6 +188,9 @@
       "database": "Database",
       "communication": "Communicatie en samenwerking",
       "ai": "AI",
+      "payments": "Betalingen",
+      "auth": "Authenticatie",
+      "projectManagement": "Projectbeheer",
       "other": "Overig"
     },
     "subtitle": "Blader door de catalogus en begin een nieuwe dienst te volgen."

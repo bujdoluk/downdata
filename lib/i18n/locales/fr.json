@@ -188,6 +188,9 @@
       "database": "Base de données",
       "communication": "Communication et collaboration",
       "ai": "IA",
+      "payments": "Paiements",
+      "auth": "Authentification",
+      "projectManagement": "Gestion de projet",
       "other": "Autre"
     },
     "subtitle": "Parcourez le catalogue et commencez à surveiller un nouveau service."

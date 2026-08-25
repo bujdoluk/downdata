@@ -188,6 +188,9 @@
       "database": "Database",
       "communication": "Kommunikasjon og samarbeid",
       "ai": "AI",
+      "payments": "Betalinger",
+      "auth": "Autentisering",
+      "projectManagement": "Prosjektstyring",
       "other": "Annet"
     },
     "subtitle": "Bla gjennom katalogen og begynn å overvåke en ny tjeneste."

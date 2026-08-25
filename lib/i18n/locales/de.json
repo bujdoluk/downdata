@@ -188,6 +188,9 @@
       "database": "Datenbank",
       "communication": "Kommunikation & Zusammenarbeit",
       "ai": "KI",
+      "payments": "Zahlungen",
+      "auth": "Authentifizierung",
+      "projectManagement": "Projektmanagement",
       "other": "Sonstiges"
     },
     "subtitle": "Durchsuche den Katalog und beginne, einen neuen Dienst zu überwachen."

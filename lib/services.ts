@@ -27,7 +27,14 @@ function slugify(name: string): string {
 
 export async function addService(input: { name: string; host: string }): Promise<ServiceDefinition> {
   const services = await getAllServices();
-  const baseSlug = slugify(input.name) || "service";
+  const catalog = await getCatalog();
+  // Reuse the catalog's slug for this host when one exists, so a tracked
+  // service's slug always matches its catalog entry — otherwise the two
+  // tables drift apart (e.g. "Bunny.net" slugifies to "bunny-net" here but
+  // the catalog seed used "bunny") and delete-by-slug 404s forever because
+  // it's looking up the wrong row.
+  const catalogMatch = catalog.find((entry) => entry.host === input.host);
+  const baseSlug = catalogMatch?.slug || slugify(input.name) || "service";
 
   let slug = baseSlug;
   let suffix = 2;

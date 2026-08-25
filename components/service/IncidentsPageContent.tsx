@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, formatDuration, minutesBetween, msSince } from "@/lib/formatTime";
+import type { Board } from "@/types/board";
 import type { TrackedIncident, TrackedIncidentSummary } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
@@ -23,7 +24,7 @@ import IncidentDetail from "@/components/service/IncidentDetail";
 
 type StatusFilter = "all" | "investigating" | "identified" | "monitoring" | "resolved" | "postmortem";
 type TimeRange = "all" | "24h" | "7d" | "30d";
-type DebouncedGroup = { status: StatusFilter; q: string; range: TimeRange; impacts: Set<string> };
+type DebouncedGroup = { status: StatusFilter; q: string; range: TimeRange; impacts: Set<string>; board: string };
 
 const RANGE_MS: Record<Exclude<TimeRange, "all">, number> = {
   "24h": 24 * 60 * 60 * 1000,
@@ -53,6 +54,7 @@ function parseGroupFromSearchParams(searchParams: URLSearchParams): DebouncedGro
     q: searchParams.get("q") ?? "",
     range: (searchParams.get("range") as TimeRange | null) ?? "30d",
     impacts: parseImpacts(searchParams, ALL_IMPACTS),
+    board: searchParams.get("board") ?? "",
   };
 }
 
@@ -60,7 +62,7 @@ function parseGroupFromSearchParams(searchParams: URLSearchParams): DebouncedGro
 // this ourselves" apart from "the URL genuinely changed" (back/forward, a
 // pasted link) — see the two sync effects below.
 function serializeGroup(g: DebouncedGroup): string {
-  return JSON.stringify([g.status, g.q, g.range, [...g.impacts].sort().join(",")]);
+  return JSON.stringify([g.status, g.q, g.range, [...g.impacts].sort().join(","), g.board]);
 }
 
 // Every field omits itself from the URL at its default value, for a clean
@@ -72,11 +74,12 @@ function debouncedGroupPatch(g: DebouncedGroup): Record<string, string | null> {
     q: g.q.trim() === "" ? null : g.q.trim(),
     range: g.range === "30d" ? null : g.range,
     impacts: serializeImpacts(g.impacts, ALL_IMPACTS),
+    board: g.board === "" ? null : g.board,
     page: null,
   };
 }
 
-export default function IncidentsPageContent() {
+export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -146,6 +149,8 @@ export default function IncidentsPageContent() {
   const detailError = currentResult ? "error" in currentResult : false;
 
   const trimmedServiceQuery = pendingFilters.q.trim().toLowerCase();
+  const selectedBoard = boards.find((board) => board.id === pendingFilters.board);
+  const boardSlugs = useMemo(() => (selectedBoard ? new Set(selectedBoard.serviceSlugs) : null), [selectedBoard]);
   const filteredIncidents = useMemo(
     () =>
       incidents
@@ -155,10 +160,11 @@ export default function IncidentsPageContent() {
             pendingFilters.impacts.has(incident.impact) &&
             (!trimmedServiceQuery || incident.service.name.toLowerCase().includes(trimmedServiceQuery)) &&
             (pendingFilters.range === "all" || msSince(incident.updated_at) <= RANGE_MS[pendingFilters.range]) &&
-            (!onlyNew || new Date(incident.updated_at).getTime() > lastViewed),
+            (!onlyNew || new Date(incident.updated_at).getTime() > lastViewed) &&
+            (!boardSlugs || boardSlugs.has(incident.service.slug)),
         )
         .sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id))),
-    [incidents, pendingFilters, trimmedServiceQuery, onlyNew, lastViewed, pinned],
+    [incidents, pendingFilters, trimmedServiceQuery, onlyNew, lastViewed, pinned, boardSlugs],
   );
 
   // Auto-selects the first *visible* incident, and only ever touches `id` —
@@ -204,10 +210,11 @@ export default function IncidentsPageContent() {
     pendingFilters.q.trim() !== "" ||
     pendingFilters.range !== "30d" ||
     pendingFilters.impacts.size !== ALL_IMPACTS.length ||
+    pendingFilters.board !== "" ||
     onlyNew;
 
   function clearFilters() {
-    setPendingFilters({ status: "all", q: "", range: "30d", impacts: new Set(ALL_IMPACTS) });
+    setPendingFilters({ status: "all", q: "", range: "30d", impacts: new Set(ALL_IMPACTS), board: "" });
     updateParams({ new: null, page: null });
   }
 
@@ -274,6 +281,21 @@ export default function IncidentsPageContent() {
                   </option>
                 ))}
               </select>
+              {boards.length > 0 && (
+                <select
+                  className="select select-bordered select-sm w-40"
+                  aria-label={t("incidents.filter.board")}
+                  value={pendingFilters.board}
+                  onChange={(e) => setPendingFilters((prev) => ({ ...prev, board: e.target.value }))}
+                >
+                  <option value="">{t("incidents.filter.allBoards")}</option>
+                  {boards.map((board) => (
+                    <option key={board.id} value={board.id}>
+                      {board.name}
+                    </option>
+                  ))}
+                </select>
+              )}
               {newCount > 0 && (
                 <button
                   type="button"

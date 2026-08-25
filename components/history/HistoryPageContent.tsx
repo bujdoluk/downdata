@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Temporal } from "temporal-polyfill";
 import { Trans, useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
+import type { Board } from "@/types/board";
 import type { ServiceDefinition, StatuspageIncident } from "@/types/service";
 import { buildIncidentCalendar } from "@/lib/buildIncidentCalendar";
 import { mergeParams } from "@/lib/mergeParams";
@@ -21,12 +22,23 @@ import Spinner from "@/components/Spinner";
 
 const CURRENT_YEAR = Temporal.Now.plainDateISO().year;
 
-export default function HistoryPageContent({ trackedServices }: { trackedServices: ServiceDefinition[] }) {
+export default function HistoryPageContent({
+  trackedServices,
+  boards,
+}: {
+  trackedServices: ServiceDefinition[];
+  boards: Board[];
+}) {
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const services = [...trackedServices].sort((a, b) => a.name.localeCompare(b.name));
   const { data: countsData } = usePolledFetch<{ counts: IncidentCountByService[] }>("/api/history/counts");
+
+  const boardId = searchParams.get("board") ?? "";
+  const selectedBoard = boards.find((board) => board.id === boardId);
+  const services = [...trackedServices]
+    .filter((service) => !selectedBoard || selectedBoard.serviceSlugs.includes(service.slug))
+    .sort((a, b) => a.name.localeCompare(b.name));
 
   const slug = searchParams.get("service") ?? "";
   const selectedYear = Number(searchParams.get("year") ?? CURRENT_YEAR);
@@ -67,6 +79,17 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
 
   function selectService(newSlug: string) {
     router.push(`/history?${mergeParams(searchParams, { service: newSlug, date: null }).toString()}`, { scroll: false });
+  }
+
+  function selectBoard(newBoardId: string) {
+    const board = boards.find((b) => b.id === newBoardId);
+    // Dropping the currently-selected service if it's outside the newly
+    // picked board — otherwise the calendar keeps showing a service that's
+    // no longer offered by ServiceSearchPicker's now-filtered list.
+    const clearService = slug && board && !board.serviceSlugs.includes(slug);
+    const patch: Record<string, string | null> = { board: newBoardId || null, date: null };
+    if (clearService) patch.service = null;
+    router.push(`/history?${mergeParams(searchParams, patch).toString()}`, { scroll: false });
   }
 
   // Years with any incident, newest first, always including the current
@@ -134,6 +157,21 @@ export default function HistoryPageContent({ trackedServices }: { trackedService
       <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div>
           <div className="flex flex-wrap items-center gap-4">
+            {boards.length > 0 && (
+              <select
+                className="select select-bordered select-sm w-40"
+                aria-label={t("incidents.filter.board")}
+                value={boardId}
+                onChange={(e) => selectBoard(e.target.value)}
+              >
+                <option value="">{t("incidents.filter.allBoards")}</option>
+                {boards.map((board) => (
+                  <option key={board.id} value={board.id}>
+                    {board.name}
+                  </option>
+                ))}
+              </select>
+            )}
             <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
           </div>
 

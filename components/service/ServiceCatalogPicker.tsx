@@ -7,7 +7,10 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { CatalogEntry } from "@/types/service";
 import CatalogBrowser from "@/components/service/CatalogBrowser";
+import CustomServiceForm from "@/components/service/CustomServiceForm";
 import { notifyServicesChanged } from "@/lib/servicesChanged";
+
+type Tab = "service" | "website";
 
 export default function ServiceCatalogPicker({
   catalog,
@@ -18,6 +21,7 @@ export default function ServiceCatalogPicker({
 }) {
   const { t } = useTranslation();
   const router = useRouter();
+  const [tab, setTab] = useState<Tab>("service");
   const [addedHosts, setAddedHosts] = useState<Set<string>>(() => new Set(trackedHosts));
   const [pendingHost, setPendingHost] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +58,7 @@ export default function ServiceCatalogPicker({
   return (
     <div className="flex w-full max-w-6xl flex-col self-start">
       <Link
-        href="/"
+        href="/boards"
         className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium"
       >
         {t("addService.back")}
@@ -63,31 +67,58 @@ export default function ServiceCatalogPicker({
       <h1 className="text-base-content mt-2 text-lg font-semibold">{t("addService.title")}</h1>
       <p className="text-base-content/60 mt-1 text-sm">{t("addService.subtitle")}</p>
 
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder={t("nav.searchPlaceholder")}
-        className="input input-bordered input-sm mt-4 w-full max-w-sm"
-        autoFocus
-      />
-
-      {error && (
-        <div role="alert" className="alert alert-error alert-soft mt-3 py-2 text-xs">
-          <span>{error}</span>
-        </div>
-      )}
-
-      <div className="mt-4">
-        <CatalogBrowser
-          catalog={catalog}
-          trackedHosts={trackedHosts}
-          pendingHost={pendingHost}
-          addedHosts={addedHosts}
-          onAdd={handleAdd}
-          query={query}
-        />
+      <div role="tablist" className="tabs tabs-box mt-4 w-fit">
+        <button
+          type="button"
+          role="tab"
+          onClick={() => setTab("service")}
+          className={`tab ${tab === "service" ? "tab-active" : ""}`}
+        >
+          {t("addService.tabService")}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          onClick={() => setTab("website")}
+          className={`tab ${tab === "website" ? "tab-active" : ""}`}
+        >
+          {t("addService.tabWebsite")}
+        </button>
       </div>
+
+      {tab === "website" ? (
+        <p className="text-base-content/50 mt-4 text-sm">{t("addService.websiteComingSoon")}</p>
+      ) : (
+        <>
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t("nav.searchPlaceholder")}
+            className="input input-bordered input-sm mt-4 w-full max-w-sm"
+            autoFocus
+          />
+
+          {error && (
+            <div role="alert" className="alert alert-error alert-soft mt-3 py-2 text-xs">
+              <span>{error}</span>
+            </div>
+          )}
+
+          <CustomServiceForm onAdded={() => router.refresh()} />
+
+          <div className="mt-4">
+            <CatalogBrowser
+              catalog={catalog}
+              trackedHosts={trackedHosts}
+              pendingHost={pendingHost}
+              addedHosts={addedHosts}
+              onAdd={handleAdd}
+              query={query}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }

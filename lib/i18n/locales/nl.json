@@ -11,8 +11,7 @@
   },
   "nav": {
     "boards": "Borden",
-    "services": "Diensten",
-    "addService": "Dienst toevoegen",
+    "addService": "Monitor toevoegen",
     "searchPlaceholder": "Diensten zoeken…",
     "noServicesFound": "Geen diensten gevonden.",
     "toggleTheme": "Thema wisselen",
@@ -79,7 +78,9 @@
       "last30d": "Laatste 30 dagen",
       "noMatches": "Geen incidenten komen overeen met dit filter.",
       "new": "Nieuw",
-      "clearFilters": "Filters wissen"
+      "clearFilters": "Filters wissen",
+      "board": "Bord",
+      "allBoards": "Alle borden"
     },
     "pagination": {
       "previous": "Vorige pagina",
@@ -177,7 +178,7 @@
   },
   "addService": {
     "back": "← Terug",
-    "title": "Een dienst toevoegen",
+    "title": "Een monitor toevoegen",
     "add": "Toevoegen",
     "adding": "Bezig met toevoegen…",
     "somethingWrong": "Er is iets misgegaan.",
@@ -193,7 +194,14 @@
       "projectManagement": "Projectbeheer",
       "other": "Overig"
     },
-    "subtitle": "Blader door de catalogus en begin een nieuwe dienst te volgen."
+    "subtitle": "Blader door de catalogus en begin een nieuwe dienst te volgen.",
+    "tabService": "Externe dienst",
+    "tabWebsite": "Website",
+    "websiteComingSoon": "Website-monitoring komt binnenkort.",
+    "customToggle": "Niet gevonden? Voeg een eigen host toe",
+    "customName": "Naam",
+    "customHost": "Host",
+    "customCancel": "Annuleren"
   },
   "landing": {
     "nav": {
@@ -260,7 +268,6 @@
     "noServices": "Er worden nog geen diensten gevolgd. Voeg er een toe om te beginnen."
   },
   "services": {
-    "title": "Mijn diensten",
     "monitoring": "Gemonitord",
     "subtitle": "Volg live de status van de diensten waar je team op vertrouwt."
   },

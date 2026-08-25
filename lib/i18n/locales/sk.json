@@ -11,8 +11,7 @@
   },
   "nav": {
     "boards": "Nástenky",
-    "services": "Služby",
-    "addService": "Pridať službu",
+    "addService": "Pridať monitor",
     "searchPlaceholder": "Hľadať služby…",
     "noServicesFound": "Nenašli sa žiadne služby.",
     "toggleTheme": "Prepnúť motív",
@@ -80,7 +79,9 @@
       "last30d": "Posledných 30 dní",
       "noMatches": "Žiadne incidenty nezodpovedajú tomuto filtru.",
       "new": "Nové",
-      "clearFilters": "Vymazať filtre"
+      "clearFilters": "Vymazať filtre",
+      "board": "Nástenka",
+      "allBoards": "Všetky nástenky"
     },
     "pagination": {
       "previous": "Predchádzajúca strana",
@@ -183,7 +184,7 @@
   },
   "addService": {
     "back": "← Späť",
-    "title": "Pridať službu",
+    "title": "Pridať monitor",
     "add": "Pridať",
     "adding": "Pridáva sa…",
     "somethingWrong": "Niečo sa pokazilo.",
@@ -199,7 +200,14 @@
       "projectManagement": "Riadenie projektov",
       "other": "Ostatné"
     },
-    "subtitle": "Prezrite si katalóg a začnite sledovať novú službu."
+    "subtitle": "Prezrite si katalóg a začnite sledovať novú službu.",
+    "tabService": "Externá služba",
+    "tabWebsite": "Webová stránka",
+    "websiteComingSoon": "Monitorovanie webových stránok už čoskoro.",
+    "customToggle": "Nenašli ste ju? Pridajte vlastného hostiteľa",
+    "customName": "Názov",
+    "customHost": "Hostiteľ",
+    "customCancel": "Zrušiť"
   },
   "landing": {
     "nav": {
@@ -266,7 +274,6 @@
     "noServices": "Zatiaľ nesledujete žiadne služby. Pridajte prvú a začnite."
   },
   "services": {
-    "title": "Moje služby",
     "monitoring": "Sledované",
     "subtitle": "Sledujte stav služieb, na ktorých závisí váš tím."
   },

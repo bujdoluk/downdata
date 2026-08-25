@@ -11,8 +11,7 @@
   },
   "nav": {
     "boards": "Tavler",
-    "services": "Tjenester",
-    "addService": "Legg til tjeneste",
+    "addService": "Legg til overvåking",
     "searchPlaceholder": "Søk etter tjenester…",
     "noServicesFound": "Ingen tjenester funnet.",
     "toggleTheme": "Bytt tema",
@@ -79,7 +78,9 @@
       "last30d": "Siste 30 dager",
       "noMatches": "Ingen hendelser samsvarer med dette filteret.",
       "new": "Ny",
-      "clearFilters": "Fjern filtre"
+      "clearFilters": "Fjern filtre",
+      "board": "Tavle",
+      "allBoards": "Alle tavler"
     },
     "pagination": {
       "previous": "Forrige side",
@@ -177,7 +178,7 @@
   },
   "addService": {
     "back": "← Tilbake",
-    "title": "Legg til en tjeneste",
+    "title": "Legg til en overvåking",
     "add": "Legg til",
     "adding": "Legger til…",
     "somethingWrong": "Noe gikk galt.",
@@ -193,7 +194,14 @@
       "projectManagement": "Prosjektstyring",
       "other": "Annet"
     },
-    "subtitle": "Bla gjennom katalogen og begynn å overvåke en ny tjeneste."
+    "subtitle": "Bla gjennom katalogen og begynn å overvåke en ny tjeneste.",
+    "tabService": "Tredjepartstjeneste",
+    "tabWebsite": "Nettside",
+    "websiteComingSoon": "Overvåking av nettsider kommer snart.",
+    "customToggle": "Finner du den ikke? Legg til en egendefinert vert",
+    "customName": "Navn",
+    "customHost": "Vert",
+    "customCancel": "Avbryt"
   },
   "landing": {
     "nav": {
@@ -260,7 +268,6 @@
     "noServices": "Ingen tjenester overvåkes ennå. Legg til en for å komme i gang."
   },
   "services": {
-    "title": "Mine tjenester",
     "monitoring": "Overvåkes",
     "subtitle": "Følg statusen i sanntid for tjenestene teamet ditt er avhengig av."
   },

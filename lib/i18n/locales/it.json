@@ -11,8 +11,7 @@
   },
   "nav": {
     "boards": "Bacheche",
-    "services": "Servizi",
-    "addService": "Aggiungi servizio",
+    "addService": "Aggiungi monitor",
     "searchPlaceholder": "Cerca servizi…",
     "noServicesFound": "Nessun servizio trovato.",
     "toggleTheme": "Cambia tema",
@@ -79,7 +78,9 @@
       "last30d": "Ultimi 30 giorni",
       "noMatches": "Nessun incidente corrisponde a questo filtro.",
       "new": "Nuovo",
-      "clearFilters": "Cancella filtri"
+      "clearFilters": "Cancella filtri",
+      "board": "Bacheca",
+      "allBoards": "Tutte le bacheche"
     },
     "pagination": {
       "previous": "Pagina precedente",
@@ -177,7 +178,7 @@
   },
   "addService": {
     "back": "← Indietro",
-    "title": "Aggiungi un servizio",
+    "title": "Aggiungi un monitor",
     "add": "Aggiungi",
     "adding": "Aggiunta in corso…",
     "somethingWrong": "Qualcosa è andato storto.",
@@ -193,7 +194,14 @@
       "projectManagement": "Gestione progetti",
       "other": "Altro"
     },
-    "subtitle": "Sfoglia il catalogo e inizia a monitorare un nuovo servizio."
+    "subtitle": "Sfoglia il catalogo e inizia a monitorare un nuovo servizio.",
+    "tabService": "Servizio di terze parti",
+    "tabWebsite": "Sito web",
+    "websiteComingSoon": "Il monitoraggio dei siti web arriverà presto.",
+    "customToggle": "Non lo trovi? Aggiungi un host personalizzato",
+    "customName": "Nome",
+    "customHost": "Host",
+    "customCancel": "Annulla"
   },
   "landing": {
     "nav": {
@@ -260,7 +268,6 @@
     "noServices": "Non stai ancora monitorando nessun servizio. Aggiungine uno per iniziare."
   },
   "services": {
-    "title": "I miei servizi",
     "monitoring": "In monitoraggio",
     "subtitle": "Monitora in tempo reale lo stato dei servizi da cui dipende il tuo team."
   },

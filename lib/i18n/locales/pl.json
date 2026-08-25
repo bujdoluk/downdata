@@ -11,8 +11,7 @@
   },
   "nav": {
     "boards": "Tablice",
-    "services": "Usługi",
-    "addService": "Dodaj usługę",
+    "addService": "Dodaj monitor",
     "searchPlaceholder": "Szukaj usług…",
     "noServicesFound": "Nie znaleziono usług.",
     "toggleTheme": "Przełącz motyw",
@@ -81,7 +80,9 @@
       "last30d": "Ostatnie 30 dni",
       "noMatches": "Żaden incydent nie pasuje do tego filtra.",
       "new": "Nowe",
-      "clearFilters": "Wyczyść filtry"
+      "clearFilters": "Wyczyść filtry",
+      "board": "Tablica",
+      "allBoards": "Wszystkie tablice"
     },
     "pagination": {
       "previous": "Poprzednia strona",
@@ -189,7 +190,7 @@
   },
   "addService": {
     "back": "← Wstecz",
-    "title": "Dodaj usługę",
+    "title": "Dodaj monitor",
     "add": "Dodaj",
     "adding": "Dodawanie…",
     "somethingWrong": "Coś poszło nie tak.",
@@ -205,7 +206,14 @@
       "projectManagement": "Zarządzanie projektami",
       "other": "Inne"
     },
-    "subtitle": "Przeglądaj katalog i zacznij monitorować nową usługę."
+    "subtitle": "Przeglądaj katalog i zacznij monitorować nową usługę.",
+    "tabService": "Usługa zewnętrzna",
+    "tabWebsite": "Strona internetowa",
+    "websiteComingSoon": "Monitorowanie stron internetowych już wkrótce.",
+    "customToggle": "Nie możesz jej znaleźć? Dodaj własny host",
+    "customName": "Nazwa",
+    "customHost": "Host",
+    "customCancel": "Anuluj"
   },
   "landing": {
     "nav": {
@@ -272,7 +280,6 @@
     "noServices": "Nie monitorujesz jeszcze żadnych usług. Dodaj pierwszą, aby zacząć."
   },
   "services": {
-    "title": "Moje usługi",
     "monitoring": "Monitorowane",
     "subtitle": "Śledź na żywo stan usług, od których zależy Twój zespół."
   },

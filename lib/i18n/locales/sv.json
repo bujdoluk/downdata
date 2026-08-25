@@ -11,8 +11,7 @@
   },
   "nav": {
     "boards": "Tavlor",
-    "services": "Tjänster",
-    "addService": "Lägg till tjänst",
+    "addService": "Lägg till övervakning",
     "searchPlaceholder": "Sök tjänster…",
     "noServicesFound": "Inga tjänster hittades.",
     "toggleTheme": "Växla tema",
@@ -79,7 +78,9 @@
       "last30d": "Senaste 30 dagarna",
       "noMatches": "Inga incidenter matchar detta filter.",
       "new": "Nytt",
-      "clearFilters": "Rensa filter"
+      "clearFilters": "Rensa filter",
+      "board": "Tavla",
+      "allBoards": "Alla tavlor"
     },
     "pagination": {
       "previous": "Föregående sida",
@@ -177,7 +178,7 @@
   },
   "addService": {
     "back": "← Tillbaka",
-    "title": "Lägg till en tjänst",
+    "title": "Lägg till en övervakning",
     "add": "Lägg till",
     "adding": "Lägger till…",
     "somethingWrong": "Något gick fel.",
@@ -193,7 +194,14 @@
       "projectManagement": "Projektledning",
       "other": "Övrigt"
     },
-    "subtitle": "Bläddra i katalogen och börja övervaka en ny tjänst."
+    "subtitle": "Bläddra i katalogen och börja övervaka en ny tjänst.",
+    "tabService": "Tredjepartstjänst",
+    "tabWebsite": "Webbplats",
+    "websiteComingSoon": "Webbplatsövervakning kommer snart.",
+    "customToggle": "Hittar du den inte? Lägg till en egen värd",
+    "customName": "Namn",
+    "customHost": "Värd",
+    "customCancel": "Avbryt"
   },
   "landing": {
     "nav": {
@@ -260,7 +268,6 @@
     "noServices": "Inga tjänster övervakas ännu. Lägg till en för att komma igång."
   },
   "services": {
-    "title": "Mina tjänster",
     "monitoring": "Övervakas",
     "subtitle": "Följ statusen i realtid för tjänsterna ditt team är beroende av."
   },

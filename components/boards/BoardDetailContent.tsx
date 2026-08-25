@@ -12,6 +12,7 @@ import { notifyServicesChanged } from "@/lib/servicesChanged";
 import { useBoardRename } from "@/lib/useBoardRename";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 import CatalogBrowser from "@/components/service/CatalogBrowser";
+import StatusSummary from "@/components/service/StatusSummary";
 import Spinner from "@/components/Spinner";
 
 export default function BoardDetailContent({
@@ -35,6 +36,18 @@ export default function BoardDetailContent({
   const confirmRef = useRef<HTMLDialogElement>(null);
 
   const onBoardEntries = catalog.filter((entry) => board.serviceSlugs.includes(entry.slug));
+
+  const overviewCounts = { critical: 0, major: 0, minor: 0, none: 0 };
+  if (data) {
+    for (const entry of onBoardEntries) {
+      const status = data[entry.slug];
+      if (!status || !("status" in status)) continue;
+      const indicator = status.status.indicator;
+      if (indicator === "critical" || indicator === "major" || indicator === "minor" || indicator === "none") {
+        overviewCounts[indicator]++;
+      }
+    }
+  }
 
   // Already-on-the-board entries are shown in the browse column too, not
   // filtered out — merging board membership into the "added" set is what
@@ -171,6 +184,8 @@ export default function BoardDetailContent({
           <button>{t("boards.cancel")}</button>
         </form>
       </dialog>
+
+      {onBoardEntries.length > 0 && <StatusSummary counts={overviewCounts} isLoading={!data && !fetchFailed} />}
 
       <input
         type="text"

@@ -6,23 +6,15 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { CatalogEntry } from "@/types/service";
 import { useCatalogStatus } from "@/lib/useCatalogStatus";
-import { useFirstVisitRedirect } from "@/lib/useFirstVisitRedirect";
 import { notifyServicesChanged } from "@/lib/servicesChanged";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 import AddServiceButton from "@/components/service/AddServiceButton";
 import NoServicesMessage from "@/components/service/NoServicesMessage";
 import StatusSummary from "@/components/service/StatusSummary";
 
-export default function ServicesPageContent({
-  catalog,
-  trackedHosts,
-}: {
-  catalog: CatalogEntry[];
-  trackedHosts: string[];
-}) {
+export default function MonitorsPageContent({ catalog, trackedHosts }: { catalog: CatalogEntry[]; trackedHosts: string[] }) {
   const { t } = useTranslation();
   const router = useRouter();
-  useFirstVisitRedirect("/boards");
   const [removingSlug, setRemovingSlug] = useState<string | null>(null);
   const myServices = catalog.filter((entry) => trackedHosts.includes(entry.host));
   const { data, fetchFailed } = useCatalogStatus();
@@ -57,7 +49,7 @@ export default function ServicesPageContent({
   return (
     <>
       <div className="flex items-start justify-between gap-4">
-        <h1 className="text-base-content text-lg font-semibold">{t("services.title")}</h1>
+        <h1 className="text-base-content text-lg font-semibold">{t("monitors.myServices")}</h1>
         <AddServiceButton />
       </div>
       <p className="text-base-content/60 mt-1 text-sm">{t("services.subtitle")}</p>

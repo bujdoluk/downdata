@@ -11,8 +11,7 @@
   },
   "nav": {
     "boards": "Tableaux",
-    "services": "Services",
-    "addService": "Ajouter un service",
+    "addService": "Ajouter un moniteur",
     "searchPlaceholder": "Rechercher des services…",
     "noServicesFound": "Aucun service trouvé.",
     "toggleTheme": "Changer de thème",
@@ -79,7 +78,9 @@
       "last30d": "30 derniers jours",
       "noMatches": "Aucun incident ne correspond à ce filtre.",
       "new": "Nouveau",
-      "clearFilters": "Effacer les filtres"
+      "clearFilters": "Effacer les filtres",
+      "board": "Tableau",
+      "allBoards": "Tous les tableaux"
     },
     "pagination": {
       "previous": "Page précédente",
@@ -177,7 +178,7 @@
   },
   "addService": {
     "back": "← Retour",
-    "title": "Ajouter un service",
+    "title": "Ajouter un moniteur",
     "add": "Ajouter",
     "adding": "Ajout en cours…",
     "somethingWrong": "Une erreur s'est produite.",
@@ -193,7 +194,14 @@
       "projectManagement": "Gestion de projet",
       "other": "Autre"
     },
-    "subtitle": "Parcourez le catalogue et commencez à surveiller un nouveau service."
+    "subtitle": "Parcourez le catalogue et commencez à surveiller un nouveau service.",
+    "tabService": "Service tiers",
+    "tabWebsite": "Site web",
+    "websiteComingSoon": "La surveillance de sites web arrive bientôt.",
+    "customToggle": "Introuvable ? Ajoutez un hôte personnalisé",
+    "customName": "Nom",
+    "customHost": "Hôte",
+    "customCancel": "Annuler"
   },
   "landing": {
     "nav": {
@@ -260,7 +268,6 @@
     "noServices": "Aucun service surveillé pour l'instant. Ajoutez-en un pour commencer."
   },
   "services": {
-    "title": "Mes services",
     "monitoring": "Surveillé",
     "subtitle": "Suivez en temps réel le statut des services dont dépend votre équipe."
   },

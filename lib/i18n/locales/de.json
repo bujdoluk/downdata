@@ -11,8 +11,7 @@
   },
   "nav": {
     "boards": "Boards",
-    "services": "Dienste",
-    "addService": "Dienst hinzufügen",
+    "addService": "Monitor hinzufügen",
     "searchPlaceholder": "Dienste suchen…",
     "noServicesFound": "Keine Dienste gefunden.",
     "toggleTheme": "Design umschalten",
@@ -79,7 +78,9 @@
       "last30d": "Letzte 30 Tage",
       "noMatches": "Keine Vorfälle entsprechen diesem Filter.",
       "new": "Neu",
-      "clearFilters": "Filter zurücksetzen"
+      "clearFilters": "Filter zurücksetzen",
+      "board": "Board",
+      "allBoards": "Alle Boards"
     },
     "pagination": {
       "previous": "Vorherige Seite",
@@ -177,7 +178,7 @@
   },
   "addService": {
     "back": "← Zurück",
-    "title": "Dienst hinzufügen",
+    "title": "Monitor hinzufügen",
     "add": "Hinzufügen",
     "adding": "Wird hinzugefügt…",
     "somethingWrong": "Etwas ist schiefgelaufen.",
@@ -193,7 +194,14 @@
       "projectManagement": "Projektmanagement",
       "other": "Sonstiges"
     },
-    "subtitle": "Durchsuche den Katalog und beginne, einen neuen Dienst zu überwachen."
+    "subtitle": "Durchsuche den Katalog und beginne, einen neuen Dienst zu überwachen.",
+    "tabService": "Drittanbieter-Dienst",
+    "tabWebsite": "Website",
+    "websiteComingSoon": "Website-Überwachung kommt bald.",
+    "customToggle": "Nicht gefunden? Eigenen Host hinzufügen",
+    "customName": "Name",
+    "customHost": "Host",
+    "customCancel": "Abbrechen"
   },
   "landing": {
     "nav": {
@@ -260,7 +268,6 @@
     "noServices": "Es werden noch keine Dienste überwacht. Füge einen hinzu, um loszulegen."
   },
   "services": {
-    "title": "Meine Dienste",
     "monitoring": "Überwacht",
     "subtitle": "Behalte den Status der Dienste im Blick, auf die dein Team angewiesen ist."
   },

@@ -11,8 +11,7 @@
   },
   "nav": {
     "boards": "Boards",
-    "services": "Services",
-    "addService": "Add service",
+    "addService": "Add Monitor",
     "searchPlaceholder": "Search services…",
     "noServicesFound": "No services found.",
     "toggleTheme": "Toggle theme",
@@ -79,7 +78,9 @@
       "last30d": "Last 30 days",
       "noMatches": "No incidents match this filter.",
       "new": "New",
-      "clearFilters": "Clear filters"
+      "clearFilters": "Clear filters",
+      "board": "Board",
+      "allBoards": "All boards"
     },
     "pagination": {
       "previous": "Previous page",
@@ -177,7 +178,7 @@
   },
   "addService": {
     "back": "← Back",
-    "title": "Add a service",
+    "title": "Add a monitor",
     "add": "Add",
     "adding": "Adding…",
     "somethingWrong": "Something went wrong.",
@@ -193,7 +194,14 @@
       "projectManagement": "Project Management",
       "other": "Other"
     },
-    "subtitle": "Browse the catalog and start tracking a new service."
+    "subtitle": "Browse the catalog and start tracking a new service.",
+    "tabService": "3rd-party service",
+    "tabWebsite": "Website",
+    "websiteComingSoon": "Website monitoring is coming soon.",
+    "customToggle": "Can't find it? Add a custom host",
+    "customName": "Name",
+    "customHost": "Host",
+    "customCancel": "Cancel"
   },
   "landing": {
     "nav": {
@@ -260,7 +268,6 @@
     "noServices": "No services being monitored yet. Add one to get started."
   },
   "services": {
-    "title": "My services",
     "monitoring": "Monitoring",
     "subtitle": "Track the live status of the services your team depends on."
   },

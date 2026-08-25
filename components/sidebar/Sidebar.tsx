@@ -8,16 +8,7 @@ import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
 import Logo from "@/components/navbar/Logo";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
-import {
-  GearIcon,
-  GridIcon,
-  ActivityIcon,
-  AlertIcon,
-  WrenchIcon,
-  PlugIcon,
-  HistoryIcon,
-  BoardIcon,
-} from "@/components/icons/NavIcons";
+import { GearIcon, ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, HistoryIcon, BoardIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 
@@ -106,7 +97,7 @@ export default function Sidebar() {
 
       <div className={`flex w-full flex-col items-center gap-4 ${collapsed ? "" : "md:items-stretch md:gap-3"}`}>
         <SidebarNavLink href="/boards" icon={<BoardIcon className="shrink-0" />} label={t("nav.boards")} collapsed={collapsed} />
-        <SidebarNavLink href="/" icon={<GridIcon className="shrink-0" />} label={t("nav.services")} collapsed={collapsed} />
+        <SidebarNavLink href="/monitors" icon={<ActivityIcon className="shrink-0" />} label={t("nav.monitors")} collapsed={collapsed} />
         <SidebarNavLink
           href="/incidents"
           icon={<AlertIcon className="shrink-0" />}
@@ -122,7 +113,6 @@ export default function Sidebar() {
           collapsed={collapsed}
           badge={inProgressMaintenanceCount}
         />
-        <SidebarNavLink href="/monitors" icon={<ActivityIcon className="shrink-0" />} label={t("nav.monitors")} collapsed={collapsed} />
         <SidebarNavLink href="/integrations" icon={<PlugIcon className="shrink-0" />} label={t("nav.integrations")} collapsed={collapsed} />
         <SidebarNavLink href="/history" icon={<HistoryIcon className="shrink-0" />} label={t("nav.history")} collapsed={collapsed} />
       </div>

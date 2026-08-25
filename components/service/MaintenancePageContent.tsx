@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime } from "@/lib/formatTime";
+import type { Board } from "@/types/board";
 import type { TrackedMaintenance, TrackedMaintenanceSummary } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
@@ -20,7 +21,7 @@ import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
 import IncidentDetail from "@/components/service/IncidentDetail";
 
 type StatusFilter = "all" | "scheduled" | "in_progress";
-type DebouncedGroup = { status: StatusFilter; q: string };
+type DebouncedGroup = { status: StatusFilter; q: string; board: string };
 
 const PAGE_SIZE = 7;
 const DEBOUNCE_MS = 300;
@@ -33,6 +34,7 @@ function parseGroupFromSearchParams(searchParams: URLSearchParams): DebouncedGro
   return {
     status: (searchParams.get("status") as StatusFilter | null) ?? "all",
     q: searchParams.get("q") ?? "",
+    board: searchParams.get("board") ?? "",
   };
 }
 
@@ -40,7 +42,7 @@ function parseGroupFromSearchParams(searchParams: URLSearchParams): DebouncedGro
 // this ourselves" apart from "the URL genuinely changed" (back/forward, a
 // pasted link) — see the two sync effects below.
 function serializeGroup(g: DebouncedGroup): string {
-  return JSON.stringify([g.status, g.q]);
+  return JSON.stringify([g.status, g.q, g.board]);
 }
 
 // Every field omits itself from the URL at its default value, for a clean
@@ -50,11 +52,12 @@ function debouncedGroupPatch(g: DebouncedGroup): Record<string, string | null> {
   return {
     status: g.status === "all" ? null : g.status,
     q: g.q.trim() === "" ? null : g.q.trim(),
+    board: g.board === "" ? null : g.board,
     page: null,
   };
 }
 
-export default function MaintenancePageContent() {
+export default function MaintenancePageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -118,20 +121,23 @@ export default function MaintenancePageContent() {
   const detailError = currentResult ? "error" in currentResult : false;
 
   const trimmedServiceQuery = pendingFilters.q.trim().toLowerCase();
+  const selectedBoard = boards.find((board) => board.id === pendingFilters.board);
+  const boardSlugs = useMemo(() => (selectedBoard ? new Set(selectedBoard.serviceSlugs) : null), [selectedBoard]);
   const filteredMaintenances = useMemo(
     () =>
       maintenances
         .filter(
           (maintenance) =>
             matchesStatus(maintenance, pendingFilters.status) &&
-            (!trimmedServiceQuery || maintenance.service.name.toLowerCase().includes(trimmedServiceQuery)),
+            (!trimmedServiceQuery || maintenance.service.name.toLowerCase().includes(trimmedServiceQuery)) &&
+            (!boardSlugs || boardSlugs.has(maintenance.service.slug)),
         )
         .sort((a, b) => {
           const pinDiff = Number(pinned.has(b.id)) - Number(pinned.has(a.id));
           if (pinDiff !== 0) return pinDiff;
           return Number(isInProgressMaintenance(b)) - Number(isInProgressMaintenance(a));
         }),
-    [maintenances, pendingFilters, trimmedServiceQuery, pinned],
+    [maintenances, pendingFilters, trimmedServiceQuery, pinned, boardSlugs],
   );
 
   // Auto-selects the first *visible* maintenance, and only ever touches
@@ -159,10 +165,10 @@ export default function MaintenancePageContent() {
     router.replace(`/maintenance?${mergeParams(searchParams, patch).toString()}`, { scroll: false });
   }
 
-  const hasActiveFilters = pendingFilters.status !== "all" || pendingFilters.q.trim() !== "";
+  const hasActiveFilters = pendingFilters.status !== "all" || pendingFilters.q.trim() !== "" || pendingFilters.board !== "";
 
   function clearFilters() {
-    setPendingFilters({ status: "all", q: "" });
+    setPendingFilters({ status: "all", q: "", board: "" });
     updateParams({ page: null });
   }
 
@@ -226,6 +232,21 @@ export default function MaintenancePageContent() {
                   </option>
                 )}
               </select>
+              {boards.length > 0 && (
+                <select
+                  className="select select-bordered select-sm w-40"
+                  aria-label={t("incidents.filter.board")}
+                  value={pendingFilters.board}
+                  onChange={(e) => setPendingFilters((prev) => ({ ...prev, board: e.target.value }))}
+                >
+                  <option value="">{t("incidents.filter.allBoards")}</option>
+                  {boards.map((board) => (
+                    <option key={board.id} value={board.id}>
+                      {board.name}
+                    </option>
+                  ))}
+                </select>
+              )}
               {hasActiveFilters && (
                 <button type="button" onClick={clearFilters} className="btn btn-ghost btn-xs">
                   {t("incidents.filter.clearFilters")}

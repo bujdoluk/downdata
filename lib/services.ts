@@ -1,15 +1,15 @@
 import { getSupabaseClient } from "@/lib/supabase";
-import type { ServiceDefinition } from "@/types/service";
+import type { Service } from "@/types/service";
 import { getCatalog } from "@/lib/catalog";
 
-export async function getAllServices(): Promise<ServiceDefinition[]> {
+export async function getAllServices(): Promise<Service[]> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase.from("services").select("slug, name, host").order("name");
   if (error) throw error;
   return data ?? [];
 }
 
-export async function resolveServiceBySlug(slug: string): Promise<ServiceDefinition | undefined> {
+export async function resolveServiceBySlug(slug: string): Promise<Service | undefined> {
   const services = await getAllServices();
   const tracked = services.find((service) => service.slug === slug);
   if (tracked) return tracked;
@@ -25,7 +25,7 @@ function slugify(name: string): string {
     .replace(/(^-|-$)/g, "");
 }
 
-export async function addService(input: { name: string; host: string }): Promise<ServiceDefinition> {
+export async function addService(input: { name: string; host: string }): Promise<Service> {
   const services = await getAllServices();
   const catalog = await getCatalog();
   // Reuse the catalog's slug for this host when one exists, so a tracked
@@ -42,7 +42,7 @@ export async function addService(input: { name: string; host: string }): Promise
     slug = `${baseSlug}-${suffix++}`;
   }
 
-  const service: ServiceDefinition = { slug, name: input.name.trim(), host: input.host.trim() };
+  const service: Service = { slug, name: input.name.trim(), host: input.host.trim() };
   const supabase = getSupabaseClient();
   const { error } = await supabase.from("services").insert(service);
   if (error) throw error;

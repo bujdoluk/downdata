@@ -206,7 +206,7 @@
   "landing": {
     "nav": {
       "pricing": "Pricing",
-      "startTrial": "Start free trial"
+      "signUp": "Sign up"
     },
     "hero": {
       "eyebrow": "All monitored services operational",
@@ -272,21 +272,41 @@
     "subtitle": "Track the live status of the services your team depends on."
   },
   "auth": {
-    "signIn": "Sign in",
-    "signUp": "Sign up",
-    "email": "Email",
-    "password": "Password",
-    "submitting": "Please wait…",
-    "or": "or",
-    "continueWithGoogle": "Continue with Google",
-    "error": {
-      "invalid_credentials": "Incorrect email or password.",
-      "user_already_exists": "An account with that email already exists.",
-      "weak_password": "Password must be at least 6 characters.",
+    "loginTitle": "Welcome back",
+    "loginSubtitle": "Log in to keep watching your services.",
+    "signupTitle": "Create your account",
+    "signupSubtitle": "Start tracking the services your team depends on.",
+    "resetTitle": "Reset your password",
+    "resetSubtitle": "We'll email you a link to set a new password.",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "backToLogin": "Back to log in",
+    "goBack": "Go back",
+    "loginSubmit": "Log in",
+    "signupSubmit": "Sign up",
+    "resetSubmit": "Send reset link",
+    "resetLinkSent": "Check your email for a link to reset your password.",
+    "confirmEmailSent": "Check your email to confirm your account.",
+    "orDivider": "or",
+    "googleContinue": "Continue with Google",
+    "switchToSignup": "Don't have an account? <switchLink>Sign up</switchLink>",
+    "switchToLogin": "Already have an account? <switchLink>Log in</switchLink>",
+    "errors": {
+      "invalidCredentials": "Incorrect email or password.",
+      "emailInUse": "An account with that email already exists.",
+      "weakPassword": "Password must be at least 6 characters.",
       "generic": "Something went wrong. Please try again."
-    },
-    "message": {
-      "confirmEmailSent": "Check your email to confirm your account."
     }
+  },
+  "resetPassword": {
+    "title": "Set a new password",
+    "subtitle": "Choose a new password for your account.",
+    "passwordLabel": "New password",
+    "submit": "Update password",
+    "success": "Password updated. Redirecting…"
   }
 }

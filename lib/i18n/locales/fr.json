@@ -206,7 +206,7 @@
   "landing": {
     "nav": {
       "pricing": "Tarifs",
-      "startTrial": "Essai gratuit"
+      "signUp": "S'inscrire"
     },
     "hero": {
       "eyebrow": "Tous les services surveillés sont opérationnels",
@@ -272,21 +272,41 @@
     "subtitle": "Suivez en temps réel le statut des services dont dépend votre équipe."
   },
   "auth": {
-    "signIn": "Se connecter",
-    "signUp": "S'inscrire",
-    "email": "E-mail",
-    "password": "Mot de passe",
-    "submitting": "Un instant…",
-    "or": "ou",
-    "continueWithGoogle": "Continuer avec Google",
-    "error": {
-      "invalid_credentials": "E-mail ou mot de passe incorrect.",
-      "user_already_exists": "Un compte existe déjà avec cette adresse e-mail.",
-      "weak_password": "Le mot de passe doit contenir au moins 6 caractères.",
+    "loginTitle": "Content de vous revoir",
+    "loginSubtitle": "Connectez-vous pour continuer à surveiller vos services.",
+    "signupTitle": "Créez votre compte",
+    "signupSubtitle": "Commencez à surveiller les services dont dépend votre équipe.",
+    "resetTitle": "Réinitialiser votre mot de passe",
+    "resetSubtitle": "Nous vous enverrons un e-mail avec un lien pour définir un nouveau mot de passe.",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Mot de passe",
+    "showPassword": "Afficher le mot de passe",
+    "hidePassword": "Masquer le mot de passe",
+    "rememberMe": "Se souvenir de moi",
+    "forgotPassword": "Mot de passe oublié ?",
+    "backToLogin": "Retour à la connexion",
+    "goBack": "Retour",
+    "loginSubmit": "Se connecter",
+    "signupSubmit": "S'inscrire",
+    "resetSubmit": "Envoyer le lien de réinitialisation",
+    "resetLinkSent": "Consultez votre e-mail pour trouver le lien de réinitialisation du mot de passe.",
+    "confirmEmailSent": "Consultez votre e-mail pour confirmer votre compte.",
+    "orDivider": "ou",
+    "googleContinue": "Continuer avec Google",
+    "switchToSignup": "Pas encore de compte ? <switchLink>Inscrivez-vous</switchLink>",
+    "switchToLogin": "Déjà un compte ? <switchLink>Connectez-vous</switchLink>",
+    "errors": {
+      "invalidCredentials": "E-mail ou mot de passe incorrect.",
+      "emailInUse": "Un compte existe déjà avec cette adresse e-mail.",
+      "weakPassword": "Le mot de passe doit contenir au moins 6 caractères.",
       "generic": "Une erreur s'est produite. Veuillez réessayer."
-    },
-    "message": {
-      "confirmEmailSent": "Consultez votre e-mail pour confirmer votre compte."
     }
+  },
+  "resetPassword": {
+    "title": "Définissez un nouveau mot de passe",
+    "subtitle": "Choisissez un nouveau mot de passe pour votre compte.",
+    "passwordLabel": "Nouveau mot de passe",
+    "submit": "Mettre à jour le mot de passe",
+    "success": "Mot de passe mis à jour. Redirection…"
   }
 }

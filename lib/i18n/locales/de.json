@@ -206,7 +206,7 @@
   "landing": {
     "nav": {
       "pricing": "Preise",
-      "startTrial": "Kostenlos testen"
+      "signUp": "Registrieren"
     },
     "hero": {
       "eyebrow": "Alle überwachten Dienste funktionieren",
@@ -272,21 +272,41 @@
     "subtitle": "Behalte den Status der Dienste im Blick, auf die dein Team angewiesen ist."
   },
   "auth": {
-    "signIn": "Anmelden",
-    "signUp": "Registrieren",
-    "email": "E-Mail",
-    "password": "Passwort",
-    "submitting": "Einen Moment…",
-    "or": "oder",
-    "continueWithGoogle": "Mit Google fortfahren",
-    "error": {
-      "invalid_credentials": "Falsche E-Mail-Adresse oder falsches Passwort.",
-      "user_already_exists": "Für diese E-Mail-Adresse existiert bereits ein Konto.",
-      "weak_password": "Das Passwort muss mindestens 6 Zeichen lang sein.",
+    "loginTitle": "Willkommen zurück",
+    "loginSubtitle": "Melde dich an, um deine Dienste weiter zu überwachen.",
+    "signupTitle": "Konto erstellen",
+    "signupSubtitle": "Beginne, die Dienste zu überwachen, auf die dein Team angewiesen ist.",
+    "resetTitle": "Passwort zurücksetzen",
+    "resetSubtitle": "Wir schicken dir eine E-Mail mit einem Link zum Festlegen eines neuen Passworts.",
+    "emailLabel": "E-Mail",
+    "passwordLabel": "Passwort",
+    "showPassword": "Passwort anzeigen",
+    "hidePassword": "Passwort verbergen",
+    "rememberMe": "Angemeldet bleiben",
+    "forgotPassword": "Passwort vergessen?",
+    "backToLogin": "Zurück zur Anmeldung",
+    "goBack": "Zurück",
+    "loginSubmit": "Anmelden",
+    "signupSubmit": "Registrieren",
+    "resetSubmit": "Link zum Zurücksetzen senden",
+    "resetLinkSent": "Prüfe deine E-Mails auf einen Link zum Zurücksetzen deines Passworts.",
+    "confirmEmailSent": "Bestätige dein Konto über den Link in deiner E-Mail.",
+    "orDivider": "oder",
+    "googleContinue": "Mit Google fortfahren",
+    "switchToSignup": "Noch kein Konto? <switchLink>Registrieren</switchLink>",
+    "switchToLogin": "Schon ein Konto? <switchLink>Anmelden</switchLink>",
+    "errors": {
+      "invalidCredentials": "Falsche E-Mail-Adresse oder falsches Passwort.",
+      "emailInUse": "Für diese E-Mail-Adresse existiert bereits ein Konto.",
+      "weakPassword": "Das Passwort muss mindestens 6 Zeichen lang sein.",
       "generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
-    },
-    "message": {
-      "confirmEmailSent": "Bestätige dein Konto über den Link in deiner E-Mail."
     }
+  },
+  "resetPassword": {
+    "title": "Neues Passwort festlegen",
+    "subtitle": "Wähle ein neues Passwort für dein Konto.",
+    "passwordLabel": "Neues Passwort",
+    "submit": "Passwort aktualisieren",
+    "success": "Passwort aktualisiert. Du wirst weitergeleitet…"
   }
 }

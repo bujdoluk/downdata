@@ -206,7 +206,7 @@
   "landing": {
     "nav": {
       "pricing": "Priser",
-      "startTrial": "Kostnadsfri provperiod"
+      "signUp": "Registrera dig"
     },
     "hero": {
       "eyebrow": "Alla övervakade tjänster fungerar",
@@ -272,21 +272,41 @@
     "subtitle": "Följ statusen i realtid för tjänsterna ditt team är beroende av."
   },
   "auth": {
-    "signIn": "Logga in",
-    "signUp": "Registrera dig",
-    "email": "E-post",
-    "password": "Lösenord",
-    "submitting": "Ett ögonblick…",
-    "or": "eller",
-    "continueWithGoogle": "Fortsätt med Google",
-    "error": {
-      "invalid_credentials": "Fel e-postadress eller lösenord.",
-      "user_already_exists": "Det finns redan ett konto med den här e-postadressen.",
-      "weak_password": "Lösenordet måste vara minst 6 tecken.",
+    "loginTitle": "Välkommen tillbaka",
+    "loginSubtitle": "Logga in för att fortsätta övervaka dina tjänster.",
+    "signupTitle": "Skapa ditt konto",
+    "signupSubtitle": "Börja övervaka tjänsterna ditt team är beroende av.",
+    "resetTitle": "Återställ ditt lösenord",
+    "resetSubtitle": "Vi skickar ett mejl med en länk för att ange ett nytt lösenord.",
+    "emailLabel": "E-post",
+    "passwordLabel": "Lösenord",
+    "showPassword": "Visa lösenord",
+    "hidePassword": "Dölj lösenord",
+    "rememberMe": "Kom ihåg mig",
+    "forgotPassword": "Glömt lösenordet?",
+    "backToLogin": "Tillbaka till inloggning",
+    "goBack": "Tillbaka",
+    "loginSubmit": "Logga in",
+    "signupSubmit": "Registrera dig",
+    "resetSubmit": "Skicka återställningslänk",
+    "resetLinkSent": "Kontrollera din e-post för en länk för att återställa lösenordet.",
+    "confirmEmailSent": "Kontrollera din e-post för att bekräfta ditt konto.",
+    "orDivider": "eller",
+    "googleContinue": "Fortsätt med Google",
+    "switchToSignup": "Har du inget konto? <switchLink>Registrera dig</switchLink>",
+    "switchToLogin": "Har du redan ett konto? <switchLink>Logga in</switchLink>",
+    "errors": {
+      "invalidCredentials": "Fel e-postadress eller lösenord.",
+      "emailInUse": "Det finns redan ett konto med den här e-postadressen.",
+      "weakPassword": "Lösenordet måste vara minst 6 tecken.",
       "generic": "Något gick fel. Försök igen."
-    },
-    "message": {
-      "confirmEmailSent": "Kontrollera din e-post för att bekräfta ditt konto."
     }
+  },
+  "resetPassword": {
+    "title": "Ange ett nytt lösenord",
+    "subtitle": "Välj ett nytt lösenord för ditt konto.",
+    "passwordLabel": "Nytt lösenord",
+    "submit": "Uppdatera lösenord",
+    "success": "Lösenordet har uppdaterats. Omdirigerar…"
   }
 }

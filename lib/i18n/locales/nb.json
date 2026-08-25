@@ -206,7 +206,7 @@
   "landing": {
     "nav": {
       "pricing": "Priser",
-      "startTrial": "Start gratis prøveperiode"
+      "signUp": "Registrer deg"
     },
     "hero": {
       "eyebrow": "Alle overvåkede tjenester er i drift",
@@ -272,21 +272,41 @@
     "subtitle": "Følg statusen i sanntid for tjenestene teamet ditt er avhengig av."
   },
   "auth": {
-    "signIn": "Logg inn",
-    "signUp": "Registrer deg",
-    "email": "E-post",
-    "password": "Passord",
-    "submitting": "Et øyeblikk…",
-    "or": "eller",
-    "continueWithGoogle": "Fortsett med Google",
-    "error": {
-      "invalid_credentials": "Feil e-post eller passord.",
-      "user_already_exists": "Det finnes allerede en konto med denne e-postadressen.",
-      "weak_password": "Passordet må være minst 6 tegn.",
+    "loginTitle": "Velkommen tilbake",
+    "loginSubtitle": "Logg inn for å fortsette å overvåke tjenestene dine.",
+    "signupTitle": "Opprett kontoen din",
+    "signupSubtitle": "Begynn å overvåke tjenestene teamet ditt er avhengig av.",
+    "resetTitle": "Tilbakestill passordet ditt",
+    "resetSubtitle": "Vi sender deg en e-post med en lenke for å angi et nytt passord.",
+    "emailLabel": "E-post",
+    "passwordLabel": "Passord",
+    "showPassword": "Vis passord",
+    "hidePassword": "Skjul passord",
+    "rememberMe": "Husk meg",
+    "forgotPassword": "Glemt passord?",
+    "backToLogin": "Tilbake til innlogging",
+    "goBack": "Tilbake",
+    "loginSubmit": "Logg inn",
+    "signupSubmit": "Registrer deg",
+    "resetSubmit": "Send tilbakestillingslenke",
+    "resetLinkSent": "Sjekk e-posten din for en lenke for å tilbakestille passordet.",
+    "confirmEmailSent": "Sjekk e-posten din for å bekrefte kontoen.",
+    "orDivider": "eller",
+    "googleContinue": "Fortsett med Google",
+    "switchToSignup": "Har du ikke en konto? <switchLink>Registrer deg</switchLink>",
+    "switchToLogin": "Har du allerede en konto? <switchLink>Logg inn</switchLink>",
+    "errors": {
+      "invalidCredentials": "Feil e-post eller passord.",
+      "emailInUse": "Det finnes allerede en konto med denne e-postadressen.",
+      "weakPassword": "Passordet må være minst 6 tegn.",
       "generic": "Noe gikk galt. Prøv igjen."
-    },
-    "message": {
-      "confirmEmailSent": "Sjekk e-posten din for å bekrefte kontoen."
     }
+  },
+  "resetPassword": {
+    "title": "Angi et nytt passord",
+    "subtitle": "Velg et nytt passord for kontoen din.",
+    "passwordLabel": "Nytt passord",
+    "submit": "Oppdater passord",
+    "success": "Passordet er oppdatert. Omdirigerer…"
   }
 }

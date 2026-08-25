@@ -66,33 +66,36 @@ export async function notifyPendingEvents(): Promise<void> {
   const trackedSlugs = (await getAllServices()).map((service) => service.slug);
   if (trackedSlugs.length === 0) return;
 
-  // No time-window cutoff — that would silently drop anything older than
-  // the window if a cycle is ever delayed. Oldest-first with a bounded
-  // limit instead: a huge backlog just takes a few extra 1-minute cycles
-  // to clear, nothing is ever dropped. The delivery anti-join below is
-  // what actually guarantees "already handled" per channel.
-  const { data: events } = await supabase
-    .from("incident_events")
-    .select("*")
-    .in("service_slug", trackedSlugs)
-    .order("occurred_at", { ascending: true })
-    .limit(1000);
-  if (!events?.length) return;
-
-  const { data: deliveries } = await supabase
-    .from("incident_event_deliveries")
-    .select("event_id, integration_slug")
-    .in(
-      "event_id",
-      events.map((event) => event.id),
-    );
-  const delivered = new Set((deliveries ?? []).map((delivery) => `${delivery.event_id}:${delivery.integration_slug}`));
-
-  const pairs = integrations.flatMap((integration) =>
-    (events as IncidentEvent[])
-      .filter((event) => !delivered.has(`${event.id}:${integration.slug}`))
-      .map((event) => ({ integration, event })),
-  );
+  // One query per integration, each scoped to events that specific
+  // integration hasn't been delivered yet — a left-join anti-join via
+  // PostgREST embedding (the `!left` + `.is(..., null)` pair), not a
+  // second deliveries query diffed in JS. That older shape fetched the
+  // oldest 1000 *tracked* events every single cycle regardless of
+  // delivery status: harmless while the tracked backlog was small, but it
+  // meant re-reading the same already-delivered rows forever, and once
+  // that backlog passed 1000 rows nothing newer could ever surface again
+  // (the query never advanced past the oldest page). Filtering "pending"
+  // into the query itself fixes both — a caught-up integration reads
+  // ~nothing per cycle, and the result is bounded by actual backlog, not
+  // total history. No time-window cutoff still, for the same reason as
+  // before: a huge backlog just takes a few extra cycles to clear, nothing
+  // is ever silently dropped.
+  const pairs = (
+    await Promise.all(
+      integrations.map(async (integration) => {
+        const { data: events } = await supabase
+          .from("incident_events")
+          .select("*, incident_event_deliveries!left(event_id)")
+          .in("service_slug", trackedSlugs)
+          .eq("incident_event_deliveries.integration_slug", integration.slug)
+          .is("incident_event_deliveries.event_id", null)
+          .order("occurred_at", { ascending: true })
+          .limit(1000);
+        return (events as IncidentEvent[] | null)?.map((event) => ({ integration, event })) ?? [];
+      }),
+    )
+  ).flat();
+  if (pairs.length === 0) return;
 
   const sent: { event_id: string | number; integration_slug: string }[] = [];
   await runInBatches(pairs, SEND_CONCURRENCY, async ({ integration, event }) => {

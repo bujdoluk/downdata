@@ -206,7 +206,7 @@
   "landing": {
     "nav": {
       "pricing": "Prezzi",
-      "startTrial": "Prova gratuita"
+      "signUp": "Registrati"
     },
     "hero": {
       "eyebrow": "Tutti i servizi monitorati sono operativi",
@@ -272,21 +272,41 @@
     "subtitle": "Monitora in tempo reale lo stato dei servizi da cui dipende il tuo team."
   },
   "auth": {
-    "signIn": "Accedi",
-    "signUp": "Registrati",
-    "email": "Email",
-    "password": "Password",
-    "submitting": "Un momento…",
-    "or": "oppure",
-    "continueWithGoogle": "Continua con Google",
-    "error": {
-      "invalid_credentials": "Email o password non corretti.",
-      "user_already_exists": "Esiste già un account con questa email.",
-      "weak_password": "La password deve contenere almeno 6 caratteri.",
+    "loginTitle": "Bentornato",
+    "loginSubtitle": "Accedi per continuare a monitorare i tuoi servizi.",
+    "signupTitle": "Crea il tuo account",
+    "signupSubtitle": "Inizia a monitorare i servizi da cui dipende il tuo team.",
+    "resetTitle": "Reimposta la password",
+    "resetSubtitle": "Ti invieremo un'e-mail con un link per impostare una nuova password.",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "showPassword": "Mostra password",
+    "hidePassword": "Nascondi password",
+    "rememberMe": "Ricordami",
+    "forgotPassword": "Password dimenticata?",
+    "backToLogin": "Torna all'accesso",
+    "goBack": "Indietro",
+    "loginSubmit": "Accedi",
+    "signupSubmit": "Registrati",
+    "resetSubmit": "Invia link di reimpostazione",
+    "resetLinkSent": "Controlla la tua email per il link di reimpostazione della password.",
+    "confirmEmailSent": "Controlla la tua email per confermare l'account.",
+    "orDivider": "oppure",
+    "googleContinue": "Continua con Google",
+    "switchToSignup": "Non hai un account? <switchLink>Registrati</switchLink>",
+    "switchToLogin": "Hai già un account? <switchLink>Accedi</switchLink>",
+    "errors": {
+      "invalidCredentials": "Email o password non corretti.",
+      "emailInUse": "Esiste già un account con questa email.",
+      "weakPassword": "La password deve contenere almeno 6 caratteri.",
       "generic": "Qualcosa è andato storto. Riprova."
-    },
-    "message": {
-      "confirmEmailSent": "Controlla la tua email per confermare l'account."
     }
+  },
+  "resetPassword": {
+    "title": "Imposta una nuova password",
+    "subtitle": "Scegli una nuova password per il tuo account.",
+    "passwordLabel": "Nuova password",
+    "submit": "Aggiorna password",
+    "success": "Password aggiornata. Reindirizzamento…"
   }
 }

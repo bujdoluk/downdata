@@ -206,7 +206,7 @@
   "landing": {
     "nav": {
       "pricing": "Precios",
-      "startTrial": "Prueba gratuita"
+      "signUp": "Registrarse"
     },
     "hero": {
       "eyebrow": "Todos los servicios monitorizados están operativos",
@@ -272,21 +272,41 @@
     "subtitle": "Sigue en tiempo real el estado de los servicios de los que depende tu equipo."
   },
   "auth": {
-    "signIn": "Iniciar sesión",
-    "signUp": "Registrarse",
-    "email": "Correo electrónico",
-    "password": "Contraseña",
-    "submitting": "Un momento…",
-    "or": "o",
-    "continueWithGoogle": "Continuar con Google",
-    "error": {
-      "invalid_credentials": "Correo electrónico o contraseña incorrectos.",
-      "user_already_exists": "Ya existe una cuenta con ese correo electrónico.",
-      "weak_password": "La contraseña debe tener al menos 6 caracteres.",
+    "loginTitle": "Bienvenido de nuevo",
+    "loginSubtitle": "Inicia sesión para seguir vigilando tus servicios.",
+    "signupTitle": "Crea tu cuenta",
+    "signupSubtitle": "Empieza a monitorizar los servicios de los que depende tu equipo.",
+    "resetTitle": "Restablece tu contraseña",
+    "resetSubtitle": "Te enviaremos un enlace por correo para establecer una nueva contraseña.",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "rememberMe": "Recordarme",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "backToLogin": "Volver a iniciar sesión",
+    "goBack": "Volver",
+    "loginSubmit": "Iniciar sesión",
+    "signupSubmit": "Registrarse",
+    "resetSubmit": "Enviar enlace de restablecimiento",
+    "resetLinkSent": "Revisa tu correo para ver el enlace de restablecimiento de contraseña.",
+    "confirmEmailSent": "Revisa tu correo para confirmar tu cuenta.",
+    "orDivider": "o",
+    "googleContinue": "Continuar con Google",
+    "switchToSignup": "¿No tienes cuenta? <switchLink>Regístrate</switchLink>",
+    "switchToLogin": "¿Ya tienes cuenta? <switchLink>Inicia sesión</switchLink>",
+    "errors": {
+      "invalidCredentials": "Correo electrónico o contraseña incorrectos.",
+      "emailInUse": "Ya existe una cuenta con ese correo electrónico.",
+      "weakPassword": "La contraseña debe tener al menos 6 caracteres.",
       "generic": "Algo salió mal. Inténtalo de nuevo."
-    },
-    "message": {
-      "confirmEmailSent": "Revisa tu correo para confirmar tu cuenta."
     }
+  },
+  "resetPassword": {
+    "title": "Establece una nueva contraseña",
+    "subtitle": "Elige una nueva contraseña para tu cuenta.",
+    "passwordLabel": "Nueva contraseña",
+    "submit": "Actualizar contraseña",
+    "success": "Contraseña actualizada. Redirigiendo…"
   }
 }

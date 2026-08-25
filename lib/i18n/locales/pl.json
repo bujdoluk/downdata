@@ -218,7 +218,7 @@
   "landing": {
     "nav": {
       "pricing": "Cennik",
-      "startTrial": "Wypróbuj za darmo"
+      "signUp": "Zarejestruj się"
     },
     "hero": {
       "eyebrow": "Wszystkie monitorowane usługi działają poprawnie",
@@ -284,21 +284,41 @@
     "subtitle": "Śledź na żywo stan usług, od których zależy Twój zespół."
   },
   "auth": {
-    "signIn": "Zaloguj się",
-    "signUp": "Zarejestruj się",
-    "email": "E-mail",
-    "password": "Hasło",
-    "submitting": "Chwileczkę…",
-    "or": "lub",
-    "continueWithGoogle": "Kontynuuj z Google",
-    "error": {
-      "invalid_credentials": "Nieprawidłowy e-mail lub hasło.",
-      "user_already_exists": "Konto z tym adresem e-mail już istnieje.",
-      "weak_password": "Hasło musi mieć co najmniej 6 znaków.",
+    "loginTitle": "Witaj ponownie",
+    "loginSubtitle": "Zaloguj się, aby dalej monitorować swoje usługi.",
+    "signupTitle": "Utwórz konto",
+    "signupSubtitle": "Zacznij monitorować usługi, od których zależy Twój zespół.",
+    "resetTitle": "Zresetuj hasło",
+    "resetSubtitle": "Wyślemy Ci e-mail z linkiem do ustawienia nowego hasła.",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Hasło",
+    "showPassword": "Pokaż hasło",
+    "hidePassword": "Ukryj hasło",
+    "rememberMe": "Zapamiętaj mnie",
+    "forgotPassword": "Nie pamiętasz hasła?",
+    "backToLogin": "Powrót do logowania",
+    "goBack": "Wstecz",
+    "loginSubmit": "Zaloguj się",
+    "signupSubmit": "Zarejestruj się",
+    "resetSubmit": "Wyślij link resetujący",
+    "resetLinkSent": "Sprawdź e-mail, aby znaleźć link do zresetowania hasła.",
+    "confirmEmailSent": "Sprawdź e-mail, aby potwierdzić konto.",
+    "orDivider": "lub",
+    "googleContinue": "Kontynuuj z Google",
+    "switchToSignup": "Nie masz konta? <switchLink>Zarejestruj się</switchLink>",
+    "switchToLogin": "Masz już konto? <switchLink>Zaloguj się</switchLink>",
+    "errors": {
+      "invalidCredentials": "Nieprawidłowy e-mail lub hasło.",
+      "emailInUse": "Konto z tym adresem e-mail już istnieje.",
+      "weakPassword": "Hasło musi mieć co najmniej 6 znaków.",
       "generic": "Coś poszło nie tak. Spróbuj ponownie."
-    },
-    "message": {
-      "confirmEmailSent": "Sprawdź e-mail, aby potwierdzić konto."
     }
+  },
+  "resetPassword": {
+    "title": "Ustaw nowe hasło",
+    "subtitle": "Wybierz nowe hasło dla swojego konta.",
+    "passwordLabel": "Nowe hasło",
+    "submit": "Zaktualizuj hasło",
+    "success": "Hasło zaktualizowane. Przekierowywanie…"
   }
 }

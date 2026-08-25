@@ -206,7 +206,7 @@
   "landing": {
     "nav": {
       "pricing": "Prijzen",
-      "startTrial": "Gratis proefperiode"
+      "signUp": "Registreren"
     },
     "hero": {
       "eyebrow": "Alle gevolgde diensten zijn operationeel",
@@ -272,21 +272,41 @@
     "subtitle": "Volg live de status van de diensten waar je team op vertrouwt."
   },
   "auth": {
-    "signIn": "Inloggen",
-    "signUp": "Registreren",
-    "email": "E-mail",
-    "password": "Wachtwoord",
-    "submitting": "Een moment…",
-    "or": "of",
-    "continueWithGoogle": "Doorgaan met Google",
-    "error": {
-      "invalid_credentials": "Onjuiste e-mail of wachtwoord.",
-      "user_already_exists": "Er bestaat al een account met dit e-mailadres.",
-      "weak_password": "Wachtwoord moet minimaal 6 tekens bevatten.",
+    "loginTitle": "Welkom terug",
+    "loginSubtitle": "Log in om je diensten te blijven volgen.",
+    "signupTitle": "Maak je account aan",
+    "signupSubtitle": "Begin met het volgen van de diensten waar je team op vertrouwt.",
+    "resetTitle": "Wachtwoord opnieuw instellen",
+    "resetSubtitle": "We sturen je een e-mail met een link om een nieuw wachtwoord in te stellen.",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Wachtwoord",
+    "showPassword": "Wachtwoord tonen",
+    "hidePassword": "Wachtwoord verbergen",
+    "rememberMe": "Onthoud mij",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "backToLogin": "Terug naar inloggen",
+    "goBack": "Terug",
+    "loginSubmit": "Inloggen",
+    "signupSubmit": "Registreren",
+    "resetSubmit": "Herstellink versturen",
+    "resetLinkSent": "Controleer je e-mail voor een link om je wachtwoord opnieuw in te stellen.",
+    "confirmEmailSent": "Controleer je e-mail om je account te bevestigen.",
+    "orDivider": "of",
+    "googleContinue": "Doorgaan met Google",
+    "switchToSignup": "Nog geen account? <switchLink>Registreren</switchLink>",
+    "switchToLogin": "Al een account? <switchLink>Inloggen</switchLink>",
+    "errors": {
+      "invalidCredentials": "Onjuiste e-mail of wachtwoord.",
+      "emailInUse": "Er bestaat al een account met dit e-mailadres.",
+      "weakPassword": "Wachtwoord moet minimaal 6 tekens bevatten.",
       "generic": "Er is iets misgegaan. Probeer het opnieuw."
-    },
-    "message": {
-      "confirmEmailSent": "Controleer je e-mail om je account te bevestigen."
     }
+  },
+  "resetPassword": {
+    "title": "Stel een nieuw wachtwoord in",
+    "subtitle": "Kies een nieuw wachtwoord voor je account.",
+    "passwordLabel": "Nieuw wachtwoord",
+    "submit": "Wachtwoord bijwerken",
+    "success": "Wachtwoord bijgewerkt. Je wordt doorgestuurd…"
   }
 }

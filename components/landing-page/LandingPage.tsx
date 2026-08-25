@@ -80,10 +80,10 @@ export default function LandingPage() {
             <a href="#pricing" className="text-base-content/70 hover:text-base-content transition-colors">
               {t("landing.nav.pricing")}
             </a>
-            <LanguageSwitcher />
-            <Link href="/boards" className="btn btn-sm rounded-full">
-              {t("landing.nav.startTrial")}
+            <Link href="/login?mode=signup" className="text-base-content/70 hover:text-base-content transition-colors">
+              {t("landing.nav.signUp")}
             </Link>
+            <LanguageSwitcher />
           </div>
         </div>
       </nav>

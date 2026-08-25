@@ -206,7 +206,7 @@
   "landing": {
     "nav": {
       "pricing": "Preços",
-      "startTrial": "Iniciar teste gratuito"
+      "signUp": "Criar conta"
     },
     "hero": {
       "eyebrow": "Todos os serviços monitorizados estão operacionais",
@@ -272,21 +272,41 @@
     "subtitle": "Acompanhe em tempo real o estado dos serviços de que a sua equipa depende."
   },
   "auth": {
-    "signIn": "Iniciar sessão",
-    "signUp": "Criar conta",
-    "email": "E-mail",
-    "password": "Palavra-passe",
-    "submitting": "Aguarde…",
-    "or": "ou",
-    "continueWithGoogle": "Continuar com o Google",
-    "error": {
-      "invalid_credentials": "E-mail ou palavra-passe incorretos.",
-      "user_already_exists": "Já existe uma conta com este e-mail.",
-      "weak_password": "A palavra-passe deve ter pelo menos 6 carateres.",
+    "loginTitle": "Bem-vindo de volta",
+    "loginSubtitle": "Inicie sessão para continuar a acompanhar os seus serviços.",
+    "signupTitle": "Crie a sua conta",
+    "signupSubtitle": "Comece a acompanhar os serviços de que a sua equipa depende.",
+    "resetTitle": "Redefina a sua palavra-passe",
+    "resetSubtitle": "Vamos enviar-lhe um e-mail com uma ligação para definir uma nova palavra-passe.",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Palavra-passe",
+    "showPassword": "Mostrar palavra-passe",
+    "hidePassword": "Ocultar palavra-passe",
+    "rememberMe": "Lembrar-me",
+    "forgotPassword": "Esqueceu-se da palavra-passe?",
+    "backToLogin": "Voltar ao início de sessão",
+    "goBack": "Voltar",
+    "loginSubmit": "Iniciar sessão",
+    "signupSubmit": "Criar conta",
+    "resetSubmit": "Enviar ligação de redefinição",
+    "resetLinkSent": "Verifique o seu e-mail para a ligação de redefinição da palavra-passe.",
+    "confirmEmailSent": "Verifique o seu e-mail para confirmar a conta.",
+    "orDivider": "ou",
+    "googleContinue": "Continuar com o Google",
+    "switchToSignup": "Ainda não tem conta? <switchLink>Crie uma</switchLink>",
+    "switchToLogin": "Já tem conta? <switchLink>Inicie sessão</switchLink>",
+    "errors": {
+      "invalidCredentials": "E-mail ou palavra-passe incorretos.",
+      "emailInUse": "Já existe uma conta com este e-mail.",
+      "weakPassword": "A palavra-passe deve ter pelo menos 6 carateres.",
       "generic": "Algo correu mal. Tente novamente."
-    },
-    "message": {
-      "confirmEmailSent": "Verifique o seu e-mail para confirmar a conta."
     }
+  },
+  "resetPassword": {
+    "title": "Defina uma nova palavra-passe",
+    "subtitle": "Escolha uma nova palavra-passe para a sua conta.",
+    "passwordLabel": "Nova palavra-passe",
+    "submit": "Atualizar palavra-passe",
+    "success": "Palavra-passe atualizada. A redirecionar…"
   }
 }

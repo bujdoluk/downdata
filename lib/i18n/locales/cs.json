@@ -212,7 +212,7 @@
   "landing": {
     "nav": {
       "pricing": "Ceník",
-      "startTrial": "Vyzkoušet zdarma"
+      "signUp": "Zaregistrovat se"
     },
     "hero": {
       "eyebrow": "Všechny sledované služby fungují",
@@ -278,21 +278,41 @@
     "subtitle": "Sledujte stav služeb, na kterých závisí váš tým."
   },
   "auth": {
-    "signIn": "Přihlásit se",
-    "signUp": "Zaregistrovat se",
-    "email": "E-mail",
-    "password": "Heslo",
-    "submitting": "Chvíli strpení…",
-    "or": "nebo",
-    "continueWithGoogle": "Pokračovat přes Google",
-    "error": {
-      "invalid_credentials": "Nesprávný e-mail nebo heslo.",
-      "user_already_exists": "Účet s tímto e-mailem už existuje.",
-      "weak_password": "Heslo musí mít alespoň 6 znaků.",
+    "loginTitle": "Vítejte zpět",
+    "loginSubtitle": "Přihlaste se a sledujte své služby dál.",
+    "signupTitle": "Vytvořte si účet",
+    "signupSubtitle": "Začněte sledovat služby, na které se spoléhá váš tým.",
+    "resetTitle": "Obnovení hesla",
+    "resetSubtitle": "Pošleme vám e-mail s odkazem na nastavení nového hesla.",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Heslo",
+    "showPassword": "Zobrazit heslo",
+    "hidePassword": "Skrýt heslo",
+    "rememberMe": "Zapamatovat si mě",
+    "forgotPassword": "Zapomněli jste heslo?",
+    "backToLogin": "Zpět na přihlášení",
+    "goBack": "Zpět",
+    "loginSubmit": "Přihlásit se",
+    "signupSubmit": "Zaregistrovat se",
+    "resetSubmit": "Odeslat odkaz na obnovení",
+    "resetLinkSent": "Zkontrolujte e-mail, kde najdete odkaz na obnovení hesla.",
+    "confirmEmailSent": "Zkontrolujte e-mail a potvrďte svůj účet.",
+    "orDivider": "nebo",
+    "googleContinue": "Pokračovat přes Google",
+    "switchToSignup": "Nemáte účet? <switchLink>Zaregistrujte se</switchLink>",
+    "switchToLogin": "Už máte účet? <switchLink>Přihlaste se</switchLink>",
+    "errors": {
+      "invalidCredentials": "Nesprávný e-mail nebo heslo.",
+      "emailInUse": "Účet s tímto e-mailem už existuje.",
+      "weakPassword": "Heslo musí mít alespoň 6 znaků.",
       "generic": "Něco se pokazilo. Zkuste to prosím znovu."
-    },
-    "message": {
-      "confirmEmailSent": "Zkontrolujte e-mail a potvrďte svůj účet."
     }
+  },
+  "resetPassword": {
+    "title": "Nastavte nové heslo",
+    "subtitle": "Zvolte si nové heslo pro svůj účet.",
+    "passwordLabel": "Nové heslo",
+    "submit": "Aktualizovat heslo",
+    "success": "Heslo bylo aktualizováno. Přesměrováváme vás…"
   }
 }

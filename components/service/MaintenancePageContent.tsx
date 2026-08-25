@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime } from "@/lib/formatTime";
@@ -9,12 +8,14 @@ import type { Board } from "@/types/board";
 import type { TrackedMaintenance, TrackedMaintenanceSummary } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
-import { PinIcon } from "@/components/icons/NavIcons";
 import Spinner from "@/components/Spinner";
+import BoardFilterSelect from "@/components/service/BoardFilterSelect";
+import PinButton from "@/components/service/PinButton";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
-import { useDebouncedValue } from "@/lib/useDebouncedValue";
-import { mergeParams } from "@/lib/mergeParams";
+import { useDebouncedUrlFilters } from "@/lib/useDebouncedUrlFilters";
+import { useSelectAndScrollOnMobile } from "@/lib/useSelectAndScrollOnMobile";
+import { useAutoSelectFirstId } from "@/lib/useAutoSelectFirstId";
 import { usePagination } from "@/lib/usePagination";
 import Pagination from "@/components/Pagination";
 import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
@@ -59,17 +60,20 @@ function debouncedGroupPatch(g: DebouncedGroup): Record<string, string | null> {
 
 export default function MaintenancePageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const { data, error } = usePolledFetch<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance");
   const { pinned, togglePin } = usePinned("pinnedMaintenance");
 
-  const [pendingFilters, setPendingFilters] = useState<DebouncedGroup>(() => parseGroupFromSearchParams(searchParams));
-  const lastWrittenRef = useRef(serializeGroup(pendingFilters));
-  const debounced = useDebouncedValue(pendingFilters, DEBOUNCE_MS);
+  const { pendingFilters, setPendingFilters, updateParams, searchParams } = useDebouncedUrlFilters({
+    path: "/maintenance",
+    parse: parseGroupFromSearchParams,
+    serialize: serializeGroup,
+    toPatch: debouncedGroupPatch,
+    debounceMs: DEBOUNCE_MS,
+  });
 
   const [result, setResult] = useState<{ id: string; maintenance: TrackedMaintenance } | { id: string; error: true } | null>(null);
   const detailRef = useRef<HTMLDivElement>(null);
+  const selectMaintenance = useSelectAndScrollOnMobile("/maintenance", detailRef);
 
   const isLoading = !data && !error;
   const maintenances = useMemo(() => data?.maintenances ?? [], [data]);
@@ -77,25 +81,6 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   const page = Number(searchParams.get("page") ?? "1");
   const selectedMaintenance = maintenances.find((maintenance) => maintenance.id === selectedId);
   const selectedServiceSlug = selectedMaintenance?.service.slug;
-
-  // pendingFilters -> URL, only once it's settled for DEBOUNCE_MS.
-  useEffect(() => {
-    const serialized = serializeGroup(debounced);
-    if (serialized === lastWrittenRef.current) return;
-    lastWrittenRef.current = serialized;
-    const next = mergeParams(searchParams, debouncedGroupPatch(debounced));
-    router.replace(`/maintenance?${next.toString()}`, { scroll: false });
-  }, [debounced, searchParams, router]);
-
-  // URL -> pendingFilters, for changes we didn't just make ourselves
-  // (back/forward button, a pasted link with filters already in it).
-  useEffect(() => {
-    const parsed = parseGroupFromSearchParams(searchParams);
-    const serialized = serializeGroup(parsed);
-    if (serialized === lastWrittenRef.current) return;
-    lastWrittenRef.current = serialized;
-    setPendingFilters(parsed);
-  }, [searchParams]);
 
   // Full timeline for whichever maintenance is selected, fetched
   // separately — see IncidentsPageContent's identical detail-fetch effect
@@ -140,30 +125,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
     [maintenances, pendingFilters, trimmedServiceQuery, pinned, boardSlugs],
   );
 
-  // Auto-selects the first *visible* maintenance, and only ever touches
-  // `id` — merged into the existing query string so a filter set from a
-  // shared link survives landing on the page with nothing selected yet.
-  useEffect(() => {
-    if (!selectedId && filteredMaintenances.length > 0) {
-      const next = mergeParams(searchParams, { id: filteredMaintenances[0]!.id });
-      router.replace(`/maintenance?${next.toString()}`, { scroll: false });
-    }
-  }, [selectedId, filteredMaintenances, searchParams, router]);
-
-  function selectMaintenance(id: string) {
-    const next = mergeParams(searchParams, { id });
-    router.push(`/maintenance?${next.toString()}`, { scroll: false });
-    // Below the lg breakpoint the list and detail stack vertically — without
-    // this, picking a maintenance near the top of the list leaves the
-    // detail pane rendering off-screen with nothing to indicate it changed.
-    if (window.innerWidth < 1024) {
-      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }
-
-  function updateParams(patch: Record<string, string | null>) {
-    router.replace(`/maintenance?${mergeParams(searchParams, patch).toString()}`, { scroll: false });
-  }
+  useAutoSelectFirstId("/maintenance", selectedId, filteredMaintenances);
 
   const hasActiveFilters = pendingFilters.status !== "all" || pendingFilters.q.trim() !== "" || pendingFilters.board !== "";
 
@@ -232,21 +194,11 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
                   </option>
                 )}
               </select>
-              {boards.length > 0 && (
-                <select
-                  className="select select-bordered select-sm w-40"
-                  aria-label={t("incidents.filter.board")}
-                  value={pendingFilters.board}
-                  onChange={(e) => setPendingFilters((prev) => ({ ...prev, board: e.target.value }))}
-                >
-                  <option value="">{t("incidents.filter.allBoards")}</option>
-                  {boards.map((board) => (
-                    <option key={board.id} value={board.id}>
-                      {board.name}
-                    </option>
-                  ))}
-                </select>
-              )}
+              <BoardFilterSelect
+                boards={boards}
+                value={pendingFilters.board}
+                onChange={(board) => setPendingFilters((prev) => ({ ...prev, board }))}
+              />
               {hasActiveFilters && (
                 <button type="button" onClick={clearFilters} className="btn btn-ghost btn-xs">
                   {t("incidents.filter.clearFilters")}
@@ -292,14 +244,12 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
                           {formatDateTime(maintenance.scheduled_for)} – {formatDateTime(maintenance.scheduled_until)}
                         </p>
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => togglePin(maintenance.id)}
-                        aria-label={t(pinned.has(maintenance.id) ? "maintenances.unpin" : "maintenances.pin")}
-                        className="text-base-content/40 hover:text-base-content absolute top-3 right-3 z-10 transition-transform hover:scale-110 active:scale-90"
-                      >
-                        <PinIcon className="h-4 w-4" filled={pinned.has(maintenance.id)} />
-                      </button>
+                      <PinButton
+                        pinned={pinned.has(maintenance.id)}
+                        onToggle={() => togglePin(maintenance.id)}
+                        ariaLabel={t(pinned.has(maintenance.id) ? "maintenances.unpin" : "maintenances.pin")}
+                        className="absolute top-3 right-3 z-10"
+                      />
                     </li>
                   );
                 })}

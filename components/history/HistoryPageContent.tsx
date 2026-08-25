@@ -15,9 +15,11 @@ import type { IncidentCountByService } from "@/lib/getStoredIncident";
 import IncidentCalendar from "@/components/history/IncidentCalendar";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import ServiceSearchPicker from "@/components/service/ServiceSearchPicker";
+import BoardFilterSelect from "@/components/service/BoardFilterSelect";
+import ImpactFilterCheckboxes from "@/components/service/ImpactFilterCheckboxes";
 import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
-import { INDICATOR_STYLES, FALLBACK_STYLE, IMPACT_CHECKBOX_COLOR, ALL_IMPACTS } from "@/components/service/statusStyles";
+import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/service/statusStyles";
 import Spinner from "@/components/Spinner";
 
 const CURRENT_YEAR = Temporal.Now.plainDateISO().year;
@@ -157,21 +159,7 @@ export default function HistoryPageContent({
       <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div>
           <div className="flex flex-wrap items-center gap-4">
-            {boards.length > 0 && (
-              <select
-                className="select select-bordered select-sm w-40"
-                aria-label={t("incidents.filter.board")}
-                value={boardId}
-                onChange={(e) => selectBoard(e.target.value)}
-              >
-                <option value="">{t("incidents.filter.allBoards")}</option>
-                {boards.map((board) => (
-                  <option key={board.id} value={board.id}>
-                    {board.name}
-                  </option>
-                ))}
-              </select>
-            )}
+            <BoardFilterSelect boards={boards} value={boardId} onChange={selectBoard} />
             <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
           </div>
 
@@ -202,18 +190,7 @@ export default function HistoryPageContent({
               </div>
 
               <div className="mt-4 flex flex-wrap justify-end gap-3">
-                {ALL_IMPACTS.map((impact) => (
-                  <label key={impact} className="label cursor-pointer gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      className={`checkbox checkbox-sm text-white ${IMPACT_CHECKBOX_COLOR[impact]}`}
-                      checked={selectedImpacts.has(impact)}
-                      onChange={() => toggleImpact(impact)}
-                    />
-                    {/* impact comes from Object.keys(IMPACT_CHECKBOX_COLOR), a subset of INDICATOR_STYLES's keys, so the lookup always hits */}
-                    {t(INDICATOR_STYLES[impact]!.labelKey)}
-                  </label>
-                ))}
+                <ImpactFilterCheckboxes selected={selectedImpacts} onToggle={toggleImpact} />
                 <span className="label gap-2 text-sm">
                   <span className="bg-base-content/10 outline-info h-4 w-4 rounded-sm outline-2 outline-offset-1" />
                   {t("history.today")}

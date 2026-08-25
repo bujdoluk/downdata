@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { resolveBoardById } from "@/lib/boards";
-import { getAllServices } from "@/lib/services";
 import { getCatalog } from "@/lib/catalog";
 import BoardDetailContent from "@/components/boards/BoardDetailContent";
 
@@ -19,12 +18,11 @@ export default async function BoardPage({ params }: { params: Promise<{ id: stri
     notFound();
   }
 
-  const [services, catalog] = await Promise.all([getAllServices(), getCatalog()]);
-  const trackedHosts = services.map((service) => service.host);
+  const catalog = await getCatalog();
 
   return (
     <main className="flex flex-1 justify-center p-6">
-      <BoardDetailContent board={board} catalog={catalog} trackedHosts={trackedHosts} />
+      <BoardDetailContent board={board} catalog={catalog} />
     </main>
   );
 }

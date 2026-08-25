@@ -8,30 +8,23 @@ import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
 import type { CatalogEntry } from "@/types/service";
 import { useCatalogStatus } from "@/lib/useCatalogStatus";
-import { notifyServicesChanged } from "@/lib/servicesChanged";
 import { useBoardRename } from "@/lib/useBoardRename";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
-import CatalogBrowser from "@/components/service/CatalogBrowser";
 import StatusSummary from "@/components/service/StatusSummary";
 import Spinner from "@/components/Spinner";
 
 export default function BoardDetailContent({
   board,
   catalog,
-  trackedHosts,
 }: {
   board: Board;
   catalog: CatalogEntry[];
-  trackedHosts: string[];
 }) {
   const { t } = useTranslation();
   const router = useRouter();
   const { data, fetchFailed } = useCatalogStatus();
   const [removingSlug, setRemovingSlug] = useState<string | null>(null);
-  const [pendingHost, setPendingHost] = useState<string | null>(null);
-  const [addedHosts, setAddedHosts] = useState<Set<string>>(new Set());
   const rename = useBoardRename(board);
-  const [query, setQuery] = useState("");
   const [deleting, setDeleting] = useState(false);
   const confirmRef = useRef<HTMLDialogElement>(null);
 
@@ -46,43 +39,6 @@ export default function BoardDetailContent({
       if (indicator === "critical" || indicator === "major" || indicator === "minor" || indicator === "none") {
         overviewCounts[indicator]++;
       }
-    }
-  }
-
-  // Already-on-the-board entries are shown in the browse column too, not
-  // filtered out — merging board membership into the "added" set is what
-  // makes CatalogServiceCard's existing disabled-"Added" state stick
-  // permanently instead of the card just vanishing once the board actually
-  // contains it.
-  const mergedAddedHosts = new Set([...addedHosts, ...onBoardEntries.map((entry) => entry.host)]);
-
-  async function handleAdd(entry: CatalogEntry) {
-    setPendingHost(entry.host);
-    try {
-      // Untracked services get tracked here in the same click — services.ts's
-      // addService dedupes by generated slug, not host, so this check is what
-      // keeps an already-tracked host from being tracked a second time.
-      if (!trackedHosts.includes(entry.host)) {
-        const trackRes = await fetch("/api/services", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: entry.name, host: entry.host }),
-        });
-        if (!trackRes.ok) return;
-        notifyServicesChanged();
-      }
-
-      const res = await fetch(`/api/boards/${board.id}/services`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug: entry.slug }),
-      });
-      if (res.ok) {
-        setAddedHosts((prev) => new Set(prev).add(entry.host));
-        router.refresh();
-      }
-    } finally {
-      setPendingHost(null);
     }
   }
 
@@ -187,44 +143,14 @@ export default function BoardDetailContent({
 
       {onBoardEntries.length > 0 && <StatusSummary counts={overviewCounts} isLoading={!data && !fetchFailed} />}
 
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder={t("nav.searchPlaceholder")}
-        className="input input-bordered input-sm mt-4 w-full max-w-sm"
-      />
+      <div className="mt-6">
+        <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("boards.onBoard")}</h2>
 
-      <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-3 lg:grid-cols-3">
-        {/* Explicit row/column placement, not DOM order, is what actually
-            aligns the card rows: "On this board" gets its own row (1) so
-            it doesn't push its cards down past where the category/service
-            columns start — those have no heading of their own, so without
-            this they'd start a row higher than the on-board cards. DOM
-            order stays heading-then-cards so mobile's single-column stack
-            still reads top to bottom correctly; only lg: reassigns rows. */}
-        <div className="lg:col-start-1 lg:col-span-2 lg:row-start-2">
-          <CatalogBrowser
-            catalog={catalog}
-            trackedHosts={trackedHosts}
-            data={data}
-            fetchFailed={fetchFailed}
-            pendingHost={pendingHost}
-            addedHosts={mergedAddedHosts}
-            onAdd={handleAdd}
-            query={query}
-          />
-        </div>
-
-        <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase lg:col-start-3 lg:row-start-1">
-          {t("boards.onBoard")}
-        </h2>
-
-        <div className="lg:col-start-3 lg:row-start-2">
+        <div className="mt-3">
           {onBoardEntries.length === 0 ? (
             <p className="text-base-content/50 text-sm">{t("boards.noServicesOnBoard")}</p>
           ) : (
-            <div className="grid grid-cols-1 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               <CatalogServiceGrid
                 catalog={onBoardEntries}
                 trackedHosts={[]}

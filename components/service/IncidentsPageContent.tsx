@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, formatDuration, minutesBetween, msSince } from "@/lib/formatTime";
@@ -9,14 +8,17 @@ import type { Board } from "@/types/board";
 import type { TrackedIncident, TrackedIncidentSummary } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
-import { INDICATOR_STYLES, FALLBACK_STYLE, IMPACT_CHECKBOX_COLOR, ALL_IMPACTS } from "@/components/service/statusStyles";
+import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/service/statusStyles";
 import Spinner from "@/components/Spinner";
-import { PinIcon } from "@/components/icons/NavIcons";
+import BoardFilterSelect from "@/components/service/BoardFilterSelect";
+import ImpactFilterCheckboxes from "@/components/service/ImpactFilterCheckboxes";
+import PinButton from "@/components/service/PinButton";
 import { usePolledFetch } from "@/lib/usePolledFetch";
 import { usePinned } from "@/lib/usePinned";
 import { useIncidentsLastViewed } from "@/lib/useIncidentsLastViewed";
-import { useDebouncedValue } from "@/lib/useDebouncedValue";
-import { mergeParams } from "@/lib/mergeParams";
+import { useDebouncedUrlFilters } from "@/lib/useDebouncedUrlFilters";
+import { useSelectAndScrollOnMobile } from "@/lib/useSelectAndScrollOnMobile";
+import { useAutoSelectFirstId } from "@/lib/useAutoSelectFirstId";
 import { parseImpacts, serializeImpacts } from "@/lib/impactsParam";
 import { usePagination } from "@/lib/usePagination";
 import Pagination from "@/components/Pagination";
@@ -81,18 +83,21 @@ function debouncedGroupPatch(g: DebouncedGroup): Record<string, string | null> {
 
 export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const { data, error } = usePolledFetch<{ incidents: TrackedIncidentSummary[] }>("/api/incidents");
   const { pinned, togglePin } = usePinned("pinnedIncidents");
   const lastViewed = useIncidentsLastViewed(true);
 
-  const [pendingFilters, setPendingFilters] = useState<DebouncedGroup>(() => parseGroupFromSearchParams(searchParams));
-  const lastWrittenRef = useRef(serializeGroup(pendingFilters));
-  const debounced = useDebouncedValue(pendingFilters, DEBOUNCE_MS);
+  const { pendingFilters, setPendingFilters, updateParams, searchParams } = useDebouncedUrlFilters({
+    path: "/incidents",
+    parse: parseGroupFromSearchParams,
+    serialize: serializeGroup,
+    toPatch: debouncedGroupPatch,
+    debounceMs: DEBOUNCE_MS,
+  });
 
   const [result, setResult] = useState<{ id: string; incident: TrackedIncident } | { id: string; error: true } | null>(null);
   const detailRef = useRef<HTMLDivElement>(null);
+  const selectIncident = useSelectAndScrollOnMobile("/incidents", detailRef);
 
   const isLoading = !data && !error;
   const incidents = useMemo(() => data?.incidents ?? [], [data]);
@@ -101,25 +106,6 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   const onlyNew = searchParams.get("new") === "1";
   const selectedIncident = incidents.find((incident) => incident.id === selectedId);
   const selectedServiceSlug = selectedIncident?.service.slug;
-
-  // pendingFilters -> URL, only once it's settled for DEBOUNCE_MS.
-  useEffect(() => {
-    const serialized = serializeGroup(debounced);
-    if (serialized === lastWrittenRef.current) return;
-    lastWrittenRef.current = serialized;
-    const next = mergeParams(searchParams, debouncedGroupPatch(debounced));
-    router.replace(`/incidents?${next.toString()}`, { scroll: false });
-  }, [debounced, searchParams, router]);
-
-  // URL -> pendingFilters, for changes we didn't just make ourselves
-  // (back/forward button, a pasted link with filters already in it).
-  useEffect(() => {
-    const parsed = parseGroupFromSearchParams(searchParams);
-    const serialized = serializeGroup(parsed);
-    if (serialized === lastWrittenRef.current) return;
-    lastWrittenRef.current = serialized;
-    setPendingFilters(parsed);
-  }, [searchParams]);
 
   // Full timeline for whichever incident is selected, fetched separately —
   // the list response deliberately omits incident_updates (see
@@ -167,30 +153,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
     [incidents, pendingFilters, trimmedServiceQuery, onlyNew, lastViewed, pinned, boardSlugs],
   );
 
-  // Auto-selects the first *visible* incident, and only ever touches `id` —
-  // merged into the existing query string so a filter set from a shared
-  // link survives landing on the page with nothing selected yet.
-  useEffect(() => {
-    if (!selectedId && filteredIncidents.length > 0) {
-      const next = mergeParams(searchParams, { id: filteredIncidents[0]!.id });
-      router.replace(`/incidents?${next.toString()}`, { scroll: false });
-    }
-  }, [selectedId, filteredIncidents, searchParams, router]);
-
-  function selectIncident(id: string) {
-    const next = mergeParams(searchParams, { id });
-    router.push(`/incidents?${next.toString()}`, { scroll: false });
-    // Below the lg breakpoint the list and detail stack vertically — without
-    // this, picking an incident near the top of the list leaves the detail
-    // pane rendering off-screen with nothing to indicate it changed.
-    if (window.innerWidth < 1024) {
-      detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }
-
-  function updateParams(patch: Record<string, string | null>) {
-    router.replace(`/incidents?${mergeParams(searchParams, patch).toString()}`, { scroll: false });
-  }
+  useAutoSelectFirstId("/incidents", selectedId, filteredIncidents);
 
   function toggleImpact(impact: string) {
     setPendingFilters((prev) => {
@@ -281,21 +244,11 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
                   </option>
                 ))}
               </select>
-              {boards.length > 0 && (
-                <select
-                  className="select select-bordered select-sm w-40"
-                  aria-label={t("incidents.filter.board")}
-                  value={pendingFilters.board}
-                  onChange={(e) => setPendingFilters((prev) => ({ ...prev, board: e.target.value }))}
-                >
-                  <option value="">{t("incidents.filter.allBoards")}</option>
-                  {boards.map((board) => (
-                    <option key={board.id} value={board.id}>
-                      {board.name}
-                    </option>
-                  ))}
-                </select>
-              )}
+              <BoardFilterSelect
+                boards={boards}
+                value={pendingFilters.board}
+                onChange={(board) => setPendingFilters((prev) => ({ ...prev, board }))}
+              />
               {newCount > 0 && (
                 <button
                   type="button"
@@ -313,18 +266,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
             </form>
 
             <div className="mt-2 flex flex-wrap justify-end gap-3">
-              {ALL_IMPACTS.map((impact) => (
-                <label key={impact} className="label cursor-pointer gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className={`checkbox checkbox-sm text-white ${IMPACT_CHECKBOX_COLOR[impact]}`}
-                    checked={pendingFilters.impacts.has(impact)}
-                    onChange={() => toggleImpact(impact)}
-                  />
-                  {/* impact comes from ALL_IMPACTS, a subset of INDICATOR_STYLES's keys, so the lookup always hits */}
-                  {t(INDICATOR_STYLES[impact]!.labelKey)}
-                </label>
-              ))}
+              <ImpactFilterCheckboxes selected={pendingFilters.impacts} onToggle={toggleImpact} />
             </div>
 
             {filteredIncidents.length === 0 ? (
@@ -348,14 +290,11 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
                       }`}
                     >
                       <div className="absolute top-3 right-4 z-10 flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => togglePin(incident.id)}
-                          aria-label={t(pinned.has(incident.id) ? "incidents.unpin" : "incidents.pin")}
-                          className="text-base-content/40 hover:text-base-content transition-transform hover:scale-110 active:scale-90"
-                        >
-                          <PinIcon className="h-4 w-8" filled={pinned.has(incident.id)} />
-                        </button>
+                        <PinButton
+                          pinned={pinned.has(incident.id)}
+                          onToggle={() => togglePin(incident.id)}
+                          ariaLabel={t(pinned.has(incident.id) ? "incidents.unpin" : "incidents.pin")}
+                        />
                       </div>
                       <button
                         type="button"

@@ -4,7 +4,8 @@ import { getAllStoredIncidentSummaries, toIncidentSummaryApiShape } from "@/lib/
 import type { TrackedIncidentSummary } from "@/types/service";
 
 export async function GET() {
-  const [services, incidents] = await Promise.all([getAllServices(), getAllStoredIncidentSummaries()]);
+  const services = await getAllServices();
+  const incidents = await getAllStoredIncidentSummaries(services.map((service) => service.slug));
   const serviceBySlug = new Map(services.map((service) => [service.slug, service]));
 
   const results: TrackedIncidentSummary[] = incidents.flatMap((incident) => {

@@ -122,9 +122,22 @@ async function fetchUpdatesForIncidentIds(
 // pages that only ever render one incident's full timeline at a time. Not
 // just trimming the response: skipping this query means that data never
 // leaves Postgres in the first place.
-export async function getAllStoredIncidentSummaries(): Promise<Omit<StoredIncident, "incident_updates">[]> {
+//
+// Scoped to trackedSlugs *in the query* (not filtered afterward), same
+// reasoning as getAllStoredMaintenanceSummaries — this used to fetch
+// catalog-wide (up to .limit(1000), unfiltered) and let the route throw
+// away everything but the caller's tracked services, which meant every
+// 60s poll from every open tab paid full egress for the whole catalog's
+// incident history regardless of how few services anyone actually tracks.
+export async function getAllStoredIncidentSummaries(trackedSlugs: string[]): Promise<Omit<StoredIncident, "incident_updates">[]> {
+  if (trackedSlugs.length === 0) return [];
   const supabase = getSupabaseClient();
-  const { data } = await supabase.from("incidents").select(INCIDENT_SUMMARY_COLUMNS).order("updated_at", { ascending: false }).limit(1000);
+  const { data } = await supabase
+    .from("incidents")
+    .select(INCIDENT_SUMMARY_COLUMNS)
+    .in("service_slug", trackedSlugs)
+    .order("updated_at", { ascending: false })
+    .limit(1000);
   return (data as Omit<StoredIncident, "incident_updates">[]) ?? [];
 }
 

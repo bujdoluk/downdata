@@ -103,8 +103,8 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`border-base-content/10 bg-[var(--color-sidebar)] sticky top-0 relative flex h-screen w-20 shrink-0 flex-col items-center border-r py-3 transition-[width] duration-200 ${
-        collapsed ? "md:w-20 md:items-center md:py-3" : "md:w-60 md:items-stretch md:p-4"
+      className={`border-base-content/10 bg-[var(--color-sidebar)] sticky top-0 relative flex h-screen w-16 shrink-0 flex-col items-center border-r py-3 transition-[width] duration-200 ${
+        collapsed ? "md:w-16 md:items-center md:py-3" : "md:w-60 md:items-stretch md:p-4"
       }`}
     >
       <Link
@@ -151,15 +151,15 @@ export default function Sidebar() {
           >
             {account?.avatarUrl ? (
               <div className="avatar shrink-0">
-                <div className="w-6 rounded-full">
+                <div className="w-8 rounded-full">
                   {/* eslint-disable-next-line @next/next/no-img-element -- external, unpredictable-host avatar URL; next/image's domain allowlist doesn't fit an arbitrary OAuth provider */}
                   <img src={account.avatarUrl} alt="" />
                 </div>
               </div>
             ) : (
               <div className="avatar avatar-placeholder shrink-0">
-                <div className="bg-neutral text-neutral-content w-6 rounded-full">
-                  <UserIcon className="h-3.5 w-3.5" />
+                <div className="bg-neutral text-neutral-content w-7 rounded-full">
+                  <UserIcon className="h-5 w-5" />
                 </div>
               </div>
             )}

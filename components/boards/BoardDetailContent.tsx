@@ -18,13 +18,16 @@ import BoardActivityPanel from "@/components/boards/BoardActivityPanel";
 import BoardLastIncidentTable from "@/components/boards/BoardLastIncidentTable";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
+import { InfoIcon } from "@/components/icons/NavIcons";
 
 export default function BoardDetailContent({
   board,
   catalog,
+  boardCount,
 }: {
   board: Board;
   catalog: Catalog[];
+  boardCount: number;
 }) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -127,14 +130,21 @@ export default function BoardDetailContent({
             </>
           )}
         </div>
-        <button
-          type="button"
-          disabled={deleting}
-          onClick={() => confirmRef.current?.showModal()}
-          className="btn btn-ghost btn-sm text-error shrink-0"
-        >
-          {deleting ? t("boards.deleting") : t("boards.delete")}
-        </button>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <button
+            type="button"
+            disabled={deleting || boardCount <= 1}
+            onClick={() => confirmRef.current?.showModal()}
+            className="btn btn-ghost btn-sm text-error"
+          >
+            {deleting ? t("boards.deleting") : t("boards.delete")}
+          </button>
+          {boardCount <= 1 && (
+            <div className="tooltip tooltip-left" data-tip={t("boards.deleteLastBoard")}>
+              <InfoIcon className="text-base-content/50" />
+            </div>
+          )}
+        </div>
       </div>
 
       <dialog ref={confirmRef} className="modal">

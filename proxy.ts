@@ -11,6 +11,14 @@ function isPublicPath(pathname: string): boolean {
 }
 
 export async function proxy(request: NextRequest) {
+  // Cron calls carry no browser session cookie to refresh and are already
+  // gated by CRON_SECRET in the route itself — skip the Supabase Auth
+  // round trip entirely so a slow/unresponsive auth call can never eat
+  // into this route's own timeout budget (see AGENTS.md poll-incidents notes).
+  if (request.nextUrl.pathname.startsWith("/api/cron/")) {
+    return NextResponse.next({ request });
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

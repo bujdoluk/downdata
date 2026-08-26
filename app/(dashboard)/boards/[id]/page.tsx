@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { resolveBoardById } from "@/lib/boards";
+import { getAllBoards, resolveBoardById } from "@/lib/boards";
 import { getCatalog } from "@/lib/catalog";
 import BoardDetailContent from "@/components/boards/BoardDetailContent";
 
@@ -18,11 +18,11 @@ export default async function BoardPage({ params }: { params: Promise<{ id: stri
     notFound();
   }
 
-  const catalog = await getCatalog();
+  const [catalog, boards] = await Promise.all([getCatalog(), getAllBoards()]);
 
   return (
     <main className="flex flex-1 justify-center p-6">
-      <BoardDetailContent board={board} catalog={catalog} />
+      <BoardDetailContent board={board} catalog={catalog} boardCount={boards.length} />
     </main>
   );
 }

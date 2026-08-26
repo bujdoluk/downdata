@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { resolveBoardById, renameBoard, removeBoard } from "@/lib/boards";
+import { getAllBoards, resolveBoardById, renameBoard, removeBoard } from "@/lib/boards";
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -19,6 +19,11 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+
+  if ((await getAllBoards()).length <= 1) {
+    return NextResponse.json({ error: "You need at least one board." }, { status: 400 });
+  }
+
   if (!(await removeBoard(id))) {
     return NextResponse.json({ error: "Board not found" }, { status: 404 });
   }

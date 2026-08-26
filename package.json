@@ -34,6 +34,8 @@
     "temporal-polyfill": "1.0.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "21.2.2",
+    "@commitlint/config-conventional": "21.2.2",
     "@playwright/test": "1.62.1",
     "@tailwindcss/postcss": "4",
     "@types/node": "24",
@@ -45,6 +47,7 @@
     "husky": "9.1.7",
     "lint-staged": "16.4.0",
     "react-docgen-typescript": "2.4.0",
+    "supabase": "2.115.0",
     "tailwindcss": "4",
     "typescript": "5"
   }

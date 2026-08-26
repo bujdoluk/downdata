@@ -33,7 +33,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **i18n**: `i18next` + `react-i18next`, 13 locales
 - **Testing**: none configured — no test runner, no `__tests__`/`e2e` folder, no test script in `package.json`. Verify changes with `npm run type-check` and `npm run lint`, plus the `run` skill (or a manual check) — don't assume a test suite exists
 - **Linting**: ESLint 9 flat config (`eslint-config-next` core-web-vitals + typescript rules)
-- **Git hooks**: Husky + lint-staged — `eslint --fix` runs on staged `.js/.jsx/.mjs/.ts/.tsx` on every commit (`.husky/pre-commit`)
+- **Git hooks**: Husky — `pre-commit` runs lint-staged (`eslint --fix` on staged `.js/.jsx/.mjs/.ts/.tsx`), `commit-msg` runs commitlint (`commitlint.config.js`, extends `@commitlint/config-conventional`) to enforce Conventional Commits, `pre-push` runs `npm run type-check`
 - **Formatting**: none configured — no Prettier in this repo
 - **Package manager**: `npm` (repo has `package-lock.json`; no pnpm/yarn lockfiles)
 
@@ -81,7 +81,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │       ├── i18n.ts                    # the one i18next instance, used app-wide
 │       └── locales/                   # 13 locale JSON files: en, sk, cs, de, pl, pt, ru, es, it, fr, sv, nb, nl
 ├── types/                            # service.ts, board.ts, integration.ts, logo.ts, i18n.ts — re-exported from index.ts
-├── supabase/migrations/               # numbered .sql files, run manually in Supabase's SQL editor (no CLI in this repo)
+├── supabase/migrations/               # numbered .sql files, applied to prod by `.github/workflows/prod.yml`'s migrate job (`supabase db push`) on every push to master
 ├── docs/COMPONENTS.md                # generated prop reference for every component (npm run docs:components)
 ├── scripts/generate-docs.mjs         # generates docs/COMPONENTS.md via react-docgen-typescript
 ├── scripts/poll-incidents.mjs        # npm run poll:incidents — one-shot trigger for the cron poll+notify endpoint
@@ -188,3 +188,4 @@ This file records what actually went wrong or turned out non-obvious, not aspira
 - `GearIcon`/`ActivityIcon` were independently redefined, byte-for-byte, in both `navbar/NavbarClient.tsx` and `sidebar/Sidebar.tsx` before being pulled into `components/icons/NavIcons.tsx`. Check that folder (and the sibling feature folder) before writing a new inline SVG icon
 - The original `lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts` wrote to `data/*.json` via synchronous `fs` calls, seeded on first run via `mkdirSync`/`writeFileSync` if the file didn't exist. That works under `next dev`/`next start` on a normal machine but broke every page on the first Vercel deployment — Vercel's deployed functions run against a read-only filesystem (`ENOENT`/`EROFS` trying to `mkdir '/var/task/data'`), and `data/` is gitignored so it never even exists there to begin with. Local-filesystem writes at request time are fundamentally incompatible with serverless deployment; that persistence moved to Supabase for exactly this reason. If a future feature is tempted to write to a local file at runtime, it won't survive a real deployment either
 - Don't paste a config file's contents (tsconfig, eslint, etc.) verbatim into this doc — the file itself is the source of truth and a pasted copy just drifts. Describe the practical consequence of the non-default settings instead
+- Migrations are not applied manually via the Supabase SQL editor — `.github/workflows/prod.yml`'s `migrate` job runs `supabase db push --db-url "$SUPABASE_DB_URL" --yes` against production on every push to `master`, after `checks` passes and before `deploy`. Don't assume a Supabase-adjacent process in this repo is manual without checking `.github/workflows/` first

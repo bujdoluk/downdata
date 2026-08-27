@@ -2,6 +2,7 @@
 
 import { useId, useState, type ChangeEvent } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { UserIcon } from "@/components/icons/NavIcons";
@@ -21,31 +22,15 @@ export default function AvatarUpload({
 }) {
   const { t } = useTranslation();
   const inputId = useId();
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   // Fixed path per user, no extension (contentType is set explicitly on
   // upload, so the URL doesn't need one) — re-uploading is then a plain
   // upsert onto the same key instead of piling up old files to clean up.
   const path = `${userId}/avatar`;
 
-  async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    event.target.value = "";
-    if (!file) return;
-
-    setError(null);
-    if (!file.type.startsWith("image/")) {
-      setError(t("nav.avatarInvalidType"));
-      return;
-    }
-    if (file.size > MAX_BYTES) {
-      setError(t("nav.avatarTooLarge"));
-      return;
-    }
-
-    setUploading(true);
-    try {
+  const uploadMutation = useMutation({
+    mutationFn: async (file: File) => {
       const { error: uploadError } = await supabase.storage
         .from("avatars")
         .upload(path, file, { upsert: true, contentType: file.type });
@@ -59,30 +44,47 @@ export default function AvatarUpload({
       const { error: updateError } = await supabase.auth.updateUser({ data: { avatar_url: newUrl } });
       if (updateError) throw updateError;
 
-      onChange(newUrl);
-    } catch {
-      setError(t("nav.avatarUploadFailed"));
-    } finally {
-      setUploading(false);
-    }
-  }
+      return newUrl;
+    },
+    onSuccess: (newUrl) => onChange(newUrl),
+  });
 
-  async function handleRemove() {
-    setError(null);
-    setUploading(true);
-    try {
+  const removeMutation = useMutation({
+    mutationFn: async () => {
       const { error: removeError } = await supabase.storage.from("avatars").remove([path]);
       if (removeError) throw removeError;
 
       const { error: updateError } = await supabase.auth.updateUser({ data: { avatar_url: null } });
       if (updateError) throw updateError;
+    },
+    onSuccess: () => onChange(null),
+  });
 
-      onChange(null);
-    } catch {
-      setError(t("nav.avatarUploadFailed"));
-    } finally {
-      setUploading(false);
+  const uploading = uploadMutation.isPending || removeMutation.isPending;
+  const error = validationError ? t(validationError) : uploadMutation.isError || removeMutation.isError ? t("nav.avatarUploadFailed") : null;
+
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setValidationError(null);
+    uploadMutation.reset();
+    if (!file.type.startsWith("image/")) {
+      setValidationError("nav.avatarInvalidType");
+      return;
     }
+    if (file.size > MAX_BYTES) {
+      setValidationError("nav.avatarTooLarge");
+      return;
+    }
+
+    uploadMutation.mutate(file);
+  }
+
+  function handleRemove() {
+    setValidationError(null);
+    removeMutation.mutate();
   }
 
   return (

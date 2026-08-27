@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, formatDuration, minutesBetween, msSince } from "@/lib/formatTime";
@@ -13,7 +14,8 @@ import Spinner from "@/components/Spinner";
 import BoardFilterSelect from "@/components/service/BoardFilterSelect";
 import ImpactFilterCheckboxes from "@/components/service/ImpactFilterCheckboxes";
 import PinButton from "@/components/service/PinButton";
-import { usePolledFetch } from "@/lib/usePolledFetch";
+import { fetchJson } from "@/lib/fetchJson";
+import { queryKeys } from "@/lib/queryKeys";
 import { usePinned } from "@/lib/usePinned";
 import { useIncidentsLastViewed } from "@/lib/useIncidentsLastViewed";
 import { useDebouncedUrlFilters } from "@/lib/useDebouncedUrlFilters";
@@ -36,6 +38,7 @@ const RANGE_MS: Record<Exclude<TimeRange, "all">, number> = {
 
 const PAGE_SIZE = 7;
 const DEBOUNCE_MS = 300;
+const POLL_INTERVAL_MS = 60_000;
 const ALL_STATUSES: StatusFilter[] = ["all", "investigating", "identified", "monitoring", "resolved", "postmortem"];
 const STATUS_LABEL_KEY: Record<StatusFilter, string> = {
   all: "allStatuses",
@@ -83,7 +86,11 @@ function debouncedGroupPatch(g: DebouncedGroup): Record<string, string | null> {
 
 export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
-  const { data, error } = usePolledFetch<{ incidents: TrackedIncidentSummary[] }>("/api/incidents");
+  const { data, isError: error } = useQuery({
+    queryKey: queryKeys.incidents.list(),
+    queryFn: () => fetchJson<{ incidents: TrackedIncidentSummary[] }>("/api/incidents", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
   const { pinned, togglePin } = usePinned("pinnedIncidents");
   const lastViewed = useIncidentsLastViewed(true);
 
@@ -95,7 +102,6 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
     debounceMs: DEBOUNCE_MS,
   });
 
-  const [result, setResult] = useState<{ id: string; incident: TrackedIncident } | { id: string; error: true } | null>(null);
   const detailRef = useRef<HTMLDivElement>(null);
   const selectIncident = useSelectAndScrollOnMobile("/incidents", detailRef);
 
@@ -112,27 +118,11 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   // app/api/incidents/route.ts). One-shot per selection, not polled: an
   // already-open incident's timeline won't live-update, only refreshes on
   // reselection. The list itself keeps polling every 60s regardless.
-  // id-tagged result compared against the current selection below (same
-  // pattern HistoryPageContent uses) instead of resetting state up front.
-  useEffect(() => {
-    if (!selectedSlug || !selectedId) return;
-    let cancelled = false;
-    fetch(`/api/incidents/${selectedSlug}/${selectedId}`)
-      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("bad response"))))
-      .then((incident) => {
-        if (!cancelled) setResult({ id: selectedId, incident });
-      })
-      .catch(() => {
-        if (!cancelled) setResult({ id: selectedId, error: true });
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [selectedSlug, selectedId]);
-
-  const currentResult = result?.id === selectedId ? result : null;
-  const detail = currentResult && "incident" in currentResult ? currentResult.incident : null;
-  const detailError = currentResult ? "error" in currentResult : false;
+  const { data: detail, isError: detailError } = useQuery({
+    queryKey: queryKeys.incidents.detail(selectedSlug ?? "", selectedId ?? ""),
+    queryFn: () => fetchJson<TrackedIncident>(`/api/incidents/${selectedSlug}/${selectedId}`),
+    enabled: !!selectedSlug && !!selectedId,
+  });
 
   const trimmedServiceQuery = pendingFilters.q.trim().toLowerCase();
   const selectedBoard = boards.find((board) => board.id === pendingFilters.board);

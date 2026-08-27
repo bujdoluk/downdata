@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime } from "@/lib/formatTime";
@@ -11,7 +12,8 @@ import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import Spinner from "@/components/Spinner";
 import BoardFilterSelect from "@/components/service/BoardFilterSelect";
 import PinButton from "@/components/service/PinButton";
-import { usePolledFetch } from "@/lib/usePolledFetch";
+import { fetchJson } from "@/lib/fetchJson";
+import { queryKeys } from "@/lib/queryKeys";
 import { usePinned } from "@/lib/usePinned";
 import { useDebouncedUrlFilters } from "@/lib/useDebouncedUrlFilters";
 import { useSelectAndScrollOnMobile } from "@/lib/useSelectAndScrollOnMobile";
@@ -26,6 +28,7 @@ type DebouncedGroup = { status: StatusFilter; q: string; board: string };
 
 const PAGE_SIZE = 7;
 const DEBOUNCE_MS = 300;
+const POLL_INTERVAL_MS = 60_000;
 
 function matchesStatus(maintenance: TrackedMaintenanceSummary, filter: StatusFilter): boolean {
   return filter === "all" || maintenance.status === filter;
@@ -60,7 +63,11 @@ function debouncedGroupPatch(g: DebouncedGroup): Record<string, string | null> {
 
 export default function MaintenancePageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
-  const { data, error } = usePolledFetch<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance");
+  const { data, isError: error } = useQuery({
+    queryKey: queryKeys.maintenance.list(),
+    queryFn: () => fetchJson<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
   const { pinned, togglePin } = usePinned("pinnedMaintenance");
 
   const { pendingFilters, setPendingFilters, updateParams, searchParams } = useDebouncedUrlFilters({
@@ -71,7 +78,6 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
     debounceMs: DEBOUNCE_MS,
   });
 
-  const [result, setResult] = useState<{ id: string; maintenance: TrackedMaintenance } | { id: string; error: true } | null>(null);
   const detailRef = useRef<HTMLDivElement>(null);
   const selectMaintenance = useSelectAndScrollOnMobile("/maintenance", detailRef);
 
@@ -83,27 +89,13 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   const selectedSlug = selectedMaintenance?.service.slug;
 
   // Full timeline for whichever maintenance is selected, fetched
-  // separately — see IncidentsPageContent's identical detail-fetch effect
-  // for the full reasoning.
-  useEffect(() => {
-    if (!selectedSlug || !selectedId) return;
-    let cancelled = false;
-    fetch(`/api/maintenance/${selectedSlug}/${selectedId}`)
-      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("bad response"))))
-      .then((maintenance) => {
-        if (!cancelled) setResult({ id: selectedId, maintenance });
-      })
-      .catch(() => {
-        if (!cancelled) setResult({ id: selectedId, error: true });
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [selectedSlug, selectedId]);
-
-  const currentResult = result?.id === selectedId ? result : null;
-  const detail = currentResult && "maintenance" in currentResult ? currentResult.maintenance : null;
-  const detailError = currentResult ? "error" in currentResult : false;
+  // separately — see IncidentsPageContent's identical detail query for the
+  // full reasoning.
+  const { data: detail, isError: detailError } = useQuery({
+    queryKey: queryKeys.maintenance.detail(selectedSlug ?? "", selectedId ?? ""),
+    queryFn: () => fetchJson<TrackedMaintenance>(`/api/maintenance/${selectedSlug}/${selectedId}`),
+    enabled: !!selectedSlug && !!selectedId,
+  });
 
   const trimmedServiceQuery = pendingFilters.q.trim().toLowerCase();
   const selectedBoard = boards.find((board) => board.id === pendingFilters.board);

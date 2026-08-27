@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Integration, IntegrationDefinition } from "@/types/integration";
@@ -35,18 +36,17 @@ export default function IntegrationsPageContent({
     if (hasError) router.replace("/integrations");
   }, [hasError, router]);
 
-  async function handleDisconnect(entry: Integration) {
+  const disconnectMutation = useMutation({
+    mutationFn: (entry: Integration) => fetch(`/api/integrations/${entry.slug}`, { method: "DELETE" }),
+    onSettled: () => setRemovingSlug(null),
+    onSuccess: (res) => {
+      if (res.ok) router.refresh();
+    },
+  });
+
+  function handleDisconnect(entry: Integration) {
     setRemovingSlug(entry.slug);
-    try {
-      const res = await fetch(`/api/integrations/${entry.slug}`, { method: "DELETE" });
-      if (res.ok) {
-        router.refresh();
-      } else {
-        setRemovingSlug(null);
-      }
-    } catch {
-      setRemovingSlug(null);
-    }
+    disconnectMutation.mutate(entry);
   }
 
   return (

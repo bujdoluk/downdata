@@ -25,6 +25,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   - `paths`: `@/*` → repo root — always import via `@/...`, never a relative `../../` chain
 - **Framework**: Next.js 16 (App Router) — see the warning above; this is a modified/future version, not the Next.js in your training data
 - **Runtime/UI**: React 19
+- **Client data fetching/caching**: TanStack Query (`@tanstack/react-query`) — every client-side `fetch`/poll/mutation goes through `useQuery`/`useMutation`, provided by `components/providers/QueryProvider.tsx` (mounted once in `app/layout.tsx`, one `QueryClient` per mount via `useState`, not module scope). Query keys are centralized in `lib/queryKeys.ts`; `lib/fetchJson.ts` is the shared `queryFn` body. This does **not** replace Server Components' own data fetching (`page.tsx` files reading via `lib/services.ts`/`lib/boards.ts`/etc. still run server-side and are unrelated to the query cache) — a mutation that changes data a Server Component prop depends on still needs `router.refresh()` alongside (or instead of) `invalidateQueries`
 - **Styling**: Tailwind CSS v4 + daisyUI 5 (config lives in `app/globals.css` via `@import "tailwindcss"` / `@plugin "daisyui"` — there is no `tailwind.config.ts`)
 - **Component library**: none — hand-rolled components styled with daisyUI classes + Tailwind utilities
 - **Data layer**: Supabase (Postgres). Tracked services/boards/integrations live in `services`/`boards`/`integrations` tables, read/written via `lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts` — all async now (they used to be synchronous `fs` reads/writes against `data/*.json`, which broke entirely on Vercel's read-only deployed filesystem; see the Failure log). Incident history for the 1-minute poller lives in `incidents`/`incident_updates`/`incident_events`/`incident_event_deliveries` (see `supabase/migrations/`). Live status itself is still never stored server-side beyond that — it's fetched from each tracked host's public Atlassian Statuspage JSON endpoints on every request/poll (`revalidate: 60`)
@@ -63,6 +64,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   ├── landing-page/                 # LandingPage.tsx, PricingSection.tsx
 │   ├── navbar/                       # NavbarClient.tsx, LanguageSwitcher.tsx, ThemeToggle.tsx, Logo.tsx
 │   ├── sidebar/                      # Sidebar.tsx (desktop nav), SidebarNavLink.tsx (shared with navbar's mobile menu)
+│   ├── providers/                    # QueryProvider.tsx — mounts the app's one TanStack Query QueryClient
 │   └── icons/                        # small icon components shared across navbar/sidebar
 ├── lib/
 │   ├── services.ts                   # Supabase `services` table CRUD (async) — getAllServices/addService/removeService/resolveServiceBySlug
@@ -73,8 +75,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   ├── notifyIncidentEvents.ts       # notifyPendingEvents() — Slack notification fan-out over incident_events
 │   ├── serviceCatalog.ts             # SERVICE_CATALOG — the fixed list of known services (slug/name/host)
 │   ├── statusBatch.ts                # fetchStatusBatch() — parallel-fetches status+incidents for a set of services
-│   ├── usePolledFetch.ts             # generic "poll this URL every 30s" hook
-│   ├── useCatalogStatus.ts           # usePolledFetch wrapper for /api/status/catalog
+│   ├── fetchJson.ts                   # shared queryFn body for useQuery/useMutation calls
+│   ├── queryKeys.ts                   # central TanStack Query key factory
 │   ├── useCloseDetailsOnOutsideClick.ts  # shared <details>-outside-click-to-close hook
 │   ├── formatTime.ts                 # Temporal-based date/time formatting
 │   └── i18n/
@@ -107,9 +109,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## 🔄 Data Flow
 
-- Supabase (Postgres) is the persistence layer for tracked services/boards/integrations (`lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts`, all async — see the Failure log for why they used to be synchronous `fs` calls and no longer are) and for incident history (`lib/pollIncidents.ts`, populated by its own 1-minute cron cycle, not by page views — see `app/api/cron/poll-incidents/route.ts` and `supabase/migrations/`)
+- Supabase (Postgres) is the persistence layer for tracked services/boards/integrations (`lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts`, all async — see the Failure log for why they used to be synchronous `fs` calls and no longer are) and for incident history (`lib/pollIncidents.ts`, populated by its own cron cycle, not by page views — see `app/api/cron/poll-incidents/route.ts` and `supabase/migrations/`). Sharded across 5 staggered 1-minute cron ticks (`?shard=0..4&shards=5`), so any one service's history is refreshed roughly every 5 minutes, not every 1 — see the Failure log for why. The scheduler that actually fires these ticks (an external cron service, e.g. cron-job.org) lives outside this repo entirely; nothing here schedules itself
 - Live status is never *cached in the database* — every page/poll still calls the tracked service's own Atlassian Statuspage JSON endpoints directly (`lib/statusBatch.ts`, or inline in `app/api/summary/[slug]/route.ts`), relying on Next's `fetch` `{ next: { revalidate: 60 } }` for caching. Incident *history* specifically also gets durably stored by the separate poller above, independent of this on-demand path
-- Client-side polling goes through `lib/usePolledFetch.ts` (60s interval) — reuse it for any new "keep this JSON fresh" need instead of hand-rolling another `useEffect`/`setInterval` pair
+- Client-side polling goes through TanStack Query's `useQuery` with `refetchInterval: 60_000` (`POLL_INTERVAL_MS` defined per-file, matching the old hook's cadence) — reuse the same `queryKey` from `lib/queryKeys.ts` for any component that needs the same data instead of inventing a new key; identical keys share one cache entry and one in-flight request automatically, so there's no need to hand-roll dedup logic
 
 ## 🧱 Component & Styling Guidelines
 
@@ -138,7 +140,7 @@ One word per concept — reuse the existing one, don't coin a new one.
 
 - Functions: `getAllServices`, `resolveServiceBySlug`, `addService`, `removeService`, `fetchStatusBatch` — verb + noun, not `fetch`/`handle`/`process` alone
 - Booleans read as assertions: `isLoading`, `isMonitored`, `isPending`, `isAdded` — match this even where an existing prop doesn't (`removable.removing` should really be `isRemoving`, but don't silently rename an existing prop as a drive-by; ask first, see above)
-- Hooks: `useXxx` in `lib/`, one file per hook (`lib/usePolledFetch.ts`, `lib/useCloseDetailsOnOutsideClick.ts`) — not bundled into a components file
+- Hooks: `useXxx` in `lib/`, one file per hook (`lib/useCloseDetailsOnOutsideClick.ts`, `lib/useBoardRename.ts`) — not bundled into a components file. Data-fetching hooks are just direct `useQuery`/`useMutation` calls at the call site, not wrapped in a bespoke `useXxx` — see `lib/queryKeys.ts`/`lib/fetchJson.ts`
 - `types/service.ts`'s `ServiceDefinition` and `CatalogEntry` are structurally identical and used interchangeably already — known, not yet consolidated; don't add a third near-duplicate type for the same `{slug, name, host}` shape
 
 ## 📦 Dependencies
@@ -189,3 +191,4 @@ This file records what actually went wrong or turned out non-obvious, not aspira
 - The original `lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts` wrote to `data/*.json` via synchronous `fs` calls, seeded on first run via `mkdirSync`/`writeFileSync` if the file didn't exist. That works under `next dev`/`next start` on a normal machine but broke every page on the first Vercel deployment — Vercel's deployed functions run against a read-only filesystem (`ENOENT`/`EROFS` trying to `mkdir '/var/task/data'`), and `data/` is gitignored so it never even exists there to begin with. Local-filesystem writes at request time are fundamentally incompatible with serverless deployment; that persistence moved to Supabase for exactly this reason. If a future feature is tempted to write to a local file at runtime, it won't survive a real deployment either
 - Don't paste a config file's contents (tsconfig, eslint, etc.) verbatim into this doc — the file itself is the source of truth and a pasted copy just drifts. Describe the practical consequence of the non-default settings instead
 - Migrations are not applied manually via the Supabase SQL editor — `.github/workflows/prod.yml`'s `migrate` job runs `supabase db push --db-url "$SUPABASE_DB_URL" --yes` against production on every push to `master`, after `checks` passes and before `deploy`. Don't assume a Supabase-adjacent process in this repo is manual without checking `.github/workflows/` first
+- Running the incident poller unsharded on a 1-minute cron re-sends the *entire* incidents/maintenances feed for every tracked service every single cycle (diff-guarded in Postgres so a no-op write costs no row rewrite, but every row still costs a real function call + index lookup — ~3,165+ of them a minute across the catalog as of the `0007_bulk_upsert_functions.sql` comment, and only growing). Sustained at that volume, it saturated the project's Postgres compute continuously (~90% CPU on a small/free-tier instance) and that same saturation is what caused Supabase Auth (GoTrue, sharing the instance) to start timing out on login (`context deadline exceeded` / `dial tcp [::1]:5432` in Auth logs) — not a bug in this app's OAuth code. Moved to 5 staggered shards (`?shard=N&shards=5`, one shard's worth of the catalog per cron tick) so per-service refresh cadence widens to ~5min while peak concurrent DB load drops ~5x with no single tick touching the whole catalog. `LOCK_STALE_MS` (`lib/pollIncidents.ts`, shared with `app/api/cron/health/route.ts`) had to widen from 5min to 10min alongside this — it's compared against `last_success_at`, and a shard that now only succeeds once per ~5min cycle needs real margin over that or ordinary tick jitter reads as "stale"/unhealthy

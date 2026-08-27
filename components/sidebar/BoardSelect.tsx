@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useState, type ChangeEvent } from "react";
+import { type ChangeEvent } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
+import { fetchJson } from "@/lib/fetchJson";
+import { queryKeys } from "@/lib/queryKeys";
 import { BoardIcon } from "@/components/icons/NavIcons";
 
 const ADD_BOARD = "__add__";
@@ -14,18 +17,32 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
   const { t } = useTranslation();
   const router = useRouter();
   const pathname = usePathname();
-  const [boards, setBoards] = useState<Board[]>([]);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    // One-shot fetch, not usePolledFetch: this mounts on every dashboard
-    // page, and boards only change on explicit create/rename/delete, so a
-    // standing 60s poll here would just add egress for data that's already
-    // kept in sync locally (see handleChange) or refreshed by navigation.
-    fetch("/api/boards")
-      .then((res) => (res.ok ? res.json() : []))
-      .then(setBoards)
-      .catch(() => {});
-  }, []);
+  // One-shot fetch, no refetchInterval: this mounts on every dashboard
+  // page, and boards only change on explicit create/rename/delete, so a
+  // standing 60s poll here would just add egress for data that's already
+  // kept in sync locally (see the create-board mutation below) or
+  // refreshed by navigation.
+  const { data: boards = [] } = useQuery({
+    queryKey: queryKeys.boards.list(),
+    queryFn: () => fetchJson<Board[]>("/api/boards").catch(() => []),
+  });
+
+  const createBoardMutation = useMutation({
+    mutationFn: (name: string) =>
+      fetchJson<Board>("/api/boards", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      }),
+    onSuccess: (board) => {
+      queryClient.setQueryData<Board[]>(queryKeys.boards.list(), (prev) =>
+        [...(prev ?? []), board].sort((a, b) => a.name.localeCompare(b.name)),
+      );
+      router.push(`/boards/${board.id}`);
+    },
+  });
 
   // Distinct from selectValue below: this only reflects an actual board
   // detail page, for the icon's active-state color.
@@ -36,7 +53,7 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
   // one specific board would silently do nothing.
   const selectValue = matchedBoardId || VIEW_ALL;
 
-  async function handleChange(e: ChangeEvent<HTMLSelectElement>) {
+  function handleChange(e: ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value;
     if (value === VIEW_ALL) {
       router.push("/boards");
@@ -50,16 +67,7 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
     const name = window.prompt(t("boards.newBoardName"))?.trim();
     if (!name) return;
 
-    const res = await fetch("/api/boards", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name }),
-    });
-    if (!res.ok) return;
-
-    const board: Board = await res.json();
-    setBoards((prev) => [...prev, board].sort((a, b) => a.name.localeCompare(b.name)));
-    router.push(`/boards/${board.id}`);
+    createBoardMutation.mutate(name);
   }
 
   return (

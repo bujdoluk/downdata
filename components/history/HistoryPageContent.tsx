@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import { Temporal } from "temporal-polyfill";
 import { Trans, useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
@@ -10,7 +11,8 @@ import type { Service, Incident } from "@/types/service";
 import { buildIncidentCalendar } from "@/lib/buildIncidentCalendar";
 import { mergeParams } from "@/lib/mergeParams";
 import { parseImpacts, serializeImpacts } from "@/lib/impactsParam";
-import { usePolledFetch } from "@/lib/usePolledFetch";
+import { fetchJson } from "@/lib/fetchJson";
+import { queryKeys } from "@/lib/queryKeys";
 import type { IncidentCountByService } from "@/lib/getStoredIncident";
 import IncidentCalendar from "@/components/history/IncidentCalendar";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
@@ -23,6 +25,7 @@ import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/serv
 import Spinner from "@/components/Spinner";
 
 const CURRENT_YEAR = Temporal.Now.plainDateISO().year;
+const POLL_INTERVAL_MS = 60_000;
 
 export default function HistoryPageContent({
   trackedServices,
@@ -34,7 +37,11 @@ export default function HistoryPageContent({
   const { t, i18n } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { data: countsData } = usePolledFetch<{ counts: IncidentCountByService[] }>("/api/history/counts");
+  const { data: countsData } = useQuery({
+    queryKey: queryKeys.history.counts(),
+    queryFn: () => fetchJson<{ counts: IncidentCountByService[] }>("/api/history/counts", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
 
   const boardId = searchParams.get("board") ?? "";
   const selectedBoard = boards.find((board) => board.id === boardId);
@@ -47,33 +54,18 @@ export default function HistoryPageContent({
   const selectedImpacts = parseImpacts(searchParams, ALL_IMPACTS);
   const selectedDate = searchParams.get("date");
 
-  const [result, setResult] = useState<{ slug: string; incidents: Incident[] } | { slug: string; error: true } | null>(
-    null,
-  );
+  const {
+    data: historyData,
+    isLoading: isHistoryLoading,
+    isError: error,
+  } = useQuery({
+    queryKey: queryKeys.history.service(slug),
+    queryFn: () => fetchJson<{ incidents: Incident[] }>(`/api/history/${slug}`),
+    enabled: !!slug,
+  });
 
-  useEffect(() => {
-    if (!slug) return;
-
-    let cancelled = false;
-
-    fetch(`/api/history/${slug}`)
-      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("bad response"))))
-      .then((data) => {
-        if (!cancelled) setResult({ slug, incidents: data.incidents });
-      })
-      .catch(() => {
-        if (!cancelled) setResult({ slug, error: true });
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [slug]);
-
-  const current = result?.slug === slug ? result : null;
-  const isLoading = !!slug && !current;
-  const error = current && "error" in current;
-  const incidents = current && "incidents" in current ? current.incidents : null;
+  const isLoading = !!slug && isHistoryLoading;
+  const incidents = historyData?.incidents ?? null;
 
   function updateParams(patch: Record<string, string | null>) {
     router.replace(`/history?${mergeParams(searchParams, patch).toString()}`, { scroll: false });

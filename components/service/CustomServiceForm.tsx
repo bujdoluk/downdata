@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 
@@ -9,36 +10,28 @@ export default function CustomServiceForm({ onAdded }: { onAdded: () => void }) 
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [host, setHost] = useState("");
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setPending(true);
-    setError(null);
-
-    try {
+  const addMutation = useMutation({
+    mutationFn: async ({ name: trimmedName, host: trimmedHost }: { name: string; host: string }) => {
       const res = await fetch("/api/services", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), host: host.trim() }),
+        body: JSON.stringify({ name: trimmedName, host: trimmedHost }),
       });
       const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error ?? t("addService.somethingWrong"));
-        return;
-      }
-
+      if (!res.ok) throw new Error(data.error ?? t("addService.somethingWrong"));
+    },
+    onSuccess: () => {
       setName("");
       setHost("");
       setOpen(false);
       onAdded();
-    } catch {
-      setError(t("addService.somethingWrong"));
-    } finally {
-      setPending(false);
-    }
+    },
+  });
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    addMutation.mutate({ name: name.trim(), host: host.trim() });
   }
 
   if (!open) {
@@ -78,15 +71,15 @@ export default function CustomServiceForm({ onAdded }: { onAdded: () => void }) 
           className="input input-bordered input-sm w-52"
         />
       </div>
-      <button type="submit" disabled={pending} className="btn btn-info btn-sm">
-        {pending ? t("addService.adding") : t("addService.add")}
+      <button type="submit" disabled={addMutation.isPending} className="btn btn-info btn-sm">
+        {addMutation.isPending ? t("addService.adding") : t("addService.add")}
       </button>
       <button type="button" onClick={() => setOpen(false)} className="btn btn-ghost btn-sm">
         {t("addService.customCancel")}
       </button>
-      {error && (
+      {addMutation.isError && (
         <div role="alert" className="alert alert-error alert-soft basis-full py-2 text-xs">
-          <span>{error}</span>
+          <span>{addMutation.error.message}</span>
         </div>
       )}
     </form>

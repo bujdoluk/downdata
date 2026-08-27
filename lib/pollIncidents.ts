@@ -49,7 +49,10 @@ const FETCH_CONCURRENCY = 200;
 
 // Shared with app/api/cron/health/route.ts so the lock's own self-heal
 // window and the health check's staleness threshold can't drift apart.
-export const LOCK_STALE_MS = 5 * 60 * 1000;
+// Each shard now only succeeds once per ~5min cycle (staggered 1-shard
+// cron ticks — see AGENTS.md), so this has to clear that cadence with
+// margin or a merely-slightly-late tick reads as "stale"/unhealthy.
+export const LOCK_STALE_MS = 10 * 60 * 1000;
 
 // Returns how many of this service's incidents (rows + their updates)
 // failed to upsert — used to decide whether this service's first poll is

@@ -3,14 +3,15 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
-import type { Catalog, TrackedIncidentSummary, TrackedMaintenanceSummary } from "@/types/service";
+import type { Catalog, ServiceStatusBatchResponse, TrackedIncidentSummary, TrackedMaintenanceSummary } from "@/types/service";
 import type { IncidentCountByService } from "@/lib/getStoredIncident";
-import { useCatalogStatus } from "@/lib/useCatalogStatus";
+import { fetchJson } from "@/lib/fetchJson";
+import { queryKeys } from "@/lib/queryKeys";
 import { useBoardRename } from "@/lib/useBoardRename";
-import { usePolledFetch } from "@/lib/usePolledFetch";
 import { isActiveIncident } from "@/lib/isActiveIncident";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 import StatusSummary from "@/components/service/StatusSummary";
@@ -19,6 +20,8 @@ import BoardLastIncidentTable from "@/components/boards/BoardLastIncidentTable";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
 import { InfoIcon } from "@/components/icons/NavIcons";
+
+const POLL_INTERVAL_MS = 60_000;
 
 export default function BoardDetailContent({
   board,
@@ -31,15 +34,31 @@ export default function BoardDetailContent({
 }) {
   const { t } = useTranslation();
   const router = useRouter();
-  const { data, fetchFailed } = useCatalogStatus();
+  const queryClient = useQueryClient();
+  const { data, isError: fetchFailed } = useQuery({
+    queryKey: queryKeys.catalogStatus(),
+    queryFn: () => fetchJson<ServiceStatusBatchResponse>("/api/status/catalog", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
   const [removingSlug, setRemovingSlug] = useState<string | null>(null);
   const rename = useBoardRename(board);
-  const [deleting, setDeleting] = useState(false);
   const confirmRef = useRef<HTMLDialogElement>(null);
 
-  const { data: incidentsData } = usePolledFetch<{ incidents: TrackedIncidentSummary[] }>("/api/incidents");
-  const { data: maintenanceData } = usePolledFetch<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance");
-  const { data: countsData } = usePolledFetch<{ counts: IncidentCountByService[] }>("/api/history/counts");
+  const { data: incidentsData } = useQuery({
+    queryKey: queryKeys.incidents.list(),
+    queryFn: () => fetchJson<{ incidents: TrackedIncidentSummary[] }>("/api/incidents", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
+  const { data: maintenanceData } = useQuery({
+    queryKey: queryKeys.maintenance.list(),
+    queryFn: () => fetchJson<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
+  const { data: countsData } = useQuery({
+    queryKey: queryKeys.history.counts(),
+    queryFn: () => fetchJson<{ counts: IncidentCountByService[] }>("/api/history/counts", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
 
   const onBoardEntries = catalog.filter((entry) => board.Slugs.includes(entry.slug));
 
@@ -68,25 +87,27 @@ export default function BoardDetailContent({
       lastIncident: boardIncidents.find((incident) => incident.service.slug === entry.slug) ?? null,
     }));
 
-  async function handleRemove(entry: Catalog) {
-    setRemovingSlug(entry.slug);
-    try {
-      const res = await fetch(`/api/boards/${board.id}/services/${entry.slug}`, { method: "DELETE" });
+  const removeFromBoardMutation = useMutation({
+    mutationFn: (entry: Catalog) => fetch(`/api/boards/${board.id}/services/${entry.slug}`, { method: "DELETE" }),
+    onSettled: () => setRemovingSlug(null),
+    onSuccess: (res) => {
       if (res.ok) router.refresh();
-    } finally {
-      setRemovingSlug(null);
-    }
+    },
+  });
+
+  function handleRemove(entry: Catalog) {
+    setRemovingSlug(entry.slug);
+    removeFromBoardMutation.mutate(entry);
   }
 
-  async function handleDelete() {
-    setDeleting(true);
-    try {
-      const res = await fetch(`/api/boards/${board.id}`, { method: "DELETE" });
-      if (res.ok) router.push("/boards");
-    } finally {
-      setDeleting(false);
-    }
-  }
+  const deleteBoardMutation = useMutation({
+    mutationFn: () => fetch(`/api/boards/${board.id}`, { method: "DELETE" }),
+    onSuccess: (res) => {
+      if (!res.ok) return;
+      queryClient.invalidateQueries({ queryKey: queryKeys.boards.list() });
+      router.push("/boards");
+    },
+  });
 
   return (
     <div className="w-full max-w-6xl self-start">
@@ -133,11 +154,11 @@ export default function BoardDetailContent({
         <div className="flex shrink-0 items-center gap-1.5">
           <button
             type="button"
-            disabled={deleting || boardCount <= 1}
+            disabled={deleteBoardMutation.isPending || boardCount <= 1}
             onClick={() => confirmRef.current?.showModal()}
             className="btn btn-ghost btn-sm text-error"
           >
-            {deleting ? t("boards.deleting") : t("boards.delete")}
+            {deleteBoardMutation.isPending ? t("boards.deleting") : t("boards.delete")}
           </button>
           {boardCount <= 1 && (
             <div className="tooltip tooltip-left" data-tip={t("boards.deleteLastBoard")}>
@@ -156,8 +177,13 @@ export default function BoardDetailContent({
               <button type="submit" className="btn btn-sm">
                 {t("boards.cancel")}
               </button>
-              <button type="button" disabled={deleting} onClick={handleDelete} className="btn btn-error btn-sm">
-                {deleting ? (
+              <button
+                type="button"
+                disabled={deleteBoardMutation.isPending}
+                onClick={() => deleteBoardMutation.mutate()}
+                className="btn btn-error btn-sm"
+              >
+                {deleteBoardMutation.isPending ? (
                   <span className="inline-flex items-center gap-1.5">
                     <Spinner size="xs" />
                     {t("boards.deleting")}

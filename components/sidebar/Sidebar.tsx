@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
@@ -13,9 +14,14 @@ import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
 import { ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, HistoryIcon, UserIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
-import { usePolledFetch } from "@/lib/usePolledFetch";
+import { fetchJson } from "@/lib/fetchJson";
+import { queryKeys } from "@/lib/queryKeys";
 import { createClient } from "@/lib/supabase/client";
 import { logOut } from "@/lib/supabase/auth";
+
+const POLL_INTERVAL_MS = 60_000;
+
+type Account = { id: string; email: string; avatarUrl: string | null };
 
 function ChevronIcon({ className, collapsed }: { className?: string; collapsed: boolean }) {
   return (
@@ -41,9 +47,9 @@ const STORAGE_KEY = "sidebarCollapsed:v2";
 export default function Sidebar() {
   const { t } = useTranslation();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [collapsed, setCollapsed] = useState(false);
   const [supabase] = useState(() => createClient());
-  const [account, setAccount] = useState<{ id: string; email: string; avatarUrl: string | null } | null>(null);
   const settingsRef = useRef<HTMLDetailsElement>(null);
   const preferencesRef = useRef<HTMLDialogElement>(null);
   // Head-only count endpoints, not the full /api/incidents /
@@ -51,22 +57,33 @@ export default function Sidebar() {
   // page and polls every 60s, so pulling full incident/maintenance history
   // (with all update bodies) just to show a badge number drove most of
   // this app's Supabase egress.
-  const { data: incidentsData } = usePolledFetch<{ count: number }>("/api/incidents/count");
+  const { data: incidentsData } = useQuery({
+    queryKey: queryKeys.incidents.count(),
+    queryFn: () => fetchJson<{ count: number }>("/api/incidents/count", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
   const activeIncidentCount = incidentsData?.count ?? 0;
-  const { data: maintenanceData } = usePolledFetch<{ count: number }>("/api/maintenance/count");
+  const { data: maintenanceData } = useQuery({
+    queryKey: queryKeys.maintenance.count(),
+    queryFn: () => fetchJson<{ count: number }>("/api/maintenance/count", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
   const inProgressMaintenanceCount = maintenanceData?.count ?? 0;
 
   useCloseDetailsOnOutsideClick(settingsRef);
 
-  useEffect(() => {
-    // One-shot, not polled — the account menu only needs to reflect who's
-    // signed in right now, not stay live-synced.
-    supabase.auth.getUser().then(({ data }) => {
-      if (!data.user) return;
+  // One-shot, not polled — the account menu only needs to reflect who's
+  // signed in right now, not stay live-synced.
+  const { data: account } = useQuery({
+    queryKey: queryKeys.account(),
+    queryFn: async () => {
+      const { data } = await supabase.auth.getUser();
+      if (!data.user) return null;
       const avatarUrl = data.user.user_metadata.avatar_url ?? data.user.user_metadata.picture ?? null;
-      setAccount({ id: data.user.id, email: data.user.email ?? "", avatarUrl });
-    });
-  }, [supabase]);
+      return { id: data.user.id, email: data.user.email ?? "", avatarUrl } satisfies Account;
+    },
+    staleTime: Infinity,
+  });
 
   function openPreferences() {
     if (settingsRef.current) settingsRef.current.open = false;
@@ -192,7 +209,9 @@ export default function Sidebar() {
                   supabase={supabase}
                   userId={account.id}
                   avatarUrl={account.avatarUrl}
-                  onChange={(avatarUrl) => setAccount((prev) => (prev ? { ...prev, avatarUrl } : prev))}
+                  onChange={(avatarUrl) =>
+                    queryClient.setQueryData<Account | null>(queryKeys.account(), (prev) => (prev ? { ...prev, avatarUrl } : prev))
+                  }
                 />
               </div>
             </div>

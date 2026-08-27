@@ -3,12 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Catalog } from "@/types/service";
 import CatalogBrowser from "@/components/service/CatalogBrowser";
 import CustomServiceForm from "@/components/service/CustomServiceForm";
-import { notifyServicesChanged } from "@/lib/servicesChanged";
+import { queryKeys } from "@/lib/queryKeys";
 
 type Tab = "service" | "website";
 
@@ -21,38 +22,31 @@ export default function ServiceCatalogPicker({
 }) {
   const { t } = useTranslation();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [tab, setTab] = useState<Tab>("service");
   const [addedHosts, setAddedHosts] = useState<Set<string>>(() => new Set(trackedHosts));
-  const [pendingHost, setPendingHost] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
 
-  async function handleAdd(entry: Catalog) {
-    setPendingHost(entry.host);
-    setError(null);
-
-    try {
+  const addMutation = useMutation({
+    mutationFn: async (entry: Catalog) => {
       const res = await fetch("/api/services", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: entry.name, host: entry.host }),
       });
       const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error ?? t("addService.somethingWrong"));
-        setPendingHost(null);
-        return;
-      }
-
+      if (!res.ok) throw new Error(data.error ?? t("addService.somethingWrong"));
+      return entry;
+    },
+    onSuccess: (entry) => {
       setAddedHosts((prev) => new Set(prev).add(entry.host));
-      setPendingHost(null);
-      notifyServicesChanged();
+      queryClient.invalidateQueries({ queryKey: queryKeys.catalogStatus() });
       router.refresh();
-    } catch {
-      setError(t("addService.somethingWrong"));
-      setPendingHost(null);
-    }
+    },
+  });
+
+  function handleAdd(entry: Catalog) {
+    addMutation.mutate(entry);
   }
 
   return (
@@ -99,9 +93,9 @@ export default function ServiceCatalogPicker({
             autoFocus
           />
 
-          {error && (
+          {addMutation.isError && (
             <div role="alert" className="alert alert-error alert-soft mt-3 py-2 text-xs">
-              <span>{error}</span>
+              <span>{addMutation.error.message}</span>
             </div>
           )}
 
@@ -111,7 +105,7 @@ export default function ServiceCatalogPicker({
             <CatalogBrowser
               catalog={catalog}
               trackedHosts={trackedHosts}
-              pendingHost={pendingHost}
+              pendingHost={addMutation.isPending ? (addMutation.variables?.host ?? null) : null}
               addedHosts={addedHosts}
               onAdd={handleAdd}
               query={query}

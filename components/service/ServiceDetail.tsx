@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, formatTime } from "@/lib/formatTime";
@@ -8,12 +9,19 @@ import type { Slug, ServiceSummaryResponse, StatuspageComponent } from "@/types/
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
-import { usePolledFetch } from "@/lib/usePolledFetch";
+import { fetchJson } from "@/lib/fetchJson";
+import { queryKeys } from "@/lib/queryKeys";
 import Spinner from "@/components/Spinner";
+
+const POLL_INTERVAL_MS = 60_000;
 
 export default function ServiceDetail({ slug }: { slug: Slug }) {
   const { t } = useTranslation();
-  const { data, error } = usePolledFetch<ServiceSummaryResponse>(`/api/summary/${slug}`);
+  const { data, isError: error } = useQuery({
+    queryKey: queryKeys.serviceStatus(slug),
+    queryFn: () => fetchJson<ServiceSummaryResponse>(`/api/summary/${slug}`, { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
 
   const isLoading = !data && !error;
   const overallStyle = INDICATOR_STYLES[data?.status.indicator ?? "unknown"] ?? FALLBACK_STYLE;

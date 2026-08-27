@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
@@ -10,9 +11,12 @@ import BoardCard from "@/components/boards/BoardCard";
 import CreateBoardForm from "@/components/boards/CreateBoardForm";
 import { PlusIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
-import { usePolledFetch } from "@/lib/usePolledFetch";
+import { fetchJson } from "@/lib/fetchJson";
+import { queryKeys } from "@/lib/queryKeys";
 import { usePinned } from "@/lib/usePinned";
 import { isActiveIncident } from "@/lib/isActiveIncident";
+
+const POLL_INTERVAL_MS = 60_000;
 
 export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
@@ -20,11 +24,20 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   const createRef = useRef<HTMLDetailsElement>(null);
   const [query, setQuery] = useState("");
   const { pinned, togglePin } = usePinned("pinnedBoards");
-  // Same URLs Sidebar already polls globally — usePolledFetch shares one
-  // request per URL across every component asking for it, so this adds no
-  // extra network traffic on top of what's already happening.
-  const { data: incidentsData } = usePolledFetch<{ incidents: TrackedIncidentSummary[] }>("/api/incidents");
-  const { data: maintenanceData } = usePolledFetch<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance");
+  // Same query keys Sidebar/IncidentsPageContent/MaintenancePageContent
+  // already poll — React Query shares one cache entry per key across every
+  // component asking for it, so this adds no extra network traffic on top
+  // of what's already happening.
+  const { data: incidentsData } = useQuery({
+    queryKey: queryKeys.incidents.list(),
+    queryFn: () => fetchJson<{ incidents: TrackedIncidentSummary[] }>("/api/incidents", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
+  const { data: maintenanceData } = useQuery({
+    queryKey: queryKeys.maintenance.list(),
+    queryFn: () => fetchJson<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
 
   useCloseDetailsOnOutsideClick(createRef);
 

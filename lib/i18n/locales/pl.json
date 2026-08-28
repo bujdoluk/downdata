@@ -295,8 +295,7 @@
     "closing": {
       "heading": "Czternaście dni. Pełny dostęp. Bez karty.",
       "cta": "Wypróbuj za darmo"
-    },
-    "footer": "Dane o stanie pochodzą z publicznego API Statuspage każdego dostawcy."
+    }
   },
   "monitors": {
     "myServices": "Moje usługi",
@@ -343,5 +342,27 @@
     "passwordLabel": "Nowe hasło",
     "submit": "Zaktualizuj hasło",
     "success": "Hasło zaktualizowane. Przekierowywanie…"
+  },
+  "cookieConsent": {
+    "title": "Używamy plików cookie",
+    "description": "Używamy plików cookie, aby utrzymać Cię zalogowanego, chronić stronę przed botami oraz — za Twoją zgodą — zrozumieć, jak strona jest używana, i zaoferować czat wsparcia na żywo.",
+    "privacyNotice": "Przeczytaj naszą <privacyLink>Politykę prywatności</privacyLink>, aby dowiedzieć się więcej o tym, jak przetwarzamy Twoje dane.",
+    "acceptAll": "Zaakceptuj wszystko",
+    "rejectAll": "Odrzuć wszystko",
+    "customize": "Dostosuj",
+    "save": "Zapisz preferencje",
+    "cancel": "Anuluj",
+    "necessaryTitle": "Niezbędne",
+    "necessaryDescription": "Wymagane do utrzymania zalogowania i ochrony formularzy logowania przed botami. Zawsze włączone.",
+    "analyticsTitle": "Analityka",
+    "analyticsDescription": "Anonimowe dane o użytkowaniu i wydajności za pośrednictwem Vercel Analytics i Speed Insights, które pomagają nam ulepszać stronę.",
+    "supportChatTitle": "Czat wsparcia",
+    "supportChatDescription": "Wczytuje widżet czatu na żywo Tawk.to, dzięki czemu nasz zespół wsparcia może pomóc Ci bezpośrednio. Ustawia pliki cookie stron trzecich.",
+    "preferencesLink": "Preferencje plików cookie"
+  },
+  "footer": {
+    "copyright": "© {{year}} downDATA. Wszelkie prawa zastrzeżone.",
+    "privacyPolicy": "Polityka prywatności",
+    "termsOfService": "Warunki korzystania z usługi"
   }
 }

@@ -283,8 +283,7 @@
     "closing": {
       "heading": "Catorce días. Acceso completo. Sin tarjeta.",
       "cta": "Empieza tu prueba"
-    },
-    "footer": "Los datos de estado provienen de la API pública de Statuspage de cada proveedor."
+    }
   },
   "monitors": {
     "myServices": "Mis servicios",
@@ -331,5 +330,27 @@
     "passwordLabel": "Nueva contraseña",
     "submit": "Actualizar contraseña",
     "success": "Contraseña actualizada. Redirigiendo…"
+  },
+  "cookieConsent": {
+    "title": "Usamos cookies",
+    "description": "Usamos cookies para mantener tu sesión iniciada, proteger el sitio de bots y — con tu permiso — entender cómo se usa el sitio y ofrecer chat de soporte en vivo.",
+    "privacyNotice": "Lee nuestra <privacyLink>Política de Privacidad</privacyLink> para saber más sobre cómo tratamos tus datos.",
+    "acceptAll": "Aceptar todo",
+    "rejectAll": "Rechazar todo",
+    "customize": "Personalizar",
+    "save": "Guardar preferencias",
+    "cancel": "Cancelar",
+    "necessaryTitle": "Necesarias",
+    "necessaryDescription": "Necesarias para mantener tu sesión iniciada y proteger los formularios de inicio de sesión de bots. Siempre activas.",
+    "analyticsTitle": "Analítica",
+    "analyticsDescription": "Datos anónimos de uso y rendimiento mediante Vercel Analytics y Speed Insights, para ayudarnos a mejorar el sitio.",
+    "supportChatTitle": "Chat de soporte",
+    "supportChatDescription": "Carga el widget de chat en vivo de Tawk.to para que nuestro equipo de soporte pueda ayudarte directamente. Establece cookies de terceros.",
+    "preferencesLink": "Preferencias de cookies"
+  },
+  "footer": {
+    "copyright": "© {{year}} downDATA. Todos los derechos reservados.",
+    "privacyPolicy": "Política de Privacidad",
+    "termsOfService": "Términos de Servicio"
   }
 }

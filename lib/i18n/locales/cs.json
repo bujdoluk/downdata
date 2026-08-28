@@ -289,8 +289,7 @@
     "closing": {
       "heading": "Čtrnáct dní. Plný přístup. Bez karty.",
       "cta": "Vyzkoušet zdarma"
-    },
-    "footer": "Stavová data pocházejí z veřejného Statuspage API každého poskytovatele."
+    }
   },
   "monitors": {
     "myServices": "Moje služby",
@@ -337,5 +336,27 @@
     "passwordLabel": "Nové heslo",
     "submit": "Aktualizovat heslo",
     "success": "Heslo bylo aktualizováno. Přesměrováváme vás…"
+  },
+  "cookieConsent": {
+    "title": "Používáme cookies",
+    "description": "Cookies používáme k tomu, abychom tě udrželi přihlášeného, chránili stránku před boty a — s tvým souhlasem — pochopili, jak se stránka používá, a nabídli živý chat podpory.",
+    "privacyNotice": "Více o tom, jak nakládáme s tvými údaji, se dozvíš v našich <privacyLink>Zásadách ochrany osobních údajů</privacyLink>.",
+    "acceptAll": "Přijmout vše",
+    "rejectAll": "Odmítnout vše",
+    "customize": "Přizpůsobit",
+    "save": "Uložit předvolby",
+    "cancel": "Zrušit",
+    "necessaryTitle": "Nezbytné",
+    "necessaryDescription": "Nutné pro udržení přihlášení a ochranu přihlašovacích formulářů před boty. Vždy zapnuto.",
+    "analyticsTitle": "Analytika",
+    "analyticsDescription": "Anonymní data o používání a výkonu přes Vercel Analytics a Speed Insights, která nám pomáhají stránku zlepšovat.",
+    "supportChatTitle": "Chat podpory",
+    "supportChatDescription": "Načte widget živého chatu Tawk.to, aby ti náš tým podpory mohl přímo pomoct. Nastavuje cookies třetích stran.",
+    "preferencesLink": "Předvolby cookies"
+  },
+  "footer": {
+    "copyright": "© {{year}} downDATA. Všechna práva vyhrazena.",
+    "privacyPolicy": "Zásady ochrany osobních údajů",
+    "termsOfService": "Podmínky používání"
   }
 }

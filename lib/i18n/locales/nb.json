@@ -283,8 +283,7 @@
     "closing": {
       "heading": "Fjorten dager. Full tilgang. Ikke noe kort.",
       "cta": "Start prøveperiode"
-    },
-    "footer": "Statusdata hentes fra hver leverandørs offentlige Statuspage-API."
+    }
   },
   "monitors": {
     "myServices": "Mine tjenester",
@@ -331,5 +330,27 @@
     "passwordLabel": "Nytt passord",
     "submit": "Oppdater passord",
     "success": "Passordet er oppdatert. Omdirigerer…"
+  },
+  "cookieConsent": {
+    "title": "Vi bruker informasjonskapsler",
+    "description": "Vi bruker informasjonskapsler for å holde deg innlogget, beskytte nettstedet mot roboter og — med din tillatelse — forstå hvordan nettstedet brukes, samt tilby direktesupport via chat.",
+    "privacyNotice": "Les vår <privacyLink>personvernerklæring</privacyLink> for å lære mer om hvordan vi behandler dataene dine.",
+    "acceptAll": "Godta alle",
+    "rejectAll": "Avvis alle",
+    "customize": "Tilpass",
+    "save": "Lagre innstillinger",
+    "cancel": "Avbryt",
+    "necessaryTitle": "Nødvendige",
+    "necessaryDescription": "Nødvendige for å holde deg innlogget og beskytte innloggingsskjemaer mot roboter. Alltid på.",
+    "analyticsTitle": "Analyse",
+    "analyticsDescription": "Anonyme bruks- og ytelsesdata via Vercel Analytics og Speed Insights, som hjelper oss å forbedre nettstedet.",
+    "supportChatTitle": "Supportchat",
+    "supportChatDescription": "Laster inn Tawk.tos live chat-widget slik at supportteamet vårt kan hjelpe deg direkte. Setter tredjepartsinformasjonskapsler.",
+    "preferencesLink": "Innstillinger for informasjonskapsler"
+  },
+  "footer": {
+    "copyright": "© {{year}} downDATA. Med enerett.",
+    "privacyPolicy": "Personvernerklæring",
+    "termsOfService": "Bruksvilkår"
   }
 }

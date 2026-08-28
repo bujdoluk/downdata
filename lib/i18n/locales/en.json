@@ -283,8 +283,7 @@
     "closing": {
       "heading": "Fourteen days. Full access. No card.",
       "cta": "Start your trial"
-    },
-    "footer": "Status data sourced from each provider's public Statuspage API."
+    }
   },
   "monitors": {
     "myServices": "My services",
@@ -331,5 +330,27 @@
     "passwordLabel": "New password",
     "submit": "Update password",
     "success": "Password updated. Redirecting…"
+  },
+  "cookieConsent": {
+    "title": "We use cookies",
+    "description": "We use cookies to keep you logged in, protect the site from bots, and — with your permission — understand how the site is used and offer live chat support.",
+    "privacyNotice": "Read our <privacyLink>Privacy Policy</privacyLink> to learn more about how we handle your data.",
+    "acceptAll": "Accept All",
+    "rejectAll": "Reject All",
+    "customize": "Customize",
+    "save": "Save Preferences",
+    "cancel": "Cancel",
+    "necessaryTitle": "Necessary",
+    "necessaryDescription": "Required to keep you logged in and protect login forms from bots. Always on.",
+    "analyticsTitle": "Analytics",
+    "analyticsDescription": "Anonymous usage and performance data via Vercel Analytics and Speed Insights, to help us improve the site.",
+    "supportChatTitle": "Support Chat",
+    "supportChatDescription": "Loads the Tawk.to live chat widget so our support team can help you directly. Sets third-party cookies.",
+    "preferencesLink": "Cookie Preferences"
+  },
+  "footer": {
+    "copyright": "© {{year}} downDATA. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
   }
 }

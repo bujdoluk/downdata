@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
+import Footer from "@/components/landing-page/Footer";
 import PricingSection from "@/components/landing-page/PricingSection";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import Logo from "@/components/navbar/Logo";
@@ -204,17 +205,7 @@ export default function LandingPage() {
         </div>
       </div>
 
-      <footer className="border-base-300 border-t py-10">
-        <div className="text-base-content/50 mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-8 text-sm">
-          <span className="flex items-center gap-2 font-bold">
-            <Logo className="h-4 w-4" />
-            <span>
-              <span className="text-primary">down</span>DATA
-            </span>
-          </span>
-          <span>{t("landing.footer")}</span>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

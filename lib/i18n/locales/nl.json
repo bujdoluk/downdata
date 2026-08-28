@@ -283,8 +283,7 @@
     "closing": {
       "heading": "Veertien dagen. Volledige toegang. Geen kaart.",
       "cta": "Start proefperiode"
-    },
-    "footer": "Statusgegevens zijn afkomstig van de publieke Statuspage-API van elke provider."
+    }
   },
   "monitors": {
     "myServices": "Mijn diensten",
@@ -331,5 +330,27 @@
     "passwordLabel": "Nieuw wachtwoord",
     "submit": "Wachtwoord bijwerken",
     "success": "Wachtwoord bijgewerkt. Je wordt doorgestuurd…"
+  },
+  "cookieConsent": {
+    "title": "We gebruiken cookies",
+    "description": "We gebruiken cookies om je ingelogd te houden, de site tegen bots te beschermen en — met jouw toestemming — te begrijpen hoe de site wordt gebruikt en live chatondersteuning aan te bieden.",
+    "privacyNotice": "Lees ons <privacyLink>privacybeleid</privacyLink> voor meer informatie over hoe we met je gegevens omgaan.",
+    "acceptAll": "Alles accepteren",
+    "rejectAll": "Alles weigeren",
+    "customize": "Aanpassen",
+    "save": "Voorkeuren opslaan",
+    "cancel": "Annuleren",
+    "necessaryTitle": "Noodzakelijk",
+    "necessaryDescription": "Nodig om je ingelogd te houden en inlogformulieren tegen bots te beschermen. Altijd actief.",
+    "analyticsTitle": "Analyse",
+    "analyticsDescription": "Anonieme gebruiks- en prestatiegegevens via Vercel Analytics en Speed Insights, om ons te helpen de site te verbeteren.",
+    "supportChatTitle": "Chatondersteuning",
+    "supportChatDescription": "Laadt de live chatwidget van Tawk.to, zodat ons supportteam je direct kan helpen. Plaatst cookies van derden.",
+    "preferencesLink": "Cookievoorkeuren"
+  },
+  "footer": {
+    "copyright": "© {{year}} downDATA. Alle rechten voorbehouden.",
+    "privacyPolicy": "Privacybeleid",
+    "termsOfService": "Gebruiksvoorwaarden"
   }
 }

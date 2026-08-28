@@ -283,8 +283,7 @@
     "closing": {
       "heading": "Vierzehn Tage. Voller Zugriff. Keine Karte.",
       "cta": "Kostenlos testen"
-    },
-    "footer": "Statusdaten stammen aus der öffentlichen Statuspage-API jedes Anbieters."
+    }
   },
   "monitors": {
     "myServices": "Meine Dienste",
@@ -331,5 +330,27 @@
     "passwordLabel": "Neues Passwort",
     "submit": "Passwort aktualisieren",
     "success": "Passwort aktualisiert. Du wirst weitergeleitet…"
+  },
+  "cookieConsent": {
+    "title": "Wir verwenden Cookies",
+    "description": "Wir verwenden Cookies, um dich angemeldet zu halten, die Seite vor Bots zu schützen und — mit deiner Erlaubnis — zu verstehen, wie die Seite genutzt wird, und Live-Chat-Support anzubieten.",
+    "privacyNotice": "Lies unsere <privacyLink>Datenschutzerklärung</privacyLink>, um mehr darüber zu erfahren, wie wir mit deinen Daten umgehen.",
+    "acceptAll": "Alle akzeptieren",
+    "rejectAll": "Alle ablehnen",
+    "customize": "Anpassen",
+    "save": "Einstellungen speichern",
+    "cancel": "Abbrechen",
+    "necessaryTitle": "Notwendig",
+    "necessaryDescription": "Erforderlich, um dich angemeldet zu halten und Login-Formulare vor Bots zu schützen. Immer aktiv.",
+    "analyticsTitle": "Analyse",
+    "analyticsDescription": "Anonyme Nutzungs- und Leistungsdaten über Vercel Analytics und Speed Insights, um uns zu helfen, die Seite zu verbessern.",
+    "supportChatTitle": "Support-Chat",
+    "supportChatDescription": "Lädt das Live-Chat-Widget von Tawk.to, damit unser Support-Team dir direkt helfen kann. Setzt Cookies von Drittanbietern.",
+    "preferencesLink": "Cookie-Einstellungen"
+  },
+  "footer": {
+    "copyright": "© {{year}} downDATA. Alle Rechte vorbehalten.",
+    "privacyPolicy": "Datenschutzerklärung",
+    "termsOfService": "Nutzungsbedingungen"
   }
 }

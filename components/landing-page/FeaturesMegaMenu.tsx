@@ -18,7 +18,10 @@ export default function FeaturesMegaMenu() {
       <summary className="text-base-content/70 hover:text-base-content list-none transition-colors">
         {t("landing.nav.features")}
       </summary>
-      <ul className="dropdown-content bg-base-100 border-base-300 z-30 mt-3 grid w-96 list-none grid-cols-1 gap-1 rounded-box border p-2 shadow-xl md:w-[40rem] md:grid-cols-2">
+      <ul
+        className="dropdown-content bg-base-100 border-base-300 z-30 mt-3 grid w-96 list-none grid-cols-1 gap-1 rounded-box border p-2 shadow-xl xl:w-[40rem] xl:grid-cols-2
+          max-xl:fixed max-xl:inset-x-4 max-xl:top-28 max-xl:mt-0 max-xl:w-auto max-xl:max-h-[70vh] max-xl:overflow-y-auto"
+      >
         {FEATURE_CATALOG.map(({ slug, icon: Icon }) => (
           <li key={slug}>
             <Link

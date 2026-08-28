@@ -6,6 +6,7 @@ import "@/lib/i18n/i18n";
 import Logo from "@/components/navbar/Logo";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import FeaturesMegaMenu from "@/components/landing-page/FeaturesMegaMenu";
+import MobileMenu from "@/components/landing-page/MobileMenu";
 
 export default function LandingNavbar() {
   const { t } = useTranslation();
@@ -19,8 +20,11 @@ export default function LandingNavbar() {
             <span className="text-primary">down</span>DATA
           </span>
         </Link>
-        <div className="flex items-center gap-6 text-sm">
+        <div className="hidden items-center gap-6 text-sm md:flex">
           <FeaturesMegaMenu />
+          <Link href="/features/integrations" className="text-base-content/70 hover:text-base-content transition-colors">
+            {t("nav.integrations")}
+          </Link>
           <Link
             href="/landing-page#pricing"
             className="text-base-content/70 hover:text-base-content transition-colors"
@@ -35,6 +39,7 @@ export default function LandingNavbar() {
           </Link>
           <LanguageSwitcher />
         </div>
+        <MobileMenu />
       </div>
     </nav>
   );

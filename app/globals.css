@@ -110,6 +110,17 @@
   --font-mono: var(--font-geist-mono);
 }
 
+html {
+  /* Browsers hide the page's scrollbar while a native <dialog> is open as
+     modal (see CookieConsentProvider's preferences dialog) — without a
+     reserved gutter that shifts the whole page a few pixels wider for as
+     long as the dialog is open. daisyUI ships a `rootscrollgutter` base
+     that handles this, but it's excluded above (see git history — tangled
+     up with an unrelated navbar background-color fix), so this is the
+     minimal, isolated equivalent. */
+  scrollbar-gutter: stable;
+}
+
 @keyframes signal-pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55);

@@ -10,6 +10,7 @@ import {
 } from "react";
 import Link from "next/link";
 import { Trans, useTranslation } from "react-i18next";
+import "@/lib/i18n/i18n";
 import { useHasMounted } from "@/lib/useHasMounted";
 
 export interface ConsentChoices {

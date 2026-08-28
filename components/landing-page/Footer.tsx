@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { Temporal } from "temporal-polyfill";
+import "@/lib/i18n/i18n";
 import { useCookieConsent } from "@/components/cookies/CookieConsent";
 
 export default function Footer() {

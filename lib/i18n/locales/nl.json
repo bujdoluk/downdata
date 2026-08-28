@@ -229,7 +229,9 @@
   "landing": {
     "nav": {
       "pricing": "Prijzen",
-      "signUp": "Registreren"
+      "signUp": "Registreren",
+      "startTrial": "Start proefperiode",
+      "features": "Functies"
     },
     "hero": {
       "eyebrow": "Alle gevolgde diensten zijn operationeel",
@@ -238,7 +240,6 @@
       "titleSuffix": ", weet jij het als eerste.",
       "body": "downDATA houdt de statuspagina's in de gaten waar je al op vertrouwt — GitHub, Supabase, Cloudflare en alle andere op Atlassian Statuspage gebaseerde diensten — gecontroleerd tot wel elke {{interval}}, vanaf {{price}}, terwijl StatusGator {{competitorPrice}} rekent voor hetzelfde.",
       "ctaTrial": "Start je gratis proefperiode van 14 dagen",
-      "ctaPricing": "Bekijk prijzen",
       "noCard": "Geen creditcard nodig. Volledige toegang gedurende 14 dagen.",
       "liveDashboard": "Live dashboard"
     },
@@ -363,5 +364,13 @@
     "followOnX": "Volg {{name}} op X",
     "chatWithUs": "Chat met ons",
     "back": "← Terug"
+  },
+  "features": {
+    "monitors": "Volg de live status van elke dienst op basis van Atlassian Statuspage — GitHub, Supabase, Cloudflare en al het andere waar je team van afhankelijk is — tot wel elke 30 seconden gecontroleerd.",
+    "incidents": "Eén overzichtelijke tijdlijn van incidenten voor alle diensten die je volgt, zodat je niet vijf verschillende statuspagina's hoeft te checken om te weten wat er echt aan de hand is.",
+    "maintenances": "Geplande en lopende onderhoudsvensters voor al je gevolgde diensten, op één plek — zodat gepland onderhoud nooit aanvoelt als een storing.",
+    "integrations": "Koppel Slack en stuur statusupdates rechtstreeks naar een kanaal dat je team al in de gaten houdt — niemand hoeft meer te onthouden een dashboard te checken.",
+    "history": "Kies een gevolgde dienst en bekijk de incidentgeschiedenis van de afgelopen 12 maanden — handig als iemand ooit vraagt of dit al eerder is gebeurd.",
+    "boards": "Groepeer je gevolgde diensten in borden voor verschillende teams, zodat iedereen alleen de diensten ziet die voor hen relevant zijn."
   }
 }

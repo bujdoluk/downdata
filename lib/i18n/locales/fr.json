@@ -229,7 +229,9 @@
   "landing": {
     "nav": {
       "pricing": "Tarifs",
-      "signUp": "S'inscrire"
+      "signUp": "S'inscrire",
+      "startTrial": "Démarrer l'essai",
+      "features": "Fonctionnalités"
     },
     "hero": {
       "eyebrow": "Tous les services surveillés sont opérationnels",
@@ -238,7 +240,6 @@
       "titleSuffix": ", vous serez le premier informé.",
       "body": "downDATA surveille les pages de statut dont vous dépendez déjà — GitHub, Supabase, Cloudflare et tout autre service basé sur Atlassian Statuspage — vérifiées jusqu'à toutes les {{interval}}, à partir de {{price}}, alors que StatusGator facture {{competitorPrice}} pour le même service.",
       "ctaTrial": "Démarrer l'essai gratuit de 14 jours",
-      "ctaPricing": "Voir les tarifs",
       "noCard": "Sans carte bancaire. Accès complet pendant 14 jours.",
       "liveDashboard": "Tableau de bord en direct"
     },
@@ -363,5 +364,13 @@
     "followOnX": "Suivre {{name}} sur X",
     "chatWithUs": "Discuter avec nous",
     "back": "← Retour"
+  },
+  "features": {
+    "monitors": "Suivez le statut en temps réel de n'importe quel service basé sur Atlassian Statuspage — GitHub, Supabase, Cloudflare et tout autre service dont dépend votre équipe — vérifié jusqu'à toutes les 30 secondes.",
+    "incidents": "Une chronologie unifiée des incidents pour tous les services que vous suivez, pour ne pas avoir à consulter cinq pages de statut différentes afin de savoir ce qui se passe réellement.",
+    "maintenances": "Les fenêtres de maintenance planifiées et en cours pour tous vos services suivis, au même endroit — pour qu'un arrêt planifié ne ressemble jamais à une panne.",
+    "integrations": "Connectez Slack et envoyez les mises à jour de statut directement dans un canal que votre équipe surveille déjà — personne n'a besoin de penser à consulter un tableau de bord.",
+    "history": "Choisissez un service suivi et consultez son historique d'incidents des 12 derniers mois — utile la prochaine fois que quelqu'un demande si c'est déjà arrivé.",
+    "boards": "Regroupez vos services suivis dans des tableaux pour différentes équipes, afin que chacun ne voie que les services qui le concernent."
   }
 }

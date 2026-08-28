@@ -17,6 +17,9 @@ export default function Footer() {
         <Trans i18nKey="footer.copyright" values={{ year }} components={{ brand: <span className="text-primary" /> }} />
       </span>
       <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+        <Link href="/landing-page#pricing" className="link link-hover">
+          {t("landing.nav.pricing")}
+        </Link>
         <Link href="/about" className="link link-hover">
           {t("footer.about")}
         </Link>

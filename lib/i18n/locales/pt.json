@@ -229,7 +229,9 @@
   "landing": {
     "nav": {
       "pricing": "Preços",
-      "signUp": "Criar conta"
+      "signUp": "Criar conta",
+      "startTrial": "Iniciar período de teste",
+      "features": "Funcionalidades"
     },
     "hero": {
       "eyebrow": "Todos os serviços monitorizados estão operacionais",
@@ -238,7 +240,6 @@
       "titleSuffix": ", é o primeiro a saber.",
       "body": "A downDATA monitoriza as páginas de estado com que já conta — GitHub, Supabase, Cloudflare e qualquer outra baseada em Atlassian Statuspage — verificadas a cada {{interval}}, a partir de {{price}}, enquanto a StatusGator cobra {{competitorPrice}} pelo mesmo serviço.",
       "ctaTrial": "Iniciar teste gratuito de 14 dias",
-      "ctaPricing": "Ver preços",
       "noCard": "Sem cartão de crédito. Acesso total durante 14 dias.",
       "liveDashboard": "Painel em direto"
     },
@@ -363,5 +364,13 @@
     "followOnX": "Seguir {{name}} no X",
     "chatWithUs": "Fale connosco",
     "back": "← Voltar"
+  },
+  "features": {
+    "monitors": "Acompanhe o estado em tempo real de qualquer serviço baseado em Atlassian Statuspage — GitHub, Supabase, Cloudflare e tudo o resto de que a sua equipa depende — verificado até de 30 em 30 segundos.",
+    "incidents": "Uma linha do tempo unificada de incidentes em todos os serviços que acompanha, para não ter de verificar cinco páginas de estado diferentes para saber o que se passa.",
+    "maintenances": "Janelas de manutenção agendadas e em curso em todos os seus serviços acompanhados, num só lugar — para que uma paragem planeada nunca pareça uma falha.",
+    "integrations": "Ligue o Slack e envie atualizações de estado diretamente para um canal que a sua equipa já acompanha — ninguém precisa de se lembrar de verificar um painel.",
+    "history": "Escolha qualquer serviço acompanhado e veja o seu histórico de incidentes dos últimos 12 meses — útil da próxima vez que alguém perguntar se isto já aconteceu antes.",
+    "boards": "Agrupe os seus serviços acompanhados em quadros para equipas diferentes, para que cada uma veja apenas os serviços que lhe interessam."
   }
 }

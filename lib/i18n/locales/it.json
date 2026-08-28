@@ -229,7 +229,9 @@
   "landing": {
     "nav": {
       "pricing": "Prezzi",
-      "signUp": "Registrati"
+      "signUp": "Registrati",
+      "startTrial": "Inizia la prova",
+      "features": "Funzionalità"
     },
     "hero": {
       "eyebrow": "Tutti i servizi monitorati sono operativi",
@@ -238,7 +240,6 @@
       "titleSuffix": ", lo saprai per primo.",
       "body": "downDATA monitora le pagine di stato da cui già dipendi — GitHub, Supabase, Cloudflare e qualsiasi altra basata su Atlassian Statuspage — controllate anche ogni {{interval}}, a partire da {{price}}, mentre StatusGator fa pagare {{competitorPrice}} per lo stesso servizio.",
       "ctaTrial": "Inizia la prova gratuita di 14 giorni",
-      "ctaPricing": "Vedi i prezzi",
       "noCard": "Nessuna carta di credito richiesta. Accesso completo per 14 giorni.",
       "liveDashboard": "Dashboard in tempo reale"
     },
@@ -363,5 +364,13 @@
     "followOnX": "Segui {{name}} su X",
     "chatWithUs": "Scrivici in chat",
     "back": "← Indietro"
+  },
+  "features": {
+    "monitors": "Monitora lo stato in tempo reale di qualsiasi servizio basato su Atlassian Statuspage — GitHub, Supabase, Cloudflare e qualsiasi altro servizio da cui dipende il tuo team — controllato anche ogni 30 secondi.",
+    "incidents": "Una cronologia unificata degli incidenti su tutti i servizi monitorati, così non devi controllare cinque pagine di stato diverse per sapere cosa sta succedendo davvero.",
+    "maintenances": "Finestre di manutenzione pianificate e in corso su tutti i servizi monitorati, in un unico posto — così un'interruzione pianificata non sembra mai un guasto.",
+    "integrations": "Collega Slack e invia gli aggiornamenti di stato direttamente in un canale che il tuo team già segue — nessuno deve ricordarsi di controllare una dashboard.",
+    "history": "Scegli un servizio monitorato qualsiasi e guarda la sua cronologia degli incidenti degli ultimi 12 mesi — utile la prossima volta che qualcuno chiede se è già successo prima.",
+    "boards": "Raggruppa i tuoi servizi monitorati in bacheche per team diversi, così ognuno vede solo i servizi che gli interessano."
   }
 }

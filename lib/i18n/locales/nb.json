@@ -229,7 +229,9 @@
   "landing": {
     "nav": {
       "pricing": "Priser",
-      "signUp": "Registrer deg"
+      "signUp": "Registrer deg",
+      "startTrial": "Start prøveperiode",
+      "features": "Funksjoner"
     },
     "hero": {
       "eyebrow": "Alle overvåkede tjenester er i drift",
@@ -238,7 +240,6 @@
       "titleSuffix": ", er du den første som får vite det.",
       "body": "downDATA overvåker statussidene du allerede stoler på — GitHub, Supabase, Cloudflare og alle andre basert på Atlassian Statuspage — sjekket så ofte som hvert {{interval}}, fra {{price}}, mens StatusGator tar {{competitorPrice}} for det samme.",
       "ctaTrial": "Start din 14 dagers gratis prøveperiode",
-      "ctaPricing": "Se priser",
       "noCard": "Ingen kredittkort nødvendig. Full tilgang i 14 dager.",
       "liveDashboard": "Sanntids dashbord"
     },
@@ -363,5 +364,13 @@
     "followOnX": "Følg {{name}} på X",
     "chatWithUs": "Chat med oss",
     "back": "← Tilbake"
+  },
+  "features": {
+    "monitors": "Følg statusen i sanntid for enhver tjeneste basert på Atlassian Statuspage — GitHub, Supabase, Cloudflare og alt annet teamet ditt er avhengig av — sjekket så ofte som hvert 30. sekund.",
+    "incidents": "En samlet tidslinje over hendelser på tvers av alle tjenestene du følger, slik at du slipper å sjekke fem forskjellige statussider for å vite hva som faktisk skjer.",
+    "maintenances": "Planlagte og pågående vedlikeholdsvinduer på tvers av alle tjenestene du følger, samlet på ett sted — slik at planlagt nedetid aldri ser ut som et avbrudd.",
+    "integrations": "Koble til Slack og send statusoppdateringer rett til en kanal teamet ditt allerede følger med på — ingen trenger å huske å sjekke et dashbord.",
+    "history": "Velg en hvilken som helst tjeneste du følger, og se hendelseshistorikken for de siste 12 månedene — nyttig neste gang noen spør om dette har skjedd før.",
+    "boards": "Grupper tjenestene du følger i tavler for ulike team, slik at alle bare ser tjenestene som er relevante for dem."
   }
 }

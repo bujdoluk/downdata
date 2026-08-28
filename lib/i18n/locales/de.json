@@ -229,7 +229,9 @@
   "landing": {
     "nav": {
       "pricing": "Preise",
-      "signUp": "Registrieren"
+      "signUp": "Registrieren",
+      "startTrial": "Kostenlos testen",
+      "features": "Funktionen"
     },
     "hero": {
       "eyebrow": "Alle überwachten Dienste funktionieren",
@@ -238,7 +240,6 @@
       "titleSuffix": ", erfährst du es als Erstes.",
       "body": "downDATA überwacht die Statusseiten, auf die du dich bereits verlässt — GitHub, Supabase, Cloudflare und alles andere auf Atlassian Statuspage — geprüft bis zu alle {{interval}}, ab {{price}}, während StatusGator für dieselbe Leistung {{competitorPrice}} verlangt.",
       "ctaTrial": "14 Tage kostenlos testen",
-      "ctaPricing": "Preise ansehen",
       "noCard": "Keine Kreditkarte nötig. Voller Zugriff für 14 Tage.",
       "liveDashboard": "Live-Dashboard"
     },
@@ -363,5 +364,13 @@
     "followOnX": "{{name}} auf X folgen",
     "chatWithUs": "Chatte mit uns",
     "back": "← Zurück"
+  },
+  "features": {
+    "monitors": "Verfolge den Live-Status jeder Statuspage-basierten Website — GitHub, Supabase, Cloudflare und alles andere, worauf sich dein Team verlässt — geprüft bis zu alle 30 Sekunden.",
+    "incidents": "Eine einheitliche Zeitleiste aller Incidents über alle getrackten Dienste hinweg, damit du nicht fünf verschiedene Statusseiten checken musst, um zu wissen, was wirklich los ist.",
+    "maintenances": "Geplante und laufende Wartungsfenster über alle getrackten Dienste hinweg an einem Ort — damit geplante Ausfallzeiten nie wie eine Störung aussehen.",
+    "integrations": "Verbinde Slack und schicke Statusupdates direkt in einen Kanal, den dein Team ohnehin schon beobachtet — niemand muss mehr daran denken, ein Dashboard zu checken.",
+    "history": "Wähle einen getrackten Dienst und sieh dir seine Incident-Historie der letzten 12 Monate an — praktisch, wenn jemand fragt, ob das schon mal vorgekommen ist.",
+    "boards": "Gruppiere deine getrackten Dienste in Boards für verschiedene Teams, damit jeder nur die Dienste sieht, die für ihn wichtig sind."
   }
 }

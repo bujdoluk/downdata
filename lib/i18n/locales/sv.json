@@ -229,7 +229,9 @@
   "landing": {
     "nav": {
       "pricing": "Priser",
-      "signUp": "Registrera dig"
+      "signUp": "Registrera dig",
+      "startTrial": "Starta provperiod",
+      "features": "Funktioner"
     },
     "hero": {
       "eyebrow": "Alla övervakade tjänster fungerar",
@@ -238,7 +240,6 @@
       "titleSuffix": ", är du den förste som får veta.",
       "body": "downDATA bevakar statussidorna du redan förlitar dig på — GitHub, Supabase, Cloudflare och alla andra baserade på Atlassian Statuspage — kontrollerade så ofta som var {{interval}}, från {{price}}, medan StatusGator tar {{competitorPrice}} för samma sak.",
       "ctaTrial": "Starta din 14-dagars kostnadsfria provperiod",
-      "ctaPricing": "Se priser",
       "noCard": "Inget kreditkort krävs. Full åtkomst i 14 dagar.",
       "liveDashboard": "Direktuppdaterad instrumentpanel"
     },
@@ -363,5 +364,13 @@
     "followOnX": "Följ {{name}} på X",
     "chatWithUs": "Chatta med oss",
     "back": "← Tillbaka"
+  },
+  "features": {
+    "monitors": "Följ statusen i realtid för vilken tjänst som helst baserad på Atlassian Statuspage — GitHub, Supabase, Cloudflare och allt annat ditt team är beroende av — kontrollerad så ofta som var 30:e sekund.",
+    "incidents": "En samlad tidslinje över incidenter för alla tjänster du bevakar, så att du slipper kolla fem olika statussidor för att veta vad som faktiskt pågår.",
+    "maintenances": "Planerade och pågående underhållsfönster för alla dina bevakade tjänster på ett ställe — så att planerat driftstopp aldrig ser ut som ett avbrott.",
+    "integrations": "Anslut Slack och skicka statusuppdateringar direkt till en kanal som ditt team redan bevakar — ingen behöver komma ihåg att kolla en instrumentpanel.",
+    "history": "Välj vilken bevakad tjänst som helst och se dess incidenthistorik för de senaste 12 månaderna — praktiskt nästa gång någon undrar om det här har hänt förut.",
+    "boards": "Gruppera dina bevakade tjänster i tavlor för olika team, så att alla bara ser de tjänster som är relevanta för dem."
   }
 }

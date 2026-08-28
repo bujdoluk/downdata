@@ -229,7 +229,9 @@
   "landing": {
     "nav": {
       "pricing": "Precios",
-      "signUp": "Registrarse"
+      "signUp": "Registrarse",
+      "startTrial": "Empieza gratis",
+      "features": "Funciones"
     },
     "hero": {
       "eyebrow": "Todos los servicios monitorizados están operativos",
@@ -238,7 +240,6 @@
       "titleSuffix": ", tú serás el primero en saberlo.",
       "body": "downDATA vigila las páginas de estado de las que ya dependes — GitHub, Supabase, Cloudflare y cualquier otra basada en Atlassian Statuspage — comprobadas hasta cada {{interval}}, desde {{price}}, mientras que StatusGator cobra {{competitorPrice}} por lo mismo.",
       "ctaTrial": "Empieza tu prueba gratuita de 14 días",
-      "ctaPricing": "Ver precios",
       "noCard": "Sin tarjeta de crédito. Acceso completo durante 14 días.",
       "liveDashboard": "Panel en vivo"
     },
@@ -363,5 +364,13 @@
     "followOnX": "Seguir a {{name}} en X",
     "chatWithUs": "Chatea con nosotros",
     "back": "← Volver"
+  },
+  "features": {
+    "monitors": "Monitoriza el estado en tiempo real de cualquier servicio basado en Atlassian Statuspage — GitHub, Supabase, Cloudflare y cualquier otro del que dependa tu equipo — comprobado hasta cada 30 segundos.",
+    "incidents": "Una cronología unificada de incidentes en todos los servicios que monitorizas, para que no tengas que revisar cinco páginas de estado distintas para saber qué está pasando de verdad.",
+    "maintenances": "Ventanas de mantenimiento programadas y en curso en todos tus servicios monitorizados, en un solo lugar — para que una parada planificada nunca parezca una caída.",
+    "integrations": "Conecta Slack y envía actualizaciones de estado directamente a un canal que tu equipo ya vigila — nadie tiene que acordarse de revisar un panel.",
+    "history": "Elige cualquier servicio monitorizado y consulta su historial de incidentes de los últimos 12 meses — útil la próxima vez que alguien pregunte si esto ya había pasado antes.",
+    "boards": "Agrupa tus servicios monitorizados en tableros para distintos equipos, para que cada uno vea solo los servicios que le importan."
   }
 }

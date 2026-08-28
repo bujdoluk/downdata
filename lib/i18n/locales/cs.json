@@ -235,7 +235,9 @@
   "landing": {
     "nav": {
       "pricing": "Ceník",
-      "signUp": "Zaregistrovat se"
+      "signUp": "Zaregistrovat se",
+      "startTrial": "Vyzkoušet zdarma",
+      "features": "Funkce"
     },
     "hero": {
       "eyebrow": "Všechny sledované služby fungují",
@@ -244,7 +246,6 @@
       "titleSuffix": ", dozvíte se to jako první.",
       "body": "downDATA sleduje stavové stránky, na které se už spoléháte — GitHub, Supabase, Cloudflare a cokoli dalšího na Atlassian Statuspage — kontrolováno až každých {{interval}}, od {{price}}, zatímco StatusGator si za totéž účtuje {{competitorPrice}}.",
       "ctaTrial": "Vyzkoušet 14 dní zdarma",
-      "ctaPricing": "Zobrazit ceník",
       "noCard": "Bez platební karty. Plný přístup na 14 dní.",
       "liveDashboard": "Živý přehled"
     },
@@ -369,5 +370,13 @@
     "followOnX": "Sledujte {{name}} na X",
     "chatWithUs": "Napište nám",
     "back": "← Zpět"
+  },
+  "features": {
+    "monitors": "Sleduj živý stav jakékoli služby na Atlassian Statuspage — GitHub, Supabase, Cloudflare a cokoli dalšího, na co se tvůj tým spoléhá — kontrolováno až každých 30 sekund.",
+    "incidents": "Jednotná časová osa incidentů napříč všemi sledovanými službami, takže nemusíš kontrolovat pět různých stavových stránek, abys věděl, co se skutečně děje.",
+    "maintenances": "Naplánované a probíhající odstávky napříč všemi sledovanými službami na jednom místě — aby plánovaná odstávka nikdy nevypadala jako výpadek.",
+    "integrations": "Propoj Slack a posílej změny stavu přímo do kanálu, který tvůj tým už stejně sleduje — nikdo si nemusí pamatovat, že má zkontrolovat dashboard.",
+    "history": "Vyber si libovolnou sledovanou službu a podívej se na historii jejích incidentů za posledních 12 měsíců — hodí se, když se někdo zeptá, jestli se to už někdy stalo.",
+    "boards": "Seskup své sledované služby do nástěnek pro různé týmy, aby každý viděl jen služby, na kterých mu záleží."
   }
 }

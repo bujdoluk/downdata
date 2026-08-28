@@ -241,7 +241,9 @@
   "landing": {
     "nav": {
       "pricing": "Cennik",
-      "signUp": "Zarejestruj się"
+      "signUp": "Zarejestruj się",
+      "startTrial": "Wypróbuj bezpłatnie",
+      "features": "Funkcje"
     },
     "hero": {
       "eyebrow": "Wszystkie monitorowane usługi działają poprawnie",
@@ -250,7 +252,6 @@
       "titleSuffix": ", dowiesz się o tym pierwszy.",
       "body": "downDATA monitoruje strony statusu, na których już polegasz — GitHub, Supabase, Cloudflare i wszystko inne oparte na Atlassian Statuspage — sprawdzane nawet co {{interval}}, już od {{price}}, podczas gdy StatusGator liczy sobie za to samo {{competitorPrice}}.",
       "ctaTrial": "Wypróbuj 14 dni za darmo",
-      "ctaPricing": "Zobacz cennik",
       "noCard": "Bez karty płatniczej. Pełny dostęp przez 14 dni.",
       "liveDashboard": "Panel na żywo"
     },
@@ -375,5 +376,13 @@
     "followOnX": "Obserwuj {{name}} na X",
     "chatWithUs": "Napisz do nas",
     "back": "← Wstecz"
+  },
+  "features": {
+    "monitors": "Śledź na żywo status dowolnej usługi opartej na Atlassian Statuspage — GitHub, Supabase, Cloudflare i wszystko inne, na czym polega Twój zespół — sprawdzany nawet co 30 sekund.",
+    "incidents": "Ujednolicona oś czasu incydentów we wszystkich monitorowanych usługach, dzięki czemu nie musisz sprawdzać pięciu różnych stron statusu, żeby wiedzieć, co się naprawdę dzieje.",
+    "maintenances": "Zaplanowane i trwające okna konserwacji we wszystkich monitorowanych usługach w jednym miejscu — dzięki czemu planowana przerwa nigdy nie wygląda jak awaria.",
+    "integrations": "Połącz Slacka i wysyłaj aktualizacje statusu prosto na kanał, który Twój zespół już i tak obserwuje — nikt nie musi pamiętać o sprawdzaniu dashboardu.",
+    "history": "Wybierz dowolną monitorowaną usługę i zobacz jej historię incydentów z ostatnich 12 miesięcy — przydaje się, gdy ktoś zapyta, czy to już się kiedyś zdarzyło.",
+    "boards": "Grupuj monitorowane usługi w tablice dla różnych zespołów, dzięki czemu każdy widzi tylko te usługi, na których mu zależy."
   }
 }

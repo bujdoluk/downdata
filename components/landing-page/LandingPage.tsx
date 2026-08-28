@@ -99,9 +99,6 @@ export default function LandingPage() {
               <Link href="/boards" className="btn btn-primary rounded-full shadow-lg">
                 {t("landing.hero.ctaTrial")}
               </Link>
-              <a href="#pricing" className="btn btn-outline rounded-full">
-                {t("landing.hero.ctaPricing")}
-              </a>
             </div>
             <div className="text-base-content/50 text-sm">{t("landing.hero.noCard")}</div>
           </div>

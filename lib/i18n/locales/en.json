@@ -229,7 +229,9 @@
   "landing": {
     "nav": {
       "pricing": "Pricing",
-      "signUp": "Sign up"
+      "signUp": "Sign up",
+      "startTrial": "Start trial",
+      "features": "Features"
     },
     "hero": {
       "eyebrow": "All monitored services operational",
@@ -238,7 +240,6 @@
       "titleSuffix": ", you'll know first.",
       "body": "downDATA watches the status pages you already depend on — GitHub, Supabase, Cloudflare, and anything else on Atlassian Statuspage — checked as often as every {{interval}}, starting at {{price}} where StatusGator charges {{competitorPrice}} for the same job.",
       "ctaTrial": "Start your 14-day trial",
-      "ctaPricing": "See pricing",
       "noCard": "No credit card. Full access for 14 days.",
       "liveDashboard": "Live dashboard"
     },
@@ -363,5 +364,13 @@
     "followOnX": "Follow {{name}} on X",
     "chatWithUs": "Chat with us",
     "back": "← Back"
+  },
+  "features": {
+    "monitors": "Track the live status of any service on Atlassian Statuspage — GitHub, Supabase, Cloudflare, and anything else your team depends on — checked as often as every 30 seconds.",
+    "incidents": "A unified timeline of incidents across every service you track, so you don't have to check five different status pages to know what's actually going on.",
+    "maintenances": "Scheduled and in-progress maintenance windows across all your tracked services, in one place — so planned downtime never looks like an outage.",
+    "integrations": "Connect Slack and send status updates straight to a channel your team already watches — no one has to remember to check a dashboard.",
+    "history": "Pick any tracked service and see its incident history over the last 12 months — useful the next time someone asks whether this has happened before.",
+    "boards": "Group your tracked services into boards for different teams, so everyone sees only the services that matter to them."
   }
 }

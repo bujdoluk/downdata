@@ -287,6 +287,20 @@
       "needMore": "Potřebujete více než 1 000 monitorů, nebo chcete vlastní hosting?",
       "selfHostedLicense": "Zeptejte se na licenci pro vlastní hosting."
     },
+    "faq": {
+      "heading": "Časté otázky",
+      "subtitle": "Všechno, co potřebujete vědět, než začnete zkušební verzi.",
+      "howItWorksQuestion": "Jak downDATA kontroluje moje služby?",
+      "howItWorksAnswer": "Kontrolujeme veřejnou stavovou stránku každé sledované služby až každých 30 sekund a jakmile se něco změní, aktualizujeme váš přehled.",
+      "trialQuestion": "Co se stane po skončení 14denní zkušební verze?",
+      "trialAnswer": "Po dobu 14 dní máte plný přístup bez nutnosti karty. Až zkušební verze skončí, vyberte si plán, který vám vyhovuje — nic se neúčtuje automaticky.",
+      "cancelQuestion": "Můžu plán kdykoli změnit nebo zrušit?",
+      "cancelAnswer": "Ano. Plán můžete kdykoli zvýšit, snížit nebo zrušit — bez závazků a dlouhodobých smluv.",
+      "notificationsQuestion": "Dostane můj tým upozornění, když něco vypadne?",
+      "notificationsAnswer": "Slack propojíte na pár kliknutí a incidenty se rovnou posílají do vašeho kanálu. Každý plán zahrnuje neomezený počet členů týmu, takže má přehled celý tým.",
+      "monitorCountQuestion": "Co se počítá jako jeden „monitor“?",
+      "monitorCountAnswer": "Každá sledovaná služba — GitHub, Supabase, Cloudflare nebo cokoli dalšího na Atlassian Statuspage — se počítá jako jeden monitor v rámci limitu vašeho plánu."
+    },
     "closing": {
       "heading": "Čtrnáct dní. Plný přístup. Bez karty.",
       "cta": "Vyzkoušet zdarma"
@@ -359,7 +373,8 @@
     "copyright": "© {{year}} <brand>down</brand>DATA. Všechna práva vyhrazena.",
     "privacyPolicy": "Zásady ochrany osobních údajů",
     "termsOfService": "Podmínky používání",
-    "about": "O nás"
+    "about": "O nás",
+    "faq": "Časté otázky"
   },
   "about": {
     "title": "O <brand>down</brand>DATA",

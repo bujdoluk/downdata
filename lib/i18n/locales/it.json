@@ -281,6 +281,20 @@
       "needMore": "Ti servono più di 1000 monitor o vuoi il self-hosting?",
       "selfHostedLicense": "Chiedi informazioni su una licenza self-hosted."
     },
+    "faq": {
+      "heading": "Domande frequenti",
+      "subtitle": "Tutto ciò che devi sapere prima di iniziare la prova gratuita.",
+      "howItWorksQuestion": "Come controlla downDATA i miei servizi?",
+      "howItWorksAnswer": "Controlliamo la pagina di stato pubblica di ogni servizio monitorato fino a ogni 30 secondi e aggiorniamo la tua dashboard non appena qualcosa cambia.",
+      "trialQuestion": "Cosa succede al termine della prova gratuita di 14 giorni?",
+      "trialAnswer": "Hai accesso completo per 14 giorni senza bisogno di carta. Quando la prova termina, scegli il piano più adatto a te — non viene addebitato nulla automaticamente.",
+      "cancelQuestion": "Posso cambiare o annullare il piano in qualsiasi momento?",
+      "cancelAnswer": "Sì. Puoi passare a un piano superiore, inferiore o annullare quando vuoi — nessun vincolo né contratti a lungo termine.",
+      "notificationsQuestion": "Il mio team riceverà una notifica se qualcosa smette di funzionare?",
+      "notificationsAnswer": "Collega Slack in pochi clic e gli incidenti arrivano direttamente nel tuo canale. Ogni piano include membri del team illimitati, così tutto il team resta aggiornato.",
+      "monitorCountQuestion": "Cosa conta come un «monitor»?",
+      "monitorCountAnswer": "Ogni servizio monitorato — GitHub, Supabase, Cloudflare o qualsiasi altro su Atlassian Statuspage — conta come un monitor rispetto al limite del tuo piano."
+    },
     "closing": {
       "heading": "Quattordici giorni. Accesso completo. Nessuna carta.",
       "cta": "Inizia la prova"
@@ -353,7 +367,8 @@
     "copyright": "© {{year}} <brand>down</brand>DATA. Tutti i diritti riservati.",
     "privacyPolicy": "Informativa sulla privacy",
     "termsOfService": "Termini di servizio",
-    "about": "Chi siamo"
+    "about": "Chi siamo",
+    "faq": "Domande frequenti"
   },
   "about": {
     "title": "Su <brand>down</brand>DATA",

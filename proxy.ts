@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 // Everything else requires a session — dashboard pages and every /api/*
 // route read/write per-account data now that boards are RLS-scoped.
-const PUBLIC_EXACT = new Set(["/landing-page", "/login", "/reset-password", "/privacy", "/terms", "/about"]);
+const PUBLIC_EXACT = new Set(["/landing-page", "/login", "/reset-password", "/privacy", "/terms", "/about", "/faq"]);
 const PUBLIC_PREFIXES = ["/auth/", "/api/cron/", "/features/"];
 
 function isPublicPath(pathname: string): boolean {

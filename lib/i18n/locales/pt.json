@@ -281,6 +281,20 @@
       "needMore": "Precisa de mais de 1000 monitores ou quer alojamento próprio?",
       "selfHostedLicense": "Informe-se sobre uma licença de alojamento próprio."
     },
+    "faq": {
+      "heading": "Perguntas frequentes",
+      "subtitle": "Tudo o que precisa de saber antes de começar o seu período de teste.",
+      "howItWorksQuestion": "Como é que a downDATA verifica os meus serviços?",
+      "howItWorksAnswer": "Verificamos a página de estado pública de cada serviço monitorizado até de 30 em 30 segundos e atualizamos o seu painel assim que algo mudar.",
+      "trialQuestion": "O que acontece quando o meu período de teste de 14 dias terminar?",
+      "trialAnswer": "Tem acesso total durante 14 dias, sem necessidade de cartão. Quando o período de teste terminar, escolha o plano que melhor se adequa — nada é cobrado automaticamente.",
+      "cancelQuestion": "Posso alterar ou cancelar o meu plano a qualquer momento?",
+      "cancelAnswer": "Sim. Pode fazer upgrade, downgrade ou cancelar quando quiser — sem compromisso nem contratos de longo prazo.",
+      "notificationsQuestion": "A minha equipa é avisada quando algo falha?",
+      "notificationsAnswer": "Ligue o Slack em poucos cliques e os incidentes são enviados diretamente para o seu canal. Todos os planos incluem utilizadores ilimitados, para que toda a equipa esteja a par.",
+      "monitorCountQuestion": "O que conta como um «monitor»?",
+      "monitorCountAnswer": "Cada serviço monitorizado — GitHub, Supabase, Cloudflare ou qualquer outro no Atlassian Statuspage — conta como um monitor dentro do limite do seu plano."
+    },
     "closing": {
       "heading": "Catorze dias. Acesso total. Sem cartão.",
       "cta": "Iniciar teste gratuito"
@@ -353,7 +367,8 @@
     "copyright": "© {{year}} <brand>down</brand>DATA. Todos os direitos reservados.",
     "privacyPolicy": "Política de Privacidade",
     "termsOfService": "Termos de Serviço",
-    "about": "Sobre nós"
+    "about": "Sobre nós",
+    "faq": "Perguntas Frequentes"
   },
   "about": {
     "title": "Sobre a <brand>down</brand>DATA",

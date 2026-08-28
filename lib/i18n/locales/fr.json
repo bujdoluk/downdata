@@ -281,6 +281,20 @@
       "needMore": "Besoin de plus de 1000 moniteurs ou d'un hébergement autonome ?",
       "selfHostedLicense": "Renseignez-vous sur une licence auto-hébergée."
     },
+    "faq": {
+      "heading": "Questions fréquentes",
+      "subtitle": "Tout ce qu'il faut savoir avant de démarrer votre essai.",
+      "howItWorksQuestion": "Comment downDATA vérifie-t-il mes services ?",
+      "howItWorksAnswer": "Nous interrogeons la page de statut publique de chaque service suivi jusqu'à toutes les 30 secondes et mettons à jour votre tableau de bord dès qu'un changement survient.",
+      "trialQuestion": "Que se passe-t-il à la fin de mon essai de 14 jours ?",
+      "trialAnswer": "Vous bénéficiez d'un accès complet pendant 14 jours, sans carte requise. Une fois l'essai terminé, choisissez le forfait qui vous convient — rien n'est débité automatiquement.",
+      "cancelQuestion": "Puis-je changer ou annuler mon forfait à tout moment ?",
+      "cancelAnswer": "Oui. Vous pouvez passer à un forfait supérieur, inférieur, ou annuler à tout moment — sans engagement ni contrat de longue durée.",
+      "notificationsQuestion": "Mon équipe sera-t-elle prévenue en cas de panne ?",
+      "notificationsAnswer": "Connectez Slack en quelques clics et les incidents arrivent directement dans votre canal. Chaque forfait inclut des membres d'équipe illimités, pour que toute l'équipe reste informée.",
+      "monitorCountQuestion": "Qu'est-ce qui compte comme un « moniteur » ?",
+      "monitorCountAnswer": "Chaque service suivi — GitHub, Supabase, Cloudflare ou tout autre service sur Atlassian Statuspage — compte comme un moniteur dans la limite de votre forfait."
+    },
     "closing": {
       "heading": "Quatorze jours. Accès complet. Sans carte.",
       "cta": "Démarrer l'essai"
@@ -353,7 +367,8 @@
     "copyright": "© {{year}} <brand>down</brand>DATA. Tous droits réservés.",
     "privacyPolicy": "Politique de confidentialité",
     "termsOfService": "Conditions d'utilisation",
-    "about": "À propos"
+    "about": "À propos",
+    "faq": "Questions fréquentes"
   },
   "about": {
     "title": "À propos de <brand>down</brand>DATA",

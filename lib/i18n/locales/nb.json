@@ -281,6 +281,20 @@
       "needMore": "Trenger du flere enn 1000 overvåkere, eller vil du selvhoste?",
       "selfHostedLicense": "Spør om en selvhostet lisens."
     },
+    "faq": {
+      "heading": "Ofte stilte spørsmål",
+      "subtitle": "Alt du trenger å vite før du starter prøveperioden.",
+      "howItWorksQuestion": "Hvordan sjekker downDATA tjenestene mine?",
+      "howItWorksAnswer": "Vi sjekker den offentlige statussiden til hver overvåkede tjeneste så ofte som hvert 30. sekund, og oppdaterer dashbordet ditt så snart noe endrer seg.",
+      "trialQuestion": "Hva skjer når 14-dagers prøveperioden min tar slutt?",
+      "trialAnswer": "Du får full tilgang i 14 dager uten behov for kort. Når prøveperioden er over, velger du planen som passer deg — ingenting trekkes automatisk.",
+      "cancelQuestion": "Kan jeg endre eller si opp planen min når som helst?",
+      "cancelAnswer": "Ja. Du kan oppgradere, nedgradere eller si opp når du vil — uten bindingstid eller langsiktige avtaler.",
+      "notificationsQuestion": "Får teamet mitt varsel når noe går ned?",
+      "notificationsAnswer": "Koble til Slack på noen få klikk, så går hendelser rett til kanalen din. Hver plan inkluderer ubegrensede teammedlemmer, slik at hele teamet holder seg oppdatert.",
+      "monitorCountQuestion": "Hva regnes som én «overvåker»?",
+      "monitorCountAnswer": "Hver overvåkede tjeneste — GitHub, Supabase, Cloudflare eller noe annet på Atlassian Statuspage — regnes som én overvåker mot grensen i planen din."
+    },
     "closing": {
       "heading": "Fjorten dager. Full tilgang. Ikke noe kort.",
       "cta": "Start prøveperiode"
@@ -353,7 +367,8 @@
     "copyright": "© {{year}} <brand>down</brand>DATA. Med enerett.",
     "privacyPolicy": "Personvernerklæring",
     "termsOfService": "Bruksvilkår",
-    "about": "Om oss"
+    "about": "Om oss",
+    "faq": "Ofte stilte spørsmål"
   },
   "about": {
     "title": "Om <brand>down</brand>DATA",

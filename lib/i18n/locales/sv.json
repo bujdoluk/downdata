@@ -281,6 +281,20 @@
       "needMore": "Behöver du fler än 1000 övervakare eller vill du köra egen värdtjänst?",
       "selfHostedLicense": "Fråga om en licens för egen värdtjänst."
     },
+    "faq": {
+      "heading": "Vanliga frågor",
+      "subtitle": "Allt du behöver veta innan du startar din provperiod.",
+      "howItWorksQuestion": "Hur kontrollerar downDATA mina tjänster?",
+      "howItWorksAnswer": "Vi hämtar den offentliga statussidan för varje övervakad tjänst så ofta som var 30:e sekund och uppdaterar din instrumentpanel så fort något ändras.",
+      "trialQuestion": "Vad händer när min 14-dagars provperiod tar slut?",
+      "trialAnswer": "Du får full åtkomst i 14 dagar utan att behöva ange kort. När provperioden är slut väljer du den plan som passar dig — inget dras automatiskt.",
+      "cancelQuestion": "Kan jag ändra eller avsluta min plan när som helst?",
+      "cancelAnswer": "Ja. Du kan uppgradera, nedgradera eller avsluta när du vill — utan bindningstid eller långa avtal.",
+      "notificationsQuestion": "Blir mitt team meddelat när något går ner?",
+      "notificationsAnswer": "Anslut Slack på några klick, så skickas incidenter direkt till din kanal. Varje plan inkluderar obegränsat antal teammedlemmar, så hela teamet hålls uppdaterat.",
+      "monitorCountQuestion": "Vad räknas som en \"övervakare\"?",
+      "monitorCountAnswer": "Varje övervakad tjänst — GitHub, Supabase, Cloudflare eller något annat på Atlassian Statuspage — räknas som en övervakare mot din plans gräns."
+    },
     "closing": {
       "heading": "Fjorton dagar. Full åtkomst. Inget kort.",
       "cta": "Starta provperiod"
@@ -353,7 +367,8 @@
     "copyright": "© {{year}} <brand>down</brand>DATA. Alla rättigheter förbehållna.",
     "privacyPolicy": "Integritetspolicy",
     "termsOfService": "Användarvillkor",
-    "about": "Om oss"
+    "about": "Om oss",
+    "faq": "Vanliga frågor"
   },
   "about": {
     "title": "Om <brand>down</brand>DATA",

@@ -281,6 +281,20 @@
       "needMore": "Mehr als 1.000 Monitore nötig oder eigenes Hosting gewünscht?",
       "selfHostedLicense": "Frag nach einer Self-Hosting-Lizenz."
     },
+    "faq": {
+      "heading": "Häufig gestellte Fragen",
+      "subtitle": "Alles, was du wissen musst, bevor du deine Testphase startest.",
+      "howItWorksQuestion": "Wie prüft downDATA meine Dienste?",
+      "howItWorksAnswer": "Wir rufen die öffentliche Statusseite jedes verfolgten Diensts bis zu alle 30 Sekunden ab und aktualisieren dein Dashboard, sobald sich etwas ändert.",
+      "trialQuestion": "Was passiert nach Ablauf meiner 14-tägigen Testphase?",
+      "trialAnswer": "Du hast 14 Tage lang vollen Zugriff, ganz ohne Kreditkarte. Nach der Testphase wählst du den passenden Plan — es wird nichts automatisch abgebucht.",
+      "cancelQuestion": "Kann ich meinen Plan jederzeit ändern oder kündigen?",
+      "cancelAnswer": "Ja. Du kannst jederzeit upgraden, downgraden oder kündigen — keine Vertragsbindung.",
+      "notificationsQuestion": "Wird mein Team benachrichtigt, wenn etwas ausfällt?",
+      "notificationsAnswer": "Verbinde Slack in wenigen Klicks, und Vorfälle landen direkt in deinem Kanal. Jeder Plan enthält unbegrenzt viele Teammitglieder, damit das ganze Team informiert bleibt.",
+      "monitorCountQuestion": "Was zählt als ein „Monitor“?",
+      "monitorCountAnswer": "Jeder verfolgte Dienst — GitHub, Supabase, Cloudflare oder alles andere auf Atlassian Statuspage — zählt als ein Monitor gegen das Limit deines Plans."
+    },
     "closing": {
       "heading": "Vierzehn Tage. Voller Zugriff. Keine Karte.",
       "cta": "Kostenlos testen"
@@ -353,7 +367,8 @@
     "copyright": "© {{year}} <brand>down</brand>DATA. Alle Rechte vorbehalten.",
     "privacyPolicy": "Datenschutzerklärung",
     "termsOfService": "Nutzungsbedingungen",
-    "about": "Über uns"
+    "about": "Über uns",
+    "faq": "Häufige Fragen"
   },
   "about": {
     "title": "Über <brand>down</brand>DATA",

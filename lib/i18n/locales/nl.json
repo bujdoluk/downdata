@@ -281,6 +281,20 @@
       "needMore": "Meer dan 1000 monitors nodig, of wil je self-hosten?",
       "selfHostedLicense": "Vraag naar een self-hosted licentie."
     },
+    "faq": {
+      "heading": "Veelgestelde vragen",
+      "subtitle": "Alles wat je moet weten voordat je je proefperiode start.",
+      "howItWorksQuestion": "Hoe controleert downDATA mijn diensten?",
+      "howItWorksAnswer": "We halen de openbare statuspagina van elke gevolgde dienst op tot wel elke 30 seconden en werken je dashboard bij zodra er iets verandert.",
+      "trialQuestion": "Wat gebeurt er als mijn proefperiode van 14 dagen afloopt?",
+      "trialAnswer": "Je hebt 14 dagen lang volledige toegang zonder dat je een kaart nodig hebt. Zodra de proefperiode afloopt, kies je het plan dat bij je past — er wordt niets automatisch afgeschreven.",
+      "cancelQuestion": "Kan ik mijn plan op elk moment wijzigen of opzeggen?",
+      "cancelAnswer": "Ja. Je kunt op elk moment upgraden, downgraden of opzeggen — zonder verplichtingen of langetermijncontracten.",
+      "notificationsQuestion": "Krijgt mijn team een melding als er iets uitvalt?",
+      "notificationsAnswer": "Koppel Slack in een paar klikken en incidenten komen rechtstreeks in je kanaal terecht. Elk plan bevat onbeperkt aantal teamleden, zodat het hele team op de hoogte blijft.",
+      "monitorCountQuestion": "Wat telt als één 'monitor'?",
+      "monitorCountAnswer": "Elke gevolgde dienst — GitHub, Supabase, Cloudflare of iets anders op Atlassian Statuspage — telt als één monitor binnen de limiet van je plan."
+    },
     "closing": {
       "heading": "Veertien dagen. Volledige toegang. Geen kaart.",
       "cta": "Start proefperiode"
@@ -353,7 +367,8 @@
     "copyright": "© {{year}} <brand>down</brand>DATA. Alle rechten voorbehouden.",
     "privacyPolicy": "Privacybeleid",
     "termsOfService": "Gebruiksvoorwaarden",
-    "about": "Over ons"
+    "about": "Over ons",
+    "faq": "Veelgestelde vragen"
   },
   "about": {
     "title": "Over <brand>down</brand>DATA",

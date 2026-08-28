@@ -281,6 +281,20 @@
       "needMore": "¿Necesitas más de 1000 monitores o quieres alojarlo tú mismo?",
       "selfHostedLicense": "Pregunta por una licencia autoalojada."
     },
+    "faq": {
+      "heading": "Preguntas frecuentes",
+      "subtitle": "Todo lo que necesitas saber antes de empezar tu periodo de prueba.",
+      "howItWorksQuestion": "¿Cómo comprueba downDATA mis servicios?",
+      "howItWorksAnswer": "Consultamos la página de estado pública de cada servicio seguido hasta cada 30 segundos y actualizamos tu panel en cuanto algo cambia.",
+      "trialQuestion": "¿Qué pasa cuando termina mi prueba de 14 días?",
+      "trialAnswer": "Tienes acceso completo durante 14 días sin necesidad de tarjeta. Cuando termine la prueba, elige el plan que mejor te encaje — no se cobra nada automáticamente.",
+      "cancelQuestion": "¿Puedo cambiar o cancelar mi plan en cualquier momento?",
+      "cancelAnswer": "Sí. Puedes subir, bajar o cancelar tu plan cuando quieras — sin permanencia ni contratos a largo plazo.",
+      "notificationsQuestion": "¿Se avisará a mi equipo cuando algo falle?",
+      "notificationsAnswer": "Conecta Slack en pocos clics y los incidentes llegarán directamente a tu canal. Todos los planes incluyen miembros ilimitados, así que todo el equipo está al tanto.",
+      "monitorCountQuestion": "¿Qué cuenta como un «monitor»?",
+      "monitorCountAnswer": "Cada servicio seguido — GitHub, Supabase, Cloudflare o cualquier otro en Atlassian Statuspage — cuenta como un monitor dentro del límite de tu plan."
+    },
     "closing": {
       "heading": "Catorce días. Acceso completo. Sin tarjeta.",
       "cta": "Empieza tu prueba"
@@ -353,7 +367,8 @@
     "copyright": "© {{year}} <brand>down</brand>DATA. Todos los derechos reservados.",
     "privacyPolicy": "Política de Privacidad",
     "termsOfService": "Términos de Servicio",
-    "about": "Sobre nosotros"
+    "about": "Sobre nosotros",
+    "faq": "Preguntas Frecuentes"
   },
   "about": {
     "title": "Sobre <brand>down</brand>DATA",

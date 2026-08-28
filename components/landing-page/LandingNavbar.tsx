@@ -13,7 +13,7 @@ export default function LandingNavbar() {
   return (
     <nav className="border-base-300 border-b">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-5">
-        <Link href="/" className="flex items-center gap-2.5 text-lg font-extrabold tracking-tight">
+        <Link href="/landing-page" className="flex items-center gap-2.5 text-lg font-extrabold tracking-tight">
           <Logo className="h-6 w-6" />
           <span>
             <span className="text-primary">down</span>DATA

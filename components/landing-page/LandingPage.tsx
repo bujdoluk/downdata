@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
+import FaqSection from "@/components/landing-page/FaqSection";
 import Footer from "@/components/landing-page/Footer";
 import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import PricingSection from "@/components/landing-page/PricingSection";
@@ -165,6 +166,8 @@ export default function LandingPage() {
       </section>
 
       <PricingSection />
+
+      <FaqSection />
 
       {/* Closing CTA */}
       <div className="border-base-300 relative overflow-hidden border-t py-28 text-center">

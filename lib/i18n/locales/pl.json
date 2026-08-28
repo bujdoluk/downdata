@@ -293,6 +293,20 @@
       "needMore": "Potrzebujesz więcej niż 1000 monitorów albo chcesz własny hosting?",
       "selfHostedLicense": "Zapytaj o licencję na własny hosting."
     },
+    "faq": {
+      "heading": "Najczęściej zadawane pytania",
+      "subtitle": "Wszystko, co warto wiedzieć przed rozpoczęciem okresu próbnego.",
+      "howItWorksQuestion": "Jak downDATA sprawdza moje usługi?",
+      "howItWorksAnswer": "Sprawdzamy publiczną stronę statusu każdej śledzonej usługi nawet co 30 sekund i aktualizujemy panel, gdy tylko coś się zmieni.",
+      "trialQuestion": "Co się stanie po zakończeniu 14-dniowego okresu próbnego?",
+      "trialAnswer": "Przez 14 dni masz pełny dostęp bez potrzeby podawania karty. Gdy okres próbny się skończy, wybierz odpowiedni plan — nic nie zostanie naliczone automatycznie.",
+      "cancelQuestion": "Czy mogę zmienić lub anulować plan w dowolnym momencie?",
+      "cancelAnswer": "Tak. Możesz w każdej chwili zmienić plan na wyższy lub niższy albo go anulować — bez zobowiązań i długoterminowych umów.",
+      "notificationsQuestion": "Czy mój zespół otrzyma powiadomienie, gdy coś przestanie działać?",
+      "notificationsAnswer": "Połącz Slacka w kilka kliknięć, a incydenty trafią prosto na Twój kanał. Każdy plan obejmuje nieograniczoną liczbę użytkowników, więc cały zespół jest na bieżąco.",
+      "monitorCountQuestion": "Co liczy się jako jeden „monitor”?",
+      "monitorCountAnswer": "Każda śledzona usługa — GitHub, Supabase, Cloudflare lub dowolna inna dostępna w Atlassian Statuspage — liczy się jako jeden monitor w ramach limitu Twojego planu."
+    },
     "closing": {
       "heading": "Czternaście dni. Pełny dostęp. Bez karty.",
       "cta": "Wypróbuj za darmo"
@@ -365,7 +379,8 @@
     "copyright": "© {{year}} <brand>down</brand>DATA. Wszelkie prawa zastrzeżone.",
     "privacyPolicy": "Polityka prywatności",
     "termsOfService": "Warunki korzystania z usługi",
-    "about": "O nas"
+    "about": "O nas",
+    "faq": "Najczęstsze pytania"
   },
   "about": {
     "title": "O <brand>down</brand>DATA",

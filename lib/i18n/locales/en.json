@@ -281,6 +281,20 @@
       "needMore": "Need more than 1,000 monitors, or want to run it yourself?",
       "selfHostedLicense": "Ask about a self-hosted license."
     },
+    "faq": {
+      "heading": "Frequently asked questions",
+      "subtitle": "Everything you need to know before you start your trial.",
+      "howItWorksQuestion": "How does downDATA check my services?",
+      "howItWorksAnswer": "We poll each tracked service's public status page as often as every 30 seconds and update your dashboard the moment anything changes.",
+      "trialQuestion": "What happens after my 14-day trial ends?",
+      "trialAnswer": "You get full access for 14 days with no card required. When the trial ends, pick the plan that fits — nothing is charged automatically.",
+      "cancelQuestion": "Can I change or cancel my plan anytime?",
+      "cancelAnswer": "Yes. Upgrade, downgrade, or cancel whenever you like — there's no lock-in or long-term contract.",
+      "notificationsQuestion": "Will my team get notified when something breaks?",
+      "notificationsAnswer": "Connect Slack in a few clicks and incidents post straight to your channel. Every plan includes unlimited team seats, so the whole team stays in the loop.",
+      "monitorCountQuestion": "What counts as one \"monitor\"?",
+      "monitorCountAnswer": "Each service you track — GitHub, Supabase, Cloudflare, or anything else on Atlassian Statuspage — counts as one monitor against your plan's limit."
+    },
     "closing": {
       "heading": "Fourteen days. Full access. No card.",
       "cta": "Start your trial"
@@ -353,7 +367,8 @@
     "copyright": "© {{year}} <brand>down</brand>DATA. All rights reserved.",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
-    "about": "About"
+    "about": "About",
+    "faq": "FAQ"
   },
   "about": {
     "title": "About <brand>down</brand>DATA",

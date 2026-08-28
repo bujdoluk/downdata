@@ -368,7 +368,9 @@
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
     "about": "About",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "companyTitle": "Company",
+    "legalTitle": "Legal"
   },
   "about": {
     "title": "About <brand>down</brand>DATA",

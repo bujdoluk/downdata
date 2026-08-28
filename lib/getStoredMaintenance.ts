@@ -1,4 +1,5 @@
 import { getSupabaseClient } from "@/lib/supabase";
+import { nowIso } from "@/lib/formatTime";
 import type { ScheduledMaintenance, ScheduledMaintenanceSummary } from "@/types/service";
 
 export type StoredMaintenanceUpdate = {
@@ -72,14 +73,14 @@ function groupUpdatesByMaintenance(updates: StoredMaintenanceUpdate[]): Map<stri
 export async function getAllStoredMaintenances(trackedSlugs: string[]): Promise<StoredMaintenance[]> {
   if (trackedSlugs.length === 0) return [];
   const supabase = getSupabaseClient();
-  const nowIso = new Date().toISOString();
+  const nowIsoValue = nowIso();
 
   const { data: maintenances } = await supabase
     .from("maintenances")
     .select(MAINTENANCE_SUMMARY_COLUMNS)
     .in("service_slug", trackedSlugs)
     .neq("status", "completed")
-    .or(`scheduled_until.gte.${nowIso},status.eq.in_progress`)
+    .or(`scheduled_until.gte.${nowIsoValue},status.eq.in_progress`)
     .order("scheduled_for", { ascending: true });
   if (!maintenances?.length) return [];
 
@@ -99,14 +100,14 @@ export async function getAllStoredMaintenances(trackedSlugs: string[]): Promise<
 export async function getAllStoredMaintenanceSummaries(trackedSlugs: string[]): Promise<Omit<StoredMaintenance, "maintenance_updates">[]> {
   if (trackedSlugs.length === 0) return [];
   const supabase = getSupabaseClient();
-  const nowIso = new Date().toISOString();
+  const nowIsoValue = nowIso();
 
   const { data } = await supabase
     .from("maintenances")
     .select(MAINTENANCE_SUMMARY_COLUMNS)
     .in("service_slug", trackedSlugs)
     .neq("status", "completed")
-    .or(`scheduled_until.gte.${nowIso},status.eq.in_progress`)
+    .or(`scheduled_until.gte.${nowIsoValue},status.eq.in_progress`)
     .order("scheduled_for", { ascending: true });
 
   return (data as Omit<StoredMaintenance, "maintenance_updates">[]) ?? [];

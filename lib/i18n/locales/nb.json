@@ -368,7 +368,9 @@
     "privacyPolicy": "Personvernerklæring",
     "termsOfService": "Bruksvilkår",
     "about": "Om oss",
-    "faq": "Ofte stilte spørsmål"
+    "faq": "Ofte stilte spørsmål",
+    "companyTitle": "Selskap",
+    "legalTitle": "Juridisk"
   },
   "about": {
     "title": "Om <brand>down</brand>DATA",

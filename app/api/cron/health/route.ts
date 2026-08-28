@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabaseClient } from "@/lib/supabase";
 import { LOCK_STALE_MS } from "@/lib/pollIncidents";
+import { msSince } from "@/lib/formatTime";
 
 // A shard_key that hasn't even attempted a run in 24h is retired config
 // (e.g. from a resharding change), not an active shard that's failing —
@@ -15,9 +16,8 @@ export async function GET() {
     const { data: rows, error } = await supabase.from("poll_run_lock").select("shard_key, started_at, last_success_at");
     if (error) throw error;
 
-    const now = Date.now();
-    const active = (rows ?? []).filter((row) => row.started_at && now - new Date(row.started_at).getTime() < IGNORE_INACTIVE_AFTER_MS);
-    const stale = active.filter((row) => !row.last_success_at || now - new Date(row.last_success_at).getTime() > LOCK_STALE_MS);
+    const active = (rows ?? []).filter((row) => row.started_at && msSince(row.started_at) < IGNORE_INACTIVE_AFTER_MS);
+    const stale = active.filter((row) => !row.last_success_at || msSince(row.last_success_at) > LOCK_STALE_MS);
 
     if (stale.length > 0) {
       return NextResponse.json({ status: "unhealthy", stale: stale.map((row) => row.shard_key) }, { status: 503 });

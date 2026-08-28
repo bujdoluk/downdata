@@ -368,7 +368,9 @@
     "privacyPolicy": "Privacybeleid",
     "termsOfService": "Gebruiksvoorwaarden",
     "about": "Over ons",
-    "faq": "Veelgestelde vragen"
+    "faq": "Veelgestelde vragen",
+    "companyTitle": "Bedrijf",
+    "legalTitle": "Juridisch"
   },
   "about": {
     "title": "Over <brand>down</brand>DATA",

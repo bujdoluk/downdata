@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { UserIcon } from "@/components/icons/NavIcons";
+import { nowMs } from "@/lib/formatTime";
 
 const MAX_BYTES = 2 * 1024 * 1024;
 
@@ -39,7 +40,7 @@ export default function AvatarUpload({
       // Cache-bust: the path is stable per user, so without this the
       // browser would keep showing the previous image at the same URL.
       const { data } = supabase.storage.from("avatars").getPublicUrl(path);
-      const newUrl = `${data.publicUrl}?t=${Date.now()}`;
+      const newUrl = `${data.publicUrl}?t=${nowMs()}`;
 
       const { error: updateError } = await supabase.auth.updateUser({ data: { avatar_url: newUrl } });
       if (updateError) throw updateError;

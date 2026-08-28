@@ -368,7 +368,9 @@
     "privacyPolicy": "Datenschutzerklärung",
     "termsOfService": "Nutzungsbedingungen",
     "about": "Über uns",
-    "faq": "Häufige Fragen"
+    "faq": "Häufige Fragen",
+    "companyTitle": "Unternehmen",
+    "legalTitle": "Rechtliches"
   },
   "about": {
     "title": "Über <brand>down</brand>DATA",

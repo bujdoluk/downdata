@@ -374,7 +374,9 @@
     "privacyPolicy": "Zásady ochrany osobných údajov",
     "termsOfService": "Podmienky používania",
     "about": "O nás",
-    "faq": "Časté otázky"
+    "faq": "Časté otázky",
+    "companyTitle": "Spoločnosť",
+    "legalTitle": "Právne"
   },
   "about": {
     "title": "O <brand>down</brand>DATA",

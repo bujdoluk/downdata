@@ -1,8 +1,10 @@
 import { timingSafeEqual } from "node:crypto";
+import { Temporal } from "temporal-polyfill";
 import { NextResponse, after } from "next/server";
 import { getSupabaseClient } from "@/lib/supabase";
 import { pollAllIncidents, LOCK_STALE_MS } from "@/lib/pollIncidents";
 import { notifyPendingEvents } from "@/lib/notifyIncidentEvents";
+import { nowIso } from "@/lib/formatTime";
 
 // A full poll+notify cycle can take longer than free external cron
 // services' request timeout (e.g. cron-job.org's free plan cuts off at
@@ -61,10 +63,12 @@ export async function GET(request: Request) {
   // A single atomic UPDATE...RETURNING is self-contained instead. Scoped
   // per shard_key so concurrent shards (?shard=0&shards=4, ?shard=1&...)
   // don't block each other — only two requests for the *same* shard do.
-  const staleBefore = new Date(Date.now() - LOCK_STALE_MS).toISOString();
+  const staleBefore = Temporal.Now.instant()
+    .subtract({ milliseconds: LOCK_STALE_MS })
+    .toString({ smallestUnit: "millisecond" });
   const { data: claimed } = await supabase
     .from("poll_run_lock")
-    .update({ running: true, started_at: new Date().toISOString() })
+    .update({ running: true, started_at: nowIso() })
     .eq("shard_key", shardKey)
     .or(`running.eq.false,started_at.lt.${staleBefore}`)
     .select();
@@ -97,7 +101,7 @@ export async function GET(request: Request) {
       const totalAttempted = result.incidentsUpserted + result.failed + result.maintenancesUpserted + result.maintenancesFailed;
       const acceptable = totalFailed === 0 || totalFailed / totalAttempted < 0.5;
       if (acceptable) {
-        await supabase.from("poll_run_lock").update({ last_success_at: new Date().toISOString() }).eq("shard_key", shardKey);
+        await supabase.from("poll_run_lock").update({ last_success_at: nowIso() }).eq("shard_key", shardKey);
       }
 
       // Only the first shard of whatever split is configured triggers

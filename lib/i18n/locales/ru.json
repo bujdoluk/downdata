@@ -380,7 +380,9 @@
     "privacyPolicy": "Политика конфиденциальности",
     "termsOfService": "Условия использования",
     "about": "О нас",
-    "faq": "Частые вопросы"
+    "faq": "Частые вопросы",
+    "companyTitle": "Компания",
+    "legalTitle": "Правовая информация"
   },
   "about": {
     "title": "О <brand>down</brand>DATA",

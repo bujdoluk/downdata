@@ -2,7 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import { formatDateTime, formatDuration, minutesBetween } from "@/lib/formatTime";
+import { formatDateTime, formatDuration, minutesBetween, epochMs } from "@/lib/formatTime";
 import type { TrackedIncident, TrackedMaintenance } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
@@ -78,7 +78,7 @@ export default function IncidentDetail({
               <div className="timeline-end timeline-box bg-base-200">
                 <p className="flex items-center gap-2 text-base-content text-sm font-medium">
                   {update.status}
-                  {lastViewed !== undefined && new Date(update.created_at).getTime() > lastViewed && (
+                  {lastViewed !== undefined && epochMs(update.created_at) > lastViewed && (
                     <span className="badge badge-xs badge-primary">{t("incidents.new")}</span>
                   )}
                 </p>

@@ -380,7 +380,9 @@
     "privacyPolicy": "Polityka prywatności",
     "termsOfService": "Warunki korzystania z usługi",
     "about": "O nas",
-    "faq": "Najczęstsze pytania"
+    "faq": "Najczęstsze pytania",
+    "companyTitle": "Firma",
+    "legalTitle": "Prawne"
   },
   "about": {
     "title": "O <brand>down</brand>DATA",

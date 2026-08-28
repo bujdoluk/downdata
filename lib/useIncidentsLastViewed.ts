@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { nowMs } from "@/lib/formatTime";
 
 const STORAGE_KEY = "incidentsLastViewed";
 
@@ -17,7 +18,7 @@ export function useIncidentsLastViewed(markSeen: boolean): number {
       const saved = localStorage.getItem(STORAGE_KEY);
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (saved) setLastViewed(Number(saved));
-      if (markSeen) localStorage.setItem(STORAGE_KEY, String(Date.now()));
+      if (markSeen) localStorage.setItem(STORAGE_KEY, String(nowMs()));
     } catch {
       // ignore
     }

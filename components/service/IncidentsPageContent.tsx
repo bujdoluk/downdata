@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import { formatDateTime, formatDuration, minutesBetween, msSince } from "@/lib/formatTime";
+import { formatDateTime, formatDuration, minutesBetween, msSince, epochMs } from "@/lib/formatTime";
 import type { Board } from "@/types/board";
 import type { TrackedIncident, TrackedIncidentSummary } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/service/logos";
@@ -136,7 +136,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
             pendingFilters.impacts.has(incident.impact) &&
             (!trimmedServiceQuery || incident.service.name.toLowerCase().includes(trimmedServiceQuery)) &&
             (pendingFilters.range === "all" || msSince(incident.updated_at) <= RANGE_MS[pendingFilters.range]) &&
-            (!onlyNew || new Date(incident.updated_at).getTime() > lastViewed) &&
+            (!onlyNew || epochMs(incident.updated_at) > lastViewed) &&
             (!boardSlugs || boardSlugs.has(incident.service.slug)),
         )
         .sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id))),
@@ -172,7 +172,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   }
 
   const countForStatus = (filter: StatusFilter) => incidents.filter((incident) => matchesStatus(incident, filter)).length;
-  const newCount = incidents.filter((incident) => new Date(incident.updated_at).getTime() > lastViewed).length;
+  const newCount = incidents.filter((incident) => epochMs(incident.updated_at) > lastViewed).length;
   const { listRef, minListHeight, totalPages, currentPage, pageItems: pageIncidents } = usePagination(
     filteredIncidents,
     page,
@@ -270,7 +270,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
                 {pageIncidents.map((incident) => {
                   const Logo = SERVICE_LOGOS[incident.service.slug] ?? FallbackLogo;
                   const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
-                  const isNew = new Date(incident.updated_at).getTime() > lastViewed;
+                  const isNew = epochMs(incident.updated_at) > lastViewed;
                   const isSelected = incident.id === selectedId;
                   return (
                     <li

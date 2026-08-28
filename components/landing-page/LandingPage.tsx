@@ -4,9 +4,8 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import Footer from "@/components/landing-page/Footer";
+import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import PricingSection from "@/components/landing-page/PricingSection";
-import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
-import Logo from "@/components/navbar/Logo";
 import CatalogServiceCard from "@/components/service/CatalogServiceCard";
 import { AlertIcon } from "@/components/icons/NavIcons";
 
@@ -68,26 +67,7 @@ export default function LandingPage() {
 
   return (
     <div data-theme="dark" className="bg-base-100 text-base-content">
-      {/* Nav */}
-      <nav className="border-base-300 border-b">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-8 py-5">
-          <Link href="/" className="flex items-center gap-2.5 text-lg font-extrabold tracking-tight">
-            <Logo className="h-6 w-6" />
-            <span>
-              <span className="text-primary">down</span>DATA
-            </span>
-          </Link>
-          <div className="flex items-center gap-6 text-sm">
-            <a href="#pricing" className="text-base-content/70 hover:text-base-content transition-colors">
-              {t("landing.nav.pricing")}
-            </a>
-            <Link href="/login?mode=signup" className="text-base-content/70 hover:text-base-content transition-colors">
-              {t("landing.nav.signUp")}
-            </Link>
-            <LanguageSwitcher />
-          </div>
-        </div>
-      </nav>
+      <LandingNavbar />
 
       {/* Hero */}
       <header className="relative overflow-hidden">

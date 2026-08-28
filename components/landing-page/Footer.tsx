@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Temporal } from "temporal-polyfill";
 import "@/lib/i18n/i18n";
 import { useCookieConsent } from "@/components/cookies/CookieConsent";
@@ -13,8 +13,13 @@ export default function Footer() {
 
   return (
     <footer className="border-base-300 bg-base-100 text-base-content/60 flex flex-col items-center gap-2 border-t py-6 text-center text-sm">
-      <span>{t("footer.copyright", { year })}</span>
+      <span>
+        <Trans i18nKey="footer.copyright" values={{ year }} components={{ brand: <span className="text-primary" /> }} />
+      </span>
       <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
+        <Link href="/about" className="link link-hover">
+          {t("footer.about")}
+        </Link>
         <Link href="/privacy" className="link link-hover">
           {t("footer.privacyPolicy")}
         </Link>

@@ -349,8 +349,19 @@
     "preferencesLink": "Cookie Preferences"
   },
   "footer": {
-    "copyright": "© {{year}} downDATA. All rights reserved.",
+    "copyright": "© {{year}} <brand>down</brand>DATA. All rights reserved.",
     "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service"
+    "termsOfService": "Terms of Service",
+    "about": "About"
+  },
+  "about": {
+    "title": "About <brand>down</brand>DATA",
+    "storyHeading": "The story",
+    "storyBody": "<brand>down</brand>DATA started in August 2026, built by one developer annoyed that checking whether the tools your app depends on are having a bad day required either babysitting five different status pages or paying a service like StatusGator hundreds of dollars a month for something that's fundamentally just polling a public API. <brand>down</brand>DATA does the same job — tracking GitHub, Supabase, Cloudflare, and anything else on Atlassian Statuspage — for a fraction of the price, with a self-hosted option for teams who'd rather not depend on us being up either.",
+    "teamHeading": "Who's behind it",
+    "teamBody": "<brand>down</brand>DATA is built and maintained by Lukáš Bujdoš, a web developer based in Slovakia <flag/>, currently as a solo project. It's new — actively built in the open, one feature at a time — rather than a company with a headcount to pad out an About page.",
+    "followOnX": "Follow {{name}} on X",
+    "chatWithUs": "Chat with us",
+    "back": "← Back"
   }
 }

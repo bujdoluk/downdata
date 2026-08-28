@@ -361,8 +361,19 @@
     "preferencesLink": "Preferencje plików cookie"
   },
   "footer": {
-    "copyright": "© {{year}} downDATA. Wszelkie prawa zastrzeżone.",
+    "copyright": "© {{year}} <brand>down</brand>DATA. Wszelkie prawa zastrzeżone.",
     "privacyPolicy": "Polityka prywatności",
-    "termsOfService": "Warunki korzystania z usługi"
+    "termsOfService": "Warunki korzystania z usługi",
+    "about": "O nas"
+  },
+  "about": {
+    "title": "O <brand>down</brand>DATA",
+    "storyHeading": "Historia",
+    "storyBody": "<brand>down</brand>DATA powstała w sierpniu 2026 roku — stworzył ją jeden programista, którego irytowało, że sprawdzenie, czy narzędzia, na których opiera się Twoja aplikacja, akurat nie mają złego dnia, wymagało albo pilnowania pięciu różnych stron statusu, albo płacenia setek dolarów miesięcznie usłudze takiej jak StatusGator za coś, co w gruncie rzeczy jest tylko cyklicznym odpytywaniem publicznego API. <brand>down</brand>DATA robi to samo — monitoruje GitHub, Supabase, Cloudflare i wszystko inne oparte na Atlassian Statuspage — za ułamek ceny, z opcją self-hostingu dla zespołów, które nie chcą polegać nawet na naszej dostępności.",
+    "teamHeading": "Kto za tym stoi",
+    "teamBody": "<brand>down</brand>DATA tworzy i utrzymuje Lukáš Bujdoš, programista webowy mieszkający w Słowacji <flag/>, na razie jako projekt jednoosobowy. Jest nowa — powstaje publicznie, funkcja po funkcji — zamiast być budowana przez firmę z zespołem, którym dałoby się wypełnić stronę „O nas”.",
+    "followOnX": "Obserwuj {{name}} na X",
+    "chatWithUs": "Napisz do nas",
+    "back": "← Wstecz"
   }
 }

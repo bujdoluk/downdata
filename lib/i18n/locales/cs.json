@@ -355,8 +355,19 @@
     "preferencesLink": "Předvolby cookies"
   },
   "footer": {
-    "copyright": "© {{year}} downDATA. Všechna práva vyhrazena.",
+    "copyright": "© {{year}} <brand>down</brand>DATA. Všechna práva vyhrazena.",
     "privacyPolicy": "Zásady ochrany osobních údajů",
-    "termsOfService": "Podmínky používání"
+    "termsOfService": "Podmínky používání",
+    "about": "O nás"
+  },
+  "about": {
+    "title": "O <brand>down</brand>DATA",
+    "storyHeading": "Příběh",
+    "storyBody": "<brand>down</brand>DATA vznikla v srpnu 2026 — postavil ji jeden vývojář, kterého štvalo, že zjistit, jestli nástroje, na které se tvoje aplikace spoléhá, zrovna nemají špatný den, vyžadovalo buď sledování pěti různých stavových stránek, nebo placení stovek dolarů měsíčně službě jako StatusGator za něco, co je v podstatě jen pravidelné volání veřejného API. <brand>down</brand>DATA dělá tu samou práci — sleduje GitHub, Supabase, Cloudflare a cokoli dalšího postaveného na Atlassian Statuspage — za zlomek ceny, s možností self-hostingu pro týmy, které se nechtějí spoléhat ani na to, že budeme dostupní zrovna my.",
+    "teamHeading": "Kdo za tím stojí",
+    "teamBody": "<brand>down</brand>DATA vytváří a spravuje Lukáš Bujdoš, webový vývojář se sídlem na Slovensku <flag/>, zatím jako sólo projekt. Je nová, vzniká veřejně, funkce po funkci — místo toho, aby ji stavěla firma s týmem, kterým by šlo zaplnit stránku „O nás“.",
+    "followOnX": "Sledujte {{name}} na X",
+    "chatWithUs": "Napište nám",
+    "back": "← Zpět"
   }
 }

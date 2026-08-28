@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito, Geist_Mono } from "next/font/google";
 import QueryProvider from "@/components/providers/QueryProvider";
+import ClientNavigationTracker from "@/components/providers/ClientNavigationTracker";
 import { CookieConsentProvider } from "@/components/cookies/CookieConsent";
 import ConsentedAnalytics from "@/components/cookies/ConsentedAnalytics";
 import TawkChat from "@/components/support/TawkChat";
@@ -40,6 +41,7 @@ export default function RootLayout({
       <body
         className={`${nunito.variable} ${geistMono.variable} bg-base-100 text-base-content overflow-x-hidden font-sans flex min-h-screen flex-col antialiased`}
       >
+        <ClientNavigationTracker />
         <QueryProvider>
           <CookieConsentProvider>
             {children}

@@ -3,6 +3,7 @@ import { Nunito, Geist_Mono } from "next/font/google";
 import QueryProvider from "@/components/providers/QueryProvider";
 import { CookieConsentProvider } from "@/components/cookies/CookieConsent";
 import ConsentedAnalytics from "@/components/cookies/ConsentedAnalytics";
+import TawkChat from "@/components/support/TawkChat";
 import "./globals.css";
 
 const nunito = Nunito({
@@ -43,6 +44,7 @@ export default function RootLayout({
           <CookieConsentProvider>
             {children}
             <ConsentedAnalytics />
+            <TawkChat />
           </CookieConsentProvider>
         </QueryProvider>
       </body>

@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "Historique",
     "settings": "Paramètres",
+    "account": "Compte",
     "preferences": "Préférences",
     "logout": "Se déconnecter",
     "avatar": "Photo de profil",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Veuillez choisir un fichier image.",
     "avatarTooLarge": "L'image doit faire moins de 2 Mo.",
     "avatarUploadFailed": "Impossible de mettre à jour l'image. Réessayez.",
-    "theme": "Thème",
-    "close": "Fermer"
+    "theme": "Thème"
   },
   "serviceCard": {
     "checkingStatus": "Vérification du statut…",
@@ -243,11 +243,7 @@
     "pickBoardFirst": "Choisissez d'abord un tableau.",
     "tabService": "Service tiers",
     "tabWebsite": "Site web",
-    "websiteComingSoon": "La surveillance de sites web arrive bientôt.",
-    "customToggle": "Introuvable ? Ajoutez un hôte personnalisé",
-    "customName": "Nom",
-    "customHost": "Hôte",
-    "customCancel": "Annuler"
+    "websiteComingSoon": "La surveillance de sites web arrive bientôt."
   },
   "landing": {
     "nav": {
@@ -375,6 +371,30 @@
     "passwordLabel": "Nouveau mot de passe",
     "submit": "Mettre à jour le mot de passe",
     "success": "Mot de passe mis à jour. Redirection…"
+  },
+  "account": {
+    "detailsTitle": "Informations du compte",
+    "email": "E-mail",
+    "memberSince": "Membre depuis",
+    "lastSignIn": "Dernière connexion",
+    "signInMethodGoogle": "Connecté avec Google",
+    "signInMethodEmail": "Connecté avec e-mail et mot de passe",
+    "passwordTitle": "Mot de passe",
+    "passwordLabel": "Nouveau mot de passe",
+    "passwordSubmit": "Mettre à jour le mot de passe",
+    "passwordSuccess": "Mot de passe mis à jour.",
+    "statsBoards": "Tableaux",
+    "statsTrackedServices": "Services suivis",
+    "statsIntegrations": "Intégrations",
+    "dangerZoneTitle": "Zone de danger",
+    "deleteAccountWarning": "La suppression de votre compte supprime définitivement vos tableaux, intégrations et toutes les autres données du compte. Cette action est irréversible.",
+    "deleteAccount": "Supprimer le compte",
+    "deleting": "Suppression…",
+    "deleteConfirmTitle": "Supprimer votre compte ?",
+    "deleteConfirmMessage": "Cela supprimera définitivement votre compte, vos tableaux et vos intégrations. Cette action est irréversible.",
+    "deleteConfirmEmailLabel": "Saisissez {{email}} pour confirmer",
+    "cancel": "Annuler",
+    "deleteFailed": "Impossible de supprimer votre compte. Réessayez."
   },
   "cookieConsent": {
     "title": "Nous utilisons des cookies",

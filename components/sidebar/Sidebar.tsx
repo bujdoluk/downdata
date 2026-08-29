@@ -3,25 +3,21 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
 import BoardSelect from "@/components/sidebar/BoardSelect";
-import AvatarUpload from "@/components/sidebar/AvatarUpload";
 import Logo from "@/components/navbar/Logo";
-import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
-import ThemeToggle from "@/components/navbar/ThemeToggle";
 import { ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, HistoryIcon, UserIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { createClient } from "@/lib/supabase/client";
 import { logOut } from "@/lib/supabase/auth";
+import type { Account } from "@/types/account";
 
 const POLL_INTERVAL_MS = 60_000;
-
-type Account = { id: string; email: string; avatarUrl: string | null };
 
 function ChevronIcon({ className, collapsed }: { className?: string; collapsed: boolean }) {
   return (
@@ -47,11 +43,9 @@ const STORAGE_KEY = "sidebarCollapsed:v2";
 export default function Sidebar() {
   const { t } = useTranslation();
   const router = useRouter();
-  const queryClient = useQueryClient();
   const [collapsed, setCollapsed] = useState(false);
   const [supabase] = useState(() => createClient());
   const settingsRef = useRef<HTMLDetailsElement>(null);
-  const preferencesRef = useRef<HTMLDialogElement>(null);
   // Head-only count endpoints, not the full /api/incidents /
   // /api/maintenance payloads: the sidebar is mounted on every dashboard
   // page and polls every 60s, so pulling full incident/maintenance history
@@ -85,13 +79,12 @@ export default function Sidebar() {
     staleTime: Infinity,
   });
 
-  function openPreferences() {
+  function closeSettingsMenu() {
     if (settingsRef.current) settingsRef.current.open = false;
-    preferencesRef.current?.showModal();
   }
 
   async function handleLogout() {
-    if (settingsRef.current) settingsRef.current.open = false;
+    closeSettingsMenu();
     await logOut(supabase);
     router.push("/login");
   }
@@ -184,9 +177,9 @@ export default function Sidebar() {
           </summary>
           <ul className="dropdown-content menu menu-sm z-30 mt-2 w-40 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl">
             <li>
-              <button type="button" onClick={openPreferences}>
-                {t("nav.preferences")}
-              </button>
+              <Link href="/account" onClick={() => closeSettingsMenu()}>
+                {t("nav.account")}
+              </Link>
             </li>
             <li>
               <button type="button" onClick={handleLogout}>
@@ -196,51 +189,6 @@ export default function Sidebar() {
           </ul>
         </details>
       </div>
-
-      <dialog ref={preferencesRef} className="modal">
-        <div className="modal-box">
-          <h3 className="text-lg font-bold">{t("nav.preferences")}</h3>
-
-          {account && (
-            <div className="mt-4">
-              <h4 className="text-xs font-semibold tracking-wide text-base-content/60 uppercase">{t("nav.avatar")}</h4>
-              <div className="mt-2">
-                <AvatarUpload
-                  supabase={supabase}
-                  userId={account.id}
-                  avatarUrl={account.avatarUrl}
-                  onChange={(avatarUrl) =>
-                    queryClient.setQueryData<Account | null>(queryKeys.account(), (prev) => (prev ? { ...prev, avatarUrl } : prev))
-                  }
-                />
-              </div>
-            </div>
-          )}
-
-          <div className="mt-4">
-            <h4 className="text-xs font-semibold tracking-wide text-base-content/60 uppercase">{t("nav.theme")}</h4>
-            <div className="mt-2">
-              <ThemeToggle />
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <h4 className="text-xs font-semibold tracking-wide text-base-content/60 uppercase">{t("nav.language")}</h4>
-            <div className="mt-2">
-              <LanguageSwitcher inline />
-            </div>
-          </div>
-
-          <div className="modal-action">
-            <form method="dialog">
-              <button className="btn btn-sm">{t("nav.close")}</button>
-            </form>
-          </div>
-        </div>
-        <form method="dialog" className="modal-backdrop">
-          <button>{t("nav.close")}</button>
-        </form>
-      </dialog>
 
       <button
         type="button"

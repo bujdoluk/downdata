@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "Historia",
     "settings": "Ustawienia",
+    "account": "Konto",
     "preferences": "Preferencje",
     "logout": "Wyloguj się",
     "avatar": "Zdjęcie profilowe",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Wybierz plik obrazu.",
     "avatarTooLarge": "Obraz musi być mniejszy niż 2 MB.",
     "avatarUploadFailed": "Nie udało się zaktualizować zdjęcia. Spróbuj ponownie.",
-    "theme": "Motyw",
-    "close": "Zamknij"
+    "theme": "Motyw"
   },
   "serviceCard": {
     "checkingStatus": "Sprawdzanie stanu…",
@@ -255,11 +255,7 @@
     "subtitle": "Przeglądaj katalog i zacznij monitorować nową usługę.",
     "tabService": "Usługa zewnętrzna",
     "tabWebsite": "Strona internetowa",
-    "websiteComingSoon": "Monitorowanie stron internetowych już wkrótce.",
-    "customToggle": "Nie możesz jej znaleźć? Dodaj własny host",
-    "customName": "Nazwa",
-    "customHost": "Host",
-    "customCancel": "Anuluj"
+    "websiteComingSoon": "Monitorowanie stron internetowych już wkrótce."
   },
   "landing": {
     "nav": {
@@ -387,6 +383,30 @@
     "passwordLabel": "Nowe hasło",
     "submit": "Zaktualizuj hasło",
     "success": "Hasło zaktualizowane. Przekierowywanie…"
+  },
+  "account": {
+    "detailsTitle": "Dane konta",
+    "email": "E-mail",
+    "memberSince": "Członkiem od",
+    "lastSignIn": "Ostatnie logowanie",
+    "signInMethodGoogle": "Zalogowano przez Google",
+    "signInMethodEmail": "Zalogowano e-mailem i hasłem",
+    "passwordTitle": "Hasło",
+    "passwordLabel": "Nowe hasło",
+    "passwordSubmit": "Zaktualizuj hasło",
+    "passwordSuccess": "Hasło zaktualizowane.",
+    "statsBoards": "Tablice",
+    "statsTrackedServices": "Śledzone usługi",
+    "statsIntegrations": "Integracje",
+    "dangerZoneTitle": "Strefa zagrożenia",
+    "deleteAccountWarning": "Usunięcie konta trwale usuwa Twoje tablice, integracje i wszystkie inne dane konta. Tej czynności nie można cofnąć.",
+    "deleteAccount": "Usuń konto",
+    "deleting": "Usuwanie…",
+    "deleteConfirmTitle": "Usunąć konto?",
+    "deleteConfirmMessage": "Spowoduje to trwałe usunięcie Twojego konta, tablic i integracji. Tej czynności nie można cofnąć.",
+    "deleteConfirmEmailLabel": "Wpisz {{email}}, aby potwierdzić",
+    "cancel": "Anuluj",
+    "deleteFailed": "Nie udało się usunąć konta. Spróbuj ponownie."
   },
   "cookieConsent": {
     "title": "Używamy plików cookie",

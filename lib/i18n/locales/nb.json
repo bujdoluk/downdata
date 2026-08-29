@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "Historikk",
     "settings": "Innstillinger",
+    "account": "Konto",
     "preferences": "Preferanser",
     "logout": "Logg ut",
     "avatar": "Profilbilde",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Velg en bildefil.",
     "avatarTooLarge": "Bildet må være mindre enn 2 MB.",
     "avatarUploadFailed": "Kunne ikke oppdatere bildet. Prøv igjen.",
-    "theme": "Tema",
-    "close": "Lukk"
+    "theme": "Tema"
   },
   "serviceCard": {
     "checkingStatus": "Sjekker status…",
@@ -243,11 +243,7 @@
     "subtitle": "Bla gjennom katalogen og begynn å overvåke en ny tjeneste.",
     "tabService": "Tredjepartstjeneste",
     "tabWebsite": "Nettside",
-    "websiteComingSoon": "Overvåking av nettsider kommer snart.",
-    "customToggle": "Finner du den ikke? Legg til en egendefinert vert",
-    "customName": "Navn",
-    "customHost": "Vert",
-    "customCancel": "Avbryt"
+    "websiteComingSoon": "Overvåking av nettsider kommer snart."
   },
   "landing": {
     "nav": {
@@ -375,6 +371,30 @@
     "passwordLabel": "Nytt passord",
     "submit": "Oppdater passord",
     "success": "Passordet er oppdatert. Omdirigerer…"
+  },
+  "account": {
+    "detailsTitle": "Kontodetaljer",
+    "email": "E-post",
+    "memberSince": "Medlem siden",
+    "lastSignIn": "Siste innlogging",
+    "signInMethodGoogle": "Logget inn med Google",
+    "signInMethodEmail": "Logget inn med e-post og passord",
+    "passwordTitle": "Passord",
+    "passwordLabel": "Nytt passord",
+    "passwordSubmit": "Oppdater passord",
+    "passwordSuccess": "Passordet er oppdatert.",
+    "statsBoards": "Tavler",
+    "statsTrackedServices": "Overvåkede tjenester",
+    "statsIntegrations": "Integrasjoner",
+    "dangerZoneTitle": "Faresone",
+    "deleteAccountWarning": "Sletting av kontoen din fjerner permanent tavlene, integrasjonene og alle andre kontodata. Dette kan ikke angres.",
+    "deleteAccount": "Slett konto",
+    "deleting": "Sletter…",
+    "deleteConfirmTitle": "Slette kontoen din?",
+    "deleteConfirmMessage": "Dette vil permanent slette kontoen din, tavlene og integrasjonene. Dette kan ikke angres.",
+    "deleteConfirmEmailLabel": "Skriv {{email}} for å bekrefte",
+    "cancel": "Avbryt",
+    "deleteFailed": "Kunne ikke slette kontoen din. Prøv igjen."
   },
   "cookieConsent": {
     "title": "Vi bruker informasjonskapsler",

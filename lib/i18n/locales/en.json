@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "History",
     "settings": "Settings",
+    "account": "Account",
     "preferences": "Preferences",
     "logout": "Log out",
     "avatar": "Profile picture",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Please choose an image file.",
     "avatarTooLarge": "Image must be smaller than 2MB.",
     "avatarUploadFailed": "Couldn't update your picture. Try again.",
-    "theme": "Theme",
-    "close": "Close"
+    "theme": "Theme"
   },
   "serviceCard": {
     "checkingStatus": "Checking status…",
@@ -243,11 +243,7 @@
     "pickBoardFirst": "Pick a board first.",
     "tabService": "3rd-party service",
     "tabWebsite": "Website",
-    "websiteComingSoon": "Website monitoring is coming soon.",
-    "customToggle": "Can't find it? Add a custom host",
-    "customName": "Name",
-    "customHost": "Host",
-    "customCancel": "Cancel"
+    "websiteComingSoon": "Website monitoring is coming soon."
   },
   "landing": {
     "nav": {
@@ -375,6 +371,30 @@
     "passwordLabel": "New password",
     "submit": "Update password",
     "success": "Password updated. Redirecting…"
+  },
+  "account": {
+    "detailsTitle": "Account details",
+    "email": "Email",
+    "memberSince": "Member since",
+    "lastSignIn": "Last sign-in",
+    "signInMethodGoogle": "Signed in with Google",
+    "signInMethodEmail": "Signed in with email & password",
+    "passwordTitle": "Password",
+    "passwordLabel": "New password",
+    "passwordSubmit": "Update password",
+    "passwordSuccess": "Password updated.",
+    "statsBoards": "Boards",
+    "statsTrackedServices": "Tracked services",
+    "statsIntegrations": "Integrations",
+    "dangerZoneTitle": "Danger zone",
+    "deleteAccountWarning": "Deleting your account permanently removes your boards, integrations, and all other account data. This can't be undone.",
+    "deleteAccount": "Delete account",
+    "deleting": "Deleting…",
+    "deleteConfirmTitle": "Delete your account?",
+    "deleteConfirmMessage": "This will permanently delete your account, boards, and integrations. This can't be undone.",
+    "deleteConfirmEmailLabel": "Type {{email}} to confirm",
+    "cancel": "Cancel",
+    "deleteFailed": "Couldn't delete your account. Try again."
   },
   "cookieConsent": {
     "title": "We use cookies",

@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "Histórico",
     "settings": "Definições",
+    "account": "Conta",
     "preferences": "Preferências",
     "logout": "Sair",
     "avatar": "Foto de perfil",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Escolha um ficheiro de imagem.",
     "avatarTooLarge": "A imagem deve ter menos de 2 MB.",
     "avatarUploadFailed": "Não foi possível atualizar a imagem. Tente novamente.",
-    "theme": "Tema",
-    "close": "Fechar"
+    "theme": "Tema"
   },
   "serviceCard": {
     "checkingStatus": "A verificar o estado…",
@@ -243,11 +243,7 @@
     "pickBoardFirst": "Escolha primeiro um painel.",
     "tabService": "Serviço de terceiros",
     "tabWebsite": "Site",
-    "websiteComingSoon": "A monitorização de sites chega em breve.",
-    "customToggle": "Não encontra? Adicione um host personalizado",
-    "customName": "Nome",
-    "customHost": "Host",
-    "customCancel": "Cancelar"
+    "websiteComingSoon": "A monitorização de sites chega em breve."
   },
   "landing": {
     "nav": {
@@ -375,6 +371,30 @@
     "passwordLabel": "Nova palavra-passe",
     "submit": "Atualizar palavra-passe",
     "success": "Palavra-passe atualizada. A redirecionar…"
+  },
+  "account": {
+    "detailsTitle": "Dados da conta",
+    "email": "E-mail",
+    "memberSince": "Membro desde",
+    "lastSignIn": "Última sessão iniciada",
+    "signInMethodGoogle": "Sessão iniciada com Google",
+    "signInMethodEmail": "Sessão iniciada com e-mail e palavra-passe",
+    "passwordTitle": "Palavra-passe",
+    "passwordLabel": "Nova palavra-passe",
+    "passwordSubmit": "Atualizar palavra-passe",
+    "passwordSuccess": "Palavra-passe atualizada.",
+    "statsBoards": "Painéis",
+    "statsTrackedServices": "Serviços monitorizados",
+    "statsIntegrations": "Integrações",
+    "dangerZoneTitle": "Zona de perigo",
+    "deleteAccountWarning": "Eliminar a sua conta remove permanentemente os seus painéis, integrações e todos os outros dados da conta. Esta ação não pode ser desfeita.",
+    "deleteAccount": "Eliminar conta",
+    "deleting": "A eliminar…",
+    "deleteConfirmTitle": "Eliminar a sua conta?",
+    "deleteConfirmMessage": "Isto irá eliminar permanentemente a sua conta, painéis e integrações. Esta ação não pode ser desfeita.",
+    "deleteConfirmEmailLabel": "Escreva {{email}} para confirmar",
+    "cancel": "Cancelar",
+    "deleteFailed": "Não foi possível eliminar a sua conta. Tente novamente."
   },
   "cookieConsent": {
     "title": "Utilizamos cookies",

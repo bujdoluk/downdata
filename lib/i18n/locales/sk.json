@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "História",
     "settings": "Nastavenia",
+    "account": "Účet",
     "preferences": "Predvoľby",
     "logout": "Odhlásiť sa",
     "avatar": "Profilová fotka",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Vyberte, prosím, obrázok.",
     "avatarTooLarge": "Obrázok musí byť menší než 2 MB.",
     "avatarUploadFailed": "Obrázok sa nepodarilo aktualizovať. Skúste to znova.",
-    "theme": "Motív",
-    "close": "Zavrieť"
+    "theme": "Motív"
   },
   "serviceCard": {
     "checkingStatus": "Kontroluje sa stav…",
@@ -249,11 +249,7 @@
     "subtitle": "Prezrite si katalóg a začnite sledovať novú službu.",
     "tabService": "Externá služba",
     "tabWebsite": "Webová stránka",
-    "websiteComingSoon": "Monitorovanie webových stránok už čoskoro.",
-    "customToggle": "Nenašli ste ju? Pridajte vlastného hostiteľa",
-    "customName": "Názov",
-    "customHost": "Hostiteľ",
-    "customCancel": "Zrušiť"
+    "websiteComingSoon": "Monitorovanie webových stránok už čoskoro."
   },
   "landing": {
     "nav": {
@@ -381,6 +377,30 @@
     "passwordLabel": "Nové heslo",
     "submit": "Aktualizovať heslo",
     "success": "Heslo bolo aktualizované. Presmerúvame vás…"
+  },
+  "account": {
+    "detailsTitle": "Údaje o účte",
+    "email": "E-mail",
+    "memberSince": "Členom od",
+    "lastSignIn": "Posledné prihlásenie",
+    "signInMethodGoogle": "Prihlásenie cez Google",
+    "signInMethodEmail": "Prihlásenie cez e-mail a heslo",
+    "passwordTitle": "Heslo",
+    "passwordLabel": "Nové heslo",
+    "passwordSubmit": "Aktualizovať heslo",
+    "passwordSuccess": "Heslo bolo aktualizované.",
+    "statsBoards": "Nástenky",
+    "statsTrackedServices": "Sledované služby",
+    "statsIntegrations": "Integrácie",
+    "dangerZoneTitle": "Nebezpečná zóna",
+    "deleteAccountWarning": "Odstránením účtu natrvalo odstránite vaše nástenky, integrácie a všetky ostatné údaje účtu. Túto akciu nemožno vrátiť späť.",
+    "deleteAccount": "Odstrániť účet",
+    "deleting": "Odstraňovanie…",
+    "deleteConfirmTitle": "Odstrániť váš účet?",
+    "deleteConfirmMessage": "Týmto natrvalo odstránite váš účet, nástenky a integrácie. Túto akciu nemožno vrátiť späť.",
+    "deleteConfirmEmailLabel": "Zadajte {{email}} na potvrdenie",
+    "cancel": "Zrušiť",
+    "deleteFailed": "Účet sa nepodarilo odstrániť. Skúste to znova."
   },
   "cookieConsent": {
     "title": "Používame cookies",

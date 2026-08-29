@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "Cronologia",
     "settings": "Impostazioni",
+    "account": "Account",
     "preferences": "Preferenze",
     "logout": "Esci",
     "avatar": "Foto profilo",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Scegli un file immagine.",
     "avatarTooLarge": "L'immagine deve essere inferiore a 2 MB.",
     "avatarUploadFailed": "Impossibile aggiornare l'immagine. Riprova.",
-    "theme": "Tema",
-    "close": "Chiudi"
+    "theme": "Tema"
   },
   "serviceCard": {
     "checkingStatus": "Controllo dello stato…",
@@ -243,11 +243,7 @@
     "pickBoardFirst": "Scegli prima una bacheca.",
     "tabService": "Servizio di terze parti",
     "tabWebsite": "Sito web",
-    "websiteComingSoon": "Il monitoraggio dei siti web arriverà presto.",
-    "customToggle": "Non lo trovi? Aggiungi un host personalizzato",
-    "customName": "Nome",
-    "customHost": "Host",
-    "customCancel": "Annulla"
+    "websiteComingSoon": "Il monitoraggio dei siti web arriverà presto."
   },
   "landing": {
     "nav": {
@@ -375,6 +371,30 @@
     "passwordLabel": "Nuova password",
     "submit": "Aggiorna password",
     "success": "Password aggiornata. Reindirizzamento…"
+  },
+  "account": {
+    "detailsTitle": "Dettagli account",
+    "email": "Email",
+    "memberSince": "Membro dal",
+    "lastSignIn": "Ultimo accesso",
+    "signInMethodGoogle": "Accesso con Google",
+    "signInMethodEmail": "Accesso con email e password",
+    "passwordTitle": "Password",
+    "passwordLabel": "Nuova password",
+    "passwordSubmit": "Aggiorna password",
+    "passwordSuccess": "Password aggiornata.",
+    "statsBoards": "Bacheche",
+    "statsTrackedServices": "Servizi monitorati",
+    "statsIntegrations": "Integrazioni",
+    "dangerZoneTitle": "Zona pericolosa",
+    "deleteAccountWarning": "L'eliminazione dell'account rimuove permanentemente le tue bacheche, integrazioni e tutti gli altri dati dell'account. Questa azione non può essere annullata.",
+    "deleteAccount": "Elimina account",
+    "deleting": "Eliminazione…",
+    "deleteConfirmTitle": "Eliminare il tuo account?",
+    "deleteConfirmMessage": "Questo eliminerà permanentemente il tuo account, le bacheche e le integrazioni. Questa azione non può essere annullata.",
+    "deleteConfirmEmailLabel": "Digita {{email}} per confermare",
+    "cancel": "Annulla",
+    "deleteFailed": "Impossibile eliminare l'account. Riprova."
   },
   "cookieConsent": {
     "title": "Usiamo i cookie",

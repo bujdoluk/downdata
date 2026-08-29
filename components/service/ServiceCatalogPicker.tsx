@@ -9,10 +9,14 @@ import "@/lib/i18n/i18n";
 import type { Catalog } from "@/types/service";
 import type { Board } from "@/types/board";
 import CatalogBrowser from "@/components/service/CatalogBrowser";
-import CustomServiceForm from "@/components/service/CustomServiceForm";
 import { queryKeys } from "@/lib/queryKeys";
 
-type Tab = "service" | "website";
+// daisyUI's tabs-lift reads the active tab's background from --tab-bg
+// (defaults to base-100 unconditionally on every .tab, so it can't be
+// overridden by setting the variable on an ancestor — see
+// node_modules/daisyui/components/tab.css). Matches the tab-content
+// panels' own bg-base-200 below.
+const TAB_BG_STYLE = { "--tab-bg": "var(--color-base-200)" } as React.CSSProperties;
 
 export default function ServiceCatalogPicker({
   catalog,
@@ -26,7 +30,6 @@ export default function ServiceCatalogPicker({
   const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const [tab, setTab] = useState<Tab>("service");
   const [boards, setBoards] = useState(initialBoards);
   const [boardId, setBoardId] = useState(initialBoardId ?? initialBoards[0]?.id);
   const [query, setQuery] = useState("");
@@ -90,35 +93,19 @@ export default function ServiceCatalogPicker({
         </select>
       </div>
 
-      <div role="tablist" className="tabs tabs-box mt-4 w-fit">
-        <button
-          type="button"
-          role="tab"
-          onClick={() => setTab("service")}
-          className={`tab ${tab === "service" ? "tab-active" : ""}`}
-        >
-          {t("addService.tabService")}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          onClick={() => setTab("website")}
-          className={`tab ${tab === "website" ? "tab-active" : ""}`}
-        >
-          {t("addService.tabWebsite")}
-        </button>
-      </div>
-
-      {tab === "website" ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("addService.websiteComingSoon")}</p>
-      ) : (
-        <>
+      {/* Radio-input tabs: selection is pure CSS (:checked + sibling
+          selector), which only works with each tab-content as the
+          immediate next sibling of its own radio — so both panels stay
+          mounted, no React state needed to switch between them. */}
+      <div role="tablist" className="tabs tabs-lift mt-4">
+        <input type="radio" name="addServiceTabs" className="tab" aria-label={t("addService.tabService")} style={TAB_BG_STYLE} defaultChecked />
+        <div className="tab-content bg-base-200 border-base-300 p-6">
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t("nav.searchPlaceholder")}
-            className="input input-bordered input-sm mt-4 w-full max-w-sm"
+            className="input input-bordered input-sm w-full max-w-sm"
             autoFocus
           />
 
@@ -127,8 +114,6 @@ export default function ServiceCatalogPicker({
               <span>{addMutation.error.message}</span>
             </div>
           )}
-
-          <CustomServiceForm boardId={boardId} onAdded={applyUpdatedBoard} />
 
           <div className="mt-4">
             <CatalogBrowser
@@ -140,8 +125,13 @@ export default function ServiceCatalogPicker({
               query={query}
             />
           </div>
-        </>
-      )}
+        </div>
+
+        <input type="radio" name="addServiceTabs" className="tab" aria-label={t("addService.tabWebsite")} style={TAB_BG_STYLE} />
+        <div className="tab-content bg-base-200 border-base-300 p-6">
+          <p className="text-base-content/50 text-sm">{t("addService.websiteComingSoon")}</p>
+        </div>
+      </div>
     </div>
   );
 }

@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "Historie",
     "settings": "Nastavení",
+    "account": "Účet",
     "preferences": "Předvolby",
     "logout": "Odhlásit se",
     "avatar": "Profilový obrázek",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Vyberte prosím obrázek.",
     "avatarTooLarge": "Obrázek musí být menší než 2 MB.",
     "avatarUploadFailed": "Obrázek se nepodařilo aktualizovat. Zkuste to znovu.",
-    "theme": "Motiv",
-    "close": "Zavřít"
+    "theme": "Motiv"
   },
   "serviceCard": {
     "checkingStatus": "Kontroluje se stav…",
@@ -249,11 +249,7 @@
     "pickBoardFirst": "Nejprve vyberte nástěnku.",
     "tabService": "Externí služba",
     "tabWebsite": "Web",
-    "websiteComingSoon": "Sledování webových stránek už brzy.",
-    "customToggle": "Nenašli jste ji? Přidejte vlastního hostitele",
-    "customName": "Název",
-    "customHost": "Hostitel",
-    "customCancel": "Zrušit"
+    "websiteComingSoon": "Sledování webových stránek už brzy."
   },
   "landing": {
     "nav": {
@@ -381,6 +377,30 @@
     "passwordLabel": "Nové heslo",
     "submit": "Aktualizovat heslo",
     "success": "Heslo bylo aktualizováno. Přesměrováváme vás…"
+  },
+  "account": {
+    "detailsTitle": "Údaje o účtu",
+    "email": "E-mail",
+    "memberSince": "Členem od",
+    "lastSignIn": "Poslední přihlášení",
+    "signInMethodGoogle": "Přihlášení přes Google",
+    "signInMethodEmail": "Přihlášení e-mailem a heslem",
+    "passwordTitle": "Heslo",
+    "passwordLabel": "Nové heslo",
+    "passwordSubmit": "Aktualizovat heslo",
+    "passwordSuccess": "Heslo bylo aktualizováno.",
+    "statsBoards": "Nástěnky",
+    "statsTrackedServices": "Sledované služby",
+    "statsIntegrations": "Integrace",
+    "dangerZoneTitle": "Nebezpečná zóna",
+    "deleteAccountWarning": "Smazáním účtu trvale odstraníte vaše nástěnky, integrace a všechna ostatní data účtu. Tuto akci nelze vrátit zpět.",
+    "deleteAccount": "Smazat účet",
+    "deleting": "Mazání…",
+    "deleteConfirmTitle": "Smazat váš účet?",
+    "deleteConfirmMessage": "Tímto trvale smažete váš účet, nástěnky a integrace. Tuto akci nelze vrátit zpět.",
+    "deleteConfirmEmailLabel": "Zadejte {{email}} pro potvrzení",
+    "cancel": "Zrušit",
+    "deleteFailed": "Účet se nepodařilo smazat. Zkuste to znovu."
   },
   "cookieConsent": {
     "title": "Používáme cookies",

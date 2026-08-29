@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "Verlauf",
     "settings": "Einstellungen",
+    "account": "Konto",
     "preferences": "Präferenzen",
     "logout": "Abmelden",
     "avatar": "Profilbild",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Bitte wählen Sie eine Bilddatei aus.",
     "avatarTooLarge": "Das Bild muss kleiner als 2 MB sein.",
     "avatarUploadFailed": "Bild konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.",
-    "theme": "Design",
-    "close": "Schließen"
+    "theme": "Design"
   },
   "serviceCard": {
     "checkingStatus": "Status wird geprüft…",
@@ -243,11 +243,7 @@
     "pickBoardFirst": "Wähle zuerst ein Board aus.",
     "tabService": "Drittanbieter-Dienst",
     "tabWebsite": "Website",
-    "websiteComingSoon": "Website-Überwachung kommt bald.",
-    "customToggle": "Nicht gefunden? Eigenen Host hinzufügen",
-    "customName": "Name",
-    "customHost": "Host",
-    "customCancel": "Abbrechen"
+    "websiteComingSoon": "Website-Überwachung kommt bald."
   },
   "landing": {
     "nav": {
@@ -375,6 +371,30 @@
     "passwordLabel": "Neues Passwort",
     "submit": "Passwort aktualisieren",
     "success": "Passwort aktualisiert. Du wirst weitergeleitet…"
+  },
+  "account": {
+    "detailsTitle": "Kontodetails",
+    "email": "E-Mail",
+    "memberSince": "Mitglied seit",
+    "lastSignIn": "Letzte Anmeldung",
+    "signInMethodGoogle": "Angemeldet mit Google",
+    "signInMethodEmail": "Angemeldet mit E-Mail & Passwort",
+    "passwordTitle": "Passwort",
+    "passwordLabel": "Neues Passwort",
+    "passwordSubmit": "Passwort aktualisieren",
+    "passwordSuccess": "Passwort aktualisiert.",
+    "statsBoards": "Boards",
+    "statsTrackedServices": "Verfolgte Dienste",
+    "statsIntegrations": "Integrationen",
+    "dangerZoneTitle": "Gefahrenzone",
+    "deleteAccountWarning": "Das Löschen deines Kontos entfernt dauerhaft deine Boards, Integrationen und alle weiteren Kontodaten. Dies kann nicht rückgängig gemacht werden.",
+    "deleteAccount": "Konto löschen",
+    "deleting": "Wird gelöscht…",
+    "deleteConfirmTitle": "Konto löschen?",
+    "deleteConfirmMessage": "Dadurch werden dein Konto, deine Boards und Integrationen dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
+    "deleteConfirmEmailLabel": "Gib {{email}} ein, um zu bestätigen",
+    "cancel": "Abbrechen",
+    "deleteFailed": "Dein Konto konnte nicht gelöscht werden. Bitte versuche es erneut."
   },
   "cookieConsent": {
     "title": "Wir verwenden Cookies",

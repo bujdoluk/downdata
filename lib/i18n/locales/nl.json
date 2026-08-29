@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "Geschiedenis",
     "settings": "Instellingen",
+    "account": "Account",
     "preferences": "Voorkeuren",
     "logout": "Uitloggen",
     "avatar": "Profielfoto",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Kies een afbeeldingsbestand.",
     "avatarTooLarge": "De afbeelding moet kleiner zijn dan 2 MB.",
     "avatarUploadFailed": "Kan de afbeelding niet bijwerken. Probeer het opnieuw.",
-    "theme": "Thema",
-    "close": "Sluiten"
+    "theme": "Thema"
   },
   "serviceCard": {
     "checkingStatus": "Status controleren…",
@@ -243,11 +243,7 @@
     "subtitle": "Blader door de catalogus en begin een nieuwe dienst te volgen.",
     "tabService": "Externe dienst",
     "tabWebsite": "Website",
-    "websiteComingSoon": "Website-monitoring komt binnenkort.",
-    "customToggle": "Niet gevonden? Voeg een eigen host toe",
-    "customName": "Naam",
-    "customHost": "Host",
-    "customCancel": "Annuleren"
+    "websiteComingSoon": "Website-monitoring komt binnenkort."
   },
   "landing": {
     "nav": {
@@ -375,6 +371,30 @@
     "passwordLabel": "Nieuw wachtwoord",
     "submit": "Wachtwoord bijwerken",
     "success": "Wachtwoord bijgewerkt. Je wordt doorgestuurd…"
+  },
+  "account": {
+    "detailsTitle": "Accountgegevens",
+    "email": "E-mail",
+    "memberSince": "Lid sinds",
+    "lastSignIn": "Laatste aanmelding",
+    "signInMethodGoogle": "Aangemeld met Google",
+    "signInMethodEmail": "Aangemeld met e-mail en wachtwoord",
+    "passwordTitle": "Wachtwoord",
+    "passwordLabel": "Nieuw wachtwoord",
+    "passwordSubmit": "Wachtwoord bijwerken",
+    "passwordSuccess": "Wachtwoord bijgewerkt.",
+    "statsBoards": "Borden",
+    "statsTrackedServices": "Gevolgde diensten",
+    "statsIntegrations": "Integraties",
+    "dangerZoneTitle": "Gevarenzone",
+    "deleteAccountWarning": "Als je je account verwijdert, worden je borden, integraties en alle andere accountgegevens permanent verwijderd. Dit kan niet ongedaan worden gemaakt.",
+    "deleteAccount": "Account verwijderen",
+    "deleting": "Verwijderen…",
+    "deleteConfirmTitle": "Account verwijderen?",
+    "deleteConfirmMessage": "Hierdoor worden je account, borden en integraties permanent verwijderd. Dit kan niet ongedaan worden gemaakt.",
+    "deleteConfirmEmailLabel": "Typ {{email}} om te bevestigen",
+    "cancel": "Annuleren",
+    "deleteFailed": "Je account kon niet worden verwijderd. Probeer het opnieuw."
   },
   "cookieConsent": {
     "title": "We gebruiken cookies",

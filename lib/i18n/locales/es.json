@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "Historial",
     "settings": "Ajustes",
+    "account": "Cuenta",
     "preferences": "Preferencias",
     "logout": "Cerrar sesión",
     "avatar": "Foto de perfil",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Elige un archivo de imagen.",
     "avatarTooLarge": "La imagen debe ser menor de 2 MB.",
     "avatarUploadFailed": "No se pudo actualizar la imagen. Inténtalo de nuevo.",
-    "theme": "Tema",
-    "close": "Cerrar"
+    "theme": "Tema"
   },
   "serviceCard": {
     "checkingStatus": "Comprobando el estado…",
@@ -243,11 +243,7 @@
     "pickBoardFirst": "Elige primero un tablero.",
     "tabService": "Servicio de terceros",
     "tabWebsite": "Sitio web",
-    "websiteComingSoon": "La monitorización de sitios web llegará pronto.",
-    "customToggle": "¿No lo encuentras? Añade un host personalizado",
-    "customName": "Nombre",
-    "customHost": "Host",
-    "customCancel": "Cancelar"
+    "websiteComingSoon": "La monitorización de sitios web llegará pronto."
   },
   "landing": {
     "nav": {
@@ -375,6 +371,30 @@
     "passwordLabel": "Nueva contraseña",
     "submit": "Actualizar contraseña",
     "success": "Contraseña actualizada. Redirigiendo…"
+  },
+  "account": {
+    "detailsTitle": "Datos de la cuenta",
+    "email": "Correo electrónico",
+    "memberSince": "Miembro desde",
+    "lastSignIn": "Último inicio de sesión",
+    "signInMethodGoogle": "Sesión iniciada con Google",
+    "signInMethodEmail": "Sesión iniciada con correo y contraseña",
+    "passwordTitle": "Contraseña",
+    "passwordLabel": "Nueva contraseña",
+    "passwordSubmit": "Actualizar contraseña",
+    "passwordSuccess": "Contraseña actualizada.",
+    "statsBoards": "Tableros",
+    "statsTrackedServices": "Servicios seguidos",
+    "statsIntegrations": "Integraciones",
+    "dangerZoneTitle": "Zona de peligro",
+    "deleteAccountWarning": "Eliminar tu cuenta borra permanentemente tus tableros, integraciones y el resto de datos de la cuenta. Esta acción no se puede deshacer.",
+    "deleteAccount": "Eliminar cuenta",
+    "deleting": "Eliminando…",
+    "deleteConfirmTitle": "¿Eliminar tu cuenta?",
+    "deleteConfirmMessage": "Esto eliminará permanentemente tu cuenta, tableros e integraciones. Esta acción no se puede deshacer.",
+    "deleteConfirmEmailLabel": "Escribe {{email}} para confirmar",
+    "cancel": "Cancelar",
+    "deleteFailed": "No se pudo eliminar tu cuenta. Inténtalo de nuevo."
   },
   "cookieConsent": {
     "title": "Usamos cookies",

@@ -28,6 +28,7 @@
     "sms": "SMS",
     "history": "Historik",
     "settings": "Inställningar",
+    "account": "Konto",
     "preferences": "Inställningsalternativ",
     "logout": "Logga ut",
     "avatar": "Profilbild",
@@ -36,8 +37,7 @@
     "avatarInvalidType": "Välj en bildfil.",
     "avatarTooLarge": "Bilden måste vara mindre än 2 MB.",
     "avatarUploadFailed": "Det gick inte att uppdatera bilden. Försök igen.",
-    "theme": "Tema",
-    "close": "Stäng"
+    "theme": "Tema"
   },
   "serviceCard": {
     "checkingStatus": "Kontrollerar status…",
@@ -243,11 +243,7 @@
     "subtitle": "Bläddra i katalogen och börja övervaka en ny tjänst.",
     "tabService": "Tredjepartstjänst",
     "tabWebsite": "Webbplats",
-    "websiteComingSoon": "Webbplatsövervakning kommer snart.",
-    "customToggle": "Hittar du den inte? Lägg till en egen värd",
-    "customName": "Namn",
-    "customHost": "Värd",
-    "customCancel": "Avbryt"
+    "websiteComingSoon": "Webbplatsövervakning kommer snart."
   },
   "landing": {
     "nav": {
@@ -375,6 +371,30 @@
     "passwordLabel": "Nytt lösenord",
     "submit": "Uppdatera lösenord",
     "success": "Lösenordet har uppdaterats. Omdirigerar…"
+  },
+  "account": {
+    "detailsTitle": "Kontouppgifter",
+    "email": "E-post",
+    "memberSince": "Medlem sedan",
+    "lastSignIn": "Senaste inloggning",
+    "signInMethodGoogle": "Inloggad med Google",
+    "signInMethodEmail": "Inloggad med e-post och lösenord",
+    "passwordTitle": "Lösenord",
+    "passwordLabel": "Nytt lösenord",
+    "passwordSubmit": "Uppdatera lösenord",
+    "passwordSuccess": "Lösenordet har uppdaterats.",
+    "statsBoards": "Tavlor",
+    "statsTrackedServices": "Övervakade tjänster",
+    "statsIntegrations": "Integrationer",
+    "dangerZoneTitle": "Farozon",
+    "deleteAccountWarning": "Om du tar bort ditt konto tas dina tavlor, integrationer och all annan kontodata bort permanent. Detta går inte att ångra.",
+    "deleteAccount": "Ta bort konto",
+    "deleting": "Tar bort…",
+    "deleteConfirmTitle": "Ta bort ditt konto?",
+    "deleteConfirmMessage": "Detta tar permanent bort ditt konto, dina tavlor och integrationer. Detta går inte att ångra.",
+    "deleteConfirmEmailLabel": "Skriv {{email}} för att bekräfta",
+    "cancel": "Avbryt",
+    "deleteFailed": "Det gick inte att ta bort ditt konto. Försök igen."
   },
   "cookieConsent": {
     "title": "Vi använder cookies",

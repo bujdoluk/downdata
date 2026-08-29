@@ -23,6 +23,8 @@
     "incidentsBadgeTooltip": "Incydenty badane lub zidentyfikowane",
     "maintenances": "Konserwacje",
     "integrations": "Integracje",
+    "slack": "Slack",
+    "email": "E-mail",
     "history": "Historia",
     "settings": "Ustawienia",
     "preferences": "Preferencje",
@@ -401,6 +403,8 @@
     "incidents": "Ujednolicona oś czasu incydentów we wszystkich monitorowanych usługach, dzięki czemu nie musisz sprawdzać pięciu różnych stron statusu, żeby wiedzieć, co się naprawdę dzieje.",
     "maintenances": "Zaplanowane i trwające okna konserwacji we wszystkich monitorowanych usługach w jednym miejscu — dzięki czemu planowana przerwa nigdy nie wygląda jak awaria.",
     "integrations": "Połącz Slacka i wysyłaj aktualizacje statusu prosto na kanał, który Twój zespół już i tak obserwuje — nikt nie musi pamiętać o sprawdzaniu dashboardu.",
+    "slack": "Wysyłaj nowe incydenty i aktualizacje statusu prosto na kanał Slack, który Twój zespół już obserwuje — połącz go w kilka kliknięć, bez konfigurowania bota.",
+    "email": "Otrzymuj incydenty i aktualizacje statusu prosto na e-mail — dodaj jeden lub kilka adresów, a wszyscy będą na bieżąco, bez logowania.",
     "history": "Wybierz dowolną monitorowaną usługę i zobacz jej historię incydentów z ostatnich 12 miesięcy — przydaje się, gdy ktoś zapyta, czy to już się kiedyś zdarzyło.",
     "boards": "Grupuj monitorowane usługi w tablice dla różnych zespołów, dzięki czemu każdy widzi tylko te usługi, na których mu zależy."
   }

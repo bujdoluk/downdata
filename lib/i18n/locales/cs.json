@@ -23,6 +23,8 @@
     "incidentsBadgeTooltip": "Vyšetřované nebo identifikované incidenty",
     "maintenances": "Údržby",
     "integrations": "Integrace",
+    "slack": "Slack",
+    "email": "E-mail",
     "history": "Historie",
     "settings": "Nastavení",
     "preferences": "Předvolby",
@@ -395,6 +397,8 @@
     "incidents": "Jednotná časová osa incidentů napříč všemi sledovanými službami, takže nemusíš kontrolovat pět různých stavových stránek, abys věděl, co se skutečně děje.",
     "maintenances": "Naplánované a probíhající odstávky napříč všemi sledovanými službami na jednom místě — aby plánovaná odstávka nikdy nevypadala jako výpadek.",
     "integrations": "Propoj Slack a posílej změny stavu přímo do kanálu, který tvůj tým už stejně sleduje — nikdo si nemusí pamatovat, že má zkontrolovat dashboard.",
+    "slack": "Posílej nové incidenty a změny stavu přímo do slackového kanálu, který tvůj tým už sleduje — připoj ho na pár kliknutí, žádného bota netřeba nastavovat.",
+    "email": "Nech si posílat incidenty a změny stavu přímo na e-mail — přidej jednu nebo více adres a všichni budou v obraze, bez přihlašování.",
     "history": "Vyber si libovolnou sledovanou službu a podívej se na historii jejích incidentů za posledních 12 měsíců — hodí se, když se někdo zeptá, jestli se to už někdy stalo.",
     "boards": "Seskup své sledované služby do nástěnek pro různé týmy, aby každý viděl jen služby, na kterých mu záleží."
   }

@@ -23,6 +23,8 @@
     "incidentsBadgeTooltip": "Incidentes em investigação ou identificados",
     "maintenances": "Manutenções",
     "integrations": "Integrações",
+    "slack": "Slack",
+    "email": "E-mail",
     "history": "Histórico",
     "settings": "Definições",
     "preferences": "Preferências",
@@ -389,6 +391,8 @@
     "incidents": "Uma linha do tempo unificada de incidentes em todos os serviços que acompanha, para não ter de verificar cinco páginas de estado diferentes para saber o que se passa.",
     "maintenances": "Janelas de manutenção agendadas e em curso em todos os seus serviços acompanhados, num só lugar — para que uma paragem planeada nunca pareça uma falha.",
     "integrations": "Ligue o Slack e envie atualizações de estado diretamente para um canal que a sua equipa já acompanha — ninguém precisa de se lembrar de verificar um painel.",
+    "slack": "Envie novos incidentes e atualizações de estado diretamente para um canal do Slack que a sua equipa já acompanha — ligue-o em poucos cliques, sem bots para configurar.",
+    "email": "Receba incidentes e atualizações de estado diretamente por e-mail — adicione um ou vários endereços e toda a gente se mantém a par, sem precisar de iniciar sessão.",
     "history": "Escolha qualquer serviço acompanhado e veja o seu histórico de incidentes dos últimos 12 meses — útil da próxima vez que alguém perguntar se isto já aconteceu antes.",
     "boards": "Agrupe os seus serviços acompanhados em quadros para equipas diferentes, para que cada uma veja apenas os serviços que lhe interessam."
   }

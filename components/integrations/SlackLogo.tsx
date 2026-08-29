@@ -1,6 +1,6 @@
-export default function SlackLogo({ size = 28 }: { size?: number }) {
+export default function SlackLogo({ size = 28, className }: { size?: number; className?: string }) {
   return (
-    <svg viewBox="0 0 127 127" width={size} height={size} aria-hidden="true">
+    <svg viewBox="0 0 127 127" width={size} height={size} className={className} aria-hidden="true">
       <path
         d="M27.2 80c0 7.3-5.9 13.2-13.2 13.2C6.7 93.2.8 87.3.8 80c0-7.3 5.9-13.2 13.2-13.2h13.2V80zm6.6 0c0-7.3 5.9-13.2 13.2-13.2 7.3 0 13.2 5.9 13.2 13.2v33c0 7.3-5.9 13.2-13.2 13.2-7.3 0-13.2-5.9-13.2-13.2V80z"
         fill="#E01E5A"

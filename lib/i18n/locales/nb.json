@@ -23,6 +23,8 @@
     "incidentsBadgeTooltip": "Hendelser under undersøkelse eller identifisert",
     "maintenances": "Vedlikehold",
     "integrations": "Integrasjoner",
+    "slack": "Slack",
+    "email": "E-post",
     "history": "Historikk",
     "settings": "Innstillinger",
     "preferences": "Preferanser",
@@ -389,6 +391,8 @@
     "incidents": "En samlet tidslinje over hendelser på tvers av alle tjenestene du følger, slik at du slipper å sjekke fem forskjellige statussider for å vite hva som faktisk skjer.",
     "maintenances": "Planlagte og pågående vedlikeholdsvinduer på tvers av alle tjenestene du følger, samlet på ett sted — slik at planlagt nedetid aldri ser ut som et avbrudd.",
     "integrations": "Koble til Slack og send statusoppdateringer rett til en kanal teamet ditt allerede følger med på — ingen trenger å huske å sjekke et dashbord.",
+    "slack": "Send nye hendelser og statusoppdateringer rett til en Slack-kanal teamet ditt allerede følger med på — koble den til på et par klikk, ingen bot å sette opp.",
+    "email": "Få hendelser og statusoppdateringer rett til e-posten — legg til én eller flere adresser, så holder alle seg oppdatert uten å logge inn.",
     "history": "Velg en hvilken som helst tjeneste du følger, og se hendelseshistorikken for de siste 12 månedene — nyttig neste gang noen spør om dette har skjedd før.",
     "boards": "Grupper tjenestene du følger i tavler for ulike team, slik at alle bare ser tjenestene som er relevante for dem."
   }

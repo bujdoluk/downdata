@@ -4,7 +4,11 @@ import { NextResponse, type NextRequest } from "next/server";
 // Everything else requires a session — dashboard pages and every /api/*
 // route read/write per-account data now that boards are RLS-scoped.
 const PUBLIC_EXACT = new Set(["/landing-page", "/login", "/reset-password", "/privacy", "/terms", "/about", "/faq"]);
-const PUBLIC_PREFIXES = ["/auth/", "/api/cron/", "/features/"];
+// "/integrations/" (trailing slash) only matches per-provider marketing
+// pages like /integrations/slack — the bare "/integrations" (no trailing
+// segment) is the protected dashboard connect/manage page and doesn't
+// start with this prefix, so it stays gated.
+const PUBLIC_PREFIXES = ["/auth/", "/api/cron/", "/features/", "/integrations/"];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_EXACT.has(pathname) || PUBLIC_PREFIXES.some((prefix) => pathname.startsWith(prefix));

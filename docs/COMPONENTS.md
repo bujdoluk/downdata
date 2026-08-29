@@ -246,6 +246,7 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | size | number \| undefined | No | 28 |  |
+| className | string \| undefined | No | — |  |
 
 ### IntegrationCard
 
@@ -276,6 +277,7 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | size | number \| undefined | No | 28 |  |
+| className | string \| undefined | No | — |  |
 
 ### FeaturePageContent
 
@@ -284,6 +286,14 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | slug | FeatureSlug | Yes | — |  |
+
+### IntegrationPageContent
+
+`components/landing-page/IntegrationPageContent.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| slug | IntegrationProviderSlug | Yes | — |  |
 
 ### LanguageSwitcher
 

@@ -5,9 +5,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { Temporal } from "temporal-polyfill";
 import "@/lib/i18n/i18n";
 import Logo from "@/components/navbar/Logo";
-import SlackLogo from "@/components/integrations/SlackLogo";
 import { useCookieConsent } from "@/components/cookies/CookieConsent";
 import { FEATURE_CATALOG } from "@/lib/featureCatalog";
+import { INTEGRATION_CATALOG } from "@/lib/integrationCatalog";
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -40,10 +40,12 @@ export default function Footer() {
 
       <nav>
         <h6 className="footer-title">{t("nav.integrations")}</h6>
-        <Link href="/features/integrations" className="link link-hover inline-flex items-center gap-1.5">
-          <SlackLogo size={14} />
-          Slack
-        </Link>
+        {INTEGRATION_CATALOG.map(({ slug, logo: Logo }) => (
+          <Link key={slug} href={`/integrations/${slug}`} className="link link-hover inline-flex items-center gap-1.5">
+            <Logo size={14} />
+            {t(`nav.${slug}`)}
+          </Link>
+        ))}
       </nav>
 
       <nav>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { FEATURE_CATALOG } from "@/lib/featureCatalog";
+import { INTEGRATION_CATALOG } from "@/lib/integrationCatalog";
 import { MenuIcon } from "@/components/icons/NavIcons";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
@@ -45,12 +46,27 @@ export default function MobileMenu() {
 
         <div className="divider my-1" />
 
+        <span className="text-base-content/50 block px-2 pt-1 text-xs font-semibold tracking-wide uppercase">
+          {t("nav.integrations")}
+        </span>
         <ul className="list-none">
-          <li>
-            <Link href="/features/integrations" onClick={close} className="hover:bg-base-200 block rounded-lg p-2 text-sm font-medium transition-colors">
-              {t("nav.integrations")}
-            </Link>
-          </li>
+          {INTEGRATION_CATALOG.map(({ slug, logo: Logo }) => (
+            <li key={slug}>
+              <Link
+                href={`/integrations/${slug}`}
+                onClick={close}
+                className="hover:bg-base-200 flex items-center gap-3 rounded-lg p-2 transition-colors"
+              >
+                <Logo size={20} />
+                <span className="text-sm font-medium">{t(`nav.${slug}`)}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        <div className="divider my-1" />
+
+        <ul className="list-none">
           <li>
             <Link href="/landing-page#pricing" onClick={close} className="hover:bg-base-200 block rounded-lg p-2 text-sm font-medium transition-colors">
               {t("landing.nav.pricing")}

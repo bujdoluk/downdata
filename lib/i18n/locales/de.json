@@ -23,6 +23,8 @@
     "incidentsBadgeTooltip": "Vorfälle in Untersuchung oder identifiziert",
     "maintenances": "Wartungen",
     "integrations": "Integrationen",
+    "slack": "Slack",
+    "email": "E-Mail",
     "history": "Verlauf",
     "settings": "Einstellungen",
     "preferences": "Präferenzen",
@@ -389,6 +391,8 @@
     "incidents": "Eine einheitliche Zeitleiste aller Incidents über alle getrackten Dienste hinweg, damit du nicht fünf verschiedene Statusseiten checken musst, um zu wissen, was wirklich los ist.",
     "maintenances": "Geplante und laufende Wartungsfenster über alle getrackten Dienste hinweg an einem Ort — damit geplante Ausfallzeiten nie wie eine Störung aussehen.",
     "integrations": "Verbinde Slack und schicke Statusupdates direkt in einen Kanal, den dein Team ohnehin schon beobachtet — niemand muss mehr daran denken, ein Dashboard zu checken.",
+    "slack": "Schicke neue Vorfälle und Statusupdates direkt in einen Slack-Kanal, den dein Team schon beobachtet — in wenigen Klicks verbunden, kein Bot zum Einrichten.",
+    "email": "Lass dir Vorfälle und Statusupdates direkt per E-Mail zustellen — füge eine oder mehrere Adressen hinzu, und alle bleiben informiert, ganz ohne Login.",
     "history": "Wähle einen getrackten Dienst und sieh dir seine Incident-Historie der letzten 12 Monate an — praktisch, wenn jemand fragt, ob das schon mal vorgekommen ist.",
     "boards": "Gruppiere deine getrackten Dienste in Boards für verschiedene Teams, damit jeder nur die Dienste sieht, die für ihn wichtig sind."
   }

@@ -1,4 +1,4 @@
-export default function EmailLogo({ size = 28 }: { size?: number }) {
+export default function EmailLogo({ size = 28, className }: { size?: number; className?: string }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -10,7 +10,7 @@ export default function EmailLogo({ size = 28 }: { size?: number }) {
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
-      className="text-base-content"
+      className={`text-base-content ${className ?? ""}`}
     >
       <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
       <path d="m3.5 6.5 8.5 6.5 8.5-6.5" />

@@ -23,6 +23,8 @@
     "incidentsBadgeTooltip": "Incidenten in onderzoek of geïdentificeerd",
     "maintenances": "Onderhoud",
     "integrations": "Integraties",
+    "slack": "Slack",
+    "email": "E-mail",
     "history": "Geschiedenis",
     "settings": "Instellingen",
     "preferences": "Voorkeuren",
@@ -389,6 +391,8 @@
     "incidents": "Eén overzichtelijke tijdlijn van incidenten voor alle diensten die je volgt, zodat je niet vijf verschillende statuspagina's hoeft te checken om te weten wat er echt aan de hand is.",
     "maintenances": "Geplande en lopende onderhoudsvensters voor al je gevolgde diensten, op één plek — zodat gepland onderhoud nooit aanvoelt als een storing.",
     "integrations": "Koppel Slack en stuur statusupdates rechtstreeks naar een kanaal dat je team al in de gaten houdt — niemand hoeft meer te onthouden een dashboard te checken.",
+    "slack": "Stuur nieuwe incidenten en statusupdates rechtstreeks naar een Slack-kanaal dat je team al in de gaten houdt — in een paar klikken gekoppeld, geen bot om in te stellen.",
+    "email": "Laat incidenten en statusupdates rechtstreeks in de mailbox bezorgen — voeg één of meerdere adressen toe en iedereen blijft op de hoogte, zonder in te loggen.",
     "history": "Kies een gevolgde dienst en bekijk de incidentgeschiedenis van de afgelopen 12 maanden — handig als iemand ooit vraagt of dit al eerder is gebeurd.",
     "boards": "Groepeer je gevolgde diensten in borden voor verschillende teams, zodat iedereen alleen de diensten ziet die voor hen relevant zijn."
   }

@@ -245,10 +245,11 @@ _No props._
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
-| currentEmails | string[] \| undefined | Yes | — |  |
+| recipients | Recipient[] | Yes | — |  |
+| onAdd | (value: string) => void | Yes | — |  |
+| onRemove | (value: string) => void | Yes | — |  |
 | isSubmitting | boolean | Yes | — |  |
 | error | string \| null | Yes | — |  |
-| onSubmit | (recipientEmails: string[]) => void | Yes | — |  |
 
 ### EmailLogo
 
@@ -278,7 +279,7 @@ _No props._
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
-| catalog | Integration[] | Yes | — |  |
+| catalog | { slug: string; name: string; }[] | Yes | — |  |
 | integrations | IntegrationDefinition[] | Yes | — |  |
 
 ### SlackLogo
@@ -296,10 +297,17 @@ _No props._
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
-| current | SmsIntegration \| undefined | Yes | — |  |
+| recipients | Recipient[] | Yes | — |  |
+| notifyImpacts | string[] | Yes | — |  |
+| onAdd | (value: string) => void | Yes | — |  |
+| onRemove | (value: string) => void | Yes | — |  |
+| onVerify | (value: string, code: string) => void | Yes | — |  |
+| onResend | (value: string) => void | Yes | — |  |
+| onUpdateImpacts | (impacts: string[]) => void | Yes | — |  |
 | isSubmitting | boolean | Yes | — |  |
+| isVerifying | boolean | Yes | — |  |
 | error | string \| null | Yes | — |  |
-| onSubmit | (recipientPhones: string[], notifyImpacts: string[]) => void | Yes | — |  |
+| verifyError | string \| null | Yes | — |  |
 
 ### SmsLogo
 
@@ -309,6 +317,15 @@ _No props._
 |---|---|---|---|---|
 | size | number \| undefined | No | 28 |  |
 | className | string \| undefined | No | — |  |
+
+### VerifiedRecipientRow
+
+`components/integrations/VerifiedRecipientRow.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| value | string | Yes | — |  |
+| onRemove | () => void | Yes | — |  |
 
 ### FeaturePageContent
 
@@ -427,7 +444,8 @@ _No props._
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
-| onAdded | () => void | Yes | — |  |
+| boardId | string \| undefined | Yes | — |  |
+| onAdded | (board: Board) => void | Yes | — |  |
 
 ### ImpactFilterCheckboxes
 
@@ -777,7 +795,7 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | catalog | Catalog[] | Yes | — |  |
-| trackedHosts | string[] | Yes | — |  |
+| trackedSlugs | string[] | Yes | — |  |
 
 ### PinButton
 
@@ -798,7 +816,8 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | catalog | Catalog[] | Yes | — |  |
-| trackedHosts | string[] | Yes | — |  |
+| boards | Board[] | Yes | — |  |
+| initialBoardId | string \| undefined | No | — |  |
 
 ### ServiceDetail
 

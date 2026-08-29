@@ -1,5 +1,5 @@
 import { getCatalog } from "@/lib/catalog";
-import { getAllIntegrations } from "@/lib/integrations";
+import { getAllIntegrationsAcrossUsers } from "@/lib/integrations";
 import { getSupabaseClient } from "@/lib/supabase";
 import { runInBatches } from "@/lib/runInBatches";
 
@@ -170,21 +170,25 @@ async function pollOneServiceMaintenances(service: { slug: string; host: string 
   return { maintenanceCount: maintenances.length, failed: (maintenanceFailed ?? 0) + updateFailed };
 }
 
-async function backfillIfFirstPoll(Slug: string, failed: number) {
+async function backfillIfFirstPoll(Slug: string, failed: number, getIntegrationsAcrossUsersOnce: () => ReturnType<typeof getAllIntegrationsAcrossUsers>) {
   const supabase = getSupabaseClient();
   const { data: seen } = await supabase.from("polled_services").select("service_slug").eq("service_slug", Slug).maybeSingle();
   if (seen) return;
 
   // First time this service has ever been polled: mark everything it just
-  // produced as already-delivered to every currently connected integration,
+  // produced as already-delivered to every currently connected integration
+  // (across every account — this runs from the cron poller, no session, so
+  // it needs the service-role cross-account read, same as the notifier),
   // so this initial backfill of pre-existing history never gets notified.
   const { data: events } = await supabase.from("incident_events").select("id").eq("service_slug", Slug);
-  const integrations = await getAllIntegrations();
-  const rows = (events ?? []).flatMap((event) => integrations.map((integration) => ({ event_id: event.id, integration_slug: integration.slug })));
+  const integrations = await getIntegrationsAcrossUsersOnce();
+  const rows = (events ?? []).flatMap((event) =>
+    integrations.map(({ integration }) => ({ event_id: event.id, integration_id: integration.id })),
+  );
   if (rows.length > 0) {
     const { error: deliveryError } = await supabase
       .from("incident_event_deliveries")
-      .upsert(rows, { onConflict: "event_id,integration_slug", ignoreDuplicates: true });
+      .upsert(rows, { onConflict: "event_id,integration_id", ignoreDuplicates: true });
     if (deliveryError) {
       // Don't mark seeded below if the suppression rows didn't actually
       // land — a silent failure here followed by a "seeded" marker would
@@ -229,6 +233,17 @@ export async function pollAllIncidents(
   let maintenancesUpserted = 0;
   let maintenancesFailedTotal = 0;
 
+  // Lazy and memoized across this whole call: most poll cycles touch zero
+  // brand-new services, so this should cost nothing most of the time — but
+  // when a cycle does see several new services at once (e.g. right after
+  // npm run import:catalog seeds a batch of hosts), they all share one
+  // fetch instead of each paying for their own cross-account read.
+  let integrationsAcrossUsersPromise: ReturnType<typeof getAllIntegrationsAcrossUsers> | null = null;
+  function getIntegrationsAcrossUsersOnce() {
+    integrationsAcrossUsersPromise ??= getAllIntegrationsAcrossUsers();
+    return integrationsAcrossUsersPromise;
+  }
+
   await runInBatches(services, FETCH_CONCURRENCY, async (service) => {
     // allSettled, not all: incidents and maintenances are fetched from
     // different upstream endpoints and written to different tables, so one
@@ -248,7 +263,7 @@ export async function pollAllIncidents(
       // failed updates than incidents can't push this display stat negative.
       incidentsUpserted += Math.max(0, incidentCount - failed);
       failedTotal += failed;
-      await backfillIfFirstPoll(service.slug, failed);
+      await backfillIfFirstPoll(service.slug, failed, getIntegrationsAcrossUsersOnce);
     } else {
       failedTotal++;
       // Otherwise a whole service's incident poll failing (bad host

@@ -8,7 +8,7 @@ import Footer from "@/components/landing-page/Footer";
 import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import PricingSection from "@/components/landing-page/PricingSection";
 import CatalogServiceCard from "@/components/service/CatalogServiceCard";
-import { AlertIcon } from "@/components/icons/NavIcons";
+import { AlertIcon, BoardIcon } from "@/components/icons/NavIcons";
 
 const mono = "font-mono";
 
@@ -32,18 +32,6 @@ function UserGroupIcon({ className }: { className?: string }) {
   );
 }
 
-function StackIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor" className={className} aria-hidden="true">
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125"
-      />
-    </svg>
-  );
-}
-
 const demoRows = [
   { slug: "supabase", name: "Supabase", indicator: "minor", outages24h: 1 },
   { slug: "github", name: "GitHub", indicator: "none", outages24h: 0 },
@@ -57,7 +45,7 @@ export default function LandingPage() {
     { icon: BoltIcon, title: t("landing.features.speedTitle"), body: t("landing.features.speedBody") },
     { icon: AlertIcon, title: t("landing.features.monitoringTitle"), body: t("landing.features.monitoringBody") },
     { icon: UserGroupIcon, title: t("landing.features.seatsTitle"), body: t("landing.features.seatsBody") },
-    { icon: StackIcon, title: t("landing.features.selfHostedTitle"), body: t("landing.features.selfHostedBody") },
+    { icon: BoardIcon, title: t("landing.features.boardsTitle"), body: t("landing.features.boardsBody") },
   ];
 
   const [heroBodyBefore, heroBodyAfter] = t("landing.hero.body", {
@@ -67,7 +55,7 @@ export default function LandingPage() {
   }).split("downDATA");
 
   return (
-    <div data-theme="dark" className="bg-base-100 text-base-content">
+    <div className="bg-base-100 text-base-content">
       <LandingNavbar />
 
       {/* Hero */}

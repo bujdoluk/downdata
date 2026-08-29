@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 
@@ -146,9 +147,9 @@ export default function PricingSection() {
 
         <p className="text-base-content/70 mt-10 text-center text-sm">
           {t("landing.pricing.needMore")}{" "}
-          <a href="#" className="link link-hover text-base-content font-medium">
-            {t("landing.pricing.selfHostedLicense")}
-          </a>
+          <Link href="/support" className="link link-hover text-base-content font-medium">
+            {t("landing.pricing.contactUs")}
+          </Link>
         </p>
       </div>
     </section>

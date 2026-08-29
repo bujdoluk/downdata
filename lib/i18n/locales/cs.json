@@ -58,6 +58,12 @@
     "components": "Komponenty",
     "incidents": "Incidenty",
     "noIncidents": "Nebyly hlášeny žádné incidenty.",
+    "maintenances": "Údržba",
+    "noMaintenances": "Žádná plánovaná údržba.",
+    "notifications": "Oznámení",
+    "noIntegrationsConnected": "Zatím nejsou připojeny žádné integrace.",
+    "manageIntegrations": "Spravovat integrace",
+    "notifyMe": "Upozornit mě",
     "lastUpdated": "Naposledy aktualizováno {{time}}"
   },
   "incidents": {
@@ -132,9 +138,18 @@
     "disconnecting": "Odpojuje se…",
     "options": "Další možnosti",
     "somethingWrong": "Něco se pokazilo.",
-    "emailPlaceholder": "E-mailové adresy oddělené čárkou",
-    "smsPlaceholder": "Telefonní čísla (např. +14155550123) oddělená čárkou",
-    "save": "Uložit"
+    "emailPlaceholder": "Přidat e-mailovou adresu",
+    "smsPlaceholder": "Přidat telefonní číslo (např. +14155550123)",
+    "addRecipient": "Přidat",
+    "pending": "Čeká na potvrzení",
+    "verified": "Ověřeno",
+    "resend": "Odeslat znovu",
+    "resendCode": "Odeslat kód znovu",
+    "verify": "Ověřit",
+    "codePlaceholder": "Kód",
+    "removeRecipient": "Odebrat",
+    "recipientVerified": "Příjemce byl potvrzen.",
+    "verifyLinkInvalid": "Tento potvrzovací odkaz je neplatný nebo vypršel."
   },
   "history": {
     "title": "Historie",
@@ -230,6 +245,8 @@
       "other": "Ostatní"
     },
     "subtitle": "Prohlédněte si katalog a začněte sledovat novou službu.",
+    "board": "Nástěnka",
+    "pickBoardFirst": "Nejprve vyberte nástěnku.",
     "tabService": "Externí služba",
     "tabWebsite": "Web",
     "websiteComingSoon": "Sledování webových stránek už brzy.",
@@ -265,8 +282,8 @@
       "monitoringBody": "Přidejte libovolnou službu a sledujte její stav v reálném čase. Kliknutím na incident zobrazíte celou časovou osu — od vyšetřování až po vyřešení.",
       "seatsTitle": "Neomezený počet členů v každém plánu",
       "seatsBody": "UptimeRobot účtuje 15–19 USD/měsíc za každého dalšího člena nad rámec prvních tří. Zde je zahrnut celý tým.",
-      "selfHostedTitle": "Vlastní hosting, pokud chcete",
-      "selfHostedBody": "Spusťte si to na vlastním serveru za paušální poplatek. Žádný z pěti prověřených konkurentů to nenabízí."
+      "boardsTitle": "Nástěnky pro každý tým",
+      "boardsBody": "Sledované služby seskupíte do nástěnek, takže každý tým vidí jen ty služby, které se ho týkají."
     },
     "pricing": {
       "heading": "Ceník",
@@ -291,8 +308,8 @@
       "getStarted": "Začít",
       "getNotified": "Chci upozornit",
       "businessNote": "SSO, auditní záznamy a prioritní podpora se ještě připravují. Nechte nám e-mail a dáme vám vědět, až to spustíme.",
-      "needMore": "Potřebujete více než 1 000 monitorů, nebo chcete vlastní hosting?",
-      "selfHostedLicense": "Zeptejte se na licenci pro vlastní hosting."
+      "needMore": "Potřebujete více než 1 000 monitorů?",
+      "contactUs": "Napište nám."
     },
     "faq": {
       "heading": "Časté otázky",
@@ -306,7 +323,13 @@
       "notificationsQuestion": "Dostane můj tým upozornění, když něco vypadne?",
       "notificationsAnswer": "Slack propojíte na pár kliknutí a incidenty se rovnou posílají do vašeho kanálu. Každý plán zahrnuje neomezený počet členů týmu, takže má přehled celý tým.",
       "monitorCountQuestion": "Co se počítá jako jeden „monitor“?",
-      "monitorCountAnswer": "Každá sledovaná služba — GitHub, Supabase, Cloudflare nebo cokoli dalšího na Atlassian Statuspage — se počítá jako jeden monitor v rámci limitu vašeho plánu."
+      "monitorCountAnswer": "Každá sledovaná služba — GitHub, Supabase, Cloudflare nebo cokoli dalšího na Atlassian Statuspage — se počítá jako jeden monitor v rámci limitu vašeho plánu.",
+      "emailSmsQuestion": "Mohu dostávat upozornění i e-mailem nebo SMS, nejen přes Slack?",
+      "emailSmsAnswer": "Ano — vedle Slacku můžete připojit i jednu nebo více e-mailových adres či telefonních čísel. U SMS si vyberete, které závažnosti stojí za zprávu, od pouze kritických až po úplně všechny.",
+      "boardsQuestion": "Můžu si monitory uspořádat pro různé týmy?",
+      "boardsAnswer": "Ano — sledované služby můžete seskupit do nástěnek, takže každý tým vidí jen ty služby, které se ho týkají.",
+      "scopeQuestion": "Sleduje downDATA i moje vlastní servery, nebo jen veřejné stavové stránky?",
+      "scopeAnswer": "Jen veřejné stavové stránky — downDATA sleduje služby postavené na Atlassian Statuspage, jako GitHub, Supabase nebo Cloudflare. Není to nástroj na pingování nebo monitorování vaší vlastní infrastruktury."
     },
     "closing": {
       "heading": "Čtrnáct dní. Plný přístup. Bez karty.",
@@ -382,17 +405,31 @@
     "termsOfService": "Podmínky používání",
     "about": "O nás",
     "faq": "Časté otázky",
+    "support": "Podpora",
     "companyTitle": "Společnost",
     "legalTitle": "Právní"
   },
   "about": {
     "title": "O <brand>down</brand>DATA",
     "storyHeading": "Příběh",
-    "storyBody": "<brand>down</brand>DATA vznikla v srpnu 2026 — postavil ji jeden vývojář, kterého štvalo, že zjistit, jestli nástroje, na které se tvoje aplikace spoléhá, zrovna nemají špatný den, vyžadovalo buď sledování pěti různých stavových stránek, nebo placení stovek dolarů měsíčně službě jako StatusGator za něco, co je v podstatě jen pravidelné volání veřejného API. <brand>down</brand>DATA dělá tu samou práci — sleduje GitHub, Supabase, Cloudflare a cokoli dalšího postaveného na Atlassian Statuspage — za zlomek ceny, s možností self-hostingu pro týmy, které se nechtějí spoléhat ani na to, že budeme dostupní zrovna my.",
+    "storyBody": "<brand>down</brand>DATA vznikla v srpnu 2026 — postavil ji jeden vývojář, kterého štvalo, že zjistit, jestli nástroje, na které se tvoje aplikace spoléhá, zrovna nemají špatný den, vyžadovalo buď sledování pěti různých stavových stránek, nebo placení stovek dolarů měsíčně službě jako StatusGator za něco, co je v podstatě jen pravidelné volání veřejného API. <brand>down</brand>DATA dělá tu samou práci — sleduje GitHub, Supabase, Cloudflare a cokoli dalšího postaveného na Atlassian Statuspage — za zlomek ceny.",
     "teamHeading": "Kdo za tím stojí",
     "teamBody": "<brand>down</brand>DATA vytváří a spravuje Lukáš Bujdoš, webový vývojář se sídlem na Slovensku <flag/>, zatím jako sólo projekt. Je nová, vzniká veřejně, funkce po funkci — místo toho, aby ji stavěla firma s týmem, kterým by šlo zaplnit stránku „O nás“.",
     "followOnX": "Sledujte {{name}} na X",
     "chatWithUs": "Napište nám",
+    "back": "← Zpět"
+  },
+  "support": {
+    "title": "Podpora",
+    "subtitle": "Potřebuješ pomoct? Tohle je nejrychlejší způsob, jak nás oslovit.",
+    "chatHeading": "Live chat",
+    "chatBody": "Napiš nám přímo v appce — obvykle odpovídáme do pár hodin.",
+    "chatButton": "Otevřít chat",
+    "emailHeading": "E-mail",
+    "emailBody": "Raději e-mailem? Napiš nám a ozveme se ti.",
+    "faqHeading": "Podívej se na časté otázky",
+    "faqBody": "Běžné otázky o tom, jak downDATA funguje, jsou už zodpovězené tam.",
+    "faqButton": "Přejít na časté otázky",
     "back": "← Zpět"
   },
   "features": {

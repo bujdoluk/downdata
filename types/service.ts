@@ -74,6 +74,7 @@ export type ServiceSummaryResponse = {
   };
   components: StatuspageComponent[];
   incidents: Incident[];
+  maintenances: ScheduledMaintenanceSummary[];
 };
 
 export type TrackedIncident = Incident & { service: Service };

@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, formatTime } from "@/lib/formatTime";
 import type { Slug, ServiceSummaryResponse, StatuspageComponent } from "@/types/service";
+import type { IntegrationDefinition } from "@/types/integration";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
@@ -14,6 +15,69 @@ import { queryKeys } from "@/lib/queryKeys";
 import Spinner from "@/components/Spinner";
 
 const POLL_INTERVAL_MS = 60_000;
+
+const INTEGRATION_LABEL_KEYS: Record<IntegrationDefinition["slug"], string> = {
+  slack: "nav.slack",
+  email: "nav.email",
+  sms: "nav.sms",
+};
+
+// Reads/writes this one service's membership in each of the current
+// account's own connected integrations' target filters — see
+// app/api/integrations/[slug]/services/[serviceSlug].
+function NotificationsCard({ slug }: { slug: Slug }) {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  const { data: integrations } = useQuery({
+    queryKey: queryKeys.integrations.list(),
+    queryFn: () => fetchJson<IntegrationDefinition[]>("/api/integrations"),
+  });
+
+  const toggleMutation = useMutation({
+    mutationFn: ({ integrationSlug, enabled }: { integrationSlug: string; enabled: boolean }) =>
+      fetch(`/api/integrations/${integrationSlug}/services/${slug}`, { method: enabled ? "POST" : "DELETE" }),
+    onSuccess: (res) => {
+      if (res.ok) queryClient.invalidateQueries({ queryKey: queryKeys.integrations.list() });
+    },
+  });
+
+  if (!integrations || integrations.length === 0) {
+    return (
+      <p className="text-base-content/50 text-sm">
+        {t("serviceDetail.noIntegrationsConnected")}{" "}
+        <Link href="/integrations" className="link">
+          {t("serviceDetail.manageIntegrations")}
+        </Link>
+      </p>
+    );
+  }
+
+  return (
+    <ul className="list bg-base-200 border-base-300 border">
+      {integrations.map((integration) => {
+        // excludedServiceSlugs is an exclusion list — enabled unless this
+        // service is explicitly in it, so an integration with nothing
+        // excluded (the default) correctly shows every service as on.
+        const enabled = !integration.excludedServiceSlugs?.includes(slug);
+        return (
+          <li key={integration.id} className="list-row items-center py-2.5">
+            <span className="text-base-content list-col-grow text-sm">{t(INTEGRATION_LABEL_KEYS[integration.slug])}</span>
+            <label className="flex shrink-0 items-center gap-2 text-xs">
+              <input
+                type="checkbox"
+                checked={enabled}
+                disabled={toggleMutation.isPending}
+                onChange={(event) => toggleMutation.mutate({ integrationSlug: integration.slug, enabled: event.target.checked })}
+                className="checkbox checkbox-sm checkbox-info"
+              />
+              {t("serviceDetail.notifyMe")}
+            </label>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
 
 export default function ServiceDetail({ slug }: { slug: Slug }) {
   const { t } = useTranslation();
@@ -47,7 +111,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
 
   return (
     <div className="w-full max-w-6xl self-start">
-      <Link href="/" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
+      <Link href="/monitors" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
         {t("serviceDetail.back")}
       </Link>
 
@@ -140,6 +204,45 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                   ))}
                 </ul>
               )}
+            </div>
+          </div>
+
+          <div className="mt-8 grid grid-cols-2 gap-8">
+            <div>
+              <h2 className="text-base-content/40 mb-3 text-xs font-semibold tracking-wide uppercase">
+                {t("serviceDetail.maintenances")}
+              </h2>
+              {data.maintenances.length === 0 ? (
+                <p className="text-base-content/50 text-sm">{t("serviceDetail.noMaintenances")}</p>
+              ) : (
+                <ul className="list bg-base-200 border-base-300 border">
+                  {data.maintenances.map((maintenance) => (
+                    <li key={maintenance.id} className="list-row items-center py-2.5">
+                      <div className="list-col-grow min-w-0">
+                        <a
+                          href={maintenance.shortlink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="link link-hover text-base-content text-sm"
+                        >
+                          {maintenance.name}
+                        </a>
+                        <p className="text-base-content/50 mt-0.5 text-xs">{maintenance.status}</p>
+                      </div>
+                      <span className="text-base-content/50 self-end text-xs whitespace-nowrap">
+                        {formatDateTime(maintenance.scheduled_for)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div>
+              <h2 className="text-base-content/40 mb-3 text-xs font-semibold tracking-wide uppercase">
+                {t("serviceDetail.notifications")}
+              </h2>
+              <NotificationsCard slug={slug} />
             </div>
           </div>
 

@@ -13,7 +13,7 @@ import { getSupabaseClient } from "@/lib/supabase";
 // (incidents.resolved_at is null) leaves them pending, so the very next
 // notifyPendingEvents() cron cycle sends the real text — "notify me about
 // what's happening right now" without a bespoke immediate-send path.
-export async function backfillNewIntegration(integrationSlug: string, options?: { excludeOpenIncidents?: boolean }): Promise<void> {
+export async function backfillNewIntegration(integrationId: string, options?: { excludeOpenIncidents?: boolean }): Promise<void> {
   const supabase = getSupabaseClient();
   const query = options?.excludeOpenIncidents
     ? supabase.from("incident_events").select("id, incidents!inner(resolved_at)").not("incidents.resolved_at", "is", null)
@@ -22,7 +22,7 @@ export async function backfillNewIntegration(integrationSlug: string, options?: 
   if (!events?.length) return;
 
   await supabase.from("incident_event_deliveries").upsert(
-    events.map((event) => ({ event_id: event.id, integration_slug: integrationSlug })),
-    { onConflict: "event_id,integration_slug", ignoreDuplicates: true },
+    events.map((event) => ({ event_id: event.id, integration_id: integrationId })),
+    { onConflict: "event_id,integration_id", ignoreDuplicates: true },
   );
 }

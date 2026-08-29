@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
+import type { Board } from "@/types/board";
 
-export default function CustomServiceForm({ onAdded }: { onAdded: () => void }) {
+export default function CustomServiceForm({ boardId, onAdded }: { boardId: string | undefined; onAdded: (board: Board) => void }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
@@ -13,19 +14,21 @@ export default function CustomServiceForm({ onAdded }: { onAdded: () => void }) 
 
   const addMutation = useMutation({
     mutationFn: async ({ name: trimmedName, host: trimmedHost }: { name: string; host: string }) => {
-      const res = await fetch("/api/services", {
+      if (!boardId) throw new Error(t("addService.pickBoardFirst"));
+      const res = await fetch(`/api/boards/${boardId}/services`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: trimmedName, host: trimmedHost }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? t("addService.somethingWrong"));
+      return data as Board;
     },
-    onSuccess: () => {
+    onSuccess: (board) => {
       setName("");
       setHost("");
       setOpen(false);
-      onAdded();
+      onAdded(board);
     },
   });
 

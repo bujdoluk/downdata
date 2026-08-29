@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
-import { getAllServices } from "@/lib/services";
+import { getAllTrackedSlugs } from "@/lib/boards";
+import { getCatalog, buildTrackedServiceLookup } from "@/lib/catalog";
 import { getAllStoredIncidentSummaries, toIncidentSummaryApiShape } from "@/lib/getStoredIncident";
 import type { TrackedIncidentSummary } from "@/types/service";
 
 export async function GET() {
-  const services = await getAllServices();
-  const incidents = await getAllStoredIncidentSummaries(services.map((service) => service.slug));
-  const serviceBySlug = new Map(services.map((service) => [service.slug, service]));
+  const [trackedSlugs, catalog] = await Promise.all([getAllTrackedSlugs(), getCatalog()]);
+  const incidents = await getAllStoredIncidentSummaries(trackedSlugs);
+  const serviceBySlug = buildTrackedServiceLookup(trackedSlugs, catalog);
 
   const results: TrackedIncidentSummary[] = incidents.flatMap((incident) => {
     const service = serviceBySlug.get(incident.service_slug);

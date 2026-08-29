@@ -57,6 +57,12 @@
     "components": "Components",
     "incidents": "Incidents",
     "noIncidents": "No incidents reported.",
+    "maintenances": "Maintenance",
+    "noMaintenances": "No maintenance scheduled.",
+    "notifications": "Notifications",
+    "noIntegrationsConnected": "No integrations connected yet.",
+    "manageIntegrations": "Manage integrations",
+    "notifyMe": "Notify me",
     "lastUpdated": "Last updated {{time}}"
   },
   "incidents": {
@@ -131,9 +137,18 @@
     "disconnecting": "Disconnecting…",
     "options": "More options",
     "somethingWrong": "Something went wrong.",
-    "emailPlaceholder": "Email addresses, comma separated",
-    "smsPlaceholder": "Phone numbers (e.g. +14155550123), comma separated",
-    "save": "Save"
+    "emailPlaceholder": "Add an email address",
+    "smsPlaceholder": "Add a phone number (e.g. +14155550123)",
+    "addRecipient": "Add",
+    "pending": "Pending",
+    "verified": "Verified",
+    "resend": "Resend",
+    "resendCode": "Resend code",
+    "verify": "Verify",
+    "codePlaceholder": "Code",
+    "removeRecipient": "Remove",
+    "recipientVerified": "Recipient confirmed.",
+    "verifyLinkInvalid": "That confirmation link is invalid or has expired."
   },
   "history": {
     "title": "History",
@@ -224,6 +239,8 @@
       "other": "Other"
     },
     "subtitle": "Browse the catalog and start tracking a new service.",
+    "board": "Board",
+    "pickBoardFirst": "Pick a board first.",
     "tabService": "3rd-party service",
     "tabWebsite": "Website",
     "websiteComingSoon": "Website monitoring is coming soon.",
@@ -259,8 +276,8 @@
       "monitoringBody": "Add any service and watch its live status update in real time. Click into any incident to see its full timeline, from investigating to resolved.",
       "seatsTitle": "Unlimited seats, every plan",
       "seatsBody": "UptimeRobot charges $15–19/month per teammate past the first three. Here, the whole team is included.",
-      "selfHostedTitle": "Self-hosted, if you want",
-      "selfHostedBody": "Run it on your own box for a flat fee. None of the five competitors we checked offer that at all."
+      "boardsTitle": "Boards for every team",
+      "boardsBody": "Group your tracked services into boards, so each team only sees the services that matter to them."
     },
     "pricing": {
       "heading": "Pricing",
@@ -285,8 +302,8 @@
       "getStarted": "Get started",
       "getNotified": "Get notified",
       "businessNote": "SSO, audit logs, and priority support are still being built. Leave your email and we'll tell you the day it ships.",
-      "needMore": "Need more than 1,000 monitors, or want to run it yourself?",
-      "selfHostedLicense": "Ask about a self-hosted license."
+      "needMore": "Need more than 1,000 monitors?",
+      "contactUs": "Get in touch."
     },
     "faq": {
       "heading": "Frequently asked questions",
@@ -300,7 +317,13 @@
       "notificationsQuestion": "Will my team get notified when something breaks?",
       "notificationsAnswer": "Connect Slack in a few clicks and incidents post straight to your channel. Every plan includes unlimited team seats, so the whole team stays in the loop.",
       "monitorCountQuestion": "What counts as one \"monitor\"?",
-      "monitorCountAnswer": "Each service you track — GitHub, Supabase, Cloudflare, or anything else on Atlassian Statuspage — counts as one monitor against your plan's limit."
+      "monitorCountAnswer": "Each service you track — GitHub, Supabase, Cloudflare, or anything else on Atlassian Statuspage — counts as one monitor against your plan's limit.",
+      "emailSmsQuestion": "Can I get notified by email or SMS too, not just Slack?",
+      "emailSmsAnswer": "Yes — connect one or more email addresses or phone numbers alongside Slack. SMS lets you pick which severities are worth a text, from critical-only up to everything.",
+      "boardsQuestion": "Can I organize monitors for different teams?",
+      "boardsAnswer": "Yes — group your tracked services into boards, so each team only sees the services that matter to them.",
+      "scopeQuestion": "Does downDATA monitor my own servers, or just public status pages?",
+      "scopeAnswer": "Just public status pages — downDATA tracks services built on Atlassian Statuspage, like GitHub, Supabase, and Cloudflare. It's not a tool for pinging or monitoring your own infrastructure."
     },
     "closing": {
       "heading": "Fourteen days. Full access. No card.",
@@ -376,17 +399,31 @@
     "termsOfService": "Terms of Service",
     "about": "About",
     "faq": "FAQ",
+    "support": "Support",
     "companyTitle": "Company",
     "legalTitle": "Legal"
   },
   "about": {
     "title": "About <brand>down</brand>DATA",
     "storyHeading": "The story",
-    "storyBody": "<brand>down</brand>DATA started in August 2026, built by one developer annoyed that checking whether the tools your app depends on are having a bad day required either babysitting five different status pages or paying a service like StatusGator hundreds of dollars a month for something that's fundamentally just polling a public API. <brand>down</brand>DATA does the same job — tracking GitHub, Supabase, Cloudflare, and anything else on Atlassian Statuspage — for a fraction of the price, with a self-hosted option for teams who'd rather not depend on us being up either.",
+    "storyBody": "<brand>down</brand>DATA started in August 2026, built by one developer annoyed that checking whether the tools your app depends on are having a bad day required either babysitting five different status pages or paying a service like StatusGator hundreds of dollars a month for something that's fundamentally just polling a public API. <brand>down</brand>DATA does the same job — tracking GitHub, Supabase, Cloudflare, and anything else on Atlassian Statuspage — for a fraction of the price.",
     "teamHeading": "Who's behind it",
     "teamBody": "<brand>down</brand>DATA is built and maintained by Lukáš Bujdoš, a web developer based in Slovakia <flag/>, currently as a solo project. It's new — actively built in the open, one feature at a time — rather than a company with a headcount to pad out an About page.",
     "followOnX": "Follow {{name}} on X",
     "chatWithUs": "Chat with us",
+    "back": "← Back"
+  },
+  "support": {
+    "title": "Support",
+    "subtitle": "Need a hand? Here's the fastest way to reach us.",
+    "chatHeading": "Live chat",
+    "chatBody": "Chat with us right in the app — we typically reply within a few hours.",
+    "chatButton": "Open chat",
+    "emailHeading": "Email",
+    "emailBody": "Prefer email? Write to us and we'll get back to you.",
+    "faqHeading": "Check the FAQ",
+    "faqBody": "Common questions about how downDATA works are already answered there.",
+    "faqButton": "Visit the FAQ",
     "back": "← Back"
   },
   "features": {

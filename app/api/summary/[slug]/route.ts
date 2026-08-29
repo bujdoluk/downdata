@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { resolveServiceBySlug } from "@/lib/services";
+import { resolveCatalogEntryBySlug } from "@/lib/catalog";
 import { getStoredIncidentsForService, toIncidentApiShape } from "@/lib/getStoredIncident";
+import { getAllStoredMaintenanceSummaries, toMaintenanceSummaryApiShape } from "@/lib/getStoredMaintenance";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const service = await resolveServiceBySlug(slug);
+  const service = await resolveCatalogEntryBySlug(slug);
 
   if (!service) {
     return NextResponse.json({ error: "Unknown service" }, { status: 404 });
@@ -21,8 +22,13 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     }
 
     const data = await res.json();
-    const incidents = (await getStoredIncidentsForService(slug, { limit: 10 })).map(toIncidentApiShape);
-    return NextResponse.json({ ...data, incidents, service });
+    const [incidentRows, maintenanceRows] = await Promise.all([
+      getStoredIncidentsForService(slug, { limit: 10 }),
+      getAllStoredMaintenanceSummaries([slug]),
+    ]);
+    const incidents = incidentRows.map(toIncidentApiShape);
+    const maintenances = maintenanceRows.map(toMaintenanceSummaryApiShape);
+    return NextResponse.json({ ...data, incidents, maintenances, service });
   } catch {
     return NextResponse.json(
       { error: "Failed to reach status API" },

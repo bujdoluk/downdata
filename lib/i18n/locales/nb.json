@@ -57,6 +57,12 @@
     "components": "Komponenter",
     "incidents": "Hendelser",
     "noIncidents": "Ingen hendelser rapportert.",
+    "maintenances": "Vedlikehold",
+    "noMaintenances": "Ingen planlagt vedlikehold.",
+    "notifications": "Varsler",
+    "noIntegrationsConnected": "Ingen integrasjoner koblet til ennå.",
+    "manageIntegrations": "Administrer integrasjoner",
+    "notifyMe": "Varsle meg",
     "lastUpdated": "Sist oppdatert {{time}}"
   },
   "incidents": {
@@ -131,9 +137,18 @@
     "disconnecting": "Kobler fra…",
     "options": "Flere valg",
     "somethingWrong": "Noe gikk galt.",
-    "emailPlaceholder": "E-postadresser, kommaseparert",
-    "smsPlaceholder": "Telefonnumre (f.eks. +14155550123), kommaseparert",
-    "save": "Lagre"
+    "emailPlaceholder": "Legg til en e-postadresse",
+    "smsPlaceholder": "Legg til et telefonnummer (f.eks. +14155550123)",
+    "addRecipient": "Legg til",
+    "pending": "Venter",
+    "verified": "Bekreftet",
+    "resend": "Send på nytt",
+    "resendCode": "Send koden på nytt",
+    "verify": "Bekreft",
+    "codePlaceholder": "Kode",
+    "removeRecipient": "Fjern",
+    "recipientVerified": "Mottaker bekreftet.",
+    "verifyLinkInvalid": "Den bekreftelseslenken er ugyldig eller har utløpt."
   },
   "history": {
     "title": "Historikk",
@@ -208,6 +223,8 @@
   "addService": {
     "back": "← Tilbake",
     "title": "Legg til en overvåking",
+    "board": "Tavle",
+    "pickBoardFirst": "Velg en tavle først.",
     "add": "Legg til",
     "adding": "Legger til…",
     "somethingWrong": "Noe gikk galt.",
@@ -259,8 +276,8 @@
       "monitoringBody": "Legg til hvilken som helst tjeneste og følg statusen i sanntid. Klikk på en hendelse for å se hele tidslinjen, fra undersøkelse til løst.",
       "seatsTitle": "Ubegrensede brukere, i alle planer",
       "seatsBody": "UptimeRobot tar 15–19 $/mnd per teammedlem utover de tre første. Her er hele teamet inkludert.",
-      "selfHostedTitle": "Selvhostet, hvis du foretrekker det",
-      "selfHostedBody": "Kjør det på din egen server for en fast pris. Ingen av de fem konkurrentene som ble undersøkt tilbyr dette."
+      "boardsTitle": "Tavler for hvert team",
+      "boardsBody": "Grupper de overvåkede tjenestene dine i tavler, slik at hvert team bare ser tjenestene som gjelder dem."
     },
     "pricing": {
       "heading": "Priser",
@@ -285,8 +302,8 @@
       "getStarted": "Kom i gang",
       "getNotified": "Varsle meg",
       "businessNote": "SSO, revisjonslogger og prioritert support er fortsatt under utvikling. Legg igjen e-posten din, så varsler vi deg den dagen det lanseres.",
-      "needMore": "Trenger du flere enn 1000 overvåkere, eller vil du selvhoste?",
-      "selfHostedLicense": "Spør om en selvhostet lisens."
+      "needMore": "Trenger du flere enn 1000 overvåkere?",
+      "contactUs": "Ta kontakt."
     },
     "faq": {
       "heading": "Ofte stilte spørsmål",
@@ -300,7 +317,13 @@
       "notificationsQuestion": "Får teamet mitt varsel når noe går ned?",
       "notificationsAnswer": "Koble til Slack på noen få klikk, så går hendelser rett til kanalen din. Hver plan inkluderer ubegrensede teammedlemmer, slik at hele teamet holder seg oppdatert.",
       "monitorCountQuestion": "Hva regnes som én «overvåker»?",
-      "monitorCountAnswer": "Hver overvåkede tjeneste — GitHub, Supabase, Cloudflare eller noe annet på Atlassian Statuspage — regnes som én overvåker mot grensen i planen din."
+      "monitorCountAnswer": "Hver overvåkede tjeneste — GitHub, Supabase, Cloudflare eller noe annet på Atlassian Statuspage — regnes som én overvåker mot grensen i planen din.",
+      "emailSmsQuestion": "Kan jeg få varsler på e-post eller SMS også, ikke bare Slack?",
+      "emailSmsAnswer": "Ja — koble til én eller flere e-postadresser eller telefonnumre i tillegg til Slack. Med SMS velger du hvilke alvorlighetsgrader som er verdt en tekstmelding, fra kun kritiske til alt.",
+      "boardsQuestion": "Kan jeg organisere overvåkere for ulike team?",
+      "boardsAnswer": "Ja — grupper de overvåkede tjenestene dine i tavler, slik at hvert team bare ser tjenestene som gjelder dem.",
+      "scopeQuestion": "Overvåker downDATA mine egne servere, eller bare offentlige statussider?",
+      "scopeAnswer": "Bare offentlige statussider — downDATA overvåker tjenester bygget på Atlassian Statuspage, som GitHub, Supabase og Cloudflare. Det er ikke et verktøy for å pinge eller overvåke din egen infrastruktur."
     },
     "closing": {
       "heading": "Fjorten dager. Full tilgang. Ikke noe kort.",
@@ -376,17 +399,31 @@
     "termsOfService": "Bruksvilkår",
     "about": "Om oss",
     "faq": "Ofte stilte spørsmål",
+    "support": "Kundestøtte",
     "companyTitle": "Selskap",
     "legalTitle": "Juridisk"
   },
   "about": {
     "title": "Om <brand>down</brand>DATA",
     "storyHeading": "Historien",
-    "storyBody": "<brand>down</brand>DATA startet i august 2026 — bygget av én utvikler som ble irritert over at det å sjekke om verktøyene appen din er avhengig av har en dårlig dag, krevde enten å følge med på fem forskjellige statussider, eller å betale en tjeneste som StatusGator hundrevis av dollar i måneden for noe som i bunn og grunn bare er å spørre et offentlig API med jevne mellomrom. <brand>down</brand>DATA gjør den samme jobben — overvåker GitHub, Supabase, Cloudflare og alt annet bygget på Atlassian Statuspage — for en brøkdel av prisen, med et selvhostet alternativ for team som helst ikke vil være avhengige av vår oppetid heller.",
+    "storyBody": "<brand>down</brand>DATA startet i august 2026 — bygget av én utvikler som ble irritert over at det å sjekke om verktøyene appen din er avhengig av har en dårlig dag, krevde enten å følge med på fem forskjellige statussider, eller å betale en tjeneste som StatusGator hundrevis av dollar i måneden for noe som i bunn og grunn bare er å spørre et offentlig API med jevne mellomrom. <brand>down</brand>DATA gjør den samme jobben — overvåker GitHub, Supabase, Cloudflare og alt annet bygget på Atlassian Statuspage — for en brøkdel av prisen.",
     "teamHeading": "Hvem som står bak",
     "teamBody": "<brand>down</brand>DATA bygges og vedlikeholdes av Lukáš Bujdoš, en webutvikler basert i Slovakia <flag/>, foreløpig som et soloprosjekt. Det er nytt — bygget åpent, funksjon for funksjon — i stedet for av et selskap med en stab å fylle en Om oss-side med.",
     "followOnX": "Følg {{name}} på X",
     "chatWithUs": "Chat med oss",
+    "back": "← Tilbake"
+  },
+  "support": {
+    "title": "Kundestøtte",
+    "subtitle": "Trenger du hjelp? Dette er raskeste måten å nå oss på.",
+    "chatHeading": "Livechat",
+    "chatBody": "Chat med oss direkte i appen — vi svarer vanligvis innen noen timer.",
+    "chatButton": "Åpne chat",
+    "emailHeading": "E-post",
+    "emailBody": "Foretrekker du e-post? Skriv til oss, så svarer vi.",
+    "faqHeading": "Se ofte stilte spørsmål",
+    "faqBody": "Vanlige spørsmål om hvordan downDATA fungerer er allerede besvart der.",
+    "faqButton": "Gå til ofte stilte spørsmål",
     "back": "← Tilbake"
   },
   "features": {

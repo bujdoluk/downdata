@@ -57,6 +57,12 @@
     "components": "Onderdelen",
     "incidents": "Incidenten",
     "noIncidents": "Geen incidenten gemeld.",
+    "maintenances": "Onderhoud",
+    "noMaintenances": "Geen onderhoud gepland.",
+    "notifications": "Meldingen",
+    "noIntegrationsConnected": "Nog geen integraties verbonden.",
+    "manageIntegrations": "Integraties beheren",
+    "notifyMe": "Meld mij",
     "lastUpdated": "Laatst bijgewerkt {{time}}"
   },
   "incidents": {
@@ -131,9 +137,18 @@
     "disconnecting": "Verbinding verbreken…",
     "options": "Meer opties",
     "somethingWrong": "Er is iets misgegaan.",
-    "emailPlaceholder": "E-mailadressen, gescheiden door komma's",
-    "smsPlaceholder": "Telefoonnummers (bijv. +14155550123), gescheiden door komma's",
-    "save": "Opslaan"
+    "emailPlaceholder": "Voeg een e-mailadres toe",
+    "smsPlaceholder": "Voeg een telefoonnummer toe (bijv. +14155550123)",
+    "addRecipient": "Toevoegen",
+    "pending": "In afwachting",
+    "verified": "Geverifieerd",
+    "resend": "Opnieuw versturen",
+    "resendCode": "Code opnieuw versturen",
+    "verify": "Verifiëren",
+    "codePlaceholder": "Code",
+    "removeRecipient": "Verwijderen",
+    "recipientVerified": "Ontvanger bevestigd.",
+    "verifyLinkInvalid": "Deze bevestigingslink is ongeldig of verlopen."
   },
   "history": {
     "title": "Geschiedenis",
@@ -208,6 +223,8 @@
   "addService": {
     "back": "← Terug",
     "title": "Een monitor toevoegen",
+    "board": "Bord",
+    "pickBoardFirst": "Kies eerst een bord.",
     "add": "Toevoegen",
     "adding": "Bezig met toevoegen…",
     "somethingWrong": "Er is iets misgegaan.",
@@ -259,8 +276,8 @@
       "monitoringBody": "Voeg een willekeurige dienst toe en volg de status live. Klik op een incident voor de volledige tijdlijn, van onderzoek tot opgelost.",
       "seatsTitle": "Onbeperkt aantal gebruikers, bij elk plan",
       "seatsBody": "UptimeRobot rekent 15–19 $/maand per teamlid boven de eerste drie. Hier is het hele team inbegrepen.",
-      "selfHostedTitle": "Self-hosted, als je dat liever hebt",
-      "selfHostedBody": "Draai het op je eigen server voor een vast tarief. Geen van de vijf onderzochte concurrenten biedt dit aan."
+      "boardsTitle": "Boards voor elk team",
+      "boardsBody": "Groepeer je gevolgde diensten in boards, zodat elk team alleen de diensten ziet die voor hen relevant zijn."
     },
     "pricing": {
       "heading": "Prijzen",
@@ -285,8 +302,8 @@
       "getStarted": "Aan de slag",
       "getNotified": "Breng mij op de hoogte",
       "businessNote": "SSO, auditlogs en prioriteitsondersteuning zijn nog in ontwikkeling. Laat je e-mailadres achter en we laten het je weten zodra het live gaat.",
-      "needMore": "Meer dan 1000 monitors nodig, of wil je self-hosten?",
-      "selfHostedLicense": "Vraag naar een self-hosted licentie."
+      "needMore": "Meer dan 1000 monitors nodig?",
+      "contactUs": "Neem contact op."
     },
     "faq": {
       "heading": "Veelgestelde vragen",
@@ -300,7 +317,13 @@
       "notificationsQuestion": "Krijgt mijn team een melding als er iets uitvalt?",
       "notificationsAnswer": "Koppel Slack in een paar klikken en incidenten komen rechtstreeks in je kanaal terecht. Elk plan bevat onbeperkt aantal teamleden, zodat het hele team op de hoogte blijft.",
       "monitorCountQuestion": "Wat telt als één 'monitor'?",
-      "monitorCountAnswer": "Elke gevolgde dienst — GitHub, Supabase, Cloudflare of iets anders op Atlassian Statuspage — telt als één monitor binnen de limiet van je plan."
+      "monitorCountAnswer": "Elke gevolgde dienst — GitHub, Supabase, Cloudflare of iets anders op Atlassian Statuspage — telt als één monitor binnen de limiet van je plan.",
+      "emailSmsQuestion": "Kan ik ook meldingen krijgen via e-mail of SMS, niet alleen via Slack?",
+      "emailSmsAnswer": "Ja — koppel naast Slack ook een of meer e-mailadressen of telefoonnummers. Bij SMS kies je zelf welke ernstniveaus een bericht waard zijn, van alleen kritiek tot alles.",
+      "boardsQuestion": "Kan ik monitors organiseren voor verschillende teams?",
+      "boardsAnswer": "Ja — groepeer je gevolgde diensten in boards, zodat elk team alleen de diensten ziet die voor hen relevant zijn.",
+      "scopeQuestion": "Monitort downDATA mijn eigen servers, of alleen openbare statuspagina's?",
+      "scopeAnswer": "Alleen openbare statuspagina's — downDATA volgt diensten gebaseerd op Atlassian Statuspage, zoals GitHub, Supabase en Cloudflare. Het is geen tool om je eigen infrastructuur te pingen of te monitoren."
     },
     "closing": {
       "heading": "Veertien dagen. Volledige toegang. Geen kaart.",
@@ -376,17 +399,31 @@
     "termsOfService": "Gebruiksvoorwaarden",
     "about": "Over ons",
     "faq": "Veelgestelde vragen",
+    "support": "Ondersteuning",
     "companyTitle": "Bedrijf",
     "legalTitle": "Juridisch"
   },
   "about": {
     "title": "Over <brand>down</brand>DATA",
     "storyHeading": "Het verhaal",
-    "storyBody": "<brand>down</brand>DATA is in augustus 2026 ontstaan — gebouwd door één ontwikkelaar die er genoeg van had dat controleren of de tools waar je app van afhangt toevallig een slechte dag hebben, ofwel het in de gaten houden van vijf verschillende statuspagina's vereiste, ofwel honderden dollars per maand betalen aan een dienst als StatusGator voor iets wat in de kern gewoon een publieke API periodiek uitvragen is. <brand>down</brand>DATA doet hetzelfde werk — het volgt GitHub, Supabase, Cloudflare en alles anders gebaseerd op Atlassian Statuspage — voor een fractie van de prijs, met een self-hosted optie voor teams die liever ook niet afhankelijk zijn van onze eigen beschikbaarheid.",
+    "storyBody": "<brand>down</brand>DATA is in augustus 2026 ontstaan — gebouwd door één ontwikkelaar die er genoeg van had dat controleren of de tools waar je app van afhangt toevallig een slechte dag hebben, ofwel het in de gaten houden van vijf verschillende statuspagina's vereiste, ofwel honderden dollars per maand betalen aan een dienst als StatusGator voor iets wat in de kern gewoon een publieke API periodiek uitvragen is. <brand>down</brand>DATA doet hetzelfde werk — het volgt GitHub, Supabase, Cloudflare en alles anders gebaseerd op Atlassian Statuspage — voor een fractie van de prijs.",
     "teamHeading": "Wie erachter zit",
     "teamBody": "<brand>down</brand>DATA wordt gebouwd en onderhouden door Lukáš Bujdoš, een webontwikkelaar gevestigd in Slowakije <flag/>, vooralsnog als soloproject. Het is nieuw — wordt in het openbaar gebouwd, functie voor functie — in plaats van gemaakt door een bedrijf met een team om een Over-ons-pagina mee te vullen.",
     "followOnX": "Volg {{name}} op X",
     "chatWithUs": "Chat met ons",
+    "back": "← Terug"
+  },
+  "support": {
+    "title": "Ondersteuning",
+    "subtitle": "Hulp nodig? Dit is de snelste manier om ons te bereiken.",
+    "chatHeading": "Livechat",
+    "chatBody": "Chat rechtstreeks met ons in de app — we reageren meestal binnen een paar uur.",
+    "chatButton": "Chat openen",
+    "emailHeading": "E-mail",
+    "emailBody": "Liever e-mail? Schrijf ons en we nemen contact op.",
+    "faqHeading": "Bekijk de veelgestelde vragen",
+    "faqBody": "Veelvoorkomende vragen over hoe downDATA werkt zijn daar al beantwoord.",
+    "faqButton": "Naar de veelgestelde vragen",
     "back": "← Terug"
   },
   "features": {

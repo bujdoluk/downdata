@@ -45,14 +45,14 @@ export async function GET(request: Request) {
       return redirectToIntegrations("?error=1");
     }
 
-    await addIntegration({ slug: "slack", name: "Slack", webhookUrl });
+    const { id } = await addIntegration({ slug: "slack", name: "Slack", webhookUrl });
 
     // Mark any pre-existing incident history as already-delivered to this
     // integration, so connecting Slack doesn't flood the channel with the
     // entire backlog the moment it's added. Best-effort: if Supabase isn't
     // configured yet, this just no-ops rather than blocking the connection.
     try {
-      await backfillNewIntegration("slack");
+      await backfillNewIntegration(id);
     } catch {
       // ignore — Supabase incident storage is optional; Slack connects either way
     }

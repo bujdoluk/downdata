@@ -57,6 +57,12 @@
     "components": "Componentes",
     "incidents": "Incidentes",
     "noIncidents": "Nenhum incidente reportado.",
+    "maintenances": "Manutenção",
+    "noMaintenances": "Nenhuma manutenção agendada.",
+    "notifications": "Notificações",
+    "noIntegrationsConnected": "Ainda não há integrações ligadas.",
+    "manageIntegrations": "Gerir integrações",
+    "notifyMe": "Notificar-me",
     "lastUpdated": "Última atualização {{time}}"
   },
   "incidents": {
@@ -131,9 +137,18 @@
     "disconnecting": "A desligar…",
     "options": "Mais opções",
     "somethingWrong": "Algo correu mal.",
-    "emailPlaceholder": "Endereços de e-mail separados por vírgulas",
-    "smsPlaceholder": "Números de telefone (por ex. +14155550123) separados por vírgulas",
-    "save": "Guardar"
+    "emailPlaceholder": "Adicionar um endereço de e-mail",
+    "smsPlaceholder": "Adicionar um número de telefone (por ex. +14155550123)",
+    "addRecipient": "Adicionar",
+    "pending": "Pendente",
+    "verified": "Verificado",
+    "resend": "Reenviar",
+    "resendCode": "Reenviar código",
+    "verify": "Verificar",
+    "codePlaceholder": "Código",
+    "removeRecipient": "Remover",
+    "recipientVerified": "Destinatário confirmado.",
+    "verifyLinkInvalid": "Esse link de confirmação é inválido ou expirou."
   },
   "history": {
     "title": "Histórico",
@@ -224,6 +239,8 @@
       "other": "Outros"
     },
     "subtitle": "Explore o catálogo e comece a monitorizar um novo serviço.",
+    "board": "Painel",
+    "pickBoardFirst": "Escolha primeiro um painel.",
     "tabService": "Serviço de terceiros",
     "tabWebsite": "Site",
     "websiteComingSoon": "A monitorização de sites chega em breve.",
@@ -259,8 +276,8 @@
       "monitoringBody": "Adicione qualquer serviço e acompanhe o seu estado em tempo real. Clique num incidente para ver a linha do tempo completa — desde a investigação até à resolução.",
       "seatsTitle": "Utilizadores ilimitados, em todos os planos",
       "seatsBody": "A UptimeRobot cobra 15–19 $/mês por cada membro da equipa além dos primeiros três. Aqui, toda a equipa está incluída.",
-      "selfHostedTitle": "Alojamento próprio, se preferir",
-      "selfHostedBody": "Execute-o no seu próprio servidor por uma taxa fixa. Nenhum dos cinco concorrentes analisados oferece isso."
+      "boardsTitle": "Quadros para cada equipa",
+      "boardsBody": "Agrupe os seus serviços monitorizados em quadros, para que cada equipa veja apenas os serviços que lhe interessam."
     },
     "pricing": {
       "heading": "Preços",
@@ -285,8 +302,8 @@
       "getStarted": "Começar",
       "getNotified": "Avisem-me",
       "businessNote": "SSO, registos de auditoria e suporte prioritário ainda estão a ser desenvolvidos. Deixe o seu e-mail e avisamo-lo assim que estiver disponível.",
-      "needMore": "Precisa de mais de 1000 monitores ou quer alojamento próprio?",
-      "selfHostedLicense": "Informe-se sobre uma licença de alojamento próprio."
+      "needMore": "Precisa de mais de 1000 monitores?",
+      "contactUs": "Contacte-nos."
     },
     "faq": {
       "heading": "Perguntas frequentes",
@@ -300,7 +317,13 @@
       "notificationsQuestion": "A minha equipa é avisada quando algo falha?",
       "notificationsAnswer": "Ligue o Slack em poucos cliques e os incidentes são enviados diretamente para o seu canal. Todos os planos incluem utilizadores ilimitados, para que toda a equipa esteja a par.",
       "monitorCountQuestion": "O que conta como um «monitor»?",
-      "monitorCountAnswer": "Cada serviço monitorizado — GitHub, Supabase, Cloudflare ou qualquer outro no Atlassian Statuspage — conta como um monitor dentro do limite do seu plano."
+      "monitorCountAnswer": "Cada serviço monitorizado — GitHub, Supabase, Cloudflare ou qualquer outro no Atlassian Statuspage — conta como um monitor dentro do limite do seu plano.",
+      "emailSmsQuestion": "Posso ser notificado também por email ou SMS, não só pelo Slack?",
+      "emailSmsAnswer": "Sim — ligue um ou mais endereços de email ou números de telefone além do Slack. No SMS, escolhe quais as gravidades que valem uma mensagem, desde apenas críticas até todas.",
+      "boardsQuestion": "Posso organizar os monitores para equipas diferentes?",
+      "boardsAnswer": "Sim — agrupe os seus serviços monitorizados em quadros, para que cada equipa veja apenas os serviços que lhe interessam.",
+      "scopeQuestion": "A downDATA monitoriza os meus próprios servidores, ou apenas páginas de estado públicas?",
+      "scopeAnswer": "Apenas páginas de estado públicas — a downDATA monitoriza serviços baseados no Atlassian Statuspage, como o GitHub, o Supabase e o Cloudflare. Não é uma ferramenta para fazer ping ou monitorizar a sua própria infraestrutura."
     },
     "closing": {
       "heading": "Catorze dias. Acesso total. Sem cartão.",
@@ -376,17 +399,31 @@
     "termsOfService": "Termos de Serviço",
     "about": "Sobre nós",
     "faq": "Perguntas Frequentes",
+    "support": "Suporte",
     "companyTitle": "Empresa",
     "legalTitle": "Legal"
   },
   "about": {
     "title": "Sobre a <brand>down</brand>DATA",
     "storyHeading": "A história",
-    "storyBody": "A <brand>down</brand>DATA nasceu em agosto de 2026 — criada por um único developer, incomodado por verificar se as ferramentas de que a sua aplicação depende estão a ter um mau dia exigir ou vigiar cinco páginas de estado diferentes, ou pagar centenas de dólares por mês a um serviço como o StatusGator por algo que, no fundo, é apenas consultar periodicamente uma API pública. A <brand>down</brand>DATA faz o mesmo trabalho — monitoriza o GitHub, o Supabase, o Cloudflare e tudo o resto baseado em Atlassian Statuspage — por uma fração do preço, com uma opção self-hosted para equipas que preferem não depender também da nossa disponibilidade.",
+    "storyBody": "A <brand>down</brand>DATA nasceu em agosto de 2026 — criada por um único developer, incomodado por verificar se as ferramentas de que a sua aplicação depende estão a ter um mau dia exigir ou vigiar cinco páginas de estado diferentes, ou pagar centenas de dólares por mês a um serviço como o StatusGator por algo que, no fundo, é apenas consultar periodicamente uma API pública. A <brand>down</brand>DATA faz o mesmo trabalho — monitoriza o GitHub, o Supabase, o Cloudflare e tudo o resto baseado em Atlassian Statuspage — por uma fração do preço.",
     "teamHeading": "Quem está por trás",
     "teamBody": "A <brand>down</brand>DATA é criada e mantida por Lukáš Bujdoš, um web developer sediado na Eslováquia <flag/>, por agora como projeto individual. É recente — construída publicamente, funcionalidade a funcionalidade — em vez de ser feita por uma empresa com uma equipa capaz de preencher uma página «Sobre nós».",
     "followOnX": "Seguir {{name}} no X",
     "chatWithUs": "Fale connosco",
+    "back": "← Voltar"
+  },
+  "support": {
+    "title": "Suporte",
+    "subtitle": "Precisa de ajuda? Esta é a forma mais rápida de nos contactar.",
+    "chatHeading": "Chat em direto",
+    "chatBody": "Fale connosco diretamente na app — normalmente respondemos em poucas horas.",
+    "chatButton": "Abrir chat",
+    "emailHeading": "E-mail",
+    "emailBody": "Prefere e-mail? Escreva-nos e nós responderemos.",
+    "faqHeading": "Consulte as perguntas frequentes",
+    "faqBody": "As perguntas mais comuns sobre o funcionamento da downDATA já estão respondidas ali.",
+    "faqButton": "Ver perguntas frequentes",
     "back": "← Voltar"
   },
   "features": {

@@ -19,7 +19,7 @@ import BoardActivityPanel from "@/components/boards/BoardActivityPanel";
 import BoardLastIncidentTable from "@/components/boards/BoardLastIncidentTable";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
-import { InfoIcon } from "@/components/icons/NavIcons";
+import { InfoIcon, PlusIcon } from "@/components/icons/NavIcons";
 
 const POLL_INTERVAL_MS = 60_000;
 
@@ -225,7 +225,13 @@ export default function BoardDetailContent({
       )}
 
       <div className="mt-6">
-        <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("boards.onBoard")}</h2>
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("boards.onBoard")}</h2>
+          <Link href={`/add-service?board=${board.id}`} className="btn btn-info btn-sm">
+            <PlusIcon />
+            {t("nav.addService")}
+          </Link>
+        </div>
 
         <div className="mt-3">
           {onBoardEntries.length === 0 ? (

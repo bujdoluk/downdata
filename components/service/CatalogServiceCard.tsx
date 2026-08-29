@@ -103,7 +103,7 @@ export default function CatalogServiceCard({
       )}
 
       <div className="flex flex-1 flex-row items-center">
-        <Link href={`/service/${slug}`} className="card-body min-w-0 flex-1 gap-0 p-4">
+        <Link href={`/monitors/${slug}`} className="card-body min-w-0 flex-1 gap-0 p-4">
           <div className="flex items-center gap-3 text-base-content">
             <Logo size={28} name={name} />
             <h1 className="card-title min-w-0 truncate text-base">{name}</h1>

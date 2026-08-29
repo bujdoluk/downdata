@@ -34,6 +34,12 @@ export function nowMs(): number {
   return Temporal.Now.instant().epochMilliseconds;
 }
 
+// millisecond precision, same "drop-in for a Date-written column" shape
+// as nowIso() — used for verification-code/token expiries.
+export function nowPlusIso(durationMs: number): string {
+  return Temporal.Now.instant().add({ milliseconds: durationMs }).toString({ smallestUnit: "millisecond" });
+}
+
 export function epochMs(iso: string): number {
   return Temporal.Instant.from(iso).epochMilliseconds;
 }

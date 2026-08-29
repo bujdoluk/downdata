@@ -1,19 +1,16 @@
 import { NextResponse } from "next/server";
-import { getAllServices } from "@/lib/services";
+import { getAllTrackedSlugs } from "@/lib/boards";
 import { getSupabaseClient } from "@/lib/supabase";
 
 export async function GET() {
-  const services = await getAllServices();
-  if (services.length === 0) return NextResponse.json({ count: 0 });
+  const trackedSlugs = await getAllTrackedSlugs();
+  if (trackedSlugs.length === 0) return NextResponse.json({ count: 0 });
 
   const supabase = getSupabaseClient();
   const { count, error } = await supabase
     .from("incidents")
     .select("id", { count: "exact", head: true })
-    .in(
-      "service_slug",
-      services.map((service) => service.slug),
-    )
+    .in("service_slug", trackedSlugs)
     .in("status", ["investigating", "identified"]);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 

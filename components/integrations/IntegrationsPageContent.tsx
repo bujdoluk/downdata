@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { Integration, IntegrationDefinition } from "@/types/integration";
+import type { IntegrationDefinition } from "@/types/integration";
 import IntegrationCard from "@/components/integrations/IntegrationCard";
 import SlackLogo from "@/components/integrations/SlackLogo";
 import EmailLogo from "@/components/integrations/EmailLogo";
@@ -28,11 +28,19 @@ const CONNECT_HREFS: Record<string, string> = {
   slack: "/api/integrations/slack/start",
 };
 
+async function postJson(url: string, body: unknown, fallbackError: string): Promise<void> {
+  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(typeof data.error === "string" ? data.error : fallbackError);
+  }
+}
+
 export default function IntegrationsPageContent({
   catalog,
   integrations,
 }: {
-  catalog: Integration[];
+  catalog: { slug: string; name: string }[];
   integrations: IntegrationDefinition[];
 }) {
   const { t } = useTranslation();
@@ -40,79 +48,97 @@ export default function IntegrationsPageContent({
   const searchParams = useSearchParams();
   const [removingSlug, setRemovingSlug] = useState<string | null>(null);
   const hasError = searchParams.get("error") !== null;
+  const verified = searchParams.get("verified");
 
   useEffect(() => {
-    if (hasError) router.replace("/integrations");
-  }, [hasError, router]);
+    if (hasError || verified !== null) router.replace("/integrations");
+  }, [hasError, verified, router]);
 
   const disconnectMutation = useMutation({
-    mutationFn: (entry: Integration) => fetch(`/api/integrations/${entry.slug}`, { method: "DELETE" }),
+    mutationFn: (slug: string) => fetch(`/api/integrations/${slug}`, { method: "DELETE" }),
     onSettled: () => setRemovingSlug(null),
     onSuccess: (res) => {
       if (res.ok) router.refresh();
     },
   });
 
-  function handleDisconnect(entry: Integration) {
-    setRemovingSlug(entry.slug);
-    disconnectMutation.mutate(entry);
+  function handleDisconnect(slug: string) {
+    setRemovingSlug(slug);
+    disconnectMutation.mutate(slug);
   }
 
-  const connectEmailMutation = useMutation({
-    mutationFn: async (recipientEmails: string[]) => {
-      const res = await fetch("/api/integrations/email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ recipientEmails }),
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(typeof data.error === "string" ? data.error : t("integrations.somethingWrong"));
-      }
-    },
+  const addEmailRecipientMutation = useMutation({
+    mutationFn: (value: string) => postJson("/api/integrations/email", { value }, t("integrations.somethingWrong")),
     onSuccess: () => router.refresh(),
   });
+  const removeEmailRecipientMutation = useMutation({
+    mutationFn: (value: string) => fetch(`/api/integrations/email/recipients/${encodeURIComponent(value)}`, { method: "DELETE" }),
+    onSuccess: (res) => {
+      if (res.ok) router.refresh();
+    },
+  });
 
-  const connectSmsMutation = useMutation({
-    mutationFn: async ({ recipientPhones, notifyImpacts }: { recipientPhones: string[]; notifyImpacts: string[] }) => {
+  const addSmsRecipientMutation = useMutation({
+    mutationFn: (value: string) => postJson("/api/integrations/sms", { value }, t("integrations.somethingWrong")),
+    onSuccess: () => router.refresh(),
+  });
+  const removeSmsRecipientMutation = useMutation({
+    mutationFn: (value: string) => fetch(`/api/integrations/sms/recipients/${encodeURIComponent(value)}`, { method: "DELETE" }),
+    onSuccess: (res) => {
+      if (res.ok) router.refresh();
+    },
+  });
+  const verifySmsMutation = useMutation({
+    mutationFn: ({ value, code }: { value: string; code: string }) =>
+      postJson("/api/integrations/sms/verify", { value, code }, t("integrations.somethingWrong")),
+    onSuccess: () => router.refresh(),
+  });
+  const updateSmsImpactsMutation = useMutation({
+    mutationFn: async (notifyImpacts: string[]) => {
       const res = await fetch("/api/integrations/sms", {
-        method: "POST",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ recipientPhones, notifyImpacts }),
+        body: JSON.stringify({ notifyImpacts }),
       });
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(typeof data.error === "string" ? data.error : t("integrations.somethingWrong"));
-      }
+      if (!res.ok) throw new Error(t("integrations.somethingWrong"));
     },
     onSuccess: () => router.refresh(),
   });
 
   // Slug -> its inline popover content. IntegrationCard owns the popover
-  // shell (open state, positioning) and hands back `close`; each form
-  // here owns its own fields, mutation, and error state, and calls
-  // `close` on success so editing an already-connected integration
-  // dismisses the popover the same way a fresh connect does.
+  // shell (open state, positioning); each form here owns its own fields
+  // and mutations. Unlike the old bulk-recipient forms, adding/removing/
+  // verifying a recipient deliberately never closes the popover — there's
+  // usually more than one thing to do in a row (add, then verify), so
+  // only an outside click closes it now.
   const connectForms: Record<string, (close: () => void) => ReactNode> = {
-    email: (close) => {
-      const current = integrations.find((i): i is Extract<IntegrationDefinition, { slug: "email" }> => i.slug === "email");
+    email: () => {
+      const current = integrations.find((entry): entry is Extract<IntegrationDefinition, { slug: "email" }> => entry.slug === "email");
       return (
         <EmailConnectForm
-          currentEmails={current?.recipientEmails}
-          isSubmitting={connectEmailMutation.isPending}
-          error={connectEmailMutation.error?.message ?? null}
-          onSubmit={(recipientEmails) => connectEmailMutation.mutate(recipientEmails, { onSuccess: close })}
+          recipients={current?.recipients ?? []}
+          isSubmitting={addEmailRecipientMutation.isPending}
+          error={addEmailRecipientMutation.error?.message ?? null}
+          onAdd={(value) => addEmailRecipientMutation.mutate(value)}
+          onRemove={(value) => removeEmailRecipientMutation.mutate(value)}
         />
       );
     },
-    sms: (close) => {
-      const current = integrations.find((i): i is Extract<IntegrationDefinition, { slug: "sms" }> => i.slug === "sms");
+    sms: () => {
+      const current = integrations.find((entry): entry is Extract<IntegrationDefinition, { slug: "sms" }> => entry.slug === "sms");
       return (
         <SmsConnectForm
-          current={current}
-          isSubmitting={connectSmsMutation.isPending}
-          error={connectSmsMutation.error?.message ?? null}
-          onSubmit={(recipientPhones, notifyImpacts) => connectSmsMutation.mutate({ recipientPhones, notifyImpacts }, { onSuccess: close })}
+          recipients={current?.recipients ?? []}
+          notifyImpacts={current?.notifyImpacts ?? ["major", "critical"]}
+          isSubmitting={addSmsRecipientMutation.isPending}
+          isVerifying={verifySmsMutation.isPending}
+          error={addSmsRecipientMutation.error?.message ?? null}
+          verifyError={verifySmsMutation.error?.message ?? null}
+          onAdd={(value) => addSmsRecipientMutation.mutate(value)}
+          onRemove={(value) => removeSmsRecipientMutation.mutate(value)}
+          onVerify={(value, code) => verifySmsMutation.mutate({ value, code })}
+          onResend={(value) => addSmsRecipientMutation.mutate(value)}
+          onUpdateImpacts={(impacts) => updateSmsImpactsMutation.mutate(impacts)}
         />
       );
     },
@@ -123,9 +149,9 @@ export default function IntegrationsPageContent({
       <h1 className="text-base-content text-lg font-semibold">{t("integrations.title")}</h1>
       <p className="text-base-content/60 mt-1 text-sm">{t("integrations.subtitle")}</p>
 
-      {hasError && (
-        <p className="alert alert-error alert-soft mt-4 text-sm">{t("integrations.somethingWrong")}</p>
-      )}
+      {hasError && <p className="alert alert-error alert-soft mt-4 text-sm">{t("integrations.somethingWrong")}</p>}
+      {verified === "1" && <p className="alert alert-success alert-soft mt-4 text-sm">{t("integrations.recipientVerified")}</p>}
+      {verified === "0" && <p className="alert alert-error alert-soft mt-4 text-sm">{t("integrations.verifyLinkInvalid")}</p>}
 
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {catalog.map((entry) => {
@@ -139,7 +165,7 @@ export default function IntegrationsPageContent({
               connected={!!integration}
               connectHref={CONNECT_HREFS[entry.slug]}
               connectForm={connectForms[entry.slug]}
-              removable={integration ? { isRemoving: removingSlug === entry.slug, onRemove: () => handleDisconnect(entry) } : undefined}
+              removable={integration ? { isRemoving: removingSlug === entry.slug, onRemove: () => handleDisconnect(entry.slug) } : undefined}
             />
           );
         })}

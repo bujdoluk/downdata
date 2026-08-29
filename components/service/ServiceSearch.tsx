@@ -38,7 +38,7 @@ export default function ServiceSearch({ services }: { services: Service[] }) {
               const Logo = SERVICE_LOGOS[service.slug] ?? FallbackLogo;
               return (
                 <li key={service.slug}>
-                  <Link href={`/service/${service.slug}`} className="flex items-center gap-2.5">
+                  <Link href={`/monitors/${service.slug}`} className="flex items-center gap-2.5">
                     <Logo size={18} name={service.name} />
                     {service.name}
                   </Link>

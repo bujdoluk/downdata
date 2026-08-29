@@ -50,7 +50,7 @@ export default function Footer() {
 
       <nav>
         <h6 className="footer-title">{t("footer.companyTitle")}</h6>
-        <Link href="/landing-page#pricing" className="link link-hover">
+        <Link href="/pricing" className="link link-hover">
           {t("landing.pricing.heading")}
         </Link>
         <Link href="/about" className="link link-hover">
@@ -58,6 +58,9 @@ export default function Footer() {
         </Link>
         <Link href="/faq" className="link link-hover">
           {t("footer.faq")}
+        </Link>
+        <Link href="/support" className="link link-hover">
+          {t("footer.support")}
         </Link>
       </nav>
 

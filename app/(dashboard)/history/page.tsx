@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getAllServices } from "@/lib/services";
-import { getAllBoards } from "@/lib/boards";
+import { getAllTrackedSlugs, getAllBoards } from "@/lib/boards";
+import { getCatalog } from "@/lib/catalog";
 import HistoryPageContent from "@/components/history/HistoryPageContent";
 
 export const metadata: Metadata = {
@@ -8,7 +8,8 @@ export const metadata: Metadata = {
 };
 
 export default async function HistoryPage() {
-  const [trackedServices, boards] = await Promise.all([getAllServices(), getAllBoards()]);
+  const [trackedSlugs, catalog, boards] = await Promise.all([getAllTrackedSlugs(), getCatalog(), getAllBoards()]);
+  const trackedServices = catalog.filter((entry) => trackedSlugs.includes(entry.slug));
 
   return (
     <main className="flex flex-1 justify-center p-6">

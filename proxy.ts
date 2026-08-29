@@ -3,7 +3,22 @@ import { NextResponse, type NextRequest } from "next/server";
 
 // Everything else requires a session — dashboard pages and every /api/*
 // route read/write per-account data now that boards are RLS-scoped.
-const PUBLIC_EXACT = new Set(["/landing-page", "/login", "/reset-password", "/privacy", "/terms", "/about", "/faq"]);
+const PUBLIC_EXACT = new Set([
+  "/landing-page",
+  "/login",
+  "/reset-password",
+  "/privacy",
+  "/terms",
+  "/about",
+  "/faq",
+  "/support",
+  "/pricing",
+  // Clicked from an email client, not this app — the browser completing
+  // it may have no session for the account that added the recipient at
+  // all. The token itself is the authorization (see
+  // lib/integrations.ts's verifyEmailRecipient).
+  "/api/integrations/email/verify",
+]);
 // "/integrations/" (trailing slash) only matches per-provider marketing
 // pages like /integrations/slack — the bare "/integrations" (no trailing
 // segment) is the protected dashboard connect/manage page and doesn't

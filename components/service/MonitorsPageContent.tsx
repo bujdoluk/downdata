@@ -14,20 +14,25 @@ import NoServicesMessage from "@/components/service/NoServicesMessage";
 
 const POLL_INTERVAL_MS = 60_000;
 
-export default function MonitorsPageContent({ catalog, trackedHosts }: { catalog: Catalog[]; trackedHosts: string[] }) {
+export default function MonitorsPageContent({ catalog, trackedSlugs }: { catalog: Catalog[]; trackedSlugs: string[] }) {
   const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
   const [removingSlug, setRemovingSlug] = useState<string | null>(null);
-  const myServices = catalog.filter((entry) => trackedHosts.includes(entry.host));
+  const myServices = catalog.filter((entry) => trackedSlugs.includes(entry.slug));
   const { data, isError: fetchFailed } = useQuery({
     queryKey: queryKeys.catalogStatus(),
     queryFn: () => fetchJson<ServiceStatusBatchResponse>("/api/status/catalog", { cache: "no-store" }),
     refetchInterval: POLL_INTERVAL_MS,
   });
 
+  // This is the all-boards aggregate view, not one specific board's page
+  // — a service can be on several of the current user's own boards at
+  // once, so "remove" here means untrack everywhere, not "which board did
+  // you mean." Removing from just one board is still available from that
+  // board's own page (BoardDetailContent), unaffected by this.
   const removeMutation = useMutation({
-    mutationFn: (entry: Catalog) => fetch(`/api/services/${entry.slug}`, { method: "DELETE" }),
+    mutationFn: (entry: Catalog) => fetch(`/api/monitors/${entry.slug}`, { method: "DELETE" }),
     onSettled: () => setRemovingSlug(null),
     onSuccess: (res) => {
       if (!res.ok) return;

@@ -21,5 +21,8 @@ export const queryKeys = {
   boards: {
     list: () => ["boards", "list"] as const,
   },
+  integrations: {
+    list: () => ["integrations", "list"] as const,
+  },
   account: () => ["account"] as const,
 };

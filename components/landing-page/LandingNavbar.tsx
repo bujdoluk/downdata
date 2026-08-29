@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import Logo from "@/components/navbar/Logo";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
+import ThemeToggle from "@/components/navbar/ThemeToggle";
 import FeaturesMegaMenu from "@/components/landing-page/FeaturesMegaMenu";
 import IntegrationsMegaMenu from "@/components/landing-page/IntegrationsMegaMenu";
 import MobileMenu from "@/components/landing-page/MobileMenu";
@@ -24,10 +25,7 @@ export default function LandingNavbar() {
         <div className="hidden items-center gap-6 text-sm md:flex">
           <FeaturesMegaMenu />
           <IntegrationsMegaMenu />
-          <Link
-            href="/landing-page#pricing"
-            className="text-base-content/70 hover:text-base-content transition-colors"
-          >
+          <Link href="/pricing" className="text-base-content/70 hover:text-base-content transition-colors">
             {t("landing.nav.pricing")}
           </Link>
           <Link href="/login?mode=signup" className="text-base-content/70 hover:text-base-content transition-colors">
@@ -37,6 +35,7 @@ export default function LandingNavbar() {
             {t("landing.nav.startTrial")}
           </Link>
           <LanguageSwitcher />
+          <ThemeToggle />
         </div>
         <MobileMenu />
       </div>

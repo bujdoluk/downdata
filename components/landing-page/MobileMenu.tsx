@@ -8,6 +8,7 @@ import { FEATURE_CATALOG } from "@/lib/featureCatalog";
 import { INTEGRATION_CATALOG } from "@/lib/integrationCatalog";
 import { MenuIcon } from "@/components/icons/NavIcons";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
+import ThemeToggle from "@/components/navbar/ThemeToggle";
 import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
 
 export default function MobileMenu() {
@@ -68,7 +69,7 @@ export default function MobileMenu() {
 
         <ul className="list-none">
           <li>
-            <Link href="/landing-page#pricing" onClick={close} className="hover:bg-base-200 block rounded-lg p-2 text-sm font-medium transition-colors">
+            <Link href="/pricing" onClick={close} className="hover:bg-base-200 block rounded-lg p-2 text-sm font-medium transition-colors">
               {t("landing.nav.pricing")}
             </Link>
           </li>
@@ -85,8 +86,9 @@ export default function MobileMenu() {
           {t("landing.nav.startTrial")}
         </Link>
 
-        <div className="mt-3 flex justify-center">
+        <div className="mt-3 flex items-center justify-center gap-2">
           <LanguageSwitcher inline />
+          <ThemeToggle />
         </div>
       </div>
     </details>

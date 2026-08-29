@@ -12,6 +12,9 @@ export default function FaqSection() {
     { question: t("landing.faq.cancelQuestion"), answer: t("landing.faq.cancelAnswer") },
     { question: t("landing.faq.notificationsQuestion"), answer: t("landing.faq.notificationsAnswer") },
     { question: t("landing.faq.monitorCountQuestion"), answer: t("landing.faq.monitorCountAnswer") },
+    { question: t("landing.faq.emailSmsQuestion"), answer: t("landing.faq.emailSmsAnswer") },
+    { question: t("landing.faq.boardsQuestion"), answer: t("landing.faq.boardsAnswer") },
+    { question: t("landing.faq.scopeQuestion"), answer: t("landing.faq.scopeAnswer") },
   ];
 
   return (

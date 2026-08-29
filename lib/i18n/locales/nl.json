@@ -25,6 +25,7 @@
     "integrations": "Integraties",
     "slack": "Slack",
     "email": "E-mail",
+    "sms": "SMS",
     "history": "Geschiedenis",
     "settings": "Instellingen",
     "preferences": "Voorkeuren",
@@ -130,7 +131,9 @@
     "disconnecting": "Verbinding verbreken…",
     "options": "Meer opties",
     "somethingWrong": "Er is iets misgegaan.",
-    "emailPlaceholder": "E-mailadressen, gescheiden door komma's"
+    "emailPlaceholder": "E-mailadressen, gescheiden door komma's",
+    "smsPlaceholder": "Telefoonnummers (bijv. +14155550123), gescheiden door komma's",
+    "save": "Opslaan"
   },
   "history": {
     "title": "Geschiedenis",
@@ -393,6 +396,7 @@
     "integrations": "Koppel Slack en stuur statusupdates rechtstreeks naar een kanaal dat je team al in de gaten houdt — niemand hoeft meer te onthouden een dashboard te checken.",
     "slack": "Stuur nieuwe incidenten en statusupdates rechtstreeks naar een Slack-kanaal dat je team al in de gaten houdt — in een paar klikken gekoppeld, geen bot om in te stellen.",
     "email": "Laat incidenten en statusupdates rechtstreeks in de mailbox bezorgen — voeg één of meerdere adressen toe en iedereen blijft op de hoogte, zonder in te loggen.",
+    "sms": "Ontvang een sms zodra er iets groots of kritieks uitvalt — voeg één of meerdere nummers toe en kies welke ernstniveaus een sms waard zijn, van alleen kritiek tot alles.",
     "history": "Kies een gevolgde dienst en bekijk de incidentgeschiedenis van de afgelopen 12 maanden — handig als iemand ooit vraagt of dit al eerder is gebeurd.",
     "boards": "Groepeer je gevolgde diensten in borden voor verschillende teams, zodat iedereen alleen de diensten ziet die voor hen relevant zijn."
   }

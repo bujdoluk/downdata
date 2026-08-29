@@ -2,6 +2,7 @@ import { getAllIntegrations } from "@/lib/integrations";
 import { getAllServices } from "@/lib/services";
 import { getSupabaseClient } from "@/lib/supabase";
 import { getResendClient } from "@/lib/resend";
+import { sendSms as sendSmsMessage } from "@/lib/twilio";
 import { getStoredIncidentWithUpdates } from "@/lib/getStoredIncident";
 import { runInBatches } from "@/lib/runInBatches";
 import type { IntegrationDefinition } from "@/types/integration";
@@ -81,6 +82,13 @@ function buildEmailContent(serviceSlug: string, resolved: ResolvedEvent): { subj
   };
 }
 
+function buildSmsBody(serviceSlug: string, resolved: ResolvedEvent): string {
+  if (resolved.type === "incident_created") {
+    return `downDATA: New incident — ${resolved.incident.name} (${resolved.incident.impact}) on ${serviceSlug}`;
+  }
+  return `downDATA: Update on ${resolved.incident.name} (${resolved.incident.impact}) — ${resolved.update.status}: ${resolved.update.body}`;
+}
+
 async function sendSlack(integration: Extract<IntegrationDefinition, { slug: "slack" }>, serviceSlug: string, resolved: ResolvedEvent): Promise<boolean> {
   try {
     const res = await fetch(integration.webhookUrl, {
@@ -108,16 +116,29 @@ async function sendEmail(integration: Extract<IntegrationDefinition, { slug: "em
   }
 }
 
-async function sendNotification(
-  integration: IntegrationDefinition,
-  event: IncidentEvent,
-  cache: Map<IncidentEvent["id"], Promise<ResolvedEvent | null>>,
-): Promise<boolean> {
-  const resolved = await resolveEventCached(event, cache);
-  if (!resolved) return false;
+async function sendSms(integration: Extract<IntegrationDefinition, { slug: "sms" }>, serviceSlug: string, resolved: ResolvedEvent): Promise<boolean> {
+  try {
+    return await sendSmsMessage({ to: integration.recipientPhones, body: buildSmsBody(serviceSlug, resolved) });
+  } catch {
+    return false;
+  }
+}
 
-  if (integration.slug === "slack") return sendSlack(integration, event.service_slug, resolved);
-  return sendEmail(integration, event.service_slug, resolved);
+// Per-integration policy filter — kept separate from the sendXxx
+// functions above so their booleans keep meaning exactly one thing (did
+// the send succeed), not "succeeded, or was never applicable." Only sms
+// has a filter today (notifyImpacts), but any future per-integration
+// filter (e.g. a quiet-hours window) would plug in here rather than
+// inside a specific channel's send function.
+function shouldNotify(integration: IntegrationDefinition, resolved: ResolvedEvent): boolean {
+  if (integration.slug !== "sms") return true;
+  return integration.notifyImpacts.includes(resolved.incident.impact);
+}
+
+async function sendNotification(integration: IntegrationDefinition, serviceSlug: string, resolved: ResolvedEvent): Promise<boolean> {
+  if (integration.slug === "slack") return sendSlack(integration, serviceSlug, resolved);
+  if (integration.slug === "email") return sendEmail(integration, serviceSlug, resolved);
+  return sendSms(integration, serviceSlug, resolved);
 }
 
 export async function notifyPendingEvents(): Promise<void> {
@@ -166,9 +187,21 @@ export async function notifyPendingEvents(): Promise<void> {
   const sent: { event_id: string | number; integration_slug: string }[] = [];
   const resolvedCache = new Map<IncidentEvent["id"], Promise<ResolvedEvent | null>>();
   await runInBatches(pairs, SEND_CONCURRENCY, async ({ integration, event }) => {
+    const resolved = await resolveEventCached(event, resolvedCache);
+    if (!resolved) return;
+
+    // Excluded by the integration's own policy filter (sms's
+    // notifyImpacts today) — not a delivery outcome, so it's marked
+    // handled the same as an actual send would be, or it would retry
+    // forever.
+    if (!shouldNotify(integration, resolved)) {
+      sent.push({ event_id: event.id, integration_slug: integration.slug });
+      return;
+    }
+
     // Only recorded as delivered on actual success — a failed send is
     // therefore automatically retried next cycle, for free, with no queue.
-    if (await sendNotification(integration, event, resolvedCache)) {
+    if (await sendNotification(integration, event.service_slug, resolved)) {
       sent.push({ event_id: event.id, integration_slug: integration.slug });
     }
   });

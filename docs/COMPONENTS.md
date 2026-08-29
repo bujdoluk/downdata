@@ -239,6 +239,17 @@ _No props._
 |---|---|---|---|---|
 | className | string \| undefined | No | — |  |
 
+### EmailConnectForm
+
+`components/integrations/EmailConnectForm.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| currentEmails | string[] \| undefined | Yes | — |  |
+| isSubmitting | boolean | Yes | — |  |
+| error | string \| null | Yes | — |  |
+| onSubmit | (recipientEmails: string[]) => void | Yes | — |  |
+
 ### EmailLogo
 
 `components/integrations/EmailLogo.tsx`
@@ -258,7 +269,7 @@ _No props._
 | logo | ReactNode | Yes | — |  |
 | connected | boolean | Yes | — |  |
 | connectHref | string \| undefined | No | — |  |
-| connectForm | { placeholder: string; isSubmitting: boolean; error: string \| null; onSubmit: (value: string) => void; } \| undefined | No | — |  |
+| connectForm | ((close: () => void) => ReactNode) \| undefined | No | — |  |
 | removable | { isRemoving: boolean; onRemove: () => void; } \| undefined | No | — |  |
 
 ### IntegrationsPageContent
@@ -273,6 +284,26 @@ _No props._
 ### SlackLogo
 
 `components/integrations/SlackLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+| className | string \| undefined | No | — |  |
+
+### SmsConnectForm
+
+`components/integrations/SmsConnectForm.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| current | SmsIntegration \| undefined | Yes | — |  |
+| isSubmitting | boolean | Yes | — |  |
+| error | string \| null | Yes | — |  |
+| onSubmit | (recipientPhones: string[], notifyImpacts: string[]) => void | Yes | — |  |
+
+### SmsLogo
+
+`components/integrations/SmsLogo.tsx`
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|

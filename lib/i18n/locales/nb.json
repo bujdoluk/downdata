@@ -25,6 +25,7 @@
     "integrations": "Integrasjoner",
     "slack": "Slack",
     "email": "E-post",
+    "sms": "SMS",
     "history": "Historikk",
     "settings": "Innstillinger",
     "preferences": "Preferanser",
@@ -130,7 +131,9 @@
     "disconnecting": "Kobler fra…",
     "options": "Flere valg",
     "somethingWrong": "Noe gikk galt.",
-    "emailPlaceholder": "E-postadresser, kommaseparert"
+    "emailPlaceholder": "E-postadresser, kommaseparert",
+    "smsPlaceholder": "Telefonnumre (f.eks. +14155550123), kommaseparert",
+    "save": "Lagre"
   },
   "history": {
     "title": "Historikk",
@@ -393,6 +396,7 @@
     "integrations": "Koble til Slack og send statusoppdateringer rett til en kanal teamet ditt allerede følger med på — ingen trenger å huske å sjekke et dashbord.",
     "slack": "Send nye hendelser og statusoppdateringer rett til en Slack-kanal teamet ditt allerede følger med på — koble den til på et par klikk, ingen bot å sette opp.",
     "email": "Få hendelser og statusoppdateringer rett til e-posten — legg til én eller flere adresser, så holder alle seg oppdatert uten å logge inn.",
+    "sms": "Få en SMS i det øyeblikket noe alvorlig eller kritisk går ned — legg til ett eller flere numre og velg hvilke alvorlighetsgrader som er verdt en SMS, fra kun kritisk til alle.",
     "history": "Velg en hvilken som helst tjeneste du følger, og se hendelseshistorikken for de siste 12 månedene — nyttig neste gang noen spør om dette har skjedd før.",
     "boards": "Grupper tjenestene du følger i tavler for ulike team, slik at alle bare ser tjenestene som er relevante for dem."
   }

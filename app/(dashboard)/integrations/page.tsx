@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 const INTEGRATION_CATALOG = [
   { slug: "slack", name: "Slack" },
   { slug: "email", name: "Email" },
+  { slug: "sms", name: "SMS" },
 ];
 
 export default async function IntegrationsPage() {

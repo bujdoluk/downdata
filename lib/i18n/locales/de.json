@@ -25,6 +25,7 @@
     "integrations": "Integrationen",
     "slack": "Slack",
     "email": "E-Mail",
+    "sms": "SMS",
     "history": "Verlauf",
     "settings": "Einstellungen",
     "preferences": "Präferenzen",
@@ -130,7 +131,9 @@
     "disconnecting": "Wird getrennt…",
     "options": "Weitere Optionen",
     "somethingWrong": "Etwas ist schiefgelaufen.",
-    "emailPlaceholder": "E-Mail-Adressen, durch Komma getrennt"
+    "emailPlaceholder": "E-Mail-Adressen, durch Komma getrennt",
+    "smsPlaceholder": "Telefonnummern (z. B. +14155550123), durch Komma getrennt",
+    "save": "Speichern"
   },
   "history": {
     "title": "Verlauf",
@@ -393,6 +396,7 @@
     "integrations": "Verbinde Slack und schicke Statusupdates direkt in einen Kanal, den dein Team ohnehin schon beobachtet — niemand muss mehr daran denken, ein Dashboard zu checken.",
     "slack": "Schicke neue Vorfälle und Statusupdates direkt in einen Slack-Kanal, den dein Team schon beobachtet — in wenigen Klicks verbunden, kein Bot zum Einrichten.",
     "email": "Lass dir Vorfälle und Statusupdates direkt per E-Mail zustellen — füge eine oder mehrere Adressen hinzu, und alle bleiben informiert, ganz ohne Login.",
+    "sms": "Erhalte eine SMS, sobald etwas Schwerwiegendes oder Kritisches ausfällt — füge eine oder mehrere Nummern hinzu und wähle, welche Schweregrade eine SMS wert sind, von nur kritisch bis hin zu allem.",
     "history": "Wähle einen getrackten Dienst und sieh dir seine Incident-Historie der letzten 12 Monate an — praktisch, wenn jemand fragt, ob das schon mal vorgekommen ist.",
     "boards": "Gruppiere deine getrackten Dienste in Boards für verschiedene Teams, damit jeder nur die Dienste sieht, die für ihn wichtig sind."
   }

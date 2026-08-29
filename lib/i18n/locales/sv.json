@@ -25,6 +25,7 @@
     "integrations": "Integrationer",
     "slack": "Slack",
     "email": "E-post",
+    "sms": "SMS",
     "history": "Historik",
     "settings": "Inställningar",
     "preferences": "Inställningsalternativ",
@@ -130,7 +131,9 @@
     "disconnecting": "Kopplar från…",
     "options": "Fler alternativ",
     "somethingWrong": "Något gick fel.",
-    "emailPlaceholder": "E-postadresser, kommaseparerade"
+    "emailPlaceholder": "E-postadresser, kommaseparerade",
+    "smsPlaceholder": "Telefonnummer (t.ex. +14155550123), kommaseparerade",
+    "save": "Spara"
   },
   "history": {
     "title": "Historik",
@@ -393,6 +396,7 @@
     "integrations": "Anslut Slack och skicka statusuppdateringar direkt till en kanal som ditt team redan bevakar — ingen behöver komma ihåg att kolla en instrumentpanel.",
     "slack": "Skicka nya incidenter och statusuppdateringar direkt till en Slack-kanal som ditt team redan bevakar — anslut den på ett par klick, ingen bot att konfigurera.",
     "email": "Få incidenter och statusuppdateringar levererade direkt till e-posten — lägg till en eller flera adresser så håller sig alla uppdaterade, utan inloggning.",
+    "sms": "Få ett sms i samma stund som något allvarligt eller kritiskt går ner — lägg till ett eller flera nummer och välj vilka allvarlighetsgrader som är värda ett sms, från enbart kritiska till alla.",
     "history": "Välj vilken bevakad tjänst som helst och se dess incidenthistorik för de senaste 12 månaderna — praktiskt nästa gång någon undrar om det här har hänt förut.",
     "boards": "Gruppera dina bevakade tjänster i tavlor för olika team, så att alla bara ser de tjänster som är relevanta för dem."
   }

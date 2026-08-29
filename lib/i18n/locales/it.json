@@ -25,6 +25,7 @@
     "integrations": "Integrazioni",
     "slack": "Slack",
     "email": "Email",
+    "sms": "SMS",
     "history": "Cronologia",
     "settings": "Impostazioni",
     "preferences": "Preferenze",
@@ -130,7 +131,9 @@
     "disconnecting": "Disconnessione…",
     "options": "Altre opzioni",
     "somethingWrong": "Qualcosa è andato storto.",
-    "emailPlaceholder": "Indirizzi email separati da virgola"
+    "emailPlaceholder": "Indirizzi email separati da virgola",
+    "smsPlaceholder": "Numeri di telefono (es. +14155550123) separati da virgola",
+    "save": "Salva"
   },
   "history": {
     "title": "Cronologia",
@@ -393,6 +396,7 @@
     "integrations": "Collega Slack e invia gli aggiornamenti di stato direttamente in un canale che il tuo team già segue — nessuno deve ricordarsi di controllare una dashboard.",
     "slack": "Invia nuovi incidenti e aggiornamenti di stato direttamente in un canale Slack che il tuo team già segue — collegalo in un paio di clic, nessun bot da configurare.",
     "email": "Ricevi incidenti e aggiornamenti di stato direttamente via email — aggiungi uno o più indirizzi e tutti restano aggiornati, senza bisogno di accedere.",
+    "sms": "Ricevi un SMS nel momento in cui si verifica un guasto grave o critico — aggiungi uno o più numeri e scegli quali livelli di gravità meritano un SMS, dal solo critico a tutti.",
     "history": "Scegli un servizio monitorato qualsiasi e guarda la sua cronologia degli incidenti degli ultimi 12 mesi — utile la prossima volta che qualcuno chiede se è già successo prima.",
     "boards": "Raggruppa i tuoi servizi monitorati in bacheche per team diversi, così ognuno vede solo i servizi che gli interessano."
   }

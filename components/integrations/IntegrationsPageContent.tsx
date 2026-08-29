@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -9,24 +10,22 @@ import type { Integration, IntegrationDefinition } from "@/types/integration";
 import IntegrationCard from "@/components/integrations/IntegrationCard";
 import SlackLogo from "@/components/integrations/SlackLogo";
 import EmailLogo from "@/components/integrations/EmailLogo";
+import SmsLogo from "@/components/integrations/SmsLogo";
+import EmailConnectForm from "@/components/integrations/EmailConnectForm";
+import SmsConnectForm from "@/components/integrations/SmsConnectForm";
 
 const INTEGRATION_LOGOS: Record<string, React.ComponentType<{ size?: number }>> = {
   slack: SlackLogo,
   email: EmailLogo,
+  sms: SmsLogo,
 };
 
-// Slug -> its OAuth-style connect entry point. Only Slack works this way
-// today; a catalog entry with no href here instead gets an inline
-// connectForm (see CONNECT_FORM_PLACEHOLDER_KEYS below).
+// Each catalog entry owns its own OAuth-style connect route today (only
+// Slack exists); this maps slug -> that entry point. A slug with no entry
+// here instead gets an inline connectForm popover (see below) — email and
+// sms, neither of which has an OAuth flow to redirect through.
 const CONNECT_HREFS: Record<string, string> = {
   slack: "/api/integrations/slack/start",
-};
-
-// Slug -> its inline connectForm's input placeholder i18n key. Only email
-// works this way today — an integration with no OAuth flow, connected by
-// submitting a value (recipient addresses) directly to its own POST route.
-const CONNECT_FORM_PLACEHOLDER_KEYS: Record<string, string> = {
-  email: "integrations.emailPlaceholder",
 };
 
 export default function IntegrationsPageContent({
@@ -74,13 +73,50 @@ export default function IntegrationsPageContent({
     onSuccess: () => router.refresh(),
   });
 
-  function handleConnectEmail(value: string) {
-    const recipientEmails = value
-      .split(",")
-      .map((email) => email.trim())
-      .filter((email) => email.length > 0);
-    connectEmailMutation.mutate(recipientEmails);
-  }
+  const connectSmsMutation = useMutation({
+    mutationFn: async ({ recipientPhones, notifyImpacts }: { recipientPhones: string[]; notifyImpacts: string[] }) => {
+      const res = await fetch("/api/integrations/sms", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ recipientPhones, notifyImpacts }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(typeof data.error === "string" ? data.error : t("integrations.somethingWrong"));
+      }
+    },
+    onSuccess: () => router.refresh(),
+  });
+
+  // Slug -> its inline popover content. IntegrationCard owns the popover
+  // shell (open state, positioning) and hands back `close`; each form
+  // here owns its own fields, mutation, and error state, and calls
+  // `close` on success so editing an already-connected integration
+  // dismisses the popover the same way a fresh connect does.
+  const connectForms: Record<string, (close: () => void) => ReactNode> = {
+    email: (close) => {
+      const current = integrations.find((i): i is Extract<IntegrationDefinition, { slug: "email" }> => i.slug === "email");
+      return (
+        <EmailConnectForm
+          currentEmails={current?.recipientEmails}
+          isSubmitting={connectEmailMutation.isPending}
+          error={connectEmailMutation.error?.message ?? null}
+          onSubmit={(recipientEmails) => connectEmailMutation.mutate(recipientEmails, { onSuccess: close })}
+        />
+      );
+    },
+    sms: (close) => {
+      const current = integrations.find((i): i is Extract<IntegrationDefinition, { slug: "sms" }> => i.slug === "sms");
+      return (
+        <SmsConnectForm
+          current={current}
+          isSubmitting={connectSmsMutation.isPending}
+          error={connectSmsMutation.error?.message ?? null}
+          onSubmit={(recipientPhones, notifyImpacts) => connectSmsMutation.mutate({ recipientPhones, notifyImpacts }, { onSuccess: close })}
+        />
+      );
+    },
+  };
 
   return (
     <div className="w-full max-w-6xl self-start">
@@ -95,7 +131,6 @@ export default function IntegrationsPageContent({
         {catalog.map((entry) => {
           const integration = integrations.find((i) => i.slug === entry.slug);
           const Logo = INTEGRATION_LOGOS[entry.slug];
-          const formPlaceholderKey = CONNECT_FORM_PLACEHOLDER_KEYS[entry.slug];
           return (
             <IntegrationCard
               key={entry.slug}
@@ -103,16 +138,7 @@ export default function IntegrationsPageContent({
               logo={Logo ? <Logo size={28} /> : null}
               connected={!!integration}
               connectHref={CONNECT_HREFS[entry.slug]}
-              connectForm={
-                formPlaceholderKey
-                  ? {
-                      placeholder: t(formPlaceholderKey),
-                      isSubmitting: connectEmailMutation.isPending,
-                      error: connectEmailMutation.error?.message ?? null,
-                      onSubmit: handleConnectEmail,
-                    }
-                  : undefined
-              }
+              connectForm={connectForms[entry.slug]}
               removable={integration ? { isRemoving: removingSlug === entry.slug, onRemove: () => handleDisconnect(entry) } : undefined}
             />
           );

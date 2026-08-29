@@ -25,6 +25,7 @@
     "integrations": "Integrations",
     "slack": "Slack",
     "email": "Email",
+    "sms": "SMS",
     "history": "History",
     "settings": "Settings",
     "preferences": "Preferences",
@@ -130,7 +131,9 @@
     "disconnecting": "Disconnecting…",
     "options": "More options",
     "somethingWrong": "Something went wrong.",
-    "emailPlaceholder": "Email addresses, comma separated"
+    "emailPlaceholder": "Email addresses, comma separated",
+    "smsPlaceholder": "Phone numbers (e.g. +14155550123), comma separated",
+    "save": "Save"
   },
   "history": {
     "title": "History",
@@ -393,6 +396,7 @@
     "integrations": "Connect Slack and send status updates straight to a channel your team already watches — no one has to remember to check a dashboard.",
     "slack": "Post new incidents and status updates straight to a Slack channel your team already watches — connect it in a couple of clicks, no bot to configure.",
     "email": "Get incident and status updates delivered straight to an email distribution list — connect one or more addresses and everyone stays in the loop, no login required.",
+    "sms": "Get a text the moment something major or critical breaks — add one or more numbers and choose which severities are worth a text, from critical-only up to everything.",
     "history": "Pick any tracked service and see its incident history over the last 12 months — useful the next time someone asks whether this has happened before.",
     "boards": "Group your tracked services into boards for different teams, so everyone sees only the services that matter to them."
   }

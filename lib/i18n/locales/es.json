@@ -25,6 +25,7 @@
     "integrations": "Integraciones",
     "slack": "Slack",
     "email": "Correo electrónico",
+    "sms": "SMS",
     "history": "Historial",
     "settings": "Ajustes",
     "preferences": "Preferencias",
@@ -130,7 +131,9 @@
     "disconnecting": "Desconectando…",
     "options": "Más opciones",
     "somethingWrong": "Algo salió mal.",
-    "emailPlaceholder": "Direcciones de correo separadas por comas"
+    "emailPlaceholder": "Direcciones de correo separadas por comas",
+    "smsPlaceholder": "Números de teléfono (p. ej. +14155550123) separados por comas",
+    "save": "Guardar"
   },
   "history": {
     "title": "Historial",
@@ -393,6 +396,7 @@
     "integrations": "Conecta Slack y envía actualizaciones de estado directamente a un canal que tu equipo ya vigila — nadie tiene que acordarse de revisar un panel.",
     "slack": "Envía nuevos incidentes y actualizaciones de estado directamente a un canal de Slack que tu equipo ya vigila — conéctalo en un par de clics, sin bots que configurar.",
     "email": "Recibe incidentes y actualizaciones de estado directamente en el correo — añade una o varias direcciones y todo el mundo se mantiene al día, sin necesidad de iniciar sesión.",
+    "sms": "Recibe un SMS en el momento en que algo falle de forma grave o crítica — añade uno o varios números y elige qué niveles de gravedad merecen un SMS, desde solo crítico hasta todos.",
     "history": "Elige cualquier servicio monitorizado y consulta su historial de incidentes de los últimos 12 meses — útil la próxima vez que alguien pregunte si esto ya había pasado antes.",
     "boards": "Agrupa tus servicios monitorizados en tableros para distintos equipos, para que cada uno vea solo los servicios que le importan."
   }

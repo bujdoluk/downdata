@@ -25,6 +25,7 @@
     "integrations": "Intégrations",
     "slack": "Slack",
     "email": "E-mail",
+    "sms": "SMS",
     "history": "Historique",
     "settings": "Paramètres",
     "preferences": "Préférences",
@@ -130,7 +131,9 @@
     "disconnecting": "Déconnexion…",
     "options": "Plus d'options",
     "somethingWrong": "Une erreur s'est produite.",
-    "emailPlaceholder": "Adresses e-mail séparées par des virgules"
+    "emailPlaceholder": "Adresses e-mail séparées par des virgules",
+    "smsPlaceholder": "Numéros de téléphone (ex. +14155550123) séparés par des virgules",
+    "save": "Enregistrer"
   },
   "history": {
     "title": "Historique",
@@ -393,6 +396,7 @@
     "integrations": "Connectez Slack et envoyez les mises à jour de statut directement dans un canal que votre équipe surveille déjà — personne n'a besoin de penser à consulter un tableau de bord.",
     "slack": "Envoyez les nouveaux incidents et les mises à jour de statut directement dans un canal Slack que votre équipe surveille déjà — connectez-le en quelques clics, aucun bot à configurer.",
     "email": "Recevez les incidents et les mises à jour de statut directement par e-mail — ajoutez une ou plusieurs adresses et toute l'équipe reste informée, sans avoir à se connecter.",
+    "sms": "Recevez un SMS dès qu'un incident majeur ou critique survient — ajoutez un ou plusieurs numéros et choisissez les niveaux de gravité qui méritent un SMS, du critique uniquement à tous les niveaux.",
     "history": "Choisissez un service suivi et consultez son historique d'incidents des 12 derniers mois — utile la prochaine fois que quelqu'un demande si c'est déjà arrivé.",
     "boards": "Regroupez vos services suivis dans des tableaux pour différentes équipes, afin que chacun ne voie que les services qui le concernent."
   }

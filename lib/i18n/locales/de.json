@@ -127,7 +127,8 @@
     "disconnect": "Trennen",
     "disconnecting": "Wird getrennt…",
     "options": "Weitere Optionen",
-    "somethingWrong": "Etwas ist schiefgelaufen."
+    "somethingWrong": "Etwas ist schiefgelaufen.",
+    "emailPlaceholder": "E-Mail-Adressen, durch Komma getrennt"
   },
   "history": {
     "title": "Verlauf",

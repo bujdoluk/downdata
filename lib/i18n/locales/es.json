@@ -127,7 +127,8 @@
     "disconnect": "Desconectar",
     "disconnecting": "Desconectando…",
     "options": "Más opciones",
-    "somethingWrong": "Algo salió mal."
+    "somethingWrong": "Algo salió mal.",
+    "emailPlaceholder": "Direcciones de correo separadas por comas"
   },
   "history": {
     "title": "Historial",

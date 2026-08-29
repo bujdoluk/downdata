@@ -128,7 +128,8 @@
     "disconnect": "Odpojiť",
     "disconnecting": "Odpája sa…",
     "options": "Ďalšie možnosti",
-    "somethingWrong": "Niečo sa pokazilo."
+    "somethingWrong": "Niečo sa pokazilo.",
+    "emailPlaceholder": "E-mailové adresy oddelené čiarkou"
   },
   "history": {
     "title": "História",

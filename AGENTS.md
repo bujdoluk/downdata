@@ -31,7 +31,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - **Data layer**: Supabase (Postgres). Tracked services/boards/integrations live in `services`/`boards`/`integrations` tables, read/written via `lib/services.ts`/`lib/boards.ts`/`lib/integrations.ts`; the fixed catalog of known services (previously an in-code `SERVICE_CATALOG` constant) is now itself a `catalog` table, read via `lib/catalog.ts`'s `getCatalog()` and reseeded with `npm run import:catalog` (`scripts/import-catalog.mjs`) — all async now (they used to be synchronous `fs` reads/writes against `data/*.json`, which broke entirely on Vercel's read-only deployed filesystem; see the Failure log). Incident history for the 1-minute poller lives in `incidents`/`incident_updates`/`incident_events`/`incident_event_deliveries` (see `supabase/migrations/`); maintenance history follows the same shape via `lib/getStoredMaintenance.ts`. Live status itself is still never stored server-side beyond that — it's fetched from each tracked host's public Atlassian Statuspage JSON endpoints on every request/poll (`revalidate: 60`)
   - Two different Supabase clients exist and picking the wrong one is a real trap: `lib/supabase.ts`'s `getSupabaseClient()` (service-role key, bypasses RLS) is what every table without row-level ownership uses — `services`, `catalog`, `integrations`, `incidents`/`maintenances`. `lib/supabase/server.ts`'s `createClient()` (publishable key, the caller's own session/cookies, respects RLS) is what `lib/boards.ts` alone uses, because `boards` has real per-user RLS policies keyed to `auth.uid()` (`supabase/migrations/0013_board_ownership.sql`) — a service-role client there would silently read/write every user's boards, not just the caller's. When adding a new `lib/*.ts` CRUD file, the choice depends on whether the table has RLS: if yes, use the session-scoped client like `boards.ts`; if the table has no ownership column yet (still the default across this app — see the RBAC note below), use the service-role client like everything else
 - **Auth**: Supabase Auth via `@supabase/ssr` — email/password + Google OAuth, `/login` page (`components/auth/LoginForm.tsx`, server actions in `lib/supabase/auth.ts`). `proxy.ts` (not `middleware.ts` — see the note at the top of this file) refreshes the session cookie on every request and gates everything else behind login via an allowlist (`PUBLIC_EXACT`/`PUBLIC_PREFIXES`) — a page not on that list 404s into a `/login` redirect (an API route gets a 401) even though it's a public marketing/legal page, not because it needs a session. Add every new public route (e.g. `/privacy`, `/terms`) to that allowlist — see the Failure log. Still no RBAC, no per-role UI beyond that — that's a later phase; `boards` is the one table with any row ownership at all so far (see above), everything else is still one shared workspace across every logged-in user
-- **External services**: Supabase (`NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, browser-safe, used by both Supabase Auth and `lib/supabase.ts`'s service-role client; `SUPABASE_SERVICE_ROLE_KEY` stays server-only, never exposed to the client), Slack (OAuth "Add to Slack", `SLACK_CLIENT_ID`/`SLACK_CLIENT_SECRET`), and Tawk.to (`NEXT_PUBLIC_TAWKTO_PROPERTY_ID`/`NEXT_PUBLIC_TAWKTO_WIDGET_ID` — both browser-safe by design, the embed script is public). A real `.env` now exists (gitignored; see `.env.example`) — this is no longer a zero-secrets app. Outbound calls: the public, unauthenticated Statuspage API (`/api/v2/status.json`, `/api/v2/summary.json`, `/api/v2/incidents.json`) of whatever host a service tracks, plus Supabase, Slack, and (opt-in only, see `components/cookies/`) Tawk.to's own APIs
+- **External services**: Supabase (`NEXT_PUBLIC_SUPABASE_URL`/`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, browser-safe, used by both Supabase Auth and `lib/supabase.ts`'s service-role client; `SUPABASE_SERVICE_ROLE_KEY` stays server-only, never exposed to the client), Slack (OAuth "Add to Slack", `SLACK_CLIENT_ID`/`SLACK_CLIENT_SECRET`), Resend (`RESEND_API_KEY`/`RESEND_FROM_EMAIL`, server-only — `lib/resend.ts`, the email leg of `lib/notifyIncidentEvents.ts`'s notification fan-out), and Tawk.to (`NEXT_PUBLIC_TAWKTO_PROPERTY_ID`/`NEXT_PUBLIC_TAWKTO_WIDGET_ID` — both browser-safe by design, the embed script is public). A real `.env` now exists (gitignored; see `.env.example`) — this is no longer a zero-secrets app. Outbound calls: the public, unauthenticated Statuspage API (`/api/v2/status.json`, `/api/v2/summary.json`, `/api/v2/incidents.json`) of whatever host a service tracks, plus Supabase, Slack, Resend, and (opt-in only, see `components/cookies/`) Tawk.to's own APIs
 - **i18n**: `i18next` + `react-i18next`, 13 locales
 - **Testing**: none configured — no test runner, no `__tests__`/`e2e` folder, no test script in `package.json`. Verify changes with `npm run type-check` and `npm run lint`, plus the `run` skill (or a manual check) — don't assume a test suite exists
 - **Linting**: ESLint 9 flat config (`eslint-config-next` core-web-vitals + typescript rules)
@@ -53,7 +53,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   │   ├── history/page.tsx          # /history — incident calendar + counts, filterable by board
 │   │   ├── incidents/page.tsx        # /incidents — live incident list across tracked services, filterable by board
 │   │   ├── maintenance/page.tsx      # /maintenance — scheduled/in-progress maintenance list, filterable by board
-│   │   ├── integrations/page.tsx     # /integrations — connect/manage integrations (Slack today)
+│   │   ├── integrations/page.tsx     # /integrations — connect/manage integrations (Slack, Email)
 │   │   └── service/[slug]/page.tsx   # /service/:slug — one service's status + components + incidents
 │   ├── api/
 │   │   ├── services/route.ts             # GET list / POST add (validates the host is a real Statuspage first)
@@ -66,6 +66,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   │   ├── maintenance/route.ts, maintenance/[slug]/[id]/route.ts, maintenance/count/route.ts  # same shape, for maintenances
 │   │   ├── integrations/route.ts, integrations/[slug]/route.ts  # connect/list/remove
 │   │   ├── integrations/slack/start/route.ts, integrations/slack/callback/route.ts  # Slack "Add to Slack" OAuth
+│   │   ├── integrations/email/route.ts  # POST — connect the email integration (no OAuth, just recipient addresses)
 │   │   └── cron/poll-incidents/route.ts, cron/health/route.ts   # CRON_SECRET-gated, see Data Flow + Security
 │   ├── landing-page/page.tsx, about/page.tsx, faq/page.tsx, privacy/page.tsx, terms/page.tsx  # public marketing/legal, outside the dashboard shell — each must be in proxy.ts's PUBLIC_EXACT, see Failure log
 │   ├── login/page.tsx, reset-password/page.tsx, auth/callback/route.ts, auth/confirm/route.ts  # Supabase Auth entry points
@@ -79,7 +80,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   │   └── *.tsx                      # cards/grids/detail/search/status-summary/incidents/maintenance; statusStyles.ts (indicator → color/label)
 │   ├── boards/                       # BoardsPageContent, BoardDetailContent, BoardCard, BoardActivityPanel, BoardLastIncidentTable, CreateBoardForm
 │   ├── history/                      # HistoryPageContent, IncidentCalendar, IncidentCountsChart
-│   ├── integrations/                 # IntegrationsPageContent, IntegrationCard, SlackLogo
+│   ├── integrations/                 # IntegrationsPageContent, IntegrationCard, SlackLogo, EmailLogo
 │   ├── landing-page/                 # LandingPage.tsx, PricingSection.tsx, AboutContent/FaqContent/PrivacyContent/TermsContent, FeaturesMegaMenu, Footer
 │   ├── navbar/                       # NavbarClient.tsx, LanguageSwitcher.tsx, ThemeToggle.tsx, Logo.tsx
 │   ├── sidebar/                      # Sidebar.tsx (desktop nav), SidebarNavLink.tsx (shared with navbar's mobile menu)
@@ -96,8 +97,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   ├── supabase.ts                   # getSupabaseClient() — lazy, server-only, service-role key
 │   ├── supabase/server.ts            # createClient() — session-scoped (RLS-respecting) client; used where a table has row-level ownership, currently only `boards`
 │   ├── supabase/auth.ts              # sign-in/sign-up/OAuth server actions backing LoginForm/ResetPasswordForm
+│   ├── resend.ts                     # getResendClient() — lazy, server-only, Resend API key
 │   ├── pollIncidents.ts              # pollAllIncidents() — the 1-minute incident/maintenance poller, diff-only writes (see supabase/migrations/)
-│   ├── notifyIncidentEvents.ts       # notifyPendingEvents() — Slack notification fan-out over incident_events
+│   ├── notifyIncidentEvents.ts       # notifyPendingEvents() — Slack + email notification fan-out over incident_events
 │   ├── getStoredIncident.ts, getStoredMaintenance.ts  # read incidents/maintenances back out of the poller's tables, for the /incidents, /maintenance, /history routes
 │   ├── buildIncidentCalendar.ts      # shapes stored incidents into the /history calendar's data
 │   ├── statusBatch.ts                # fetchStatusBatch() — parallel-fetches status+incidents for a set of services
@@ -204,7 +206,7 @@ One word per concept — reuse the existing one, don't coin a new one.
 
 - `POST /api/services` fetches whatever hostname the client submits (`https://${host}/api/v2/status.json`) to confirm it's a real Statuspage before tracking it — that's a user-controlled server-side fetch (SSRF-shaped surface, though scoped to HTTPS and an expected JSON shape). Apply the same host-validation pattern to any new feature that accepts a user-supplied URL/hostname
 - `next.config.ts` sets no CSP or security headers currently — don't assume any are in place
-- Real secrets now exist in a gitignored `.env` (`SUPABASE_SERVICE_ROLE_KEY`, `SLACK_CLIENT_SECRET`, `CRON_SECRET`) — see `.env.example` for the full list. `SUPABASE_SERVICE_ROLE_KEY` bypasses Row Level Security entirely; it must only ever be read server-side (`lib/supabase.ts`) and never prefixed `NEXT_PUBLIC_` or otherwise exposed to the client
+- Real secrets now exist in a gitignored `.env` (`SUPABASE_SERVICE_ROLE_KEY`, `SLACK_CLIENT_SECRET`, `RESEND_API_KEY`, `CRON_SECRET`) — see `.env.example` for the full list. `SUPABASE_SERVICE_ROLE_KEY` bypasses Row Level Security entirely; it must only ever be read server-side (`lib/supabase.ts`) and never prefixed `NEXT_PUBLIC_` or otherwise exposed to the client
 - `/api/cron/poll-incidents` is guarded by a constant-time comparison against `CRON_SECRET`, not a plain `!==` — apply the same care to any other endpoint that should only be triggered by a trusted caller, not a logged-in user (this app still has no auth/accounts)
 
 ## Keeping this file current

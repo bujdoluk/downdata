@@ -127,7 +127,8 @@
     "disconnect": "Disconnect",
     "disconnecting": "Disconnecting…",
     "options": "More options",
-    "somethingWrong": "Something went wrong."
+    "somethingWrong": "Something went wrong.",
+    "emailPlaceholder": "Email addresses, comma separated"
   },
   "history": {
     "title": "History",

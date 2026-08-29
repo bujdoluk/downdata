@@ -127,7 +127,8 @@
     "disconnect": "Verbinding verbreken",
     "disconnecting": "Verbinding verbreken…",
     "options": "Meer opties",
-    "somethingWrong": "Er is iets misgegaan."
+    "somethingWrong": "Er is iets misgegaan.",
+    "emailPlaceholder": "E-mailadressen, gescheiden door komma's"
   },
   "history": {
     "title": "Geschiedenis",

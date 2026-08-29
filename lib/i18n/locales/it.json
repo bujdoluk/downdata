@@ -127,7 +127,8 @@
     "disconnect": "Disconnetti",
     "disconnecting": "Disconnessione…",
     "options": "Altre opzioni",
-    "somethingWrong": "Qualcosa è andato storto."
+    "somethingWrong": "Qualcosa è andato storto.",
+    "emailPlaceholder": "Indirizzi email separati da virgola"
   },
   "history": {
     "title": "Cronologia",

@@ -47,6 +47,12 @@ export async function proxy(request: NextRequest) {
     if (pathname.startsWith("/api/")) {
       return NextResponse.json({ error: "Authentication required." }, { status: 401 });
     }
+    // "/" itself redirects an authenticated visitor straight to /boards
+    // (app/(dashboard)/page.tsx) — for a logged-out visitor that same root
+    // should read as the marketing entry point, not bounce through /login.
+    if (pathname === "/") {
+      return NextResponse.redirect(new URL("/landing-page", request.url));
+    }
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("next", pathname);
     return NextResponse.redirect(loginUrl);

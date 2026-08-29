@@ -127,7 +127,8 @@
     "disconnect": "Koppla från",
     "disconnecting": "Kopplar från…",
     "options": "Fler alternativ",
-    "somethingWrong": "Något gick fel."
+    "somethingWrong": "Något gick fel.",
+    "emailPlaceholder": "E-postadresser, kommaseparerade"
   },
   "history": {
     "title": "Historik",

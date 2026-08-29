@@ -127,7 +127,8 @@
     "disconnect": "Déconnecter",
     "disconnecting": "Déconnexion…",
     "options": "Plus d'options",
-    "somethingWrong": "Une erreur s'est produite."
+    "somethingWrong": "Une erreur s'est produite.",
+    "emailPlaceholder": "Adresses e-mail séparées par des virgules"
   },
   "history": {
     "title": "Historique",

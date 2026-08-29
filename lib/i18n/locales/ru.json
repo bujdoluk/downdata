@@ -129,7 +129,8 @@
     "disconnect": "Отключить",
     "disconnecting": "Отключение…",
     "options": "Дополнительные параметры",
-    "somethingWrong": "Что-то пошло не так."
+    "somethingWrong": "Что-то пошло не так.",
+    "emailPlaceholder": "Адреса эл. почты через запятую"
   },
   "history": {
     "title": "История",

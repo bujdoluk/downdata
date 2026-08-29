@@ -127,7 +127,8 @@
     "disconnect": "Desligar",
     "disconnecting": "A desligar…",
     "options": "Mais opções",
-    "somethingWrong": "Algo correu mal."
+    "somethingWrong": "Algo correu mal.",
+    "emailPlaceholder": "Endereços de e-mail separados por vírgulas"
   },
   "history": {
     "title": "Histórico",

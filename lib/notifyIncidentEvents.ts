@@ -1,9 +1,11 @@
 import { getAllIntegrations } from "@/lib/integrations";
 import { getAllServices } from "@/lib/services";
 import { getSupabaseClient } from "@/lib/supabase";
+import { getResendClient } from "@/lib/resend";
 import { getStoredIncidentWithUpdates } from "@/lib/getStoredIncident";
 import { runInBatches } from "@/lib/runInBatches";
 import type { IntegrationDefinition } from "@/types/integration";
+import type { StoredIncident, StoredIncidentUpdate } from "@/lib/getStoredIncident";
 
 type IncidentEvent = {
   // bigint columns can come back from PostgREST as strings rather than
@@ -19,39 +21,103 @@ type IncidentEvent = {
 const SEND_CONCURRENCY = 200;
 const BODY_PREVIEW_LENGTH = 300;
 
-async function buildMessage(event: IncidentEvent): Promise<string | null> {
+// Discriminated on event type (not a bare `update: StoredIncidentUpdate |
+// null`) so the formatters below can read `resolved.update` in the
+// "update_added" branch without a non-null assertion — resolveEvent
+// itself is the one place that guarantees the update actually exists.
+type ResolvedEvent =
+  | { type: "incident_created"; incident: StoredIncident }
+  | { type: "update_added"; incident: StoredIncident; update: StoredIncidentUpdate };
+
+async function resolveEvent(event: IncidentEvent): Promise<ResolvedEvent | null> {
   const incident = await getStoredIncidentWithUpdates(event.service_slug, event.incident_id);
   if (!incident) return null;
 
   if (event.event_type === "incident_created") {
-    return `🆕 New incident on ${event.service_slug}: *${incident.name}* (${incident.impact})`;
+    return { type: "incident_created", incident };
   }
 
   const update = incident.incident_updates.find((u) => u.id === event.update_id);
   if (!update) return null;
-  const preview = update.body.length > BODY_PREVIEW_LENGTH ? `${update.body.slice(0, BODY_PREVIEW_LENGTH)}…` : update.body;
-  return `${event.service_slug} — *${incident.name}* (${update.status}): ${preview}`;
+  return { type: "update_added", incident, update };
 }
 
-// Only Slack exists today — this is the one place a second channel
-// (PagerDuty/Datadog/email/...) would get its own branch later.
-async function sendNotification(integration: IntegrationDefinition, event: IncidentEvent): Promise<boolean> {
-  if (integration.slug !== "slack") return false;
+// Now that an event can be pending for more than one integration (Slack
+// and email both connected), the same event shows up in `pairs` once per
+// integration — cache by event id so its incident/updates only get
+// fetched once per cycle, not once per (event, integration) pair. Storing
+// the in-flight promise (not just the resolved value) is what makes this
+// race-free across concurrent pairs for the same event: resolveEventCached
+// runs synchronously up to its first await, so a second pair for the same
+// event always finds the first pair's promise already cached, never
+// starts a duplicate fetch.
+function resolveEventCached(event: IncidentEvent, cache: Map<IncidentEvent["id"], Promise<ResolvedEvent | null>>): Promise<ResolvedEvent | null> {
+  const cached = cache.get(event.id);
+  if (cached) return cached;
+  const promise = resolveEvent(event);
+  cache.set(event.id, promise);
+  return promise;
+}
 
-  const text = await buildMessage(event);
-  if (!text) return false;
+function buildSlackText(serviceSlug: string, resolved: ResolvedEvent): string {
+  if (resolved.type === "incident_created") {
+    return `🆕 New incident on ${serviceSlug}: *${resolved.incident.name}* (${resolved.incident.impact})`;
+  }
+  const { body, status } = resolved.update;
+  const preview = body.length > BODY_PREVIEW_LENGTH ? `${body.slice(0, BODY_PREVIEW_LENGTH)}…` : body;
+  return `${serviceSlug} — *${resolved.incident.name}* (${status}): ${preview}`;
+}
 
+function buildEmailContent(serviceSlug: string, resolved: ResolvedEvent): { subject: string; text: string } {
+  if (resolved.type === "incident_created") {
+    return {
+      subject: `New incident: ${resolved.incident.name}`,
+      text: `${serviceSlug} — ${resolved.incident.name} (${resolved.incident.impact})`,
+    };
+  }
+  return {
+    subject: `Update on ${resolved.incident.name}`,
+    text: `${serviceSlug} — ${resolved.incident.name} (${resolved.update.status}): ${resolved.update.body}`,
+  };
+}
+
+async function sendSlack(integration: Extract<IntegrationDefinition, { slug: "slack" }>, serviceSlug: string, resolved: ResolvedEvent): Promise<boolean> {
   try {
     const res = await fetch(integration.webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ text: buildSlackText(serviceSlug, resolved) }),
       signal: AbortSignal.timeout(8_000),
     });
     return res.ok;
   } catch {
     return false;
   }
+}
+
+async function sendEmail(integration: Extract<IntegrationDefinition, { slug: "email" }>, serviceSlug: string, resolved: ResolvedEvent): Promise<boolean> {
+  const from = process.env.RESEND_FROM_EMAIL;
+  if (!from) return false;
+
+  const { subject, text } = buildEmailContent(serviceSlug, resolved);
+  try {
+    const { error } = await getResendClient().emails.send({ from, to: integration.recipientEmails, subject, text });
+    return !error;
+  } catch {
+    return false;
+  }
+}
+
+async function sendNotification(
+  integration: IntegrationDefinition,
+  event: IncidentEvent,
+  cache: Map<IncidentEvent["id"], Promise<ResolvedEvent | null>>,
+): Promise<boolean> {
+  const resolved = await resolveEventCached(event, cache);
+  if (!resolved) return false;
+
+  if (integration.slug === "slack") return sendSlack(integration, event.service_slug, resolved);
+  return sendEmail(integration, event.service_slug, resolved);
 }
 
 export async function notifyPendingEvents(): Promise<void> {
@@ -98,10 +164,11 @@ export async function notifyPendingEvents(): Promise<void> {
   if (pairs.length === 0) return;
 
   const sent: { event_id: string | number; integration_slug: string }[] = [];
+  const resolvedCache = new Map<IncidentEvent["id"], Promise<ResolvedEvent | null>>();
   await runInBatches(pairs, SEND_CONCURRENCY, async ({ integration, event }) => {
     // Only recorded as delivered on actual success — a failed send is
     // therefore automatically retried next cycle, for free, with no queue.
-    if (await sendNotification(integration, event)) {
+    if (await sendNotification(integration, event, resolvedCache)) {
       sent.push({ event_id: event.id, integration_slug: integration.slug });
     }
   });

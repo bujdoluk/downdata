@@ -3,6 +3,7 @@ export type Integration = {
   name: string;
 };
 
-export type IntegrationDefinition = Integration & {
-  webhookUrl: string;
-};
+export type SlackIntegration = Integration & { slug: "slack"; webhookUrl: string };
+export type EmailIntegration = Integration & { slug: "email"; recipientEmails: string[] };
+
+export type IntegrationDefinition = SlackIntegration | EmailIntegration;

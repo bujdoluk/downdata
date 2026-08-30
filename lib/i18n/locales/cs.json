@@ -168,7 +168,7 @@
     "keywordPlaceholder": "Přidat klíčové slovo ke sledování",
     "addKeyword": "Přidat",
     "removeKeyword": "Odebrat",
-    "empty": "Zatím žádné shody — přidejte klíčové slovo a zapněte zdroj výše.",
+    "empty": "Zatím žádné shody. Přidejte klíčové slovo a zapněte zdroj výše.",
     "new": "Nové",
     "openLink": "Otevřít na Redditu",
     "selectPrompt": "Vyberte shodu vlevo a zobrazí se její podrobnosti.",
@@ -241,7 +241,7 @@
       "viewAll": "Zobrazit vše",
       "noIncidents": "Žádné aktivní incidenty",
       "noMaintenance": "Žádná aktivní údržba",
-      "allClear": "Vše v pořádku — žádné aktivní incidenty ani údržba"
+      "allClear": "Vše v pořádku. Žádné aktivní incidenty ani údržba"
     },
     "viewHistory": "Zobrazit historii této nástěnky",
     "lastIncident": {
@@ -287,7 +287,7 @@
       "titlePrefix": "Když něco",
       "titleDown": "vypadne",
       "titleSuffix": ", dozvíte se to jako první.",
-      "body": "downDATA sleduje stavové stránky, na které se už spoléháte — GitHub, Supabase, Cloudflare a cokoli dalšího na Atlassian Statuspage — kontrolováno až každých {{interval}}, od {{price}}, zatímco StatusGator si za totéž účtuje {{competitorPrice}}.",
+      "body": "downDATA sleduje stavové stránky, na které se už spoléháte: GitHub, Supabase, Cloudflare a cokoli dalšího na Atlassian Statuspage. Jsou kontrolovány až každých {{interval}}, od {{price}}, zatímco StatusGator si za totéž účtuje {{competitorPrice}}.",
       "ctaTrial": "Vyzkoušet 14 dní zdarma",
       "noCard": "Bez platební karty. Plný přístup na 14 dní.",
       "liveDashboard": "Živý přehled"
@@ -302,9 +302,9 @@
       "heading": "Levnější, protože náklady v pozadí jsou nižší.",
       "subtitle": "Ceny konkurence částečně platí za telefonní/SMS infrastrukturu a víceregionální sondy, které my nemáme ve stejném rozsahu.",
       "speedTitle": "Kontroly každých 30 sekund",
-      "speedBody": "Každá sledovaná služba se kontroluje každých 30 sekund — nejlevnější placený plán UptimeRobot zvládne jen 60 s.",
+      "speedBody": "Každá sledovaná služba se kontroluje každých 30 sekund. Nejlevnější placený plán UptimeRobot zvládne jen 60 s.",
       "monitoringTitle": "Sledování služeb a detail incidentů",
-      "monitoringBody": "Přidejte libovolnou službu a sledujte její stav v reálném čase. Kliknutím na incident zobrazíte celou časovou osu — od vyšetřování až po vyřešení.",
+      "monitoringBody": "Přidejte libovolnou službu a sledujte její stav v reálném čase. Kliknutím na incident zobrazíte celou časovou osu, od vyšetřování až po vyřešení.",
       "seatsTitle": "Neomezený počet členů v každém plánu",
       "seatsBody": "UptimeRobot účtuje 15–19 USD/měsíc za každého dalšího člena nad rámec prvních tří. Zde je zahrnut celý tým.",
       "boardsTitle": "Nástěnky pro každý tým",
@@ -312,7 +312,7 @@
     },
     "pricing": {
       "heading": "Ceník",
-      "subtitle": "Místo toho skutečná 14denní zkušební verze s plným přístupem — bez nutnosti karty. Plán vyberte, až budete připraveni, ne dřív.",
+      "subtitle": "Místo toho skutečná 14denní zkušební verze s plným přístupem. Karta není potřeba. Plán vyberte, až budete připraveni, ne dřív.",
       "monthly": "Měsíčně",
       "annual": "Ročně",
       "save20": "Ušetříte 20 %",
@@ -342,19 +342,19 @@
       "howItWorksQuestion": "Jak downDATA kontroluje moje služby?",
       "howItWorksAnswer": "Kontrolujeme veřejnou stavovou stránku každé sledované služby až každých 30 sekund a jakmile se něco změní, aktualizujeme váš přehled.",
       "trialQuestion": "Co se stane po skončení 14denní zkušební verze?",
-      "trialAnswer": "Po dobu 14 dní máte plný přístup bez nutnosti karty. Až zkušební verze skončí, vyberte si plán, který vám vyhovuje — nic se neúčtuje automaticky.",
+      "trialAnswer": "Po dobu 14 dní máte plný přístup bez nutnosti karty. Až zkušební verze skončí, vyberte si plán, který vám vyhovuje. Nic se neúčtuje automaticky.",
       "cancelQuestion": "Můžu plán kdykoli změnit nebo zrušit?",
-      "cancelAnswer": "Ano. Plán můžete kdykoli zvýšit, snížit nebo zrušit — bez závazků a dlouhodobých smluv.",
+      "cancelAnswer": "Ano. Plán můžete kdykoli zvýšit, snížit nebo zrušit. Nejsou tu žádné závazky ani dlouhodobé smlouvy.",
       "notificationsQuestion": "Dostane můj tým upozornění, když něco vypadne?",
       "notificationsAnswer": "Slack propojíte na pár kliknutí a incidenty se rovnou posílají do vašeho kanálu. Každý plán zahrnuje neomezený počet členů týmu, takže má přehled celý tým.",
       "monitorCountQuestion": "Co se počítá jako jeden „monitor“?",
-      "monitorCountAnswer": "Každá sledovaná služba — GitHub, Supabase, Cloudflare nebo cokoli dalšího na Atlassian Statuspage — se počítá jako jeden monitor v rámci limitu vašeho plánu.",
+      "monitorCountAnswer": "Každá sledovaná služba se počítá jako jeden monitor v rámci limitu vašeho plánu. Patří sem GitHub, Supabase, Cloudflare nebo cokoli dalšího na Atlassian Statuspage.",
       "emailSmsQuestion": "Mohu dostávat upozornění i e-mailem nebo SMS, nejen přes Slack?",
-      "emailSmsAnswer": "Ano — vedle Slacku můžete připojit i jednu nebo více e-mailových adres či telefonních čísel. U SMS si vyberete, které závažnosti stojí za zprávu, od pouze kritických až po úplně všechny.",
+      "emailSmsAnswer": "Ano. Vedle Slacku můžete připojit i jednu nebo více e-mailových adres či telefonních čísel. U SMS si vyberete, které závažnosti stojí za zprávu, od pouze kritických až po úplně všechny.",
       "boardsQuestion": "Můžu si monitory uspořádat pro různé týmy?",
-      "boardsAnswer": "Ano — sledované služby můžete seskupit do nástěnek, takže každý tým vidí jen ty služby, které se ho týkají.",
+      "boardsAnswer": "Ano. Sledované služby můžete seskupit do nástěnek, takže každý tým vidí jen ty služby, které se ho týkají.",
       "scopeQuestion": "Sleduje downDATA i moje vlastní servery, nebo jen veřejné stavové stránky?",
-      "scopeAnswer": "Jen veřejné stavové stránky — downDATA sleduje služby postavené na Atlassian Statuspage, jako GitHub, Supabase nebo Cloudflare. Není to nástroj na pingování nebo monitorování vaší vlastní infrastruktury."
+      "scopeAnswer": "Jen veřejné stavové stránky. downDATA sleduje služby postavené na Atlassian Statuspage, jako GitHub, Supabase nebo Cloudflare. Není to nástroj na pingování nebo monitorování vaší vlastní infrastruktury."
     },
     "closing": {
       "heading": "Čtrnáct dní. Plný přístup. Bez karty.",
@@ -431,7 +431,7 @@
   },
   "cookieConsent": {
     "title": "Používáme cookies",
-    "description": "Cookies používáme k tomu, abychom tě udrželi přihlášeného, chránili stránku před boty a — s tvým souhlasem — pochopili, jak se stránka používá, a nabídli živý chat podpory.",
+    "description": "Cookies používáme k tomu, abychom tě udrželi přihlášeného a chránili stránku před boty. S tvým souhlasem také zjišťujeme, jak se stránka používá, a nabízíme živý chat podpory.",
     "privacyNotice": "Více o tom, jak nakládáme s tvými údaji, se dozvíš v našich <privacyLink>Zásadách ochrany osobních údajů</privacyLink>.",
     "acceptAll": "Přijmout vše",
     "rejectAll": "Odmítnout vše",
@@ -459,9 +459,9 @@
   "about": {
     "title": "O <brand>down</brand>DATA",
     "storyHeading": "Příběh",
-    "storyBody": "<brand>down</brand>DATA vznikla v srpnu 2026 — postavil ji jeden vývojář, kterého štvalo, že zjistit, jestli nástroje, na které se tvoje aplikace spoléhá, zrovna nemají špatný den, vyžadovalo buď sledování pěti různých stavových stránek, nebo placení stovek dolarů měsíčně službě jako StatusGator za něco, co je v podstatě jen pravidelné volání veřejného API. <brand>down</brand>DATA dělá tu samou práci — sleduje GitHub, Supabase, Cloudflare a cokoli dalšího postaveného na Atlassian Statuspage — za zlomek ceny.",
+    "storyBody": "<brand>down</brand>DATA vznikla v srpnu 2026, postavil ji jeden vývojář, kterého štvalo, že zjistit, jestli nástroje, na které se tvoje aplikace spoléhá, zrovna nemají špatný den, vyžadovalo buď sledování pěti různých stavových stránek, nebo placení stovek dolarů měsíčně službě jako StatusGator za něco, co je v podstatě jen pravidelné volání veřejného API. <brand>down</brand>DATA sleduje GitHub, Supabase, Cloudflare a cokoli dalšího postaveného na Atlassian Statuspage. Dělá tu samou práci za zlomek ceny.",
     "teamHeading": "Kdo za tím stojí",
-    "teamBody": "<brand>down</brand>DATA vytváří a spravuje Lukáš Bujdoš, webový vývojář se sídlem na Slovensku <flag/>, zatím jako sólo projekt. Je nová, vzniká veřejně, funkce po funkci — místo toho, aby ji stavěla firma s týmem, kterým by šlo zaplnit stránku „O nás“.",
+    "teamBody": "<brand>down</brand>DATA vytváří a spravuje Lukáš Bujdoš, webový vývojář se sídlem na Slovensku <flag/>, zatím jako sólo projekt. Je nová, vzniká veřejně, funkce po funkci, místo toho, aby ji stavěla firma s týmem, kterým by šlo zaplnit stránku „O nás“.",
     "followOnX": "Sledujte {{name}} na X",
     "chatWithUs": "Napište nám",
     "back": "← Zpět"
@@ -470,7 +470,7 @@
     "title": "Podpora",
     "subtitle": "Potřebuješ pomoct? Tohle je nejrychlejší způsob, jak nás oslovit.",
     "chatHeading": "Live chat",
-    "chatBody": "Napiš nám přímo v appce — obvykle odpovídáme do pár hodin.",
+    "chatBody": "Napiš nám přímo v appce. Obvykle odpovídáme do pár hodin.",
     "chatButton": "Otevřít chat",
     "emailHeading": "E-mail",
     "emailBody": "Raději e-mailem? Napiš nám a ozveme se ti.",
@@ -480,14 +480,14 @@
     "back": "← Zpět"
   },
   "features": {
-    "monitors": "Sleduj živý stav jakékoli služby na Atlassian Statuspage — GitHub, Supabase, Cloudflare a cokoli dalšího, na co se tvůj tým spoléhá — kontrolováno až každých 30 sekund.",
+    "monitors": "Sleduj živý stav jakékoli služby na Atlassian Statuspage: GitHub, Supabase, Cloudflare a cokoli dalšího, na co se tvůj tým spoléhá. Kontrolováno až každých 30 sekund.",
     "incidents": "Jednotná časová osa incidentů napříč všemi sledovanými službami, takže nemusíš kontrolovat pět různých stavových stránek, abys věděl, co se skutečně děje.",
-    "maintenances": "Naplánované a probíhající odstávky napříč všemi sledovanými službami na jednom místě — aby plánovaná odstávka nikdy nevypadala jako výpadek.",
-    "integrations": "Propoj Slack a posílej změny stavu přímo do kanálu, který tvůj tým už stejně sleduje — nikdo si nemusí pamatovat, že má zkontrolovat dashboard.",
-    "slack": "Posílej nové incidenty a změny stavu přímo do slackového kanálu, který tvůj tým už sleduje — připoj ho na pár kliknutí, žádného bota netřeba nastavovat.",
-    "email": "Nech si posílat incidenty a změny stavu přímo na e-mail — přidej jednu nebo více adres a všichni budou v obraze, bez přihlašování.",
-    "sms": "Nech si poslat SMS ve chvíli, kdy nastane vážný nebo kritický výpadek — přidej jedno nebo více čísel a vyber, které závažnosti stojí za zprávu, od pouze kritických až po úplně všechny.",
-    "history": "Vyber si libovolnou sledovanou službu a podívej se na historii jejích incidentů za posledních 12 měsíců — hodí se, když se někdo zeptá, jestli se to už někdy stalo.",
+    "maintenances": "Naplánované a probíhající odstávky napříč všemi sledovanými službami na jednom místě. Plánovaná odstávka nikdy nevypadá jako výpadek.",
+    "integrations": "Propoj Slack a posílej změny stavu přímo do kanálu, který tvůj tým už stejně sleduje. Nikdo si nemusí pamatovat, že má zkontrolovat dashboard.",
+    "slack": "Posílej nové incidenty a změny stavu přímo do slackového kanálu, který tvůj tým už sleduje. Připoj ho na pár kliknutí, žádného bota netřeba nastavovat.",
+    "email": "Nech si posílat incidenty a změny stavu přímo na e-mail. Přidej jednu nebo více adres a všichni budou v obraze, bez přihlašování.",
+    "sms": "Nech si poslat SMS ve chvíli, kdy nastane vážný nebo kritický výpadek. Přidej jedno nebo více čísel a vyber, které závažnosti stojí za zprávu, od pouze kritických až po úplně všechny.",
+    "history": "Vyber si libovolnou sledovanou službu a podívej se na historii jejích incidentů za posledních 12 měsíců. Hodí se, když se někdo zeptá, jestli se to už někdy stalo.",
     "boards": "Seskup své sledované služby do nástěnek pro různé týmy, aby každý viděl jen služby, na kterých mu záleží."
   }
 }

@@ -167,7 +167,7 @@
     "keywordPlaceholder": "Legg til et nøkkelord å overvåke",
     "addKeyword": "Legg til",
     "removeKeyword": "Fjern",
-    "empty": "Ingen treff ennå — legg til et nøkkelord og slå på en kilde ovenfor.",
+    "empty": "Ingen treff ennå. Legg til et nøkkelord og slå på en kilde ovenfor.",
     "new": "Nytt",
     "openLink": "Åpne på Reddit",
     "selectPrompt": "Velg et treff til venstre for å se detaljer.",
@@ -235,7 +235,7 @@
       "viewAll": "Vis alle",
       "noIncidents": "Ingen aktive hendelser",
       "noMaintenance": "Ikke noe aktivt vedlikehold",
-      "allClear": "Alt er i orden — ingen aktive hendelser eller vedlikehold"
+      "allClear": "Alt er i orden. Ingen aktive hendelser eller vedlikehold"
     },
     "viewHistory": "Vis historikk for denne tavlen",
     "lastIncident": {
@@ -281,7 +281,7 @@
       "titlePrefix": "Hvis noe",
       "titleDown": "faller ut",
       "titleSuffix": ", er du den første som får vite det.",
-      "body": "downDATA overvåker statussidene du allerede stoler på — GitHub, Supabase, Cloudflare og alle andre basert på Atlassian Statuspage — sjekket så ofte som hvert {{interval}}, fra {{price}}, mens StatusGator tar {{competitorPrice}} for det samme.",
+      "body": "downDATA overvåker statussidene du allerede stoler på: GitHub, Supabase, Cloudflare og alle andre basert på Atlassian Statuspage. De sjekkes så ofte som hvert {{interval}}, fra {{price}}, mens StatusGator tar {{competitorPrice}} for det samme.",
       "ctaTrial": "Start din 14 dagers gratis prøveperiode",
       "noCard": "Ingen kredittkort nødvendig. Full tilgang i 14 dager.",
       "liveDashboard": "Sanntids dashbord"
@@ -296,7 +296,7 @@
       "heading": "Billigere fordi kostnadene bak kulissene er lavere.",
       "subtitle": "Konkurrentenes priser dekker delvis telefon-/SMS-infrastruktur og sonder i flere regioner som vi ikke vedlikeholder på samme måte.",
       "speedTitle": "Sjekker hvert 30. sekund",
-      "speedBody": "Hver overvåkede tjeneste sjekkes hvert 30. sekund — UptimeRobots billigste betalte plan klarer kun 60 sekunder.",
+      "speedBody": "Hver overvåkede tjeneste sjekkes hvert 30. sekund. UptimeRobots billigste betalte plan klarer kun 60 sekunder.",
       "monitoringTitle": "Overvåk tjenester, se hver hendelse",
       "monitoringBody": "Legg til hvilken som helst tjeneste og følg statusen i sanntid. Klikk på en hendelse for å se hele tidslinjen, fra undersøkelse til løst.",
       "seatsTitle": "Ubegrensede brukere, i alle planer",
@@ -306,7 +306,7 @@
     },
     "pricing": {
       "heading": "Priser",
-      "subtitle": "I stedet en ekte 14-dagers prøveperiode med full tilgang — uten behov for kort. Velg en plan når du er klar, ikke før.",
+      "subtitle": "I stedet en ekte 14-dagers prøveperiode med full tilgang. Ingen kort kreves. Velg en plan når du er klar, ikke før.",
       "monthly": "Månedlig",
       "annual": "Årlig",
       "save20": "Spar 20 %",
@@ -336,19 +336,19 @@
       "howItWorksQuestion": "Hvordan sjekker downDATA tjenestene mine?",
       "howItWorksAnswer": "Vi sjekker den offentlige statussiden til hver overvåkede tjeneste så ofte som hvert 30. sekund, og oppdaterer dashbordet ditt så snart noe endrer seg.",
       "trialQuestion": "Hva skjer når 14-dagers prøveperioden min tar slutt?",
-      "trialAnswer": "Du får full tilgang i 14 dager uten behov for kort. Når prøveperioden er over, velger du planen som passer deg — ingenting trekkes automatisk.",
+      "trialAnswer": "Du får full tilgang i 14 dager uten behov for kort. Når prøveperioden er over, velger du planen som passer deg. Ingenting trekkes automatisk.",
       "cancelQuestion": "Kan jeg endre eller si opp planen min når som helst?",
-      "cancelAnswer": "Ja. Du kan oppgradere, nedgradere eller si opp når du vil — uten bindingstid eller langsiktige avtaler.",
+      "cancelAnswer": "Ja. Du kan oppgradere, nedgradere eller si opp når du vil. Ingen bindingstid eller langsiktige avtaler.",
       "notificationsQuestion": "Får teamet mitt varsel når noe går ned?",
       "notificationsAnswer": "Koble til Slack på noen få klikk, så går hendelser rett til kanalen din. Hver plan inkluderer ubegrensede teammedlemmer, slik at hele teamet holder seg oppdatert.",
       "monitorCountQuestion": "Hva regnes som én «overvåker»?",
-      "monitorCountAnswer": "Hver overvåkede tjeneste — GitHub, Supabase, Cloudflare eller noe annet på Atlassian Statuspage — regnes som én overvåker mot grensen i planen din.",
+      "monitorCountAnswer": "Hver overvåkede tjeneste regnes som én overvåker mot grensen i planen din. Dette gjelder GitHub, Supabase, Cloudflare eller noe annet på Atlassian Statuspage.",
       "emailSmsQuestion": "Kan jeg få varsler på e-post eller SMS også, ikke bare Slack?",
-      "emailSmsAnswer": "Ja — koble til én eller flere e-postadresser eller telefonnumre i tillegg til Slack. Med SMS velger du hvilke alvorlighetsgrader som er verdt en tekstmelding, fra kun kritiske til alt.",
+      "emailSmsAnswer": "Ja. Koble til én eller flere e-postadresser eller telefonnumre i tillegg til Slack. Med SMS velger du hvilke alvorlighetsgrader som er verdt en tekstmelding, fra kun kritiske til alt.",
       "boardsQuestion": "Kan jeg organisere overvåkere for ulike team?",
-      "boardsAnswer": "Ja — grupper de overvåkede tjenestene dine i tavler, slik at hvert team bare ser tjenestene som gjelder dem.",
+      "boardsAnswer": "Ja. Grupper de overvåkede tjenestene dine i tavler, slik at hvert team bare ser tjenestene som gjelder dem.",
       "scopeQuestion": "Overvåker downDATA mine egne servere, eller bare offentlige statussider?",
-      "scopeAnswer": "Bare offentlige statussider — downDATA overvåker tjenester bygget på Atlassian Statuspage, som GitHub, Supabase og Cloudflare. Det er ikke et verktøy for å pinge eller overvåke din egen infrastruktur."
+      "scopeAnswer": "Bare offentlige statussider. downDATA overvåker tjenester bygget på Atlassian Statuspage, som GitHub, Supabase og Cloudflare. Det er ikke et verktøy for å pinge eller overvåke din egen infrastruktur."
     },
     "closing": {
       "heading": "Fjorten dager. Full tilgang. Ikke noe kort.",
@@ -425,7 +425,7 @@
   },
   "cookieConsent": {
     "title": "Vi bruker informasjonskapsler",
-    "description": "Vi bruker informasjonskapsler for å holde deg innlogget, beskytte nettstedet mot roboter og — med din tillatelse — forstå hvordan nettstedet brukes, samt tilby direktesupport via chat.",
+    "description": "Vi bruker informasjonskapsler for å holde deg innlogget og beskytte nettstedet mot roboter. Med din tillatelse forstår vi også hvordan nettstedet brukes, og tilbyr direktesupport via chat.",
     "privacyNotice": "Les vår <privacyLink>personvernerklæring</privacyLink> for å lære mer om hvordan vi behandler dataene dine.",
     "acceptAll": "Godta alle",
     "rejectAll": "Avvis alle",
@@ -453,9 +453,9 @@
   "about": {
     "title": "Om <brand>down</brand>DATA",
     "storyHeading": "Historien",
-    "storyBody": "<brand>down</brand>DATA startet i august 2026 — bygget av én utvikler som ble irritert over at det å sjekke om verktøyene appen din er avhengig av har en dårlig dag, krevde enten å følge med på fem forskjellige statussider, eller å betale en tjeneste som StatusGator hundrevis av dollar i måneden for noe som i bunn og grunn bare er å spørre et offentlig API med jevne mellomrom. <brand>down</brand>DATA gjør den samme jobben — overvåker GitHub, Supabase, Cloudflare og alt annet bygget på Atlassian Statuspage — for en brøkdel av prisen.",
+    "storyBody": "<brand>down</brand>DATA startet i august 2026, bygget av én utvikler som ble irritert over at det å sjekke om verktøyene appen din er avhengig av har en dårlig dag, krevde enten å følge med på fem forskjellige statussider, eller å betale en tjeneste som StatusGator hundrevis av dollar i måneden for noe som i bunn og grunn bare er å spørre et offentlig API med jevne mellomrom. <brand>down</brand>DATA overvåker GitHub, Supabase, Cloudflare og alt annet bygget på Atlassian Statuspage. Det gjør den samme jobben for en brøkdel av prisen.",
     "teamHeading": "Hvem som står bak",
-    "teamBody": "<brand>down</brand>DATA bygges og vedlikeholdes av Lukáš Bujdoš, en webutvikler basert i Slovakia <flag/>, foreløpig som et soloprosjekt. Det er nytt — bygget åpent, funksjon for funksjon — i stedet for av et selskap med en stab å fylle en Om oss-side med.",
+    "teamBody": "<brand>down</brand>DATA bygges og vedlikeholdes av Lukáš Bujdoš, en webutvikler basert i Slovakia <flag/>, foreløpig som et soloprosjekt. Det er nytt, bygget åpent, funksjon for funksjon, i stedet for av et selskap med en stab å fylle en Om oss-side med.",
     "followOnX": "Følg {{name}} på X",
     "chatWithUs": "Chat med oss",
     "back": "← Tilbake"
@@ -464,7 +464,7 @@
     "title": "Kundestøtte",
     "subtitle": "Trenger du hjelp? Dette er raskeste måten å nå oss på.",
     "chatHeading": "Livechat",
-    "chatBody": "Chat med oss direkte i appen — vi svarer vanligvis innen noen timer.",
+    "chatBody": "Chat med oss direkte i appen. Vi svarer vanligvis innen noen timer.",
     "chatButton": "Åpne chat",
     "emailHeading": "E-post",
     "emailBody": "Foretrekker du e-post? Skriv til oss, så svarer vi.",
@@ -474,14 +474,14 @@
     "back": "← Tilbake"
   },
   "features": {
-    "monitors": "Følg statusen i sanntid for enhver tjeneste basert på Atlassian Statuspage — GitHub, Supabase, Cloudflare og alt annet teamet ditt er avhengig av — sjekket så ofte som hvert 30. sekund.",
+    "monitors": "Følg statusen i sanntid for enhver tjeneste basert på Atlassian Statuspage: GitHub, Supabase, Cloudflare og alt annet teamet ditt er avhengig av. Sjekket så ofte som hvert 30. sekund.",
     "incidents": "En samlet tidslinje over hendelser på tvers av alle tjenestene du følger, slik at du slipper å sjekke fem forskjellige statussider for å vite hva som faktisk skjer.",
-    "maintenances": "Planlagte og pågående vedlikeholdsvinduer på tvers av alle tjenestene du følger, samlet på ett sted — slik at planlagt nedetid aldri ser ut som et avbrudd.",
-    "integrations": "Koble til Slack og send statusoppdateringer rett til en kanal teamet ditt allerede følger med på — ingen trenger å huske å sjekke et dashbord.",
-    "slack": "Send nye hendelser og statusoppdateringer rett til en Slack-kanal teamet ditt allerede følger med på — koble den til på et par klikk, ingen bot å sette opp.",
-    "email": "Få hendelser og statusoppdateringer rett til e-posten — legg til én eller flere adresser, så holder alle seg oppdatert uten å logge inn.",
-    "sms": "Få en SMS i det øyeblikket noe alvorlig eller kritisk går ned — legg til ett eller flere numre og velg hvilke alvorlighetsgrader som er verdt en SMS, fra kun kritisk til alle.",
-    "history": "Velg en hvilken som helst tjeneste du følger, og se hendelseshistorikken for de siste 12 månedene — nyttig neste gang noen spør om dette har skjedd før.",
+    "maintenances": "Planlagte og pågående vedlikeholdsvinduer på tvers av alle tjenestene du følger, samlet på ett sted. Planlagt nedetid ser aldri ut som et avbrudd.",
+    "integrations": "Koble til Slack og send statusoppdateringer rett til en kanal teamet ditt allerede følger med på. Ingen trenger å huske å sjekke et dashbord.",
+    "slack": "Send nye hendelser og statusoppdateringer rett til en Slack-kanal teamet ditt allerede følger med på. Koble den til på et par klikk, ingen bot å sette opp.",
+    "email": "Få hendelser og statusoppdateringer rett til e-posten. Legg til én eller flere adresser, så holder alle seg oppdatert uten å logge inn.",
+    "sms": "Få en SMS i det øyeblikket noe alvorlig eller kritisk går ned. Legg til ett eller flere numre og velg hvilke alvorlighetsgrader som er verdt en SMS, fra kun kritisk til alle.",
+    "history": "Velg en hvilken som helst tjeneste du følger, og se hendelseshistorikken for de siste 12 månedene. Nyttig neste gang noen spør om dette har skjedd før.",
     "boards": "Grupper tjenestene du følger i tavler for ulike team, slik at alle bare ser tjenestene som er relevante for dem."
   }
 }

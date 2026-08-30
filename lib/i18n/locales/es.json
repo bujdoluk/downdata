@@ -167,7 +167,7 @@
     "keywordPlaceholder": "Añadir una palabra clave para vigilar",
     "addKeyword": "Añadir",
     "removeKeyword": "Quitar",
-    "empty": "Aún no hay coincidencias — añade una palabra clave y activa una fuente arriba.",
+    "empty": "Aún no hay coincidencias. Añade una palabra clave y activa una fuente arriba.",
     "new": "Nuevo",
     "openLink": "Abrir en Reddit",
     "selectPrompt": "Selecciona una coincidencia a la izquierda para ver sus detalles.",
@@ -235,7 +235,7 @@
       "viewAll": "Ver todo",
       "noIncidents": "Sin incidentes activos",
       "noMaintenance": "Sin mantenimiento activo",
-      "allClear": "Todo correcto — sin incidentes ni mantenimiento activos"
+      "allClear": "Todo correcto. Sin incidentes ni mantenimiento activos"
     },
     "viewHistory": "Ver historial de este tablero",
     "lastIncident": {
@@ -281,7 +281,7 @@
       "titlePrefix": "Si algo",
       "titleDown": "se cae",
       "titleSuffix": ", tú serás el primero en saberlo.",
-      "body": "downDATA vigila las páginas de estado de las que ya dependes — GitHub, Supabase, Cloudflare y cualquier otra basada en Atlassian Statuspage — comprobadas hasta cada {{interval}}, desde {{price}}, mientras que StatusGator cobra {{competitorPrice}} por lo mismo.",
+      "body": "downDATA vigila las páginas de estado de las que ya dependes: GitHub, Supabase, Cloudflare y cualquier otra basada en Atlassian Statuspage. Se comprueban hasta cada {{interval}}, desde {{price}}, mientras que StatusGator cobra {{competitorPrice}} por lo mismo.",
       "ctaTrial": "Empieza tu prueba gratuita de 14 días",
       "noCard": "Sin tarjeta de crédito. Acceso completo durante 14 días.",
       "liveDashboard": "Panel en vivo"
@@ -296,7 +296,7 @@
       "heading": "Más barato porque los costes de fondo son menores.",
       "subtitle": "Los precios de la competencia pagan en parte infraestructura de teléfono/SMS y sondas multirregión que nosotros no mantenemos igual.",
       "speedTitle": "Comprobaciones cada 30 segundos",
-      "speedBody": "Cada servicio monitorizado se comprueba cada 30 segundos — el plan de pago más barato de UptimeRobot solo llega a 60 s.",
+      "speedBody": "Cada servicio monitorizado se comprueba cada 30 segundos. El plan de pago más barato de UptimeRobot solo llega a 60 s.",
       "monitoringTitle": "Monitoriza servicios, ve cada incidente",
       "monitoringBody": "Añade cualquier servicio y sigue su estado en tiempo real. Haz clic en un incidente para ver su cronología completa, desde la investigación hasta la resolución.",
       "seatsTitle": "Usuarios ilimitados en todos los planes",
@@ -306,7 +306,7 @@
     },
     "pricing": {
       "heading": "Precios",
-      "subtitle": "En su lugar, una prueba real de 14 días con acceso completo — sin necesidad de tarjeta. Elige un plan cuando estés listo, no antes.",
+      "subtitle": "En su lugar, una prueba real de 14 días con acceso completo. No se requiere tarjeta. Elige un plan cuando estés listo, no antes.",
       "monthly": "Mensual",
       "annual": "Anual",
       "save20": "Ahorra un 20%",
@@ -336,19 +336,19 @@
       "howItWorksQuestion": "¿Cómo comprueba downDATA mis servicios?",
       "howItWorksAnswer": "Consultamos la página de estado pública de cada servicio seguido hasta cada 30 segundos y actualizamos tu panel en cuanto algo cambia.",
       "trialQuestion": "¿Qué pasa cuando termina mi prueba de 14 días?",
-      "trialAnswer": "Tienes acceso completo durante 14 días sin necesidad de tarjeta. Cuando termine la prueba, elige el plan que mejor te encaje — no se cobra nada automáticamente.",
+      "trialAnswer": "Tienes acceso completo durante 14 días sin necesidad de tarjeta. Cuando termine la prueba, elige el plan que mejor te encaje. No se cobra nada automáticamente.",
       "cancelQuestion": "¿Puedo cambiar o cancelar mi plan en cualquier momento?",
-      "cancelAnswer": "Sí. Puedes subir, bajar o cancelar tu plan cuando quieras — sin permanencia ni contratos a largo plazo.",
+      "cancelAnswer": "Sí. Puedes subir, bajar o cancelar tu plan cuando quieras. No hay permanencia ni contratos a largo plazo.",
       "notificationsQuestion": "¿Se avisará a mi equipo cuando algo falle?",
       "notificationsAnswer": "Conecta Slack en pocos clics y los incidentes llegarán directamente a tu canal. Todos los planes incluyen miembros ilimitados, así que todo el equipo está al tanto.",
       "monitorCountQuestion": "¿Qué cuenta como un «monitor»?",
-      "monitorCountAnswer": "Cada servicio seguido — GitHub, Supabase, Cloudflare o cualquier otro en Atlassian Statuspage — cuenta como un monitor dentro del límite de tu plan.",
+      "monitorCountAnswer": "Cada servicio seguido cuenta como un monitor dentro del límite de tu plan. Esto incluye GitHub, Supabase, Cloudflare o cualquier otro en Atlassian Statuspage.",
       "emailSmsQuestion": "¿Puedo recibir avisos también por correo o SMS, no solo por Slack?",
-      "emailSmsAnswer": "Sí — conecta una o varias direcciones de correo o números de teléfono además de Slack. Con el SMS eliges qué gravedades merecen un mensaje, desde solo crítico hasta todo.",
+      "emailSmsAnswer": "Sí. Conecta una o varias direcciones de correo o números de teléfono además de Slack. Con el SMS eliges qué gravedades merecen un mensaje, desde solo crítico hasta todo.",
       "boardsQuestion": "¿Puedo organizar los monitores para distintos equipos?",
-      "boardsAnswer": "Sí — agrupa tus servicios seguidos en tableros, para que cada equipo vea solo los servicios que le importan.",
+      "boardsAnswer": "Sí. Agrupa tus servicios seguidos en tableros, para que cada equipo vea solo los servicios que le importan.",
       "scopeQuestion": "¿downDATA monitoriza mis propios servidores, o solo páginas de estado públicas?",
-      "scopeAnswer": "Solo páginas de estado públicas — downDATA sigue servicios basados en Atlassian Statuspage, como GitHub, Supabase y Cloudflare. No es una herramienta para hacer ping o monitorizar tu propia infraestructura."
+      "scopeAnswer": "Solo páginas de estado públicas. downDATA sigue servicios basados en Atlassian Statuspage, como GitHub, Supabase y Cloudflare. No es una herramienta para hacer ping o monitorizar tu propia infraestructura."
     },
     "closing": {
       "heading": "Catorce días. Acceso completo. Sin tarjeta.",
@@ -425,7 +425,7 @@
   },
   "cookieConsent": {
     "title": "Usamos cookies",
-    "description": "Usamos cookies para mantener tu sesión iniciada, proteger el sitio de bots y — con tu permiso — entender cómo se usa el sitio y ofrecer chat de soporte en vivo.",
+    "description": "Usamos cookies para mantener tu sesión iniciada y proteger el sitio de bots. Con tu permiso, también entendemos cómo se usa el sitio y ofrecemos chat de soporte en vivo.",
     "privacyNotice": "Lee nuestra <privacyLink>Política de Privacidad</privacyLink> para saber más sobre cómo tratamos tus datos.",
     "acceptAll": "Aceptar todo",
     "rejectAll": "Rechazar todo",
@@ -453,9 +453,9 @@
   "about": {
     "title": "Sobre <brand>down</brand>DATA",
     "storyHeading": "La historia",
-    "storyBody": "<brand>down</brand>DATA nació en agosto de 2026 — la creó un solo desarrollador, harto de que comprobar si las herramientas de las que depende tu aplicación estaban teniendo un mal día implicara vigilar cinco páginas de estado distintas o pagar cientos de dólares al mes a un servicio como StatusGator por algo que, en el fondo, es solo consultar periódicamente una API pública. <brand>down</brand>DATA hace el mismo trabajo — monitoriza GitHub, Supabase, Cloudflare y cualquier otro servicio basado en Atlassian Statuspage — por una fracción del precio.",
+    "storyBody": "<brand>down</brand>DATA nació en agosto de 2026, la creó un solo desarrollador, harto de que comprobar si las herramientas de las que depende tu aplicación estaban teniendo un mal día implicara vigilar cinco páginas de estado distintas o pagar cientos de dólares al mes a un servicio como StatusGator por algo que, en el fondo, es solo consultar periódicamente una API pública. <brand>down</brand>DATA monitoriza GitHub, Supabase, Cloudflare y cualquier otro servicio basado en Atlassian Statuspage. Hace el mismo trabajo por una fracción del precio.",
     "teamHeading": "Quién está detrás",
-    "teamBody": "<brand>down</brand>DATA está creada y mantenida por Lukáš Bujdoš, desarrollador web afincado en Eslovaquia <flag/>, de momento como proyecto individual. Es nueva — se construye en público, función a función — en lugar de estar hecha por una empresa con una plantilla con la que rellenar una página «Sobre nosotros».",
+    "teamBody": "<brand>down</brand>DATA está creada y mantenida por Lukáš Bujdoš, desarrollador web afincado en Eslovaquia <flag/>, de momento como proyecto individual. Es nueva, se construye en público, función a función, en lugar de estar hecha por una empresa con una plantilla con la que rellenar una página «Sobre nosotros».",
     "followOnX": "Seguir a {{name}} en X",
     "chatWithUs": "Chatea con nosotros",
     "back": "← Volver"
@@ -464,7 +464,7 @@
     "title": "Soporte",
     "subtitle": "¿Necesitas ayuda? Esta es la forma más rápida de contactarnos.",
     "chatHeading": "Chat en directo",
-    "chatBody": "Chatea con nosotros directamente en la app — solemos responder en pocas horas.",
+    "chatBody": "Chatea con nosotros directamente en la app. Solemos responder en pocas horas.",
     "chatButton": "Abrir chat",
     "emailHeading": "Correo electrónico",
     "emailBody": "¿Prefieres el correo? Escríbenos y te responderemos.",
@@ -474,14 +474,14 @@
     "back": "← Volver"
   },
   "features": {
-    "monitors": "Monitoriza el estado en tiempo real de cualquier servicio basado en Atlassian Statuspage — GitHub, Supabase, Cloudflare y cualquier otro del que dependa tu equipo — comprobado hasta cada 30 segundos.",
+    "monitors": "Monitoriza el estado en tiempo real de cualquier servicio basado en Atlassian Statuspage: GitHub, Supabase, Cloudflare y cualquier otro del que dependa tu equipo. Comprobado hasta cada 30 segundos.",
     "incidents": "Una cronología unificada de incidentes en todos los servicios que monitorizas, para que no tengas que revisar cinco páginas de estado distintas para saber qué está pasando de verdad.",
-    "maintenances": "Ventanas de mantenimiento programadas y en curso en todos tus servicios monitorizados, en un solo lugar — para que una parada planificada nunca parezca una caída.",
-    "integrations": "Conecta Slack y envía actualizaciones de estado directamente a un canal que tu equipo ya vigila — nadie tiene que acordarse de revisar un panel.",
-    "slack": "Envía nuevos incidentes y actualizaciones de estado directamente a un canal de Slack que tu equipo ya vigila — conéctalo en un par de clics, sin bots que configurar.",
-    "email": "Recibe incidentes y actualizaciones de estado directamente en el correo — añade una o varias direcciones y todo el mundo se mantiene al día, sin necesidad de iniciar sesión.",
-    "sms": "Recibe un SMS en el momento en que algo falle de forma grave o crítica — añade uno o varios números y elige qué niveles de gravedad merecen un SMS, desde solo crítico hasta todos.",
-    "history": "Elige cualquier servicio monitorizado y consulta su historial de incidentes de los últimos 12 meses — útil la próxima vez que alguien pregunte si esto ya había pasado antes.",
+    "maintenances": "Ventanas de mantenimiento programadas y en curso en todos tus servicios monitorizados, en un solo lugar. Una parada planificada nunca parece una caída.",
+    "integrations": "Conecta Slack y envía actualizaciones de estado directamente a un canal que tu equipo ya vigila. Nadie tiene que acordarse de revisar un panel.",
+    "slack": "Envía nuevos incidentes y actualizaciones de estado directamente a un canal de Slack que tu equipo ya vigila. Conéctalo en un par de clics, sin bots que configurar.",
+    "email": "Recibe incidentes y actualizaciones de estado directamente en el correo. Añade una o varias direcciones y todo el mundo se mantiene al día, sin necesidad de iniciar sesión.",
+    "sms": "Recibe un SMS en el momento en que algo falle de forma grave o crítica. Añade uno o varios números y elige qué niveles de gravedad merecen un SMS, desde solo crítico hasta todos.",
+    "history": "Elige cualquier servicio monitorizado y consulta su historial de incidentes de los últimos 12 meses. Útil la próxima vez que alguien pregunte si esto ya había pasado antes.",
     "boards": "Agrupa tus servicios monitorizados en tableros para distintos equipos, para que cada uno vea solo los servicios que le importan."
   }
 }

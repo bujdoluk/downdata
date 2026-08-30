@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -10,6 +11,7 @@ import type { IntegrationDefinition } from "@/types/integration";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import { ALL_CONTINENTS, CONTINENT_LABEL_KEYS, inferComponentContinent, type Continent } from "@/lib/componentRegion";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import Spinner from "@/components/Spinner";
@@ -90,12 +92,37 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
   const isLoading = !data && !error;
   const overallStyle = INDICATOR_STYLES[data?.status.indicator ?? "unknown"] ?? FALLBACK_STYLE;
   const allComponents = data?.components ?? [];
-  const componentCount = allComponents.filter((c) => !c.group).length;
   const topLevelItems = allComponents
     .filter((c) => c.group_id === null)
     .sort((a, b) => a.position - b.position);
   const childrenOf = (groupId: string) =>
     allComponents.filter((c) => c.group_id === groupId).sort((a, b) => a.position - b.position);
+
+  // Best-effort continent inference from component names — see
+  // lib/componentRegion.ts. Only offer a continent as a filter if this
+  // service actually has a component in it.
+  const componentsById = new Map(allComponents.map((c) => [c.id, c]));
+  const continentOf = (c: StatuspageComponent) => inferComponentContinent(c, componentsById);
+  const presentContinents = ALL_CONTINENTS.filter((continent) =>
+    allComponents.some((c) => !c.group && continentOf(c) === continent),
+  );
+  const [selectedContinents, setSelectedContinents] = useState<Set<Continent>>(new Set());
+  const isVisible = (c: StatuspageComponent) => {
+    if (selectedContinents.size === 0) return true;
+    const continent = continentOf(c);
+    return continent !== null && selectedContinents.has(continent);
+  };
+
+  function toggleContinent(continent: Continent) {
+    setSelectedContinents((prev) => {
+      const next = new Set(prev);
+      if (next.has(continent)) next.delete(continent);
+      else next.add(continent);
+      return next;
+    });
+  }
+
+  const visibleComponentCount = allComponents.filter((c) => !c.group && isVisible(c)).length;
 
   function componentRow(c: StatuspageComponent, indent = false) {
     const s = COMPONENT_STATUS_STYLES[c.status] ?? FALLBACK_STYLE;
@@ -157,23 +184,47 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                 <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">
                   {t("serviceDetail.components")}
                 </h2>
-                <span className="text-base-content/40 text-xs font-semibold">({componentCount})</span>
+                <span className="text-base-content/40 text-xs font-semibold">({visibleComponentCount})</span>
               </div>
-              <ul className="list bg-base-200 border-base-300 border">
-                {topLevelItems.flatMap((item) =>
-                  item.group
-                    ? [
+              {presentContinents.length === 0 ? (
+                <p className="text-base-content/50 mb-3 text-sm">{t("serviceDetail.noLocationsToFilter")}</p>
+              ) : (
+                <div className="mb-3 flex flex-wrap gap-3">
+                  {presentContinents.map((continent) => (
+                    <label key={continent} className="label cursor-pointer gap-1.5 text-xs">
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-xs"
+                        checked={selectedContinents.has(continent)}
+                        onChange={() => toggleContinent(continent)}
+                      />
+                      {t(CONTINENT_LABEL_KEYS[continent])}
+                    </label>
+                  ))}
+                </div>
+              )}
+              {visibleComponentCount === 0 ? (
+                <p className="text-base-content/50 text-sm">{t("serviceDetail.noComponentsMatchFilter")}</p>
+              ) : (
+                <ul className="list bg-base-200 border-base-300 border">
+                  {topLevelItems.flatMap((item) => {
+                    if (item.group) {
+                      const visibleChildren = childrenOf(item.id).filter(isVisible);
+                      if (visibleChildren.length === 0) return [];
+                      return [
                         <li
                           key={item.id}
                           className="bg-base-300/40 text-base-content/50 px-4 py-2 text-[11px] font-semibold tracking-wide uppercase"
                         >
                           {item.name}
                         </li>,
-                        ...childrenOf(item.id).map((c) => componentRow(c, true)),
-                      ]
-                    : [componentRow(item)],
-                )}
-              </ul>
+                        ...visibleChildren.map((c) => componentRow(c, true)),
+                      ];
+                    }
+                    return isVisible(item) ? [componentRow(item)] : [];
+                  })}
+                </ul>
+              )}
             </div>
 
             <div>

@@ -167,7 +167,7 @@
     "keywordPlaceholder": "Add a keyword to watch",
     "addKeyword": "Add",
     "removeKeyword": "Remove",
-    "empty": "No matches yet — add a keyword and turn on a source above.",
+    "empty": "No matches yet. Add a keyword and turn on a source above.",
     "new": "New",
     "openLink": "Open on Reddit",
     "selectPrompt": "Select a match on the left to see its details.",
@@ -235,7 +235,7 @@
       "viewAll": "View all",
       "noIncidents": "No active incidents",
       "noMaintenance": "No active maintenance",
-      "allClear": "All clear — no active incidents or maintenance"
+      "allClear": "All clear. No active incidents or maintenance"
     },
     "viewHistory": "View history for this board",
     "lastIncident": {
@@ -281,7 +281,7 @@
       "titlePrefix": "If it goes",
       "titleDown": "down",
       "titleSuffix": ", you'll know first.",
-      "body": "downDATA watches the status pages you already depend on — GitHub, Supabase, Cloudflare, and anything else on Atlassian Statuspage — checked as often as every {{interval}}, starting at {{price}} where StatusGator charges {{competitorPrice}} for the same job.",
+      "body": "downDATA watches the status pages you already depend on: GitHub, Supabase, Cloudflare, and anything else on Atlassian Statuspage. They're checked as often as every {{interval}}, starting at {{price}} where StatusGator charges {{competitorPrice}} for the same job.",
       "ctaTrial": "Start your 14-day trial",
       "noCard": "No credit card. Full access for 14 days.",
       "liveDashboard": "Live dashboard"
@@ -296,7 +296,7 @@
       "heading": "Cheaper because the bill behind it is smaller.",
       "subtitle": "Competitor pricing partly pays for phone/SMS infrastructure and multi-region probe networks we don't carry the same way.",
       "speedTitle": "Checks every 30 seconds",
-      "speedBody": "Every tracked service is checked every 30 seconds — UptimeRobot's cheapest paid plan only manages 60s.",
+      "speedBody": "Every tracked service is checked every 30 seconds. UptimeRobot's cheapest paid plan only manages 60s.",
       "monitoringTitle": "Monitor services, see every incident",
       "monitoringBody": "Add any service and watch its live status update in real time. Click into any incident to see its full timeline, from investigating to resolved.",
       "seatsTitle": "Unlimited seats, every plan",
@@ -306,7 +306,7 @@
     },
     "pricing": {
       "heading": "Pricing",
-      "subtitle": "Instead, a real 14-day trial with full access — no card required. Pick a plan when you're ready, not before.",
+      "subtitle": "Instead, a real 14-day trial with full access. No card required. Pick a plan when you're ready, not before.",
       "monthly": "Monthly",
       "annual": "Annual",
       "save20": "Save 20%",
@@ -336,19 +336,19 @@
       "howItWorksQuestion": "How does downDATA check my services?",
       "howItWorksAnswer": "We poll each tracked service's public status page as often as every 30 seconds and update your dashboard the moment anything changes.",
       "trialQuestion": "What happens after my 14-day trial ends?",
-      "trialAnswer": "You get full access for 14 days with no card required. When the trial ends, pick the plan that fits — nothing is charged automatically.",
+      "trialAnswer": "You get full access for 14 days with no card required. When the trial ends, pick the plan that fits. Nothing is charged automatically.",
       "cancelQuestion": "Can I change or cancel my plan anytime?",
-      "cancelAnswer": "Yes. Upgrade, downgrade, or cancel whenever you like — there's no lock-in or long-term contract.",
+      "cancelAnswer": "Yes. Upgrade, downgrade, or cancel whenever you like. There's no lock-in or long-term contract.",
       "notificationsQuestion": "Will my team get notified when something breaks?",
       "notificationsAnswer": "Connect Slack in a few clicks and incidents post straight to your channel. Every plan includes unlimited team seats, so the whole team stays in the loop.",
       "monitorCountQuestion": "What counts as one \"monitor\"?",
-      "monitorCountAnswer": "Each service you track — GitHub, Supabase, Cloudflare, or anything else on Atlassian Statuspage — counts as one monitor against your plan's limit.",
+      "monitorCountAnswer": "Each service you track counts as one monitor against your plan's limit. That includes GitHub, Supabase, Cloudflare, or anything else on Atlassian Statuspage.",
       "emailSmsQuestion": "Can I get notified by email or SMS too, not just Slack?",
-      "emailSmsAnswer": "Yes — connect one or more email addresses or phone numbers alongside Slack. SMS lets you pick which severities are worth a text, from critical-only up to everything.",
+      "emailSmsAnswer": "Yes. Connect one or more email addresses or phone numbers alongside Slack. SMS lets you pick which severities are worth a text, from critical-only up to everything.",
       "boardsQuestion": "Can I organize monitors for different teams?",
-      "boardsAnswer": "Yes — group your tracked services into boards, so each team only sees the services that matter to them.",
+      "boardsAnswer": "Yes. Group your tracked services into boards, so each team only sees the services that matter to them.",
       "scopeQuestion": "Does downDATA monitor my own servers, or just public status pages?",
-      "scopeAnswer": "Just public status pages — downDATA tracks services built on Atlassian Statuspage, like GitHub, Supabase, and Cloudflare. It's not a tool for pinging or monitoring your own infrastructure."
+      "scopeAnswer": "Just public status pages. downDATA tracks services built on Atlassian Statuspage, like GitHub, Supabase, and Cloudflare. It's not a tool for pinging or monitoring your own infrastructure."
     },
     "closing": {
       "heading": "Fourteen days. Full access. No card.",
@@ -425,7 +425,7 @@
   },
   "cookieConsent": {
     "title": "We use cookies",
-    "description": "We use cookies to keep you logged in, protect the site from bots, and — with your permission — understand how the site is used and offer live chat support.",
+    "description": "We use cookies to keep you logged in and protect the site from bots. With your permission, we also understand how the site is used and offer live chat support.",
     "privacyNotice": "Read our <privacyLink>Privacy Policy</privacyLink> to learn more about how we handle your data.",
     "acceptAll": "Accept All",
     "rejectAll": "Reject All",
@@ -453,9 +453,9 @@
   "about": {
     "title": "About <brand>down</brand>DATA",
     "storyHeading": "The story",
-    "storyBody": "<brand>down</brand>DATA started in August 2026, built by one developer annoyed that checking whether the tools your app depends on are having a bad day required either babysitting five different status pages or paying a service like StatusGator hundreds of dollars a month for something that's fundamentally just polling a public API. <brand>down</brand>DATA does the same job — tracking GitHub, Supabase, Cloudflare, and anything else on Atlassian Statuspage — for a fraction of the price.",
+    "storyBody": "<brand>down</brand>DATA started in August 2026, built by one developer annoyed that checking whether the tools your app depends on are having a bad day required either babysitting five different status pages or paying a service like StatusGator hundreds of dollars a month for something that's fundamentally just polling a public API. <brand>down</brand>DATA tracks GitHub, Supabase, Cloudflare, and anything else on Atlassian Statuspage. It does the same job for a fraction of the price.",
     "teamHeading": "Who's behind it",
-    "teamBody": "<brand>down</brand>DATA is built and maintained by Lukáš Bujdoš, a web developer based in Slovakia <flag/>, currently as a solo project. It's new — actively built in the open, one feature at a time — rather than a company with a headcount to pad out an About page.",
+    "teamBody": "<brand>down</brand>DATA is built and maintained by Lukáš Bujdoš, a web developer based in Slovakia <flag/>, currently as a solo project. It's new, actively built in the open, one feature at a time, rather than a company with a headcount to pad out an About page.",
     "followOnX": "Follow {{name}} on X",
     "chatWithUs": "Chat with us",
     "back": "← Back"
@@ -464,7 +464,7 @@
     "title": "Support",
     "subtitle": "Need a hand? Here's the fastest way to reach us.",
     "chatHeading": "Live chat",
-    "chatBody": "Chat with us right in the app — we typically reply within a few hours.",
+    "chatBody": "Chat with us right in the app. We typically reply within a few hours.",
     "chatButton": "Open chat",
     "emailHeading": "Email",
     "emailBody": "Prefer email? Write to us and we'll get back to you.",
@@ -474,14 +474,14 @@
     "back": "← Back"
   },
   "features": {
-    "monitors": "Track the live status of any service on Atlassian Statuspage — GitHub, Supabase, Cloudflare, and anything else your team depends on — checked as often as every 30 seconds.",
+    "monitors": "Track the live status of any service on Atlassian Statuspage: GitHub, Supabase, Cloudflare, and anything else your team depends on. Checked as often as every 30 seconds.",
     "incidents": "A unified timeline of incidents across every service you track, so you don't have to check five different status pages to know what's actually going on.",
-    "maintenances": "Scheduled and in-progress maintenance windows across all your tracked services, in one place — so planned downtime never looks like an outage.",
-    "integrations": "Connect Slack and send status updates straight to a channel your team already watches — no one has to remember to check a dashboard.",
-    "slack": "Post new incidents and status updates straight to a Slack channel your team already watches — connect it in a couple of clicks, no bot to configure.",
-    "email": "Get incident and status updates delivered straight to an email distribution list — connect one or more addresses and everyone stays in the loop, no login required.",
-    "sms": "Get a text the moment something major or critical breaks — add one or more numbers and choose which severities are worth a text, from critical-only up to everything.",
-    "history": "Pick any tracked service and see its incident history over the last 12 months — useful the next time someone asks whether this has happened before.",
+    "maintenances": "Scheduled and in-progress maintenance windows across all your tracked services, in one place. Planned downtime never looks like an outage.",
+    "integrations": "Connect Slack and send status updates straight to a channel your team already watches. No one has to remember to check a dashboard.",
+    "slack": "Post new incidents and status updates straight to a Slack channel your team already watches. Connect it in a couple of clicks, no bot to configure.",
+    "email": "Get incident and status updates delivered straight to an email distribution list. Connect one or more addresses and everyone stays in the loop, no login required.",
+    "sms": "Get a text the moment something major or critical breaks. Add one or more numbers and choose which severities are worth a text, from critical-only up to everything.",
+    "history": "Pick any tracked service and see its incident history over the last 12 months. Useful the next time someone asks whether this has happened before.",
     "boards": "Group your tracked services into boards for different teams, so everyone sees only the services that matter to them."
   }
 }

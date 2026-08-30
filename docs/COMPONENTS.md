@@ -354,6 +354,29 @@ _No props._
 | value | string | Yes | — |  |
 | onRemove | () => void | Yes | — |  |
 
+### CatalogDetailPage
+
+`components/landing-page/CatalogDetailPage.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| slug | string | Yes | — |  |
+| icon | ReactNode | Yes | — |  |
+
+### CatalogMegaMenu
+
+`components/landing-page/CatalogMegaMenu.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| label | string | Yes | — |  |
+| entries | T[] | Yes | — |  |
+| hrefPrefix | string | Yes | — |  |
+| menuClassName | string | Yes | — |  |
+| renderIcon | (entry: T) => ReactNode | Yes | — |  |
+| renderLabel | (entry: T) => ReactNode | Yes | — |  |
+| renderDescription | (entry: T) => ReactNode | Yes | — |  |
+
 ### FeaturePageContent
 
 `components/landing-page/FeaturePageContent.tsx`
@@ -465,6 +488,15 @@ _No props._
 | removingSlug | string \| null \| undefined | No | — |  |
 | onRemove | ((entry: Catalog) => void) \| undefined | No | — |  |
 
+### ClearFiltersButton
+
+`components/service/ClearFiltersButton.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| label | string | Yes | — |  |
+| onClick | () => void | Yes | — |  |
+
 ### ImpactFilterCheckboxes
 
 `components/service/ImpactFilterCheckboxes.tsx`
@@ -490,6 +522,25 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | boards | Board[] | Yes | — |  |
+
+### ListDetailShell
+
+`components/service/ListDetailShell.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| title | string | Yes | — |  |
+| subtitle | string | Yes | — |  |
+| isLoading | boolean | Yes | — |  |
+| isError | boolean | Yes | — |  |
+| isEmpty | boolean | Yes | — |  |
+| loadingLabel | string | Yes | — |  |
+| unreachableLabel | string | Yes | — |  |
+| emptyLabel | string | Yes | — |  |
+| filters | ReactNode | Yes | — |  |
+| list | ReactNode | Yes | — |  |
+| detailRef | RefObject<HTMLDivElement \| null> | Yes | — |  |
+| detail | ReactNode | Yes | — |  |
 
 ### AirtableLogo
 
@@ -826,6 +877,16 @@ _No props._
 | ariaLabel | string | Yes | — |  |
 | className | string \| undefined | No |  |  |
 | iconClassName | string \| undefined | No | h-4 w-4 |  |
+
+### SearchFilterInput
+
+`components/service/SearchFilterInput.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| value | string | Yes | — |  |
+| onChange | (value: string) => void | Yes | — |  |
+| label | string | Yes | — |  |
 
 ### ServiceCatalogPicker
 

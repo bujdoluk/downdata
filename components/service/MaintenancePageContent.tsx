@@ -22,6 +22,9 @@ import { usePagination } from "@/lib/usePagination";
 import Pagination from "@/components/Pagination";
 import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
 import IncidentDetail from "@/components/service/IncidentDetail";
+import ListDetailShell from "@/components/service/ListDetailShell";
+import SearchFilterInput from "@/components/service/SearchFilterInput";
+import ClearFiltersButton from "@/components/service/ClearFiltersButton";
 
 type StatusFilter = "all" | "scheduled" | "in_progress";
 type DebouncedGroup = { status: StatusFilter; q: string; board: string };
@@ -140,140 +143,132 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
     updateParams({ page: next === 1 ? null : String(next) });
   }
 
-  return (
-    <div className="w-full self-start">
-      <h1 className="text-xl font-semibold text-base-content">{t("maintenances.title")}</h1>
-      <p className="text-base-content/60 mt-1 text-sm">{t("maintenances.subtitle")}</p>
+  const filters = (
+    <form className="flex flex-wrap items-center gap-2">
+      <SearchFilterInput
+        value={pendingFilters.q}
+        onChange={(q) => setPendingFilters((prev) => ({ ...prev, q }))}
+        label={t("incidents.filter.searchService")}
+      />
+      <select
+        className="select select-bordered select-sm w-40"
+        aria-label={t("maintenances.filter.status")}
+        value={pendingFilters.status}
+        onChange={(e) => setPendingFilters((prev) => ({ ...prev, status: e.target.value as StatusFilter }))}
+      >
+        <option value="all">
+          {t("maintenances.filter.allStatuses")} ({countForStatus("all")})
+        </option>
+        {showScheduled && (
+          <option value="scheduled">
+            {t("maintenances.filter.scheduled")} ({countForStatus("scheduled")})
+          </option>
+        )}
+        {showInProgress && (
+          <option value="in_progress">
+            {t("maintenances.inProgress")} ({countForStatus("in_progress")})
+          </option>
+        )}
+      </select>
+      <BoardFilterSelect
+        boards={boards}
+        value={pendingFilters.board}
+        onChange={(board) => setPendingFilters((prev) => ({ ...prev, board }))}
+      />
+      {hasActiveFilters && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={clearFilters} />}
+    </form>
+  );
 
-      {isLoading ? (
-        <p className="text-base-content/50 mt-4 flex items-center gap-2 text-sm">
-          <Spinner size="sm" />
-          {t("maintenances.loading")}
-        </p>
-      ) : error ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.unreachable")}</p>
-      ) : maintenances.length === 0 ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.empty")}</p>
+  const list = (
+    <>
+      {filteredMaintenances.length === 0 ? (
+        <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.noMatches")}</p>
       ) : (
-        <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div>
-            <form className="flex flex-wrap items-center gap-2">
-              <input
-                type="text"
-                className="input input-bordered input-sm w-40"
-                aria-label={t("incidents.filter.searchService")}
-                placeholder={t("incidents.filter.searchService")}
-                value={pendingFilters.q}
-                onChange={(e) => setPendingFilters((prev) => ({ ...prev, q: e.target.value }))}
-              />
-              <select
-                className="select select-bordered select-sm w-40"
-                aria-label={t("maintenances.filter.status")}
-                value={pendingFilters.status}
-                onChange={(e) => setPendingFilters((prev) => ({ ...prev, status: e.target.value as StatusFilter }))}
-              >
-                <option value="all">
-                  {t("maintenances.filter.allStatuses")} ({countForStatus("all")})
-                </option>
-                {showScheduled && (
-                  <option value="scheduled">
-                    {t("maintenances.filter.scheduled")} ({countForStatus("scheduled")})
-                  </option>
-                )}
-                {showInProgress && (
-                  <option value="in_progress">
-                    {t("maintenances.inProgress")} ({countForStatus("in_progress")})
-                  </option>
-                )}
-              </select>
-              <BoardFilterSelect
-                boards={boards}
-                value={pendingFilters.board}
-                onChange={(board) => setPendingFilters((prev) => ({ ...prev, board }))}
-              />
-              {hasActiveFilters && (
-                <button type="button" onClick={clearFilters} className="btn btn-ghost btn-xs">
-                  {t("incidents.filter.clearFilters")}
+        <ul
+          ref={listRef}
+          style={{ minHeight: totalPages > 1 ? minListHeight : undefined }}
+          className="mt-4 flex flex-col gap-3"
+        >
+          {pageMaintenances.map((maintenance) => {
+            const Logo = SERVICE_LOGOS[maintenance.service.slug] ?? FallbackLogo;
+            const isActive = isInProgressMaintenance(maintenance);
+            const isSelected = maintenance.id === selectedId;
+            return (
+              <li key={maintenance.id} className="relative">
+                <button
+                  type="button"
+                  onClick={() => selectMaintenance(maintenance.id)}
+                  className={`card card-border bg-base-200 relative flex w-full flex-row items-center gap-3 overflow-hidden p-4 text-left shadow-md transition-colors ${
+                    isSelected ? "border-primary" : isActive ? "border-info" : "hover:border-base-content/20"
+                  }`}
+                >
+                  <Logo size={24} name={maintenance.service.name} />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-base-content/50 text-xs">{maintenance.service.name}</p>
+                    <p className="text-base-content truncate text-sm font-medium">{maintenance.name}</p>
+                    {isActive ? (
+                      <span className="badge badge-info badge-xs mt-1 gap-1.5">
+                        <span className="bg-info-content text-info-content animate-pulse-ring h-1.5 w-1.5 rounded-full" />
+                        {t("maintenances.inProgress")}
+                      </span>
+                    ) : (
+                      <p className="text-base-content/50 text-xs">{maintenance.status}</p>
+                    )}
+                  </div>
+                  <p className="text-base-content/50 self-end text-xs whitespace-nowrap">
+                    {formatDateTime(maintenance.scheduled_for)} – {formatDateTime(maintenance.scheduled_until)}
+                  </p>
                 </button>
-              )}
-            </form>
-
-            {filteredMaintenances.length === 0 ? (
-              <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.noMatches")}</p>
-            ) : (
-              <ul
-                ref={listRef}
-                style={{ minHeight: totalPages > 1 ? minListHeight : undefined }}
-                className="mt-4 flex flex-col gap-3"
-              >
-                {pageMaintenances.map((maintenance) => {
-                  const Logo = SERVICE_LOGOS[maintenance.service.slug] ?? FallbackLogo;
-                  const isActive = isInProgressMaintenance(maintenance);
-                  const isSelected = maintenance.id === selectedId;
-                  return (
-                    <li key={maintenance.id} className="relative">
-                      <button
-                        type="button"
-                        onClick={() => selectMaintenance(maintenance.id)}
-                        className={`card card-border bg-base-200 relative flex w-full flex-row items-center gap-3 overflow-hidden p-4 text-left shadow-md transition-colors ${
-                          isSelected ? "border-primary" : isActive ? "border-info" : "hover:border-base-content/20"
-                        }`}
-                      >
-                        <Logo size={24} name={maintenance.service.name} />
-                        <div className="min-w-0 flex-1">
-                          <p className="text-base-content/50 text-xs">{maintenance.service.name}</p>
-                          <p className="text-base-content truncate text-sm font-medium">{maintenance.name}</p>
-                          {isActive ? (
-                            <span className="badge badge-info badge-xs mt-1 gap-1.5">
-                              <span className="bg-info-content text-info-content animate-pulse-ring h-1.5 w-1.5 rounded-full" />
-                              {t("maintenances.inProgress")}
-                            </span>
-                          ) : (
-                            <p className="text-base-content/50 text-xs">{maintenance.status}</p>
-                          )}
-                        </div>
-                        <p className="text-base-content/50 self-end text-xs whitespace-nowrap">
-                          {formatDateTime(maintenance.scheduled_for)} – {formatDateTime(maintenance.scheduled_until)}
-                        </p>
-                      </button>
-                      <PinButton
-                        pinned={pinned.has(maintenance.id)}
-                        onToggle={() => togglePin(maintenance.id)}
-                        ariaLabel={t(pinned.has(maintenance.id) ? "maintenances.unpin" : "maintenances.pin")}
-                        className="absolute top-3 right-3 z-10"
-                      />
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onChange={goToPage}
-              prevLabel={t("maintenances.pagination.previous")}
-              nextLabel={t("maintenances.pagination.next")}
-              pageLabel={t("maintenances.pagination.page", { page: currentPage, totalPages })}
-            />
-          </div>
-
-          <div ref={detailRef} className="card card-border bg-base-200 p-4">
-            {detail ? (
-              <IncidentDetail incident={detail} />
-            ) : detailError ? (
-              <p className="text-base-content/50 text-sm">{t("maintenances.unreachable")}</p>
-            ) : selectedMaintenance ? (
-              <p className="text-base-content/50 flex items-center gap-2 text-sm">
-                <Spinner size="sm" />
-                {t("maintenances.loading")}
-              </p>
-            ) : (
-              <p className="text-base-content/50 text-sm">{t("maintenances.selectPrompt")}</p>
-            )}
-          </div>
-        </div>
+                <PinButton
+                  pinned={pinned.has(maintenance.id)}
+                  onToggle={() => togglePin(maintenance.id)}
+                  ariaLabel={t(pinned.has(maintenance.id) ? "maintenances.unpin" : "maintenances.pin")}
+                  className="absolute top-3 right-3 z-10"
+                />
+              </li>
+            );
+          })}
+        </ul>
       )}
-    </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onChange={goToPage}
+        prevLabel={t("maintenances.pagination.previous")}
+        nextLabel={t("maintenances.pagination.next")}
+        pageLabel={t("maintenances.pagination.page", { page: currentPage, totalPages })}
+      />
+    </>
+  );
+
+  const detailContent = detail ? (
+    <IncidentDetail incident={detail} />
+  ) : detailError ? (
+    <p className="text-base-content/50 text-sm">{t("maintenances.unreachable")}</p>
+  ) : selectedMaintenance ? (
+    <p className="text-base-content/50 flex items-center gap-2 text-sm">
+      <Spinner size="sm" />
+      {t("maintenances.loading")}
+    </p>
+  ) : (
+    <p className="text-base-content/50 text-sm">{t("maintenances.selectPrompt")}</p>
+  );
+
+  return (
+    <ListDetailShell
+      title={t("maintenances.title")}
+      subtitle={t("maintenances.subtitle")}
+      isLoading={isLoading}
+      isError={!!error}
+      isEmpty={maintenances.length === 0}
+      loadingLabel={t("maintenances.loading")}
+      unreachableLabel={t("maintenances.unreachable")}
+      emptyLabel={t("maintenances.empty")}
+      filters={filters}
+      list={list}
+      detailRef={detailRef}
+      detail={detailContent}
+    />
   );
 }

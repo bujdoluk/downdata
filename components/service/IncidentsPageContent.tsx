@@ -25,6 +25,9 @@ import { parseImpacts, serializeImpacts } from "@/lib/impactsParam";
 import { usePagination } from "@/lib/usePagination";
 import Pagination from "@/components/Pagination";
 import IncidentDetail from "@/components/service/IncidentDetail";
+import ListDetailShell from "@/components/service/ListDetailShell";
+import SearchFilterInput from "@/components/service/SearchFilterInput";
+import ClearFiltersButton from "@/components/service/ClearFiltersButton";
 
 type StatusFilter = "all" | "investigating" | "identified" | "monitoring" | "resolved" | "postmortem";
 type TimeRange = "all" | "24h" | "7d" | "30d";
@@ -183,168 +186,158 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
     updateParams({ page: next === 1 ? null : String(next) });
   }
 
-  return (
-    <div className="w-full self-start">
-      <h1 className="text-xl font-semibold text-base-content">{t("incidents.title")}</h1>
-      <p className="text-base-content/60 mt-1 text-sm">{t("incidents.subtitle")}</p>
+  const filters = (
+    <>
+      <form className="flex flex-wrap items-center gap-2">
+        <SearchFilterInput
+          value={pendingFilters.q}
+          onChange={(q) => setPendingFilters((prev) => ({ ...prev, q }))}
+          label={t("incidents.filter.searchService")}
+        />
+        <select
+          className="select select-bordered select-sm w-40"
+          aria-label={t("incidents.filter.timeRange")}
+          value={pendingFilters.range}
+          onChange={(e) => setPendingFilters((prev) => ({ ...prev, range: e.target.value as TimeRange }))}
+        >
+          <option value="all">{t("incidents.filter.allTime")}</option>
+          <option value="24h">{t("incidents.filter.last24h")}</option>
+          <option value="7d">{t("incidents.filter.last7d")}</option>
+          <option value="30d">{t("incidents.filter.last30d")}</option>
+        </select>
+        <select
+          className="select select-bordered select-sm w-40"
+          aria-label={t("incidents.filter.status")}
+          value={pendingFilters.status}
+          onChange={(e) => setPendingFilters((prev) => ({ ...prev, status: e.target.value as StatusFilter }))}
+        >
+          {ALL_STATUSES.filter(
+            (status) => status === "all" || countForStatus(status) > 0 || status === pendingFilters.status,
+          ).map((status) => (
+            <option key={status} value={status}>
+              {t(`incidents.filter.${STATUS_LABEL_KEY[status]}`)} ({countForStatus(status)})
+            </option>
+          ))}
+        </select>
+        <BoardFilterSelect
+          boards={boards}
+          value={pendingFilters.board}
+          onChange={(board) => setPendingFilters((prev) => ({ ...prev, board }))}
+        />
+        {newCount > 0 && (
+          <button type="button" onClick={toggleOnlyNew} className={`btn btn-xs ${onlyNew ? "btn-primary" : "btn-ghost"}`}>
+            {t("incidents.filter.new")} ({newCount})
+          </button>
+        )}
+        {hasActiveFilters && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={clearFilters} />}
+      </form>
 
-      {isLoading ? (
-        <p className="text-base-content/50 mt-4 flex items-center gap-2 text-sm">
-          <Spinner size="sm" />
-          {t("incidents.loading")}
-        </p>
-      ) : error ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("incidents.unreachable")}</p>
-      ) : incidents.length === 0 ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("serviceDetail.noIncidents")}</p>
+      <div className="mt-2 flex flex-wrap justify-end gap-3">
+        <ImpactFilterCheckboxes selected={pendingFilters.impacts} onToggle={toggleImpact} />
+      </div>
+    </>
+  );
+
+  const list = (
+    <>
+      {filteredIncidents.length === 0 ? (
+        <p className="text-base-content/50 mt-4 text-sm">{t("incidents.filter.noMatches")}</p>
       ) : (
-        <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div>
-            <form className="flex flex-wrap items-center gap-2">
-              <input
-                type="text"
-                className="input input-bordered input-sm w-40"
-                aria-label={t("incidents.filter.searchService")}
-                placeholder={t("incidents.filter.searchService")}
-                value={pendingFilters.q}
-                onChange={(e) => setPendingFilters((prev) => ({ ...prev, q: e.target.value }))}
-              />
-              <select
-                className="select select-bordered select-sm w-40"
-                aria-label={t("incidents.filter.timeRange")}
-                value={pendingFilters.range}
-                onChange={(e) => setPendingFilters((prev) => ({ ...prev, range: e.target.value as TimeRange }))}
+        <ul
+          ref={listRef}
+          style={{ minHeight: totalPages > 1 ? minListHeight : undefined }}
+          className="mt-4 flex flex-col gap-3"
+        >
+          {pageIncidents.map((incident) => {
+            const Logo = SERVICE_LOGOS[incident.service.slug] ?? FallbackLogo;
+            const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
+            const isNew = epochMs(incident.updated_at) > lastViewed;
+            const isSelected = incident.id === selectedId;
+            return (
+              <li
+                key={incident.id}
+                className={`card card-border bg-base-200 relative flex w-full flex-row items-stretch overflow-hidden shadow-md transition-colors ${
+                  isSelected ? "border-primary" : "hover:border-base-content/20"
+                }`}
               >
-                <option value="all">{t("incidents.filter.allTime")}</option>
-                <option value="24h">{t("incidents.filter.last24h")}</option>
-                <option value="7d">{t("incidents.filter.last7d")}</option>
-                <option value="30d">{t("incidents.filter.last30d")}</option>
-              </select>
-              <select
-                className="select select-bordered select-sm w-40"
-                aria-label={t("incidents.filter.status")}
-                value={pendingFilters.status}
-                onChange={(e) => setPendingFilters((prev) => ({ ...prev, status: e.target.value as StatusFilter }))}
-              >
-                {ALL_STATUSES.filter(
-                  (status) => status === "all" || countForStatus(status) > 0 || status === pendingFilters.status,
-                ).map((status) => (
-                  <option key={status} value={status}>
-                    {t(`incidents.filter.${STATUS_LABEL_KEY[status]}`)} ({countForStatus(status)})
-                  </option>
-                ))}
-              </select>
-              <BoardFilterSelect
-                boards={boards}
-                value={pendingFilters.board}
-                onChange={(board) => setPendingFilters((prev) => ({ ...prev, board }))}
-              />
-              {newCount > 0 && (
+                <div className="absolute top-3 right-4 z-10 flex items-center gap-2">
+                  <PinButton
+                    pinned={pinned.has(incident.id)}
+                    onToggle={() => togglePin(incident.id)}
+                    ariaLabel={t(pinned.has(incident.id) ? "incidents.unpin" : "incidents.pin")}
+                  />
+                </div>
                 <button
                   type="button"
-                  onClick={toggleOnlyNew}
-                  className={`btn btn-xs ${onlyNew ? "btn-primary" : "btn-ghost"}`}
+                  onClick={() => selectIncident(incident.id)}
+                  className="flex min-w-0 flex-1 items-center gap-3 p-4 text-left"
                 >
-                  {t("incidents.filter.new")} ({newCount})
+                  <Logo size={24} name={incident.service.name} />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-base-content/50 text-xs">{incident.service.name}</p>
+                    <p className="text-base-content truncate text-sm font-medium">{incident.name}</p>
+                    <div className="mt-1 flex items-center gap-2">
+                      <span className="text-base-content/50 text-xs">{incident.status}</span>
+                      <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
+                      {isNew && <span className="badge badge-xs badge-primary">{t("incidents.new")}</span>}
+                    </div>
+                  </div>
+                  <div className="text-base-content/50 self-end text-right text-xs whitespace-nowrap">
+                    <p>{formatDateTime(incident.updated_at)}</p>
+                    {incident.resolved_at && (
+                      <p>
+                        {t("history.resolutionTime", {
+                          duration: formatDuration(minutesBetween(incident.created_at, incident.resolved_at), t),
+                        })}
+                      </p>
+                    )}
+                  </div>
                 </button>
-              )}
-              {hasActiveFilters && (
-                <button type="button" onClick={clearFilters} className="btn btn-ghost btn-xs">
-                  {t("incidents.filter.clearFilters")}
-                </button>
-              )}
-            </form>
-
-            <div className="mt-2 flex flex-wrap justify-end gap-3">
-              <ImpactFilterCheckboxes selected={pendingFilters.impacts} onToggle={toggleImpact} />
-            </div>
-
-            {filteredIncidents.length === 0 ? (
-              <p className="text-base-content/50 mt-4 text-sm">{t("incidents.filter.noMatches")}</p>
-            ) : (
-              <ul
-                ref={listRef}
-                style={{ minHeight: totalPages > 1 ? minListHeight : undefined }}
-                className="mt-4 flex flex-col gap-3"
-              >
-                {pageIncidents.map((incident) => {
-                  const Logo = SERVICE_LOGOS[incident.service.slug] ?? FallbackLogo;
-                  const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
-                  const isNew = epochMs(incident.updated_at) > lastViewed;
-                  const isSelected = incident.id === selectedId;
-                  return (
-                    <li
-                      key={incident.id}
-                      className={`card card-border bg-base-200 relative flex w-full flex-row items-stretch overflow-hidden shadow-md transition-colors ${
-                        isSelected ? "border-primary" : "hover:border-base-content/20"
-                      }`}
-                    >
-                      <div className="absolute top-3 right-4 z-10 flex items-center gap-2">
-                        <PinButton
-                          pinned={pinned.has(incident.id)}
-                          onToggle={() => togglePin(incident.id)}
-                          ariaLabel={t(pinned.has(incident.id) ? "incidents.unpin" : "incidents.pin")}
-                        />
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => selectIncident(incident.id)}
-                        className="flex min-w-0 flex-1 items-center gap-3 p-4 text-left"
-                      >
-                        <Logo size={24} name={incident.service.name} />
-                        <div className="min-w-0 flex-1">
-                          <p className="text-base-content/50 text-xs">{incident.service.name}</p>
-                          <p className="text-base-content truncate text-sm font-medium">{incident.name}</p>
-                          <div className="mt-1 flex items-center gap-2">
-                            <span className="text-base-content/50 text-xs">{incident.status}</span>
-                            <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
-                            {isNew && <span className="badge badge-xs badge-primary">{t("incidents.new")}</span>}
-                          </div>
-                        </div>
-                        <div className="text-base-content/50 self-end text-right text-xs whitespace-nowrap">
-                          <p>{formatDateTime(incident.updated_at)}</p>
-                          {incident.resolved_at && (
-                            <p>
-                              {t("history.resolutionTime", {
-                                duration: formatDuration(minutesBetween(incident.created_at, incident.resolved_at), t),
-                              })}
-                            </p>
-                          )}
-                        </div>
-                      </button>
-                      <div className={`w-3 shrink-0 self-stretch ${style.dot}`} aria-hidden="true" />
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onChange={goToPage}
-              prevLabel={t("incidents.pagination.previous")}
-              nextLabel={t("incidents.pagination.next")}
-              pageLabel={t("incidents.pagination.page", { page: currentPage, totalPages })}
-            />
-          </div>
-
-          <div ref={detailRef} className="card card-border bg-base-200 p-4">
-            {detail ? (
-              <IncidentDetail incident={detail} lastViewed={lastViewed} />
-            ) : detailError ? (
-              <p className="text-base-content/50 text-sm">{t("incidents.unreachable")}</p>
-            ) : selectedIncident ? (
-              <p className="text-base-content/50 flex items-center gap-2 text-sm">
-                <Spinner size="sm" />
-                {t("incidents.loading")}
-              </p>
-            ) : (
-              <p className="text-base-content/50 text-sm">{t("incidents.selectPrompt")}</p>
-            )}
-          </div>
-        </div>
+                <div className={`w-3 shrink-0 self-stretch ${style.dot}`} aria-hidden="true" />
+              </li>
+            );
+          })}
+        </ul>
       )}
-    </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onChange={goToPage}
+        prevLabel={t("incidents.pagination.previous")}
+        nextLabel={t("incidents.pagination.next")}
+        pageLabel={t("incidents.pagination.page", { page: currentPage, totalPages })}
+      />
+    </>
+  );
+
+  const detailContent = detail ? (
+    <IncidentDetail incident={detail} lastViewed={lastViewed} />
+  ) : detailError ? (
+    <p className="text-base-content/50 text-sm">{t("incidents.unreachable")}</p>
+  ) : selectedIncident ? (
+    <p className="text-base-content/50 flex items-center gap-2 text-sm">
+      <Spinner size="sm" />
+      {t("incidents.loading")}
+    </p>
+  ) : (
+    <p className="text-base-content/50 text-sm">{t("incidents.selectPrompt")}</p>
+  );
+
+  return (
+    <ListDetailShell
+      title={t("incidents.title")}
+      subtitle={t("incidents.subtitle")}
+      isLoading={isLoading}
+      isError={!!error}
+      isEmpty={incidents.length === 0}
+      loadingLabel={t("incidents.loading")}
+      unreachableLabel={t("incidents.unreachable")}
+      emptyLabel={t("serviceDetail.noIncidents")}
+      filters={filters}
+      list={list}
+      detailRef={detailRef}
+      detail={detailContent}
+    />
   );
 }

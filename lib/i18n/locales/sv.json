@@ -27,6 +27,7 @@
     "email": "E-post",
     "sms": "SMS",
     "history": "Historik",
+    "earlyWarnings": "Tidiga Varningar",
     "settings": "Inställningar",
     "account": "Konto",
     "preferences": "Inställningsalternativ",
@@ -158,6 +159,20 @@
     "recipientVerified": "Mottagaren bekräftad.",
     "verifyLinkInvalid": "Den bekräftelselänken är ogiltig eller har gått ut."
   },
+  "earlyWarnings": {
+    "title": "Tidiga Varningar",
+    "subtitle": "Bevaka nyckelord på webben och upptäck omnämnanden innan de blir ett problem.",
+    "sources": "Källor",
+    "keywords": "Nyckelord",
+    "keywordPlaceholder": "Lägg till ett nyckelord att bevaka",
+    "addKeyword": "Lägg till",
+    "removeKeyword": "Ta bort",
+    "empty": "Inga träffar än — lägg till ett nyckelord och slå på en källa ovan.",
+    "new": "Nytt",
+    "openLink": "Öppna på Reddit",
+    "selectPrompt": "Välj en träff till vänster för att se detaljer.",
+    "somethingWrong": "Något gick fel."
+  },
   "history": {
     "title": "Historik",
     "subtitle": "Välj en tjänst för att se dess incidenthistorik för de senaste 12 månaderna.",
@@ -270,6 +285,12 @@
       "ctaTrial": "Starta din 14-dagars kostnadsfria provperiod",
       "noCard": "Inget kreditkort krävs. Full åtkomst i 14 dagar.",
       "liveDashboard": "Direktuppdaterad instrumentpanel"
+    },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Tjänster tillgängliga att övervaka",
+      "intervalLabel": "Intervall för statuskontroll",
+      "priceLabel": "Startpris"
     },
     "features": {
       "heading": "Billigare eftersom kostnaderna bakom kulisserna är lägre.",
@@ -385,8 +406,6 @@
     "email": "E-post",
     "memberSince": "Medlem sedan",
     "lastSignIn": "Senaste inloggning",
-    "signInMethodGoogle": "Inloggad med Google",
-    "signInMethodEmail": "Inloggad med e-post och lösenord",
     "passwordTitle": "Lösenord",
     "passwordLabel": "Nytt lösenord",
     "passwordSubmit": "Uppdatera lösenord",

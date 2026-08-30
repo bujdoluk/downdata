@@ -24,5 +24,10 @@ export const queryKeys = {
   integrations: {
     list: () => ["integrations", "list"] as const,
   },
+  earlyWarnings: {
+    keywords: () => ["earlyWarnings", "keywords"] as const,
+    sources: () => ["earlyWarnings", "sources"] as const,
+    matches: () => ["earlyWarnings", "matches"] as const,
+  },
   account: () => ["account"] as const,
 };

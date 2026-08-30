@@ -80,9 +80,6 @@ export default function AccountPageContent({
             )}
             <div className="min-w-0">
               <h1 className="truncate text-xl font-bold">{email}</h1>
-              <span className="badge badge-soft badge-sm mt-1">
-                {t(isPasswordAccount ? "account.signInMethodEmail" : "account.signInMethodGoogle")}
-              </span>
             </div>
           </div>
         </div>

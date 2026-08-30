@@ -27,6 +27,7 @@
     "email": "E-Mail",
     "sms": "SMS",
     "history": "Verlauf",
+    "earlyWarnings": "Frühwarnungen",
     "settings": "Einstellungen",
     "account": "Konto",
     "preferences": "Präferenzen",
@@ -158,6 +159,20 @@
     "recipientVerified": "Empfänger bestätigt.",
     "verifyLinkInvalid": "Dieser Bestätigungslink ist ungültig oder abgelaufen."
   },
+  "earlyWarnings": {
+    "title": "Frühwarnungen",
+    "subtitle": "Behalte Schlüsselwörter im Web im Blick und erkenne Erwähnungen, bevor sie zum Problem werden.",
+    "sources": "Quellen",
+    "keywords": "Schlüsselwörter",
+    "keywordPlaceholder": "Schlüsselwort zum Beobachten hinzufügen",
+    "addKeyword": "Hinzufügen",
+    "removeKeyword": "Entfernen",
+    "empty": "Noch keine Treffer — füge oben ein Schlüsselwort hinzu und aktiviere eine Quelle.",
+    "new": "Neu",
+    "openLink": "Auf Reddit öffnen",
+    "selectPrompt": "Wähle links einen Treffer aus, um Details zu sehen.",
+    "somethingWrong": "Etwas ist schiefgelaufen."
+  },
   "history": {
     "title": "Verlauf",
     "subtitle": "Wähle einen Dienst, um dessen Vorfallverlauf der letzten 12 Monate zu sehen.",
@@ -270,6 +285,12 @@
       "ctaTrial": "14 Tage kostenlos testen",
       "noCard": "Keine Kreditkarte nötig. Voller Zugriff für 14 Tage.",
       "liveDashboard": "Live-Dashboard"
+    },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Verfügbare Dienste zum Überwachen",
+      "intervalLabel": "Statusprüfintervall",
+      "priceLabel": "Startpreis"
     },
     "features": {
       "heading": "Günstiger, weil im Hintergrund weniger Kosten anfallen.",
@@ -385,8 +406,6 @@
     "email": "E-Mail",
     "memberSince": "Mitglied seit",
     "lastSignIn": "Letzte Anmeldung",
-    "signInMethodGoogle": "Angemeldet mit Google",
-    "signInMethodEmail": "Angemeldet mit E-Mail & Passwort",
     "passwordTitle": "Passwort",
     "passwordLabel": "Neues Passwort",
     "passwordSubmit": "Passwort aktualisieren",

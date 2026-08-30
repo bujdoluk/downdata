@@ -10,6 +10,7 @@ import Spinner from "@/components/Spinner";
 export default function ListDetailShell({
   title,
   subtitle,
+  header,
   isLoading,
   isError,
   isEmpty,
@@ -23,6 +24,11 @@ export default function ListDetailShell({
 }: {
   title: string;
   subtitle: string;
+  // Content that always renders regardless of loading/error/empty state —
+  // e.g. Early Warnings' keyword/source settings panel, which must stay
+  // visible even with zero matches yet, unlike `filters` below (which
+  // only makes sense once there's a list to filter).
+  header?: ReactNode;
   isLoading: boolean;
   isError: boolean;
   isEmpty: boolean;
@@ -38,6 +44,7 @@ export default function ListDetailShell({
     <div className="w-full self-start">
       <h1 className="text-xl font-semibold text-base-content">{title}</h1>
       <p className="text-base-content/60 mt-1 text-sm">{subtitle}</p>
+      {header}
 
       {isLoading ? (
         <p className="text-base-content/50 mt-4 flex items-center gap-2 text-sm">

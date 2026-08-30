@@ -27,6 +27,7 @@
     "email": "E-mail",
     "sms": "SMS",
     "history": "Historia",
+    "earlyWarnings": "Wczesne ostrzeżenia",
     "settings": "Ustawienia",
     "account": "Konto",
     "preferences": "Preferencje",
@@ -160,6 +161,20 @@
     "recipientVerified": "Odbiorca potwierdzony.",
     "verifyLinkInvalid": "Ten link potwierdzający jest nieprawidłowy lub wygasł."
   },
+  "earlyWarnings": {
+    "title": "Wczesne ostrzeżenia",
+    "subtitle": "Obserwuj słowa kluczowe w sieci i wychwytuj wzmianki, zanim staną się problemem.",
+    "sources": "Źródła",
+    "keywords": "Słowa kluczowe",
+    "keywordPlaceholder": "Dodaj słowo kluczowe do obserwowania",
+    "addKeyword": "Dodaj",
+    "removeKeyword": "Usuń",
+    "empty": "Brak dopasowań — dodaj słowo kluczowe i włącz źródło powyżej.",
+    "new": "Nowe",
+    "openLink": "Otwórz na Reddicie",
+    "selectPrompt": "Wybierz dopasowanie po lewej, aby zobaczyć szczegóły.",
+    "somethingWrong": "Coś poszło nie tak."
+  },
   "history": {
     "title": "Historia",
     "subtitle": "Wybierz usługę, aby zobaczyć historię incydentów z ostatnich 12 miesięcy.",
@@ -283,6 +298,12 @@
       "noCard": "Bez karty płatniczej. Pełny dostęp przez 14 dni.",
       "liveDashboard": "Panel na żywo"
     },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Dostępne usługi do monitorowania",
+      "intervalLabel": "Interwał sprawdzania stanu",
+      "priceLabel": "Cena początkowa"
+    },
     "features": {
       "heading": "Taniej, bo koszty w tle są mniejsze.",
       "subtitle": "Ceny konkurencji częściowo pokrywają infrastrukturę telefoniczną/SMS oraz sondy w wielu regionach, których my nie utrzymujemy w takim zakresie.",
@@ -397,8 +418,6 @@
     "email": "E-mail",
     "memberSince": "Członkiem od",
     "lastSignIn": "Ostatnie logowanie",
-    "signInMethodGoogle": "Zalogowano przez Google",
-    "signInMethodEmail": "Zalogowano e-mailem i hasłem",
     "passwordTitle": "Hasło",
     "passwordLabel": "Nowe hasło",
     "passwordSubmit": "Zaktualizuj hasło",

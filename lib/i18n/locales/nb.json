@@ -27,6 +27,7 @@
     "email": "E-post",
     "sms": "SMS",
     "history": "Historikk",
+    "earlyWarnings": "Tidlige Varsler",
     "settings": "Innstillinger",
     "account": "Konto",
     "preferences": "Preferanser",
@@ -158,6 +159,20 @@
     "recipientVerified": "Mottaker bekreftet.",
     "verifyLinkInvalid": "Den bekreftelseslenken er ugyldig eller har utløpt."
   },
+  "earlyWarnings": {
+    "title": "Tidlige Varsler",
+    "subtitle": "Overvåk nøkkelord på nettet og fang opp omtaler før de blir et problem.",
+    "sources": "Kilder",
+    "keywords": "Nøkkelord",
+    "keywordPlaceholder": "Legg til et nøkkelord å overvåke",
+    "addKeyword": "Legg til",
+    "removeKeyword": "Fjern",
+    "empty": "Ingen treff ennå — legg til et nøkkelord og slå på en kilde ovenfor.",
+    "new": "Nytt",
+    "openLink": "Åpne på Reddit",
+    "selectPrompt": "Velg et treff til venstre for å se detaljer.",
+    "somethingWrong": "Noe gikk galt."
+  },
   "history": {
     "title": "Historikk",
     "subtitle": "Velg en tjeneste for å se hendelseshistorikken for de siste 12 månedene.",
@@ -270,6 +285,12 @@
       "ctaTrial": "Start din 14 dagers gratis prøveperiode",
       "noCard": "Ingen kredittkort nødvendig. Full tilgang i 14 dager.",
       "liveDashboard": "Sanntids dashbord"
+    },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Tjenester tilgjengelig for overvåking",
+      "intervalLabel": "Intervall for statussjekk",
+      "priceLabel": "Startpris"
     },
     "features": {
       "heading": "Billigere fordi kostnadene bak kulissene er lavere.",
@@ -385,8 +406,6 @@
     "email": "E-post",
     "memberSince": "Medlem siden",
     "lastSignIn": "Siste innlogging",
-    "signInMethodGoogle": "Logget inn med Google",
-    "signInMethodEmail": "Logget inn med e-post og passord",
     "passwordTitle": "Passord",
     "passwordLabel": "Nytt passord",
     "passwordSubmit": "Oppdater passord",

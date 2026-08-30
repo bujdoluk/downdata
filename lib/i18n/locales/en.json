@@ -27,6 +27,7 @@
     "email": "Email",
     "sms": "SMS",
     "history": "History",
+    "earlyWarnings": "Early Warnings",
     "settings": "Settings",
     "account": "Account",
     "preferences": "Preferences",
@@ -158,6 +159,20 @@
     "recipientVerified": "Recipient confirmed.",
     "verifyLinkInvalid": "That confirmation link is invalid or has expired."
   },
+  "earlyWarnings": {
+    "title": "Early Warnings",
+    "subtitle": "Watch keywords across the web and catch mentions before they become a problem.",
+    "sources": "Sources",
+    "keywords": "Keywords",
+    "keywordPlaceholder": "Add a keyword to watch",
+    "addKeyword": "Add",
+    "removeKeyword": "Remove",
+    "empty": "No matches yet — add a keyword and turn on a source above.",
+    "new": "New",
+    "openLink": "Open on Reddit",
+    "selectPrompt": "Select a match on the left to see its details.",
+    "somethingWrong": "Something went wrong."
+  },
   "history": {
     "title": "History",
     "subtitle": "Pick a service to see its incident history over the last 12 months.",
@@ -270,6 +285,12 @@
       "ctaTrial": "Start your 14-day trial",
       "noCard": "No credit card. Full access for 14 days.",
       "liveDashboard": "Live dashboard"
+    },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Services available to track",
+      "intervalLabel": "Status check interval",
+      "priceLabel": "Starting price"
     },
     "features": {
       "heading": "Cheaper because the bill behind it is smaller.",
@@ -385,8 +406,6 @@
     "email": "Email",
     "memberSince": "Member since",
     "lastSignIn": "Last sign-in",
-    "signInMethodGoogle": "Signed in with Google",
-    "signInMethodEmail": "Signed in with email & password",
     "passwordTitle": "Password",
     "passwordLabel": "New password",
     "passwordSubmit": "Update password",

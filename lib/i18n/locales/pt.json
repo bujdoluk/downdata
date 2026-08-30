@@ -27,6 +27,7 @@
     "email": "E-mail",
     "sms": "SMS",
     "history": "Histórico",
+    "earlyWarnings": "Alertas Antecipados",
     "settings": "Definições",
     "account": "Conta",
     "preferences": "Preferências",
@@ -158,6 +159,20 @@
     "recipientVerified": "Destinatário confirmado.",
     "verifyLinkInvalid": "Esse link de confirmação é inválido ou expirou."
   },
+  "earlyWarnings": {
+    "title": "Alertas Antecipados",
+    "subtitle": "Monitorize palavras-chave na web e detete menções antes de se tornarem um problema.",
+    "sources": "Fontes",
+    "keywords": "Palavras-chave",
+    "keywordPlaceholder": "Adicionar palavra-chave a monitorizar",
+    "addKeyword": "Adicionar",
+    "removeKeyword": "Remover",
+    "empty": "Ainda sem correspondências — adicione uma palavra-chave e ative uma fonte acima.",
+    "new": "Novo",
+    "openLink": "Abrir no Reddit",
+    "selectPrompt": "Selecione uma correspondência à esquerda para ver os detalhes.",
+    "somethingWrong": "Algo correu mal."
+  },
   "history": {
     "title": "Histórico",
     "subtitle": "Escolha um serviço para ver o histórico de incidentes dos últimos 12 meses.",
@@ -270,6 +285,12 @@
       "ctaTrial": "Iniciar teste gratuito de 14 dias",
       "noCard": "Sem cartão de crédito. Acesso total durante 14 dias.",
       "liveDashboard": "Painel em direto"
+    },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Serviços disponíveis para monitorizar",
+      "intervalLabel": "Intervalo de verificação de estado",
+      "priceLabel": "Preço inicial"
     },
     "features": {
       "heading": "Mais barato porque os custos por trás são menores.",
@@ -385,8 +406,6 @@
     "email": "E-mail",
     "memberSince": "Membro desde",
     "lastSignIn": "Última sessão iniciada",
-    "signInMethodGoogle": "Sessão iniciada com Google",
-    "signInMethodEmail": "Sessão iniciada com e-mail e palavra-passe",
     "passwordTitle": "Palavra-passe",
     "passwordLabel": "Nova palavra-passe",
     "passwordSubmit": "Atualizar palavra-passe",

@@ -38,8 +38,14 @@ const demoRows = [
   { slug: "cloudflare", name: "Cloudflare", indicator: "none", outages24h: 0 },
 ] as const;
 
-export default function LandingPage() {
+export default function LandingPage({ catalogCount }: { catalogCount: number }) {
   const { t } = useTranslation();
+
+  // Rounded down rather than shown exact, so the landing page never needs a
+  // copy update as the catalog grows — see AGENTS.md, this is a live count
+  // (lib/catalog.ts's getCatalog(), fetched server-side in page.tsx), not a
+  // hardcoded claim.
+  const catalogCountDisplay = Math.floor(catalogCount / 10) * 10;
 
   const features = [
     { icon: BoltIcon, title: t("landing.features.speedTitle"), body: t("landing.features.speedBody") },
@@ -126,6 +132,24 @@ export default function LandingPage() {
           </div>
         </div>
       </header>
+
+      {/* Stats */}
+      <section className="border-base-300 border-t py-12">
+        <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-14 gap-y-4 px-8">
+          <div
+            className={`text-primary text-3xl font-extrabold sm:text-4xl ${mono}`}
+            aria-label={t("landing.stats.catalogLabel")}
+          >
+            {t("landing.stats.catalogValue", { count: catalogCountDisplay })}
+          </div>
+          <div className={`text-primary text-3xl font-extrabold sm:text-4xl ${mono}`} aria-label={t("landing.stats.intervalLabel")}>
+            30s
+          </div>
+          <div className={`text-primary text-3xl font-extrabold sm:text-4xl ${mono}`} aria-label={t("landing.stats.priceLabel")}>
+            $5/mo
+          </div>
+        </div>
+      </section>
 
       {/* Features */}
       <section className="border-base-300 bg-base-200/40 border-t py-24">

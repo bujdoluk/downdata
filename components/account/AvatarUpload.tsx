@@ -111,7 +111,7 @@ export default function AvatarUpload({
               from the browser's own locale, not the app's — can't be
               translated via CSS, so it's hidden behind a label carrying
               our own translated text instead. */}
-          <label htmlFor={inputId} className={`btn btn-sm flex-1 ${uploading ? "btn-disabled" : ""}`}>
+          <label htmlFor={inputId} className={`btn btn-sm ${uploading ? "btn-disabled" : ""}`}>
             {t("nav.avatarChoose")}
           </label>
           <input

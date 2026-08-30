@@ -27,6 +27,7 @@
     "email": "E-mail",
     "sms": "SMS",
     "history": "Historique",
+    "earlyWarnings": "Alertes Précoces",
     "settings": "Paramètres",
     "account": "Compte",
     "preferences": "Préférences",
@@ -158,6 +159,20 @@
     "recipientVerified": "Destinataire confirmé.",
     "verifyLinkInvalid": "Ce lien de confirmation est invalide ou a expiré."
   },
+  "earlyWarnings": {
+    "title": "Alertes Précoces",
+    "subtitle": "Surveillez des mots-clés sur le web et repérez les mentions avant qu'elles ne deviennent un problème.",
+    "sources": "Sources",
+    "keywords": "Mots-clés",
+    "keywordPlaceholder": "Ajouter un mot-clé à surveiller",
+    "addKeyword": "Ajouter",
+    "removeKeyword": "Retirer",
+    "empty": "Aucune correspondance pour le moment — ajoutez un mot-clé et activez une source ci-dessus.",
+    "new": "Nouveau",
+    "openLink": "Ouvrir sur Reddit",
+    "selectPrompt": "Sélectionnez une correspondance à gauche pour voir ses détails.",
+    "somethingWrong": "Une erreur s'est produite."
+  },
   "history": {
     "title": "Historique",
     "subtitle": "Choisissez un service pour voir son historique d'incidents des 12 derniers mois.",
@@ -270,6 +285,12 @@
       "ctaTrial": "Démarrer l'essai gratuit de 14 jours",
       "noCard": "Sans carte bancaire. Accès complet pendant 14 jours.",
       "liveDashboard": "Tableau de bord en direct"
+    },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Services disponibles à surveiller",
+      "intervalLabel": "Intervalle de vérification du statut",
+      "priceLabel": "Prix de départ"
     },
     "features": {
       "heading": "Moins cher, car les coûts en coulisses sont plus bas.",
@@ -385,8 +406,6 @@
     "email": "E-mail",
     "memberSince": "Membre depuis",
     "lastSignIn": "Dernière connexion",
-    "signInMethodGoogle": "Connecté avec Google",
-    "signInMethodEmail": "Connecté avec e-mail et mot de passe",
     "passwordTitle": "Mot de passe",
     "passwordLabel": "Nouveau mot de passe",
     "passwordSubmit": "Mettre à jour le mot de passe",

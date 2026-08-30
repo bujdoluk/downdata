@@ -27,6 +27,7 @@
     "email": "Email",
     "sms": "SMS",
     "history": "Cronologia",
+    "earlyWarnings": "Avvisi Anticipati",
     "settings": "Impostazioni",
     "account": "Account",
     "preferences": "Preferenze",
@@ -158,6 +159,20 @@
     "recipientVerified": "Destinatario confermato.",
     "verifyLinkInvalid": "Il link di conferma non è valido o è scaduto."
   },
+  "earlyWarnings": {
+    "title": "Avvisi Anticipati",
+    "subtitle": "Monitora parole chiave sul web e individua le menzioni prima che diventino un problema.",
+    "sources": "Fonti",
+    "keywords": "Parole chiave",
+    "keywordPlaceholder": "Aggiungi una parola chiave da monitorare",
+    "addKeyword": "Aggiungi",
+    "removeKeyword": "Rimuovi",
+    "empty": "Ancora nessuna corrispondenza — aggiungi una parola chiave e attiva una fonte qui sopra.",
+    "new": "Nuovo",
+    "openLink": "Apri su Reddit",
+    "selectPrompt": "Seleziona una corrispondenza a sinistra per vederne i dettagli.",
+    "somethingWrong": "Qualcosa è andato storto."
+  },
   "history": {
     "title": "Cronologia",
     "subtitle": "Scegli un servizio per vedere la cronologia degli incidenti degli ultimi 12 mesi.",
@@ -270,6 +285,12 @@
       "ctaTrial": "Inizia la prova gratuita di 14 giorni",
       "noCard": "Nessuna carta di credito richiesta. Accesso completo per 14 giorni.",
       "liveDashboard": "Dashboard in tempo reale"
+    },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Servizi disponibili da monitorare",
+      "intervalLabel": "Intervallo di controllo dello stato",
+      "priceLabel": "Prezzo di partenza"
     },
     "features": {
       "heading": "Più economico perché i costi dietro le quinte sono minori.",
@@ -385,8 +406,6 @@
     "email": "Email",
     "memberSince": "Membro dal",
     "lastSignIn": "Ultimo accesso",
-    "signInMethodGoogle": "Accesso con Google",
-    "signInMethodEmail": "Accesso con email e password",
     "passwordTitle": "Password",
     "passwordLabel": "Nuova password",
     "passwordSubmit": "Aggiorna password",

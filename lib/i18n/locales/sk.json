@@ -27,6 +27,7 @@
     "email": "E-mail",
     "sms": "SMS",
     "history": "História",
+    "earlyWarnings": "Včasné varovania",
     "settings": "Nastavenia",
     "account": "Účet",
     "preferences": "Predvoľby",
@@ -159,6 +160,20 @@
     "recipientVerified": "Príjemca bol potvrdený.",
     "verifyLinkInvalid": "Tento potvrdzovací odkaz je neplatný alebo vypršal."
   },
+  "earlyWarnings": {
+    "title": "Včasné varovania",
+    "subtitle": "Sledujte kľúčové slová naprieč webom a zachyťte zmienky skôr, než sa stanú problémom.",
+    "sources": "Zdroje",
+    "keywords": "Kľúčové slová",
+    "keywordPlaceholder": "Pridať kľúčové slovo na sledovanie",
+    "addKeyword": "Pridať",
+    "removeKeyword": "Odstrániť",
+    "empty": "Zatiaľ žiadne zhody — pridajte kľúčové slovo a zapnite zdroj vyššie.",
+    "new": "Nové",
+    "openLink": "Otvoriť na Reddite",
+    "selectPrompt": "Vyberte zhodu vľavo a zobrazia sa jej podrobnosti.",
+    "somethingWrong": "Niečo sa pokazilo."
+  },
   "history": {
     "title": "História",
     "subtitle": "Vyberte službu a zobrazte si históriu incidentov za posledných 12 mesiacov.",
@@ -277,6 +292,12 @@
       "noCard": "Bez platobnej karty. Plný prístup na 14 dní.",
       "liveDashboard": "Živý prehľad"
     },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Dostupné služby na sledovanie",
+      "intervalLabel": "Interval kontroly stavu",
+      "priceLabel": "Počiatočná cena"
+    },
     "features": {
       "heading": "Lacnejšie, pretože náklady v pozadí sú nižšie.",
       "subtitle": "Ceny konkurencie čiastočne platia za telefónnu/SMS infraštruktúru a viacregionálne sondy, ktoré my nemáme v rovnakom rozsahu.",
@@ -391,8 +412,6 @@
     "email": "E-mail",
     "memberSince": "Členom od",
     "lastSignIn": "Posledné prihlásenie",
-    "signInMethodGoogle": "Prihlásenie cez Google",
-    "signInMethodEmail": "Prihlásenie cez e-mail a heslo",
     "passwordTitle": "Heslo",
     "passwordLabel": "Nové heslo",
     "passwordSubmit": "Aktualizovať heslo",

@@ -27,6 +27,7 @@
     "email": "E-mail",
     "sms": "SMS",
     "history": "Geschiedenis",
+    "earlyWarnings": "Vroege Waarschuwingen",
     "settings": "Instellingen",
     "account": "Account",
     "preferences": "Voorkeuren",
@@ -158,6 +159,20 @@
     "recipientVerified": "Ontvanger bevestigd.",
     "verifyLinkInvalid": "Deze bevestigingslink is ongeldig of verlopen."
   },
+  "earlyWarnings": {
+    "title": "Vroege Waarschuwingen",
+    "subtitle": "Houd trefwoorden op het web in de gaten en signaleer vermeldingen voordat ze een probleem worden.",
+    "sources": "Bronnen",
+    "keywords": "Trefwoorden",
+    "keywordPlaceholder": "Trefwoord toevoegen om te volgen",
+    "addKeyword": "Toevoegen",
+    "removeKeyword": "Verwijderen",
+    "empty": "Nog geen overeenkomsten — voeg hierboven een trefwoord toe en zet een bron aan.",
+    "new": "Nieuw",
+    "openLink": "Openen op Reddit",
+    "selectPrompt": "Selecteer links een overeenkomst om de details te zien.",
+    "somethingWrong": "Er is iets misgegaan."
+  },
   "history": {
     "title": "Geschiedenis",
     "subtitle": "Kies een dienst om de incidentgeschiedenis van de afgelopen 12 maanden te bekijken.",
@@ -270,6 +285,12 @@
       "ctaTrial": "Start je gratis proefperiode van 14 dagen",
       "noCard": "Geen creditcard nodig. Volledige toegang gedurende 14 dagen.",
       "liveDashboard": "Live dashboard"
+    },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Beschikbare diensten om te bewaken",
+      "intervalLabel": "Interval voor statuscontrole",
+      "priceLabel": "Startprijs"
     },
     "features": {
       "heading": "Goedkoper omdat de kosten achter de schermen lager zijn.",
@@ -385,8 +406,6 @@
     "email": "E-mail",
     "memberSince": "Lid sinds",
     "lastSignIn": "Laatste aanmelding",
-    "signInMethodGoogle": "Aangemeld met Google",
-    "signInMethodEmail": "Aangemeld met e-mail en wachtwoord",
     "passwordTitle": "Wachtwoord",
     "passwordLabel": "Nieuw wachtwoord",
     "passwordSubmit": "Wachtwoord bijwerken",

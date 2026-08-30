@@ -27,6 +27,7 @@
     "email": "Correo electrónico",
     "sms": "SMS",
     "history": "Historial",
+    "earlyWarnings": "Alertas Tempranas",
     "settings": "Ajustes",
     "account": "Cuenta",
     "preferences": "Preferencias",
@@ -158,6 +159,20 @@
     "recipientVerified": "Destinatario confirmado.",
     "verifyLinkInvalid": "Ese enlace de confirmación no es válido o ha caducado."
   },
+  "earlyWarnings": {
+    "title": "Alertas Tempranas",
+    "subtitle": "Vigila palabras clave en la web y detecta menciones antes de que se conviertan en un problema.",
+    "sources": "Fuentes",
+    "keywords": "Palabras clave",
+    "keywordPlaceholder": "Añadir una palabra clave para vigilar",
+    "addKeyword": "Añadir",
+    "removeKeyword": "Quitar",
+    "empty": "Aún no hay coincidencias — añade una palabra clave y activa una fuente arriba.",
+    "new": "Nuevo",
+    "openLink": "Abrir en Reddit",
+    "selectPrompt": "Selecciona una coincidencia a la izquierda para ver sus detalles.",
+    "somethingWrong": "Algo salió mal."
+  },
   "history": {
     "title": "Historial",
     "subtitle": "Elige un servicio para ver su historial de incidentes de los últimos 12 meses.",
@@ -270,6 +285,12 @@
       "ctaTrial": "Empieza tu prueba gratuita de 14 días",
       "noCard": "Sin tarjeta de crédito. Acceso completo durante 14 días.",
       "liveDashboard": "Panel en vivo"
+    },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Servicios disponibles para monitorizar",
+      "intervalLabel": "Intervalo de comprobación de estado",
+      "priceLabel": "Precio inicial"
     },
     "features": {
       "heading": "Más barato porque los costes de fondo son menores.",
@@ -385,8 +406,6 @@
     "email": "Correo electrónico",
     "memberSince": "Miembro desde",
     "lastSignIn": "Último inicio de sesión",
-    "signInMethodGoogle": "Sesión iniciada con Google",
-    "signInMethodEmail": "Sesión iniciada con correo y contraseña",
     "passwordTitle": "Contraseña",
     "passwordLabel": "Nueva contraseña",
     "passwordSubmit": "Actualizar contraseña",

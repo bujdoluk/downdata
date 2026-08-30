@@ -27,6 +27,7 @@
     "email": "E-mail",
     "sms": "SMS",
     "history": "Historie",
+    "earlyWarnings": "Včasná varování",
     "settings": "Nastavení",
     "account": "Účet",
     "preferences": "Předvolby",
@@ -159,6 +160,20 @@
     "recipientVerified": "Příjemce byl potvrzen.",
     "verifyLinkInvalid": "Tento potvrzovací odkaz je neplatný nebo vypršel."
   },
+  "earlyWarnings": {
+    "title": "Včasná varování",
+    "subtitle": "Sledujte klíčová slova na webu a zachyťte zmínky dřív, než se stanou problémem.",
+    "sources": "Zdroje",
+    "keywords": "Klíčová slova",
+    "keywordPlaceholder": "Přidat klíčové slovo ke sledování",
+    "addKeyword": "Přidat",
+    "removeKeyword": "Odebrat",
+    "empty": "Zatím žádné shody — přidejte klíčové slovo a zapněte zdroj výše.",
+    "new": "Nové",
+    "openLink": "Otevřít na Redditu",
+    "selectPrompt": "Vyberte shodu vlevo a zobrazí se její podrobnosti.",
+    "somethingWrong": "Něco se pokazilo."
+  },
   "history": {
     "title": "Historie",
     "subtitle": "Vyberte službu a zobrazte historii incidentů za posledních 12 měsíců.",
@@ -277,6 +292,12 @@
       "noCard": "Bez platební karty. Plný přístup na 14 dní.",
       "liveDashboard": "Živý přehled"
     },
+    "stats": {
+      "catalogValue": "{{count}}+",
+      "catalogLabel": "Dostupné služby ke sledování",
+      "intervalLabel": "Interval kontroly stavu",
+      "priceLabel": "Počáteční cena"
+    },
     "features": {
       "heading": "Levnější, protože náklady v pozadí jsou nižší.",
       "subtitle": "Ceny konkurence částečně platí za telefonní/SMS infrastrukturu a víceregionální sondy, které my nemáme ve stejném rozsahu.",
@@ -391,8 +412,6 @@
     "email": "E-mail",
     "memberSince": "Členem od",
     "lastSignIn": "Poslední přihlášení",
-    "signInMethodGoogle": "Přihlášení přes Google",
-    "signInMethodEmail": "Přihlášení e-mailem a heslem",
     "passwordTitle": "Heslo",
     "passwordLabel": "Nové heslo",
     "passwordSubmit": "Aktualizovat heslo",

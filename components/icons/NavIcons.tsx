@@ -348,6 +348,28 @@ export function UserIcon({ className }: { className?: string }) {
   );
 }
 
+export function RadarIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={20}
+      height={20}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M19.07 4.93A10 10 0 1 0 22 12" />
+      <path d="M12 12 8.5 8.5" />
+      <path d="M12 2v4" />
+      <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 export function ArrowLeftIcon({ className }: { className?: string }) {
   return (
     <svg

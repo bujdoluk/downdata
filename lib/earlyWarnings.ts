@@ -7,7 +7,6 @@ type WatchRow = { id: string; keyword: string };
 type SettingRow = { source: string; enabled: boolean };
 type MatchRow = {
   source: string;
-  keyword: string;
   external_id: string;
   kind: "post" | "comment";
   title: string;
@@ -18,11 +17,12 @@ type MatchRow = {
   captured_at: string;
   metadata: Record<string, unknown> | null;
 };
+type LinkRow = { source: string; external_id: string; keyword: string };
 
-function toMatch(row: MatchRow): KeywordMatch {
+function toMatch(row: MatchRow, keywords: string[]): KeywordMatch {
   return {
     source: row.source,
-    keyword: row.keyword,
+    keywords,
     externalId: row.external_id,
     kind: row.kind,
     title: row.title,
@@ -78,18 +78,11 @@ export async function setSourceEnabled(source: string, enabled: boolean): Promis
 }
 
 // Matches for the caller's own watched keywords, scoped to sources the
-// caller currently has enabled — two steps, not a join, because
-// keyword_matches is the global service-role-only cache (no RLS policies
-// of its own, see 0020_early_warnings.sql's comment) while
+// caller currently has enabled — grouped in application code, not a join,
+// because keyword_matches/keyword_match_keywords are the global
+// service-role-only cache (no RLS policies of their own, see
+// 0021_keyword_match_keywords.sql's comment) while
 // keyword_watches/keyword_source_settings are RLS-scoped to the caller.
-// The session-scoped reads above are what actually authorize which
-// keywords/sources this call is allowed to see; the service-role read
-// below only ever fetches rows for that already-authorized (source,
-// keyword) combination, so this can't leak another account's matches even
-// though keyword_matches itself has no owner column. Filtering by enabled
-// source (not just keyword) also matches what "turn a source off" should
-// mean — a disabled source's matches disappear from the feed even if
-// another account's own opt-in caused the same keyword to be polled there.
 export async function getMatchesForOwnKeywords(): Promise<KeywordMatch[]> {
   const [watches, settings] = await Promise.all([getAllKeywordWatches(), getAllSourceSettings()]);
   const keywords = [...new Set(watches.map((w) => w.keyword))];
@@ -97,13 +90,53 @@ export async function getMatchesForOwnKeywords(): Promise<KeywordMatch[]> {
   if (keywords.length === 0 || enabledSources.length === 0) return [];
 
   const supabase = getSupabaseClient();
-  const { data, error } = await supabase
-    .from("keyword_matches")
-    .select("source, keyword, external_id, kind, title, url, author, snippet, published_at, captured_at, metadata")
+
+  // The session-scoped reads above are what actually authorize which
+  // keywords/sources this call is allowed to see — this query only ever
+  // selects join rows whose `keyword` is already in that authorized set,
+  // so another account's own keywords for the same post can never leak
+  // into what's shown here, even though this table has no owner column.
+  // Filtering by enabled source too matches what "turn a source off"
+  // should mean — a disabled source's matches disappear from the feed
+  // even if another account's own opt-in caused the same keyword to be
+  // polled there.
+  const { data: linkData, error: linkError } = await supabase
+    .from("keyword_match_keywords")
+    .select("source, external_id, keyword")
     .in("keyword", keywords)
-    .in("source", enabledSources)
-    .order("published_at", { ascending: false })
-    .limit(200);
-  if (error) throw error;
-  return ((data as MatchRow[] | null) ?? []).map(toMatch);
+    .in("source", enabledSources);
+  if (linkError) throw linkError;
+
+  const keywordsByPost = new Map<string, Set<string>>();
+  const idsBySource = new Map<string, Set<string>>();
+  for (const row of (linkData as LinkRow[] | null) ?? []) {
+    const postKey = `${row.source}:${row.external_id}`;
+    const postKeywords = keywordsByPost.get(postKey) ?? new Set<string>();
+    postKeywords.add(row.keyword);
+    keywordsByPost.set(postKey, postKeywords);
+
+    const sourceIds = idsBySource.get(row.source) ?? new Set<string>();
+    sourceIds.add(row.external_id);
+    idsBySource.set(row.source, sourceIds);
+  }
+  if (keywordsByPost.size === 0) return [];
+
+  // One query per distinct source (PostgREST has no composite-key `.in()`
+  // for (source, external_id) pairs) — in practice one query today, since
+  // only Reddit is registered.
+  const matchRows: MatchRow[] = [];
+  for (const [source, externalIds] of idsBySource) {
+    const { data, error } = await supabase
+      .from("keyword_matches")
+      .select("source, external_id, kind, title, url, author, snippet, published_at, captured_at, metadata")
+      .eq("source", source)
+      .in("external_id", [...externalIds]);
+    if (error) throw error;
+    matchRows.push(...((data as MatchRow[] | null) ?? []));
+  }
+
+  return matchRows
+    .map((row) => toMatch(row, [...(keywordsByPost.get(`${row.source}:${row.external_id}`) ?? [])].sort()))
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+    .slice(0, 200);
 }

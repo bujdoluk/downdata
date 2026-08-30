@@ -16,12 +16,11 @@ import { useEarlyWarningsLastViewed } from "@/lib/useEarlyWarningsLastViewed";
 
 type MatchWithId = KeywordMatch & { id: string };
 
-// (source, keyword, external_id) is the table's own primary key — the same
-// post can legitimately appear twice in one account's own results if it
-// matched two different watched keywords, so external_id alone isn't a
-// safe React key/selection id here.
+// (source, external_id) is keyword_matches's own primary key — one row per
+// real post regardless of how many watched keywords matched it (see
+// match.keywords).
 function matchId(match: KeywordMatch): string {
-  return `${match.source}:${match.keyword}:${match.externalId}`;
+  return `${match.source}:${match.externalId}`;
 }
 
 async function patchJson(url: string, body: unknown, fallbackError: string): Promise<void> {
@@ -103,7 +102,14 @@ export default function EarlyWarningsPageContent({
               </div>
               <p className="text-base-content truncate text-sm font-medium">{match.title}</p>
               <p className="text-base-content/60 line-clamp-2 text-xs">{match.snippet}</p>
-              <p className="text-base-content/40 text-xs">{formatDateTime(match.publishedAt)}</p>
+              <div className="flex flex-wrap items-center gap-1.5">
+                {match.keywords.map((keyword) => (
+                  <span key={keyword} className="badge badge-xs badge-outline">
+                    {keyword}
+                  </span>
+                ))}
+                <p className="text-base-content/40 text-xs">{formatDateTime(match.publishedAt)}</p>
+              </div>
             </button>
           </li>
         );
@@ -114,6 +120,13 @@ export default function EarlyWarningsPageContent({
   const detail = selected ? (
     <div className="flex flex-col gap-3">
       <h2 className="text-base-content text-lg font-semibold">{selected.title}</h2>
+      <div className="flex flex-wrap gap-1.5">
+        {selected.keywords.map((keyword) => (
+          <span key={keyword} className="badge badge-sm badge-outline">
+            {keyword}
+          </span>
+        ))}
+      </div>
       <p className="text-base-content/60 text-sm whitespace-pre-wrap">{selected.snippet}</p>
       <a href={selected.url} target="_blank" rel="noreferrer" className="link link-primary text-sm">
         {t("earlyWarnings.openLink")}

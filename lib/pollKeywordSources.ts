@@ -57,9 +57,11 @@ export async function pollAllKeywordSources(): Promise<{ sourcesPolled: number; 
       try {
         const matches = await source.fetchMatches(keyword);
         if (matches.length > 0) {
-          const rows = matches.map((match) => ({
+          // Post content, written once per real match regardless of how
+          // many watched keywords eventually find it — matches
+          // keyword_matches's (source, external_id) primary key.
+          const postRows = matches.map((match) => ({
             source: source.id,
-            keyword,
             external_id: match.externalId,
             kind: match.kind,
             title: match.title,
@@ -69,11 +71,20 @@ export async function pollAllKeywordSources(): Promise<{ sourcesPolled: number; 
             published_at: match.publishedAt,
             metadata: match.metadata ?? null,
           }));
-          const { error } = await supabase
+          const { error: postError } = await supabase
             .from("keyword_matches")
-            .upsert(rows, { onConflict: "source,keyword,external_id", ignoreDuplicates: true });
-          if (error) throw error;
-          matchesUpserted += rows.length;
+            .upsert(postRows, { onConflict: "source,external_id", ignoreDuplicates: true });
+          if (postError) throw postError;
+
+          // Which keyword(s) found this post — re-polling the same keyword
+          // against a post it already matched just no-ops here.
+          const linkRows = matches.map((match) => ({ source: source.id, external_id: match.externalId, keyword }));
+          const { error: linkError } = await supabase
+            .from("keyword_match_keywords")
+            .upsert(linkRows, { onConflict: "source,external_id,keyword", ignoreDuplicates: true });
+          if (linkError) throw linkError;
+
+          matchesUpserted += postRows.length;
         }
       } catch (error) {
         failed++;

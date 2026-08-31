@@ -118,6 +118,34 @@ const CLOUD_REGION_CODES: Record<string, Continent> = {
   "af-south-1": "africa",
 };
 
+// Linode's own short-code convention — "US-East (Newark)", "AP-Southeast
+// (Sydney)" — distinct from AWS's (no numeric suffix, different codes for
+// the same places). Exact table, not a "us-"/"ap-" prefix regex, for the
+// same reason CLOUD_REGION_CODES is one: Linode's own "AP-" spans Asia and
+// Australia too (AP-Southeast is Sydney, not generic Asia-Pacific). Seen
+// live on status.linode.com as of 2026-08-31 — verified against the actual
+// feed, not guessed, the same way CLOUD_REGION_CODES was built.
+const LEADING_REGION_CODES: Record<string, Continent> = {
+  "us-east": "northAmerica", "us-central": "northAmerica", "us-west": "northAmerica", "us-southeast": "northAmerica",
+  "us-iad": "northAmerica", "us-iad-2": "northAmerica", "us-ord": "northAmerica", "us-sea": "northAmerica",
+  "us-mia": "northAmerica", "us-lax": "northAmerica", "us-den": "northAmerica", "us-hou": "northAmerica",
+  "ca-central": "northAmerica", "mx-qro": "northAmerica",
+  "eu-west": "europe", "eu-central": "europe", "fr-par": "europe", "fr-par-2": "europe", "fr-mrs": "europe",
+  "de-fra-2": "europe", "de-ham": "europe", "gb-lon": "europe", "it-mil": "europe", "es-mad": "europe",
+  "nl-ams": "europe", "se-sto": "europe",
+  "ap-south": "asia", "ap-west": "asia", "ap-northeast": "asia", "ap-northeast-2": "asia", "jp-osa": "asia",
+  "jp-tyo-3": "asia", "in-maa": "asia", "in-bom-2": "asia", "my-kul": "asia", "id-cgk": "asia", "sg-sin-2": "asia",
+  "ap-southeast": "australia", "au-mel": "australia", "nz-akl": "australia",
+  "br-gru": "southAmerica", "co-bog": "southAmerica", "cl-scl": "southAmerica",
+  "za-jnb": "africa",
+};
+
+// A leading code always precedes " (<city>)" in Linode's naming — matches
+// "us-east" out of "US-East (Newark) Block Storage", "ap-northeast-2" out of
+// "AP-Northeast-2 (Tokyo 2)", etc. Anchored at the start so it can't fire on
+// an unrelated name that merely contains a code-shaped substring somewhere.
+const LEADING_REGION_CODE_PATTERN = /^([a-z]{2}(?:-[a-z0-9]+){1,2})\s+\(/;
+
 const CODE_SUFFIX = /\s*-\s*\([^)]*\)\s*$/;
 
 function matchContinentLiteral(name: string): Continent | null {
@@ -145,6 +173,13 @@ function matchName(name: string): Continent | null {
   const lower = name.toLowerCase();
   for (const [code, continent] of Object.entries(CLOUD_REGION_CODES)) {
     if (lower.includes(code)) return continent;
+  }
+
+  const leadingCodeMatch = LEADING_REGION_CODE_PATTERN.exec(lower);
+  const leadingCode = leadingCodeMatch?.[1];
+  if (leadingCode) {
+    const byLeadingCode = LEADING_REGION_CODES[leadingCode];
+    if (byLeadingCode) return byLeadingCode;
   }
 
   return null;

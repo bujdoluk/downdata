@@ -141,10 +141,7 @@ export default function AccountPageContent({
           </div>
 
           <div className="mt-4">
-            <h2 className="text-xs font-semibold tracking-wide text-base-content/60 uppercase">{t("nav.avatar")}</h2>
-            <div className="mt-2">
-              <AvatarUpload supabase={supabase} userId={userId} avatarUrl={avatarUrl} onChange={handleAvatarChange} />
-            </div>
+            <AvatarUpload supabase={supabase} userId={userId} avatarUrl={avatarUrl} onChange={handleAvatarChange} />
           </div>
 
           <div className="mt-4">
@@ -215,7 +212,7 @@ function PasswordSection({ supabase }: { supabase: ReturnType<typeof createClien
           />
         </fieldset>
         <button type="submit" className="btn btn-info" disabled={submitting}>
-          {submitting ? <span className="loading loading-spinner loading-xs" /> : t("account.passwordSubmit")}
+          {submitting ? <Spinner size="xs" /> : t("account.passwordSubmit")}
         </button>
       </form>
       {error && <p className="text-error mt-2 text-sm">{error}</p>}

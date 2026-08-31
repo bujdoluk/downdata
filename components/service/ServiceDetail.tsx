@@ -6,11 +6,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, formatTime } from "@/lib/formatTime";
-import type { Slug, ServiceSummaryResponse, StatuspageComponent } from "@/types/service";
+import type { Slug, ServiceSummaryResponse, StatuspageComponent, Status } from "@/types/service";
 import type { IntegrationDefinition } from "@/types/integration";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
-import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, ALL_COMPONENT_STATUSES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import { ALL_CONTINENTS, CONTINENT_LABEL_KEYS, inferComponentContinent, type Continent } from "@/lib/componentRegion";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
@@ -109,10 +109,19 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
     allComponents.some((c) => !c.group && continentOf(c) === continent),
   );
   const [selectedContinents, setSelectedContinents] = useState<Set<Continent>>(new Set());
+
+  // Real field, not a guess like continent — only offer a status as a
+  // filter if some component is actually reporting it right now.
+  const presentStatuses = ALL_COMPONENT_STATUSES.filter((status) => allComponents.some((c) => !c.group && c.status === status));
+  const [selectedStatuses, setSelectedStatuses] = useState<Set<Status>>(new Set());
+
   const isVisible = (c: StatuspageComponent) => {
-    if (selectedContinents.size === 0) return true;
-    const continent = continentOf(c);
-    return continent !== null && selectedContinents.has(continent);
+    if (selectedContinents.size > 0) {
+      const continent = continentOf(c);
+      if (continent === null || !selectedContinents.has(continent)) return false;
+    }
+    if (selectedStatuses.size > 0 && !selectedStatuses.has(c.status)) return false;
+    return true;
   };
 
   function toggleContinent(continent: Continent) {
@@ -120,6 +129,15 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
       const next = new Set(prev);
       if (next.has(continent)) next.delete(continent);
       else next.add(continent);
+      return next;
+    });
+  }
+
+  function toggleStatus(status: Status) {
+    setSelectedStatuses((prev) => {
+      const next = new Set(prev);
+      if (next.has(status)) next.delete(status);
+      else next.add(status);
       return next;
     });
   }
@@ -203,6 +221,25 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                       {t(CONTINENT_LABEL_KEYS[continent])}
                     </label>
                   ))}
+                </div>
+              )}
+              {presentStatuses.length > 0 && (
+                <div className="mb-3 flex flex-wrap gap-3">
+                  {presentStatuses.map((status) => {
+                    const style = COMPONENT_STATUS_STYLES[status] ?? FALLBACK_STYLE;
+                    return (
+                      <label key={status} className="label cursor-pointer gap-1.5 text-xs">
+                        <input
+                          type="checkbox"
+                          className="checkbox checkbox-xs"
+                          checked={selectedStatuses.has(status)}
+                          onChange={() => toggleStatus(status)}
+                        />
+                        <span className={`h-2 w-2 shrink-0 rounded-full ${style.dot}`} />
+                        {t(style.labelKey)}
+                      </label>
+                    );
+                  })}
                 </div>
               )}
               {visibleComponentCount === 0 ? (

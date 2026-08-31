@@ -89,7 +89,11 @@ export default function AvatarUpload({
   }
 
   return (
-    <div>
+    <fieldset className="fieldset p-0">
+      <legend className="fieldset-legend text-xs font-semibold tracking-wide text-base-content/60 uppercase">
+        {t("nav.avatar")}
+      </legend>
+
       <div className="flex items-center gap-3">
         {avatarUrl ? (
           <div className="avatar">
@@ -130,7 +134,8 @@ export default function AvatarUpload({
         </div>
       </div>
 
-      {error && <p className="text-error mt-2 text-xs">{error}</p>}
-    </div>
+      <p className="label">{t("nav.avatarMaxSize")}</p>
+      {error && <p className="text-error text-xs">{error}</p>}
+    </fieldset>
   );
 }

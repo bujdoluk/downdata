@@ -2,6 +2,8 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Service } from "@/types/service";
 import type { IncidentCountByService } from "@/lib/getStoredIncident";
+import { getNiceTicks } from "@/lib/niceTicks";
+import { BarList } from "@/components/BarList";
 
 // A "quick overview" stops being one past a screenful of rows — cap to the
 // worst offenders instead of forcing a long scroll through everyone.
@@ -29,31 +31,54 @@ export default function IncidentCountsChart({
   const hiddenCount = sorted.length - bars.length;
   const maxCount = Math.max(0, ...bars.map((bar) => bar.count));
 
+  // Already sorted above (and that sort is what keeps the alphabetical
+  // tie-break stable) — BarList gets sortOrder="none" so it doesn't re-sort.
+  const data = bars.map(({ service, count }) => ({ key: service.slug, name: service.name, value: count }));
+
   return (
     <div className="card card-border bg-base-200 p-4">
       <p className="text-base-content/60 text-sm font-medium">
         {hiddenCount > 0 ? t("history.overview.titleTop", { max: MAX_BARS }) : t("history.overview.title")}
       </p>
-      <ul className="mt-3 flex flex-col gap-1.5">
-        {bars.map(({ service, count }) => (
-          <li key={service.slug}>
-            <button
-              type="button"
-              onClick={() => onSelectService(service.slug)}
-              className="flex w-full items-center gap-2"
-            >
-              <span className="text-base-content/70 w-24 shrink-0 truncate text-right text-xs">{service.name}</span>
-              <span className="bg-base-content/10 h-4 flex-1 rounded-sm">
-                <span
-                  className={`block h-full rounded-sm ${service.slug === selectedSlug ? "bg-primary" : "bg-primary/50"}`}
-                  style={{ width: maxCount > 0 ? `${(count / maxCount) * 100}%` : 0 }}
-                />
+
+      <div className="mt-3">
+        <BarList
+          data={data}
+          sortOrder="none"
+          // key is always service.slug — set on every item mapped above
+          onValueChange={(item) => onSelectService(item.key!)}
+          // bg-info, not bg-primary — this app's primary token is red
+          // (matches the status/error color), info is the actual blue
+          barColor={(item) => (item.key === selectedSlug ? "bg-info" : "bg-info/50")}
+        />
+      </div>
+
+      {maxCount > 0 && (
+        <div className="mt-1.5 flex items-center gap-6" aria-hidden="true">
+          <div className="border-base-content/10 relative h-4 w-full border-t">
+            {getNiceTicks(maxCount).map((tick, i, ticks) => (
+              <span
+                key={tick}
+                className={`absolute top-0 flex flex-col items-center ${
+                  i === 0 ? "left-0" : i === ticks.length - 1 ? "left-full -translate-x-full" : "-translate-x-1/2"
+                }`}
+                style={i === 0 || i === ticks.length - 1 ? undefined : { left: `${(tick / maxCount) * 100}%` }}
+              >
+                <span className="bg-base-content/15 h-1.5 w-px" />
+                <span className="text-base-content/40 text-[10px] tabular-nums">{tick}</span>
               </span>
-              <span className="text-base-content/70 w-6 shrink-0 text-left text-xs tabular-nums">{count}</span>
-            </button>
-          </li>
-        ))}
-      </ul>
+            ))}
+          </div>
+          {/* Invisible but same markup as BarList's own value column so this
+              spacer's width matches it exactly (digit count of maxCount is
+              always >= every other shown count's digit count) — keeps the
+              axis under the bar track, not under the value column too. */}
+          <div className="invisible flex items-center">
+            <p className="text-sm leading-none tabular-nums">{maxCount}</p>
+          </div>
+        </div>
+      )}
+
       {hiddenCount > 0 && <p className="text-base-content/40 mt-2 text-xs">{t("history.overview.moreServices", { count: hiddenCount })}</p>}
     </div>
   );

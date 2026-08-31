@@ -12,7 +12,7 @@ export default async function HistoryPage() {
   const trackedServices = catalog.filter((entry) => trackedSlugs.includes(entry.slug));
 
   return (
-    <main className="flex flex-1 justify-center p-6">
+    <main className="relative flex flex-1 justify-center p-6">
       <HistoryPageContent trackedServices={trackedServices} boards={boards} />
     </main>
   );

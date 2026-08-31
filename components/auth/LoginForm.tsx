@@ -9,6 +9,7 @@ import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import { AuthActionError, continueWithGoogle, logIn, resetPassword, signUp } from "@/lib/supabase/auth";
 import { createClient } from "@/lib/supabase/client";
 import { forgetSessionOnBrowserClose } from "@/lib/supabase/rememberMe";
+import Spinner from "@/components/Spinner";
 
 type Mode = "login" | "signup" | "reset";
 
@@ -132,7 +133,7 @@ function LoginForm() {
                   {error && <p className="text-error text-sm">{error}</p>}
 
                   <button type="submit" className="btn btn-info mt-1" disabled={submitting}>
-                    {submitting ? <span className="loading loading-spinner loading-xs" /> : t("auth.resetSubmit")}
+                    {submitting ? <Spinner size="xs" /> : t("auth.resetSubmit")}
                   </button>
                 </form>
               )
@@ -202,7 +203,7 @@ function LoginForm() {
 
                   <button type="submit" className="btn btn-info mt-1" disabled={submitting || googleSubmitting}>
                     {submitting ? (
-                      <span className="loading loading-spinner loading-xs" />
+                      <Spinner size="xs" />
                     ) : mode === "login" ? (
                       t("auth.loginSubmit")
                     ) : (
@@ -219,7 +220,7 @@ function LoginForm() {
                   disabled={googleSubmitting || submitting}
                   onClick={handleGoogle}
                 >
-                  {googleSubmitting ? <span className="loading loading-spinner loading-xs" /> : <GoogleIcon />}
+                  {googleSubmitting ? <Spinner size="xs" /> : <GoogleIcon />}
                   {t("auth.googleContinue")}
                 </button>
               </>

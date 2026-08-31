@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { Temporal } from "temporal-polyfill";
@@ -23,7 +23,7 @@ import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime
 import { stripHtml } from "@/lib/stripHtml";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/service/statusStyles";
-import Spinner from "@/components/Spinner";
+import LoadingOverlay from "@/components/LoadingOverlay";
 
 const POLL_INTERVAL_MS = 60_000;
 
@@ -55,6 +55,21 @@ export default function HistoryPageContent({
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const slug = searchParams.get("service") ?? "";
+
+  // Lands on an empty calendar otherwise — default to the first service in
+  // the (already alphabetized) list so a first-time visitor sees data
+  // right away instead of having to search manually. replace, not push,
+  // so this doesn't add a spurious back-button entry; also re-fires (and
+  // picks a new default) whenever selectBoard clears an out-of-board
+  // service back to empty.
+  useEffect(() => {
+    if (!slug && services.length > 0) {
+      // services.length > 0 was just checked above
+      const firstSlug = services[0]!.slug;
+      router.replace(`/history?${mergeParams(searchParams, { service: firstSlug }).toString()}`, { scroll: false });
+    }
+  }, [slug, services, searchParams, router]);
+
   const selectedYear = Number(searchParams.get("year") ?? currentYear);
   const selectedImpacts = parseImpacts(searchParams, ALL_IMPACTS);
   const selectedDate = searchParams.get("date");
@@ -70,6 +85,9 @@ export default function HistoryPageContent({
   });
 
   const isLoading = !!slug && isHistoryLoading;
+  // The brief window between landing and the auto-select effect above
+  // picking a default service — nothing meaningful shows yet either.
+  const isPickingService = !slug && services.length > 0;
   const incidents = historyData?.incidents ?? null;
 
   function updateParams(patch: Record<string, string | null>) {
@@ -152,22 +170,19 @@ export default function HistoryPageContent({
 
   return (
     <div className="w-full self-start">
+      {(isPickingService || isLoading) && <LoadingOverlay label={t("history.loading")} contained />}
+
       <h1 className="text-base-content text-lg font-semibold">{t("history.title")}</h1>
       <p className="text-base-content/60 mt-1 text-sm">{t("history.subtitle")}</p>
 
-      <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
         <div>
           <div className="flex flex-wrap items-center gap-4">
             <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
             <BoardFilterSelect boards={boards} value={boardId} onChange={selectBoard} />
           </div>
 
-          {!slug ? null : isLoading ? (
-            <p className="text-base-content/50 mt-4 flex items-center gap-2 text-sm">
-              <Spinner size="sm" />
-              {t("history.loading")}
-            </p>
-          ) : error ? (
+          {!slug ? null : isLoading ? null : error ? (
             <p className="text-base-content/50 mt-4 text-sm">{t("history.unreachable")}</p>
           ) : incidents && incidents.length === 0 ? (
             <p className="text-base-content/50 mt-4 text-sm">{t("history.empty")}</p>
@@ -213,70 +228,74 @@ export default function HistoryPageContent({
                   ))}
                 </div>
               </div>
-
-              {selectedDay && selectedDay.incidents.length > 0 ? (
-                <div className="card card-border bg-base-200 mt-4 p-4">
-                  <ul className="flex flex-col gap-3">
-                    {selectedDay.incidents.map((incident) => {
-                      const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
-                      return (
-                        <li key={incident.id} className="border-base-content/10 border-t pt-3 first:border-t-0 first:pt-0">
-                          <details open className="collapse collapse-arrow">
-                            <summary className="collapse-title flex min-h-0 items-center gap-2 p-0 pr-6">
-                              <p className="text-base-content text-base font-semibold">{incident.name}</p>
-                              <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
-                            </summary>
-                            <div className="collapse-content p-0">
-                              <p className="text-base-content/40 mt-1 text-xs">
-                                {t("incidents.officialPageLabel")}{" "}
-                                <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
-                                  {incident.shortlink}
-                                </a>
-                              </p>
-                              <p className="text-base-content/50 mt-1 text-xs">
-                                {incident.resolved_at
-                                  ? t("history.resolutionTime", {
-                                      duration: formatDuration(minutesBetween(incident.created_at, incident.resolved_at), t),
-                                    })
-                                  : t("history.stillOngoing")}
-                              </p>
-                              <ul className="timeline timeline-vertical mt-2 [--timeline-col-start:auto]">
-                                {incident.incident_updates.map((update, i) => (
-                                  <li key={update.id}>
-                                    {i > 0 && <hr />}
-                                    <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
-                                      {formatDateTime(update.created_at, timeZone)}
-                                    </div>
-                                    <div className="timeline-middle">
-                                      <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
-                                    </div>
-                                    <div className="timeline-end timeline-box bg-base-200">
-                                      <p className="text-base-content text-sm font-medium">{update.status}</p>
-                                      <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
-                                    </div>
-                                    {i < incident.incident_updates.length - 1 && <hr />}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          </details>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              ) : (
-                <p className="text-base-content/50 mt-4 text-sm">{t("history.selectPrompt")}</p>
-              )}
             </>
           ) : null}
+
+          {services.length > 0 && (
+            <div className="mt-4">
+              <IncidentCountsChart services={services} counts={countsData?.counts ?? []} selectedSlug={slug} onSelectService={selectService} />
+            </div>
+          )}
         </div>
 
-        {services.length > 0 && (
-          <div>
-            <IncidentCountsChart services={services} counts={countsData?.counts ?? []} selectedSlug={slug} onSelectService={selectService} />
-          </div>
-        )}
+        <div>
+          {slug && incidents && incidents.length > 0 ? (
+            selectedDay && selectedDay.incidents.length > 0 ? (
+              <div className="card card-border bg-base-200 p-4">
+                <ul className="flex flex-col gap-3">
+                  {selectedDay.incidents.map((incident) => {
+                    const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
+                    return (
+                      <li key={incident.id} className="border-base-content/10 border-t pt-3 first:border-t-0 first:pt-0">
+                        <details open className="collapse collapse-arrow">
+                          <summary className="collapse-title flex min-h-0 items-center gap-2 p-0 pr-6">
+                            <p className="text-base-content text-base font-semibold">{incident.name}</p>
+                            <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
+                          </summary>
+                          <div className="collapse-content p-0">
+                            <p className="text-base-content/40 mt-1 text-xs">
+                              {t("incidents.officialPageLabel")}{" "}
+                              <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
+                                {incident.shortlink}
+                              </a>
+                            </p>
+                            <p className="text-base-content/50 mt-1 text-xs">
+                              {incident.resolved_at
+                                ? t("history.resolutionTime", {
+                                    duration: formatDuration(minutesBetween(incident.created_at, incident.resolved_at), t),
+                                  })
+                                : t("history.stillOngoing")}
+                            </p>
+                            <ul className="timeline timeline-vertical mt-2 [--timeline-col-start:auto]">
+                              {incident.incident_updates.map((update, i) => (
+                                <li key={update.id}>
+                                  {i > 0 && <hr />}
+                                  <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
+                                    {formatDateTime(update.created_at, timeZone)}
+                                  </div>
+                                  <div className="timeline-middle">
+                                    <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
+                                  </div>
+                                  <div className="timeline-end timeline-box bg-base-200">
+                                    <p className="text-base-content text-sm font-medium">{update.status}</p>
+                                    <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
+                                  </div>
+                                  {i < incident.incident_updates.length - 1 && <hr />}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </details>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ) : (
+              <p className="text-base-content/50 text-sm">{t("history.selectPrompt")}</p>
+            )
+          ) : null}
+        </div>
       </div>
     </div>
   );

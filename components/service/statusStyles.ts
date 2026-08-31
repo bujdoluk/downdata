@@ -20,6 +20,8 @@ export const COMPONENT_STATUS_STYLES: Record<
   under_maintenance: { dot: "bg-info", text: "text-info", badge: "badge-info", labelKey: "status.underMaintenance" },
 };
 
+export const ALL_COMPONENT_STATUSES = Object.keys(COMPONENT_STATUS_STYLES);
+
 export const FALLBACK_STYLE = {
   dot: "bg-base-content/20",
   text: "text-base-content/50",

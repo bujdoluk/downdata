@@ -182,7 +182,7 @@ One word per concept — reuse the existing one, don't coin a new one.
 
 - `package.json` pins exact versions — no `^`/`~` ranges. Match that if you add or bump one
 - Ask before adding a dependency. Check the ladder first: does this need to exist → is there already a pattern for it in this repo → does a native platform/CSS feature cover it → does an already-installed dependency cover it → *then* consider a new one
-- This repo has a running preference for zero third-party UI/icon libraries — logos and icons are hand-written inline SVG components (`components/service/logos/`, `components/icons/`) even though that means one file per icon. Don't introduce an icon package to replace them
+- This repo has a running preference for zero third-party UI/icon libraries — logos and icons are hand-written inline SVG components (`components/service/logos/`, `components/icons/`) even though that means one file per icon. Don't introduce an icon package to replace them. `components/BarList.tsx` is a one-off, explicitly-requested exception: it's vendored (copy-paste, not an installed package — that's how Tremor Raw itself distributes) and recolored/adapted rather than used as-is — see the file's own header comment for what changed and why. Treat it as a single approved exception, not precedent for adopting Tremor (or another UI kit) more broadly without asking again
 
 ## 📝 Code Style Standards
 

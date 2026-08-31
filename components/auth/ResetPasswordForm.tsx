@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { AuthActionError, updatePassword } from "@/lib/supabase/auth";
 import { createClient } from "@/lib/supabase/client";
+import Spinner from "@/components/Spinner";
 
 export default function ResetPasswordForm() {
   const { t } = useTranslation();
@@ -61,7 +62,7 @@ export default function ResetPasswordForm() {
               {error && <p className="text-error text-sm">{error}</p>}
 
               <button type="submit" className="btn btn-info mt-1" disabled={submitting}>
-                {submitting ? <span className="loading loading-spinner loading-xs" /> : t("resetPassword.submit")}
+                {submitting ? <Spinner size="xs" /> : t("resetPassword.submit")}
               </button>
             </form>
           )}

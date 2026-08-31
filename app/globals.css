@@ -189,3 +189,24 @@ html {
     animation: none;
   }
 }
+
+@keyframes logo-bars {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.animate-logo-bars {
+  transform-origin: bottom;
+  animation: logo-bars 1s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-logo-bars {
+    animation: none;
+  }
+}

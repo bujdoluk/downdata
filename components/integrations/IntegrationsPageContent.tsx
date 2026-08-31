@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
@@ -11,8 +12,9 @@ import IntegrationCard from "@/components/integrations/IntegrationCard";
 import SlackLogo from "@/components/integrations/SlackLogo";
 import EmailLogo from "@/components/integrations/EmailLogo";
 import SmsLogo from "@/components/integrations/SmsLogo";
-import EmailConnectForm from "@/components/integrations/EmailConnectForm";
-import SmsConnectForm from "@/components/integrations/SmsConnectForm";
+
+const EmailConnectForm = dynamic(() => import("@/components/integrations/EmailConnectForm"));
+const SmsConnectForm = dynamic(() => import("@/components/integrations/SmsConnectForm"));
 
 const INTEGRATION_LOGOS: Record<string, React.ComponentType<{ size?: number }>> = {
   slack: SlackLogo,

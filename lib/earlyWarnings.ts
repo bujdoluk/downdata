@@ -19,6 +19,12 @@ type MatchRow = {
 };
 type LinkRow = { source: string; external_id: string; keyword: string };
 
+// keyword_watches.id is a uuid column — a malformed id (bad client, stale
+// link) would otherwise make Postgres itself error on `.eq("id", id)",
+// which removeKeywordWatch would then throw unhandled instead of the
+// clean "not found" every other resolve/remove helper returns.
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 function toMatch(row: MatchRow, keywords: string[]): KeywordMatch {
   return {
     source: row.source,
@@ -54,6 +60,8 @@ export async function addKeywordWatch(keyword: string): Promise<KeywordWatch> {
 }
 
 export async function removeKeywordWatch(id: string): Promise<boolean> {
+  if (!UUID_PATTERN.test(id)) return false;
+
   const supabase = await createClient();
   const { data, error } = await supabase.from("keyword_watches").delete().eq("id", id).select();
   if (error) throw error;

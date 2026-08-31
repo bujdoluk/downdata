@@ -168,8 +168,12 @@
     "addKeyword": "Legg til",
     "removeKeyword": "Fjern",
     "empty": "Ingen treff ennå — legg til et nøkkelord og slå på en kilde ovenfor.",
+    "noMatches": "Ingen treff for dette nøkkelordet.",
     "new": "Nytt",
     "openLink": "Åpne på Reddit",
+    "filter": {
+      "allKeywords": "Alle nøkkelord"
+    },
     "selectPrompt": "Velg et treff til venstre for å se detaljer.",
     "somethingWrong": "Noe gikk galt."
   },
@@ -483,5 +487,10 @@
     "sms": "Få en SMS i det øyeblikket noe alvorlig eller kritisk går ned — legg til ett eller flere numre og velg hvilke alvorlighetsgrader som er verdt en SMS, fra kun kritisk til alle.",
     "history": "Velg en hvilken som helst tjeneste du følger, og se hendelseshistorikken for de siste 12 månedene — nyttig neste gang noen spør om dette har skjedd før.",
     "boards": "Grupper tjenestene du følger i tavler for ulike team, slik at alle bare ser tjenestene som er relevante for dem."
+  },
+  "notFound": {
+    "title": "Siden ble ikke funnet",
+    "description": "Siden du leter etter finnes ikke eller har blitt flyttet.",
+    "homeButton": "Tilbake til downDATA"
   }
 }

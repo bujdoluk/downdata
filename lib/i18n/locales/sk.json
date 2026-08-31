@@ -169,8 +169,12 @@
     "addKeyword": "Pridať",
     "removeKeyword": "Odstrániť",
     "empty": "Zatiaľ žiadne zhody — pridajte kľúčové slovo a zapnite zdroj vyššie.",
+    "noMatches": "Žiadne zhody pre toto kľúčové slovo.",
     "new": "Nové",
     "openLink": "Otvoriť na Reddite",
+    "filter": {
+      "allKeywords": "Všetky kľúčové slová"
+    },
     "selectPrompt": "Vyberte zhodu vľavo a zobrazia sa jej podrobnosti.",
     "somethingWrong": "Niečo sa pokazilo."
   },
@@ -489,5 +493,10 @@
     "sms": "Nechaj si poslať SMS vo chvíli, keď nastane vážny alebo kritický výpadok — pridaj jedno alebo viac čísel a vyber, ktoré závažnosti stoja za správu, od len kritických až po úplne všetky.",
     "history": "Vyber si ktorúkoľvek sledovanú službu a pozri si jej históriu incidentov za posledných 12 mesiacov — hodí sa, keď sa niekto opýta, či sa to už stalo aj predtým.",
     "boards": "Zoskup svoje sledované služby do tabúľ pre rôzne tímy, aby každý videl len služby, na ktorých mu záleží."
+  },
+  "notFound": {
+    "title": "Stránka nenájdená",
+    "description": "Stránka, ktorú hľadáte, neexistuje alebo bola presunutá.",
+    "homeButton": "Späť na downDATA"
   }
 }

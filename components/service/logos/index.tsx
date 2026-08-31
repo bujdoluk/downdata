@@ -1,79 +1,49 @@
+import dynamic from "next/dynamic";
 import type { LogoComponent } from "@/types/logo";
-import GithubLogo from "@/components/service/logos/GithubLogo";
-import SupabaseLogo from "@/components/service/logos/SupabaseLogo";
-import CloudflareLogo from "@/components/service/logos/CloudflareLogo";
-import VercelLogo from "@/components/service/logos/VercelLogo";
-import DiscordLogo from "@/components/service/logos/DiscordLogo";
-import NpmLogo from "@/components/service/logos/NpmLogo";
-import DigitaloceanLogo from "@/components/service/logos/DigitaloceanLogo";
-import NetlifyLogo from "@/components/service/logos/NetlifyLogo";
-import OpenaiLogo from "@/components/service/logos/OpenaiLogo";
-import ZoomLogo from "@/components/service/logos/ZoomLogo";
-import DropboxLogo from "@/components/service/logos/DropboxLogo";
-import AtlassianLogo from "@/components/service/logos/AtlassianLogo";
-import TwilioLogo from "@/components/service/logos/TwilioLogo";
-import MongodbLogo from "@/components/service/logos/MongodbLogo";
-import DatadogLogo from "@/components/service/logos/DatadogLogo";
-import CircleciLogo from "@/components/service/logos/CircleciLogo";
-import SentryLogo from "@/components/service/logos/SentryLogo";
-import PostmanLogo from "@/components/service/logos/PostmanLogo";
-import NewrelicLogo from "@/components/service/logos/NewrelicLogo";
-import BitbucketLogo from "@/components/service/logos/BitbucketLogo";
-import ElasticLogo from "@/components/service/logos/ElasticLogo";
-import SnowflakeLogo from "@/components/service/logos/SnowflakeLogo";
-import CockroachdbLogo from "@/components/service/logos/CockroachdbLogo";
-import CloudinaryLogo from "@/components/service/logos/CloudinaryLogo";
-import BunnyLogo from "@/components/service/logos/BunnyLogo";
-import WasabiLogo from "@/components/service/logos/WasabiLogo";
-import MailgunLogo from "@/components/service/logos/MailgunLogo";
-import BrevoLogo from "@/components/service/logos/BrevoLogo";
-import AnthropicLogo from "@/components/service/logos/AnthropicLogo";
-import ElevenlabsLogo from "@/components/service/logos/ElevenlabsLogo";
-import NotionLogo from "@/components/service/logos/NotionLogo";
-import FigmaLogo from "@/components/service/logos/FigmaLogo";
-import AirtableLogo from "@/components/service/logos/AirtableLogo";
-import WebflowLogo from "@/components/service/logos/WebflowLogo";
-import TrelloLogo from "@/components/service/logos/TrelloLogo";
-import RenderLogo from "@/components/service/logos/RenderLogo";
 import MonogramLogo from "@/components/service/logos/MonogramLogo";
 
+// Each hand-crafted logo is its own file; loading it via next/dynamic means
+// a page importing this map only ships the SVGs for the services it actually
+// renders, not the whole catalog's — see AGENTS.md's code-splitting note.
+const lazyLogo = (loader: () => Promise<{ default: LogoComponent }>) => dynamic(loader);
+
 export const SERVICE_LOGOS: Record<string, LogoComponent> = {
-  github: GithubLogo,
-  supabase: SupabaseLogo,
-  cloudflare: CloudflareLogo,
-  vercel: VercelLogo,
-  discord: DiscordLogo,
-  npm: NpmLogo,
-  digitalocean: DigitaloceanLogo,
-  netlify: NetlifyLogo,
-  openai: OpenaiLogo,
-  zoom: ZoomLogo,
-  dropbox: DropboxLogo,
-  atlassian: AtlassianLogo,
-  twilio: TwilioLogo,
-  mongodb: MongodbLogo,
-  datadog: DatadogLogo,
-  circleci: CircleciLogo,
-  sentry: SentryLogo,
-  postman: PostmanLogo,
-  newrelic: NewrelicLogo,
-  bitbucket: BitbucketLogo,
-  elastic: ElasticLogo,
-  snowflake: SnowflakeLogo,
-  cockroachdb: CockroachdbLogo,
-  cloudinary: CloudinaryLogo,
-  bunny: BunnyLogo,
-  wasabi: WasabiLogo,
-  mailgun: MailgunLogo,
-  brevo: BrevoLogo,
-  anthropic: AnthropicLogo,
-  elevenlabs: ElevenlabsLogo,
-  notion: NotionLogo,
-  figma: FigmaLogo,
-  airtable: AirtableLogo,
-  webflow: WebflowLogo,
-  trello: TrelloLogo,
-  render: RenderLogo,
+  github: lazyLogo(() => import("@/components/service/logos/GithubLogo")),
+  supabase: lazyLogo(() => import("@/components/service/logos/SupabaseLogo")),
+  cloudflare: lazyLogo(() => import("@/components/service/logos/CloudflareLogo")),
+  vercel: lazyLogo(() => import("@/components/service/logos/VercelLogo")),
+  discord: lazyLogo(() => import("@/components/service/logos/DiscordLogo")),
+  npm: lazyLogo(() => import("@/components/service/logos/NpmLogo")),
+  digitalocean: lazyLogo(() => import("@/components/service/logos/DigitaloceanLogo")),
+  netlify: lazyLogo(() => import("@/components/service/logos/NetlifyLogo")),
+  openai: lazyLogo(() => import("@/components/service/logos/OpenaiLogo")),
+  zoom: lazyLogo(() => import("@/components/service/logos/ZoomLogo")),
+  dropbox: lazyLogo(() => import("@/components/service/logos/DropboxLogo")),
+  atlassian: lazyLogo(() => import("@/components/service/logos/AtlassianLogo")),
+  twilio: lazyLogo(() => import("@/components/service/logos/TwilioLogo")),
+  mongodb: lazyLogo(() => import("@/components/service/logos/MongodbLogo")),
+  datadog: lazyLogo(() => import("@/components/service/logos/DatadogLogo")),
+  circleci: lazyLogo(() => import("@/components/service/logos/CircleciLogo")),
+  sentry: lazyLogo(() => import("@/components/service/logos/SentryLogo")),
+  postman: lazyLogo(() => import("@/components/service/logos/PostmanLogo")),
+  newrelic: lazyLogo(() => import("@/components/service/logos/NewrelicLogo")),
+  bitbucket: lazyLogo(() => import("@/components/service/logos/BitbucketLogo")),
+  elastic: lazyLogo(() => import("@/components/service/logos/ElasticLogo")),
+  snowflake: lazyLogo(() => import("@/components/service/logos/SnowflakeLogo")),
+  cockroachdb: lazyLogo(() => import("@/components/service/logos/CockroachdbLogo")),
+  cloudinary: lazyLogo(() => import("@/components/service/logos/CloudinaryLogo")),
+  bunny: lazyLogo(() => import("@/components/service/logos/BunnyLogo")),
+  wasabi: lazyLogo(() => import("@/components/service/logos/WasabiLogo")),
+  mailgun: lazyLogo(() => import("@/components/service/logos/MailgunLogo")),
+  brevo: lazyLogo(() => import("@/components/service/logos/BrevoLogo")),
+  anthropic: lazyLogo(() => import("@/components/service/logos/AnthropicLogo")),
+  elevenlabs: lazyLogo(() => import("@/components/service/logos/ElevenlabsLogo")),
+  notion: lazyLogo(() => import("@/components/service/logos/NotionLogo")),
+  figma: lazyLogo(() => import("@/components/service/logos/FigmaLogo")),
+  airtable: lazyLogo(() => import("@/components/service/logos/AirtableLogo")),
+  webflow: lazyLogo(() => import("@/components/service/logos/WebflowLogo")),
+  trello: lazyLogo(() => import("@/components/service/logos/TrelloLogo")),
+  render: lazyLogo(() => import("@/components/service/logos/RenderLogo")),
   // No hand-crafted brand logo available for these — original two-letter
   // badges instead (see MonogramLogo's own comment for why).
   launchdarkly: ({ size }) => <MonogramLogo size={size} initials="LD" color="#4F46E5" />,

@@ -168,8 +168,12 @@
     "addKeyword": "Toevoegen",
     "removeKeyword": "Verwijderen",
     "empty": "Nog geen overeenkomsten — voeg hierboven een trefwoord toe en zet een bron aan.",
+    "noMatches": "Geen overeenkomsten voor dit trefwoord.",
     "new": "Nieuw",
     "openLink": "Openen op Reddit",
+    "filter": {
+      "allKeywords": "Alle trefwoorden"
+    },
     "selectPrompt": "Selecteer links een overeenkomst om de details te zien.",
     "somethingWrong": "Er is iets misgegaan."
   },
@@ -483,5 +487,10 @@
     "sms": "Ontvang een sms zodra er iets groots of kritieks uitvalt — voeg één of meerdere nummers toe en kies welke ernstniveaus een sms waard zijn, van alleen kritiek tot alles.",
     "history": "Kies een gevolgde dienst en bekijk de incidentgeschiedenis van de afgelopen 12 maanden — handig als iemand ooit vraagt of dit al eerder is gebeurd.",
     "boards": "Groepeer je gevolgde diensten in borden voor verschillende teams, zodat iedereen alleen de diensten ziet die voor hen relevant zijn."
+  },
+  "notFound": {
+    "title": "Pagina niet gevonden",
+    "description": "De pagina die je zoekt bestaat niet of is verplaatst.",
+    "homeButton": "Terug naar downDATA"
   }
 }

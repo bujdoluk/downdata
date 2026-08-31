@@ -168,8 +168,12 @@
     "addKeyword": "Hinzufügen",
     "removeKeyword": "Entfernen",
     "empty": "Noch keine Treffer — füge oben ein Schlüsselwort hinzu und aktiviere eine Quelle.",
+    "noMatches": "Keine Treffer für dieses Schlüsselwort.",
     "new": "Neu",
     "openLink": "Auf Reddit öffnen",
+    "filter": {
+      "allKeywords": "Alle Schlüsselwörter"
+    },
     "selectPrompt": "Wähle links einen Treffer aus, um Details zu sehen.",
     "somethingWrong": "Etwas ist schiefgelaufen."
   },
@@ -483,5 +487,10 @@
     "sms": "Erhalte eine SMS, sobald etwas Schwerwiegendes oder Kritisches ausfällt — füge eine oder mehrere Nummern hinzu und wähle, welche Schweregrade eine SMS wert sind, von nur kritisch bis hin zu allem.",
     "history": "Wähle einen getrackten Dienst und sieh dir seine Incident-Historie der letzten 12 Monate an — praktisch, wenn jemand fragt, ob das schon mal vorgekommen ist.",
     "boards": "Gruppiere deine getrackten Dienste in Boards für verschiedene Teams, damit jeder nur die Dienste sieht, die für ihn wichtig sind."
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+    "homeButton": "Zurück zu downDATA"
   }
 }

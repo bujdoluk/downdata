@@ -170,8 +170,12 @@
     "addKeyword": "Dodaj",
     "removeKeyword": "Usuń",
     "empty": "Brak dopasowań — dodaj słowo kluczowe i włącz źródło powyżej.",
+    "noMatches": "Brak dopasowań dla tego słowa kluczowego.",
     "new": "Nowe",
     "openLink": "Otwórz na Reddicie",
+    "filter": {
+      "allKeywords": "Wszystkie słowa kluczowe"
+    },
     "selectPrompt": "Wybierz dopasowanie po lewej, aby zobaczyć szczegóły.",
     "somethingWrong": "Coś poszło nie tak."
   },
@@ -495,5 +499,10 @@
     "sms": "Otrzymaj SMS w chwili, gdy coś ulegnie poważnej lub krytycznej awarii — dodaj jeden lub więcej numerów i wybierz, które poziomy ważności zasługują na SMS, od samych krytycznych po wszystkie.",
     "history": "Wybierz dowolną monitorowaną usługę i zobacz jej historię incydentów z ostatnich 12 miesięcy — przydaje się, gdy ktoś zapyta, czy to już się kiedyś zdarzyło.",
     "boards": "Grupuj monitorowane usługi w tablice dla różnych zespołów, dzięki czemu każdy widzi tylko te usługi, na których mu zależy."
+  },
+  "notFound": {
+    "title": "Nie znaleziono strony",
+    "description": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
+    "homeButton": "Wróć do downDATA"
   }
 }

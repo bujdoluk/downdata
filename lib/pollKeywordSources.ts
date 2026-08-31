@@ -1,4 +1,5 @@
 import { KEYWORD_SOURCES } from "@/lib/keywordSources";
+import type { RawMatch } from "@/lib/keywordSources/types";
 import { getSupabaseClient } from "@/lib/supabase";
 import { nowPlusIso } from "@/lib/formatTime";
 
@@ -13,6 +14,28 @@ const REQUEST_DELAY_MS = 3_000;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// A source's own search (Reddit's search.rss included) is relevance-ranked,
+// not a literal keyword match — confirmed live, it can return a result that
+// doesn't contain the keyword anywhere at all. This re-checks every result
+// against exactly what gets stored/shown (title + snippet, not the full
+// untruncated post) before it's ever written to keyword_matches, so every
+// match a user sees is self-evidently justified by its own preview.
+// Word-boundary, not substring — a plain .includes() would still let
+// through a different false positive ("aws" inside "flaws"). Lookaround
+// instead of \b: \b only treats ASCII [A-Za-z0-9_] as "word" characters,
+// which would silently fail to bound non-Latin keywords (this app's
+// keyword_watches.keyword is free text across 13 locales).
+function matchesKeyword(match: RawMatch, keyword: string): boolean {
+  const escaped = escapeRegExp(keyword.trim());
+  if (!escaped) return false;
+  const pattern = new RegExp(`(?<![\\p{L}\\p{N}_])${escaped}(?![\\p{L}\\p{N}_])`, "iu");
+  return pattern.test(`${match.title} ${match.snippet}`);
 }
 
 // Distinct keywords across every account that has this source enabled —
@@ -43,10 +66,17 @@ async function distinctEnabledKeywords(source: string): Promise<string[]> {
   return [...new Set((watchRows as { keyword: string }[] | null)?.map((row) => row.keyword) ?? [])];
 }
 
-export async function pollAllKeywordSources(): Promise<{ sourcesPolled: number; keywordsPolled: number; matchesUpserted: number; failed: number }> {
+export async function pollAllKeywordSources(): Promise<{
+  sourcesPolled: number;
+  keywordsPolled: number;
+  matchesUpserted: number;
+  filteredOut: number;
+  failed: number;
+}> {
   const supabase = getSupabaseClient();
   let keywordsPolled = 0;
   let matchesUpserted = 0;
+  let filteredOut = 0;
   let failed = 0;
 
   for (const source of KEYWORD_SOURCES) {
@@ -55,7 +85,9 @@ export async function pollAllKeywordSources(): Promise<{ sourcesPolled: number; 
     for (const keyword of keywords) {
       keywordsPolled++;
       try {
-        const matches = await source.fetchMatches(keyword);
+        const rawMatches = await source.fetchMatches(keyword);
+        const matches = rawMatches.filter((match) => matchesKeyword(match, keyword));
+        filteredOut += rawMatches.length - matches.length;
         if (matches.length > 0) {
           // Post content, written once per real match regardless of how
           // many watched keywords eventually find it — matches
@@ -104,5 +136,5 @@ export async function pollAllKeywordSources(): Promise<{ sourcesPolled: number; 
   const { error: pruneError } = await supabase.from("keyword_matches").delete().lt("captured_at", cutoff);
   if (pruneError) console.error("pollAllKeywordSources: retention prune failed:", pruneError);
 
-  return { sourcesPolled: KEYWORD_SOURCES.length, keywordsPolled, matchesUpserted, failed };
+  return { sourcesPolled: KEYWORD_SOURCES.length, keywordsPolled, matchesUpserted, filteredOut, failed };
 }

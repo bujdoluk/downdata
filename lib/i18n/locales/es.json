@@ -168,8 +168,12 @@
     "addKeyword": "Añadir",
     "removeKeyword": "Quitar",
     "empty": "Aún no hay coincidencias — añade una palabra clave y activa una fuente arriba.",
+    "noMatches": "Sin coincidencias para esta palabra clave.",
     "new": "Nuevo",
     "openLink": "Abrir en Reddit",
+    "filter": {
+      "allKeywords": "Todas las palabras clave"
+    },
     "selectPrompt": "Selecciona una coincidencia a la izquierda para ver sus detalles.",
     "somethingWrong": "Algo salió mal."
   },
@@ -483,5 +487,10 @@
     "sms": "Recibe un SMS en el momento en que algo falle de forma grave o crítica — añade uno o varios números y elige qué niveles de gravedad merecen un SMS, desde solo crítico hasta todos.",
     "history": "Elige cualquier servicio monitorizado y consulta su historial de incidentes de los últimos 12 meses — útil la próxima vez que alguien pregunte si esto ya había pasado antes.",
     "boards": "Agrupa tus servicios monitorizados en tableros para distintos equipos, para que cada uno vea solo los servicios que le importan."
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o ha sido movida.",
+    "homeButton": "Volver a downDATA"
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,9 @@ import { formatDateTime, epochMs } from "@/lib/formatTime";
 import type { KeywordWatch, SourceSetting, KeywordMatch } from "@/types/earlyWarning";
 import ListDetailShell from "@/components/service/ListDetailShell";
 import SourceToggleRow from "@/components/early-warnings/SourceToggleRow";
-import KeywordForm from "@/components/early-warnings/KeywordForm";
+import AddKeywordForm from "@/components/early-warnings/AddKeywordForm";
+import KeywordBadgeList from "@/components/early-warnings/KeywordBadgeList";
+import ClearFiltersButton from "@/components/service/ClearFiltersButton";
 import { useSelectAndScrollOnMobile } from "@/lib/useSelectAndScrollOnMobile";
 import { useAutoSelectFirstId } from "@/lib/useAutoSelectFirstId";
 import { useEarlyWarningsLastViewed } from "@/lib/useEarlyWarningsLastViewed";
@@ -47,11 +49,29 @@ export default function EarlyWarningsPageContent({
 
   const matches: MatchWithId[] = useMemo(() => initialMatches.map((match) => ({ ...match, id: matchId(match) })), [initialMatches]);
   const selectedId = searchParams.get("id");
+  // Deliberately looked up against the full list, not filteredMatches below
+  // — narrowing the keyword filter shouldn't blank out an already-open
+  // detail pane just because its post fell outside the current filter,
+  // same behavior IncidentsPageContent already has for its own filters.
   const selected = matches.find((match) => match.id === selectedId);
+
+  const [selectedKeyword, setSelectedKeyword] = useState("");
+  const keywordCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const match of matches) {
+      for (const keyword of match.keywords) counts.set(keyword, (counts.get(keyword) ?? 0) + 1);
+    }
+    return counts;
+  }, [matches]);
+  const availableKeywords = useMemo(() => [...keywordCounts.keys()].sort(), [keywordCounts]);
+  const filteredMatches = useMemo(
+    () => (selectedKeyword ? matches.filter((match) => match.keywords.includes(selectedKeyword)) : matches),
+    [matches, selectedKeyword],
+  );
 
   const detailRef = useRef<HTMLDivElement>(null);
   const selectMatch = useSelectAndScrollOnMobile("/early-warnings", detailRef);
-  useAutoSelectFirstId("/early-warnings", selectedId, matches);
+  useAutoSelectFirstId("/early-warnings", selectedId, filteredMatches);
 
   const addKeywordMutation = useMutation({
     mutationFn: async (keyword: string) => {
@@ -80,9 +100,11 @@ export default function EarlyWarningsPageContent({
     onSuccess: () => router.refresh(),
   });
 
-  const list = (
+  const list = filteredMatches.length === 0 ? (
+    <p className="text-base-content/50 mt-4 text-sm">{t("earlyWarnings.noMatches")}</p>
+  ) : (
     <ul className="mt-4 flex flex-col gap-3">
-      {matches.map((match) => {
+      {filteredMatches.map((match) => {
         const isNew = epochMs(match.capturedAt) > lastViewed;
         const isSelected = match.id === selectedId;
         const subreddit = typeof match.metadata?.subreddit === "string" ? match.metadata.subreddit : null;
@@ -101,20 +123,38 @@ export default function EarlyWarningsPageContent({
                 {isNew && <span className="badge badge-xs badge-primary">{t("earlyWarnings.new")}</span>}
               </div>
               <p className="text-base-content truncate text-sm font-medium">{match.title}</p>
-              <p className="text-base-content/60 line-clamp-2 text-xs">{match.snippet}</p>
               <div className="flex flex-wrap items-center gap-1.5">
                 {match.keywords.map((keyword) => (
-                  <span key={keyword} className="badge badge-xs badge-outline">
+                  <span key={keyword} className="badge badge-sm badge-outline">
                     {keyword}
                   </span>
                 ))}
-                <p className="text-base-content/40 text-xs">{formatDateTime(match.publishedAt)}</p>
+                <span className="text-base-content/40 ml-auto text-xs whitespace-nowrap">{formatDateTime(match.publishedAt)}</span>
               </div>
             </button>
           </li>
         );
       })}
     </ul>
+  );
+
+  const filters = availableKeywords.length > 0 && (
+    <form className="flex flex-wrap items-center gap-2">
+      <select
+        className="select select-bordered select-sm w-48"
+        aria-label={t("earlyWarnings.filter.allKeywords")}
+        value={selectedKeyword}
+        onChange={(e) => setSelectedKeyword(e.target.value)}
+      >
+        <option value="">{t("earlyWarnings.filter.allKeywords")}</option>
+        {availableKeywords.map((keyword) => (
+          <option key={keyword} value={keyword}>
+            {keyword} ({keywordCounts.get(keyword)})
+          </option>
+        ))}
+      </select>
+      {selectedKeyword && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={() => setSelectedKeyword("")} />}
+    </form>
   );
 
   const detail = selected ? (
@@ -142,14 +182,15 @@ export default function EarlyWarningsPageContent({
         sources={initialSources}
         isPending={toggleSourceMutation.isPending}
         onToggle={(source, enabled) => toggleSourceMutation.mutate({ source, enabled })}
+        trailing={
+          <AddKeywordForm
+            isSubmitting={addKeywordMutation.isPending}
+            error={addKeywordMutation.error?.message ?? null}
+            onAdd={(keyword) => addKeywordMutation.mutate(keyword)}
+          />
+        }
       />
-      <KeywordForm
-        keywords={initialKeywords}
-        isSubmitting={addKeywordMutation.isPending}
-        error={addKeywordMutation.error?.message ?? null}
-        onAdd={(keyword) => addKeywordMutation.mutate(keyword)}
-        onRemove={(id) => removeKeywordMutation.mutate(id)}
-      />
+      <KeywordBadgeList keywords={initialKeywords} onRemove={(id) => removeKeywordMutation.mutate(id)} />
     </div>
   );
 
@@ -165,7 +206,7 @@ export default function EarlyWarningsPageContent({
         loadingLabel=""
         unreachableLabel=""
         emptyLabel={t("earlyWarnings.empty")}
-        filters={null}
+        filters={filters}
         list={list}
         detailRef={detailRef}
         detail={detail}

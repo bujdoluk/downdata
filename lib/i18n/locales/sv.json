@@ -168,8 +168,12 @@
     "addKeyword": "Lägg till",
     "removeKeyword": "Ta bort",
     "empty": "Inga träffar än — lägg till ett nyckelord och slå på en källa ovan.",
+    "noMatches": "Inga träffar för det här nyckelordet.",
     "new": "Nytt",
     "openLink": "Öppna på Reddit",
+    "filter": {
+      "allKeywords": "Alla nyckelord"
+    },
     "selectPrompt": "Välj en träff till vänster för att se detaljer.",
     "somethingWrong": "Något gick fel."
   },
@@ -483,5 +487,10 @@
     "sms": "Få ett sms i samma stund som något allvarligt eller kritiskt går ner — lägg till ett eller flera nummer och välj vilka allvarlighetsgrader som är värda ett sms, från enbart kritiska till alla.",
     "history": "Välj vilken bevakad tjänst som helst och se dess incidenthistorik för de senaste 12 månaderna — praktiskt nästa gång någon undrar om det här har hänt förut.",
     "boards": "Gruppera dina bevakade tjänster i tavlor för olika team, så att alla bara ser de tjänster som är relevanta för dem."
+  },
+  "notFound": {
+    "title": "Sidan hittades inte",
+    "description": "Sidan du letar efter finns inte eller har flyttats.",
+    "homeButton": "Tillbaka till downDATA"
   }
 }

@@ -168,8 +168,12 @@
     "addKeyword": "Add",
     "removeKeyword": "Remove",
     "empty": "No matches yet — add a keyword and turn on a source above.",
+    "noMatches": "No matches for this keyword.",
     "new": "New",
     "openLink": "Open on Reddit",
+    "filter": {
+      "allKeywords": "All keywords"
+    },
     "selectPrompt": "Select a match on the left to see its details.",
     "somethingWrong": "Something went wrong."
   },
@@ -483,5 +487,10 @@
     "sms": "Get a text the moment something major or critical breaks — add one or more numbers and choose which severities are worth a text, from critical-only up to everything.",
     "history": "Pick any tracked service and see its incident history over the last 12 months — useful the next time someone asks whether this has happened before.",
     "boards": "Group your tracked services into boards for different teams, so everyone sees only the services that matter to them."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or may have moved.",
+    "homeButton": "Back to downDATA"
   }
 }

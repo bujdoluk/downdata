@@ -11,6 +11,11 @@ const USER_AGENT = "downdata-early-warnings/1.0 (+https://downdata.app)";
 // same post results regardless (confirmed live). There is no free,
 // targeted way to search Reddit comments by keyword; see the Early
 // Warnings plan for why that's out of scope rather than worked around.
+//
+// This is relevance-ranked, not a literal keyword match — confirmed live,
+// it can return a result that doesn't contain the searched keyword at all.
+// Don't treat its results as pre-verified matches: lib/pollKeywordSources.ts's
+// matchesKeyword() re-checks every result before it's ever stored.
 const SEARCH_URL = "https://www.reddit.com/search.rss";
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });

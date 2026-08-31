@@ -168,8 +168,12 @@
     "addKeyword": "Ajouter",
     "removeKeyword": "Retirer",
     "empty": "Aucune correspondance pour le moment — ajoutez un mot-clé et activez une source ci-dessus.",
+    "noMatches": "Aucune correspondance pour ce mot-clé.",
     "new": "Nouveau",
     "openLink": "Ouvrir sur Reddit",
+    "filter": {
+      "allKeywords": "Tous les mots-clés"
+    },
     "selectPrompt": "Sélectionnez une correspondance à gauche pour voir ses détails.",
     "somethingWrong": "Une erreur s'est produite."
   },
@@ -483,5 +487,10 @@
     "sms": "Recevez un SMS dès qu'un incident majeur ou critique survient — ajoutez un ou plusieurs numéros et choisissez les niveaux de gravité qui méritent un SMS, du critique uniquement à tous les niveaux.",
     "history": "Choisissez un service suivi et consultez son historique d'incidents des 12 derniers mois — utile la prochaine fois que quelqu'un demande si c'est déjà arrivé.",
     "boards": "Regroupez vos services suivis dans des tableaux pour différentes équipes, afin que chacun ne voie que les services qui le concernent."
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "homeButton": "Retour à downDATA"
   }
 }

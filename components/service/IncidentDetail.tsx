@@ -17,9 +17,11 @@ import { stripHtml } from "@/lib/stripHtml";
 // no "New" badges, matching the Maintenance page's existing behavior.
 export default function IncidentDetail({
   incident,
+  timeZone,
   lastViewed,
 }: {
   incident: TrackedIncident | TrackedMaintenance;
+  timeZone: string;
   lastViewed?: number;
 }) {
   const { t } = useTranslation();
@@ -36,12 +38,13 @@ export default function IncidentDetail({
           <h2 className="text-lg font-semibold">{incident.name}</h2>
           {"scheduled_for" in incident ? (
             <p className="text-base-content/40 text-xs">
-              {t("maintenances.scheduledLabel")} {formatDateTime(incident.scheduled_for)} – {formatDateTime(incident.scheduled_until)}
+              {t("maintenances.scheduledLabel")} {formatDateTime(incident.scheduled_for, timeZone)} –{" "}
+              {formatDateTime(incident.scheduled_until, timeZone)}
             </p>
           ) : (
             <>
               <p className="text-base-content/40 text-xs">
-                {t("incidents.dateLabel")} {formatDateTime(incident.created_at)}
+                {t("incidents.dateLabel")} {formatDateTime(incident.created_at, timeZone)}
               </p>
               {incident.resolved_at && (
                 <p className="text-base-content/40 text-xs">
@@ -70,7 +73,7 @@ export default function IncidentDetail({
             <li key={update.id}>
               {i > 0 && <hr />}
               <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
-                {formatDateTime(update.created_at)}
+                {formatDateTime(update.created_at, timeZone)}
               </div>
               <div className="timeline-middle">
                 <span className="bg-base-content/30 block h-2 w-2 rounded-full" />

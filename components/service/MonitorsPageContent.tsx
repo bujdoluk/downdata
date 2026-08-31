@@ -59,7 +59,7 @@ export default function MonitorsPageContent({ catalog, trackedSlugs }: { catalog
           <NoServicesMessage />
         </div>
       ) : (
-        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] gap-4">
           <CatalogServiceGrid
             catalog={myServices}
             trackedHosts={[]}

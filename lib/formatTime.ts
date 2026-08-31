@@ -1,15 +1,15 @@
 import { Temporal } from "temporal-polyfill";
 
-function toLocalZonedDateTime(iso: string) {
-  return Temporal.Instant.from(iso).toZonedDateTimeISO(Temporal.Now.timeZoneId());
+function toLocalZonedDateTime(iso: string, timeZone: string) {
+  return Temporal.Instant.from(iso).toZonedDateTimeISO(timeZone);
 }
 
-export function formatDateTime(iso: string): string {
-  return toLocalZonedDateTime(iso).toLocaleString();
+export function formatDateTime(iso: string, timeZone: string): string {
+  return toLocalZonedDateTime(iso, timeZone).toLocaleString();
 }
 
-export function formatTime(iso: string): string {
-  return toLocalZonedDateTime(iso).toLocaleString(undefined, { timeStyle: "medium" });
+export function formatTime(iso: string, timeZone: string): string {
+  return toLocalZonedDateTime(iso, timeZone).toLocaleString(undefined, { timeStyle: "medium" });
 }
 
 export function msSince(iso: string): number {

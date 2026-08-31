@@ -15,6 +15,7 @@ import PinButton from "@/components/service/PinButton";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { usePinned } from "@/lib/usePinned";
+import { useTimeZone } from "@/lib/useTimeZone";
 import { useDebouncedUrlFilters } from "@/lib/useDebouncedUrlFilters";
 import { useSelectAndScrollOnMobile } from "@/lib/useSelectAndScrollOnMobile";
 import { useAutoSelectFirstId } from "@/lib/useAutoSelectFirstId";
@@ -72,6 +73,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
     refetchInterval: POLL_INTERVAL_MS,
   });
   const { pinned, togglePin } = usePinned("pinnedMaintenance");
+  const timeZone = useTimeZone();
 
   const { pendingFilters, setPendingFilters, updateParams, searchParams } = useDebouncedUrlFilters({
     path: "/maintenance",
@@ -216,7 +218,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
                     )}
                   </div>
                   <p className="text-base-content/50 self-end text-xs whitespace-nowrap">
-                    {formatDateTime(maintenance.scheduled_for)} – {formatDateTime(maintenance.scheduled_until)}
+                    {formatDateTime(maintenance.scheduled_for, timeZone)} – {formatDateTime(maintenance.scheduled_until, timeZone)}
                   </p>
                 </button>
                 <PinButton
@@ -243,7 +245,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   );
 
   const detailContent = detail ? (
-    <IncidentDetail incident={detail} />
+    <IncidentDetail incident={detail} timeZone={timeZone} />
   ) : detailError ? (
     <p className="text-base-content/50 text-sm">{t("maintenances.unreachable")}</p>
   ) : selectedMaintenance ? (

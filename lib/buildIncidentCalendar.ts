@@ -18,6 +18,10 @@ export type IncidentCalendarData = {
   weeks: number;
   days: CalendarDay[];
   monthLabels: CalendarMonthLabel[];
+  // "Today" in the timezone this calendar was built for — exposed so
+  // IncidentCalendar.tsx can highlight the right cell without computing
+  // its own, possibly browser-local, notion of "today" a second time.
+  today: string;
 };
 
 const IMPACT_RANK = ["critical", "major", "minor", "none"];
@@ -38,8 +42,7 @@ function worstImpact(incidents: Incident[]): string | null {
   return best;
 }
 
-export function buildIncidentCalendar(incidents: Incident[], year: number, locale: string): IncidentCalendarData {
-  const timeZone = Temporal.Now.timeZoneId();
+export function buildIncidentCalendar(incidents: Incident[], year: number, locale: string, timeZone: string): IncidentCalendarData {
   const today = Temporal.Now.zonedDateTimeISO(timeZone).toPlainDate();
   const yearStart = Temporal.PlainDate.from({ year, month: 1, day: 1 });
   const yearEnd = Temporal.PlainDate.from({ year, month: 12, day: 31 });
@@ -81,5 +84,5 @@ export function buildIncidentCalendar(incidents: Incident[], year: number, local
 
   const weeks = Math.floor((offset - 1) / 7) + 1;
 
-  return { weeks, days, monthLabels };
+  return { weeks, days, monthLabels, today: today.toString() };
 }

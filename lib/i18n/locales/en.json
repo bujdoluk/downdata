@@ -21,6 +21,7 @@
     "monitors": "Monitors",
     "incidents": "Incidents",
     "incidentsBadgeTooltip": "Investigating & Identified incidents",
+    "maintenanceBadgeTooltip": "In-progress maintenances",
     "maintenances": "Maintenances",
     "integrations": "Integrations",
     "slack": "Slack",
@@ -38,7 +39,8 @@
     "avatarInvalidType": "Please choose an image file.",
     "avatarTooLarge": "Image must be smaller than 2MB.",
     "avatarUploadFailed": "Couldn't update your picture. Try again.",
-    "theme": "Theme"
+    "theme": "Theme",
+    "timezone": "Timezone"
   },
   "serviceCard": {
     "checkingStatus": "Checking status…",
@@ -425,7 +427,8 @@
     "deleteConfirmMessage": "This will permanently delete your account, boards, and integrations. This can't be undone.",
     "deleteConfirmEmailLabel": "Type {{email}} to confirm",
     "cancel": "Cancel",
-    "deleteFailed": "Couldn't delete your account. Try again."
+    "deleteFailed": "Couldn't delete your account. Try again.",
+    "timezoneUpdateFailed": "Couldn't update your timezone. Try again."
   },
   "cookieConsent": {
     "title": "We use cookies",

@@ -21,6 +21,7 @@
     "monitors": "Monitoren",
     "incidents": "Incidenten",
     "incidentsBadgeTooltip": "Incidenten in onderzoek of geïdentificeerd",
+    "maintenanceBadgeTooltip": "Lopend onderhoud",
     "maintenances": "Onderhoud",
     "integrations": "Integraties",
     "slack": "Slack",
@@ -38,7 +39,8 @@
     "avatarInvalidType": "Kies een afbeeldingsbestand.",
     "avatarTooLarge": "De afbeelding moet kleiner zijn dan 2 MB.",
     "avatarUploadFailed": "Kan de afbeelding niet bijwerken. Probeer het opnieuw.",
-    "theme": "Thema"
+    "theme": "Thema",
+    "timezone": "Tijdzone"
   },
   "serviceCard": {
     "checkingStatus": "Status controleren…",
@@ -425,7 +427,8 @@
     "deleteConfirmMessage": "Hierdoor worden je account, borden en integraties permanent verwijderd. Dit kan niet ongedaan worden gemaakt.",
     "deleteConfirmEmailLabel": "Typ {{email}} om te bevestigen",
     "cancel": "Annuleren",
-    "deleteFailed": "Je account kon niet worden verwijderd. Probeer het opnieuw."
+    "deleteFailed": "Je account kon niet worden verwijderd. Probeer het opnieuw.",
+    "timezoneUpdateFailed": "Je tijdzone kon niet worden bijgewerkt. Probeer het opnieuw."
   },
   "cookieConsent": {
     "title": "We gebruiken cookies",

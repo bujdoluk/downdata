@@ -18,6 +18,7 @@ import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { usePinned } from "@/lib/usePinned";
 import { useIncidentsLastViewed } from "@/lib/useIncidentsLastViewed";
+import { useTimeZone } from "@/lib/useTimeZone";
 import { useDebouncedUrlFilters } from "@/lib/useDebouncedUrlFilters";
 import { useSelectAndScrollOnMobile } from "@/lib/useSelectAndScrollOnMobile";
 import { useAutoSelectFirstId } from "@/lib/useAutoSelectFirstId";
@@ -96,6 +97,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   });
   const { pinned, togglePin } = usePinned("pinnedIncidents");
   const lastViewed = useIncidentsLastViewed(true);
+  const timeZone = useTimeZone();
 
   const { pendingFilters, setPendingFilters, updateParams, searchParams } = useDebouncedUrlFilters({
     path: "/incidents",
@@ -112,7 +114,6 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   const incidents = useMemo(() => data?.incidents ?? [], [data]);
   const selectedId = searchParams.get("id");
   const page = Number(searchParams.get("page") ?? "1");
-  const onlyNew = searchParams.get("new") === "1";
   const selectedIncident = incidents.find((incident) => incident.id === selectedId);
   const selectedSlug = selectedIncident?.service.slug;
 
@@ -139,11 +140,14 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
             pendingFilters.impacts.has(incident.impact) &&
             (!trimmedServiceQuery || incident.service.name.toLowerCase().includes(trimmedServiceQuery)) &&
             (pendingFilters.range === "all" || msSince(incident.updated_at) <= RANGE_MS[pendingFilters.range]) &&
-            (!onlyNew || epochMs(incident.updated_at) > lastViewed) &&
             (!boardSlugs || boardSlugs.has(incident.service.slug)),
         )
-        .sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id))),
-    [incidents, pendingFilters, trimmedServiceQuery, onlyNew, lastViewed, pinned, boardSlugs],
+        .sort((a, b) => {
+          const pinnedDiff = Number(pinned.has(b.id)) - Number(pinned.has(a.id));
+          if (pinnedDiff !== 0) return pinnedDiff;
+          return Number(epochMs(b.updated_at) > lastViewed) - Number(epochMs(a.updated_at) > lastViewed);
+        }),
+    [incidents, pendingFilters, trimmedServiceQuery, pinned, boardSlugs, lastViewed],
   );
 
   useAutoSelectFirstId("/incidents", selectedId, filteredIncidents);
@@ -157,25 +161,19 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
     });
   }
 
-  function toggleOnlyNew() {
-    updateParams({ new: onlyNew ? null : "1", page: null });
-  }
-
   const hasActiveFilters =
     pendingFilters.status !== "all" ||
     pendingFilters.q.trim() !== "" ||
     pendingFilters.range !== "30d" ||
     pendingFilters.impacts.size !== ALL_IMPACTS.length ||
-    pendingFilters.board !== "" ||
-    onlyNew;
+    pendingFilters.board !== "";
 
   function clearFilters() {
     setPendingFilters({ status: "all", q: "", range: "30d", impacts: new Set(ALL_IMPACTS), board: "" });
-    updateParams({ new: null, page: null });
+    updateParams({ page: null });
   }
 
   const countForStatus = (filter: StatusFilter) => incidents.filter((incident) => matchesStatus(incident, filter)).length;
-  const newCount = incidents.filter((incident) => epochMs(incident.updated_at) > lastViewed).length;
   const { listRef, minListHeight, totalPages, currentPage, pageItems: pageIncidents } = usePagination(
     filteredIncidents,
     page,
@@ -224,11 +222,6 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
           value={pendingFilters.board}
           onChange={(board) => setPendingFilters((prev) => ({ ...prev, board }))}
         />
-        {newCount > 0 && (
-          <button type="button" onClick={toggleOnlyNew} className={`btn btn-xs ${onlyNew ? "btn-primary" : "btn-ghost"}`}>
-            {t("incidents.filter.new")} ({newCount})
-          </button>
-        )}
         {hasActiveFilters && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={clearFilters} />}
       </form>
 
@@ -260,6 +253,11 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
                   isSelected ? "border-primary" : "hover:border-base-content/20"
                 }`}
               >
+                {isNew && (
+                  <span className="badge badge-xs badge-info absolute top-3 left-4 z-10 text-white uppercase">
+                    {t("incidents.new")}
+                  </span>
+                )}
                 <div className="absolute top-3 right-4 z-10 flex items-center gap-2">
                   <PinButton
                     pinned={pinned.has(incident.id)}
@@ -279,11 +277,10 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
                     <div className="mt-1 flex items-center gap-2">
                       <span className="text-base-content/50 text-xs">{incident.status}</span>
                       <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
-                      {isNew && <span className="badge badge-xs badge-primary">{t("incidents.new")}</span>}
                     </div>
                   </div>
                   <div className="text-base-content/50 self-end text-right text-xs whitespace-nowrap">
-                    <p>{formatDateTime(incident.updated_at)}</p>
+                    <p>{formatDateTime(incident.updated_at, timeZone)}</p>
                     {incident.resolved_at && (
                       <p>
                         {t("history.resolutionTime", {
@@ -312,7 +309,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   );
 
   const detailContent = detail ? (
-    <IncidentDetail incident={detail} lastViewed={lastViewed} />
+    <IncidentDetail incident={detail} timeZone={timeZone} lastViewed={lastViewed} />
   ) : detailError ? (
     <p className="text-base-content/50 text-sm">{t("incidents.unreachable")}</p>
   ) : selectedIncident ? (

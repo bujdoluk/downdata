@@ -14,10 +14,12 @@ export default function BoardActivityPanel({
   boardId,
   activeIncidents,
   maintenances,
+  timeZone,
 }: {
   boardId: string;
   activeIncidents: TrackedIncidentSummary[];
   maintenances: TrackedMaintenanceSummary[];
+  timeZone: string;
 }) {
   const { t } = useTranslation();
 
@@ -104,7 +106,7 @@ export default function BoardActivityPanel({
                       <span className="badge badge-info badge-xs shrink-0">{t("maintenances.inProgress")}</span>
                     ) : (
                       <span className="text-base-content/50 shrink-0 text-xs whitespace-nowrap">
-                        {formatDateTime(maintenance.scheduled_for)}
+                        {formatDateTime(maintenance.scheduled_for, timeZone)}
                       </span>
                     )}
                   </Link>

@@ -12,7 +12,7 @@ export default async function MonitorsPage() {
 
   return (
     <main className="flex flex-1 justify-center p-6">
-      <div className="w-full max-w-6xl">
+      <div className="w-full">
         <MonitorsPageContent catalog={catalog} trackedSlugs={trackedSlugs} />
       </div>
     </main>

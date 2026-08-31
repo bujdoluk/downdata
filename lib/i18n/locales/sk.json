@@ -21,6 +21,7 @@
     "monitors": "Monitory",
     "incidents": "Incidenty",
     "incidentsBadgeTooltip": "Vyšetrované alebo identifikované incidenty",
+    "maintenanceBadgeTooltip": "Prebiehajúce údržby",
     "maintenances": "Údržby",
     "integrations": "Integrácie",
     "slack": "Slack",
@@ -38,7 +39,8 @@
     "avatarInvalidType": "Vyberte, prosím, obrázok.",
     "avatarTooLarge": "Obrázok musí byť menší než 2 MB.",
     "avatarUploadFailed": "Obrázok sa nepodarilo aktualizovať. Skúste to znova.",
-    "theme": "Motív"
+    "theme": "Motív",
+    "timezone": "Časové pásmo"
   },
   "serviceCard": {
     "checkingStatus": "Kontroluje sa stav…",
@@ -431,7 +433,8 @@
     "deleteConfirmMessage": "Týmto natrvalo odstránite váš účet, nástenky a integrácie. Túto akciu nemožno vrátiť späť.",
     "deleteConfirmEmailLabel": "Zadajte {{email}} na potvrdenie",
     "cancel": "Zrušiť",
-    "deleteFailed": "Účet sa nepodarilo odstrániť. Skúste to znova."
+    "deleteFailed": "Účet sa nepodarilo odstrániť. Skúste to znova.",
+    "timezoneUpdateFailed": "Časové pásmo sa nepodarilo aktualizovať. Skúste to znova."
   },
   "cookieConsent": {
     "title": "Používame cookies",

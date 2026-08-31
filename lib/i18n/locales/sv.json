@@ -21,6 +21,7 @@
     "monitors": "Övervakning",
     "incidents": "Incidenter",
     "incidentsBadgeTooltip": "Undersökta eller identifierade incidenter",
+    "maintenanceBadgeTooltip": "Pågående underhåll",
     "maintenances": "Underhåll",
     "integrations": "Integrationer",
     "slack": "Slack",
@@ -38,7 +39,8 @@
     "avatarInvalidType": "Välj en bildfil.",
     "avatarTooLarge": "Bilden måste vara mindre än 2 MB.",
     "avatarUploadFailed": "Det gick inte att uppdatera bilden. Försök igen.",
-    "theme": "Tema"
+    "theme": "Tema",
+    "timezone": "Tidszon"
   },
   "serviceCard": {
     "checkingStatus": "Kontrollerar status…",
@@ -425,7 +427,8 @@
     "deleteConfirmMessage": "Detta tar permanent bort ditt konto, dina tavlor och integrationer. Detta går inte att ångra.",
     "deleteConfirmEmailLabel": "Skriv {{email}} för att bekräfta",
     "cancel": "Avbryt",
-    "deleteFailed": "Det gick inte att ta bort ditt konto. Försök igen."
+    "deleteFailed": "Det gick inte att ta bort ditt konto. Försök igen.",
+    "timezoneUpdateFailed": "Det gick inte att uppdatera din tidszon. Försök igen."
   },
   "cookieConsent": {
     "title": "Vi använder cookies",

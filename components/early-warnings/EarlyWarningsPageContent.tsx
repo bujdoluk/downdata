@@ -15,6 +15,7 @@ import ClearFiltersButton from "@/components/service/ClearFiltersButton";
 import { useSelectAndScrollOnMobile } from "@/lib/useSelectAndScrollOnMobile";
 import { useAutoSelectFirstId } from "@/lib/useAutoSelectFirstId";
 import { useEarlyWarningsLastViewed } from "@/lib/useEarlyWarningsLastViewed";
+import { useTimeZone } from "@/lib/useTimeZone";
 import { usePagination } from "@/lib/usePagination";
 import Pagination from "@/components/Pagination";
 import { mergeParams } from "@/lib/mergeParams";
@@ -56,6 +57,7 @@ export default function EarlyWarningsPageContent({
   const router = useRouter();
   const searchParams = useSearchParams();
   const lastViewed = useEarlyWarningsLastViewed(true);
+  const timeZone = useTimeZone();
 
   const matches: MatchWithId[] = useMemo(() => initialMatches.map((match) => ({ ...match, id: matchId(match) })), [initialMatches]);
   const selectedId = searchParams.get("id");
@@ -170,7 +172,7 @@ export default function EarlyWarningsPageContent({
                         {keyword}
                       </span>
                     ))}
-                    <span className="text-base-content/40 ml-auto text-xs whitespace-nowrap">{formatDateTime(match.publishedAt)}</span>
+                    <span className="text-base-content/40 ml-auto text-xs whitespace-nowrap">{formatDateTime(match.publishedAt, timeZone)}</span>
                   </div>
                 </button>
               </li>
@@ -247,7 +249,7 @@ export default function EarlyWarningsPageContent({
   );
 
   return (
-    <div className="w-full max-w-6xl self-start">
+    <div className="w-full self-start">
       <ListDetailShell
         title={t("earlyWarnings.title")}
         subtitle={t("earlyWarnings.subtitle")}

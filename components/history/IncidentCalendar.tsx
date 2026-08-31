@@ -1,4 +1,3 @@
-import { Temporal } from "temporal-polyfill";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDate, minutesBetween, formatDuration } from "@/lib/formatTime";
@@ -6,7 +5,6 @@ import { INDICATOR_STYLES } from "@/components/service/statusStyles";
 import type { IncidentCalendarData } from "@/lib/buildIncidentCalendar";
 
 const EMPTY_DAY_COLOR = "bg-base-content/10";
-const TODAY = Temporal.Now.plainDateISO().toString();
 
 export default function IncidentCalendar({
   calendar,
@@ -18,7 +16,7 @@ export default function IncidentCalendar({
   onSelectDay: (date: string) => void;
 }) {
   const { t } = useTranslation();
-  const { weeks, days, monthLabels } = calendar;
+  const { weeks, days, monthLabels, today } = calendar;
 
   return (
     <div
@@ -63,7 +61,7 @@ export default function IncidentCalendar({
               onClick={() => onSelectDay(day.date)}
               className={`h-4 w-4 rounded-sm ${color} ${hasIncidents ? "cursor-pointer" : "cursor-default"} ${
                 day.date === selectedDate ? "ring-primary ring-2" : ""
-              } ${day.date === TODAY ? "outline-info outline-2 outline-offset-1" : ""}`}
+              } ${day.date === today ? "outline-info outline-2 outline-offset-1" : ""}`}
             />
           </div>
         );

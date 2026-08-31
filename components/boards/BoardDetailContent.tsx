@@ -12,6 +12,7 @@ import type { IncidentCountByService } from "@/lib/getStoredIncident";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { useBoardRename } from "@/lib/useBoardRename";
+import { useTimeZone } from "@/lib/useTimeZone";
 import { isActiveIncident } from "@/lib/isActiveIncident";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 import StatusSummary from "@/components/service/StatusSummary";
@@ -42,6 +43,7 @@ export default function BoardDetailContent({
   });
   const [removingSlug, setRemovingSlug] = useState<string | null>(null);
   const rename = useBoardRename(board);
+  const timeZone = useTimeZone();
   const confirmRef = useRef<HTMLDialogElement>(null);
 
   const { data: incidentsData } = useQuery({
@@ -110,7 +112,7 @@ export default function BoardDetailContent({
   });
 
   return (
-    <div className="w-full max-w-6xl self-start">
+    <div className="w-full self-start">
       <Link href="/boards" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
         {t("serviceDetail.back")}
       </Link>
@@ -211,7 +213,7 @@ export default function BoardDetailContent({
               {t("boards.viewHistory")}
             </Link>
           </div>
-          <BoardActivityPanel boardId={board.id} activeIncidents={activeIncidents} maintenances={boardMaintenances} />
+          <BoardActivityPanel boardId={board.id} activeIncidents={activeIncidents} maintenances={boardMaintenances} timeZone={timeZone} />
           <div className="mt-6">
             <IncidentCountsChart
               services={onBoardEntries}
@@ -220,7 +222,7 @@ export default function BoardDetailContent({
               onSelectService={(slug) => router.push(`/history?board=${board.id}&service=${slug}`)}
             />
           </div>
-          <BoardLastIncidentTable entries={calmEntries} />
+          <BoardLastIncidentTable entries={calmEntries} timeZone={timeZone} />
         </>
       )}
 
@@ -237,7 +239,7 @@ export default function BoardDetailContent({
           {onBoardEntries.length === 0 ? (
             <p className="text-base-content/50 text-sm">{t("boards.noServicesOnBoard")}</p>
           ) : (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] gap-3">
               <CatalogServiceGrid
                 catalog={onBoardEntries}
                 trackedHosts={[]}

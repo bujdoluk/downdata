@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import AvatarUpload from "@/components/account/AvatarUpload";
+import TimeZonePicker from "@/components/account/TimeZonePicker";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import Spinner from "@/components/Spinner";
@@ -28,6 +29,7 @@ export default function AccountPageContent({
   userId,
   email,
   avatarUrl: initialAvatarUrl,
+  timeZone: initialTimeZone,
   createdAt,
   lastSignInAt,
   provider,
@@ -38,6 +40,7 @@ export default function AccountPageContent({
   userId: string;
   email: string;
   avatarUrl: string | null;
+  timeZone: string;
   createdAt: string | null;
   lastSignInAt: string | null;
   provider: string;
@@ -49,6 +52,7 @@ export default function AccountPageContent({
   const queryClient = useQueryClient();
   const [supabase] = useState(() => createClient());
   const [avatarUrl, setAvatarUrl] = useState(initialAvatarUrl);
+  const [timeZone, setTimeZone] = useState(initialTimeZone);
 
   const isPasswordAccount = provider === "email";
 
@@ -57,6 +61,14 @@ export default function AccountPageContent({
     // Keeps the Sidebar's own avatar trigger (a separate mounted instance
     // reading the same query key) in sync without it having to refetch.
     queryClient.setQueryData<Account | null>(queryKeys.account(), (prev) => (prev ? { ...prev, avatarUrl: nextAvatarUrl } : prev));
+  }
+
+  function handleTimeZoneChange(nextTimeZone: string) {
+    setTimeZone(nextTimeZone);
+    // Same sync as handleAvatarChange — every useTimeZone() consumer
+    // reads this same cache entry, so this updates every open page's
+    // formatted times immediately, no refetch.
+    queryClient.setQueryData<Account | null>(queryKeys.account(), (prev) => (prev ? { ...prev, timeZone: nextTimeZone } : prev));
   }
 
   return (
@@ -96,9 +108,9 @@ export default function AccountPageContent({
             <dt className="text-base-content/60">{t("account.email")}</dt>
             <dd>{email}</dd>
             <dt className="text-base-content/60">{t("account.memberSince")}</dt>
-            <dd>{createdAt ? formatDateTime(createdAt) : "—"}</dd>
+            <dd>{createdAt ? formatDateTime(createdAt, timeZone) : "—"}</dd>
             <dt className="text-base-content/60">{t("account.lastSignIn")}</dt>
-            <dd>{lastSignInAt ? formatDateTime(lastSignInAt) : "—"}</dd>
+            <dd>{lastSignInAt ? formatDateTime(lastSignInAt, timeZone) : "—"}</dd>
           </dl>
 
           {isPasswordAccount && (
@@ -132,6 +144,13 @@ export default function AccountPageContent({
             <h2 className="text-xs font-semibold tracking-wide text-base-content/60 uppercase">{t("nav.avatar")}</h2>
             <div className="mt-2">
               <AvatarUpload supabase={supabase} userId={userId} avatarUrl={avatarUrl} onChange={handleAvatarChange} />
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <h2 className="text-xs font-semibold tracking-wide text-base-content/60 uppercase">{t("nav.timezone")}</h2>
+            <div className="mt-2">
+              <TimeZonePicker supabase={supabase} timeZone={timeZone} onChange={handleTimeZoneChange} />
             </div>
           </div>
         </div>

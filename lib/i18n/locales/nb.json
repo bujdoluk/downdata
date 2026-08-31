@@ -21,6 +21,7 @@
     "monitors": "Overvåking",
     "incidents": "Hendelser",
     "incidentsBadgeTooltip": "Hendelser under undersøkelse eller identifisert",
+    "maintenanceBadgeTooltip": "Pågående vedlikehold",
     "maintenances": "Vedlikehold",
     "integrations": "Integrasjoner",
     "slack": "Slack",
@@ -38,7 +39,8 @@
     "avatarInvalidType": "Velg en bildefil.",
     "avatarTooLarge": "Bildet må være mindre enn 2 MB.",
     "avatarUploadFailed": "Kunne ikke oppdatere bildet. Prøv igjen.",
-    "theme": "Tema"
+    "theme": "Tema",
+    "timezone": "Tidssone"
   },
   "serviceCard": {
     "checkingStatus": "Sjekker status…",
@@ -425,7 +427,8 @@
     "deleteConfirmMessage": "Dette vil permanent slette kontoen din, tavlene og integrasjonene. Dette kan ikke angres.",
     "deleteConfirmEmailLabel": "Skriv {{email}} for å bekrefte",
     "cancel": "Avbryt",
-    "deleteFailed": "Kunne ikke slette kontoen din. Prøv igjen."
+    "deleteFailed": "Kunne ikke slette kontoen din. Prøv igjen.",
+    "timezoneUpdateFailed": "Kunne ikke oppdatere tidssonen din. Prøv igjen."
   },
   "cookieConsent": {
     "title": "Vi bruker informasjonskapsler",

@@ -21,10 +21,10 @@ import BoardFilterSelect from "@/components/service/BoardFilterSelect";
 import ImpactFilterCheckboxes from "@/components/service/ImpactFilterCheckboxes";
 import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
+import { useTimeZone } from "@/lib/useTimeZone";
 import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/service/statusStyles";
 import Spinner from "@/components/Spinner";
 
-const CURRENT_YEAR = Temporal.Now.plainDateISO().year;
 const POLL_INTERVAL_MS = 60_000;
 
 export default function HistoryPageContent({
@@ -42,6 +42,11 @@ export default function HistoryPageContent({
     queryFn: () => fetchJson<{ counts: IncidentCountByService[] }>("/api/history/counts", { cache: "no-store" }),
     refetchInterval: POLL_INTERVAL_MS,
   });
+  const timeZone = useTimeZone();
+  // "Today" in the account's chosen timezone, not baked in once at module
+  // load in the browser's own — matters right around New Year's, when the
+  // two can disagree on what year "now" is.
+  const currentYear = useMemo(() => Temporal.Now.zonedDateTimeISO(timeZone).year, [timeZone]);
 
   const boardId = searchParams.get("board") ?? "";
   const selectedBoard = boards.find((board) => board.id === boardId);
@@ -50,7 +55,7 @@ export default function HistoryPageContent({
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const slug = searchParams.get("service") ?? "";
-  const selectedYear = Number(searchParams.get("year") ?? CURRENT_YEAR);
+  const selectedYear = Number(searchParams.get("year") ?? currentYear);
   const selectedImpacts = parseImpacts(searchParams, ALL_IMPACTS);
   const selectedDate = searchParams.get("date");
 
@@ -88,20 +93,22 @@ export default function HistoryPageContent({
 
   // Years with any incident, newest first, always including the current
   // year even with zero incidents so there's always at least one to pick.
+  // Bucketed by the same timeZone the calendar grid itself uses below —
+  // otherwise an incident near a year boundary could land in a different
+  // year here than in the grid.
   const years = useMemo(() => {
-    const timeZone = Temporal.Now.timeZoneId();
     const set = new Set(
       (incidents ?? []).map((incident) => Temporal.Instant.from(incident.created_at).toZonedDateTimeISO(timeZone).year),
     );
-    set.add(CURRENT_YEAR);
+    set.add(currentYear);
     return [...set].sort((a, b) => b - a);
-  }, [incidents]);
+  }, [incidents, timeZone, currentYear]);
   // Falls back to the current year if the selected one doesn't apply to
   // whatever service is now loaded, or came from a malformed URL.
-  const year = years.includes(selectedYear) ? selectedYear : CURRENT_YEAR;
+  const year = years.includes(selectedYear) ? selectedYear : currentYear;
 
   function selectYear(y: number) {
-    updateParams({ year: y === CURRENT_YEAR ? null : String(y), date: null });
+    updateParams({ year: y === currentYear ? null : String(y), date: null });
   }
 
   const relevantIncidents = useMemo(
@@ -117,8 +124,8 @@ export default function HistoryPageContent({
   }
 
   const calendar = useMemo(
-    () => buildIncidentCalendar(relevantIncidents, year, i18n.language),
-    [relevantIncidents, year, i18n.language],
+    () => buildIncidentCalendar(relevantIncidents, year, i18n.language, timeZone),
+    [relevantIncidents, year, i18n.language, timeZone],
   );
   const selectedDay = selectedDate ? calendar.days.find((day) => day.date === selectedDate) : null;
 
@@ -238,7 +245,7 @@ export default function HistoryPageContent({
                                   <li key={update.id}>
                                     {i > 0 && <hr />}
                                     <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
-                                      {formatDateTime(update.created_at)}
+                                      {formatDateTime(update.created_at, timeZone)}
                                     </div>
                                     <div className="timeline-middle">
                                       <span className="bg-base-content/30 block h-2 w-2 rounded-full" />

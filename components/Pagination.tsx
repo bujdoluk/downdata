@@ -4,32 +4,27 @@ import { useId } from "react";
 
 type PageItem = number | "ellipsis";
 
-// Pages between the fixed first(1)/last(totalPages) anchors and
-// currentPage: currentPage itself (unless it already coincides with an
-// anchor, in which case that anchor already represents it — no
-// redundant duplicate number next to it), each side flanked by either
-// the one hidden page — no point ellipsis-ing away just one — or an
-// ellipsis once there's a real gap. Item count is exactly the same
-// (first + up to 3 middle + last = up to 5 numbers, plus 2 arrows) for
-// any currentPage at least 3 away from both ends, so the bar's width
-// stays constant across the vast majority of navigation; it only
-// narrows gradually, one item at a time, right at the edges — nothing
-// like a sliding window whose item count can double between page 1 and
-// a page in the middle of the list.
+// Pages between the fixed first(1)/last(totalPages) anchors: a 4-page
+// window slid to stay centered on currentPage but clamped so it never
+// overlaps either anchor. The two inner slots are always plain numbers;
+// each outer slot independently renders as a number when it's adjacent
+// to its anchor, or an ellipsis when there's a real gap — either way the
+// slot is always filled, never omitted. That keeps the window at exactly
+// 4 items (so the bar's total width is exactly constant) for any
+// currentPage, including right at the edges, where the old version used
+// to drop a slot entirely and visibly narrow the bar.
 function getMiddleItems(currentPage: number, totalPages: number): PageItem[] {
-  const items: PageItem[] = [];
+  if (totalPages <= 5) {
+    return Array.from({ length: totalPages - 2 }, (_, i) => i + 2);
+  }
 
-  const hiddenBefore = currentPage - 2; // pages strictly between 1 and currentPage
-  if (hiddenBefore === 1) items.push(currentPage - 1);
-  else if (hiddenBefore > 1) items.push("ellipsis");
-
-  if (currentPage !== 1 && currentPage !== totalPages) items.push(currentPage);
-
-  const hiddenAfter = totalPages - currentPage - 1; // pages strictly between currentPage and totalPages
-  if (hiddenAfter === 1) items.push(currentPage + 1);
-  else if (hiddenAfter > 1) items.push("ellipsis");
-
-  return items;
+  const w = Math.min(Math.max(currentPage - 2, 2), totalPages - 4);
+  return [
+    w === 2 ? w : "ellipsis",
+    w + 1,
+    w + 2,
+    w + 3 === totalPages - 1 ? w + 3 : "ellipsis",
+  ];
 }
 
 export default function Pagination({

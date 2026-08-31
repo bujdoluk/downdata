@@ -21,6 +21,7 @@
     "monitors": "Мониторы",
     "incidents": "Инциденты",
     "incidentsBadgeTooltip": "Расследуемые или определённые инциденты",
+    "maintenanceBadgeTooltip": "Обслуживания в процессе",
     "maintenances": "Обслуживания",
     "integrations": "Интеграции",
     "slack": "Slack",
@@ -38,7 +39,8 @@
     "avatarInvalidType": "Выберите файл изображения.",
     "avatarTooLarge": "Изображение должно быть меньше 2 МБ.",
     "avatarUploadFailed": "Не удалось обновить изображение. Попробуйте снова.",
-    "theme": "Тема"
+    "theme": "Тема",
+    "timezone": "Часовой пояс"
   },
   "serviceCard": {
     "checkingStatus": "Проверка статуса…",
@@ -437,7 +439,8 @@
     "deleteConfirmMessage": "Это безвозвратно удалит ваш аккаунт, доски и интеграции. Это действие нельзя отменить.",
     "deleteConfirmEmailLabel": "Введите {{email}} для подтверждения",
     "cancel": "Отмена",
-    "deleteFailed": "Не удалось удалить аккаунт. Попробуйте снова."
+    "deleteFailed": "Не удалось удалить аккаунт. Попробуйте снова.",
+    "timezoneUpdateFailed": "Не удалось обновить часовой пояс. Попробуйте снова."
   },
   "cookieConsent": {
     "title": "Мы используем файлы cookie",

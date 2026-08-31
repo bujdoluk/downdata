@@ -147,7 +147,7 @@ export default function IntegrationsPageContent({
   };
 
   return (
-    <div className="w-full max-w-6xl self-start">
+    <div className="w-full self-start">
       <h1 className="text-base-content text-lg font-semibold">{t("integrations.title")}</h1>
       <p className="text-base-content/60 mt-1 text-sm">{t("integrations.subtitle")}</p>
 
@@ -155,7 +155,7 @@ export default function IntegrationsPageContent({
       {verified === "1" && <p className="alert alert-success alert-soft mt-4 text-sm">{t("integrations.recipientVerified")}</p>}
       {verified === "0" && <p className="alert alert-error alert-soft mt-4 text-sm">{t("integrations.verifyLinkInvalid")}</p>}
 
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] gap-4">
         {catalog.map((entry) => {
           const integration = integrations.find((i) => i.slug === entry.slug);
           const Logo = INTEGRATION_LOGOS[entry.slug];

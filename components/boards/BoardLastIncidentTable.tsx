@@ -9,8 +9,10 @@ import { formatDateTime } from "@/lib/formatTime";
 
 export default function BoardLastIncidentTable({
   entries,
+  timeZone,
 }: {
   entries: { service: Service; lastIncident: TrackedIncidentSummary | null }[];
+  timeZone: string;
 }) {
   const { t } = useTranslation();
   if (entries.length === 0) return null;
@@ -27,7 +29,7 @@ export default function BoardLastIncidentTable({
               <p className="text-base-content min-w-0 flex-1 truncate text-sm font-medium">{service.name}</p>
               {lastIncident ? (
                 <p className="text-base-content/50 min-w-0 shrink truncate text-xs">
-                  {lastIncident.name} · {formatDateTime(lastIncident.resolved_at ?? lastIncident.updated_at)}
+                  {lastIncident.name} · {formatDateTime(lastIncident.resolved_at ?? lastIncident.updated_at, timeZone)}
                 </p>
               ) : (
                 <p className="text-base-content/40 shrink-0 text-xs">{t("boards.lastIncident.none")}</p>

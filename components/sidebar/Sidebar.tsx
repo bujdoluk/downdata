@@ -15,7 +15,7 @@ import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { createClient } from "@/lib/supabase/client";
 import { logOut } from "@/lib/supabase/auth";
-import type { Account } from "@/types/account";
+import { fetchAccount } from "@/lib/account";
 
 const POLL_INTERVAL_MS = 60_000;
 
@@ -70,12 +70,7 @@ export default function Sidebar() {
   // signed in right now, not stay live-synced.
   const { data: account } = useQuery({
     queryKey: queryKeys.account(),
-    queryFn: async () => {
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) return null;
-      const avatarUrl = data.user.user_metadata.avatar_url ?? data.user.user_metadata.picture ?? null;
-      return { id: data.user.id, email: data.user.email ?? "", avatarUrl } satisfies Account;
-    },
+    queryFn: () => fetchAccount(supabase),
     staleTime: Infinity,
   });
 
@@ -146,6 +141,7 @@ export default function Sidebar() {
           label={t("nav.maintenances")}
           collapsed={collapsed}
           badge={inProgressMaintenanceCount}
+          badgeTitle={t("nav.maintenanceBadgeTooltip")}
         />
         <SidebarNavLink href="/integrations" icon={<PlugIcon className="shrink-0" />} label={t("nav.integrations")} collapsed={collapsed} />
         <SidebarNavLink href="/history" icon={<HistoryIcon className="shrink-0" />} label={t("nav.history")} collapsed={collapsed} />

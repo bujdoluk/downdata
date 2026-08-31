@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { getAllBoards, getAllTrackedSlugs } from "@/lib/boards";
 import { getAllIntegrations } from "@/lib/integrations";
+import { resolveTimeZone } from "@/lib/account";
 import AccountPageContent from "@/components/account/AccountPageContent";
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default async function AccountPage() {
         userId={user?.id ?? ""}
         email={user?.email ?? ""}
         avatarUrl={user?.user_metadata.avatar_url ?? user?.user_metadata.picture ?? null}
+        timeZone={resolveTimeZone(user?.user_metadata.time_zone)}
         createdAt={user?.created_at ?? null}
         lastSignInAt={user?.last_sign_in_at ?? null}
         provider={user?.app_metadata.provider ?? "email"}

@@ -14,6 +14,7 @@ import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/com
 import { ALL_CONTINENTS, CONTINENT_LABEL_KEYS, inferComponentContinent, type Continent } from "@/lib/componentRegion";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
+import { useTimeZone } from "@/lib/useTimeZone";
 import Spinner from "@/components/Spinner";
 
 const POLL_INTERVAL_MS = 60_000;
@@ -83,6 +84,7 @@ function NotificationsCard({ slug }: { slug: Slug }) {
 
 export default function ServiceDetail({ slug }: { slug: Slug }) {
   const { t } = useTranslation();
+  const timeZone = useTimeZone();
   const { data, isError: error } = useQuery({
     queryKey: queryKeys.serviceStatus(slug),
     queryFn: () => fetchJson<ServiceSummaryResponse>(`/api/summary/${slug}`, { cache: "no-store" }),
@@ -249,7 +251,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                         <p className="text-base-content/50 mt-0.5 text-xs">{incident.status}</p>
                       </div>
                       <span className="text-base-content/50 self-end text-xs whitespace-nowrap">
-                        {formatDateTime(incident.updated_at)}
+                        {formatDateTime(incident.updated_at, timeZone)}
                       </span>
                     </li>
                   ))}
@@ -281,7 +283,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                         <p className="text-base-content/50 mt-0.5 text-xs">{maintenance.status}</p>
                       </div>
                       <span className="text-base-content/50 self-end text-xs whitespace-nowrap">
-                        {formatDateTime(maintenance.scheduled_for)}
+                        {formatDateTime(maintenance.scheduled_for, timeZone)}
                       </span>
                     </li>
                   ))}
@@ -298,7 +300,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
           </div>
 
           <p className="text-base-content/30 mt-6 text-[11px]">
-            {t("serviceDetail.lastUpdated", { time: formatTime(data.page.updated_at) })}
+            {t("serviceDetail.lastUpdated", { time: formatTime(data.page.updated_at, timeZone) })}
           </p>
         </>
       )}

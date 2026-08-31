@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { languages, getLanguage } from "@/lib/i18n/languages";
-import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
+import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 
 export default function LanguageSwitcher({
   dropdownClassName = "dropdown-end",

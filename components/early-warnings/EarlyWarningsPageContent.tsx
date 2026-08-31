@@ -12,11 +12,11 @@ import SourceToggleRow from "@/components/early-warnings/SourceToggleRow";
 import AddKeywordForm from "@/components/early-warnings/AddKeywordForm";
 import KeywordBadgeList from "@/components/early-warnings/KeywordBadgeList";
 import ClearFiltersButton from "@/components/service/ClearFiltersButton";
-import { useSelectAndScrollOnMobile } from "@/lib/useSelectAndScrollOnMobile";
-import { useAutoSelectFirstId } from "@/lib/useAutoSelectFirstId";
-import { useEarlyWarningsLastViewed } from "@/lib/useEarlyWarningsLastViewed";
-import { useTimeZone } from "@/lib/useTimeZone";
-import { usePagination } from "@/lib/usePagination";
+import { useSelectAndScrollOnMobile } from "@/hooks/useSelectAndScrollOnMobile";
+import { useAutoSelectFirstId } from "@/hooks/useAutoSelectFirstId";
+import { useEarlyWarningsLastViewed } from "@/hooks/useEarlyWarningsLastViewed";
+import { useTimeZone } from "@/hooks/useTimeZone";
+import { usePagination } from "@/hooks/usePagination";
 import Pagination from "@/components/Pagination";
 import { mergeParams } from "@/lib/mergeParams";
 

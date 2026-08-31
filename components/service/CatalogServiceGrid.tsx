@@ -2,7 +2,7 @@
 
 import type { Catalog, ServiceStatusBatchResponse } from "@/types/service";
 import CatalogServiceCard from "@/components/service/CatalogServiceCard";
-import { usePinned } from "@/lib/usePinned";
+import { usePinned } from "@/hooks/usePinned";
 
 const INDICATOR_SEVERITY: Record<string, number> = {
   critical: 3,

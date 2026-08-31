@@ -9,7 +9,7 @@ import { INTEGRATION_CATALOG } from "@/lib/integrationCatalog";
 import { MenuIcon } from "@/components/icons/NavIcons";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
-import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
+import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 
 export default function MobileMenu() {
   const { t } = useTranslation();

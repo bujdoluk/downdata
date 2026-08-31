@@ -10,10 +10,10 @@ import type { TrackedIncidentSummary, TrackedMaintenanceSummary } from "@/types/
 import BoardCard from "@/components/boards/BoardCard";
 import CreateBoardForm from "@/components/boards/CreateBoardForm";
 import { PlusIcon } from "@/components/icons/NavIcons";
-import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
+import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
-import { usePinned } from "@/lib/usePinned";
+import { usePinned } from "@/hooks/usePinned";
 import { isActiveIncident } from "@/lib/isActiveIncident";
 
 const POLL_INTERVAL_MS = 60_000;

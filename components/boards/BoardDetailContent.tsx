@@ -11,8 +11,8 @@ import type { Catalog, ServiceStatusBatchResponse, TrackedIncidentSummary, Track
 import type { IncidentCountByService } from "@/lib/getStoredIncident";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
-import { useBoardRename } from "@/lib/useBoardRename";
-import { useTimeZone } from "@/lib/useTimeZone";
+import { useBoardRename } from "@/hooks/useBoardRename";
+import { useTimeZone } from "@/hooks/useTimeZone";
 import { isActiveIncident } from "@/lib/isActiveIncident";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 import StatusSummary from "@/components/service/StatusSummary";

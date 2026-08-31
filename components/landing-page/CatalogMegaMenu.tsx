@@ -2,7 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import Link from "next/link";
-import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
+import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 
 export default function CatalogMegaMenu<T extends { slug: string }>({
   label,

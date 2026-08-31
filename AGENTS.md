@@ -11,7 +11,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 ## Ask before you assume
 
 - Ask before changing the shape of `types/service.ts` (`ServiceDefinition`/`CatalogEntry`) or an API route's response shape — components across `service/`, `landing-page/`, and both grid components read them structurally; a silent shape change breaks callers TypeScript won't catch if the new shape still happens to fit
-- Ask before adding a new top-level folder — everything so far fits in `app/`, `components/`, `lib/`, `types/`
+- Ask before adding a new top-level folder — everything so far fits in `app/`, `components/`, `lib/`, `hooks/`, `types/`
 - If you spot something adjacent that looks wrong while working (dead code, a duplicate, a stale comment), say so and confirm before touching it rather than folding it into the current change unasked — this repo has real history of "found it, asked, then deleted" being the right call (see the Failure log)
 - Don't invent copy or product decisions — new user-facing strings still need a real translation pass across all 13 locales, not just an English placeholder
 
@@ -109,11 +109,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   ├── statusBatch.ts                # fetchStatusBatch() — parallel-fetches status+incidents for a set of services
 │   ├── fetchJson.ts                   # shared queryFn body for useQuery/useMutation calls
 │   ├── queryKeys.ts                   # central TanStack Query key factory
-│   ├── useCloseDetailsOnOutsideClick.ts, useBoardRename.ts, useAutoSelectFirstId.ts, useDebouncedUrlFilters.ts, usePagination.ts, usePinned.ts, ...  # one file per hook, see Naming
 │   ├── formatTime.ts                 # Temporal-based date/time formatting
 │   └── i18n/
 │       ├── i18n.ts                    # the one i18next instance, used app-wide
 │       └── locales/                   # 13 locale JSON files: en, sk, cs, de, pl, pt, ru, es, it, fr, sv, nb, nl
+├── hooks/                            # useCloseDetailsOnOutsideClick.ts, useBoardRename.ts, useAutoSelectFirstId.ts, useDebouncedUrlFilters.ts, usePagination.ts, usePinned.ts, useTimeZone.ts, ...  # one file per hook, see Naming
 ├── types/                            # service.ts, board.ts, integration.ts, logo.ts, i18n.ts — each imported directly (`@/types/service`, etc.), there is no barrel `index.ts`
 ├── supabase/migrations/               # numbered .sql files, applied to prod by `.github/workflows/prod.yml`'s migrate job (`supabase db push`) on every push to master
 ├── docs/COMPONENTS.md                # generated prop reference for every component (npm run docs:components)
@@ -175,7 +175,7 @@ One word per concept — reuse the existing one, don't coin a new one.
 
 - Functions: `getAllServices`, `resolveServiceBySlug`, `addService`, `removeService`, `fetchStatusBatch` — verb + noun, not `fetch`/`handle`/`process` alone
 - Booleans read as assertions: `isLoading`, `isMonitored`, `isPending`, `isAdded` — match this even where an existing prop doesn't (`removable.removing` should really be `isRemoving`, but don't silently rename an existing prop as a drive-by; ask first, see above)
-- Hooks: `useXxx` in `lib/`, one file per hook (`lib/useCloseDetailsOnOutsideClick.ts`, `lib/useBoardRename.ts`) — not bundled into a components file. Data-fetching hooks are just direct `useQuery`/`useMutation` calls at the call site, not wrapped in a bespoke `useXxx` — see `lib/queryKeys.ts`/`lib/fetchJson.ts`
+- Hooks: `useXxx` in `hooks/`, one file per hook (`hooks/useCloseDetailsOnOutsideClick.ts`, `hooks/useBoardRename.ts`) — not bundled into a components file. Data-fetching hooks are just direct `useQuery`/`useMutation` calls at the call site, not wrapped in a bespoke `useXxx` — see `lib/queryKeys.ts`/`lib/fetchJson.ts`
 - `types/service.ts`'s `ServiceDefinition` and `CatalogEntry` are structurally identical and used interchangeably already — known, not yet consolidated; don't add a third near-duplicate type for the same `{slug, name, host}` shape
 
 ## 📦 Dependencies

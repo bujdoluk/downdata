@@ -21,7 +21,7 @@ import BoardFilterSelect from "@/components/service/BoardFilterSelect";
 import ImpactFilterCheckboxes from "@/components/service/ImpactFilterCheckboxes";
 import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
-import { useTimeZone } from "@/lib/useTimeZone";
+import { useTimeZone } from "@/hooks/useTimeZone";
 import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/service/statusStyles";
 import Spinner from "@/components/Spinner";
 

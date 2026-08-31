@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useDebouncedValue } from "@/lib/useDebouncedValue";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { mergeParams } from "@/lib/mergeParams";
 
 // "Debounced filter state, synced to the URL" was duplicated near-identically

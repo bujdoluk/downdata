@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import type { Service } from "@/types/service";
-import { useCloseDetailsOnOutsideClick } from "@/lib/useCloseDetailsOnOutsideClick";
+import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 
 // A <select>'s "pick exactly one from a list" can't come from a bare text
 // input, so this is the one service-picker spot that needs an actual small

@@ -14,7 +14,7 @@ import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, FALLBACK_STYLE } from "@/com
 import { ALL_CONTINENTS, CONTINENT_LABEL_KEYS, inferComponentContinent, type Continent } from "@/lib/componentRegion";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
-import { useTimeZone } from "@/lib/useTimeZone";
+import { useTimeZone } from "@/hooks/useTimeZone";
 import Spinner from "@/components/Spinner";
 
 const POLL_INTERVAL_MS = 60_000;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useLastViewed } from "@/lib/useLastViewed";
+import { useLastViewed } from "@/hooks/useLastViewed";
 
 const STORAGE_KEY = "incidentsLastViewed";
 

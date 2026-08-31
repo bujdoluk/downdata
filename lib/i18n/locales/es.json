@@ -108,9 +108,9 @@
       "allBoards": "Todos los tableros"
     },
     "pagination": {
+      "label": "Paginación",
       "previous": "Página anterior",
-      "next": "Página siguiente",
-      "page": "Página {{page}} de {{totalPages}}"
+      "next": "Página siguiente"
     },
     "subtitle": "Una cronología unificada de incidentes en todos los servicios monitorizados."
   },
@@ -131,9 +131,9 @@
       "scheduled": "Programado"
     },
     "pagination": {
+      "label": "Paginación",
       "previous": "Página anterior",
-      "next": "Página siguiente",
-      "page": "Página {{page}} de {{totalPages}}"
+      "next": "Página siguiente"
     },
     "subtitle": "Ventanas de mantenimiento programadas y en curso en todos tus servicios monitorizados."
   },
@@ -491,6 +491,12 @@
   "notFound": {
     "title": "Página no encontrada",
     "description": "La página que buscas no existe o ha sido movida.",
+    "homeButton": "Volver a downDATA"
+  },
+  "error": {
+    "title": "Algo salió mal",
+    "description": "Se produjo un error inesperado. Inténtalo de nuevo o vuelve al inicio.",
+    "retryButton": "Intentar de nuevo",
     "homeButton": "Volver a downDATA"
   }
 }

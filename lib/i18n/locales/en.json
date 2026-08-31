@@ -108,9 +108,9 @@
       "allBoards": "All boards"
     },
     "pagination": {
+      "label": "Pagination",
       "previous": "Previous page",
-      "next": "Next page",
-      "page": "Page {{page}} of {{totalPages}}"
+      "next": "Next page"
     },
     "subtitle": "A unified timeline of incidents across every tracked service."
   },
@@ -131,9 +131,9 @@
       "scheduled": "Scheduled"
     },
     "pagination": {
+      "label": "Pagination",
       "previous": "Previous page",
-      "next": "Next page",
-      "page": "Page {{page}} of {{totalPages}}"
+      "next": "Next page"
     },
     "subtitle": "Scheduled and in-progress maintenance windows across your tracked services."
   },
@@ -491,6 +491,12 @@
   "notFound": {
     "title": "Page not found",
     "description": "The page you're looking for doesn't exist or may have moved.",
+    "homeButton": "Back to downDATA"
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Try again, or head back home.",
+    "retryButton": "Try again",
     "homeButton": "Back to downDATA"
   }
 }

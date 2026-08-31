@@ -110,9 +110,9 @@
       "allBoards": "Wszystkie tablice"
     },
     "pagination": {
+      "label": "Paginacja",
       "previous": "Poprzednia strona",
-      "next": "Następna strona",
-      "page": "Strona {{page}} z {{totalPages}}"
+      "next": "Następna strona"
     },
     "subtitle": "Ujednolicona oś czasu incydentów we wszystkich monitorowanych usługach."
   },
@@ -133,9 +133,9 @@
       "scheduled": "Zaplanowano"
     },
     "pagination": {
+      "label": "Paginacja",
       "previous": "Poprzednia strona",
-      "next": "Następna strona",
-      "page": "Strona {{page}} z {{totalPages}}"
+      "next": "Następna strona"
     },
     "subtitle": "Zaplanowane i trwające okna konserwacji we wszystkich monitorowanych usługach."
   },
@@ -503,6 +503,12 @@
   "notFound": {
     "title": "Nie znaleziono strony",
     "description": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
+    "homeButton": "Wróć do downDATA"
+  },
+  "error": {
+    "title": "Coś poszło nie tak",
+    "description": "Wystąpił nieoczekiwany błąd. Spróbuj ponownie lub wróć na stronę główną.",
+    "retryButton": "Spróbuj ponownie",
     "homeButton": "Wróć do downDATA"
   }
 }

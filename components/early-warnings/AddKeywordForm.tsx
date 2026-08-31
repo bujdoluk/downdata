@@ -35,7 +35,7 @@ export default function AddKeywordForm({
           placeholder={t("earlyWarnings.keywordPlaceholder")}
           className="input input-sm input-bordered"
         />
-        <button type="submit" disabled={isSubmitting || !value.trim()} className="btn btn-primary btn-sm">
+        <button type="submit" disabled={isSubmitting || !value.trim()} className="btn btn-info btn-sm">
           {isSubmitting ? <Spinner size="xs" /> : t("earlyWarnings.addKeyword")}
         </button>
       </form>

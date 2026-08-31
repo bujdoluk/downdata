@@ -131,6 +131,15 @@ _No props._
 | onToggle | (source: string, enabled: boolean) => void | Yes | — |  |
 | trailing | ReactNode | No | — |  |
 
+### ErrorContent
+
+`components/ErrorContent.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| error | Error & { digest?: string \| undefined; } | Yes | — |  |
+| retry | () => void | Yes | — |  |
+
 ### HistoryPageContent
 
 `components/history/HistoryPageContent.tsx`
@@ -475,9 +484,9 @@ _No props._
 | currentPage | number | Yes | — |  |
 | totalPages | number | Yes | — |  |
 | onChange | (page: number) => void | Yes | — |  |
+| label | string | Yes | — |  |
 | prevLabel | string | Yes | — |  |
 | nextLabel | string | Yes | — |  |
-| pageLabel | string | Yes | — |  |
 
 ### QueryProvider
 

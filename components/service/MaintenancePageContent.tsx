@@ -235,9 +235,9 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
         currentPage={currentPage}
         totalPages={totalPages}
         onChange={goToPage}
+        label={t("maintenances.pagination.label")}
         prevLabel={t("maintenances.pagination.previous")}
         nextLabel={t("maintenances.pagination.next")}
-        pageLabel={t("maintenances.pagination.page", { page: currentPage, totalPages })}
       />
     </>
   );

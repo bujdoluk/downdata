@@ -108,9 +108,9 @@
       "allBoards": "Alle Boards"
     },
     "pagination": {
+      "label": "Seitennavigation",
       "previous": "Vorherige Seite",
-      "next": "Nächste Seite",
-      "page": "Seite {{page}} von {{totalPages}}"
+      "next": "Nächste Seite"
     },
     "subtitle": "Eine einheitliche Zeitleiste der Vorfälle über alle überwachten Dienste hinweg."
   },
@@ -131,9 +131,9 @@
       "scheduled": "Geplant"
     },
     "pagination": {
+      "label": "Seitennavigation",
       "previous": "Vorherige Seite",
-      "next": "Nächste Seite",
-      "page": "Seite {{page}} von {{totalPages}}"
+      "next": "Nächste Seite"
     },
     "subtitle": "Geplante und laufende Wartungsfenster für alle überwachten Dienste."
   },
@@ -491,6 +491,12 @@
   "notFound": {
     "title": "Seite nicht gefunden",
     "description": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+    "homeButton": "Zurück zu downDATA"
+  },
+  "error": {
+    "title": "Etwas ist schiefgelaufen",
+    "description": "Ein unerwarteter Fehler ist aufgetreten. Versuche es erneut oder kehre zur Startseite zurück.",
+    "retryButton": "Erneut versuchen",
     "homeButton": "Zurück zu downDATA"
   }
 }

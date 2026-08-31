@@ -34,7 +34,7 @@ export default function SourceToggleRow({
           <label key={source.id} className="flex items-center gap-2 text-sm">
             <input
               type="checkbox"
-              className="toggle toggle-primary toggle-sm"
+              className="toggle toggle-info toggle-sm"
               checked={source.enabled}
               disabled={isPending}
               onChange={(e) => onToggle(source.id, e.target.checked)}

@@ -15,8 +15,18 @@ import ClearFiltersButton from "@/components/service/ClearFiltersButton";
 import { useSelectAndScrollOnMobile } from "@/lib/useSelectAndScrollOnMobile";
 import { useAutoSelectFirstId } from "@/lib/useAutoSelectFirstId";
 import { useEarlyWarningsLastViewed } from "@/lib/useEarlyWarningsLastViewed";
+import { usePagination } from "@/lib/usePagination";
+import Pagination from "@/components/Pagination";
+import { mergeParams } from "@/lib/mergeParams";
 
 type MatchWithId = KeywordMatch & { id: string };
+
+// Fewer than the Incidents/Maintenance sibling pages' PAGE_SIZE=7 — this
+// page's header panel (source toggles + keyword form + keyword badges)
+// has no equivalent there and eats real vertical space above the list,
+// and each card's keyword-badge row runs taller/more variable than their
+// compact status badge.
+const PAGE_SIZE = 5;
 
 // (source, external_id) is keyword_matches's own primary key — one row per
 // real post regardless of how many watched keywords matched it (see
@@ -49,6 +59,7 @@ export default function EarlyWarningsPageContent({
 
   const matches: MatchWithId[] = useMemo(() => initialMatches.map((match) => ({ ...match, id: matchId(match) })), [initialMatches]);
   const selectedId = searchParams.get("id");
+  const page = Number(searchParams.get("page") ?? "1");
   // Deliberately looked up against the full list, not filteredMatches below
   // — narrowing the keyword filter shouldn't blank out an already-open
   // detail pane just because its post fell outside the current filter,
@@ -72,6 +83,30 @@ export default function EarlyWarningsPageContent({
   const detailRef = useRef<HTMLDivElement>(null);
   const selectMatch = useSelectAndScrollOnMobile("/early-warnings", detailRef);
   useAutoSelectFirstId("/early-warnings", selectedId, filteredMatches);
+
+  const { listRef, minListHeight, totalPages, currentPage, pageItems: pageMatches } = usePagination(
+    filteredMatches,
+    page,
+    PAGE_SIZE,
+  );
+
+  function updateParams(patch: Record<string, string | null>) {
+    router.replace(`/early-warnings?${mergeParams(searchParams, patch).toString()}`, { scroll: false });
+  }
+
+  function goToPage(next: number) {
+    updateParams({ page: next === 1 ? null : String(next) });
+  }
+
+  // Narrowing the keyword filter can leave the current page past the end
+  // of the now-shorter list — usePagination already clamps that
+  // defensively, but resetting the URL param explicitly (matching
+  // Incidents/Maintenance's debouncedGroupPatch) avoids a stale ?page=3
+  // resurfacing if the filter is broadened back later.
+  function selectKeyword(keyword: string) {
+    setSelectedKeyword(keyword);
+    updateParams({ page: null });
+  }
 
   const addKeywordMutation = useMutation({
     mutationFn: async (keyword: string) => {
@@ -100,42 +135,59 @@ export default function EarlyWarningsPageContent({
     onSuccess: () => router.refresh(),
   });
 
-  const list = filteredMatches.length === 0 ? (
-    <p className="text-base-content/50 mt-4 text-sm">{t("earlyWarnings.noMatches")}</p>
-  ) : (
-    <ul className="mt-4 flex flex-col gap-3">
-      {filteredMatches.map((match) => {
-        const isNew = epochMs(match.capturedAt) > lastViewed;
-        const isSelected = match.id === selectedId;
-        const subreddit = typeof match.metadata?.subreddit === "string" ? match.metadata.subreddit : null;
-        return (
-          <li key={match.id}>
-            <button
-              type="button"
-              onClick={() => selectMatch(match.id)}
-              className={`card card-border bg-base-100 flex w-full flex-col gap-1 p-4 text-left shadow-md transition-colors ${
-                isSelected ? "border-primary" : "hover:border-base-content/20"
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                {subreddit && <span className="text-base-content/50 text-xs">r/{subreddit}</span>}
-                <span className="text-base-content/40 text-xs">u/{match.author}</span>
-                {isNew && <span className="badge badge-xs badge-primary">{t("earlyWarnings.new")}</span>}
-              </div>
-              <p className="text-base-content truncate text-sm font-medium">{match.title}</p>
-              <div className="flex flex-wrap items-center gap-1.5">
-                {match.keywords.map((keyword) => (
-                  <span key={keyword} className="badge badge-sm badge-outline">
-                    {keyword}
-                  </span>
-                ))}
-                <span className="text-base-content/40 ml-auto text-xs whitespace-nowrap">{formatDateTime(match.publishedAt)}</span>
-              </div>
-            </button>
-          </li>
-        );
-      })}
-    </ul>
+  const list = (
+    <>
+      {filteredMatches.length === 0 ? (
+        <p className="text-base-content/50 mt-4 text-sm">{t("earlyWarnings.noMatches")}</p>
+      ) : (
+        <ul
+          ref={listRef}
+          style={{ minHeight: totalPages > 1 ? minListHeight : undefined }}
+          className="mt-4 flex flex-col gap-3"
+        >
+          {pageMatches.map((match) => {
+            const isNew = epochMs(match.capturedAt) > lastViewed;
+            const isSelected = match.id === selectedId;
+            const subreddit = typeof match.metadata?.subreddit === "string" ? match.metadata.subreddit : null;
+            return (
+              <li key={match.id}>
+                <button
+                  type="button"
+                  onClick={() => selectMatch(match.id)}
+                  className={`card card-border bg-base-100 flex w-full flex-col gap-1 p-4 text-left shadow-md transition-colors ${
+                    isSelected ? "border-primary" : "hover:border-base-content/20"
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    {subreddit && <span className="text-base-content/50 text-xs">r/{subreddit}</span>}
+                    <span className="text-base-content/40 text-xs">u/{match.author}</span>
+                    {isNew && <span className="badge badge-xs badge-primary">{t("earlyWarnings.new")}</span>}
+                  </div>
+                  <p className="text-base-content truncate text-sm font-medium">{match.title}</p>
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    {match.keywords.map((keyword) => (
+                      <span key={keyword} className="badge badge-sm badge-outline">
+                        {keyword}
+                      </span>
+                    ))}
+                    <span className="text-base-content/40 ml-auto text-xs whitespace-nowrap">{formatDateTime(match.publishedAt)}</span>
+                  </div>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onChange={goToPage}
+        label={t("incidents.pagination.label")}
+        prevLabel={t("incidents.pagination.previous")}
+        nextLabel={t("incidents.pagination.next")}
+      />
+    </>
   );
 
   const filters = availableKeywords.length > 0 && (
@@ -144,7 +196,7 @@ export default function EarlyWarningsPageContent({
         className="select select-bordered select-sm w-48"
         aria-label={t("earlyWarnings.filter.allKeywords")}
         value={selectedKeyword}
-        onChange={(e) => setSelectedKeyword(e.target.value)}
+        onChange={(e) => selectKeyword(e.target.value)}
       >
         <option value="">{t("earlyWarnings.filter.allKeywords")}</option>
         {availableKeywords.map((keyword) => (
@@ -153,13 +205,13 @@ export default function EarlyWarningsPageContent({
           </option>
         ))}
       </select>
-      {selectedKeyword && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={() => setSelectedKeyword("")} />}
+      {selectedKeyword && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={() => selectKeyword("")} />}
     </form>
   );
 
   const detail = selected ? (
     <div className="flex flex-col gap-3">
-      <h2 className="text-base-content text-lg font-semibold">{selected.title}</h2>
+      <h2 className="text-base-content text-lg font-semibold break-words">{selected.title}</h2>
       <div className="flex flex-wrap gap-1.5">
         {selected.keywords.map((keyword) => (
           <span key={keyword} className="badge badge-sm badge-outline">
@@ -167,7 +219,7 @@ export default function EarlyWarningsPageContent({
           </span>
         ))}
       </div>
-      <p className="text-base-content/60 text-sm whitespace-pre-wrap">{selected.snippet}</p>
+      <p className="text-base-content/60 text-sm whitespace-pre-wrap break-words">{selected.snippet}</p>
       <a href={selected.url} target="_blank" rel="noreferrer" className="link link-primary text-sm">
         {t("earlyWarnings.openLink")}
       </a>

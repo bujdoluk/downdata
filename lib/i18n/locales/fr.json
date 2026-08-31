@@ -108,9 +108,9 @@
       "allBoards": "Tous les tableaux"
     },
     "pagination": {
+      "label": "Pagination",
       "previous": "Page précédente",
-      "next": "Page suivante",
-      "page": "Page {{page}} sur {{totalPages}}"
+      "next": "Page suivante"
     },
     "subtitle": "Une chronologie unifiée des incidents sur tous les services surveillés."
   },
@@ -131,9 +131,9 @@
       "scheduled": "Planifiée"
     },
     "pagination": {
+      "label": "Pagination",
       "previous": "Page précédente",
-      "next": "Page suivante",
-      "page": "Page {{page}} sur {{totalPages}}"
+      "next": "Page suivante"
     },
     "subtitle": "Fenêtres de maintenance planifiées et en cours sur tous vos services surveillés."
   },
@@ -491,6 +491,12 @@
   "notFound": {
     "title": "Page introuvable",
     "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "homeButton": "Retour à downDATA"
+  },
+  "error": {
+    "title": "Une erreur est survenue",
+    "description": "Une erreur inattendue s'est produite. Réessayez ou retournez à l'accueil.",
+    "retryButton": "Réessayer",
     "homeButton": "Retour à downDATA"
   }
 }

@@ -304,9 +304,9 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
         currentPage={currentPage}
         totalPages={totalPages}
         onChange={goToPage}
+        label={t("incidents.pagination.label")}
         prevLabel={t("incidents.pagination.previous")}
         nextLabel={t("incidents.pagination.next")}
-        pageLabel={t("incidents.pagination.page", { page: currentPage, totalPages })}
       />
     </>
   );

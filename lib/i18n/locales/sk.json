@@ -109,9 +109,9 @@
       "allBoards": "Všetky nástenky"
     },
     "pagination": {
+      "label": "Stránkovanie",
       "previous": "Predchádzajúca strana",
-      "next": "Ďalšia strana",
-      "page": "Strana {{page}} z {{totalPages}}"
+      "next": "Ďalšia strana"
     },
     "subtitle": "Jednotná časová os incidentov naprieč všetkými sledovanými službami."
   },
@@ -132,9 +132,9 @@
       "scheduled": "Naplánované"
     },
     "pagination": {
+      "label": "Stránkovanie",
       "previous": "Predchádzajúca strana",
-      "next": "Ďalšia strana",
-      "page": "Strana {{page}} z {{totalPages}}"
+      "next": "Ďalšia strana"
     },
     "subtitle": "Plánované a prebiehajúce údržby naprieč vašimi sledovanými službami."
   },
@@ -497,6 +497,12 @@
   "notFound": {
     "title": "Stránka nenájdená",
     "description": "Stránka, ktorú hľadáte, neexistuje alebo bola presunutá.",
+    "homeButton": "Späť na downDATA"
+  },
+  "error": {
+    "title": "Niečo sa pokazilo",
+    "description": "Nastala neočakávaná chyba. Skúste to znova, alebo sa vráťte domov.",
+    "retryButton": "Skúsiť znova",
     "homeButton": "Späť na downDATA"
   }
 }

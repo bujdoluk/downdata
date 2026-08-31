@@ -108,9 +108,9 @@
       "allBoards": "Alla tavlor"
     },
     "pagination": {
+      "label": "Sidnumrering",
       "previous": "Föregående sida",
-      "next": "Nästa sida",
-      "page": "Sida {{page}} av {{totalPages}}"
+      "next": "Nästa sida"
     },
     "subtitle": "En samlad tidslinje över incidenter för alla övervakade tjänster."
   },
@@ -131,9 +131,9 @@
       "scheduled": "Schemalagt"
     },
     "pagination": {
+      "label": "Sidnumrering",
       "previous": "Föregående sida",
-      "next": "Nästa sida",
-      "page": "Sida {{page}} av {{totalPages}}"
+      "next": "Nästa sida"
     },
     "subtitle": "Planerade och pågående underhållsfönster för alla dina övervakade tjänster."
   },
@@ -491,6 +491,12 @@
   "notFound": {
     "title": "Sidan hittades inte",
     "description": "Sidan du letar efter finns inte eller har flyttats.",
+    "homeButton": "Tillbaka till downDATA"
+  },
+  "error": {
+    "title": "Något gick fel",
+    "description": "Ett oväntat fel inträffade. Försök igen eller gå tillbaka till startsidan.",
+    "retryButton": "Försök igen",
     "homeButton": "Tillbaka till downDATA"
   }
 }

@@ -17,7 +17,6 @@ import type { IncidentCountByService } from "@/lib/getStoredIncident";
 import IncidentCalendar from "@/components/history/IncidentCalendar";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import ServiceSearchPicker from "@/components/service/ServiceSearchPicker";
-import BoardFilterSelect from "@/components/service/BoardFilterSelect";
 import ImpactFilterCheckboxes from "@/components/service/ImpactFilterCheckboxes";
 import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
@@ -55,7 +54,7 @@ export default function HistoryPageContent({
     .filter((service) => !selectedBoard || selectedBoard.Slugs.includes(service.slug))
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const { selectedBoardId, setSelectedBoardId } = useSelectedBoard();
+  const { selectedBoardId } = useSelectedBoard();
   // True on a render where the persisted cross-page board pick (see
   // hooks/useSelectedBoard) is about to be applied because this URL has no
   // ?board= of its own yet. The service-default effect below deliberately
@@ -114,18 +113,6 @@ export default function HistoryPageContent({
 
   function selectService(newSlug: string) {
     router.push(`/history?${mergeParams(searchParams, { service: newSlug, date: null }).toString()}`, { scroll: false });
-  }
-
-  function selectBoard(newBoardId: string) {
-    const board = boards.find((b) => b.id === newBoardId);
-    // Dropping the currently-selected service if it's outside the newly
-    // picked board — otherwise the calendar keeps showing a service that's
-    // no longer offered by ServiceSearchPicker's now-filtered list.
-    const clearService = slug && board && !board.Slugs.includes(slug);
-    const patch: Record<string, string | null> = { board: newBoardId || null, date: null };
-    if (clearService) patch.service = null;
-    router.push(`/history?${mergeParams(searchParams, patch).toString()}`, { scroll: false });
-    setSelectedBoardId(newBoardId);
   }
 
   // Years with any incident, oldest first, always including the current
@@ -205,7 +192,6 @@ export default function HistoryPageContent({
         <div>
           <div className="flex flex-wrap items-center gap-4">
             <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
-            <BoardFilterSelect boards={boards} value={boardId} onChange={selectBoard} />
           </div>
 
           {!slug ? null : isLoading ? null : error ? (

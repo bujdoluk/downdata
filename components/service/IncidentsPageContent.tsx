@@ -11,7 +11,6 @@ import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/service/statusStyles";
 import Spinner from "@/components/Spinner";
-import BoardFilterSelect from "@/components/service/BoardFilterSelect";
 import ImpactFilterCheckboxes from "@/components/service/ImpactFilterCheckboxes";
 import PinButton from "@/components/service/PinButton";
 import { fetchJson } from "@/lib/fetchJson";
@@ -112,7 +111,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   const detailRef = useRef<HTMLDivElement>(null);
   const selectIncident = useSelectAndScrollOnMobile("/incidents", detailRef);
 
-  const { selectedBoardId, setSelectedBoardId } = useSelectedBoard();
+  const { selectedBoardId } = useSelectedBoard();
   // True on a render where the persisted cross-page board pick (see
   // hooks/useSelectedBoard) is about to be applied because this URL has no
   // ?board= of its own yet — filteredIncidents below is still unfiltered on
@@ -182,11 +181,12 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
     pendingFilters.status !== "all" ||
     pendingFilters.q.trim() !== "" ||
     pendingFilters.range !== "30d" ||
-    pendingFilters.impacts.size !== ALL_IMPACTS.length ||
-    pendingFilters.board !== "";
+    pendingFilters.impacts.size !== ALL_IMPACTS.length;
 
   function clearFilters() {
-    setPendingFilters({ status: "all", q: "", range: "30d", impacts: new Set(ALL_IMPACTS), board: "" });
+    // board isn't reset here — it's no longer a filter this page can set
+    // (see BoardSelect.tsx), just whatever the sidebar has selected.
+    setPendingFilters((prev) => ({ ...prev, status: "all", q: "", range: "30d", impacts: new Set(ALL_IMPACTS) }));
     updateParams({ page: null });
   }
 
@@ -234,14 +234,6 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
             </option>
           ))}
         </select>
-        <BoardFilterSelect
-          boards={boards}
-          value={pendingFilters.board}
-          onChange={(board) => {
-            setPendingFilters((prev) => ({ ...prev, board }));
-            setSelectedBoardId(board);
-          }}
-        />
         {hasActiveFilters && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={clearFilters} />}
       </form>
 

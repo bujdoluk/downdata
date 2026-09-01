@@ -91,7 +91,7 @@ export default function CatalogBrowser({
         {visibleEntries.length === 0 ? (
           <p className="text-base-content/50 text-sm">{trimmedQuery ? t("nav.noServicesFound") : t("boards.pickCategory")}</p>
         ) : (
-          <div className="grid grid-cols-1 gap-3">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] gap-3">
             <CatalogServiceGrid
               catalog={visibleEntries}
               trackedHosts={trackedHosts}

@@ -30,4 +30,5 @@ export const queryKeys = {
     matches: () => ["earlyWarnings", "matches"] as const,
   },
   account: () => ["account"] as const,
+  subscription: () => ["subscription"] as const,
 };

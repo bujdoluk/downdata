@@ -31,6 +31,7 @@
     "earlyWarnings": "Early Warnings",
     "settings": "Settings",
     "account": "Account",
+    "billing": "Billing",
     "preferences": "Preferences",
     "logout": "Log out",
     "avatar": "Profile picture",
@@ -160,7 +161,11 @@
     "codePlaceholder": "Code",
     "removeRecipient": "Remove",
     "recipientVerified": "Recipient confirmed.",
-    "verifyLinkInvalid": "That confirmation link is invalid or has expired."
+    "verifyLinkInvalid": "That confirmation link is invalid or has expired.",
+    "requestCard": {
+      "title": "Can't find your integration?",
+      "button": "Request integration"
+    }
   },
   "earlyWarnings": {
     "title": "Early Warnings",
@@ -273,7 +278,11 @@
     "pickBoardFirst": "Pick a board first.",
     "tabService": "3rd-party service",
     "tabWebsite": "Website",
-    "websiteComingSoon": "Website monitoring is coming soon."
+    "websiteComingSoon": "Website monitoring is coming soon.",
+    "requestCard": {
+      "title": "Can't find your service?",
+      "button": "Request service"
+    }
   },
   "landing": {
     "nav": {
@@ -292,12 +301,6 @@
       "ctaTrial": "Start your 14-day trial",
       "noCard": "No credit card. Full access for 14 days.",
       "liveDashboard": "Live dashboard"
-    },
-    "stats": {
-      "catalogValue": "{{count}}+",
-      "catalogLabel": "Services available to track",
-      "intervalLabel": "Status check interval",
-      "priceLabel": "Starting price"
     },
     "features": {
       "heading": "Cheaper because the bill behind it is smaller.",
@@ -332,6 +335,7 @@
       "history": "History",
       "unlimited": "Unlimited",
       "getStarted": "Get started",
+      "startTrial": "Start free trial",
       "getNotified": "Get notified",
       "businessNote": "SSO, audit logs, and priority support are still being built. Leave your email and we'll tell you the day it ships.",
       "needMore": "Need more than 1,000 monitors?",
@@ -430,6 +434,32 @@
     "cancel": "Cancel",
     "deleteFailed": "Couldn't delete your account. Try again.",
     "timezoneUpdateFailed": "Couldn't update your timezone. Try again."
+  },
+  "billing": {
+    "title": "Billing",
+    "currentPlan": "Current plan",
+    "statusLabel": "Status",
+    "renewsOn": "Renews on",
+    "endsOn": "Ends on",
+    "cancelSubscription": "Cancel subscription",
+    "resumeSubscription": "Resume subscription",
+    "confirmCancelTitle": "Cancel your subscription?",
+    "confirmCancelMessage": "Your plan stays active until the end of the current billing period, then switches to Free. You can resume anytime before then.",
+    "checkoutSuccess": "Payment successful — your plan will update shortly.",
+    "checkoutCanceled": "Checkout canceled. No charge was made.",
+    "somethingWrong": "Something went wrong.",
+    "freePlanTitle": "You're on the Free plan",
+    "freePlanSubtitle": "Pick a plan to start tracking more services.",
+    "status": {
+      "active": "Active",
+      "trialing": "Trial",
+      "pastDue": "Payment past due",
+      "canceled": "Canceled",
+      "unpaid": "Unpaid",
+      "paused": "Paused",
+      "incomplete": "Incomplete",
+      "other": "{{status}}"
+    }
   },
   "cookieConsent": {
     "title": "We use cookies",

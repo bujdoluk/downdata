@@ -10,6 +10,22 @@ import { nowMs } from "@/lib/formatTime";
 import Spinner from "@/components/Spinner";
 
 const MAX_BYTES = 2 * 1024 * 1024;
+// Every format that reliably renders via <img src> in all major browsers.
+// Deliberately excludes formats a browser will still tag as "image/*" but
+// won't actually display that way — HEIC/HEIF (Safari-only), TIFF, JPEG
+// 2000 — which would let the upload succeed while the avatar shows broken
+// almost everywhere.
+const ALLOWED_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "image/gif",
+  "image/avif",
+  "image/svg+xml",
+  "image/bmp",
+  "image/x-icon",
+  "image/vnd.microsoft.icon", // the other MIME type browsers/OSes report for .ico, alongside image/x-icon
+];
 
 export default function AvatarUpload({
   supabase,
@@ -72,7 +88,7 @@ export default function AvatarUpload({
 
     setValidationError(null);
     uploadMutation.reset();
-    if (!file.type.startsWith("image/")) {
+    if (!ALLOWED_TYPES.includes(file.type)) {
       setValidationError("nav.avatarInvalidType");
       return;
     }
@@ -128,7 +144,7 @@ export default function AvatarUpload({
             className="hidden"
           />
           {avatarUrl && (
-            <button type="button" className="btn btn-ghost btn-sm" onClick={handleRemove} disabled={uploading}>
+            <button type="button" className="btn btn-ghost btn-sm text-error" onClick={handleRemove} disabled={uploading}>
               {removeMutation.isPending ? <Spinner size="xs" /> : t("nav.avatarRemove")}
             </button>
           )}

@@ -9,7 +9,9 @@ import "@/lib/i18n/i18n";
 import type { Catalog } from "@/types/service";
 import type { Board } from "@/types/board";
 import CatalogBrowser from "@/components/service/CatalogBrowser";
+import RequestCard from "@/components/RequestCard";
 import { queryKeys } from "@/lib/queryKeys";
+import { SUPPORT_EMAIL } from "@/lib/constants";
 
 // daisyUI's tabs-lift reads the active tab's background from --tab-bg
 // (defaults to base-100 unconditionally on every .tab, so it can't be
@@ -67,7 +69,7 @@ export default function ServiceCatalogPicker({
   }
 
   return (
-    <div className="flex w-full max-w-6xl flex-col self-start">
+    <div className="flex w-full flex-col self-start">
       <Link href="/boards" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
         {t("addService.back")}
       </Link>
@@ -99,32 +101,40 @@ export default function ServiceCatalogPicker({
           mounted, no React state needed to switch between them. */}
       <div role="tablist" className="tabs tabs-lift mt-4">
         <input type="radio" name="addServiceTabs" className="tab" aria-label={t("addService.tabService")} style={TAB_BG_STYLE} defaultChecked />
-        <div className="tab-content bg-base-200 border-base-300 p-6">
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t("nav.searchPlaceholder")}
-            className="input input-bordered input-sm w-full max-w-sm"
-            autoFocus
-          />
-
-          {addMutation.isError && (
-            <div role="alert" className="alert alert-error alert-soft mt-3 py-2 text-xs">
-              <span>{addMutation.error.message}</span>
-            </div>
-          )}
-
-          <div className="mt-4">
-            <CatalogBrowser
-              catalog={catalog}
-              trackedHosts={[]}
-              pendingHost={addMutation.isPending ? (addMutation.variables?.host ?? null) : null}
-              addedHosts={addedHosts}
-              onAdd={handleAdd}
-              query={query}
+        <div className="tab-content bg-base-200 border-base-300 flex items-start gap-6 p-6">
+          <div className="min-w-0 flex-1">
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t("nav.searchPlaceholder")}
+              className="input input-bordered input-sm w-full max-w-sm"
+              autoFocus
             />
+
+            {addMutation.isError && (
+              <div role="alert" className="alert alert-error alert-soft mt-3 py-2 text-xs">
+                <span>{addMutation.error.message}</span>
+              </div>
+            )}
+
+            <div className="mt-4">
+              <CatalogBrowser
+                catalog={catalog}
+                trackedHosts={[]}
+                pendingHost={addMutation.isPending ? (addMutation.variables?.host ?? null) : null}
+                addedHosts={addedHosts}
+                onAdd={handleAdd}
+                query={query}
+              />
+            </div>
           </div>
+
+          <RequestCard
+            title={t("addService.requestCard.title")}
+            buttonLabel={t("addService.requestCard.button")}
+            href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Service request")}`}
+          />
         </div>
 
         <input type="radio" name="addServiceTabs" className="tab" aria-label={t("addService.tabWebsite")} style={TAB_BG_STYLE} />

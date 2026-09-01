@@ -8,7 +8,9 @@ import Footer from "@/components/landing-page/Footer";
 import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import PricingSection from "@/components/landing-page/PricingSection";
 import CatalogServiceCard from "@/components/service/CatalogServiceCard";
+import RequestCard from "@/components/RequestCard";
 import { AlertIcon, BoardIcon } from "@/components/icons/NavIcons";
+import { SUPPORT_EMAIL } from "@/lib/constants";
 
 const mono = "font-mono";
 
@@ -38,14 +40,8 @@ const demoRows = [
   { slug: "cloudflare", name: "Cloudflare", indicator: "none", outages24h: 0 },
 ] as const;
 
-export default function LandingPage({ catalogCount }: { catalogCount: number }) {
+export default function LandingPage() {
   const { t } = useTranslation();
-
-  // Rounded down rather than shown exact, so the landing page never needs a
-  // copy update as the catalog grows — see AGENTS.md, this is a live count
-  // (lib/catalog.ts's getCatalog(), fetched server-side in page.tsx), not a
-  // hardcoded claim.
-  const catalogCountDisplay = Math.floor(catalogCount / 10) * 10;
 
   const features = [
     { icon: BoltIcon, title: t("landing.features.speedTitle"), body: t("landing.features.speedBody") },
@@ -56,7 +52,7 @@ export default function LandingPage({ catalogCount }: { catalogCount: number }) 
 
   const [heroBodyBefore, heroBodyAfter] = t("landing.hero.body", {
     interval: "30s",
-    price: "$5/month",
+    price: "$19.99/month",
     competitorPrice: "$274",
   }).split("downDATA");
 
@@ -133,24 +129,6 @@ export default function LandingPage({ catalogCount }: { catalogCount: number }) 
         </div>
       </header>
 
-      {/* Stats */}
-      <section className="border-base-300 border-t py-12">
-        <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-center gap-x-14 gap-y-4 px-8">
-          <div
-            className={`text-primary text-3xl font-extrabold sm:text-4xl ${mono}`}
-            aria-label={t("landing.stats.catalogLabel")}
-          >
-            {t("landing.stats.catalogValue", { count: catalogCountDisplay })}
-          </div>
-          <div className={`text-primary text-3xl font-extrabold sm:text-4xl ${mono}`} aria-label={t("landing.stats.intervalLabel")}>
-            30s
-          </div>
-          <div className={`text-primary text-3xl font-extrabold sm:text-4xl ${mono}`} aria-label={t("landing.stats.priceLabel")}>
-            $5/mo
-          </div>
-        </div>
-      </section>
-
       {/* Features */}
       <section className="border-base-300 bg-base-200/40 border-t py-24">
         <div className="mx-auto max-w-6xl px-8">
@@ -180,6 +158,23 @@ export default function LandingPage({ catalogCount }: { catalogCount: number }) 
       <PricingSection />
 
       <FaqSection />
+
+      {/* Request card — one for integrations, one for services, reusing the
+          same dashboard copy/keys rather than inventing landing-only strings */}
+      <section className="border-base-300 border-t py-16">
+        <div className="mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-4 px-8">
+          <RequestCard
+            title={t("integrations.requestCard.title")}
+            buttonLabel={t("integrations.requestCard.button")}
+            href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Integration request")}`}
+          />
+          <RequestCard
+            title={t("addService.requestCard.title")}
+            buttonLabel={t("addService.requestCard.button")}
+            href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Service request")}`}
+          />
+        </div>
+      </section>
 
       {/* Closing CTA */}
       <div className="border-base-300 relative overflow-hidden border-t py-28 text-center">

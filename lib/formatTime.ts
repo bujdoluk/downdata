@@ -44,6 +44,13 @@ export function epochMs(iso: string): number {
   return Temporal.Instant.from(iso).epochMilliseconds;
 }
 
+// Stripe (and most other webhook payloads) send Unix seconds, not
+// milliseconds — this is the one inbound conversion, used by the billing
+// webhook handler (lib/subscriptions.ts).
+export function isoFromUnixSeconds(seconds: number): string {
+  return Temporal.Instant.fromEpochMilliseconds(seconds * 1000).toString({ smallestUnit: "millisecond" });
+}
+
 export function formatDuration(totalMinutes: number, t: (key: string, options: Record<string, number>) => string): string {
   const h = Math.floor(totalMinutes / 60);
   const m = totalMinutes % 60;

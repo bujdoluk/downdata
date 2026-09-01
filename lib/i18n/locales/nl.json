@@ -31,6 +31,7 @@
     "earlyWarnings": "Vroege Waarschuwingen",
     "settings": "Instellingen",
     "account": "Account",
+    "billing": "Facturering",
     "preferences": "Voorkeuren",
     "logout": "Uitloggen",
     "avatar": "Profielfoto",
@@ -160,7 +161,11 @@
     "codePlaceholder": "Code",
     "removeRecipient": "Verwijderen",
     "recipientVerified": "Ontvanger bevestigd.",
-    "verifyLinkInvalid": "Deze bevestigingslink is ongeldig of verlopen."
+    "verifyLinkInvalid": "Deze bevestigingslink is ongeldig of verlopen.",
+    "requestCard": {
+      "title": "Vind je jouw integratie niet?",
+      "button": "Integratie aanvragen"
+    }
   },
   "earlyWarnings": {
     "title": "Vroege Waarschuwingen",
@@ -273,7 +278,11 @@
     "subtitle": "Blader door de catalogus en begin een nieuwe dienst te volgen.",
     "tabService": "Externe dienst",
     "tabWebsite": "Website",
-    "websiteComingSoon": "Website-monitoring komt binnenkort."
+    "websiteComingSoon": "Website-monitoring komt binnenkort.",
+    "requestCard": {
+      "title": "Vind je jouw service niet?",
+      "button": "Service aanvragen"
+    }
   },
   "landing": {
     "nav": {
@@ -292,12 +301,6 @@
       "ctaTrial": "Start je gratis proefperiode van 14 dagen",
       "noCard": "Geen creditcard nodig. Volledige toegang gedurende 14 dagen.",
       "liveDashboard": "Live dashboard"
-    },
-    "stats": {
-      "catalogValue": "{{count}}+",
-      "catalogLabel": "Beschikbare diensten om te bewaken",
-      "intervalLabel": "Interval voor statuscontrole",
-      "priceLabel": "Startprijs"
     },
     "features": {
       "heading": "Goedkoper omdat de kosten achter de schermen lager zijn.",
@@ -332,6 +335,7 @@
       "history": "Geschiedenis",
       "unlimited": "Onbeperkt",
       "getStarted": "Aan de slag",
+      "startTrial": "Gratis proberen",
       "getNotified": "Breng mij op de hoogte",
       "businessNote": "SSO, auditlogs en prioriteitsondersteuning zijn nog in ontwikkeling. Laat je e-mailadres achter en we laten het je weten zodra het live gaat.",
       "needMore": "Meer dan 1000 monitors nodig?",
@@ -430,6 +434,32 @@
     "cancel": "Annuleren",
     "deleteFailed": "Je account kon niet worden verwijderd. Probeer het opnieuw.",
     "timezoneUpdateFailed": "Je tijdzone kon niet worden bijgewerkt. Probeer het opnieuw."
+  },
+  "billing": {
+    "title": "Facturering",
+    "currentPlan": "Huidig plan",
+    "statusLabel": "Status",
+    "renewsOn": "Wordt verlengd op",
+    "endsOn": "Eindigt op",
+    "cancelSubscription": "Abonnement opzeggen",
+    "resumeSubscription": "Abonnement hervatten",
+    "confirmCancelTitle": "Abonnement opzeggen?",
+    "confirmCancelMessage": "Je plan blijft actief tot het einde van de huidige factureringsperiode en schakelt daarna over naar Free. Je kunt het tot die tijd op elk moment hervatten.",
+    "checkoutSuccess": "Betaling gelukt — je plan wordt binnenkort bijgewerkt.",
+    "checkoutCanceled": "Afrekenen geannuleerd. Er is niets in rekening gebracht.",
+    "somethingWrong": "Er is iets misgegaan.",
+    "freePlanTitle": "Je gebruikt het Free-plan",
+    "freePlanSubtitle": "Kies een plan om meer diensten te gaan volgen.",
+    "status": {
+      "active": "Actief",
+      "trialing": "Proefperiode",
+      "pastDue": "Betaling te laat",
+      "canceled": "Opgezegd",
+      "unpaid": "Onbetaald",
+      "paused": "Gepauzeerd",
+      "incomplete": "Onvolledig",
+      "other": "{{status}}"
+    }
   },
   "cookieConsent": {
     "title": "We gebruiken cookies",

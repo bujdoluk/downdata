@@ -31,6 +31,7 @@
     "earlyWarnings": "Alertas Tempranas",
     "settings": "Ajustes",
     "account": "Cuenta",
+    "billing": "Facturación",
     "preferences": "Preferencias",
     "logout": "Cerrar sesión",
     "avatar": "Foto de perfil",
@@ -160,7 +161,11 @@
     "codePlaceholder": "Código",
     "removeRecipient": "Eliminar",
     "recipientVerified": "Destinatario confirmado.",
-    "verifyLinkInvalid": "Ese enlace de confirmación no es válido o ha caducado."
+    "verifyLinkInvalid": "Ese enlace de confirmación no es válido o ha caducado.",
+    "requestCard": {
+      "title": "¿No encuentras tu integración?",
+      "button": "Solicitar integración"
+    }
   },
   "earlyWarnings": {
     "title": "Alertas Tempranas",
@@ -273,7 +278,11 @@
     "pickBoardFirst": "Elige primero un tablero.",
     "tabService": "Servicio de terceros",
     "tabWebsite": "Sitio web",
-    "websiteComingSoon": "La monitorización de sitios web llegará pronto."
+    "websiteComingSoon": "La monitorización de sitios web llegará pronto.",
+    "requestCard": {
+      "title": "¿No encuentras tu servicio?",
+      "button": "Solicitar servicio"
+    }
   },
   "landing": {
     "nav": {
@@ -292,12 +301,6 @@
       "ctaTrial": "Empieza tu prueba gratuita de 14 días",
       "noCard": "Sin tarjeta de crédito. Acceso completo durante 14 días.",
       "liveDashboard": "Panel en vivo"
-    },
-    "stats": {
-      "catalogValue": "{{count}}+",
-      "catalogLabel": "Servicios disponibles para monitorizar",
-      "intervalLabel": "Intervalo de comprobación de estado",
-      "priceLabel": "Precio inicial"
     },
     "features": {
       "heading": "Más barato porque los costes de fondo son menores.",
@@ -332,6 +335,7 @@
       "history": "Historial",
       "unlimited": "Ilimitado",
       "getStarted": "Empezar",
+      "startTrial": "Probar gratis",
       "getNotified": "Avísame",
       "businessNote": "SSO, registros de auditoría y soporte prioritario aún están en desarrollo. Déjanos tu correo y te avisaremos el día que esté listo.",
       "needMore": "¿Necesitas más de 1000 monitores?",
@@ -430,6 +434,32 @@
     "cancel": "Cancelar",
     "deleteFailed": "No se pudo eliminar tu cuenta. Inténtalo de nuevo.",
     "timezoneUpdateFailed": "No se pudo actualizar tu zona horaria. Inténtalo de nuevo."
+  },
+  "billing": {
+    "title": "Facturación",
+    "currentPlan": "Plan actual",
+    "statusLabel": "Estado",
+    "renewsOn": "Se renueva el",
+    "endsOn": "Termina el",
+    "cancelSubscription": "Cancelar suscripción",
+    "resumeSubscription": "Reanudar suscripción",
+    "confirmCancelTitle": "¿Cancelar tu suscripción?",
+    "confirmCancelMessage": "Tu plan seguirá activo hasta el final del periodo de facturación actual y después pasará a Free. Puedes reanudarlo en cualquier momento antes de eso.",
+    "checkoutSuccess": "Pago realizado con éxito — tu plan se actualizará en breve.",
+    "checkoutCanceled": "Pago cancelado. No se ha realizado ningún cargo.",
+    "somethingWrong": "Algo salió mal.",
+    "freePlanTitle": "Estás en el plan Free",
+    "freePlanSubtitle": "Elige un plan para empezar a monitorizar más servicios.",
+    "status": {
+      "active": "Activo",
+      "trialing": "Periodo de prueba",
+      "pastDue": "Pago pendiente",
+      "canceled": "Cancelado",
+      "unpaid": "Sin pagar",
+      "paused": "Pausado",
+      "incomplete": "Incompleto",
+      "other": "{{status}}"
+    }
   },
   "cookieConsent": {
     "title": "Usamos cookies",

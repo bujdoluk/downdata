@@ -13,7 +13,6 @@ import { mergeParams } from "@/lib/mergeParams";
 import { useSelectedBoard } from "@/hooks/useSelectedBoard";
 import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 import AddServiceButton from "@/components/service/AddServiceButton";
-import BoardFilterSelect from "@/components/service/BoardFilterSelect";
 import NoServicesMessage from "@/components/service/NoServicesMessage";
 
 const POLL_INTERVAL_MS = 60_000;
@@ -39,7 +38,7 @@ export default function MonitorsPageContent({
     (entry) => trackedSlugs.includes(entry.slug) && (!selectedBoard || selectedBoard.Slugs.includes(entry.slug)),
   );
 
-  const { selectedBoardId, setSelectedBoardId } = useSelectedBoard();
+  const { selectedBoardId } = useSelectedBoard();
   // No ?board= yet and the persisted cross-page pick (see
   // hooks/useSelectedBoard) still refers to a real board — apply it once,
   // same one-shot idiom used by the other board-aware pages.
@@ -48,11 +47,6 @@ export default function MonitorsPageContent({
       router.replace(`/monitors?${mergeParams(searchParams, { board: selectedBoardId }).toString()}`, { scroll: false });
     }
   }, [searchParams, selectedBoardId, boards, router]);
-
-  function selectBoard(newBoardId: string) {
-    router.replace(`/monitors?${mergeParams(searchParams, { board: newBoardId || null }).toString()}`, { scroll: false });
-    setSelectedBoardId(newBoardId);
-  }
 
   const { data, isError: fetchFailed } = useQuery({
     queryKey: queryKeys.catalogStatus(),
@@ -84,10 +78,7 @@ export default function MonitorsPageContent({
     <>
       <div className="flex items-start justify-between gap-4">
         <h1 className="text-base-content text-lg font-semibold">{t("monitors.myServices")}</h1>
-        <div className="flex items-center gap-2">
-          <BoardFilterSelect boards={boards} value={boardId} onChange={selectBoard} />
-          <AddServiceButton />
-        </div>
+        <AddServiceButton />
       </div>
       <p className="text-base-content/60 mt-1 text-sm">{t("services.subtitle")}</p>
 

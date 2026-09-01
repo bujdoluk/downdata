@@ -31,6 +31,7 @@
     "earlyWarnings": "Frühwarnungen",
     "settings": "Einstellungen",
     "account": "Konto",
+    "billing": "Abrechnung",
     "preferences": "Präferenzen",
     "logout": "Abmelden",
     "avatar": "Profilbild",
@@ -160,7 +161,11 @@
     "codePlaceholder": "Code",
     "removeRecipient": "Entfernen",
     "recipientVerified": "Empfänger bestätigt.",
-    "verifyLinkInvalid": "Dieser Bestätigungslink ist ungültig oder abgelaufen."
+    "verifyLinkInvalid": "Dieser Bestätigungslink ist ungültig oder abgelaufen.",
+    "requestCard": {
+      "title": "Ihre Integration ist nicht dabei?",
+      "button": "Integration anfragen"
+    }
   },
   "earlyWarnings": {
     "title": "Frühwarnungen",
@@ -273,7 +278,11 @@
     "pickBoardFirst": "Wähle zuerst ein Board aus.",
     "tabService": "Drittanbieter-Dienst",
     "tabWebsite": "Website",
-    "websiteComingSoon": "Website-Überwachung kommt bald."
+    "websiteComingSoon": "Website-Überwachung kommt bald.",
+    "requestCard": {
+      "title": "Ihr Dienst ist nicht dabei?",
+      "button": "Dienst anfragen"
+    }
   },
   "landing": {
     "nav": {
@@ -292,12 +301,6 @@
       "ctaTrial": "14 Tage kostenlos testen",
       "noCard": "Keine Kreditkarte nötig. Voller Zugriff für 14 Tage.",
       "liveDashboard": "Live-Dashboard"
-    },
-    "stats": {
-      "catalogValue": "{{count}}+",
-      "catalogLabel": "Verfügbare Dienste zum Überwachen",
-      "intervalLabel": "Statusprüfintervall",
-      "priceLabel": "Startpreis"
     },
     "features": {
       "heading": "Günstiger, weil im Hintergrund weniger Kosten anfallen.",
@@ -332,6 +335,7 @@
       "history": "Verlauf",
       "unlimited": "Unbegrenzt",
       "getStarted": "Loslegen",
+      "startTrial": "Kostenlos testen",
       "getNotified": "Benachrichtigen lassen",
       "businessNote": "SSO, Audit-Protokolle und bevorzugter Support werden noch entwickelt. Hinterlasse deine E-Mail und wir sagen dir Bescheid, sobald es verfügbar ist.",
       "needMore": "Mehr als 1.000 Monitore nötig?",
@@ -430,6 +434,32 @@
     "cancel": "Abbrechen",
     "deleteFailed": "Dein Konto konnte nicht gelöscht werden. Bitte versuche es erneut.",
     "timezoneUpdateFailed": "Deine Zeitzone konnte nicht aktualisiert werden. Bitte versuche es erneut."
+  },
+  "billing": {
+    "title": "Abrechnung",
+    "currentPlan": "Aktueller Plan",
+    "statusLabel": "Status",
+    "renewsOn": "Verlängert sich am",
+    "endsOn": "Endet am",
+    "cancelSubscription": "Abo kündigen",
+    "resumeSubscription": "Abo fortsetzen",
+    "confirmCancelTitle": "Abo kündigen?",
+    "confirmCancelMessage": "Dein Plan bleibt bis zum Ende des aktuellen Abrechnungszeitraums aktiv und wechselt danach zu Free. Bis dahin kannst du jederzeit fortsetzen.",
+    "checkoutSuccess": "Zahlung erfolgreich — dein Plan wird in Kürze aktualisiert.",
+    "checkoutCanceled": "Bezahlvorgang abgebrochen. Es wurde nichts berechnet.",
+    "somethingWrong": "Etwas ist schiefgelaufen.",
+    "freePlanTitle": "Du nutzt den Free-Plan",
+    "freePlanSubtitle": "Wähle einen Plan, um mehr Dienste zu überwachen.",
+    "status": {
+      "active": "Aktiv",
+      "trialing": "Testphase",
+      "pastDue": "Zahlung überfällig",
+      "canceled": "Gekündigt",
+      "unpaid": "Unbezahlt",
+      "paused": "Pausiert",
+      "incomplete": "Unvollständig",
+      "other": "{{status}}"
+    }
   },
   "cookieConsent": {
     "title": "Wir verwenden Cookies",

@@ -31,6 +31,7 @@
     "earlyWarnings": "Včasné varovania",
     "settings": "Nastavenia",
     "account": "Účet",
+    "billing": "Fakturácia",
     "preferences": "Predvoľby",
     "logout": "Odhlásiť sa",
     "avatar": "Profilová fotka",
@@ -161,7 +162,11 @@
     "codePlaceholder": "Kód",
     "removeRecipient": "Odobrať",
     "recipientVerified": "Príjemca bol potvrdený.",
-    "verifyLinkInvalid": "Tento potvrdzovací odkaz je neplatný alebo vypršal."
+    "verifyLinkInvalid": "Tento potvrdzovací odkaz je neplatný alebo vypršal.",
+    "requestCard": {
+      "title": "Nenašli ste svoju integráciu?",
+      "button": "Vyžiadať integráciu"
+    }
   },
   "earlyWarnings": {
     "title": "Včasné varovania",
@@ -279,7 +284,11 @@
     "subtitle": "Prezrite si katalóg a začnite sledovať novú službu.",
     "tabService": "Externá služba",
     "tabWebsite": "Webová stránka",
-    "websiteComingSoon": "Monitorovanie webových stránok už čoskoro."
+    "websiteComingSoon": "Monitorovanie webových stránok už čoskoro.",
+    "requestCard": {
+      "title": "Nenašli ste svoju službu?",
+      "button": "Vyžiadať službu"
+    }
   },
   "landing": {
     "nav": {
@@ -298,12 +307,6 @@
       "ctaTrial": "Vyskúšať 14 dní zadarmo",
       "noCard": "Bez platobnej karty. Plný prístup na 14 dní.",
       "liveDashboard": "Živý prehľad"
-    },
-    "stats": {
-      "catalogValue": "{{count}}+",
-      "catalogLabel": "Dostupné služby na sledovanie",
-      "intervalLabel": "Interval kontroly stavu",
-      "priceLabel": "Počiatočná cena"
     },
     "features": {
       "heading": "Lacnejšie, pretože náklady v pozadí sú nižšie.",
@@ -338,6 +341,7 @@
       "history": "História",
       "unlimited": "Neobmedzené",
       "getStarted": "Začať",
+      "startTrial": "Vyskúšať zdarma",
       "getNotified": "Chcem upozornenie",
       "businessNote": "SSO, audítorské záznamy a prioritná podpora sa ešte pripravujú. Nechajte nám e-mail a dáme vám vedieť, keď to spustíme.",
       "needMore": "Potrebujete viac ako 1 000 monitorov?",
@@ -436,6 +440,32 @@
     "cancel": "Zrušiť",
     "deleteFailed": "Účet sa nepodarilo odstrániť. Skúste to znova.",
     "timezoneUpdateFailed": "Časové pásmo sa nepodarilo aktualizovať. Skúste to znova."
+  },
+  "billing": {
+    "title": "Fakturácia",
+    "currentPlan": "Aktuálny plán",
+    "statusLabel": "Stav",
+    "renewsOn": "Obnovuje sa",
+    "endsOn": "Končí",
+    "cancelSubscription": "Zrušiť predplatné",
+    "resumeSubscription": "Obnoviť predplatné",
+    "confirmCancelTitle": "Zrušiť predplatné?",
+    "confirmCancelMessage": "Váš plán zostane aktívny do konca aktuálneho fakturačného obdobia a potom sa prepne na Free. Do tej doby ho môžete kedykoľvek obnoviť.",
+    "checkoutSuccess": "Platba prebehla úspešne — váš plán sa čoskoro aktualizuje.",
+    "checkoutCanceled": "Platba bola zrušená. Nič sme vám neúčtovali.",
+    "somethingWrong": "Niečo sa pokazilo.",
+    "freePlanTitle": "Používate plán Free",
+    "freePlanSubtitle": "Vyberte si plán a začnite sledovať viac služieb.",
+    "status": {
+      "active": "Aktívne",
+      "trialing": "Skúšobná verzia",
+      "pastDue": "Platba po splatnosti",
+      "canceled": "Zrušené",
+      "unpaid": "Neuhradené",
+      "paused": "Pozastavené",
+      "incomplete": "Nedokončené",
+      "other": "{{status}}"
+    }
   },
   "cookieConsent": {
     "title": "Používame cookies",

@@ -31,6 +31,7 @@
     "earlyWarnings": "Tidiga Varningar",
     "settings": "Inställningar",
     "account": "Konto",
+    "billing": "Fakturering",
     "preferences": "Inställningsalternativ",
     "logout": "Logga ut",
     "avatar": "Profilbild",
@@ -160,7 +161,11 @@
     "codePlaceholder": "Kod",
     "removeRecipient": "Ta bort",
     "recipientVerified": "Mottagaren bekräftad.",
-    "verifyLinkInvalid": "Den bekräftelselänken är ogiltig eller har gått ut."
+    "verifyLinkInvalid": "Den bekräftelselänken är ogiltig eller har gått ut.",
+    "requestCard": {
+      "title": "Hittar du inte din integration?",
+      "button": "Begär integration"
+    }
   },
   "earlyWarnings": {
     "title": "Tidiga Varningar",
@@ -273,7 +278,11 @@
     "subtitle": "Bläddra i katalogen och börja övervaka en ny tjänst.",
     "tabService": "Tredjepartstjänst",
     "tabWebsite": "Webbplats",
-    "websiteComingSoon": "Webbplatsövervakning kommer snart."
+    "websiteComingSoon": "Webbplatsövervakning kommer snart.",
+    "requestCard": {
+      "title": "Hittar du inte din tjänst?",
+      "button": "Begär tjänst"
+    }
   },
   "landing": {
     "nav": {
@@ -292,12 +301,6 @@
       "ctaTrial": "Starta din 14-dagars kostnadsfria provperiod",
       "noCard": "Inget kreditkort krävs. Full åtkomst i 14 dagar.",
       "liveDashboard": "Direktuppdaterad instrumentpanel"
-    },
-    "stats": {
-      "catalogValue": "{{count}}+",
-      "catalogLabel": "Tjänster tillgängliga att övervaka",
-      "intervalLabel": "Intervall för statuskontroll",
-      "priceLabel": "Startpris"
     },
     "features": {
       "heading": "Billigare eftersom kostnaderna bakom kulisserna är lägre.",
@@ -332,6 +335,7 @@
       "history": "Historik",
       "unlimited": "Obegränsat",
       "getStarted": "Kom igång",
+      "startTrial": "Prova gratis",
       "getNotified": "Meddela mig",
       "businessNote": "SSO, granskningsloggar och prioriterad support är fortfarande under utveckling. Lämna din e-post så meddelar vi dig när det lanseras.",
       "needMore": "Behöver du fler än 1000 övervakare?",
@@ -430,6 +434,32 @@
     "cancel": "Avbryt",
     "deleteFailed": "Det gick inte att ta bort ditt konto. Försök igen.",
     "timezoneUpdateFailed": "Det gick inte att uppdatera din tidszon. Försök igen."
+  },
+  "billing": {
+    "title": "Fakturering",
+    "currentPlan": "Nuvarande plan",
+    "statusLabel": "Status",
+    "renewsOn": "Förnyas",
+    "endsOn": "Upphör",
+    "cancelSubscription": "Avsluta prenumeration",
+    "resumeSubscription": "Återuppta prenumeration",
+    "confirmCancelTitle": "Avsluta din prenumeration?",
+    "confirmCancelMessage": "Din plan förblir aktiv till slutet av den nuvarande faktureringsperioden och växlar sedan till Free. Du kan återuppta den när som helst innan dess.",
+    "checkoutSuccess": "Betalningen lyckades — din plan uppdateras inom kort.",
+    "checkoutCanceled": "Betalningen avbröts. Inget drogs från ditt konto.",
+    "somethingWrong": "Något gick fel.",
+    "freePlanTitle": "Du har planen Free",
+    "freePlanSubtitle": "Välj en plan för att börja övervaka fler tjänster.",
+    "status": {
+      "active": "Aktiv",
+      "trialing": "Provperiod",
+      "pastDue": "Betalning försenad",
+      "canceled": "Avslutad",
+      "unpaid": "Obetald",
+      "paused": "Pausad",
+      "incomplete": "Ofullständig",
+      "other": "{{status}}"
+    }
   },
   "cookieConsent": {
     "title": "Vi använder cookies",

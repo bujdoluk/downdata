@@ -12,6 +12,8 @@ import IntegrationCard from "@/components/integrations/IntegrationCard";
 import SlackLogo from "@/components/integrations/SlackLogo";
 import EmailLogo from "@/components/integrations/EmailLogo";
 import SmsLogo from "@/components/integrations/SmsLogo";
+import RequestCard from "@/components/RequestCard";
+import { SUPPORT_EMAIL } from "@/lib/constants";
 
 const EmailConnectForm = dynamic(() => import("@/components/integrations/EmailConnectForm"));
 const SmsConnectForm = dynamic(() => import("@/components/integrations/SmsConnectForm"));
@@ -171,6 +173,14 @@ export default function IntegrationsPageContent({
             />
           );
         })}
+      </div>
+
+      <div className="mt-6 flex justify-end">
+        <RequestCard
+          title={t("integrations.requestCard.title")}
+          buttonLabel={t("integrations.requestCard.button")}
+          href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Integration request")}`}
+        />
       </div>
     </div>
   );

@@ -31,6 +31,7 @@
     "earlyWarnings": "Tidlige Varsler",
     "settings": "Innstillinger",
     "account": "Konto",
+    "billing": "Fakturering",
     "preferences": "Preferanser",
     "logout": "Logg ut",
     "avatar": "Profilbilde",
@@ -160,7 +161,11 @@
     "codePlaceholder": "Kode",
     "removeRecipient": "Fjern",
     "recipientVerified": "Mottaker bekreftet.",
-    "verifyLinkInvalid": "Den bekreftelseslenken er ugyldig eller har utløpt."
+    "verifyLinkInvalid": "Den bekreftelseslenken er ugyldig eller har utløpt.",
+    "requestCard": {
+      "title": "Finner du ikke integrasjonen din?",
+      "button": "Be om integrasjon"
+    }
   },
   "earlyWarnings": {
     "title": "Tidlige Varsler",
@@ -273,7 +278,11 @@
     "subtitle": "Bla gjennom katalogen og begynn å overvåke en ny tjeneste.",
     "tabService": "Tredjepartstjeneste",
     "tabWebsite": "Nettside",
-    "websiteComingSoon": "Overvåking av nettsider kommer snart."
+    "websiteComingSoon": "Overvåking av nettsider kommer snart.",
+    "requestCard": {
+      "title": "Finner du ikke tjenesten din?",
+      "button": "Be om tjeneste"
+    }
   },
   "landing": {
     "nav": {
@@ -292,12 +301,6 @@
       "ctaTrial": "Start din 14 dagers gratis prøveperiode",
       "noCard": "Ingen kredittkort nødvendig. Full tilgang i 14 dager.",
       "liveDashboard": "Sanntids dashbord"
-    },
-    "stats": {
-      "catalogValue": "{{count}}+",
-      "catalogLabel": "Tjenester tilgjengelig for overvåking",
-      "intervalLabel": "Intervall for statussjekk",
-      "priceLabel": "Startpris"
     },
     "features": {
       "heading": "Billigere fordi kostnadene bak kulissene er lavere.",
@@ -332,6 +335,7 @@
       "history": "Historikk",
       "unlimited": "Ubegrenset",
       "getStarted": "Kom i gang",
+      "startTrial": "Prøv gratis",
       "getNotified": "Varsle meg",
       "businessNote": "SSO, revisjonslogger og prioritert support er fortsatt under utvikling. Legg igjen e-posten din, så varsler vi deg den dagen det lanseres.",
       "needMore": "Trenger du flere enn 1000 overvåkere?",
@@ -430,6 +434,32 @@
     "cancel": "Avbryt",
     "deleteFailed": "Kunne ikke slette kontoen din. Prøv igjen.",
     "timezoneUpdateFailed": "Kunne ikke oppdatere tidssonen din. Prøv igjen."
+  },
+  "billing": {
+    "title": "Fakturering",
+    "currentPlan": "Gjeldende plan",
+    "statusLabel": "Status",
+    "renewsOn": "Fornyes",
+    "endsOn": "Avsluttes",
+    "cancelSubscription": "Si opp abonnement",
+    "resumeSubscription": "Gjenoppta abonnement",
+    "confirmCancelTitle": "Si opp abonnementet ditt?",
+    "confirmCancelMessage": "Planen din forblir aktiv til slutten av inneværende faktureringsperiode og bytter deretter til Free. Du kan gjenoppta den når som helst før det.",
+    "checkoutSuccess": "Betalingen var vellykket — planen din oppdateres snart.",
+    "checkoutCanceled": "Kjøpet ble avbrutt. Ingenting ble trukket.",
+    "somethingWrong": "Noe gikk galt.",
+    "freePlanTitle": "Du bruker Free-planen",
+    "freePlanSubtitle": "Velg en plan for å begynne å overvåke flere tjenester.",
+    "status": {
+      "active": "Aktiv",
+      "trialing": "Prøveperiode",
+      "pastDue": "Forfalt betaling",
+      "canceled": "Sagt opp",
+      "unpaid": "Ikke betalt",
+      "paused": "Pauset",
+      "incomplete": "Ufullstendig",
+      "other": "{{status}}"
+    }
   },
   "cookieConsent": {
     "title": "Vi bruker informasjonskapsler",

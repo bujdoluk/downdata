@@ -108,6 +108,10 @@ export default function BoardDetailContent({
       if (!res.ok) return;
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.list() });
       router.push("/boards");
+      // Otherwise the destination /boards list can serve a router-cached
+      // render from before this delete (still showing the deleted board,
+      // or a stale count anywhere else on that page that depends on it).
+      router.refresh();
     },
   });
 

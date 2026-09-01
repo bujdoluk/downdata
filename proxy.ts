@@ -18,6 +18,9 @@ const PUBLIC_EXACT = new Set([
   // all. The token itself is the authorization (see
   // lib/integrations.ts's verifyEmailRecipient).
   "/api/integrations/email/verify",
+  // Called by Stripe, which carries no session cookie — the webhook
+  // signature is the authorization (see app/api/billing/webhook/route.ts).
+  "/api/billing/webhook",
 ]);
 // "/integrations/" (trailing slash) only matches per-provider marketing
 // pages like /integrations/slack — the bare "/integrations" (no trailing
@@ -34,7 +37,9 @@ export async function proxy(request: NextRequest) {
   // gated by CRON_SECRET in the route itself — skip the Supabase Auth
   // round trip entirely so a slow/unresponsive auth call can never eat
   // into this route's own timeout budget (see AGENTS.md poll-incidents notes).
-  if (request.nextUrl.pathname.startsWith("/api/cron/")) {
+  // Stripe's webhook calls get the same treatment — no session cookie to
+  // refresh, and already gated by its own signature check.
+  if (request.nextUrl.pathname.startsWith("/api/cron/") || request.nextUrl.pathname === "/api/billing/webhook") {
     return NextResponse.next({ request });
   }
 
@@ -73,7 +78,10 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL("/landing-page", request.url));
     }
     const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("next", pathname);
+    // Preserves the original query string too (e.g. /billing?plan=pro&
+    // interval=month from a pricing-page CTA) — dropping it here would
+    // silently lose which plan a logged-out visitor meant to check out.
+    loginUrl.searchParams.set("next", pathname + request.nextUrl.search);
     return NextResponse.redirect(loginUrl);
   }
 

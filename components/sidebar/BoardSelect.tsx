@@ -1,6 +1,7 @@
 "use client";
 
-import { type ChangeEvent, useEffect } from "react";
+import { type ChangeEvent, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -10,6 +11,7 @@ import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { BoardIcon } from "@/components/icons/NavIcons";
 import { useSelectedBoard } from "@/hooks/useSelectedBoard";
+import Spinner from "@/components/Spinner";
 
 const ADD_BOARD = "__add__";
 const VIEW_ALL = "__all__";
@@ -30,22 +32,32 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
     queryFn: () => fetchJson<Board[]>("/api/boards").catch(() => []),
   });
 
+  const { selectedBoardId, setSelectedBoardId } = useSelectedBoard();
+  const createBoardRef = useRef<HTMLDialogElement>(null);
+  const [newBoardName, setNewBoardName] = useState("");
+
   const createBoardMutation = useMutation({
-    mutationFn: (name: string) =>
-      fetchJson<Board>("/api/boards", {
+    mutationFn: async (name: string) => {
+      const res = await fetch("/api/boards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name }),
-      }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? t("addService.somethingWrong"));
+      return data as Board;
+    },
     onSuccess: (board) => {
       queryClient.setQueryData<Board[]>(queryKeys.boards.list(), (prev) =>
         [...(prev ?? []), board].sort((a, b) => a.name.localeCompare(b.name)),
       );
+      setNewBoardName("");
+      createBoardRef.current?.close();
+      setSelectedBoardId(board.id);
       router.push(`/boards/${board.id}`);
     },
   });
 
-  const { selectedBoardId, setSelectedBoardId } = useSelectedBoard();
   // Distinct from selectValue below: this only reflects an actual board
   // detail page, for the icon's active-state color.
   const matchedBoardId = pathname?.match(/^\/boards\/([^/]+)/)?.[1] ?? "";
@@ -76,17 +88,20 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
       return;
     }
 
-    const name = window.prompt(t("boards.newBoardName"))?.trim();
-    if (!name) return;
-
-    createBoardMutation.mutate(name);
+    setNewBoardName("");
+    createBoardRef.current?.showModal();
   }
 
   return (
     <div className={`flex items-center gap-2 ${collapsed ? "" : "md:w-full"}`}>
-      <span title={t("nav.boards")} className={`shrink-0 ${matchedBoardId ? "text-base-content" : "text-base-content/40"}`}>
+      <Link
+        href="/boards"
+        onClick={() => setSelectedBoardId("")}
+        title={t("nav.boards")}
+        className={`shrink-0 transition-colors ${matchedBoardId ? "text-base-content" : "text-base-content/40 hover:text-base-content/70"}`}
+      >
         <BoardIcon className="shrink-0" />
-      </span>
+      </Link>
       {!collapsed && (
         <select
           className="select select-bordered select-sm hidden w-full md:inline-flex"
@@ -105,6 +120,42 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
           </option>
         </select>
       )}
+
+      <dialog ref={createBoardRef} className="modal">
+        <div className="modal-box">
+          <h3 className="text-lg font-bold">{t("boards.addBoard")}</h3>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const trimmed = newBoardName.trim();
+              if (!trimmed) return;
+              createBoardMutation.mutate(trimmed);
+            }}
+            className="mt-4"
+          >
+            <input
+              type="text"
+              value={newBoardName}
+              onChange={(e) => setNewBoardName(e.target.value)}
+              placeholder={t("boards.namePlaceholder")}
+              className="input input-bordered w-full"
+              autoFocus
+            />
+            {createBoardMutation.isError && <p className="text-error mt-2 text-sm">{createBoardMutation.error.message}</p>}
+            <div className="modal-action">
+              <button type="button" onClick={() => createBoardRef.current?.close()} className="btn btn-sm">
+                {t("boards.cancel")}
+              </button>
+              <button type="submit" disabled={createBoardMutation.isPending || !newBoardName.trim()} className="btn btn-info btn-sm">
+                {createBoardMutation.isPending ? <Spinner size="xs" /> : t("boards.createSubmit")}
+              </button>
+            </div>
+          </form>
+        </div>
+        <form method="dialog" className="modal-backdrop">
+          <button>{t("boards.cancel")}</button>
+        </form>
+      </dialog>
     </div>
   );
 }

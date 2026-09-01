@@ -179,6 +179,11 @@ export default function Sidebar() {
               </Link>
             </li>
             <li>
+              <Link href="/billing" onClick={() => closeSettingsMenu()}>
+                {t("nav.billing")}
+              </Link>
+            </li>
+            <li>
               <button type="button" onClick={handleLogout}>
                 {t("nav.logout")}
               </button>

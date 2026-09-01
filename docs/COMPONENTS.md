@@ -59,6 +59,15 @@ Vendored + adapted from [Tremor Raw's BarList](https://tremor.so/docs/visualizat
 
 Also accepts the rest of `React.HTMLAttributes<HTMLDivElement>`, spread onto the root element.
 
+### BillingPageContent
+
+`components/billing/BillingPageContent.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| initialSubscription | Subscription \| null | Yes | — |  |
+| timeZone | string | Yes | — |  |
+
 ### BoardActivityPanel
 
 `components/boards/BoardActivityPanel.tsx`
@@ -306,6 +315,14 @@ _No props._
 |---|---|---|---|---|
 | className | string \| undefined | No | — |  |
 
+### PencilIcon
+
+`components/icons/NavIcons.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| className | string \| undefined | No | — |  |
+
 ### PinIcon
 
 `components/icons/NavIcons.tsx`
@@ -535,15 +552,16 @@ _No props._
 
 _No props._
 
-### BoardFilterSelect
+### RequestCard
 
-`components/service/BoardFilterSelect.tsx`
+`components/RequestCard.tsx`
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
-| boards | Board[] | Yes | — |  |
-| value | string | Yes | — |  |
-| onChange | (boardId: string) => void | Yes | — |  |
+| title | string | Yes | — |  |
+| buttonLabel | string | Yes | — |  |
+| href | string | Yes | — |  |
+| className | string \| undefined | No |  |  |
 
 ### CatalogBrowser
 
@@ -973,6 +991,7 @@ _No props._
 |---|---|---|---|---|
 | catalog | Catalog[] | Yes | — |  |
 | trackedSlugs | string[] | Yes | — |  |
+| boards | Board[] | Yes | — |  |
 
 ### PinButton
 

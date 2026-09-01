@@ -33,7 +33,14 @@ export default function SidebarNavLink({
         collapsed ? "" : "md:w-full md:justify-start"
       } ${isActive ? "text-base-content" : "text-base-content/40 hover:text-base-content/70"}`}
     >
-      {icon}
+      <span className="relative inline-flex">
+        {icon}
+        {collapsed && !!badge && (
+          <span className="badge badge-info badge-xs absolute -top-1.5 -right-2.5 px-1" title={badgeTitle}>
+            {badge}
+          </span>
+        )}
+      </span>
       {!collapsed && (
         <span className="hidden items-center gap-2 md:inline-flex">
           {label}

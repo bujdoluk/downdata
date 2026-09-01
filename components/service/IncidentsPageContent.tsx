@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
@@ -20,8 +20,10 @@ import { usePinned } from "@/hooks/usePinned";
 import { useIncidentsLastViewed } from "@/hooks/useIncidentsLastViewed";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import { useDebouncedUrlFilters } from "@/hooks/useDebouncedUrlFilters";
+import { mergeParams } from "@/lib/mergeParams";
 import { useSelectAndScrollOnMobile } from "@/hooks/useSelectAndScrollOnMobile";
 import { useAutoSelectFirstId } from "@/hooks/useAutoSelectFirstId";
+import { useSelectedBoard } from "@/hooks/useSelectedBoard";
 import { parseImpacts, serializeImpacts } from "@/lib/impactsParam";
 import { usePagination } from "@/hooks/usePagination";
 import Pagination from "@/components/Pagination";
@@ -99,7 +101,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   const lastViewed = useIncidentsLastViewed(true);
   const timeZone = useTimeZone();
 
-  const { pendingFilters, setPendingFilters, updateParams, searchParams } = useDebouncedUrlFilters({
+  const { pendingFilters, setPendingFilters, updateParams, searchParams, router } = useDebouncedUrlFilters({
     path: "/incidents",
     parse: parseGroupFromSearchParams,
     serialize: serializeGroup,
@@ -109,6 +111,21 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
 
   const detailRef = useRef<HTMLDivElement>(null);
   const selectIncident = useSelectAndScrollOnMobile("/incidents", detailRef);
+
+  const { selectedBoardId, setSelectedBoardId } = useSelectedBoard();
+  // True on a render where the persisted cross-page board pick (see
+  // hooks/useSelectedBoard) is about to be applied because this URL has no
+  // ?board= of its own yet — filteredIncidents below is still unfiltered on
+  // that render, so useAutoSelectFirstId is told to sit it out (see its call
+  // below) rather than risk auto-selecting an incident outside the board
+  // that's about to be applied.
+  const persistedBoardApplies = !searchParams.has("board") && !!selectedBoardId && boards.some((b) => b.id === selectedBoardId);
+
+  useEffect(() => {
+    if (persistedBoardApplies) {
+      router.replace(`/incidents?${mergeParams(searchParams, { board: selectedBoardId }).toString()}`, { scroll: false });
+    }
+  }, [persistedBoardApplies, selectedBoardId, searchParams, router]);
 
   const isLoading = !data && !error;
   const incidents = useMemo(() => data?.incidents ?? [], [data]);
@@ -150,7 +167,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
     [incidents, pendingFilters, trimmedServiceQuery, pinned, boardSlugs, lastViewed],
   );
 
-  useAutoSelectFirstId("/incidents", selectedId, filteredIncidents);
+  useAutoSelectFirstId("/incidents", selectedId, persistedBoardApplies ? [] : filteredIncidents);
 
   function toggleImpact(impact: string) {
     setPendingFilters((prev) => {
@@ -220,7 +237,10 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
         <BoardFilterSelect
           boards={boards}
           value={pendingFilters.board}
-          onChange={(board) => setPendingFilters((prev) => ({ ...prev, board }))}
+          onChange={(board) => {
+            setPendingFilters((prev) => ({ ...prev, board }));
+            setSelectedBoardId(board);
+          }}
         />
         {hasActiveFilters && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={clearFilters} />}
       </form>
@@ -313,8 +333,8 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   ) : detailError ? (
     <p className="text-base-content/50 text-sm">{t("incidents.unreachable")}</p>
   ) : selectedIncident ? (
-    <p className="text-base-content/50 flex items-center gap-2 text-sm">
-      <Spinner size="sm" />
+    <p className="text-base-content/50 flex h-full items-center justify-center gap-2 text-sm">
+      <Spinner size="xl" />
       {t("incidents.loading")}
     </p>
   ) : (

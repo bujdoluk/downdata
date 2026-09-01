@@ -20,7 +20,7 @@ import BoardActivityPanel from "@/components/boards/BoardActivityPanel";
 import BoardLastIncidentTable from "@/components/boards/BoardLastIncidentTable";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
-import { InfoIcon, PlusIcon } from "@/components/icons/NavIcons";
+import { InfoIcon, PencilIcon, PlusIcon } from "@/components/icons/NavIcons";
 
 const POLL_INTERVAL_MS = 60_000;
 
@@ -146,9 +146,11 @@ export default function BoardDetailContent({
               <button
                 type="button"
                 onClick={rename.startEditing}
-                className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium"
+                aria-label={t("boards.rename")}
+                title={t("boards.rename")}
+                className="text-base-content/40 hover:text-base-content transition-transform hover:scale-110 active:scale-90"
               >
-                {t("boards.rename")}
+                <PencilIcon />
               </button>
             </>
           )}

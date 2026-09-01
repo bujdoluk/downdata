@@ -1,6 +1,6 @@
 "use client";
 
-import { type ChangeEvent } from "react";
+import { type ChangeEvent, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,7 @@ import type { Board } from "@/types/board";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { BoardIcon } from "@/components/icons/NavIcons";
+import { useSelectedBoard } from "@/hooks/useSelectedBoard";
 
 const ADD_BOARD = "__add__";
 const VIEW_ALL = "__all__";
@@ -44,22 +45,33 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
     },
   });
 
+  const { selectedBoardId, setSelectedBoardId } = useSelectedBoard();
   // Distinct from selectValue below: this only reflects an actual board
   // detail page, for the icon's active-state color.
   const matchedBoardId = pathname?.match(/^\/boards\/([^/]+)/)?.[1] ?? "";
-  // Defaults to "All boards" (VIEW_ALL), not the first board — a native
-  // <select> never fires onChange when you reselect the value it's
-  // already showing, so if this defaulted to a real board, clicking that
-  // one specific board would silently do nothing.
-  const selectValue = matchedBoardId || VIEW_ALL;
+  // Falls back to the persisted cross-page pick (see hooks/useSelectedBoard),
+  // then "All boards" (VIEW_ALL) — a native <select> never fires onChange
+  // when you reselect the value it's already showing, so if this defaulted
+  // to a real board, clicking that one specific board would silently do
+  // nothing.
+  const selectValue = matchedBoardId || selectedBoardId || VIEW_ALL;
+
+  // Arriving at a board page any way — a BoardCard click on /boards,
+  // browser back/forward, not just this dropdown — keeps the persisted
+  // default in sync too, so every other board-aware page picks it up next.
+  useEffect(() => {
+    if (matchedBoardId && matchedBoardId !== selectedBoardId) setSelectedBoardId(matchedBoardId);
+  }, [matchedBoardId, selectedBoardId, setSelectedBoardId]);
 
   function handleChange(e: ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value;
     if (value === VIEW_ALL) {
+      setSelectedBoardId("");
       router.push("/boards");
       return;
     }
     if (value !== ADD_BOARD) {
+      setSelectedBoardId(value);
       router.push(`/boards/${value}`);
       return;
     }

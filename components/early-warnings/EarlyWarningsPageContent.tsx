@@ -156,7 +156,7 @@ export default function EarlyWarningsPageContent({
                 <button
                   type="button"
                   onClick={() => selectMatch(match.id)}
-                  className={`card card-border bg-base-100 flex w-full flex-col gap-1 p-4 text-left shadow-md transition-colors ${
+                  className={`card card-border bg-base-200 flex w-full flex-col gap-1 p-4 text-left shadow-md transition-colors ${
                     isSelected ? "border-primary" : "hover:border-base-content/20"
                   }`}
                 >

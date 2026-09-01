@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getAllTrackedSlugs } from "@/lib/boards";
+import { getAllTrackedSlugs, getAllBoards } from "@/lib/boards";
 import { getCatalog } from "@/lib/catalog";
 import MonitorsPageContent from "@/components/service/MonitorsPageContent";
 
@@ -8,12 +8,12 @@ export const metadata: Metadata = {
 };
 
 export default async function MonitorsPage() {
-  const [trackedSlugs, catalog] = await Promise.all([getAllTrackedSlugs(), getCatalog()]);
+  const [trackedSlugs, catalog, boards] = await Promise.all([getAllTrackedSlugs(), getCatalog(), getAllBoards()]);
 
   return (
     <main className="flex flex-1 justify-center p-6">
       <div className="w-full">
-        <MonitorsPageContent catalog={catalog} trackedSlugs={trackedSlugs} />
+        <MonitorsPageContent catalog={catalog} trackedSlugs={trackedSlugs} boards={boards} />
       </div>
     </main>
   );

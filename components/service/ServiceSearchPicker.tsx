@@ -57,7 +57,7 @@ export default function ServiceSearchPicker({
           className="input input-bordered input-sm w-56"
         />
       </summary>
-      <ul className="dropdown-content menu menu-sm bg-base-100 border-base-300 z-30 mt-1 max-h-64 w-56 flex-nowrap overflow-y-auto rounded-box border p-1 shadow-xl">
+      <ul className="dropdown-content menu menu-sm bg-base-200 border-base-300 z-30 mt-1 max-h-64 w-56 flex-nowrap overflow-y-auto rounded-box border p-1 shadow-xl">
         {matches.length === 0 ? (
           <li className="text-base-content/50 px-3 py-2 text-xs">—</li>
         ) : (

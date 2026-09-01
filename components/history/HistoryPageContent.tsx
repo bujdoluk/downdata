@@ -22,6 +22,7 @@ import ImpactFilterCheckboxes from "@/components/service/ImpactFilterCheckboxes"
 import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
 import { useTimeZone } from "@/hooks/useTimeZone";
+import { useSelectedBoard } from "@/hooks/useSelectedBoard";
 import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/service/statusStyles";
 import LoadingOverlay from "@/components/LoadingOverlay";
 
@@ -54,6 +55,23 @@ export default function HistoryPageContent({
     .filter((service) => !selectedBoard || selectedBoard.Slugs.includes(service.slug))
     .sort((a, b) => a.name.localeCompare(b.name));
 
+  const { selectedBoardId, setSelectedBoardId } = useSelectedBoard();
+  // True on a render where the persisted cross-page board pick (see
+  // hooks/useSelectedBoard) is about to be applied because this URL has no
+  // ?board= of its own yet. The service-default effect below deliberately
+  // sits this render out when true — `services` above is still the
+  // unfiltered list (computed from the still-absent boardId), so picking a
+  // "first service" now could pick one outside the board that's about to be
+  // applied; it settles safely once the board default lands and `services`
+  // is re-filtered on the next render.
+  const persistedBoardApplies = !searchParams.has("board") && !!selectedBoardId && boards.some((b) => b.id === selectedBoardId);
+
+  useEffect(() => {
+    if (persistedBoardApplies) {
+      router.replace(`/history?${mergeParams(searchParams, { board: selectedBoardId }).toString()}`, { scroll: false });
+    }
+  }, [persistedBoardApplies, selectedBoardId, searchParams, router]);
+
   const slug = searchParams.get("service") ?? "";
 
   // Lands on an empty calendar otherwise — default to the first service in
@@ -63,12 +81,12 @@ export default function HistoryPageContent({
   // picks a new default) whenever selectBoard clears an out-of-board
   // service back to empty.
   useEffect(() => {
-    if (!slug && services.length > 0) {
+    if (!persistedBoardApplies && !slug && services.length > 0) {
       // services.length > 0 was just checked above
       const firstSlug = services[0]!.slug;
       router.replace(`/history?${mergeParams(searchParams, { service: firstSlug }).toString()}`, { scroll: false });
     }
-  }, [slug, services, searchParams, router]);
+  }, [persistedBoardApplies, slug, services, searchParams, router]);
 
   const selectedYear = Number(searchParams.get("year") ?? currentYear);
   const selectedImpacts = parseImpacts(searchParams, ALL_IMPACTS);
@@ -107,9 +125,10 @@ export default function HistoryPageContent({
     const patch: Record<string, string | null> = { board: newBoardId || null, date: null };
     if (clearService) patch.service = null;
     router.push(`/history?${mergeParams(searchParams, patch).toString()}`, { scroll: false });
+    setSelectedBoardId(newBoardId);
   }
 
-  // Years with any incident, newest first, always including the current
+  // Years with any incident, oldest first, always including the current
   // year even with zero incidents so there's always at least one to pick.
   // Bucketed by the same timeZone the calendar grid itself uses below —
   // otherwise an incident near a year boundary could land in a different
@@ -119,7 +138,7 @@ export default function HistoryPageContent({
       (incidents ?? []).map((incident) => Temporal.Instant.from(incident.created_at).toZonedDateTimeISO(timeZone).year),
     );
     set.add(currentYear);
-    return [...set].sort((a, b) => b - a);
+    return [...set].sort((a, b) => a - b);
   }, [incidents, timeZone, currentYear]);
   // Falls back to the current year if the selected one doesn't apply to
   // whatever service is now loaded, or came from a malformed URL.
@@ -218,17 +237,17 @@ export default function HistoryPageContent({
                 </span>
               </div>
 
-              <div className="mt-2 flex items-start gap-4 overflow-x-auto pb-1">
-                <div className="min-w-0 flex-1">
+              <div className="mt-2">
+                <div className="overflow-x-auto pb-1">
                   <IncidentCalendar calendar={calendar} selectedDate={effectiveSelectedDate} onSelectDay={selectDay} />
                 </div>
-                <div className="flex shrink-0 flex-col gap-0.5">
+                <div className="mt-2 flex flex-wrap justify-end gap-1">
                   {years.map((y) => (
                     <button
                       key={y}
                       type="button"
                       onClick={() => selectYear(y)}
-                      className={`btn btn-ghost btn-sm justify-start ${y === year ? "btn-active" : ""}`}
+                      className={`btn btn-ghost btn-sm ${y === year ? "btn-active" : ""}`}
                     >
                       {y}
                     </button>
@@ -255,9 +274,9 @@ export default function HistoryPageContent({
                     return (
                       <li key={incident.id} className="border-base-content/10 border-t pt-3 first:border-t-0 first:pt-0">
                         <details open className="collapse collapse-arrow">
-                          <summary className="collapse-title flex min-h-0 items-center gap-2 p-0 pr-6">
-                            <p className="text-base-content text-base font-semibold">{incident.name}</p>
-                            <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
+                          <summary className="collapse-title flex min-h-0 items-start gap-2 p-0 pr-6">
+                            <p className="text-base-content min-w-0 max-w-[80%] flex-1 text-base font-semibold break-words">{incident.name}</p>
+                            <span className={`badge badge-xs shrink-0 mt-1 ${style.badge} text-white`}>{t(style.labelKey)}</span>
                           </summary>
                           <div className="collapse-content p-0">
                             <p className="text-base-content/40 mt-1 text-xs">

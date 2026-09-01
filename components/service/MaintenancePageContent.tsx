@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
@@ -19,6 +19,8 @@ import { useTimeZone } from "@/hooks/useTimeZone";
 import { useDebouncedUrlFilters } from "@/hooks/useDebouncedUrlFilters";
 import { useSelectAndScrollOnMobile } from "@/hooks/useSelectAndScrollOnMobile";
 import { useAutoSelectFirstId } from "@/hooks/useAutoSelectFirstId";
+import { useSelectedBoard } from "@/hooks/useSelectedBoard";
+import { mergeParams } from "@/lib/mergeParams";
 import { usePagination } from "@/hooks/usePagination";
 import Pagination from "@/components/Pagination";
 import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
@@ -75,7 +77,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   const { pinned, togglePin } = usePinned("pinnedMaintenance");
   const timeZone = useTimeZone();
 
-  const { pendingFilters, setPendingFilters, updateParams, searchParams } = useDebouncedUrlFilters({
+  const { pendingFilters, setPendingFilters, updateParams, searchParams, router } = useDebouncedUrlFilters({
     path: "/maintenance",
     parse: parseGroupFromSearchParams,
     serialize: serializeGroup,
@@ -85,6 +87,21 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
 
   const detailRef = useRef<HTMLDivElement>(null);
   const selectMaintenance = useSelectAndScrollOnMobile("/maintenance", detailRef);
+
+  const { selectedBoardId, setSelectedBoardId } = useSelectedBoard();
+  // True on a render where the persisted cross-page board pick (see
+  // hooks/useSelectedBoard) is about to be applied because this URL has no
+  // ?board= of its own yet — filteredMaintenances below is still unfiltered
+  // on that render, so useAutoSelectFirstId is told to sit it out (see its
+  // call below) rather than risk auto-selecting a maintenance outside the
+  // board that's about to be applied.
+  const persistedBoardApplies = !searchParams.has("board") && !!selectedBoardId && boards.some((b) => b.id === selectedBoardId);
+
+  useEffect(() => {
+    if (persistedBoardApplies) {
+      router.replace(`/maintenance?${mergeParams(searchParams, { board: selectedBoardId }).toString()}`, { scroll: false });
+    }
+  }, [persistedBoardApplies, selectedBoardId, searchParams, router]);
 
   const isLoading = !data && !error;
   const maintenances = useMemo(() => data?.maintenances ?? [], [data]);
@@ -122,7 +139,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
     [maintenances, pendingFilters, trimmedServiceQuery, pinned, boardSlugs],
   );
 
-  useAutoSelectFirstId("/maintenance", selectedId, filteredMaintenances);
+  useAutoSelectFirstId("/maintenance", selectedId, persistedBoardApplies ? [] : filteredMaintenances);
 
   const hasActiveFilters = pendingFilters.status !== "all" || pendingFilters.q.trim() !== "" || pendingFilters.board !== "";
 
@@ -175,7 +192,10 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
       <BoardFilterSelect
         boards={boards}
         value={pendingFilters.board}
-        onChange={(board) => setPendingFilters((prev) => ({ ...prev, board }))}
+        onChange={(board) => {
+          setPendingFilters((prev) => ({ ...prev, board }));
+          setSelectedBoardId(board);
+        }}
       />
       {hasActiveFilters && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={clearFilters} />}
     </form>
@@ -249,8 +269,8 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   ) : detailError ? (
     <p className="text-base-content/50 text-sm">{t("maintenances.unreachable")}</p>
   ) : selectedMaintenance ? (
-    <p className="text-base-content/50 flex items-center gap-2 text-sm">
-      <Spinner size="sm" />
+    <p className="text-base-content/50 flex h-full items-center justify-center gap-2 text-sm">
+      <Spinner size="xl" />
       {t("maintenances.loading")}
     </p>
   ) : (

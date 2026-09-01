@@ -284,6 +284,13 @@
       "button": "Solicitar serviço"
     }
   },
+  "requestModal": {
+    "placeholder": "Diga-nos o que procura…",
+    "submit": "Enviar pedido",
+    "sent": "Obrigado — recebemos o seu pedido!",
+    "somethingWrong": "Algo correu mal. Tente novamente.",
+    "close": "Fechar"
+  },
   "landing": {
     "nav": {
       "pricing": "Preços",
@@ -367,7 +374,7 @@
     }
   },
   "monitors": {
-    "myServices": "Meus serviços",
+    "myServices": "Monitores",
     "noServices": "Ainda não está a monitorizar nenhum serviço. Adicione um para começar."
   },
   "services": {
@@ -450,6 +457,7 @@
     "somethingWrong": "Algo correu mal.",
     "freePlanTitle": "Está no plano Free",
     "freePlanSubtitle": "Escolha um plano para começar a monitorizar mais serviços.",
+    "viewPlans": "Ver planos",
     "status": {
       "active": "Ativo",
       "trialing": "Período de teste",

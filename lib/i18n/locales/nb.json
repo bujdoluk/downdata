@@ -284,6 +284,13 @@
       "button": "Be om tjeneste"
     }
   },
+  "requestModal": {
+    "placeholder": "Fortell oss hva du leter etter…",
+    "submit": "Send forespørsel",
+    "sent": "Takk — vi har mottatt forespørselen din!",
+    "somethingWrong": "Noe gikk galt. Prøv igjen.",
+    "close": "Lukk"
+  },
   "landing": {
     "nav": {
       "pricing": "Priser",
@@ -367,7 +374,7 @@
     }
   },
   "monitors": {
-    "myServices": "Mine tjenester",
+    "myServices": "Overvåking",
     "noServices": "Ingen tjenester overvåkes ennå. Legg til en for å komme i gang."
   },
   "services": {
@@ -450,6 +457,7 @@
     "somethingWrong": "Noe gikk galt.",
     "freePlanTitle": "Du bruker Free-planen",
     "freePlanSubtitle": "Velg en plan for å begynne å overvåke flere tjenester.",
+    "viewPlans": "Se planer",
     "status": {
       "active": "Aktiv",
       "trialing": "Prøveperiode",

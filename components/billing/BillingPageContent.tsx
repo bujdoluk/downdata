@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -9,7 +10,7 @@ import Spinner from "@/components/Spinner";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { formatDateTime } from "@/lib/formatTime";
-import { annualBilledTotal, discountedMonthlyPrice, isBillingInterval, isPlanTier, PLAN_CATALOG, PLAN_ORDER } from "@/lib/plans";
+import { isBillingInterval, isPlanTier, PLAN_CATALOG } from "@/lib/plans";
 import type { BillingInterval, PlanTier, Subscription } from "@/types/subscription";
 
 async function postJson<T>(url: string, body: unknown, fallbackError: string): Promise<T> {
@@ -108,11 +109,7 @@ export default function BillingPageContent({
           isResuming={cancelMutation.isPending}
         />
       ) : (
-        <FreePlanPicker
-          onChoose={(plan, interval) => checkoutMutation.mutate({ plan, interval })}
-          isPending={checkoutMutation.isPending}
-          pendingPlan={checkoutMutation.variables?.plan}
-        />
+        <FreeTierCard />
       )}
 
       <dialog ref={confirmRef} className="modal">
@@ -192,86 +189,22 @@ function CurrentPlanCard({
   );
 }
 
-function FreePlanPicker({
-  onChoose,
-  isPending,
-  pendingPlan,
-}: {
-  onChoose: (plan: PlanTier, interval: BillingInterval) => void;
-  isPending: boolean;
-  pendingPlan?: PlanTier;
-}) {
+// No plan-picking UI here — that only lives on the public pricing page
+// (components/landing-page/PricingSection.tsx). This page is purely for
+// managing an existing subscription; a free-tier account just gets
+// pointed at /pricing to choose one.
+function FreeTierCard() {
   const { t } = useTranslation();
-  const [annual, setAnnual] = useState(false);
-  const interval: BillingInterval = annual ? "year" : "month";
 
   return (
     <div className="card card-border bg-base-200">
-      <div className="card-body gap-4">
-        <div>
-          <h2 className="text-base font-semibold">{t("billing.freePlanTitle")}</h2>
-          <p className="text-base-content/60 mt-1 text-sm">{t("billing.freePlanSubtitle")}</p>
-        </div>
-
-        <div className="flex items-center justify-center gap-3">
-          <span className={`text-sm font-medium ${annual ? "text-base-content/50" : "text-base-content"}`}>{t("landing.pricing.monthly")}</span>
-          <input
-            type="checkbox"
-            className="toggle toggle-primary toggle-sm"
-            checked={annual}
-            onChange={(event) => setAnnual(event.target.checked)}
-            aria-label={t("landing.pricing.annual")}
-          />
-          <span className={`flex items-center gap-2 text-sm font-medium ${annual ? "text-base-content" : "text-base-content/50"}`}>
-            {t("landing.pricing.annual")}
-            <span className="badge badge-success badge-soft badge-sm">{t("landing.pricing.save20")}</span>
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {PLAN_ORDER.map((tier) => {
-            const plan = PLAN_CATALOG[tier];
-            const price = plan.monthlyPrice !== null ? (annual ? discountedMonthlyPrice(plan.monthlyPrice) : plan.monthlyPrice) : null;
-            return (
-              <div key={tier} className="border-base-300 flex flex-col gap-3 rounded-lg border p-4">
-                <div className="flex items-center justify-between text-sm font-bold">
-                  {t(`landing.pricing.${tier}`)}
-                  {plan.badge && <span className="badge badge-ghost badge-sm">{t(`landing.pricing.${plan.badge}`)}</span>}
-                </div>
-                <div className="text-2xl font-bold">
-                  {price !== null ? (
-                    <>
-                      ${price.toFixed(2)}
-                      <span className="text-base-content/50 text-sm font-normal">{t("landing.pricing.perMonth")}</span>
-                    </>
-                  ) : (
-                    <span className="text-base-content/50 text-lg">{t("landing.pricing.pricingTBD")}</span>
-                  )}
-                </div>
-                <div className="text-base-content/50 h-4 text-xs">
-                  {annual && plan.monthlyPrice !== null && t("landing.pricing.billedAnnually", { price: annualBilledTotal(plan.monthlyPrice).toFixed(2) })}
-                </div>
-                <button
-                  type="button"
-                  disabled={!plan.available || isPending}
-                  onClick={() => onChoose(tier, interval)}
-                  className={`btn btn-sm w-full ${tier === "pro" ? "btn-primary" : "btn-outline"}`}
-                >
-                  {isPending && pendingPlan === tier ? (
-                    <Spinner size="xs" />
-                  ) : plan.available ? (
-                    plan.trialDays ? (
-                      t("landing.pricing.startTrial")
-                    ) : (
-                      t("landing.pricing.getStarted")
-                    )
-                  ) : (
-                    t("landing.pricing.getNotified")
-                  )}
-                </button>
-              </div>
-            );
-          })}
+      <div className="card-body">
+        <h2 className="text-base font-semibold">{t("billing.freePlanTitle")}</h2>
+        <p className="text-base-content/60 mt-1 text-sm">{t("billing.freePlanSubtitle")}</p>
+        <div className="card-actions mt-4">
+          <Link href="/pricing" className="btn btn-primary btn-sm">
+            {t("billing.viewPlans")}
+          </Link>
         </div>
       </div>
     </div>

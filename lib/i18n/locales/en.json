@@ -284,6 +284,13 @@
       "button": "Request service"
     }
   },
+  "requestModal": {
+    "placeholder": "Tell us what you're looking for…",
+    "submit": "Send request",
+    "sent": "Thanks — we got your request!",
+    "somethingWrong": "Something went wrong. Try again.",
+    "close": "Close"
+  },
   "landing": {
     "nav": {
       "pricing": "Pricing",
@@ -367,7 +374,7 @@
     }
   },
   "monitors": {
-    "myServices": "My services",
+    "myServices": "Monitors",
     "noServices": "No services being monitored yet. Add one to get started."
   },
   "services": {
@@ -450,6 +457,7 @@
     "somethingWrong": "Something went wrong.",
     "freePlanTitle": "You're on the Free plan",
     "freePlanSubtitle": "Pick a plan to start tracking more services.",
+    "viewPlans": "View plans",
     "status": {
       "active": "Active",
       "trialing": "Trial",

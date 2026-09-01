@@ -284,6 +284,13 @@
       "button": "Demander un service"
     }
   },
+  "requestModal": {
+    "placeholder": "Dites-nous ce que vous cherchez…",
+    "submit": "Envoyer la demande",
+    "sent": "Merci — nous avons bien reçu votre demande !",
+    "somethingWrong": "Une erreur s'est produite. Réessayez.",
+    "close": "Fermer"
+  },
   "landing": {
     "nav": {
       "pricing": "Tarifs",
@@ -367,7 +374,7 @@
     }
   },
   "monitors": {
-    "myServices": "Mes services",
+    "myServices": "Moniteurs",
     "noServices": "Aucun service surveillé pour l'instant. Ajoutez-en un pour commencer."
   },
   "services": {
@@ -450,6 +457,7 @@
     "somethingWrong": "Une erreur s'est produite.",
     "freePlanTitle": "Vous êtes sur le forfait Free",
     "freePlanSubtitle": "Choisissez un forfait pour surveiller davantage de services.",
+    "viewPlans": "Voir les forfaits",
     "status": {
       "active": "Actif",
       "trialing": "Essai",

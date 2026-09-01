@@ -21,6 +21,10 @@ const PUBLIC_EXACT = new Set([
   // Called by Stripe, which carries no session cookie — the webhook
   // signature is the authorization (see app/api/billing/webhook/route.ts).
   "/api/billing/webhook",
+  // RequestCard on the (anonymous) landing page calls this with no
+  // session — unlike the entries above, a session here is still read when
+  // present (to attach the submitter's user_id), just not required.
+  "/api/requests",
 ]);
 // "/integrations/" (trailing slash) only matches per-provider marketing
 // pages like /integrations/slack — the bare "/integrations" (no trailing

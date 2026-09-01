@@ -284,6 +284,13 @@
       "button": "Dienst anfragen"
     }
   },
+  "requestModal": {
+    "placeholder": "Sag uns, wonach du suchst…",
+    "submit": "Anfrage senden",
+    "sent": "Danke — wir haben deine Anfrage erhalten!",
+    "somethingWrong": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+    "close": "Schließen"
+  },
   "landing": {
     "nav": {
       "pricing": "Preise",
@@ -367,7 +374,7 @@
     }
   },
   "monitors": {
-    "myServices": "Meine Dienste",
+    "myServices": "Monitore",
     "noServices": "Es werden noch keine Dienste überwacht. Füge einen hinzu, um loszulegen."
   },
   "services": {
@@ -450,6 +457,7 @@
     "somethingWrong": "Etwas ist schiefgelaufen.",
     "freePlanTitle": "Du nutzt den Free-Plan",
     "freePlanSubtitle": "Wähle einen Plan, um mehr Dienste zu überwachen.",
+    "viewPlans": "Pläne ansehen",
     "status": {
       "active": "Aktiv",
       "trialing": "Testphase",

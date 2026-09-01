@@ -284,6 +284,13 @@
       "button": "Service aanvragen"
     }
   },
+  "requestModal": {
+    "placeholder": "Vertel ons wat je zoekt…",
+    "submit": "Verzoek versturen",
+    "sent": "Bedankt — we hebben je verzoek ontvangen!",
+    "somethingWrong": "Er is iets misgegaan. Probeer het opnieuw.",
+    "close": "Sluiten"
+  },
   "landing": {
     "nav": {
       "pricing": "Prijzen",
@@ -367,7 +374,7 @@
     }
   },
   "monitors": {
-    "myServices": "Mijn diensten",
+    "myServices": "Monitoren",
     "noServices": "Er worden nog geen diensten gevolgd. Voeg er een toe om te beginnen."
   },
   "services": {
@@ -450,6 +457,7 @@
     "somethingWrong": "Er is iets misgegaan.",
     "freePlanTitle": "Je gebruikt het Free-plan",
     "freePlanSubtitle": "Kies een plan om meer diensten te gaan volgen.",
+    "viewPlans": "Bekijk plannen",
     "status": {
       "active": "Actief",
       "trialing": "Proefperiode",

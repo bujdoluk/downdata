@@ -284,6 +284,13 @@
       "button": "Richiedi servizio"
     }
   },
+  "requestModal": {
+    "placeholder": "Dicci cosa stai cercando…",
+    "submit": "Invia richiesta",
+    "sent": "Grazie — abbiamo ricevuto la tua richiesta!",
+    "somethingWrong": "Qualcosa è andato storto. Riprova.",
+    "close": "Chiudi"
+  },
   "landing": {
     "nav": {
       "pricing": "Prezzi",
@@ -367,7 +374,7 @@
     }
   },
   "monitors": {
-    "myServices": "I miei servizi",
+    "myServices": "Monitor",
     "noServices": "Non stai ancora monitorando nessun servizio. Aggiungine uno per iniziare."
   },
   "services": {
@@ -450,6 +457,7 @@
     "somethingWrong": "Qualcosa è andato storto.",
     "freePlanTitle": "Stai usando il piano Free",
     "freePlanSubtitle": "Scegli un piano per iniziare a monitorare più servizi.",
+    "viewPlans": "Vedi i piani",
     "status": {
       "active": "Attivo",
       "trialing": "Prova",

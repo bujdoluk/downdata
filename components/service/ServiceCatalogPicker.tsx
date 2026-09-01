@@ -11,7 +11,6 @@ import type { Board } from "@/types/board";
 import CatalogBrowser from "@/components/service/CatalogBrowser";
 import RequestCard from "@/components/RequestCard";
 import { queryKeys } from "@/lib/queryKeys";
-import { SUPPORT_EMAIL } from "@/lib/constants";
 
 // daisyUI's tabs-lift reads the active tab's background from --tab-bg
 // (defaults to base-100 unconditionally on every .tab, so it can't be
@@ -130,11 +129,7 @@ export default function ServiceCatalogPicker({
             </div>
           </div>
 
-          <RequestCard
-            title={t("addService.requestCard.title")}
-            buttonLabel={t("addService.requestCard.button")}
-            href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Service request")}`}
-          />
+          <RequestCard title={t("addService.requestCard.title")} buttonLabel={t("addService.requestCard.button")} kind="service" />
         </div>
 
         <input type="radio" name="addServiceTabs" className="tab" aria-label={t("addService.tabWebsite")} style={TAB_BG_STYLE} />

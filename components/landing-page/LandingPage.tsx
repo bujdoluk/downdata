@@ -10,7 +10,6 @@ import PricingSection from "@/components/landing-page/PricingSection";
 import CatalogServiceCard from "@/components/service/CatalogServiceCard";
 import RequestCard from "@/components/RequestCard";
 import { AlertIcon, BoardIcon } from "@/components/icons/NavIcons";
-import { SUPPORT_EMAIL } from "@/lib/constants";
 
 const mono = "font-mono";
 
@@ -163,16 +162,8 @@ export default function LandingPage() {
           same dashboard copy/keys rather than inventing landing-only strings */}
       <section className="border-base-300 border-t py-16">
         <div className="mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-4 px-8">
-          <RequestCard
-            title={t("integrations.requestCard.title")}
-            buttonLabel={t("integrations.requestCard.button")}
-            href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Integration request")}`}
-          />
-          <RequestCard
-            title={t("addService.requestCard.title")}
-            buttonLabel={t("addService.requestCard.button")}
-            href={`mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent("Service request")}`}
-          />
+          <RequestCard title={t("integrations.requestCard.title")} buttonLabel={t("integrations.requestCard.button")} kind="integration" />
+          <RequestCard title={t("addService.requestCard.title")} buttonLabel={t("addService.requestCard.button")} kind="service" />
         </div>
       </section>
 

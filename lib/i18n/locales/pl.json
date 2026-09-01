@@ -296,6 +296,13 @@
       "button": "Poproś o usługę"
     }
   },
+  "requestModal": {
+    "placeholder": "Napisz, czego szukasz…",
+    "submit": "Wyślij zgłoszenie",
+    "sent": "Dziękujemy — otrzymaliśmy Twoje zgłoszenie!",
+    "somethingWrong": "Coś poszło nie tak. Spróbuj ponownie.",
+    "close": "Zamknij"
+  },
   "landing": {
     "nav": {
       "pricing": "Cennik",
@@ -379,7 +386,7 @@
     }
   },
   "monitors": {
-    "myServices": "Moje usługi",
+    "myServices": "Monitory",
     "noServices": "Nie monitorujesz jeszcze żadnych usług. Dodaj pierwszą, aby zacząć."
   },
   "services": {
@@ -462,6 +469,7 @@
     "somethingWrong": "Coś poszło nie tak.",
     "freePlanTitle": "Korzystasz z planu Free",
     "freePlanSubtitle": "Wybierz plan, aby monitorować więcej usług.",
+    "viewPlans": "Zobacz plany",
     "status": {
       "active": "Aktywny",
       "trialing": "Okres próbny",

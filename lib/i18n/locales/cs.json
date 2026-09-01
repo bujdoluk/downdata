@@ -290,6 +290,13 @@
       "button": "Vyžádat službu"
     }
   },
+  "requestModal": {
+    "placeholder": "Napište nám, co hledáte…",
+    "submit": "Odeslat žádost",
+    "sent": "Děkujeme — vaši žádost jsme dostali!",
+    "somethingWrong": "Něco se pokazilo. Zkuste to znovu.",
+    "close": "Zavřít"
+  },
   "landing": {
     "nav": {
       "pricing": "Ceník",
@@ -373,7 +380,7 @@
     }
   },
   "monitors": {
-    "myServices": "Moje služby",
+    "myServices": "Monitory",
     "noServices": "Zatím nesledujete žádné služby. Přidejte první a začněte."
   },
   "services": {
@@ -456,6 +463,7 @@
     "somethingWrong": "Něco se pokazilo.",
     "freePlanTitle": "Používáte plán Free",
     "freePlanSubtitle": "Vyberte si plán a začněte sledovat více služeb.",
+    "viewPlans": "Zobrazit plány",
     "status": {
       "active": "Aktivní",
       "trialing": "Zkušební verze",

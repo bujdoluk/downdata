@@ -145,7 +145,14 @@ export default function HistoryPageContent({
     () => buildIncidentCalendar(relevantIncidents, year, i18n.language, timeZone),
     [relevantIncidents, year, i18n.language, timeZone],
   );
-  const selectedDay = selectedDate ? calendar.days.find((day) => day.date === selectedDate) : null;
+  // No explicit ?date= yet and today already has an incident in the current
+  // (filtered, current-year) calendar — show it without requiring a click.
+  // Naturally falls through to null for a past year or when the impact
+  // checkboxes filter today's incident(s) out, since calendar.days won't
+  // contain a matching day.incidents.length > 0 entry either way.
+  const todayWithIncident = calendar.days.find((day) => day.date === calendar.today && day.incidents.length > 0);
+  const effectiveSelectedDate = selectedDate ?? todayWithIncident?.date ?? null;
+  const selectedDay = effectiveSelectedDate ? calendar.days.find((day) => day.date === effectiveSelectedDate) : null;
 
   function selectDay(date: string) {
     updateParams({ date: date === selectedDate ? null : date });
@@ -213,7 +220,7 @@ export default function HistoryPageContent({
 
               <div className="mt-2 flex items-start gap-4 overflow-x-auto pb-1">
                 <div className="min-w-0 flex-1">
-                  <IncidentCalendar calendar={calendar} selectedDate={selectedDate} onSelectDay={selectDay} />
+                  <IncidentCalendar calendar={calendar} selectedDate={effectiveSelectedDate} onSelectDay={selectDay} />
                 </div>
                 <div className="flex shrink-0 flex-col gap-0.5">
                   {years.map((y) => (

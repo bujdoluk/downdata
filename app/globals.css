@@ -35,7 +35,7 @@
   color-scheme: dark;
 
   --color-base-100: #0a0b10;
-  --color-base-200: #13141b;
+  --color-base-200: #171821;
   --color-base-300: #191b24;
   --color-base-content: #edeef4;
   --color-neutral: #191b24;
@@ -85,7 +85,7 @@
 
 [data-theme="dark"] {
   --color-base-100: #0a0b10 !important;
-  --color-base-200: #13141b !important;
+  --color-base-200: #171821 !important;
   --color-base-300: #191b24 !important;
   --color-base-content: #edeef4 !important;
   --color-neutral: #191b24 !important;

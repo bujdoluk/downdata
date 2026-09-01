@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { UserIcon } from "@/components/icons/NavIcons";
 import { nowMs } from "@/lib/formatTime";
+import Spinner from "@/components/Spinner";
 
 const MAX_BYTES = 2 * 1024 * 1024;
 
@@ -128,7 +129,7 @@ export default function AvatarUpload({
           />
           {avatarUrl && (
             <button type="button" className="btn btn-ghost btn-sm" onClick={handleRemove} disabled={uploading}>
-              {t("nav.avatarRemove")}
+              {removeMutation.isPending ? <Spinner size="xs" /> : t("nav.avatarRemove")}
             </button>
           )}
         </div>

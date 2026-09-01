@@ -1,5 +1,5 @@
 import { Temporal } from "temporal-polyfill";
-import type { Incident } from "@/types/service";
+import type { Incident, StatuspageIncidentSummary } from "@/types/service";
 
 export type CalendarDay = {
   date: string;
@@ -26,7 +26,10 @@ export type IncidentCalendarData = {
 
 const IMPACT_RANK = ["critical", "major", "minor", "none"];
 
-function worstImpact(incidents: Incident[]): string | null {
+// Structural, not Incident — only .impact is read, so this also satisfies
+// StatuspageIncidentSummary (buildOutageTrackerDays below), same reasoning
+// as lib/isActiveIncident.ts's structural param.
+export function worstImpact(incidents: { impact: string }[]): string | null {
   if (incidents.length === 0) return null;
   let best = incidents[0]!.impact;
   let bestRank = IMPACT_RANK.indexOf(best);
@@ -85,4 +88,33 @@ export function buildIncidentCalendar(incidents: Incident[], year: number, local
   const weeks = Math.floor((offset - 1) / 7) + 1;
 
   return { weeks, days, monthLabels, today: today.toString() };
+}
+
+export type TrackerDay = { date: string; impact: string | null; incidents: StatuspageIncidentSummary[] };
+
+// Flat last-N-days list, not a year grid — no week/month-label bookkeeping,
+// just the same "worst impact wins" per-day rule buildIncidentCalendar uses
+// above. Powers ServiceDetail's outage tracker.
+export function buildOutageTrackerDays(incidents: StatuspageIncidentSummary[], days: number, timeZone: string): TrackerDay[] {
+  const today = Temporal.Now.zonedDateTimeISO(timeZone).toPlainDate();
+  const start = today.subtract({ days: days - 1 });
+
+  const ranges = incidents.map((incident) => ({
+    incident,
+    start: Temporal.Instant.from(incident.created_at).toZonedDateTimeISO(timeZone).toPlainDate(),
+    end: incident.resolved_at
+      ? Temporal.Instant.from(incident.resolved_at).toZonedDateTimeISO(timeZone).toPlainDate()
+      : today,
+  }));
+
+  const result: TrackerDay[] = [];
+  let cursor = start;
+  while (Temporal.PlainDate.compare(cursor, today) <= 0) {
+    const dayIncidents = ranges
+      .filter(({ start: rangeStart, end }) => Temporal.PlainDate.compare(cursor, rangeStart) >= 0 && Temporal.PlainDate.compare(cursor, end) <= 0)
+      .map(({ incident }) => incident);
+    result.push({ date: cursor.toString(), impact: worstImpact(dayIncidents), incidents: dayIncidents });
+    cursor = cursor.add({ days: 1 });
+  }
+  return result;
 }

@@ -172,6 +172,24 @@ export async function getStoredIncidentsForService(Slug: string, options?: { lim
   }));
 }
 
+// One service's incidents that overlap a trailing window (started inside
+// it, still ongoing, or resolved inside it) — powers the outage tracker on
+// ServiceDetail. Same trimmed columns as getAllStoredIncidentSummaries (no
+// incident_updates join), windowed the same way getAllStoredMaintenances
+// windows "still relevant": an incident that started before sinceIso but
+// hasn't resolved yet (or resolved after sinceIso) still belongs in the
+// window, not just ones created inside it.
+export async function getStoredIncidentSummariesForService(Slug: string, sinceIso: string): Promise<Omit<StoredIncident, "incident_updates">[]> {
+  const supabase = getSupabaseClient();
+  const { data } = await supabase
+    .from("incidents")
+    .select(INCIDENT_SUMMARY_COLUMNS)
+    .eq("service_slug", Slug)
+    .or(`created_at.gte.${sinceIso},resolved_at.is.null,resolved_at.gte.${sinceIso}`)
+    .order("created_at", { ascending: true });
+  return (data as Omit<StoredIncident, "incident_updates">[]) ?? [];
+}
+
 export type IncidentCountByService = { service_slug: string; count: number };
 
 // Total incident count per service, for the history page's overview chart —

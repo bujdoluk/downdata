@@ -966,6 +966,15 @@ _No props._
 | trackedSlugs | string[] | Yes | — |  |
 | boards | Board[] | Yes | — |  |
 
+### OutageTracker
+
+`components/service/OutageTracker.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| incidents | StatuspageIncidentSummary[] | Yes | — |  |
+| timeZone | string | Yes | — |  |
+
 ### PinButton
 
 `components/service/PinButton.tsx`

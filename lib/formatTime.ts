@@ -44,6 +44,12 @@ export function epochMs(iso: string): number {
   return Temporal.Instant.from(iso).epochMilliseconds;
 }
 
+// millisecond precision, same "drop-in for a Date-written column" shape as
+// nowIso() — used for windowing a query to "the last N days".
+export function isoDaysAgo(days: number): string {
+  return Temporal.Now.instant().subtract({ hours: days * 24 }).toString({ smallestUnit: "millisecond" });
+}
+
 // Stripe (and most other webhook payloads) send Unix seconds, not
 // milliseconds — this is the one inbound conversion, used by the billing
 // webhook handler (lib/subscriptions.ts).

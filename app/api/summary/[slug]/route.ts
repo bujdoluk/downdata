@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { resolveCatalogEntryBySlug } from "@/lib/catalog";
-import { getStoredIncidentsForService, toIncidentApiShape } from "@/lib/getStoredIncident";
+import { getStoredIncidentsForService, getStoredIncidentSummariesForService, toIncidentApiShape, toIncidentSummaryApiShape } from "@/lib/getStoredIncident";
 import { getAllStoredMaintenanceSummaries, toMaintenanceSummaryApiShape } from "@/lib/getStoredMaintenance";
+import { isoDaysAgo } from "@/lib/formatTime";
+
+const OUTAGE_TRACKER_DAYS = 30;
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -22,13 +25,15 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     }
 
     const data = await res.json();
-    const [incidentRows, maintenanceRows] = await Promise.all([
+    const [incidentRows, maintenanceRows, last30DaysRows] = await Promise.all([
       getStoredIncidentsForService(slug, { limit: 10 }),
       getAllStoredMaintenanceSummaries([slug]),
+      getStoredIncidentSummariesForService(slug, isoDaysAgo(OUTAGE_TRACKER_DAYS)),
     ]);
     const incidents = incidentRows.map(toIncidentApiShape);
     const maintenances = maintenanceRows.map(toMaintenanceSummaryApiShape);
-    return NextResponse.json({ ...data, incidents, maintenances, service });
+    const last30DaysIncidents = last30DaysRows.map(toIncidentSummaryApiShape);
+    return NextResponse.json({ ...data, incidents, maintenances, last30DaysIncidents, service });
   } catch {
     return NextResponse.json(
       { error: "Failed to reach status API" },

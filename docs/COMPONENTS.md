@@ -224,6 +224,14 @@ _No props._
 |---|---|---|---|---|
 | className | string \| undefined | No | — |  |
 
+### BoltIcon
+
+`components/icons/NavIcons.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| className | string \| undefined | No | — |  |
+
 ### ExternalLinkIcon
 
 `components/icons/NavIcons.tsx`
@@ -330,6 +338,14 @@ _No props._
 | className | string \| undefined | No | — |  |
 
 ### RadarIcon
+
+`components/icons/NavIcons.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| className | string \| undefined | No | — |  |
+
+### UserGroupIcon
 
 `components/icons/NavIcons.tsx`
 
@@ -479,6 +495,15 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | slug | IntegrationProviderSlug | Yes | — |  |
+
+### RevealOnScroll
+
+`components/landing-page/RevealOnScroll.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| delayMs | number \| undefined | No | 0 |  |
+| className | string \| undefined | No |  |  |
 
 ### LoadingOverlay
 

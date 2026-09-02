@@ -2,6 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
+import RevealOnScroll from "@/components/landing-page/RevealOnScroll";
 
 export default function FaqSection() {
   const { t } = useTranslation();
@@ -27,11 +28,13 @@ export default function FaqSection() {
 
         <div className="mx-auto flex max-w-3xl flex-col gap-3">
           {faqs.map((faq, i) => (
-            <div key={faq.question} className="collapse collapse-arrow border-base-300 bg-base-200 border">
-              <input type="radio" name="faq-accordion" defaultChecked={i === 0} />
-              <div className="collapse-title font-semibold">{faq.question}</div>
-              <div className="collapse-content text-base-content/70 text-sm leading-relaxed">{faq.answer}</div>
-            </div>
+            <RevealOnScroll key={faq.question} delayMs={Math.min(i, 4) * 60}>
+              <div className="collapse collapse-arrow border-base-300 bg-base-200 hover:border-base-content/20 border transition-colors">
+                <input type="radio" name="faq-accordion" defaultChecked={i === 0} />
+                <div className="collapse-title font-semibold">{faq.question}</div>
+                <div className="collapse-content text-base-content/70 text-sm leading-relaxed">{faq.answer}</div>
+              </div>
+            </RevealOnScroll>
           ))}
         </div>
       </div>

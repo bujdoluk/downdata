@@ -31,7 +31,7 @@ export default function LandingNavbar() {
           <Link href="/login?mode=signup" className="text-base-content/70 hover:text-base-content transition-colors">
             {t("landing.nav.signUp")}
           </Link>
-          <Link href="/boards" className="btn btn-primary btn-sm rounded-full">
+          <Link href="/boards" className="btn btn-info btn-sm rounded-full">
             {t("landing.nav.startTrial")}
           </Link>
           <LanguageSwitcher />

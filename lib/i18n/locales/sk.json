@@ -60,6 +60,13 @@
     "back": "← Späť",
     "checkingStatus": "Kontroluje sa stav…",
     "unreachable": "Stavové API nie je dostupné",
+    "viewFullHistory": "Zobraziť celú históriu",
+    "uptime30d": "{{value}} % dostupnosť ({{days}} dní)",
+    "uptimeAllTime": "{{value}} % celkovo",
+    "uptimeMethodology": "Počíta sa len z oficiálne nahlásených závažných a kritických incidentov — menšie problémy a plánovaná údržba sa nezapočítavajú.",
+    "notTrackedYet": "Zatiaľ nesledované",
+    "trackedSince": "Sledované od {{date}}",
+    "searchComponents": "Hľadať komponenty…",
     "components": "Komponenty",
     "continentAfrica": "Afrika",
     "continentAsia": "Ázia",
@@ -209,11 +216,7 @@
     "stillOngoing": "Stále trvá",
     "selectPrompt": "Kliknite na deň v kalendári a zobrazte jeho incidenty.",
     "overview": {
-      "title": "Incidenty podľa služby",
-      "titleTop": "Top {{max}} incidentov podľa služby",
-      "moreServices_one": "+{{count}} ďalšia služba nezobrazená",
-      "moreServices_few": "+{{count}} ďalšie služby nezobrazené",
-      "moreServices_other": "+{{count}} ďalších služieb nezobrazených"
+      "title": "Incidenty podľa služby"
     }
   },
   "boards": {
@@ -310,26 +313,29 @@
       "titlePrefix": "Ak niečo",
       "titleDown": "vypadne",
       "titleSuffix": ", dozviete sa to ako prví.",
-      "body": "downDATA sleduje stavové stránky, na ktoré sa už spoliehate — GitHub, Supabase, Cloudflare a čokoľvek iné na Atlassian Statuspage — kontrolované až každých {{interval}}, od {{price}}, zatiaľ čo StatusGator si za to isté účtuje {{competitorPrice}}.",
+      "body": "downDATA sleduje GitHub, Supabase, Cloudflare a čokoľvek iné na Atlassian Statuspage, kontrolované až každých {{interval}}, za zlomok ceny.",
       "ctaTrial": "Vyskúšať 14 dní zadarmo",
       "noCard": "Bez platobnej karty. Plný prístup na 14 dní.",
       "liveDashboard": "Živý prehľad"
+    },
+    "trusted": {
+      "heading": "Niektoré zo služieb, ktoré môžete sledovať"
     },
     "features": {
       "heading": "Lacnejšie, pretože náklady v pozadí sú nižšie.",
       "subtitle": "Ceny konkurencie čiastočne platia za telefónnu/SMS infraštruktúru a viacregionálne sondy, ktoré my nemáme v rovnakom rozsahu.",
       "speedTitle": "Kontroly každých 30 sekúnd",
-      "speedBody": "Každá sledovaná služba sa kontroluje každých 30 sekúnd — najlacnejší platený plán UptimeRobot zvládne len 60 s.",
+      "speedBody": "Každá sledovaná služba sa kontroluje každých 30 sekúnd. Najlacnejší platený plán UptimeRobot zvládne len 60 s.",
       "monitoringTitle": "Sledovanie služieb a detail incidentov",
-      "monitoringBody": "Pridajte ľubovoľnú službu a sledujte jej stav naživo. Kliknutím na incident zobrazíte celú časovú os — od vyšetrovania až po vyriešenie.",
+      "monitoringBody": "Pridajte ľubovoľnú službu a sledujte jej stav naživo. Kliknutím na incident zobrazíte celú časovú os, od vyšetrovania až po vyriešenie.",
       "seatsTitle": "Neobmedzený počet členov v každom pláne",
-      "seatsBody": "UptimeRobot účtuje 15 – 19 USD/mesiac za každého ďalšieho člena nad rámec prvých troch. Tu je zahrnutý celý tím.",
+      "seatsBody": "UptimeRobot účtuje 15-19 USD/mesiac za každého ďalšieho člena nad rámec prvých troch. Tu je zahrnutý celý tím.",
       "boardsTitle": "Nástenky pre každý tím",
       "boardsBody": "Sledované služby zoskupíte do nástenok, takže každý tím vidí len tie služby, ktoré sa ho týkajú."
     },
     "pricing": {
       "heading": "Cenník",
-      "subtitle": "Namiesto toho skutočná 14-dňová skúšobná verzia s plným prístupom — bez potreby karty. Plán si vyberte, až keď budete pripravení, nie skôr.",
+      "subtitle": "Namiesto toho skutočná 14-dňová skúšobná verzia s plným prístupom, bez potreby karty. Plán si vyberte, až keď budete pripravení, nie skôr.",
       "monthly": "Mesačne",
       "annual": "Ročne",
       "save20": "Ušetríte 20 %",
@@ -360,19 +366,19 @@
       "howItWorksQuestion": "Ako downDATA kontroluje moje služby?",
       "howItWorksAnswer": "Kontrolujeme verejnú stavovú stránku každej sledovanej služby až každých 30 sekúnd a hneď ako sa niečo zmení, aktualizujeme váš prehľad.",
       "trialQuestion": "Čo sa stane po skončení 14-dňovej skúšobnej verzie?",
-      "trialAnswer": "Počas 14 dní máte plný prístup bez potreby karty. Keď skúšobná verzia skončí, vyberte si plán, ktorý vám vyhovuje — nič sa automaticky neúčtuje.",
+      "trialAnswer": "Počas 14 dní máte plný prístup bez potreby karty. Keď skúšobná verzia skončí, vyberte si plán, ktorý vám vyhovuje. Nič sa automaticky neúčtuje.",
       "cancelQuestion": "Môžem plán kedykoľvek zmeniť alebo zrušiť?",
-      "cancelAnswer": "Áno. Plán môžete kedykoľvek zvýšiť, znížiť alebo zrušiť — bez záväzkov a dlhodobých zmlúv.",
+      "cancelAnswer": "Áno. Plán môžete kedykoľvek zvýšiť, znížiť alebo zrušiť. Bez záväzkov a dlhodobých zmlúv.",
       "notificationsQuestion": "Dostane môj tím upozornenie, keď niečo vypadne?",
       "notificationsAnswer": "Slack pripojíte na pár kliknutí a incidenty sa hneď posielajú do vášho kanála. Každý plán zahŕňa neobmedzený počet členov tímu, takže o všetkom vie celý tím.",
       "monitorCountQuestion": "Čo sa počíta ako jeden „monitor“?",
-      "monitorCountAnswer": "Každá sledovaná služba — GitHub, Supabase, Cloudflare alebo čokoľvek iné na Atlassian Statuspage — sa počíta ako jeden monitor v rámci limitu vášho plánu.",
+      "monitorCountAnswer": "Každá sledovaná služba (GitHub, Supabase, Cloudflare alebo čokoľvek iné na Atlassian Statuspage) sa počíta ako jeden monitor v rámci limitu vášho plánu.",
       "emailSmsQuestion": "Môžem dostávať upozornenia aj e-mailom alebo SMS, nielen cez Slack?",
-      "emailSmsAnswer": "Áno — popri Slacku môžete pripojiť aj jednu alebo viac e-mailových adries či telefónnych čísel. Pri SMS si vyberiete, ktoré závažnosti stoja za správu, od len kritických až po úplne všetky.",
+      "emailSmsAnswer": "Áno, popri Slacku môžete pripojiť aj jednu alebo viac e-mailových adries či telefónnych čísel. Pri SMS si vyberiete, ktoré závažnosti stoja za správu, od len kritických až po úplne všetky.",
       "boardsQuestion": "Môžem si monitory usporiadať pre rôzne tímy?",
-      "boardsAnswer": "Áno — sledované služby môžete zoskupiť do nástenok, takže každý tím vidí len tie služby, ktoré sa ho týkajú.",
+      "boardsAnswer": "Áno, sledované služby môžete zoskupiť do nástenok, takže každý tím vidí len tie služby, ktoré sa ho týkajú.",
       "scopeQuestion": "Sleduje downDATA aj moje vlastné servery, alebo len verejné stavové stránky?",
-      "scopeAnswer": "Len verejné stavové stránky — downDATA sleduje služby postavené na Atlassian Statuspage, ako GitHub, Supabase alebo Cloudflare. Nie je to nástroj na pingovanie alebo monitorovanie vašej vlastnej infraštruktúry."
+      "scopeAnswer": "Len verejné stavové stránky. downDATA sleduje služby postavené na Atlassian Statuspage, ako GitHub, Supabase alebo Cloudflare. Nie je to nástroj na pingovanie alebo monitorovanie vašej vlastnej infraštruktúry."
     },
     "closing": {
       "heading": "Štrnásť dní. Plný prístup. Bez karty.",
@@ -526,14 +532,14 @@
     "back": "← Späť"
   },
   "features": {
-    "monitors": "Sleduj živý stav ktorejkoľvek služby na Atlassian Statuspage — GitHub, Supabase, Cloudflare a čokoľvek iné, na čo sa tvoj tím spolieha — kontrolovaný aj každých 30 sekúnd.",
+    "monitors": "Sleduj živý stav ktorejkoľvek služby na Atlassian Statuspage (GitHub, Supabase, Cloudflare a čokoľvek iné, na čo sa tvoj tím spolieha), kontrolovaný aj každých 30 sekúnd.",
     "incidents": "Jednotná časová os incidentov naprieč všetkými sledovanými službami, takže nemusíš kontrolovať päť rôznych stavových stránok, aby si vedel, čo sa naozaj deje.",
-    "maintenances": "Naplánované a prebiehajúce odstávky naprieč všetkými sledovanými službami na jednom mieste — aby plánovaná odstávka nikdy nevyzerala ako výpadok.",
-    "integrations": "Prepoj Slack a posielaj zmeny stavu priamo do kanála, ktorý tvoj tím už aj tak sleduje — nikto si nemusí pamätať, že má skontrolovať dashboard.",
-    "slack": "Posielaj nové incidenty a zmeny stavu priamo do slackového kanála, ktorý tvoj tím už sleduje — pripoj ho na pár kliknutí, žiadneho bota netreba nastavovať.",
-    "email": "Nechaj si posielať incidenty a zmeny stavu priamo na e-mail — pridaj jednu alebo viac adries a všetci budú v obraze, bez prihlasovania.",
-    "sms": "Nechaj si poslať SMS vo chvíli, keď nastane vážny alebo kritický výpadok — pridaj jedno alebo viac čísel a vyber, ktoré závažnosti stoja za správu, od len kritických až po úplne všetky.",
-    "history": "Vyber si ktorúkoľvek sledovanú službu a pozri si jej históriu incidentov za posledných 12 mesiacov — hodí sa, keď sa niekto opýta, či sa to už stalo aj predtým.",
+    "maintenances": "Naplánované a prebiehajúce odstávky naprieč všetkými sledovanými službami na jednom mieste. Plánovaná odstávka nikdy nevyzerá ako výpadok.",
+    "integrations": "Prepoj Slack a posielaj zmeny stavu priamo do kanála, ktorý tvoj tím už aj tak sleduje, bez toho, aby si niekto musel pamätať, že má skontrolovať dashboard.",
+    "slack": "Posielaj nové incidenty a zmeny stavu priamo do slackového kanála, ktorý tvoj tím už sleduje. Pripoj ho na pár kliknutí, žiadneho bota netreba nastavovať.",
+    "email": "Nechaj si posielať incidenty a zmeny stavu priamo na e-mail. Pridaj jednu alebo viac adries a všetci budú v obraze, bez prihlasovania.",
+    "sms": "Nechaj si poslať SMS vo chvíli, keď nastane vážny alebo kritický výpadok. Pridaj jedno alebo viac čísel a vyber, ktoré závažnosti stoja za správu, od len kritických až po úplne všetky.",
+    "history": "Vyber si ktorúkoľvek sledovanú službu a pozri si jej históriu incidentov za posledných 12 mesiacov, hodí sa, keď sa niekto opýta, či sa to už stalo aj predtým.",
     "boards": "Zoskup svoje sledované služby do tabúľ pre rôzne tímy, aby každý videl len služby, na ktorých mu záleží."
   },
   "notFound": {

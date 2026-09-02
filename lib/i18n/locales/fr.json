@@ -59,6 +59,13 @@
     "back": "← Retour",
     "checkingStatus": "Vérification du statut…",
     "unreachable": "Impossible d'accéder à l'API de statut",
+    "viewFullHistory": "Voir l'historique complet",
+    "uptime30d": "{{value}} % de disponibilité ({{days}} jours)",
+    "uptimeAllTime": "{{value}} % depuis le début",
+    "uptimeMethodology": "Calculé uniquement à partir des incidents majeurs et critiques signalés officiellement — les problèmes mineurs et la maintenance planifiée ne sont pas comptabilisés.",
+    "notTrackedYet": "Pas encore suivi",
+    "trackedSince": "Suivi depuis {{date}}",
+    "searchComponents": "Rechercher des composants…",
     "components": "Composants",
     "continentAfrica": "Afrique",
     "continentAsia": "Asie",
@@ -207,10 +214,7 @@
     "stillOngoing": "Toujours en cours",
     "selectPrompt": "Cliquez sur un jour du calendrier pour voir ses incidents.",
     "overview": {
-      "title": "Incidents par service",
-      "titleTop": "Top {{max}} incidents par service",
-      "moreServices_one": "+{{count}} autre service non affiché",
-      "moreServices_other": "+{{count}} autres services non affichés"
+      "title": "Incidents par service"
     }
   },
   "boards": {
@@ -304,26 +308,29 @@
       "titlePrefix": "Si quelque chose",
       "titleDown": "tombe en panne",
       "titleSuffix": ", vous serez le premier informé.",
-      "body": "downDATA surveille les pages de statut dont vous dépendez déjà — GitHub, Supabase, Cloudflare et tout autre service basé sur Atlassian Statuspage — vérifiées jusqu'à toutes les {{interval}}, à partir de {{price}}, alors que StatusGator facture {{competitorPrice}} pour le même service.",
+      "body": "downDATA surveille GitHub, Supabase, Cloudflare et tout autre service basé sur Atlassian Statuspage, vérifié jusqu'à toutes les {{interval}}, pour une fraction du prix.",
       "ctaTrial": "Démarrer l'essai gratuit de 14 jours",
       "noCard": "Sans carte bancaire. Accès complet pendant 14 jours.",
       "liveDashboard": "Tableau de bord en direct"
+    },
+    "trusted": {
+      "heading": "Quelques-uns des services que vous pouvez suivre"
     },
     "features": {
       "heading": "Moins cher, car les coûts en coulisses sont plus bas.",
       "subtitle": "Les tarifs de la concurrence financent en partie une infrastructure téléphonique/SMS et des sondes multi-régions que nous n'entretenons pas de la même façon.",
       "speedTitle": "Vérifications toutes les 30 secondes",
-      "speedBody": "Chaque service surveillé est vérifié toutes les 30 secondes — le forfait payant le moins cher d'UptimeRobot ne descend qu'à 60 s.",
+      "speedBody": "Chaque service surveillé est vérifié toutes les 30 secondes. Le forfait payant le moins cher d'UptimeRobot ne descend qu'à 60 s.",
       "monitoringTitle": "Surveillez vos services, suivez chaque incident",
       "monitoringBody": "Ajoutez n'importe quel service et suivez son statut en temps réel. Cliquez sur un incident pour voir sa chronologie complète, de l'investigation à la résolution.",
       "seatsTitle": "Membres illimités, sur chaque forfait",
-      "seatsBody": "UptimeRobot facture 15–19 $/mois par membre d'équipe au-delà des trois premiers. Ici, toute l'équipe est incluse.",
+      "seatsBody": "UptimeRobot facture 15-19 $/mois par membre d'équipe au-delà des trois premiers. Ici, toute l'équipe est incluse.",
       "boardsTitle": "Des tableaux pour chaque équipe",
       "boardsBody": "Regroupez vos services suivis en tableaux, pour que chaque équipe ne voie que les services qui la concernent."
     },
     "pricing": {
       "heading": "Tarifs",
-      "subtitle": "À la place, un véritable essai de 14 jours avec accès complet — sans carte requise. Choisissez un forfait quand vous serez prêt, pas avant.",
+      "subtitle": "À la place, un véritable essai de 14 jours avec accès complet, sans carte requise. Choisissez un forfait quand vous serez prêt, pas avant.",
       "monthly": "Mensuel",
       "annual": "Annuel",
       "save20": "Économisez 20 %",
@@ -354,19 +361,19 @@
       "howItWorksQuestion": "Comment downDATA vérifie-t-il mes services ?",
       "howItWorksAnswer": "Nous interrogeons la page de statut publique de chaque service suivi jusqu'à toutes les 30 secondes et mettons à jour votre tableau de bord dès qu'un changement survient.",
       "trialQuestion": "Que se passe-t-il à la fin de mon essai de 14 jours ?",
-      "trialAnswer": "Vous bénéficiez d'un accès complet pendant 14 jours, sans carte requise. Une fois l'essai terminé, choisissez le forfait qui vous convient — rien n'est débité automatiquement.",
+      "trialAnswer": "Vous bénéficiez d'un accès complet pendant 14 jours, sans carte requise. Une fois l'essai terminé, choisissez le forfait qui vous convient. Rien n'est débité automatiquement.",
       "cancelQuestion": "Puis-je changer ou annuler mon forfait à tout moment ?",
-      "cancelAnswer": "Oui. Vous pouvez passer à un forfait supérieur, inférieur, ou annuler à tout moment — sans engagement ni contrat de longue durée.",
+      "cancelAnswer": "Oui. Vous pouvez passer à un forfait supérieur, inférieur, ou annuler à tout moment. Aucun engagement ni contrat de longue durée.",
       "notificationsQuestion": "Mon équipe sera-t-elle prévenue en cas de panne ?",
       "notificationsAnswer": "Connectez Slack en quelques clics et les incidents arrivent directement dans votre canal. Chaque forfait inclut des membres d'équipe illimités, pour que toute l'équipe reste informée.",
       "monitorCountQuestion": "Qu'est-ce qui compte comme un « moniteur » ?",
-      "monitorCountAnswer": "Chaque service suivi — GitHub, Supabase, Cloudflare ou tout autre service sur Atlassian Statuspage — compte comme un moniteur dans la limite de votre forfait.",
+      "monitorCountAnswer": "Chaque service suivi (GitHub, Supabase, Cloudflare ou tout autre service sur Atlassian Statuspage) compte comme un moniteur dans la limite de votre forfait.",
       "emailSmsQuestion": "Puis-je être notifié par e-mail ou SMS aussi, pas seulement via Slack ?",
-      "emailSmsAnswer": "Oui — connectez une ou plusieurs adresses e-mail ou numéros de téléphone en plus de Slack. Pour les SMS, vous choisissez les niveaux de gravité qui méritent un message, du critique uniquement jusqu'à tout.",
+      "emailSmsAnswer": "Oui, connectez une ou plusieurs adresses e-mail ou numéros de téléphone en plus de Slack. Pour les SMS, vous choisissez les niveaux de gravité qui méritent un message, du critique uniquement jusqu'à tout.",
       "boardsQuestion": "Puis-je organiser les moniteurs pour différentes équipes ?",
-      "boardsAnswer": "Oui — regroupez vos services suivis en tableaux, pour que chaque équipe ne voie que les services qui la concernent.",
+      "boardsAnswer": "Oui, regroupez vos services suivis en tableaux, pour que chaque équipe ne voie que les services qui la concernent.",
       "scopeQuestion": "downDATA surveille-t-il mes propres serveurs, ou seulement des pages de statut publiques ?",
-      "scopeAnswer": "Seulement des pages de statut publiques — downDATA suit des services basés sur Atlassian Statuspage, comme GitHub, Supabase et Cloudflare. Ce n'est pas un outil pour pinguer ou surveiller votre propre infrastructure."
+      "scopeAnswer": "Seulement des pages de statut publiques. downDATA suit des services basés sur Atlassian Statuspage, comme GitHub, Supabase et Cloudflare. Ce n'est pas un outil pour pinguer ou surveiller votre propre infrastructure."
     },
     "closing": {
       "heading": "Quatorze jours. Accès complet. Sans carte.",
@@ -520,14 +527,14 @@
     "back": "← Retour"
   },
   "features": {
-    "monitors": "Suivez le statut en temps réel de n'importe quel service basé sur Atlassian Statuspage — GitHub, Supabase, Cloudflare et tout autre service dont dépend votre équipe — vérifié jusqu'à toutes les 30 secondes.",
+    "monitors": "Suivez le statut en temps réel de n'importe quel service basé sur Atlassian Statuspage (GitHub, Supabase, Cloudflare et tout autre service dont dépend votre équipe), vérifié jusqu'à toutes les 30 secondes.",
     "incidents": "Une chronologie unifiée des incidents pour tous les services que vous suivez, pour ne pas avoir à consulter cinq pages de statut différentes afin de savoir ce qui se passe réellement.",
-    "maintenances": "Les fenêtres de maintenance planifiées et en cours pour tous vos services suivis, au même endroit — pour qu'un arrêt planifié ne ressemble jamais à une panne.",
-    "integrations": "Connectez Slack et envoyez les mises à jour de statut directement dans un canal que votre équipe surveille déjà — personne n'a besoin de penser à consulter un tableau de bord.",
-    "slack": "Envoyez les nouveaux incidents et les mises à jour de statut directement dans un canal Slack que votre équipe surveille déjà — connectez-le en quelques clics, aucun bot à configurer.",
-    "email": "Recevez les incidents et les mises à jour de statut directement par e-mail — ajoutez une ou plusieurs adresses et toute l'équipe reste informée, sans avoir à se connecter.",
-    "sms": "Recevez un SMS dès qu'un incident majeur ou critique survient — ajoutez un ou plusieurs numéros et choisissez les niveaux de gravité qui méritent un SMS, du critique uniquement à tous les niveaux.",
-    "history": "Choisissez un service suivi et consultez son historique d'incidents des 12 derniers mois — utile la prochaine fois que quelqu'un demande si c'est déjà arrivé.",
+    "maintenances": "Les fenêtres de maintenance planifiées et en cours pour tous vos services suivis, au même endroit. Un arrêt planifié ne ressemble jamais à une panne.",
+    "integrations": "Connectez Slack et envoyez les mises à jour de statut directement dans un canal que votre équipe surveille déjà, sans que personne ait besoin de penser à consulter un tableau de bord.",
+    "slack": "Envoyez les nouveaux incidents et les mises à jour de statut directement dans un canal Slack que votre équipe surveille déjà. Connectez-le en quelques clics, aucun bot à configurer.",
+    "email": "Recevez les incidents et les mises à jour de statut directement par e-mail. Ajoutez une ou plusieurs adresses et toute l'équipe reste informée, sans avoir à se connecter.",
+    "sms": "Recevez un SMS dès qu'un incident majeur ou critique survient. Ajoutez un ou plusieurs numéros et choisissez les niveaux de gravité qui méritent un SMS, du critique uniquement à tous les niveaux.",
+    "history": "Choisissez un service suivi et consultez son historique d'incidents des 12 derniers mois, utile la prochaine fois que quelqu'un demande si c'est déjà arrivé.",
     "boards": "Regroupez vos services suivis dans des tableaux pour différentes équipes, afin que chacun ne voie que les services qui le concernent."
   },
   "notFound": {

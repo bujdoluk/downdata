@@ -76,6 +76,10 @@ export type ServiceSummaryResponse = {
   incidents: Incident[];
   maintenances: ScheduledMaintenanceSummary[];
   last30DaysIncidents: StatuspageIncidentSummary[];
+  official30daysUptime: number;
+  uptimeWindowDays: number;
+  officialAllTimeUptime: number | null;
+  trackedSince: string | null;
 };
 
 export type TrackedIncident = Incident & { service: Service };

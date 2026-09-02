@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { annualBilledTotal, discountedMonthlyPrice, PLAN_CATALOG } from "@/lib/plans";
+import RevealOnScroll from "@/components/landing-page/RevealOnScroll";
 
 const mono = "font-mono";
 
@@ -23,8 +24,8 @@ export default function PricingSection() {
     {
       key: "pro" as const,
       badge: t("landing.pricing.mostTeams"),
-      ctaClass: "btn-primary",
-      cardClass: "border-primary/40 shadow-2xl",
+      ctaClass: "btn-info",
+      cardClass: "border-info/40 shadow-2xl",
     },
   ];
 
@@ -54,7 +55,7 @@ export default function PricingSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {plans.map((plan) => {
+          {plans.map((plan, i) => {
             const catalogEntry = PLAN_CATALOG[plan.key];
             const monthlyPrice = catalogEntry.monthlyPrice!; // starter/pro always have a real price — only business is null
             const rows: [string, string][] = [
@@ -65,12 +66,13 @@ export default function PricingSection() {
               [t("landing.pricing.history"), catalogEntry.features.history],
             ];
             return (
-              <div key={plan.key} className={`card card-border bg-base-200 ${plan.cardClass}`}>
+              <RevealOnScroll key={plan.key} delayMs={i * 80}>
+              <div className={`card card-border bg-base-200 transition-transform duration-300 hover:-translate-y-1 ${plan.cardClass}`}>
                 <div className="card-body gap-6 p-8">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between text-base font-bold">
                       {t(`landing.pricing.${plan.key}`)}
-                      {plan.badge && <span className={`badge badge-primary ${mono}`}>{plan.badge}</span>}
+                      {plan.badge && <span className={`badge badge-info ${mono}`}>{plan.badge}</span>}
                     </div>
                     <div className={`text-4xl font-bold ${mono}`}>
                       ${(annual ? discountedMonthlyPrice(monthlyPrice) : monthlyPrice).toFixed(2)}
@@ -94,10 +96,12 @@ export default function PricingSection() {
                   </div>
                 </div>
               </div>
+              </RevealOnScroll>
             );
           })}
 
           {/* Business — in the making; unaffected by the billing toggle */}
+          <RevealOnScroll delayMs={plans.length * 80}>
           <div className="card card-border card-dash bg-base-200/60">
             <div className="card-body gap-6 p-8">
               <div className="flex flex-col gap-1">
@@ -135,6 +139,7 @@ export default function PricingSection() {
               </div>
             </div>
           </div>
+          </RevealOnScroll>
         </div>
 
         <p className="text-base-content/70 mt-10 text-center text-sm">

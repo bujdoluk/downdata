@@ -82,7 +82,7 @@ export default function MobileMenu() {
 
         <div className="divider my-1" />
 
-        <Link href="/boards" onClick={close} className="btn btn-primary btn-sm w-full rounded-full">
+        <Link href="/boards" onClick={close} className="btn btn-info btn-sm w-full rounded-full">
           {t("landing.nav.startTrial")}
         </Link>
 

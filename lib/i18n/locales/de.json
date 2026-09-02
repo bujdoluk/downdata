@@ -59,6 +59,13 @@
     "back": "← Zurück",
     "checkingStatus": "Status wird geprüft…",
     "unreachable": "Status-API nicht erreichbar",
+    "viewFullHistory": "Vollständigen Verlauf anzeigen",
+    "uptime30d": "{{value}} % Verfügbarkeit ({{days}} Tage)",
+    "uptimeAllTime": "{{value}} % insgesamt",
+    "uptimeMethodology": "Berechnet nur aus offiziell gemeldeten schwerwiegenden und kritischen Vorfällen – kleinere Probleme und geplante Wartungsarbeiten werden nicht berücksichtigt.",
+    "notTrackedYet": "Noch nicht erfasst",
+    "trackedSince": "Verfolgt seit {{date}}",
+    "searchComponents": "Komponenten durchsuchen…",
     "components": "Komponenten",
     "continentAfrica": "Afrika",
     "continentAsia": "Asien",
@@ -207,10 +214,7 @@
     "stillOngoing": "Noch andauernd",
     "selectPrompt": "Klicke auf einen Tag im Kalender, um seine Vorfälle zu sehen.",
     "overview": {
-      "title": "Vorfälle nach Dienst",
-      "titleTop": "Top {{max}} Vorfälle nach Dienst",
-      "moreServices_one": "+{{count}} weiterer Dienst nicht angezeigt",
-      "moreServices_other": "+{{count}} weitere Dienste nicht angezeigt"
+      "title": "Vorfälle nach Dienst"
     }
   },
   "boards": {
@@ -304,26 +308,29 @@
       "titlePrefix": "Wenn etwas",
       "titleDown": "ausfällt",
       "titleSuffix": ", erfährst du es als Erstes.",
-      "body": "downDATA überwacht die Statusseiten, auf die du dich bereits verlässt — GitHub, Supabase, Cloudflare und alles andere auf Atlassian Statuspage — geprüft bis zu alle {{interval}}, ab {{price}}, während StatusGator für dieselbe Leistung {{competitorPrice}} verlangt.",
+      "body": "downDATA überwacht GitHub, Supabase, Cloudflare und alles andere auf Atlassian Statuspage, geprüft bis zu alle {{interval}}, für einen Bruchteil des Preises.",
       "ctaTrial": "14 Tage kostenlos testen",
       "noCard": "Keine Kreditkarte nötig. Voller Zugriff für 14 Tage.",
       "liveDashboard": "Live-Dashboard"
+    },
+    "trusted": {
+      "heading": "Einige der Dienste, die du verfolgen kannst"
     },
     "features": {
       "heading": "Günstiger, weil im Hintergrund weniger Kosten anfallen.",
       "subtitle": "Die Preise der Konkurrenz decken teils Telefon-/SMS-Infrastruktur und Multi-Region-Sonden ab, die wir nicht im gleichen Umfang betreiben.",
       "speedTitle": "Prüfungen alle 30 Sekunden",
-      "speedBody": "Jeder überwachte Dienst wird alle 30 Sekunden geprüft — der günstigste bezahlte Plan von UptimeRobot schafft nur 60 s.",
+      "speedBody": "Jeder überwachte Dienst wird alle 30 Sekunden geprüft. Der günstigste bezahlte Plan von UptimeRobot schafft nur 60 s.",
       "monitoringTitle": "Dienste überwachen, Vorfälle im Detail",
-      "monitoringBody": "Füge einen beliebigen Dienst hinzu und verfolge seinen Live-Status in Echtzeit. Klicke auf einen Vorfall, um den vollständigen Verlauf zu sehen — von der Untersuchung bis zur Lösung.",
+      "monitoringBody": "Füge einen beliebigen Dienst hinzu und verfolge seinen Live-Status in Echtzeit. Klicke auf einen Vorfall, um den vollständigen Verlauf zu sehen, von der Untersuchung bis zur Lösung.",
       "seatsTitle": "Unbegrenzte Nutzer, in jedem Plan",
-      "seatsBody": "UptimeRobot verlangt 15–19 $/Monat für jedes Teammitglied ab dem vierten. Hier ist das ganze Team inbegriffen.",
+      "seatsBody": "UptimeRobot verlangt 15-19 $/Monat für jedes Teammitglied ab dem vierten. Hier ist das ganze Team inbegriffen.",
       "boardsTitle": "Boards für jedes Team",
       "boardsBody": "Gruppiere deine verfolgten Dienste in Boards, sodass jedes Team nur die Dienste sieht, die es betreffen."
     },
     "pricing": {
       "heading": "Preise",
-      "subtitle": "Stattdessen eine echte 14-tägige Testphase mit vollem Zugriff — keine Kreditkarte nötig. Wähle einen Plan, wenn du bereit bist, nicht vorher.",
+      "subtitle": "Stattdessen eine echte 14-tägige Testphase mit vollem Zugriff, keine Kreditkarte nötig. Wähle einen Plan, wenn du bereit bist, nicht vorher.",
       "monthly": "Monatlich",
       "annual": "Jährlich",
       "save20": "20 % sparen",
@@ -354,19 +361,19 @@
       "howItWorksQuestion": "Wie prüft downDATA meine Dienste?",
       "howItWorksAnswer": "Wir rufen die öffentliche Statusseite jedes verfolgten Diensts bis zu alle 30 Sekunden ab und aktualisieren dein Dashboard, sobald sich etwas ändert.",
       "trialQuestion": "Was passiert nach Ablauf meiner 14-tägigen Testphase?",
-      "trialAnswer": "Du hast 14 Tage lang vollen Zugriff, ganz ohne Kreditkarte. Nach der Testphase wählst du den passenden Plan — es wird nichts automatisch abgebucht.",
+      "trialAnswer": "Du hast 14 Tage lang vollen Zugriff, ganz ohne Kreditkarte. Nach der Testphase wählst du den passenden Plan. Es wird nichts automatisch abgebucht.",
       "cancelQuestion": "Kann ich meinen Plan jederzeit ändern oder kündigen?",
-      "cancelAnswer": "Ja. Du kannst jederzeit upgraden, downgraden oder kündigen — keine Vertragsbindung.",
+      "cancelAnswer": "Ja. Du kannst jederzeit upgraden, downgraden oder kündigen. Keine Vertragsbindung.",
       "notificationsQuestion": "Wird mein Team benachrichtigt, wenn etwas ausfällt?",
       "notificationsAnswer": "Verbinde Slack in wenigen Klicks, und Vorfälle landen direkt in deinem Kanal. Jeder Plan enthält unbegrenzt viele Teammitglieder, damit das ganze Team informiert bleibt.",
       "monitorCountQuestion": "Was zählt als ein „Monitor“?",
-      "monitorCountAnswer": "Jeder verfolgte Dienst — GitHub, Supabase, Cloudflare oder alles andere auf Atlassian Statuspage — zählt als ein Monitor gegen das Limit deines Plans.",
+      "monitorCountAnswer": "Jeder verfolgte Dienst (GitHub, Supabase, Cloudflare oder alles andere auf Atlassian Statuspage) zählt als ein Monitor gegen das Limit deines Plans.",
       "emailSmsQuestion": "Kann ich Benachrichtigungen auch per E-Mail oder SMS bekommen, nicht nur über Slack?",
-      "emailSmsAnswer": "Ja — verbinde neben Slack auch eine oder mehrere E-Mail-Adressen oder Telefonnummern. Bei SMS wählst du, welche Schweregrade eine Nachricht wert sind, von nur kritisch bis alles.",
+      "emailSmsAnswer": "Ja, verbinde neben Slack auch eine oder mehrere E-Mail-Adressen oder Telefonnummern. Bei SMS wählst du, welche Schweregrade eine Nachricht wert sind, von nur kritisch bis alles.",
       "boardsQuestion": "Kann ich Monitore für verschiedene Teams organisieren?",
-      "boardsAnswer": "Ja — gruppiere deine verfolgten Dienste in Boards, sodass jedes Team nur die Dienste sieht, die es betreffen.",
+      "boardsAnswer": "Ja, gruppiere deine verfolgten Dienste in Boards, sodass jedes Team nur die Dienste sieht, die es betreffen.",
       "scopeQuestion": "Überwacht downDATA auch meine eigenen Server, oder nur öffentliche Statusseiten?",
-      "scopeAnswer": "Nur öffentliche Statusseiten — downDATA verfolgt Dienste, die auf Atlassian Statuspage basieren, wie GitHub, Supabase und Cloudflare. Es ist kein Tool zum Pingen oder Überwachen deiner eigenen Infrastruktur."
+      "scopeAnswer": "Nur öffentliche Statusseiten. downDATA verfolgt Dienste, die auf Atlassian Statuspage basieren, wie GitHub, Supabase und Cloudflare. Es ist kein Tool zum Pingen oder Überwachen deiner eigenen Infrastruktur."
     },
     "closing": {
       "heading": "Vierzehn Tage. Voller Zugriff. Keine Karte.",
@@ -520,14 +527,14 @@
     "back": "← Zurück"
   },
   "features": {
-    "monitors": "Verfolge den Live-Status jeder Statuspage-basierten Website — GitHub, Supabase, Cloudflare und alles andere, worauf sich dein Team verlässt — geprüft bis zu alle 30 Sekunden.",
+    "monitors": "Verfolge den Live-Status jeder Statuspage-basierten Website (GitHub, Supabase, Cloudflare und alles andere, worauf sich dein Team verlässt), geprüft bis zu alle 30 Sekunden.",
     "incidents": "Eine einheitliche Zeitleiste aller Incidents über alle getrackten Dienste hinweg, damit du nicht fünf verschiedene Statusseiten checken musst, um zu wissen, was wirklich los ist.",
-    "maintenances": "Geplante und laufende Wartungsfenster über alle getrackten Dienste hinweg an einem Ort — damit geplante Ausfallzeiten nie wie eine Störung aussehen.",
-    "integrations": "Verbinde Slack und schicke Statusupdates direkt in einen Kanal, den dein Team ohnehin schon beobachtet — niemand muss mehr daran denken, ein Dashboard zu checken.",
-    "slack": "Schicke neue Vorfälle und Statusupdates direkt in einen Slack-Kanal, den dein Team schon beobachtet — in wenigen Klicks verbunden, kein Bot zum Einrichten.",
-    "email": "Lass dir Vorfälle und Statusupdates direkt per E-Mail zustellen — füge eine oder mehrere Adressen hinzu, und alle bleiben informiert, ganz ohne Login.",
-    "sms": "Erhalte eine SMS, sobald etwas Schwerwiegendes oder Kritisches ausfällt — füge eine oder mehrere Nummern hinzu und wähle, welche Schweregrade eine SMS wert sind, von nur kritisch bis hin zu allem.",
-    "history": "Wähle einen getrackten Dienst und sieh dir seine Incident-Historie der letzten 12 Monate an — praktisch, wenn jemand fragt, ob das schon mal vorgekommen ist.",
+    "maintenances": "Geplante und laufende Wartungsfenster über alle getrackten Dienste hinweg an einem Ort. Geplante Ausfallzeiten sehen nie wie eine Störung aus.",
+    "integrations": "Verbinde Slack und schicke Statusupdates direkt in einen Kanal, den dein Team ohnehin schon beobachtet, ohne dass jemand mehr daran denken muss, ein Dashboard zu checken.",
+    "slack": "Schicke neue Vorfälle und Statusupdates direkt in einen Slack-Kanal, den dein Team schon beobachtet. In wenigen Klicks verbunden, kein Bot zum Einrichten.",
+    "email": "Lass dir Vorfälle und Statusupdates direkt per E-Mail zustellen. Füge eine oder mehrere Adressen hinzu, und alle bleiben informiert, ganz ohne Login.",
+    "sms": "Erhalte eine SMS, sobald etwas Schwerwiegendes oder Kritisches ausfällt. Füge eine oder mehrere Nummern hinzu und wähle, welche Schweregrade eine SMS wert sind, von nur kritisch bis hin zu allem.",
+    "history": "Wähle einen getrackten Dienst und sieh dir seine Incident-Historie der letzten 12 Monate an, praktisch, wenn jemand fragt, ob das schon mal vorgekommen ist.",
     "boards": "Gruppiere deine getrackten Dienste in Boards für verschiedene Teams, damit jeder nur die Dienste sieht, die für ihn wichtig sind."
   },
   "notFound": {

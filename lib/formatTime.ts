@@ -20,6 +20,10 @@ export function formatDate(isoDate: string): string {
   return Temporal.PlainDate.from(isoDate).toLocaleString(undefined, { dateStyle: "medium" });
 }
 
+export function formatMonthYear(iso: string, timeZone: string): string {
+  return toLocalZonedDateTime(iso, timeZone).toLocaleString(undefined, { year: "numeric", month: "short" });
+}
+
 export function minutesBetween(startIso: string, endIso: string): number {
   return Math.round(Temporal.Instant.from(endIso).since(Temporal.Instant.from(startIso)).total("minutes"));
 }

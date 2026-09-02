@@ -59,6 +59,13 @@
     "back": "← Tillbaka",
     "checkingStatus": "Kontrollerar status…",
     "unreachable": "Status-API kunde inte nås",
+    "viewFullHistory": "Visa fullständig historik",
+    "uptime30d": "{{value}} % drifttid ({{days}} dagar)",
+    "uptimeAllTime": "{{value}} % totalt",
+    "uptimeMethodology": "Beräknas endast utifrån officiellt rapporterade allvarliga och kritiska incidenter – mindre problem och planerat underhåll räknas inte med.",
+    "notTrackedYet": "Ännu inte spårat",
+    "trackedSince": "Spårat sedan {{date}}",
+    "searchComponents": "Sök komponenter…",
     "components": "Komponenter",
     "continentAfrica": "Afrika",
     "continentAsia": "Asien",
@@ -207,10 +214,7 @@
     "stillOngoing": "Fortfarande pågående",
     "selectPrompt": "Klicka på en dag i kalendern för att se dess incidenter.",
     "overview": {
-      "title": "Incidenter per tjänst",
-      "titleTop": "Topp {{max}} incidenter per tjänst",
-      "moreServices_one": "+{{count}} tjänst till visas inte",
-      "moreServices_other": "+{{count}} tjänster till visas inte"
+      "title": "Incidenter per tjänst"
     }
   },
   "boards": {
@@ -304,26 +308,29 @@
       "titlePrefix": "Om något",
       "titleDown": "går ner",
       "titleSuffix": ", är du den förste som får veta.",
-      "body": "downDATA bevakar statussidorna du redan förlitar dig på — GitHub, Supabase, Cloudflare och alla andra baserade på Atlassian Statuspage — kontrollerade så ofta som var {{interval}}, från {{price}}, medan StatusGator tar {{competitorPrice}} för samma sak.",
+      "body": "downDATA bevakar GitHub, Supabase, Cloudflare och alla andra tjänster baserade på Atlassian Statuspage, kontrollerade så ofta som var {{interval}}, för en bråkdel av priset.",
       "ctaTrial": "Starta din 14-dagars kostnadsfria provperiod",
       "noCard": "Inget kreditkort krävs. Full åtkomst i 14 dagar.",
       "liveDashboard": "Direktuppdaterad instrumentpanel"
+    },
+    "trusted": {
+      "heading": "Några av tjänsterna du kan bevaka"
     },
     "features": {
       "heading": "Billigare eftersom kostnaderna bakom kulisserna är lägre.",
       "subtitle": "Konkurrenternas priser täcker delvis telefon-/SMS-infrastruktur och sonder i flera regioner som vi inte underhåller på samma sätt.",
       "speedTitle": "Kontroller var 30:e sekund",
-      "speedBody": "Varje övervakad tjänst kontrolleras var 30:e sekund — UptimeRobots billigaste betalplan klarar bara 60 sekunder.",
+      "speedBody": "Varje övervakad tjänst kontrolleras var 30:e sekund. UptimeRobots billigaste betalplan klarar bara 60 sekunder.",
       "monitoringTitle": "Övervaka tjänster, se varje incident",
       "monitoringBody": "Lägg till valfri tjänst och följ dess status i realtid. Klicka på en incident för att se hela tidslinjen, från utredning till löst.",
       "seatsTitle": "Obegränsat antal användare, i alla planer",
-      "seatsBody": "UptimeRobot tar 15–19 $/mån per teammedlem utöver de tre första. Här ingår hela teamet.",
+      "seatsBody": "UptimeRobot tar 15-19 $/mån per teammedlem utöver de tre första. Här ingår hela teamet.",
       "boardsTitle": "Tavlor för varje team",
       "boardsBody": "Gruppera dina övervakade tjänster i tavlor, så att varje team bara ser de tjänster som berör dem."
     },
     "pricing": {
       "heading": "Priser",
-      "subtitle": "Istället en riktig 14-dagars provperiod med full åtkomst — inget kort krävs. Välj en plan när du är redo, inte innan.",
+      "subtitle": "Istället en riktig 14-dagars provperiod med full åtkomst, inget kort krävs. Välj en plan när du är redo, inte innan.",
       "monthly": "Månadsvis",
       "annual": "Årsvis",
       "save20": "Spara 20 %",
@@ -354,19 +361,19 @@
       "howItWorksQuestion": "Hur kontrollerar downDATA mina tjänster?",
       "howItWorksAnswer": "Vi hämtar den offentliga statussidan för varje övervakad tjänst så ofta som var 30:e sekund och uppdaterar din instrumentpanel så fort något ändras.",
       "trialQuestion": "Vad händer när min 14-dagars provperiod tar slut?",
-      "trialAnswer": "Du får full åtkomst i 14 dagar utan att behöva ange kort. När provperioden är slut väljer du den plan som passar dig — inget dras automatiskt.",
+      "trialAnswer": "Du får full åtkomst i 14 dagar utan att behöva ange kort. När provperioden är slut väljer du den plan som passar dig. Inget dras automatiskt.",
       "cancelQuestion": "Kan jag ändra eller avsluta min plan när som helst?",
-      "cancelAnswer": "Ja. Du kan uppgradera, nedgradera eller avsluta när du vill — utan bindningstid eller långa avtal.",
+      "cancelAnswer": "Ja. Du kan uppgradera, nedgradera eller avsluta när du vill. Utan bindningstid eller långa avtal.",
       "notificationsQuestion": "Blir mitt team meddelat när något går ner?",
       "notificationsAnswer": "Anslut Slack på några klick, så skickas incidenter direkt till din kanal. Varje plan inkluderar obegränsat antal teammedlemmar, så hela teamet hålls uppdaterat.",
       "monitorCountQuestion": "Vad räknas som en \"övervakare\"?",
-      "monitorCountAnswer": "Varje övervakad tjänst — GitHub, Supabase, Cloudflare eller något annat på Atlassian Statuspage — räknas som en övervakare mot din plans gräns.",
+      "monitorCountAnswer": "Varje övervakad tjänst (GitHub, Supabase, Cloudflare eller något annat på Atlassian Statuspage) räknas som en övervakare mot din plans gräns.",
       "emailSmsQuestion": "Kan jag få aviseringar via e-post eller SMS också, inte bara Slack?",
-      "emailSmsAnswer": "Ja — anslut en eller flera e-postadresser eller telefonnummer utöver Slack. Med SMS väljer du vilka allvarlighetsgrader som är värda ett meddelande, från bara kritiska upp till allt.",
+      "emailSmsAnswer": "Ja, anslut en eller flera e-postadresser eller telefonnummer utöver Slack. Med SMS väljer du vilka allvarlighetsgrader som är värda ett meddelande, från bara kritiska upp till allt.",
       "boardsQuestion": "Kan jag organisera övervakare för olika team?",
-      "boardsAnswer": "Ja — gruppera dina övervakade tjänster i tavlor, så att varje team bara ser de tjänster som berör dem.",
+      "boardsAnswer": "Ja, gruppera dina övervakade tjänster i tavlor, så att varje team bara ser de tjänster som berör dem.",
       "scopeQuestion": "Övervakar downDATA mina egna servrar, eller bara offentliga statussidor?",
-      "scopeAnswer": "Bara offentliga statussidor — downDATA övervakar tjänster byggda på Atlassian Statuspage, som GitHub, Supabase och Cloudflare. Det är inget verktyg för att pinga eller övervaka din egen infrastruktur."
+      "scopeAnswer": "Bara offentliga statussidor. downDATA övervakar tjänster byggda på Atlassian Statuspage, som GitHub, Supabase och Cloudflare. Det är inget verktyg för att pinga eller övervaka din egen infrastruktur."
     },
     "closing": {
       "heading": "Fjorton dagar. Full åtkomst. Inget kort.",
@@ -520,14 +527,14 @@
     "back": "← Tillbaka"
   },
   "features": {
-    "monitors": "Följ statusen i realtid för vilken tjänst som helst baserad på Atlassian Statuspage — GitHub, Supabase, Cloudflare och allt annat ditt team är beroende av — kontrollerad så ofta som var 30:e sekund.",
+    "monitors": "Följ statusen i realtid för vilken tjänst som helst baserad på Atlassian Statuspage (GitHub, Supabase, Cloudflare och allt annat ditt team är beroende av), kontrollerad så ofta som var 30:e sekund.",
     "incidents": "En samlad tidslinje över incidenter för alla tjänster du bevakar, så att du slipper kolla fem olika statussidor för att veta vad som faktiskt pågår.",
-    "maintenances": "Planerade och pågående underhållsfönster för alla dina bevakade tjänster på ett ställe — så att planerat driftstopp aldrig ser ut som ett avbrott.",
-    "integrations": "Anslut Slack och skicka statusuppdateringar direkt till en kanal som ditt team redan bevakar — ingen behöver komma ihåg att kolla en instrumentpanel.",
-    "slack": "Skicka nya incidenter och statusuppdateringar direkt till en Slack-kanal som ditt team redan bevakar — anslut den på ett par klick, ingen bot att konfigurera.",
-    "email": "Få incidenter och statusuppdateringar levererade direkt till e-posten — lägg till en eller flera adresser så håller sig alla uppdaterade, utan inloggning.",
-    "sms": "Få ett sms i samma stund som något allvarligt eller kritiskt går ner — lägg till ett eller flera nummer och välj vilka allvarlighetsgrader som är värda ett sms, från enbart kritiska till alla.",
-    "history": "Välj vilken bevakad tjänst som helst och se dess incidenthistorik för de senaste 12 månaderna — praktiskt nästa gång någon undrar om det här har hänt förut.",
+    "maintenances": "Planerade och pågående underhållsfönster för alla dina bevakade tjänster på ett ställe. Planerat driftstopp ser aldrig ut som ett avbrott.",
+    "integrations": "Anslut Slack och skicka statusuppdateringar direkt till en kanal som ditt team redan bevakar, utan att någon behöver komma ihåg att kolla en instrumentpanel.",
+    "slack": "Skicka nya incidenter och statusuppdateringar direkt till en Slack-kanal som ditt team redan bevakar. Anslut den på ett par klick, ingen bot att konfigurera.",
+    "email": "Få incidenter och statusuppdateringar levererade direkt till e-posten. Lägg till en eller flera adresser så håller sig alla uppdaterade, utan inloggning.",
+    "sms": "Få ett sms i samma stund som något allvarligt eller kritiskt går ner. Lägg till ett eller flera nummer och välj vilka allvarlighetsgrader som är värda ett sms, från enbart kritiska till alla.",
+    "history": "Välj vilken bevakad tjänst som helst och se dess incidenthistorik för de senaste 12 månaderna, praktiskt nästa gång någon undrar om det här har hänt förut.",
     "boards": "Gruppera dina bevakade tjänster i tavlor för olika team, så att alla bara ser de tjänster som är relevanta för dem."
   },
   "notFound": {

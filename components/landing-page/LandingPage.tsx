@@ -7,31 +7,13 @@ import FaqSection from "@/components/landing-page/FaqSection";
 import Footer from "@/components/landing-page/Footer";
 import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import PricingSection from "@/components/landing-page/PricingSection";
+import TrustedServicesRow from "@/components/landing-page/TrustedServicesRow";
+import RevealOnScroll from "@/components/landing-page/RevealOnScroll";
 import CatalogServiceCard from "@/components/service/CatalogServiceCard";
-import RequestCard from "@/components/RequestCard";
-import { AlertIcon, BoardIcon } from "@/components/icons/NavIcons";
+import { INDICATOR_STYLES } from "@/components/service/statusStyles";
+import { AlertIcon, BoardIcon, BoltIcon, UserGroupIcon } from "@/components/icons/NavIcons";
 
 const mono = "font-mono";
-
-function BoltIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor" className={className} aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
-    </svg>
-  );
-}
-
-function UserGroupIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" strokeWidth={1.5} stroke="currentColor" className={className} aria-hidden="true">
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"
-      />
-    </svg>
-  );
-}
 
 const demoRows = [
   { slug: "supabase", name: "Supabase", indicator: "minor", outages24h: 1 },
@@ -42,18 +24,7 @@ const demoRows = [
 export default function LandingPage() {
   const { t } = useTranslation();
 
-  const features = [
-    { icon: BoltIcon, title: t("landing.features.speedTitle"), body: t("landing.features.speedBody") },
-    { icon: AlertIcon, title: t("landing.features.monitoringTitle"), body: t("landing.features.monitoringBody") },
-    { icon: UserGroupIcon, title: t("landing.features.seatsTitle"), body: t("landing.features.seatsBody") },
-    { icon: BoardIcon, title: t("landing.features.boardsTitle"), body: t("landing.features.boardsBody") },
-  ];
-
-  const [heroBodyBefore, heroBodyAfter] = t("landing.hero.body", {
-    interval: "30s",
-    price: "$19.99/month",
-    competitorPrice: "$274",
-  }).split("downDATA");
+  const [heroBodyBefore, heroBodyAfter] = t("landing.hero.body", { interval: "30s" }).split("downDATA");
 
   return (
     <div className="bg-base-100 text-base-content">
@@ -63,15 +34,10 @@ export default function LandingPage() {
       <header className="relative overflow-hidden">
         <div
           aria-hidden="true"
-          className="bg-primary/20 pointer-events-none absolute top-[-12rem] left-1/2 h-[36rem] w-[56rem] -translate-x-1/2 rounded-full blur-[120px]"
+          className="bg-primary/20 pointer-events-none absolute top-[-10rem] left-1/2 h-[36rem] w-[56rem] -translate-x-1/2 rounded-full blur-[120px]"
         />
-        <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-8 py-24 lg:grid-cols-[1.05fr_1fr] lg:py-32">
+        <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-8 py-16 lg:grid-cols-[1.05fr_1fr] lg:py-24">
           <div className="flex flex-col items-center gap-7 text-center lg:items-start lg:text-left">
-            <div className={`badge badge-success badge-soft gap-2 py-4 text-[0.72rem] tracking-[0.1em] uppercase ${mono}`}>
-              <span className="bg-success animate-signal-pulse h-[7px] w-[7px] rounded-full" />
-              {t("landing.hero.eyebrow")}
-            </div>
-
             <h1 className="max-w-xl text-5xl leading-[1.05] font-black tracking-tight text-balance sm:text-6xl">
               {t("landing.hero.titlePrefix")}{" "}
               <span className="text-primary">{t("landing.hero.titleDown")}</span>
@@ -86,11 +52,11 @@ export default function LandingPage() {
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
-              <Link href="/boards" className="btn btn-primary rounded-full shadow-lg">
+              <Link href="/boards" className="btn btn-info rounded-full shadow-lg">
                 {t("landing.hero.ctaTrial")}
               </Link>
+              <span className="text-base-content/50 text-sm">{t("landing.hero.noCard")}</span>
             </div>
-            <div className="text-base-content/50 text-sm">{t("landing.hero.noCard")}</div>
           </div>
 
           {/* Demo panel — the hero visual */}
@@ -98,7 +64,7 @@ export default function LandingPage() {
             <div className="bg-primary/10 absolute inset-0 translate-x-3 translate-y-3 rounded-2xl" aria-hidden="true" />
             <div className="card card-border bg-base-200 relative shadow-2xl">
               <div className="card-body gap-3 p-6">
-                <div className="flex items-center justify-between px-1 pb-1">
+                <div className="flex items-center justify-between px-1">
                   <span className={`text-base-content/50 text-[0.7rem] tracking-[0.1em] uppercase ${mono}`}>
                     {t("landing.hero.liveDashboard")}
                   </span>
@@ -107,6 +73,10 @@ export default function LandingPage() {
                     <span className="bg-base-content/10 h-2.5 w-2.5 rounded-full" />
                     <span className="bg-base-content/10 h-2.5 w-2.5 rounded-full" />
                   </span>
+                </div>
+                <div className="text-success flex items-center gap-2 px-1 pb-1 text-xs">
+                  <span className="bg-success animate-signal-pulse h-[7px] w-[7px] rounded-full" />
+                  {t("landing.hero.eyebrow")}
                 </div>
                 {demoRows.map((row) => (
                   <CatalogServiceCard
@@ -128,7 +98,11 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* Features */}
+      <TrustedServicesRow />
+
+      {/* Features — asymmetric bento, not four identical cards: the speed and
+          monitoring cells carry a real visual (a live tick, a status-dot
+          strip), the other two stay plain for contrast/rhythm. */}
       <section className="border-base-300 bg-base-200/40 border-t py-24">
         <div className="mx-auto max-w-6xl px-8">
           <div className="mx-auto mb-14 flex max-w-xl flex-col items-center gap-3 text-center">
@@ -138,18 +112,67 @@ export default function LandingPage() {
             <p className="text-base-content/70">{t("landing.features.subtitle")}</p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map(({ icon: Icon, title, body }) => (
-              <div key={title} className="card card-border bg-base-200 hover:border-base-content/20 transition-colors">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <RevealOnScroll className="md:col-span-1 lg:col-span-2">
+              <div className="card card-border bg-primary/5 border-primary/20 hover:border-primary/40 h-full transition-colors">
                 <div className="card-body gap-4 p-7">
-                  <div className="bg-primary/10 flex h-11 w-11 items-center justify-center rounded-xl">
-                    <Icon className="text-primary h-6 w-6" />
+                  <div className="flex items-start justify-between">
+                    <div className="bg-primary/10 flex h-11 w-11 items-center justify-center rounded-xl">
+                      <BoltIcon className="text-primary h-6 w-6" />
+                    </div>
+                    <div className={`text-primary flex items-baseline gap-1.5 text-3xl font-bold ${mono}`}>
+                      <span className="bg-primary animate-pulse-ring inline-block h-2 w-2 rounded-full" aria-hidden="true" />
+                      30s
+                    </div>
                   </div>
-                  <h3 className="card-title text-base">{title}</h3>
-                  <p className="text-base-content/70 text-sm leading-relaxed">{body}</p>
+                  <h3 className="card-title text-base">{t("landing.features.speedTitle")}</h3>
+                  <p className="text-base-content/70 text-sm leading-relaxed">{t("landing.features.speedBody")}</p>
                 </div>
               </div>
-            ))}
+            </RevealOnScroll>
+
+            <RevealOnScroll delayMs={80} className="md:col-span-1 lg:col-span-1">
+              <div className="card card-border bg-info/5 border-info/20 hover:border-info/40 h-full transition-colors">
+                <div className="card-body gap-4 p-7">
+                  <div className="bg-info/10 flex h-11 w-11 items-center justify-center rounded-xl">
+                    <AlertIcon className="text-info h-6 w-6" />
+                  </div>
+                  <h3 className="card-title text-base">{t("landing.features.monitoringTitle")}</h3>
+                  <p className="text-base-content/70 text-sm leading-relaxed">{t("landing.features.monitoringBody")}</p>
+                  <div className="mt-1 flex gap-1" aria-hidden="true">
+                    {["none", "none", "none", "minor", "none", "none", "critical", "none", "none", "none"].map((indicator, i) => (
+                      <span key={i} className={`h-4 w-1.5 rounded-full ${INDICATOR_STYLES[indicator]?.dot}`} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </RevealOnScroll>
+
+            <RevealOnScroll delayMs={140} className="md:col-span-1 lg:col-span-1">
+              <div className="card card-border bg-base-200 hover:border-base-content/20 h-full transition-colors">
+                <div className="card-body gap-4 p-7">
+                  <div className="bg-primary/10 flex h-11 w-11 items-center justify-center rounded-xl">
+                    <UserGroupIcon className="text-primary h-6 w-6" />
+                  </div>
+                  <h3 className="card-title text-base">{t("landing.features.seatsTitle")}</h3>
+                  <p className="text-base-content/70 text-sm leading-relaxed">{t("landing.features.seatsBody")}</p>
+                </div>
+              </div>
+            </RevealOnScroll>
+
+            <RevealOnScroll delayMs={200} className="md:col-span-1 lg:col-span-2">
+              <div className="card card-border bg-base-200 hover:border-base-content/20 h-full transition-colors">
+                <div className="card-body gap-4 p-7 sm:flex-row sm:items-center">
+                  <div className="bg-primary/10 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+                    <BoardIcon className="text-primary h-6 w-6" />
+                  </div>
+                  <div>
+                    <h3 className="card-title text-base">{t("landing.features.boardsTitle")}</h3>
+                    <p className="text-base-content/70 mt-1 text-sm leading-relaxed">{t("landing.features.boardsBody")}</p>
+                  </div>
+                </div>
+              </div>
+            </RevealOnScroll>
           </div>
         </div>
       </section>
@@ -157,15 +180,6 @@ export default function LandingPage() {
       <PricingSection />
 
       <FaqSection />
-
-      {/* Request card — one for integrations, one for services, reusing the
-          same dashboard copy/keys rather than inventing landing-only strings */}
-      <section className="border-base-300 border-t py-16">
-        <div className="mx-auto flex max-w-2xl flex-wrap items-start justify-center gap-4 px-8">
-          <RequestCard title={t("integrations.requestCard.title")} buttonLabel={t("integrations.requestCard.button")} kind="integration" />
-          <RequestCard title={t("addService.requestCard.title")} buttonLabel={t("addService.requestCard.button")} kind="service" />
-        </div>
-      </section>
 
       {/* Closing CTA */}
       <div className="border-base-300 relative overflow-hidden border-t py-28 text-center">
@@ -177,7 +191,7 @@ export default function LandingPage() {
           <h2 className="max-w-md text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
             {t("landing.closing.heading")}
           </h2>
-          <Link href="/boards" className="btn btn-primary rounded-full shadow-lg">
+          <Link href="/boards" className="btn btn-info rounded-full shadow-lg">
             {t("landing.closing.cta")}
           </Link>
         </div>

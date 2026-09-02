@@ -26,7 +26,7 @@ export default function PricingContent() {
           <h2 className="max-w-md text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
             {t("landing.closing.heading")}
           </h2>
-          <Link href="/boards" className="btn btn-primary rounded-full shadow-lg">
+          <Link href="/boards" className="btn btn-info rounded-full shadow-lg">
             {t("landing.closing.cta")}
           </Link>
         </div>

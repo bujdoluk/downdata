@@ -56,7 +56,7 @@ export default function SupportContent() {
               <h2 className="card-title text-lg">{t("support.chatHeading")}</h2>
               <p className="text-base-content/70 text-sm">{t("support.chatBody")}</p>
               <div className="card-actions mt-2">
-                <button type="button" className="btn btn-primary btn-sm" onClick={handleChatClick}>
+                <button type="button" className="btn btn-info btn-sm" onClick={handleChatClick}>
                   {t("support.chatButton")}
                 </button>
               </div>

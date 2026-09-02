@@ -5,10 +5,6 @@ import type { IncidentCountByService } from "@/lib/getStoredIncident";
 import { getNiceTicks } from "@/lib/niceTicks";
 import { BarList } from "@/components/BarList";
 
-// A "quick overview" stops being one past a screenful of rows — cap to the
-// worst offenders instead of forcing a long scroll through everyone.
-const MAX_BARS = 20;
-
 export default function IncidentCountsChart({
   services,
   counts,
@@ -27,19 +23,15 @@ export default function IncidentCountsChart({
   // RPC's own row order, so the count-descending sort below tie-breaks
   // alphabetically and stays stable poll to poll.
   const sorted = services.map((service) => ({ service, count: countBySlug.get(service.slug) ?? 0 })).sort((a, b) => b.count - a.count);
-  const bars = sorted.slice(0, MAX_BARS);
-  const hiddenCount = sorted.length - bars.length;
-  const maxCount = Math.max(0, ...bars.map((bar) => bar.count));
+  const maxCount = Math.max(0, ...sorted.map((bar) => bar.count));
 
   // Already sorted above (and that sort is what keeps the alphabetical
   // tie-break stable) — BarList gets sortOrder="none" so it doesn't re-sort.
-  const data = bars.map(({ service, count }) => ({ key: service.slug, name: service.name, value: count }));
+  const data = sorted.map(({ service, count }) => ({ key: service.slug, name: service.name, value: count }));
 
   return (
     <div className="card card-border bg-base-200 p-4">
-      <p className="text-base-content/60 text-sm font-medium">
-        {hiddenCount > 0 ? t("history.overview.titleTop", { max: MAX_BARS }) : t("history.overview.title")}
-      </p>
+      <p className="text-base-content/60 text-sm font-medium">{t("history.overview.title")}</p>
 
       <div className="mt-3">
         <BarList
@@ -78,8 +70,6 @@ export default function IncidentCountsChart({
           </div>
         </div>
       )}
-
-      {hiddenCount > 0 && <p className="text-base-content/40 mt-2 text-xs">{t("history.overview.moreServices", { count: hiddenCount })}</p>}
     </div>
   );
 }

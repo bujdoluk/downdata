@@ -61,6 +61,13 @@
     "back": "← Wstecz",
     "checkingStatus": "Sprawdzanie stanu…",
     "unreachable": "Brak dostępu do API stanu",
+    "viewFullHistory": "Zobacz pełną historię",
+    "uptime30d": "{{value}}% dostępności ({{days}} dni)",
+    "uptimeAllTime": "{{value}}% od początku",
+    "uptimeMethodology": "Obliczane wyłącznie na podstawie oficjalnie zgłoszonych poważnych i krytycznych incydentów — drobne problemy i planowane prace konserwacyjne nie są uwzględniane.",
+    "notTrackedYet": "Jeszcze nieśledzone",
+    "trackedSince": "Śledzone od {{date}}",
+    "searchComponents": "Szukaj komponentów…",
     "components": "Komponenty",
     "continentAfrica": "Afryka",
     "continentAsia": "Azja",
@@ -211,12 +218,7 @@
     "stillOngoing": "Nadal trwa",
     "selectPrompt": "Kliknij dzień w kalendarzu, aby zobaczyć jego incydenty.",
     "overview": {
-      "title": "Incydenty według usługi",
-      "titleTop": "Top {{max}} incydentów według usługi",
-      "moreServices_one": "+{{count}} kolejna usługa nie jest wyświetlana",
-      "moreServices_few": "+{{count}} kolejne usługi nie są wyświetlane",
-      "moreServices_many": "+{{count}} kolejnych usług nie jest wyświetlanych",
-      "moreServices_other": "+{{count}} kolejnych usług nie jest wyświetlanych"
+      "title": "Incydenty według usługi"
     }
   },
   "boards": {
@@ -316,26 +318,29 @@
       "titlePrefix": "Jeśli coś",
       "titleDown": "przestanie działać",
       "titleSuffix": ", dowiesz się o tym pierwszy.",
-      "body": "downDATA monitoruje strony statusu, na których już polegasz — GitHub, Supabase, Cloudflare i wszystko inne oparte na Atlassian Statuspage — sprawdzane nawet co {{interval}}, już od {{price}}, podczas gdy StatusGator liczy sobie za to samo {{competitorPrice}}.",
+      "body": "downDATA monitoruje GitHub, Supabase, Cloudflare i wszystko inne oparte na Atlassian Statuspage, sprawdzane nawet co {{interval}}, za ułamek ceny.",
       "ctaTrial": "Wypróbuj 14 dni za darmo",
       "noCard": "Bez karty płatniczej. Pełny dostęp przez 14 dni.",
       "liveDashboard": "Panel na żywo"
+    },
+    "trusted": {
+      "heading": "Niektóre z usług, które możesz monitorować"
     },
     "features": {
       "heading": "Taniej, bo koszty w tle są mniejsze.",
       "subtitle": "Ceny konkurencji częściowo pokrywają infrastrukturę telefoniczną/SMS oraz sondy w wielu regionach, których my nie utrzymujemy w takim zakresie.",
       "speedTitle": "Sprawdzanie co 30 sekund",
-      "speedBody": "Każda monitorowana usługa jest sprawdzana co 30 sekund — najtańszy płatny plan UptimeRobot oferuje tylko 60 s.",
+      "speedBody": "Każda monitorowana usługa jest sprawdzana co 30 sekund. Najtańszy płatny plan UptimeRobot oferuje tylko 60 s.",
       "monitoringTitle": "Monitorowanie usług i szczegóły incydentów",
-      "monitoringBody": "Dodaj dowolną usługę i obserwuj jej status na żywo. Kliknij incydent, aby zobaczyć pełną oś czasu — od badania aż po rozwiązanie.",
+      "monitoringBody": "Dodaj dowolną usługę i obserwuj jej status na żywo. Kliknij incydent, aby zobaczyć pełną oś czasu, od badania aż po rozwiązanie.",
       "seatsTitle": "Nielimitowana liczba użytkowników w każdym planie",
-      "seatsBody": "UptimeRobot pobiera 15–19 USD/miesiąc za każdego kolejnego członka zespołu powyżej trzech. Tutaj cały zespół jest wliczony w cenę.",
+      "seatsBody": "UptimeRobot pobiera 15-19 USD/miesiąc za każdego kolejnego członka zespołu powyżej trzech. Tutaj cały zespół jest wliczony w cenę.",
       "boardsTitle": "Tablice dla każdego zespołu",
       "boardsBody": "Pogrupuj śledzone usługi w tablice, dzięki czemu każdy zespół widzi tylko te usługi, które go dotyczą."
     },
     "pricing": {
       "heading": "Cennik",
-      "subtitle": "Zamiast tego prawdziwy 14-dniowy okres próbny z pełnym dostępem — bez karty płatniczej. Wybierz plan, gdy będziesz gotowy, nie wcześniej.",
+      "subtitle": "Zamiast tego prawdziwy 14-dniowy okres próbny z pełnym dostępem, bez karty płatniczej. Wybierz plan, gdy będziesz gotowy, nie wcześniej.",
       "monthly": "Miesięcznie",
       "annual": "Rocznie",
       "save20": "Oszczędź 20%",
@@ -366,19 +371,19 @@
       "howItWorksQuestion": "Jak downDATA sprawdza moje usługi?",
       "howItWorksAnswer": "Sprawdzamy publiczną stronę statusu każdej śledzonej usługi nawet co 30 sekund i aktualizujemy panel, gdy tylko coś się zmieni.",
       "trialQuestion": "Co się stanie po zakończeniu 14-dniowego okresu próbnego?",
-      "trialAnswer": "Przez 14 dni masz pełny dostęp bez potrzeby podawania karty. Gdy okres próbny się skończy, wybierz odpowiedni plan — nic nie zostanie naliczone automatycznie.",
+      "trialAnswer": "Przez 14 dni masz pełny dostęp bez potrzeby podawania karty. Gdy okres próbny się skończy, wybierz odpowiedni plan. Nic nie zostanie naliczone automatycznie.",
       "cancelQuestion": "Czy mogę zmienić lub anulować plan w dowolnym momencie?",
-      "cancelAnswer": "Tak. Możesz w każdej chwili zmienić plan na wyższy lub niższy albo go anulować — bez zobowiązań i długoterminowych umów.",
+      "cancelAnswer": "Tak. Możesz w każdej chwili zmienić plan na wyższy lub niższy albo go anulować. Bez zobowiązań i długoterminowych umów.",
       "notificationsQuestion": "Czy mój zespół otrzyma powiadomienie, gdy coś przestanie działać?",
       "notificationsAnswer": "Połącz Slacka w kilka kliknięć, a incydenty trafią prosto na Twój kanał. Każdy plan obejmuje nieograniczoną liczbę użytkowników, więc cały zespół jest na bieżąco.",
       "monitorCountQuestion": "Co liczy się jako jeden „monitor”?",
-      "monitorCountAnswer": "Każda śledzona usługa — GitHub, Supabase, Cloudflare lub dowolna inna dostępna w Atlassian Statuspage — liczy się jako jeden monitor w ramach limitu Twojego planu.",
+      "monitorCountAnswer": "Każda śledzona usługa (GitHub, Supabase, Cloudflare lub dowolna inna dostępna w Atlassian Statuspage) liczy się jako jeden monitor w ramach limitu Twojego planu.",
       "emailSmsQuestion": "Czy mogę otrzymywać powiadomienia też e-mailem lub SMS-em, nie tylko przez Slacka?",
-      "emailSmsAnswer": "Tak — obok Slacka możesz podłączyć jeden lub więcej adresów e-mail albo numerów telefonu. Przy SMS-ach sam wybierasz, które poziomy istotności zasługują na wiadomość, od samych krytycznych aż po wszystkie.",
+      "emailSmsAnswer": "Tak, obok Slacka możesz podłączyć jeden lub więcej adresów e-mail albo numerów telefonu. Przy SMS-ach sam wybierasz, które poziomy istotności zasługują na wiadomość, od samych krytycznych aż po wszystkie.",
       "boardsQuestion": "Czy mogę zorganizować monitory dla różnych zespołów?",
-      "boardsAnswer": "Tak — pogrupuj śledzone usługi w tablice, dzięki czemu każdy zespół widzi tylko te usługi, które go dotyczą.",
+      "boardsAnswer": "Tak, pogrupuj śledzone usługi w tablice, dzięki czemu każdy zespół widzi tylko te usługi, które go dotyczą.",
       "scopeQuestion": "Czy downDATA monitoruje moje własne serwery, czy tylko publiczne strony statusu?",
-      "scopeAnswer": "Tylko publiczne strony statusu — downDATA śledzi usługi oparte na Atlassian Statuspage, takie jak GitHub, Supabase czy Cloudflare. To nie jest narzędzie do pingowania ani monitorowania Twojej własnej infrastruktury."
+      "scopeAnswer": "Tylko publiczne strony statusu. downDATA śledzi usługi oparte na Atlassian Statuspage, takie jak GitHub, Supabase czy Cloudflare. To nie jest narzędzie do pingowania ani monitorowania Twojej własnej infrastruktury."
     },
     "closing": {
       "heading": "Czternaście dni. Pełny dostęp. Bez karty.",
@@ -532,14 +537,14 @@
     "back": "← Wstecz"
   },
   "features": {
-    "monitors": "Śledź na żywo status dowolnej usługi opartej na Atlassian Statuspage — GitHub, Supabase, Cloudflare i wszystko inne, na czym polega Twój zespół — sprawdzany nawet co 30 sekund.",
+    "monitors": "Śledź na żywo status dowolnej usługi opartej na Atlassian Statuspage (GitHub, Supabase, Cloudflare i wszystko inne, na czym polega Twój zespół), sprawdzany nawet co 30 sekund.",
     "incidents": "Ujednolicona oś czasu incydentów we wszystkich monitorowanych usługach, dzięki czemu nie musisz sprawdzać pięciu różnych stron statusu, żeby wiedzieć, co się naprawdę dzieje.",
-    "maintenances": "Zaplanowane i trwające okna konserwacji we wszystkich monitorowanych usługach w jednym miejscu — dzięki czemu planowana przerwa nigdy nie wygląda jak awaria.",
-    "integrations": "Połącz Slacka i wysyłaj aktualizacje statusu prosto na kanał, który Twój zespół już i tak obserwuje — nikt nie musi pamiętać o sprawdzaniu dashboardu.",
-    "slack": "Wysyłaj nowe incydenty i aktualizacje statusu prosto na kanał Slack, który Twój zespół już obserwuje — połącz go w kilka kliknięć, bez konfigurowania bota.",
-    "email": "Otrzymuj incydenty i aktualizacje statusu prosto na e-mail — dodaj jeden lub kilka adresów, a wszyscy będą na bieżąco, bez logowania.",
-    "sms": "Otrzymaj SMS w chwili, gdy coś ulegnie poważnej lub krytycznej awarii — dodaj jeden lub więcej numerów i wybierz, które poziomy ważności zasługują na SMS, od samych krytycznych po wszystkie.",
-    "history": "Wybierz dowolną monitorowaną usługę i zobacz jej historię incydentów z ostatnich 12 miesięcy — przydaje się, gdy ktoś zapyta, czy to już się kiedyś zdarzyło.",
+    "maintenances": "Zaplanowane i trwające okna konserwacji we wszystkich monitorowanych usługach w jednym miejscu. Planowana przerwa nigdy nie wygląda jak awaria.",
+    "integrations": "Połącz Slacka i wysyłaj aktualizacje statusu prosto na kanał, który Twój zespół już i tak obserwuje, bez konieczności pamiętania o sprawdzaniu dashboardu.",
+    "slack": "Wysyłaj nowe incydenty i aktualizacje statusu prosto na kanał Slack, który Twój zespół już obserwuje. Połącz go w kilka kliknięć, bez konfigurowania bota.",
+    "email": "Otrzymuj incydenty i aktualizacje statusu prosto na e-mail. Dodaj jeden lub kilka adresów, a wszyscy będą na bieżąco, bez logowania.",
+    "sms": "Otrzymaj SMS w chwili, gdy coś ulegnie poważnej lub krytycznej awarii. Dodaj jeden lub więcej numerów i wybierz, które poziomy ważności zasługują na SMS, od samych krytycznych po wszystkie.",
+    "history": "Wybierz dowolną monitorowaną usługę i zobacz jej historię incydentów z ostatnich 12 miesięcy, przydaje się, gdy ktoś zapyta, czy to już się kiedyś zdarzyło.",
     "boards": "Grupuj monitorowane usługi w tablice dla różnych zespołów, dzięki czemu każdy widzi tylko te usługi, na których mu zależy."
   },
   "notFound": {

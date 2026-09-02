@@ -90,14 +90,28 @@ export function buildIncidentCalendar(incidents: Incident[], year: number, local
   return { weeks, days, monthLabels, today: today.toString() };
 }
 
-export type TrackerDay = { date: string; impact: string | null; incidents: StatuspageIncidentSummary[] };
+export type TrackerDay = { date: string; impact: string | null; incidents: StatuspageIncidentSummary[]; tracked: boolean };
 
 // Flat last-N-days list, not a year grid — no week/month-label bookkeeping,
 // just the same "worst impact wins" per-day rule buildIncidentCalendar uses
 // above. Powers ServiceDetail's outage tracker.
-export function buildOutageTrackerDays(incidents: StatuspageIncidentSummary[], days: number, timeZone: string): TrackerDay[] {
+//
+// trackedSinceIso is the service's first_polled_at (null if it has no
+// polled_services row yet) — each day's `tracked` flag says whether this
+// app was actually watching by then. impact/incidents are still computed
+// unconditionally regardless of `tracked`; it's the rendering layer
+// (OutageTracker) that decides what to do with a day that isn't tracked.
+export function buildOutageTrackerDays(
+  incidents: StatuspageIncidentSummary[],
+  days: number,
+  timeZone: string,
+  trackedSinceIso: string | null,
+): TrackerDay[] {
   const today = Temporal.Now.zonedDateTimeISO(timeZone).toPlainDate();
   const start = today.subtract({ days: days - 1 });
+  const trackedSinceDate = trackedSinceIso
+    ? Temporal.Instant.from(trackedSinceIso).toZonedDateTimeISO(timeZone).toPlainDate()
+    : null;
 
   const ranges = incidents.map((incident) => ({
     incident,
@@ -113,7 +127,8 @@ export function buildOutageTrackerDays(incidents: StatuspageIncidentSummary[], d
     const dayIncidents = ranges
       .filter(({ start: rangeStart, end }) => Temporal.PlainDate.compare(cursor, rangeStart) >= 0 && Temporal.PlainDate.compare(cursor, end) <= 0)
       .map(({ incident }) => incident);
-    result.push({ date: cursor.toString(), impact: worstImpact(dayIncidents), incidents: dayIncidents });
+    const tracked = trackedSinceDate !== null && Temporal.PlainDate.compare(cursor, trackedSinceDate) >= 0;
+    result.push({ date: cursor.toString(), impact: worstImpact(dayIncidents), incidents: dayIncidents, tracked });
     cursor = cursor.add({ days: 1 });
   }
   return result;

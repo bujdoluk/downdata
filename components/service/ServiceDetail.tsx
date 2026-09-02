@@ -1,24 +1,53 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import { formatDateTime, formatTime } from "@/lib/formatTime";
+import { formatDateTime, formatTime, formatMonthYear } from "@/lib/formatTime";
 import type { Slug, ServiceSummaryResponse, StatuspageComponent, Status } from "@/types/service";
 import type { IntegrationDefinition } from "@/types/integration";
 import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import OutageTracker from "@/components/service/OutageTracker";
+import SearchFilterInput from "@/components/service/SearchFilterInput";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, ALL_COMPONENT_STATUSES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import { ALL_CONTINENTS, CONTINENT_LABEL_KEYS, inferComponentContinent, type Continent } from "@/lib/componentRegion";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { useTimeZone } from "@/hooks/useTimeZone";
+import { useDebouncedUrlFilters } from "@/hooks/useDebouncedUrlFilters";
 import Spinner from "@/components/Spinner";
 
 const POLL_INTERVAL_MS = 60_000;
+
+// Debounced-and-URL-synced state for the component list's continent/status
+// filters — same pattern as IncidentsPageContent/MaintenancePageContent
+// (see hooks/useDebouncedUrlFilters), so a filtered view here is a
+// shareable/bookmarkable link instead of vanishing on refresh. parse/
+// serialize/toPatch must be stable module-level references, not redefined
+// per render (see that hook's own comment).
+type ComponentFilters = { continents: Set<Continent>; statuses: Set<Status>; q: string };
+
+function parseComponentFilters(searchParams: URLSearchParams): ComponentFilters {
+  return {
+    continents: new Set((searchParams.get("continents") ?? "").split(",").filter(Boolean) as Continent[]),
+    statuses: new Set((searchParams.get("statuses") ?? "").split(",").filter(Boolean) as Status[]),
+    q: searchParams.get("q") ?? "",
+  };
+}
+
+function serializeComponentFilters(f: ComponentFilters): string {
+  return JSON.stringify([[...f.continents].sort(), [...f.statuses].sort(), f.q]);
+}
+
+function componentFiltersPatch(f: ComponentFilters): Record<string, string | null> {
+  return {
+    continents: f.continents.size === 0 ? null : [...f.continents].sort().join(","),
+    statuses: f.statuses.size === 0 ? null : [...f.statuses].sort().join(","),
+    q: f.q.trim() === "" ? null : f.q.trim(),
+  };
+}
 
 const INTEGRATION_LABEL_KEYS: Record<IntegrationDefinition["slug"], string> = {
   slack: "nav.slack",
@@ -109,12 +138,19 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
   const presentContinents = ALL_CONTINENTS.filter((continent) =>
     allComponents.some((c) => !c.group && continentOf(c) === continent),
   );
-  const [selectedContinents, setSelectedContinents] = useState<Set<Continent>>(new Set());
 
   // Real field, not a guess like continent — only offer a status as a
   // filter if some component is actually reporting it right now.
   const presentStatuses = ALL_COMPONENT_STATUSES.filter((status) => allComponents.some((c) => !c.group && c.status === status));
-  const [selectedStatuses, setSelectedStatuses] = useState<Set<Status>>(new Set());
+
+  const { pendingFilters, setPendingFilters } = useDebouncedUrlFilters({
+    path: `/monitors/${slug}`,
+    parse: parseComponentFilters,
+    serialize: serializeComponentFilters,
+    toPatch: componentFiltersPatch,
+  });
+  const { continents: selectedContinents, statuses: selectedStatuses, q: componentQuery } = pendingFilters;
+  const trimmedComponentQuery = componentQuery.trim().toLowerCase();
 
   const isVisible = (c: StatuspageComponent) => {
     if (selectedContinents.size > 0) {
@@ -122,24 +158,25 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
       if (continent === null || !selectedContinents.has(continent)) return false;
     }
     if (selectedStatuses.size > 0 && !selectedStatuses.has(c.status)) return false;
+    if (trimmedComponentQuery && !c.name.toLowerCase().includes(trimmedComponentQuery)) return false;
     return true;
   };
 
   function toggleContinent(continent: Continent) {
-    setSelectedContinents((prev) => {
-      const next = new Set(prev);
+    setPendingFilters((prev) => {
+      const next = new Set(prev.continents);
       if (next.has(continent)) next.delete(continent);
       else next.add(continent);
-      return next;
+      return { ...prev, continents: next };
     });
   }
 
   function toggleStatus(status: Status) {
-    setSelectedStatuses((prev) => {
-      const next = new Set(prev);
+    setPendingFilters((prev) => {
+      const next = new Set(prev.statuses);
       if (next.has(status)) next.delete(status);
       else next.add(status);
-      return next;
+      return { ...prev, statuses: next };
     });
   }
 
@@ -197,9 +234,32 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
         </div>
       </div>
 
+      {data && data.trackedSince && (
+        <div className="text-base-content/50 mt-1 text-xs">
+          <div className="flex flex-wrap gap-x-4 gap-y-1">
+            <span>{t("serviceDetail.uptime30d", { value: data.official30daysUptime, days: data.uptimeWindowDays })}</span>
+            {data.officialAllTimeUptime !== null && (
+              <span>{t("serviceDetail.uptimeAllTime", { value: data.officialAllTimeUptime })}</span>
+            )}
+          </div>
+          <p className="text-base-content/40 mt-0.5 text-[11px]">{t("serviceDetail.uptimeMethodology")}</p>
+          <p className="text-base-content/40 text-[11px]">
+            {t("serviceDetail.trackedSince", { date: formatMonthYear(data.trackedSince, timeZone) })}
+          </p>
+        </div>
+      )}
+
       {data && (
         <div className="mt-4">
-          <OutageTracker incidents={data.last30DaysIncidents} timeZone={timeZone} />
+          <OutageTracker incidents={data.last30DaysIncidents} timeZone={timeZone} trackedSince={data.trackedSince} />
+          <div className="mt-2 flex justify-end">
+            <Link
+              href={`/history?service=${slug}`}
+              className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium"
+            >
+              {t("serviceDetail.viewFullHistory")}
+            </Link>
+          </div>
         </div>
       )}
 
@@ -212,6 +272,13 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                   {t("serviceDetail.components")}
                 </h2>
                 <span className="text-base-content/40 text-xs font-semibold">({visibleComponentCount})</span>
+              </div>
+              <div className="mb-3">
+                <SearchFilterInput
+                  value={componentQuery}
+                  onChange={(q) => setPendingFilters((prev) => ({ ...prev, q }))}
+                  label={t("serviceDetail.searchComponents")}
+                />
               </div>
               {presentContinents.length === 0 ? (
                 <p className="text-base-content/50 mb-3 text-sm">{t("serviceDetail.noLocationsToFilter")}</p>

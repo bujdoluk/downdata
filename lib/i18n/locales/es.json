@@ -59,6 +59,13 @@
     "back": "← Volver",
     "checkingStatus": "Comprobando el estado…",
     "unreachable": "No se pudo acceder a la API de estado",
+    "viewFullHistory": "Ver historial completo",
+    "uptime30d": "{{value}}% de disponibilidad ({{days}} días)",
+    "uptimeAllTime": "{{value}}% desde el inicio",
+    "uptimeMethodology": "Calculado solo a partir de incidentes graves y críticos reportados oficialmente; los problemas menores y el mantenimiento programado no se contabilizan.",
+    "notTrackedYet": "Aún no monitorizado",
+    "trackedSince": "Monitorizado desde {{date}}",
+    "searchComponents": "Buscar componentes…",
     "components": "Componentes",
     "continentAfrica": "África",
     "continentAsia": "Asia",
@@ -207,10 +214,7 @@
     "stillOngoing": "Aún en curso",
     "selectPrompt": "Haz clic en un día del calendario para ver sus incidentes.",
     "overview": {
-      "title": "Incidentes por servicio",
-      "titleTop": "Top {{max}} incidentes por servicio",
-      "moreServices_one": "+{{count}} otro servicio no mostrado",
-      "moreServices_other": "+{{count}} otros servicios no mostrados"
+      "title": "Incidentes por servicio"
     }
   },
   "boards": {
@@ -304,26 +308,29 @@
       "titlePrefix": "Si algo",
       "titleDown": "se cae",
       "titleSuffix": ", tú serás el primero en saberlo.",
-      "body": "downDATA vigila las páginas de estado de las que ya dependes — GitHub, Supabase, Cloudflare y cualquier otra basada en Atlassian Statuspage — comprobadas hasta cada {{interval}}, desde {{price}}, mientras que StatusGator cobra {{competitorPrice}} por lo mismo.",
+      "body": "downDATA vigila GitHub, Supabase, Cloudflare y cualquier otro servicio basado en Atlassian Statuspage, comprobado hasta cada {{interval}}, por una fracción del precio.",
       "ctaTrial": "Empieza tu prueba gratuita de 14 días",
       "noCard": "Sin tarjeta de crédito. Acceso completo durante 14 días.",
       "liveDashboard": "Panel en vivo"
+    },
+    "trusted": {
+      "heading": "Algunos de los servicios que puedes seguir"
     },
     "features": {
       "heading": "Más barato porque los costes de fondo son menores.",
       "subtitle": "Los precios de la competencia pagan en parte infraestructura de teléfono/SMS y sondas multirregión que nosotros no mantenemos igual.",
       "speedTitle": "Comprobaciones cada 30 segundos",
-      "speedBody": "Cada servicio monitorizado se comprueba cada 30 segundos — el plan de pago más barato de UptimeRobot solo llega a 60 s.",
+      "speedBody": "Cada servicio monitorizado se comprueba cada 30 segundos. El plan de pago más barato de UptimeRobot solo llega a 60 s.",
       "monitoringTitle": "Monitoriza servicios, ve cada incidente",
       "monitoringBody": "Añade cualquier servicio y sigue su estado en tiempo real. Haz clic en un incidente para ver su cronología completa, desde la investigación hasta la resolución.",
       "seatsTitle": "Usuarios ilimitados en todos los planes",
-      "seatsBody": "UptimeRobot cobra 15–19 $/mes por cada miembro del equipo a partir del cuarto. Aquí se incluye todo el equipo.",
+      "seatsBody": "UptimeRobot cobra 15-19 $/mes por cada miembro del equipo a partir del cuarto. Aquí se incluye todo el equipo.",
       "boardsTitle": "Tableros para cada equipo",
       "boardsBody": "Agrupa tus servicios seguidos en tableros, para que cada equipo vea solo los servicios que le importan."
     },
     "pricing": {
       "heading": "Precios",
-      "subtitle": "En su lugar, una prueba real de 14 días con acceso completo — sin necesidad de tarjeta. Elige un plan cuando estés listo, no antes.",
+      "subtitle": "En su lugar, una prueba real de 14 días con acceso completo, sin necesidad de tarjeta. Elige un plan cuando estés listo, no antes.",
       "monthly": "Mensual",
       "annual": "Anual",
       "save20": "Ahorra un 20%",
@@ -354,19 +361,19 @@
       "howItWorksQuestion": "¿Cómo comprueba downDATA mis servicios?",
       "howItWorksAnswer": "Consultamos la página de estado pública de cada servicio seguido hasta cada 30 segundos y actualizamos tu panel en cuanto algo cambia.",
       "trialQuestion": "¿Qué pasa cuando termina mi prueba de 14 días?",
-      "trialAnswer": "Tienes acceso completo durante 14 días sin necesidad de tarjeta. Cuando termine la prueba, elige el plan que mejor te encaje — no se cobra nada automáticamente.",
+      "trialAnswer": "Tienes acceso completo durante 14 días sin necesidad de tarjeta. Cuando termine la prueba, elige el plan que mejor te encaje. No se cobra nada automáticamente.",
       "cancelQuestion": "¿Puedo cambiar o cancelar mi plan en cualquier momento?",
-      "cancelAnswer": "Sí. Puedes subir, bajar o cancelar tu plan cuando quieras — sin permanencia ni contratos a largo plazo.",
+      "cancelAnswer": "Sí. Puedes subir, bajar o cancelar tu plan cuando quieras. Sin permanencia ni contratos a largo plazo.",
       "notificationsQuestion": "¿Se avisará a mi equipo cuando algo falle?",
       "notificationsAnswer": "Conecta Slack en pocos clics y los incidentes llegarán directamente a tu canal. Todos los planes incluyen miembros ilimitados, así que todo el equipo está al tanto.",
       "monitorCountQuestion": "¿Qué cuenta como un «monitor»?",
-      "monitorCountAnswer": "Cada servicio seguido — GitHub, Supabase, Cloudflare o cualquier otro en Atlassian Statuspage — cuenta como un monitor dentro del límite de tu plan.",
+      "monitorCountAnswer": "Cada servicio seguido (GitHub, Supabase, Cloudflare o cualquier otro en Atlassian Statuspage) cuenta como un monitor dentro del límite de tu plan.",
       "emailSmsQuestion": "¿Puedo recibir avisos también por correo o SMS, no solo por Slack?",
-      "emailSmsAnswer": "Sí — conecta una o varias direcciones de correo o números de teléfono además de Slack. Con el SMS eliges qué gravedades merecen un mensaje, desde solo crítico hasta todo.",
+      "emailSmsAnswer": "Sí, conecta una o varias direcciones de correo o números de teléfono además de Slack. Con el SMS eliges qué gravedades merecen un mensaje, desde solo crítico hasta todo.",
       "boardsQuestion": "¿Puedo organizar los monitores para distintos equipos?",
-      "boardsAnswer": "Sí — agrupa tus servicios seguidos en tableros, para que cada equipo vea solo los servicios que le importan.",
+      "boardsAnswer": "Sí, agrupa tus servicios seguidos en tableros, para que cada equipo vea solo los servicios que le importan.",
       "scopeQuestion": "¿downDATA monitoriza mis propios servidores, o solo páginas de estado públicas?",
-      "scopeAnswer": "Solo páginas de estado públicas — downDATA sigue servicios basados en Atlassian Statuspage, como GitHub, Supabase y Cloudflare. No es una herramienta para hacer ping o monitorizar tu propia infraestructura."
+      "scopeAnswer": "Solo páginas de estado públicas. downDATA sigue servicios basados en Atlassian Statuspage, como GitHub, Supabase y Cloudflare. No es una herramienta para hacer ping o monitorizar tu propia infraestructura."
     },
     "closing": {
       "heading": "Catorce días. Acceso completo. Sin tarjeta.",
@@ -520,14 +527,14 @@
     "back": "← Volver"
   },
   "features": {
-    "monitors": "Monitoriza el estado en tiempo real de cualquier servicio basado en Atlassian Statuspage — GitHub, Supabase, Cloudflare y cualquier otro del que dependa tu equipo — comprobado hasta cada 30 segundos.",
+    "monitors": "Monitoriza el estado en tiempo real de cualquier servicio basado en Atlassian Statuspage (GitHub, Supabase, Cloudflare y cualquier otro del que dependa tu equipo), comprobado hasta cada 30 segundos.",
     "incidents": "Una cronología unificada de incidentes en todos los servicios que monitorizas, para que no tengas que revisar cinco páginas de estado distintas para saber qué está pasando de verdad.",
-    "maintenances": "Ventanas de mantenimiento programadas y en curso en todos tus servicios monitorizados, en un solo lugar — para que una parada planificada nunca parezca una caída.",
-    "integrations": "Conecta Slack y envía actualizaciones de estado directamente a un canal que tu equipo ya vigila — nadie tiene que acordarse de revisar un panel.",
-    "slack": "Envía nuevos incidentes y actualizaciones de estado directamente a un canal de Slack que tu equipo ya vigila — conéctalo en un par de clics, sin bots que configurar.",
-    "email": "Recibe incidentes y actualizaciones de estado directamente en el correo — añade una o varias direcciones y todo el mundo se mantiene al día, sin necesidad de iniciar sesión.",
-    "sms": "Recibe un SMS en el momento en que algo falle de forma grave o crítica — añade uno o varios números y elige qué niveles de gravedad merecen un SMS, desde solo crítico hasta todos.",
-    "history": "Elige cualquier servicio monitorizado y consulta su historial de incidentes de los últimos 12 meses — útil la próxima vez que alguien pregunte si esto ya había pasado antes.",
+    "maintenances": "Ventanas de mantenimiento programadas y en curso en todos tus servicios monitorizados, en un solo lugar. Una parada planificada nunca parece una caída.",
+    "integrations": "Conecta Slack y envía actualizaciones de estado directamente a un canal que tu equipo ya vigila, sin que nadie tenga que acordarse de revisar un panel.",
+    "slack": "Envía nuevos incidentes y actualizaciones de estado directamente a un canal de Slack que tu equipo ya vigila. Conéctalo en un par de clics, sin bots que configurar.",
+    "email": "Recibe incidentes y actualizaciones de estado directamente en el correo. Añade una o varias direcciones y todo el mundo se mantiene al día, sin necesidad de iniciar sesión.",
+    "sms": "Recibe un SMS en el momento en que algo falle de forma grave o crítica. Añade uno o varios números y elige qué niveles de gravedad merecen un SMS, desde solo crítico hasta todos.",
+    "history": "Elige cualquier servicio monitorizado y consulta su historial de incidentes de los últimos 12 meses, útil la próxima vez que alguien pregunte si esto ya había pasado antes.",
     "boards": "Agrupa tus servicios monitorizados en tableros para distintos equipos, para que cada uno vea solo los servicios que le importan."
   },
   "notFound": {

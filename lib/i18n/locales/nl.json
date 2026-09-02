@@ -59,6 +59,13 @@
     "back": "← Terug",
     "checkingStatus": "Status controleren…",
     "unreachable": "Status-API niet bereikbaar",
+    "viewFullHistory": "Volledige geschiedenis bekijken",
+    "uptime30d": "{{value}}% uptime ({{days}} dagen)",
+    "uptimeAllTime": "{{value}}% sinds het begin",
+    "uptimeMethodology": "Berekend op basis van alleen officieel gemelde grote en kritieke incidenten — kleine problemen en gepland onderhoud tellen niet mee.",
+    "notTrackedYet": "Nog niet gevolgd",
+    "trackedSince": "Gevolgd sinds {{date}}",
+    "searchComponents": "Onderdelen zoeken…",
     "components": "Onderdelen",
     "continentAfrica": "Afrika",
     "continentAsia": "Azië",
@@ -207,10 +214,7 @@
     "stillOngoing": "Nog gaande",
     "selectPrompt": "Klik op een dag in de kalender om de incidenten te bekijken.",
     "overview": {
-      "title": "Incidenten per dienst",
-      "titleTop": "Top {{max}} incidenten per dienst",
-      "moreServices_one": "+{{count}} dienst niet weergegeven",
-      "moreServices_other": "+{{count}} diensten niet weergegeven"
+      "title": "Incidenten per dienst"
     }
   },
   "boards": {
@@ -304,26 +308,29 @@
       "titlePrefix": "Als iets",
       "titleDown": "uitvalt",
       "titleSuffix": ", weet jij het als eerste.",
-      "body": "downDATA houdt de statuspagina's in de gaten waar je al op vertrouwt — GitHub, Supabase, Cloudflare en alle andere op Atlassian Statuspage gebaseerde diensten — gecontroleerd tot wel elke {{interval}}, vanaf {{price}}, terwijl StatusGator {{competitorPrice}} rekent voor hetzelfde.",
+      "body": "downDATA houdt GitHub, Supabase, Cloudflare en alle andere op Atlassian Statuspage gebaseerde diensten in de gaten, gecontroleerd tot wel elke {{interval}}, voor een fractie van de prijs.",
       "ctaTrial": "Start je gratis proefperiode van 14 dagen",
       "noCard": "Geen creditcard nodig. Volledige toegang gedurende 14 dagen.",
       "liveDashboard": "Live dashboard"
+    },
+    "trusted": {
+      "heading": "Enkele van de diensten die je kunt volgen"
     },
     "features": {
       "heading": "Goedkoper omdat de kosten achter de schermen lager zijn.",
       "subtitle": "De prijzen van concurrenten dekken deels telefoon-/sms-infrastructuur en multi-regio sondes die wij niet op dezelfde manier onderhouden.",
       "speedTitle": "Controles elke 30 seconden",
-      "speedBody": "Elke gevolgde dienst wordt elke 30 seconden gecontroleerd — het goedkoopste betaalde plan van UptimeRobot komt maar tot 60 s.",
+      "speedBody": "Elke gevolgde dienst wordt elke 30 seconden gecontroleerd. Het goedkoopste betaalde plan van UptimeRobot komt maar tot 60 s.",
       "monitoringTitle": "Volg diensten, bekijk elk incident",
       "monitoringBody": "Voeg een willekeurige dienst toe en volg de status live. Klik op een incident voor de volledige tijdlijn, van onderzoek tot opgelost.",
       "seatsTitle": "Onbeperkt aantal gebruikers, bij elk plan",
-      "seatsBody": "UptimeRobot rekent 15–19 $/maand per teamlid boven de eerste drie. Hier is het hele team inbegrepen.",
+      "seatsBody": "UptimeRobot rekent 15-19 $/maand per teamlid boven de eerste drie. Hier is het hele team inbegrepen.",
       "boardsTitle": "Boards voor elk team",
       "boardsBody": "Groepeer je gevolgde diensten in boards, zodat elk team alleen de diensten ziet die voor hen relevant zijn."
     },
     "pricing": {
       "heading": "Prijzen",
-      "subtitle": "In plaats daarvan een echte proefperiode van 14 dagen met volledige toegang — geen kaart nodig. Kies een plan wanneer je er klaar voor bent, niet eerder.",
+      "subtitle": "In plaats daarvan een echte proefperiode van 14 dagen met volledige toegang, geen kaart nodig. Kies een plan wanneer je er klaar voor bent, niet eerder.",
       "monthly": "Maandelijks",
       "annual": "Jaarlijks",
       "save20": "Bespaar 20%",
@@ -354,19 +361,19 @@
       "howItWorksQuestion": "Hoe controleert downDATA mijn diensten?",
       "howItWorksAnswer": "We halen de openbare statuspagina van elke gevolgde dienst op tot wel elke 30 seconden en werken je dashboard bij zodra er iets verandert.",
       "trialQuestion": "Wat gebeurt er als mijn proefperiode van 14 dagen afloopt?",
-      "trialAnswer": "Je hebt 14 dagen lang volledige toegang zonder dat je een kaart nodig hebt. Zodra de proefperiode afloopt, kies je het plan dat bij je past — er wordt niets automatisch afgeschreven.",
+      "trialAnswer": "Je hebt 14 dagen lang volledige toegang zonder dat je een kaart nodig hebt. Zodra de proefperiode afloopt, kies je het plan dat bij je past. Er wordt niets automatisch afgeschreven.",
       "cancelQuestion": "Kan ik mijn plan op elk moment wijzigen of opzeggen?",
-      "cancelAnswer": "Ja. Je kunt op elk moment upgraden, downgraden of opzeggen — zonder verplichtingen of langetermijncontracten.",
+      "cancelAnswer": "Ja. Je kunt op elk moment upgraden, downgraden of opzeggen. Zonder verplichtingen of langetermijncontracten.",
       "notificationsQuestion": "Krijgt mijn team een melding als er iets uitvalt?",
       "notificationsAnswer": "Koppel Slack in een paar klikken en incidenten komen rechtstreeks in je kanaal terecht. Elk plan bevat onbeperkt aantal teamleden, zodat het hele team op de hoogte blijft.",
       "monitorCountQuestion": "Wat telt als één 'monitor'?",
-      "monitorCountAnswer": "Elke gevolgde dienst — GitHub, Supabase, Cloudflare of iets anders op Atlassian Statuspage — telt als één monitor binnen de limiet van je plan.",
+      "monitorCountAnswer": "Elke gevolgde dienst (GitHub, Supabase, Cloudflare of iets anders op Atlassian Statuspage) telt als één monitor binnen de limiet van je plan.",
       "emailSmsQuestion": "Kan ik ook meldingen krijgen via e-mail of SMS, niet alleen via Slack?",
-      "emailSmsAnswer": "Ja — koppel naast Slack ook een of meer e-mailadressen of telefoonnummers. Bij SMS kies je zelf welke ernstniveaus een bericht waard zijn, van alleen kritiek tot alles.",
+      "emailSmsAnswer": "Ja, koppel naast Slack ook een of meer e-mailadressen of telefoonnummers. Bij SMS kies je zelf welke ernstniveaus een bericht waard zijn, van alleen kritiek tot alles.",
       "boardsQuestion": "Kan ik monitors organiseren voor verschillende teams?",
-      "boardsAnswer": "Ja — groepeer je gevolgde diensten in boards, zodat elk team alleen de diensten ziet die voor hen relevant zijn.",
+      "boardsAnswer": "Ja, groepeer je gevolgde diensten in boards, zodat elk team alleen de diensten ziet die voor hen relevant zijn.",
       "scopeQuestion": "Monitort downDATA mijn eigen servers, of alleen openbare statuspagina's?",
-      "scopeAnswer": "Alleen openbare statuspagina's — downDATA volgt diensten gebaseerd op Atlassian Statuspage, zoals GitHub, Supabase en Cloudflare. Het is geen tool om je eigen infrastructuur te pingen of te monitoren."
+      "scopeAnswer": "Alleen openbare statuspagina's. downDATA volgt diensten gebaseerd op Atlassian Statuspage, zoals GitHub, Supabase en Cloudflare. Het is geen tool om je eigen infrastructuur te pingen of te monitoren."
     },
     "closing": {
       "heading": "Veertien dagen. Volledige toegang. Geen kaart.",
@@ -520,14 +527,14 @@
     "back": "← Terug"
   },
   "features": {
-    "monitors": "Volg de live status van elke dienst op basis van Atlassian Statuspage — GitHub, Supabase, Cloudflare en al het andere waar je team van afhankelijk is — tot wel elke 30 seconden gecontroleerd.",
+    "monitors": "Volg de live status van elke dienst op basis van Atlassian Statuspage (GitHub, Supabase, Cloudflare en al het andere waar je team van afhankelijk is), tot wel elke 30 seconden gecontroleerd.",
     "incidents": "Eén overzichtelijke tijdlijn van incidenten voor alle diensten die je volgt, zodat je niet vijf verschillende statuspagina's hoeft te checken om te weten wat er echt aan de hand is.",
-    "maintenances": "Geplande en lopende onderhoudsvensters voor al je gevolgde diensten, op één plek — zodat gepland onderhoud nooit aanvoelt als een storing.",
-    "integrations": "Koppel Slack en stuur statusupdates rechtstreeks naar een kanaal dat je team al in de gaten houdt — niemand hoeft meer te onthouden een dashboard te checken.",
-    "slack": "Stuur nieuwe incidenten en statusupdates rechtstreeks naar een Slack-kanaal dat je team al in de gaten houdt — in een paar klikken gekoppeld, geen bot om in te stellen.",
-    "email": "Laat incidenten en statusupdates rechtstreeks in de mailbox bezorgen — voeg één of meerdere adressen toe en iedereen blijft op de hoogte, zonder in te loggen.",
-    "sms": "Ontvang een sms zodra er iets groots of kritieks uitvalt — voeg één of meerdere nummers toe en kies welke ernstniveaus een sms waard zijn, van alleen kritiek tot alles.",
-    "history": "Kies een gevolgde dienst en bekijk de incidentgeschiedenis van de afgelopen 12 maanden — handig als iemand ooit vraagt of dit al eerder is gebeurd.",
+    "maintenances": "Geplande en lopende onderhoudsvensters voor al je gevolgde diensten, op één plek. Gepland onderhoud voelt nooit aan als een storing.",
+    "integrations": "Koppel Slack en stuur statusupdates rechtstreeks naar een kanaal dat je team al in de gaten houdt, zonder dat iemand hoeft te onthouden een dashboard te checken.",
+    "slack": "Stuur nieuwe incidenten en statusupdates rechtstreeks naar een Slack-kanaal dat je team al in de gaten houdt. In een paar klikken gekoppeld, geen bot om in te stellen.",
+    "email": "Laat incidenten en statusupdates rechtstreeks in de mailbox bezorgen. Voeg één of meerdere adressen toe en iedereen blijft op de hoogte, zonder in te loggen.",
+    "sms": "Ontvang een sms zodra er iets groots of kritieks uitvalt. Voeg één of meerdere nummers toe en kies welke ernstniveaus een sms waard zijn, van alleen kritiek tot alles.",
+    "history": "Kies een gevolgde dienst en bekijk de incidentgeschiedenis van de afgelopen 12 maanden, handig als iemand ooit vraagt of dit al eerder is gebeurd.",
     "boards": "Groepeer je gevolgde diensten in borden voor verschillende teams, zodat iedereen alleen de diensten ziet die voor hen relevant zijn."
   },
   "notFound": {

@@ -265,11 +265,6 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
                   isSelected ? "border-primary" : "hover:border-base-content/20"
                 }`}
               >
-                {isNew && (
-                  <span className="badge badge-xs badge-info absolute top-3 left-4 z-10 text-white uppercase">
-                    {t("incidents.new")}
-                  </span>
-                )}
                 <div className="absolute top-3 right-4 z-10 flex items-center gap-2">
                   <PinButton
                     pinned={pinned.has(incident.id)}
@@ -289,6 +284,9 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
                     <div className="mt-1 flex items-center gap-2">
                       <span className="text-base-content/50 text-xs">{incident.status}</span>
                       <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
+                      {isNew && (
+                        <span className="badge badge-xs badge-info text-white uppercase">{t("incidents.new")}</span>
+                      )}
                     </div>
                   </div>
                   <div className="text-base-content/50 self-end text-right text-xs whitespace-nowrap">

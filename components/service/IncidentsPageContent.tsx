@@ -11,7 +11,7 @@ import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/service/statusStyles";
 import Spinner from "@/components/Spinner";
-import ImpactFilterCheckboxes from "@/components/service/ImpactFilterCheckboxes";
+import ImpactFilterDropdown from "@/components/service/ImpactFilterDropdown";
 import PinButton from "@/components/service/PinButton";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
@@ -202,45 +202,40 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   }
 
   const filters = (
-    <>
-      <form className="flex flex-wrap items-center gap-2">
-        <SearchFilterInput
-          value={pendingFilters.q}
-          onChange={(q) => setPendingFilters((prev) => ({ ...prev, q }))}
-          label={t("incidents.filter.searchService")}
-        />
-        <select
-          className="select select-bordered select-sm w-40"
-          aria-label={t("incidents.filter.timeRange")}
-          value={pendingFilters.range}
-          onChange={(e) => setPendingFilters((prev) => ({ ...prev, range: e.target.value as TimeRange }))}
-        >
-          <option value="all">{t("incidents.filter.allTime")}</option>
-          <option value="24h">{t("incidents.filter.last24h")}</option>
-          <option value="7d">{t("incidents.filter.last7d")}</option>
-          <option value="30d">{t("incidents.filter.last30d")}</option>
-        </select>
-        <select
-          className="select select-bordered select-sm w-40"
-          aria-label={t("incidents.filter.status")}
-          value={pendingFilters.status}
-          onChange={(e) => setPendingFilters((prev) => ({ ...prev, status: e.target.value as StatusFilter }))}
-        >
-          {ALL_STATUSES.filter(
-            (status) => status === "all" || countForStatus(status) > 0 || status === pendingFilters.status,
-          ).map((status) => (
-            <option key={status} value={status}>
-              {t(`incidents.filter.${STATUS_LABEL_KEY[status]}`)} ({countForStatus(status)})
-            </option>
-          ))}
-        </select>
-        {hasActiveFilters && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={clearFilters} />}
-      </form>
-
-      <div className="mt-2 flex flex-wrap justify-end gap-3">
-        <ImpactFilterCheckboxes selected={pendingFilters.impacts} onToggle={toggleImpact} />
-      </div>
-    </>
+    <form className="flex flex-wrap items-center gap-2">
+      <SearchFilterInput
+        value={pendingFilters.q}
+        onChange={(q) => setPendingFilters((prev) => ({ ...prev, q }))}
+        label={t("incidents.filter.searchService")}
+      />
+      <select
+        className="select select-bordered select-sm w-40"
+        aria-label={t("incidents.filter.timeRange")}
+        value={pendingFilters.range}
+        onChange={(e) => setPendingFilters((prev) => ({ ...prev, range: e.target.value as TimeRange }))}
+      >
+        <option value="all">{t("incidents.filter.allTime")}</option>
+        <option value="24h">{t("incidents.filter.last24h")}</option>
+        <option value="7d">{t("incidents.filter.last7d")}</option>
+        <option value="30d">{t("incidents.filter.last30d")}</option>
+      </select>
+      <select
+        className="select select-bordered select-sm w-40"
+        aria-label={t("incidents.filter.status")}
+        value={pendingFilters.status}
+        onChange={(e) => setPendingFilters((prev) => ({ ...prev, status: e.target.value as StatusFilter }))}
+      >
+        {ALL_STATUSES.filter(
+          (status) => status === "all" || countForStatus(status) > 0 || status === pendingFilters.status,
+        ).map((status) => (
+          <option key={status} value={status}>
+            {t(`incidents.filter.${STATUS_LABEL_KEY[status]}`)} ({countForStatus(status)})
+          </option>
+        ))}
+      </select>
+      <ImpactFilterDropdown selected={pendingFilters.impacts} onToggle={toggleImpact} />
+      {hasActiveFilters && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={clearFilters} />}
+    </form>
   );
 
   const list = (

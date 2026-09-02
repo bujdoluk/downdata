@@ -619,6 +619,15 @@ _No props._
 | label | string | Yes | — |  |
 | onClick | () => void | Yes | — |  |
 
+### ImpactFilterDropdown
+
+`components/service/ImpactFilterDropdown.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| selected | Set<string> | Yes | — |  |
+| onToggle | (impact: string) => void | Yes | — |  |
+
 ### ImpactFilterCheckboxes
 
 `components/service/ImpactFilterCheckboxes.tsx`
@@ -999,6 +1008,7 @@ _No props._
 |---|---|---|---|---|
 | incidents | StatuspageIncidentSummary[] | Yes | — |  |
 | timeZone | string | Yes | — |  |
+| trackedSince | string \| null | Yes | — |  |
 
 ### PinButton
 

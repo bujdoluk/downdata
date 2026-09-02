@@ -21,7 +21,7 @@ export function formatDate(isoDate: string): string {
 }
 
 export function formatMonthYear(iso: string, timeZone: string): string {
-  return toLocalZonedDateTime(iso, timeZone).toLocaleString(undefined, { year: "numeric", month: "short" });
+  return toLocalZonedDateTime(iso, timeZone).toLocaleString(undefined, { year: "numeric", month: "long" });
 }
 
 export function minutesBetween(startIso: string, endIso: string): number {

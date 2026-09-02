@@ -17,7 +17,7 @@ import type { IncidentCountByService } from "@/lib/getStoredIncident";
 import IncidentCalendar from "@/components/history/IncidentCalendar";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import ServiceSearchPicker from "@/components/service/ServiceSearchPicker";
-import ImpactFilterCheckboxes from "@/components/service/ImpactFilterCheckboxes";
+import ImpactFilterDropdown from "@/components/service/ImpactFilterDropdown";
 import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
 import { useTimeZone } from "@/hooks/useTimeZone";
@@ -192,6 +192,7 @@ export default function HistoryPageContent({
         <div>
           <div className="flex flex-wrap items-center gap-4">
             <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
+            <ImpactFilterDropdown selected={selectedImpacts} onToggle={toggleImpact} />
           </div>
 
           {!slug ? null : isLoading ? null : error ? (
@@ -216,7 +217,6 @@ export default function HistoryPageContent({
               </div>
 
               <div className="mt-4 flex flex-wrap justify-end gap-3">
-                <ImpactFilterCheckboxes selected={selectedImpacts} onToggle={toggleImpact} />
                 <span className="label gap-2 text-sm">
                   <span className="bg-base-content/10 outline-info h-4 w-4 rounded-sm outline-2 outline-offset-1" />
                   {t("history.today")}

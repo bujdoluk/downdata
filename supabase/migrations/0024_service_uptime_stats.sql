@@ -19,15 +19,19 @@ comment on column polled_services.total_downtime_seconds is 'Cumulative seconds 
 -- labeling, and lib/uptime.ts's matching OUTAGE_IMPACTS filter for the
 -- 30-day figure computed in JS — keep both in sync if this ever changes).
 --
--- Known simplification: each incident's downtime is summed independently.
--- Two genuinely overlapping incidents on the same service double-count
--- their shared window (all-time uptime reads slightly low in that edge
--- case) — fixing that exactly would mean re-scanning and interval-merging
--- the service's whole incident history on every row change, the same
--- per-poll-cycle cost this trigger exists to avoid. Similarly, only an
--- incident's current/latest impact is stored (not impact-over-time), so
--- an incident that started `minor` and was later escalated to `major` is
--- credited to `major` for its whole duration, not time-sliced.
+-- Known simplification: each *resolved* incident's downtime is summed
+-- independently here and in the one-time backfill below. Two genuinely
+-- overlapping resolved incidents on the same service double-count their
+-- shared window (all-time uptime reads slightly low in that edge case).
+-- Fixing that exactly would mean re-scanning and interval-merging the
+-- service's whole incident history on every row change, the same
+-- per-poll-cycle cost this trigger exists to avoid. This does not apply
+-- to currently-open incidents, which get_uptime_stats() below computes
+-- correctly (their shared endpoint, `now()`, makes a real merge cheap).
+-- Similarly, only an incident's current/latest impact is stored (not
+-- impact-over-time), so an incident that started `minor` and was later
+-- escalated to `major` is credited to `major` for its whole duration,
+-- not time-sliced.
 create or replace function update_service_downtime() returns trigger as $$
 declare
   v_tracked_since timestamptz;
@@ -75,18 +79,33 @@ create trigger incidents_update_downtime after insert or update on incidents for
 -- history. Same style as incident_counts_by_service() (0008) — plain
 -- invoker-rights SQL, since incidents/polled_services have RLS enabled
 -- with no policies and this app only ever connects service-role anyway.
+--
+-- open_incident_seconds uses min(created_at), not sum(...) per row — every
+-- currently-open incident's live span ends at the same point, now(), so
+-- their real union is just the earliest start among them, not the sum of
+-- each independently. Summing was the actual bug behind an all-time figure
+-- reading 0%: two or more simultaneously-open major/critical incidents
+-- pushed the raw downtime total past the tracked window's real length,
+-- and clampPercent() in lib/uptime.ts floors that to 0.
 create or replace function get_uptime_stats(p_service_slug text)
 returns table(tracked_since timestamptz, total_downtime_seconds bigint, open_incident_seconds bigint) as $$
   select
     ps.first_polled_at,
     ps.total_downtime_seconds,
-    coalesce(sum(extract(epoch from (now() - greatest(i.created_at, ps.first_polled_at))))::bigint, 0)
+    -- Explicit case, not coalesce(greatest(min(...), first_polled_at), ...):
+    -- greatest() ignores nulls and falls back to first_polled_at even when
+    -- there are zero open incidents, which would silently turn "no open
+    -- incident" into "open since first_polled_at" instead of 0.
+    case
+      when min(i.created_at) is null then 0
+      else extract(epoch from (now() - greatest(min(i.created_at), ps.first_polled_at)))::bigint
+    end
   from polled_services ps
   left join incidents i on i.service_slug = ps.service_slug and i.resolved_at is null and i.impact in ('major', 'critical')
   where ps.service_slug = p_service_slug
   group by ps.first_polled_at, ps.total_downtime_seconds;
 $$ language sql stable;
-comment on function get_uptime_stats is 'Tracked-since date, cumulative resolved major/critical downtime, and any currently-open major/critical incident''s live elapsed seconds for one service — powers the monitor detail page''s all-time uptime figure. Empty result if the service has no polled_services row yet.';
+comment on function get_uptime_stats is 'Tracked-since date, cumulative resolved major/critical downtime, and the live elapsed seconds since the earliest currently-open major/critical incident for one service — powers the monitor detail page''s all-time uptime figure. Empty result if the service has no polled_services row yet.';
 
 -- One-time backfill so existing resolved major/critical incidents count
 -- from day one — without this, total_downtime_seconds starts at 0 for

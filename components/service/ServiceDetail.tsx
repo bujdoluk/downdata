@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, formatTime, formatMonthYear } from "@/lib/formatTime";
 import type { Slug, ServiceSummaryResponse, StatuspageComponent, Status } from "@/types/service";
@@ -11,6 +11,7 @@ import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import OutageTracker from "@/components/service/OutageTracker";
 import SearchFilterInput from "@/components/service/SearchFilterInput";
+import { InfoIcon } from "@/components/icons/NavIcons";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, ALL_COMPONENT_STATUSES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import { ALL_CONTINENTS, CONTINENT_LABEL_KEYS, inferComponentContinent, type Continent } from "@/lib/componentRegion";
 import { fetchJson } from "@/lib/fetchJson";
@@ -186,7 +187,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
     const s = COMPONENT_STATUS_STYLES[c.status] ?? FALLBACK_STYLE;
     return (
       <li key={c.id} className={`list-row items-center py-2.5 ${indent ? "pl-6" : ""}`}>
-        <span className="text-base-content text-sm">{c.name}</span>
+        <span className="list-col-grow text-base-content text-sm">{c.name}</span>
         <span className={`badge badge-soft ${s.badge}`}>{t(s.labelKey)}</span>
       </li>
     );
@@ -195,7 +196,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
   const Logo = SERVICE_LOGOS[slug] ?? FallbackLogo;
 
   return (
-    <div className="w-full max-w-6xl self-start">
+    <div className="w-full self-start">
       <Link href="/monitors" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
         {t("serviceDetail.back")}
       </Link>
@@ -236,14 +237,31 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
 
       {data && data.trackedSince && (
         <div className="text-base-content/50 mt-1 text-xs">
-          <div className="flex flex-wrap gap-x-4 gap-y-1">
-            <span>{t("serviceDetail.uptime30d", { value: data.official30daysUptime, days: data.uptimeWindowDays })}</span>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <span className="inline-flex items-center gap-1">
+              <Trans
+                i18nKey="serviceDetail.uptime30d"
+                values={{ value: data.official30daysUptime, days: data.uptimeWindowDays }}
+                components={[<span key="0" className="text-base-content text-base font-bold" />]}
+              />
+              <span className="tooltip" data-tip={t("serviceDetail.uptime30dMethodology")}>
+                <InfoIcon className="text-base-content/40" />
+              </span>
+            </span>
             {data.officialAllTimeUptime !== null && (
-              <span>{t("serviceDetail.uptimeAllTime", { value: data.officialAllTimeUptime })}</span>
+              <span className="inline-flex items-center gap-1">
+                <Trans
+                  i18nKey="serviceDetail.uptimeAllTime"
+                  values={{ value: data.officialAllTimeUptime }}
+                  components={[<span key="0" className="text-base-content text-base font-bold" />]}
+                />
+                <span className="tooltip" data-tip={t("serviceDetail.uptimeMethodology")}>
+                  <InfoIcon className="text-base-content/40" />
+                </span>
+              </span>
             )}
           </div>
-          <p className="text-base-content/40 mt-0.5 text-[11px]">{t("serviceDetail.uptimeMethodology")}</p>
-          <p className="text-base-content/40 text-[11px]">
+          <p className="text-base-content/40 mt-1 text-xs">
             {t("serviceDetail.trackedSince", { date: formatMonthYear(data.trackedSince, timeZone) })}
           </p>
         </div>

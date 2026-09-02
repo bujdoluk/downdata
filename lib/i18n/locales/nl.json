@@ -203,6 +203,8 @@
     "unreachable": "Kan de incidentgeschiedenis niet laden.",
     "empty": "Geen incidenten in de afgelopen 12 maanden.",
     "today": "Vandaag",
+    "detailTab": "Incidentdetail",
+    "byServiceTab": "Incidenten per dienst",
     "summary": {
       "incidents_one": "<0>{{count}}</0> incident",
       "incidents_other": "<0>{{count}}</0> incidenten",
@@ -215,10 +217,7 @@
     },
     "resolutionTime": "Opgelost in {{duration}}",
     "stillOngoing": "Nog gaande",
-    "selectPrompt": "Klik op een dag in de kalender om de incidenten te bekijken.",
-    "overview": {
-      "title": "Incidenten per dienst"
-    }
+    "selectPrompt": "Klik op een dag in de kalender om de incidenten te bekijken."
   },
   "boards": {
     "title": "Borden",
@@ -245,7 +244,7 @@
     "maintenanceCountLabel_one": "onderhoud",
     "maintenanceCountLabel_other": "onderhoud",
     "rename": "Hernoemen",
-    "onBoard": "Op dit bord",
+    "trackedServices": "Gevolgde diensten",
     "pickCategory": "Selecteer een categorie om diensten te doorbladeren.",
     "noServicesOnBoard": "Nog geen diensten op dit bord.",
     "activity": {
@@ -253,8 +252,7 @@
       "maintenanceTitle": "Actief onderhoud",
       "viewAll": "Alles bekijken",
       "noIncidents": "Geen actieve incidenten",
-      "noMaintenance": "Geen actief onderhoud",
-      "allClear": "Alles in orde — geen actieve incidenten of onderhoud"
+      "noMaintenance": "Geen actief onderhoud"
     },
     "viewHistory": "Geschiedenis van dit bord bekijken",
     "lastIncident": {

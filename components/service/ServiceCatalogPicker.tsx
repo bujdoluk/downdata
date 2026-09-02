@@ -68,7 +68,7 @@ export default function ServiceCatalogPicker({
   }
 
   return (
-    <div className="flex w-full flex-col self-start">
+    <div className="mx-auto flex w-full max-w-6xl flex-col self-start">
       <Link href="/boards" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
         {t("addService.back")}
       </Link>

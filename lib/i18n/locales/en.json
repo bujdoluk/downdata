@@ -203,6 +203,8 @@
     "unreachable": "Unable to load incident history.",
     "empty": "No incidents in the last 12 months.",
     "today": "Today",
+    "detailTab": "Incident detail",
+    "byServiceTab": "Incidents by service",
     "summary": {
       "incidents_one": "<0>{{count}}</0> incident",
       "incidents_other": "<0>{{count}}</0> incidents",
@@ -215,10 +217,7 @@
     },
     "resolutionTime": "Resolved in {{duration}}",
     "stillOngoing": "Still ongoing",
-    "selectPrompt": "Click a day on the calendar to see its incidents.",
-    "overview": {
-      "title": "Incidents by service"
-    }
+    "selectPrompt": "Click a day on the calendar to see its incidents."
   },
   "boards": {
     "title": "Boards",
@@ -245,7 +244,7 @@
     "maintenanceCountLabel_one": "maintenance",
     "maintenanceCountLabel_other": "maintenances",
     "rename": "Rename",
-    "onBoard": "On this board",
+    "trackedServices": "Tracked services",
     "pickCategory": "Select a category to browse services.",
     "noServicesOnBoard": "No services on this board yet.",
     "activity": {
@@ -253,8 +252,7 @@
       "maintenanceTitle": "Active Maintenance",
       "viewAll": "View all",
       "noIncidents": "No active incidents",
-      "noMaintenance": "No active maintenance",
-      "allClear": "All clear — no active incidents or maintenance"
+      "noMaintenance": "No active maintenance"
     },
     "viewHistory": "View history for this board",
     "lastIncident": {

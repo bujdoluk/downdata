@@ -92,7 +92,7 @@ export default function BillingPageContent({
   });
 
   return (
-    <div className="flex w-full max-w-2xl flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
       <h1 className="text-base-content text-lg font-semibold">{t("billing.title")}</h1>
 
       {checkoutParam === "success" && <p className="alert alert-success alert-soft text-sm">{t("billing.checkoutSuccess")}</p>}

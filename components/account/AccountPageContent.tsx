@@ -16,14 +16,8 @@ import { createClient } from "@/lib/supabase/client";
 import { AuthActionError, logOut, updatePassword } from "@/lib/supabase/auth";
 import { queryKeys } from "@/lib/queryKeys";
 import { formatDateTime } from "@/lib/formatTime";
+import { TAB_BG_STYLE } from "@/lib/utils";
 import type { Account } from "@/types/account";
-
-// daisyUI's tabs-lift reads the active tab's background from --tab-bg
-// (defaults to base-100 unconditionally on every .tab, so it can't be
-// overridden by setting the variable on an ancestor — see
-// node_modules/daisyui/components/tab.css). Matches the tab-content
-// panels' own bg-base-200 below.
-const TAB_BG_STYLE = { "--tab-bg": "var(--color-base-200)" } as React.CSSProperties;
 
 export default function AccountPageContent({
   userId,
@@ -72,7 +66,7 @@ export default function AccountPageContent({
   }
 
   return (
-    <div className="flex w-full max-w-2xl flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
       <div className="card card-border bg-base-200">
         <div className="card-body">
           <div className="flex items-center gap-4">

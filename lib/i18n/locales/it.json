@@ -203,6 +203,8 @@
     "unreachable": "Impossibile caricare la cronologia degli incidenti.",
     "empty": "Nessun incidente negli ultimi 12 mesi.",
     "today": "Oggi",
+    "detailTab": "Dettaglio incidente",
+    "byServiceTab": "Incidenti per servizio",
     "summary": {
       "incidents_one": "<0>{{count}}</0> incidente",
       "incidents_other": "<0>{{count}}</0> incidenti",
@@ -215,10 +217,7 @@
     },
     "resolutionTime": "Risolto in {{duration}}",
     "stillOngoing": "Ancora in corso",
-    "selectPrompt": "Fai clic su un giorno nel calendario per vedere i suoi incidenti.",
-    "overview": {
-      "title": "Incidenti per servizio"
-    }
+    "selectPrompt": "Fai clic su un giorno nel calendario per vedere i suoi incidenti."
   },
   "boards": {
     "title": "Bacheche",
@@ -245,7 +244,7 @@
     "maintenanceCountLabel_one": "manutenzione",
     "maintenanceCountLabel_other": "manutenzioni",
     "rename": "Rinomina",
-    "onBoard": "In questa bacheca",
+    "trackedServices": "Servizi monitorati",
     "pickCategory": "Seleziona una categoria per sfogliare i servizi.",
     "noServicesOnBoard": "Nessun servizio in questa bacheca.",
     "activity": {
@@ -253,8 +252,7 @@
       "maintenanceTitle": "Manutenzioni attive",
       "viewAll": "Vedi tutto",
       "noIncidents": "Nessun incidente attivo",
-      "noMaintenance": "Nessuna manutenzione attiva",
-      "allClear": "Tutto a posto — nessun incidente o manutenzione attivi"
+      "noMaintenance": "Nessuna manutenzione attiva"
     },
     "viewHistory": "Visualizza la cronologia di questa bacheca",
     "lastIncident": {

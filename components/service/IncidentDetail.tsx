@@ -62,7 +62,9 @@ export default function IncidentDetail({
             </a>
           </p>
         </div>
-        <span className={`badge ml-auto ${impactStyle.badge} text-white`}>{t(impactStyle.labelKey)}</span>
+        <span className={`badge badge-xs ml-auto shrink-0 whitespace-nowrap ${impactStyle.badge} text-white`}>
+          {t(impactStyle.labelKey)}
+        </span>
       </div>
 
       {incident.incident_updates.length === 0 ? (

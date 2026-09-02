@@ -241,12 +241,12 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   const list = (
     <>
       {filteredIncidents.length === 0 ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("incidents.filter.noMatches")}</p>
+        <p className="text-base-content/50 text-sm">{t("incidents.filter.noMatches")}</p>
       ) : (
         <ul
           ref={listRef}
           style={{ minHeight: totalPages > 1 ? minListHeight : undefined }}
-          className="mt-4 flex flex-col gap-3"
+          className="flex flex-col gap-3"
         >
           {pageIncidents.map((incident) => {
             const Logo = SERVICE_LOGOS[incident.service.slug] ?? FallbackLogo;
@@ -301,16 +301,18 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
           })}
         </ul>
       )}
-
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onChange={goToPage}
-        label={t("incidents.pagination.label")}
-        prevLabel={t("incidents.pagination.previous")}
-        nextLabel={t("incidents.pagination.next")}
-      />
     </>
+  );
+
+  const pagination = (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      onChange={goToPage}
+      label={t("incidents.pagination.label")}
+      prevLabel={t("incidents.pagination.previous")}
+      nextLabel={t("incidents.pagination.next")}
+    />
   );
 
   const detailContent = detail ? (
@@ -340,6 +342,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
       list={list}
       detailRef={detailRef}
       detail={detailContent}
+      pagination={pagination}
     />
   );
 }

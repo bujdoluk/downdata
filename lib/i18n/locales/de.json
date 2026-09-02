@@ -203,6 +203,8 @@
     "unreachable": "Vorfallverlauf konnte nicht geladen werden.",
     "empty": "Keine Vorfälle in den letzten 12 Monaten.",
     "today": "Heute",
+    "detailTab": "Vorfalldetails",
+    "byServiceTab": "Vorfälle nach Dienst",
     "summary": {
       "incidents_one": "<0>{{count}}</0> Vorfall",
       "incidents_other": "<0>{{count}}</0> Vorfälle",
@@ -215,10 +217,7 @@
     },
     "resolutionTime": "Gelöst in {{duration}}",
     "stillOngoing": "Noch andauernd",
-    "selectPrompt": "Klicke auf einen Tag im Kalender, um seine Vorfälle zu sehen.",
-    "overview": {
-      "title": "Vorfälle nach Dienst"
-    }
+    "selectPrompt": "Klicke auf einen Tag im Kalender, um seine Vorfälle zu sehen."
   },
   "boards": {
     "title": "Boards",
@@ -245,7 +244,7 @@
     "maintenanceCountLabel_one": "Wartung",
     "maintenanceCountLabel_other": "Wartungen",
     "rename": "Umbenennen",
-    "onBoard": "Auf diesem Board",
+    "trackedServices": "Verfolgte Dienste",
     "pickCategory": "Wähle eine Kategorie, um Dienste zu durchsuchen.",
     "noServicesOnBoard": "Noch keine Dienste auf diesem Board.",
     "activity": {
@@ -253,8 +252,7 @@
       "maintenanceTitle": "Aktive Wartungen",
       "viewAll": "Alle anzeigen",
       "noIncidents": "Keine aktiven Vorfälle",
-      "noMaintenance": "Keine aktive Wartung",
-      "allClear": "Alles in Ordnung — keine aktiven Vorfälle oder Wartungsarbeiten"
+      "noMaintenance": "Keine aktive Wartung"
     },
     "viewHistory": "Verlauf dieses Boards anzeigen",
     "lastIncident": {

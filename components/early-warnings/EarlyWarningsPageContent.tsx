@@ -140,12 +140,12 @@ export default function EarlyWarningsPageContent({
   const list = (
     <>
       {filteredMatches.length === 0 ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("earlyWarnings.noMatches")}</p>
+        <p className="text-base-content/50 text-sm">{t("earlyWarnings.noMatches")}</p>
       ) : (
         <ul
           ref={listRef}
           style={{ minHeight: totalPages > 1 ? minListHeight : undefined }}
-          className="mt-4 flex flex-col gap-3"
+          className="flex flex-col gap-3"
         >
           {pageMatches.map((match) => {
             const isNew = epochMs(match.capturedAt) > lastViewed;
@@ -180,16 +180,18 @@ export default function EarlyWarningsPageContent({
           })}
         </ul>
       )}
-
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onChange={goToPage}
-        label={t("incidents.pagination.label")}
-        prevLabel={t("incidents.pagination.previous")}
-        nextLabel={t("incidents.pagination.next")}
-      />
     </>
+  );
+
+  const pagination = (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      onChange={goToPage}
+      label={t("incidents.pagination.label")}
+      prevLabel={t("incidents.pagination.previous")}
+      nextLabel={t("incidents.pagination.next")}
+    />
   );
 
   const filters = availableKeywords.length > 0 && (
@@ -264,6 +266,7 @@ export default function EarlyWarningsPageContent({
         list={list}
         detailRef={detailRef}
         detail={detail}
+        pagination={pagination}
       />
     </div>
   );

@@ -16,6 +16,7 @@ import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, ALL_COMPONENT_STATUSES, FALL
 import { ALL_CONTINENTS, CONTINENT_LABEL_KEYS, inferComponentContinent, type Continent } from "@/lib/componentRegion";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
+import { TAB_BG_STYLE } from "@/lib/utils";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import { useDebouncedUrlFilters } from "@/hooks/useDebouncedUrlFilters";
 import Spinner from "@/components/Spinner";
@@ -87,7 +88,7 @@ function NotificationsCard({ slug }: { slug: Slug }) {
   }
 
   return (
-    <ul className="list bg-base-200 border-base-300 border">
+    <ul className="list bg-base-100 border-base-300 border">
       {integrations.map((integration) => {
         // excludedServiceSlugs is an exclusion list — enabled unless this
         // service is explicitly in it, so an integration with nothing
@@ -196,7 +197,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
   const Logo = SERVICE_LOGOS[slug] ?? FallbackLogo;
 
   return (
-    <div className="w-full self-start">
+    <div className="mx-auto w-full max-w-6xl self-start">
       <Link href="/monitors" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
         {t("serviceDetail.back")}
       </Link>
@@ -236,8 +237,11 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
       </div>
 
       {data && data.trackedSince && (
-        <div className="text-base-content/50 mt-1 text-xs">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <div className="text-base-content/50 mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs">
+          <p className="text-base-content/40 text-xs">
+            {t("serviceDetail.trackedSince", { date: formatMonthYear(data.trackedSince, timeZone) })}
+          </p>
+          <div className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 text-right">
             <span className="inline-flex items-center gap-1">
               <Trans
                 i18nKey="serviceDetail.uptime30d"
@@ -261,9 +265,6 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
               </span>
             )}
           </div>
-          <p className="text-base-content/40 mt-1 text-xs">
-            {t("serviceDetail.trackedSince", { date: formatMonthYear(data.trackedSince, timeZone) })}
-          </p>
         </div>
       )}
 
@@ -283,14 +284,16 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
 
       {data && (
         <>
-          <div className="mt-8 grid grid-cols-2 gap-8">
-            <div>
-              <div className="mb-3 flex items-center justify-between">
-                <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">
-                  {t("serviceDetail.components")}
-                </h2>
-                <span className="text-base-content/40 text-xs font-semibold">({visibleComponentCount})</span>
-              </div>
+          <div role="tablist" className="tabs tabs-lift mt-8">
+            <input
+              type="radio"
+              name="serviceDetailTabs"
+              className="tab"
+              aria-label={`${t("serviceDetail.components")} (${visibleComponentCount})`}
+              style={TAB_BG_STYLE}
+              defaultChecked
+            />
+            <div className="tab-content bg-base-200 border-base-300 p-6">
               <div className="mb-3">
                 <SearchFilterInput
                   value={componentQuery}
@@ -337,7 +340,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
               {visibleComponentCount === 0 ? (
                 <p className="text-base-content/50 text-sm">{t("serviceDetail.noComponentsMatchFilter")}</p>
               ) : (
-                <ul className="list bg-base-200 border-base-300 border">
+                <ul className="list bg-base-100 border-base-300 border">
                   {topLevelItems.flatMap((item) => {
                     if (item.group) {
                       const visibleChildren = childrenOf(item.id).filter(isVisible);
@@ -358,14 +361,12 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
               )}
             </div>
 
-            <div>
-              <h2 className="text-base-content/40 mb-3 text-xs font-semibold tracking-wide uppercase">
-                {t("serviceDetail.incidents")}
-              </h2>
+            <input type="radio" name="serviceDetailTabs" className="tab" aria-label={t("serviceDetail.incidents")} style={TAB_BG_STYLE} />
+            <div className="tab-content bg-base-200 border-base-300 p-6">
               {data.incidents.length === 0 ? (
                 <p className="text-base-content/50 text-sm">{t("serviceDetail.noIncidents")}</p>
               ) : (
-                <ul className="list bg-base-200 border-base-300 border">
+                <ul className="list bg-base-100 border-base-300 border">
                   {data.incidents.map((incident) => (
                     <li key={incident.id} className="list-row items-center py-2.5">
                       <div className="list-col-grow min-w-0">
@@ -387,17 +388,13 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                 </ul>
               )}
             </div>
-          </div>
 
-          <div className="mt-8 grid grid-cols-2 gap-8">
-            <div>
-              <h2 className="text-base-content/40 mb-3 text-xs font-semibold tracking-wide uppercase">
-                {t("serviceDetail.maintenances")}
-              </h2>
+            <input type="radio" name="serviceDetailTabs" className="tab" aria-label={t("serviceDetail.maintenances")} style={TAB_BG_STYLE} />
+            <div className="tab-content bg-base-200 border-base-300 p-6">
               {data.maintenances.length === 0 ? (
                 <p className="text-base-content/50 text-sm">{t("serviceDetail.noMaintenances")}</p>
               ) : (
-                <ul className="list bg-base-200 border-base-300 border">
+                <ul className="list bg-base-100 border-base-300 border">
                   {data.maintenances.map((maintenance) => (
                     <li key={maintenance.id} className="list-row items-center py-2.5">
                       <div className="list-col-grow min-w-0">
@@ -420,10 +417,8 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
               )}
             </div>
 
-            <div>
-              <h2 className="text-base-content/40 mb-3 text-xs font-semibold tracking-wide uppercase">
-                {t("serviceDetail.notifications")}
-              </h2>
+            <input type="radio" name="serviceDetailTabs" className="tab" aria-label={t("serviceDetail.notifications")} style={TAB_BG_STYLE} />
+            <div className="tab-content bg-base-200 border-base-300 p-6">
               <NotificationsCard slug={slug} />
             </div>
           </div>

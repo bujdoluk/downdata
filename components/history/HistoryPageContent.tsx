@@ -20,6 +20,7 @@ import ServiceSearchPicker from "@/components/service/ServiceSearchPicker";
 import ImpactFilterDropdown from "@/components/service/ImpactFilterDropdown";
 import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
+import { TAB_BG_STYLE } from "@/lib/utils";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import { useSelectedBoard } from "@/hooks/useSelectedBoard";
 import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/service/statusStyles";
@@ -135,6 +136,13 @@ export default function HistoryPageContent({
     updateParams({ year: y === currentYear ? null : String(y), date: null });
   }
 
+  type Tab = "detail" | "byService";
+  const activeTab: Tab = searchParams.get("tab") === "byService" ? "byService" : "detail";
+
+  function selectTab(tab: Tab) {
+    updateParams({ tab: tab === "detail" ? null : tab });
+  }
+
   const relevantIncidents = useMemo(
     () => (incidents ?? []).filter((incident) => selectedImpacts.has(incident.impact)),
     [incidents, selectedImpacts],
@@ -182,132 +190,144 @@ export default function HistoryPageContent({
   }, [calendar.days]);
 
   return (
-    <div className="w-full self-start">
+    <div className="mx-auto w-full max-w-6xl self-start">
       {(isPickingService || isLoading) && <LoadingOverlay label={t("history.loading")} contained />}
 
       <h1 className="text-base-content text-lg font-semibold">{t("history.title")}</h1>
       <p className="text-base-content/60 mt-1 text-sm">{t("history.subtitle")}</p>
 
-      <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-        <div>
-          <div className="flex flex-wrap items-center gap-4">
-            <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
-            <ImpactFilterDropdown selected={selectedImpacts} onToggle={toggleImpact} />
-          </div>
+      <div className="mt-4">
+        <div className="flex flex-wrap items-center gap-4">
+          <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
+          <ImpactFilterDropdown selected={selectedImpacts} onToggle={toggleImpact} />
+        </div>
 
-          {!slug ? null : isLoading ? null : error ? (
-            <p className="text-base-content/50 mt-4 text-sm">{t("history.unreachable")}</p>
-          ) : incidents && incidents.length === 0 ? (
-            <p className="text-base-content/50 mt-4 text-sm">{t("history.empty")}</p>
-          ) : incidents ? (
-            <>
-              <div className="text-base-content/60 mt-4 flex flex-wrap gap-4 text-base">
+        {!slug ? null : isLoading ? null : error ? (
+          <p className="text-base-content/50 mt-4 text-sm">{t("history.unreachable")}</p>
+        ) : incidents && incidents.length === 0 ? (
+          <p className="text-base-content/50 mt-4 text-sm">{t("history.empty")}</p>
+        ) : incidents ? (
+          <>
+            <div className="text-base-content/60 mt-4 flex flex-wrap gap-4 text-base">
+              <span>
+                <Trans i18nKey="history.summary.incidents" count={summary.incidentCount} components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]} />
+              </span>
+              {summary.avgResolutionMinutes !== null && (
                 <span>
-                  <Trans i18nKey="history.summary.incidents" count={summary.incidentCount} components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]} />
+                  <Trans
+                    i18nKey="history.summary.avgResolution"
+                    values={{ duration: formatDuration(summary.avgResolutionMinutes, t) }}
+                    components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]}
+                  />
                 </span>
-                {summary.avgResolutionMinutes !== null && (
-                  <span>
-                    <Trans
-                      i18nKey="history.summary.avgResolution"
-                      values={{ duration: formatDuration(summary.avgResolutionMinutes, t) }}
-                      components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]}
-                    />
-                  </span>
+              )}
+            </div>
+
+            <div className="mt-4 flex flex-wrap justify-end gap-3">
+              <span className="label gap-2 text-sm">
+                <span className="bg-base-content/10 outline-info h-4 w-4 rounded-sm outline-2 outline-offset-1" />
+                {t("history.today")}
+              </span>
+            </div>
+
+            <div className="mt-2">
+              <div className="overflow-x-auto pb-1">
+                <IncidentCalendar calendar={calendar} selectedDate={effectiveSelectedDate} onSelectDay={selectDay} />
+              </div>
+              <div className="mt-2 flex flex-wrap justify-end gap-1">
+                {years.map((y) => (
+                  <button
+                    key={y}
+                    type="button"
+                    onClick={() => selectYear(y)}
+                    className={`btn btn-ghost btn-sm ${y === year ? "btn-active" : ""}`}
+                  >
+                    {y}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div role="tablist" className="tabs tabs-lift mt-6">
+              <input
+                type="radio"
+                name="historyTabs"
+                className="tab"
+                aria-label={t("history.detailTab")}
+                style={TAB_BG_STYLE}
+                checked={activeTab === "detail"}
+                onChange={() => selectTab("detail")}
+              />
+              <div className="tab-content bg-base-200 border-base-300 p-6">
+                {selectedDay && selectedDay.incidents.length > 0 ? (
+                  <ul className="flex flex-col gap-3">
+                    {selectedDay.incidents.map((incident) => {
+                      const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
+                      return (
+                        <li key={incident.id} className="border-base-content/10 border-t pt-3 first:border-t-0 first:pt-0">
+                          <details open className="collapse collapse-arrow">
+                            <summary className="collapse-title flex min-h-0 items-start gap-2 p-0 pr-6">
+                              <p className="text-base-content min-w-0 max-w-[80%] flex-1 text-base font-semibold break-words">{incident.name}</p>
+                              <span className={`badge badge-xs shrink-0 mt-1 ${style.badge} text-white`}>{t(style.labelKey)}</span>
+                            </summary>
+                            <div className="collapse-content p-0">
+                              <p className="text-base-content/40 mt-1 text-xs">
+                                {t("incidents.officialPageLabel")}{" "}
+                                <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
+                                  {incident.shortlink}
+                                </a>
+                              </p>
+                              <p className="text-base-content/50 mt-1 text-xs">
+                                {incident.resolved_at
+                                  ? t("history.resolutionTime", {
+                                      duration: formatDuration(minutesBetween(incident.created_at, incident.resolved_at), t),
+                                    })
+                                  : t("history.stillOngoing")}
+                              </p>
+                              <ul className="timeline timeline-vertical mt-2 [--timeline-col-start:auto]">
+                                {incident.incident_updates.map((update, i) => (
+                                  <li key={update.id}>
+                                    {i > 0 && <hr />}
+                                    <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
+                                      {formatDateTime(update.created_at, timeZone)}
+                                    </div>
+                                    <div className="timeline-middle">
+                                      <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
+                                    </div>
+                                    <div className="timeline-end timeline-box bg-base-200">
+                                      <p className="text-base-content text-sm font-medium">{update.status}</p>
+                                      <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
+                                    </div>
+                                    {i < incident.incident_updates.length - 1 && <hr />}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </details>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : (
+                  <p className="text-base-content/50 text-sm">{t("history.selectPrompt")}</p>
                 )}
               </div>
 
-              <div className="mt-4 flex flex-wrap justify-end gap-3">
-                <span className="label gap-2 text-sm">
-                  <span className="bg-base-content/10 outline-info h-4 w-4 rounded-sm outline-2 outline-offset-1" />
-                  {t("history.today")}
-                </span>
+              <input
+                type="radio"
+                name="historyTabs"
+                className="tab"
+                aria-label={t("history.byServiceTab")}
+                style={TAB_BG_STYLE}
+                checked={activeTab === "byService"}
+                onChange={() => selectTab("byService")}
+              />
+              <div className="tab-content bg-base-200 border-base-300 p-6">
+                <IncidentCountsChart services={services} counts={countsData?.counts ?? []} selectedSlug={slug} onSelectService={selectService} />
               </div>
-
-              <div className="mt-2">
-                <div className="overflow-x-auto pb-1">
-                  <IncidentCalendar calendar={calendar} selectedDate={effectiveSelectedDate} onSelectDay={selectDay} />
-                </div>
-                <div className="mt-2 flex flex-wrap justify-end gap-1">
-                  {years.map((y) => (
-                    <button
-                      key={y}
-                      type="button"
-                      onClick={() => selectYear(y)}
-                      className={`btn btn-ghost btn-sm ${y === year ? "btn-active" : ""}`}
-                    >
-                      {y}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </>
-          ) : null}
-
-          {services.length > 0 && (
-            <div className="mt-4">
-              <IncidentCountsChart services={services} counts={countsData?.counts ?? []} selectedSlug={slug} onSelectService={selectService} />
             </div>
-          )}
-        </div>
-
-        <div>
-          {slug && incidents && incidents.length > 0 ? (
-            selectedDay && selectedDay.incidents.length > 0 ? (
-              <div className="card card-border bg-base-200 p-4">
-                <ul className="flex flex-col gap-3">
-                  {selectedDay.incidents.map((incident) => {
-                    const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
-                    return (
-                      <li key={incident.id} className="border-base-content/10 border-t pt-3 first:border-t-0 first:pt-0">
-                        <details open className="collapse collapse-arrow">
-                          <summary className="collapse-title flex min-h-0 items-start gap-2 p-0 pr-6">
-                            <p className="text-base-content min-w-0 max-w-[80%] flex-1 text-base font-semibold break-words">{incident.name}</p>
-                            <span className={`badge badge-xs shrink-0 mt-1 ${style.badge} text-white`}>{t(style.labelKey)}</span>
-                          </summary>
-                          <div className="collapse-content p-0">
-                            <p className="text-base-content/40 mt-1 text-xs">
-                              {t("incidents.officialPageLabel")}{" "}
-                              <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
-                                {incident.shortlink}
-                              </a>
-                            </p>
-                            <p className="text-base-content/50 mt-1 text-xs">
-                              {incident.resolved_at
-                                ? t("history.resolutionTime", {
-                                    duration: formatDuration(minutesBetween(incident.created_at, incident.resolved_at), t),
-                                  })
-                                : t("history.stillOngoing")}
-                            </p>
-                            <ul className="timeline timeline-vertical mt-2 [--timeline-col-start:auto]">
-                              {incident.incident_updates.map((update, i) => (
-                                <li key={update.id}>
-                                  {i > 0 && <hr />}
-                                  <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
-                                    {formatDateTime(update.created_at, timeZone)}
-                                  </div>
-                                  <div className="timeline-middle">
-                                    <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
-                                  </div>
-                                  <div className="timeline-end timeline-box bg-base-200">
-                                    <p className="text-base-content text-sm font-medium">{update.status}</p>
-                                    <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
-                                  </div>
-                                  {i < incident.incident_updates.length - 1 && <hr />}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </details>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            ) : (
-              <p className="text-base-content/50 text-sm">{t("history.selectPrompt")}</p>
-            )
-          ) : null}
-        </div>
+          </>
+        ) : null}
       </div>
     </div>
   );

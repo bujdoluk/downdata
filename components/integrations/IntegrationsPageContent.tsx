@@ -148,7 +148,7 @@ export default function IntegrationsPageContent({
   };
 
   return (
-    <div className="w-full self-start">
+    <div className="mx-auto w-full max-w-6xl self-start">
       <h1 className="text-base-content text-lg font-semibold">{t("integrations.title")}</h1>
       <p className="text-base-content/60 mt-1 text-sm">{t("integrations.subtitle")}</p>
 

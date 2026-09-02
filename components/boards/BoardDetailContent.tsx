@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -14,13 +14,14 @@ import { queryKeys } from "@/lib/queryKeys";
 import { useBoardRename } from "@/hooks/useBoardRename";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import { isActiveIncident } from "@/lib/isActiveIncident";
-import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
 import StatusSummary from "@/components/service/StatusSummary";
-import BoardActivityPanel from "@/components/boards/BoardActivityPanel";
+import BoardActiveIncidentsPanel from "@/components/boards/BoardActiveIncidentsPanel";
+import BoardActiveMaintenancePanel from "@/components/boards/BoardActiveMaintenancePanel";
 import BoardLastIncidentTable from "@/components/boards/BoardLastIncidentTable";
+import BoardTrackedServicesGrid from "@/components/boards/BoardTrackedServicesGrid";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
-import { InfoIcon, PencilIcon, PlusIcon } from "@/components/icons/NavIcons";
+import { InfoIcon, PencilIcon } from "@/components/icons/NavIcons";
 
 const POLL_INTERVAL_MS = 60_000;
 
@@ -41,7 +42,6 @@ export default function BoardDetailContent({
     queryFn: () => fetchJson<ServiceStatusBatchResponse>("/api/status/catalog", { cache: "no-store" }),
     refetchInterval: POLL_INTERVAL_MS,
   });
-  const [removingSlug, setRemovingSlug] = useState<string | null>(null);
   const rename = useBoardRename(board);
   const timeZone = useTimeZone();
   const confirmRef = useRef<HTMLDialogElement>(null);
@@ -88,19 +88,6 @@ export default function BoardDetailContent({
       service: entry,
       lastIncident: boardIncidents.find((incident) => incident.service.slug === entry.slug) ?? null,
     }));
-
-  const removeFromBoardMutation = useMutation({
-    mutationFn: (entry: Catalog) => fetch(`/api/boards/${board.id}/services/${entry.slug}`, { method: "DELETE" }),
-    onSettled: () => setRemovingSlug(null),
-    onSuccess: (res) => {
-      if (res.ok) router.refresh();
-    },
-  });
-
-  function handleRemove(entry: Catalog) {
-    setRemovingSlug(entry.slug);
-    removeFromBoardMutation.mutate(entry);
-  }
 
   const deleteBoardMutation = useMutation({
     mutationFn: () => fetch(`/api/boards/${board.id}`, { method: "DELETE" }),
@@ -208,7 +195,7 @@ export default function BoardDetailContent({
         </form>
       </dialog>
 
-      {onBoardEntries.length > 0 && (
+      {onBoardEntries.length > 0 ? (
         <>
           <StatusSummary counts={overviewCounts} isLoading={!data && !fetchFailed} />
           <div className="mt-2 flex justify-end">
@@ -219,45 +206,45 @@ export default function BoardDetailContent({
               {t("boards.viewHistory")}
             </Link>
           </div>
-          <BoardActivityPanel boardId={board.id} activeIncidents={activeIncidents} maintenances={boardMaintenances} timeZone={timeZone} />
-          <div className="mt-6">
-            <IncidentCountsChart
-              services={onBoardEntries}
-              counts={countsData?.counts ?? []}
-              selectedSlug=""
-              onSelectService={(slug) => router.push(`/history?board=${board.id}&service=${slug}`)}
-            />
-          </div>
-          <BoardLastIncidentTable entries={calmEntries} timeZone={timeZone} />
-        </>
-      )}
-
-      <div className="mt-6">
-        <div className="flex items-center justify-between gap-2">
-          <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("boards.onBoard")}</h2>
-          <Link href={`/add-service?board=${board.id}`} className="btn btn-info btn-sm">
-            <PlusIcon />
-            {t("nav.addService")}
-          </Link>
-        </div>
-
-        <div className="mt-3">
-          {onBoardEntries.length === 0 ? (
-            <p className="text-base-content/50 text-sm">{t("boards.noServicesOnBoard")}</p>
-          ) : (
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] gap-3">
-              <CatalogServiceGrid
-                catalog={onBoardEntries}
-                trackedHosts={[]}
-                data={data}
-                fetchFailed={fetchFailed}
-                removingSlug={removingSlug}
-                onRemove={handleRemove}
-              />
+          {/* 2 rows x 3 columns, every cell the same fixed size (h-80,
+              overflow-y-auto for whichever cell's content runs long) —
+              only 5 of the 6 cells have content right now, the 6th is
+              deliberately left empty rather than stretched to fill. */}
+          <div className="mt-6 grid grid-cols-3 gap-4">
+            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
+              <BoardActiveIncidentsPanel boardId={board.id} activeIncidents={activeIncidents} />
             </div>
-          )}
+            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
+              <BoardActiveMaintenancePanel boardId={board.id} maintenances={boardMaintenances} timeZone={timeZone} />
+            </div>
+            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
+              <BoardLastIncidentTable entries={calmEntries} timeZone={timeZone} />
+            </div>
+            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
+              <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("history.byServiceTab")}</h2>
+              <div className="mt-3">
+                <IncidentCountsChart
+                  services={onBoardEntries}
+                  counts={countsData?.counts ?? []}
+                  selectedSlug=""
+                  onSelectService={(slug) => router.push(`/history?board=${board.id}&service=${slug}`)}
+                />
+              </div>
+            </div>
+            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
+              <BoardTrackedServicesGrid boardId={board.id} entries={onBoardEntries} data={data} fetchFailed={fetchFailed} />
+            </div>
+          </div>
+        </>
+      ) : (
+        // Empty board: skip the stat/activity grid entirely (nothing for
+        // it to show yet), but still surface the Add Monitor button — its
+        // only home now, since the old always-visible "On this board"
+        // section was removed — so a brand-new board isn't a dead end.
+        <div className="mt-6 card card-border bg-base-200 p-4">
+          <BoardTrackedServicesGrid boardId={board.id} entries={onBoardEntries} data={data} fetchFailed={fetchFailed} />
         </div>
-      </div>
+      )}
     </div>
   );
 }

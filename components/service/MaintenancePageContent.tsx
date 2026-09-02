@@ -197,12 +197,12 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   const list = (
     <>
       {filteredMaintenances.length === 0 ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("maintenances.noMatches")}</p>
+        <p className="text-base-content/50 text-sm">{t("maintenances.noMatches")}</p>
       ) : (
         <ul
           ref={listRef}
           style={{ minHeight: totalPages > 1 ? minListHeight : undefined }}
-          className="mt-4 flex flex-col gap-3"
+          className="flex flex-col gap-3"
         >
           {pageMaintenances.map((maintenance) => {
             const Logo = SERVICE_LOGOS[maintenance.service.slug] ?? FallbackLogo;
@@ -245,16 +245,18 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
           })}
         </ul>
       )}
-
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onChange={goToPage}
-        label={t("maintenances.pagination.label")}
-        prevLabel={t("maintenances.pagination.previous")}
-        nextLabel={t("maintenances.pagination.next")}
-      />
     </>
+  );
+
+  const pagination = (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      onChange={goToPage}
+      label={t("maintenances.pagination.label")}
+      prevLabel={t("maintenances.pagination.previous")}
+      nextLabel={t("maintenances.pagination.next")}
+    />
   );
 
   const detailContent = detail ? (
@@ -284,6 +286,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
       list={list}
       detailRef={detailRef}
       detail={detailContent}
+      pagination={pagination}
     />
   );
 }

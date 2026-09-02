@@ -203,6 +203,8 @@
     "unreachable": "Det gick inte att läsa in incidenthistoriken.",
     "empty": "Inga incidenter de senaste 12 månaderna.",
     "today": "Idag",
+    "detailTab": "Incidentdetaljer",
+    "byServiceTab": "Incidenter per tjänst",
     "summary": {
       "incidents_one": "<0>{{count}}</0> incident",
       "incidents_other": "<0>{{count}}</0> incidenter",
@@ -215,10 +217,7 @@
     },
     "resolutionTime": "Löst på {{duration}}",
     "stillOngoing": "Fortfarande pågående",
-    "selectPrompt": "Klicka på en dag i kalendern för att se dess incidenter.",
-    "overview": {
-      "title": "Incidenter per tjänst"
-    }
+    "selectPrompt": "Klicka på en dag i kalendern för att se dess incidenter."
   },
   "boards": {
     "title": "Tavlor",
@@ -245,7 +244,7 @@
     "maintenanceCountLabel_one": "underhåll",
     "maintenanceCountLabel_other": "underhåll",
     "rename": "Byt namn",
-    "onBoard": "På denna tavla",
+    "trackedServices": "Spårade tjänster",
     "pickCategory": "Välj en kategori för att bläddra bland tjänster.",
     "noServicesOnBoard": "Inga tjänster på denna tavla än.",
     "activity": {
@@ -253,8 +252,7 @@
       "maintenanceTitle": "Aktivt underhåll",
       "viewAll": "Visa alla",
       "noIncidents": "Inga aktiva incidenter",
-      "noMaintenance": "Inget aktivt underhåll",
-      "allClear": "Allt är okej — inga aktiva incidenter eller underhåll"
+      "noMaintenance": "Inget aktivt underhåll"
     },
     "viewHistory": "Visa historik för den här tavlan",
     "lastIncident": {

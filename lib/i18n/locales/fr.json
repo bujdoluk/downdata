@@ -203,6 +203,8 @@
     "unreachable": "Impossible de charger l'historique des incidents.",
     "empty": "Aucun incident au cours des 12 derniers mois.",
     "today": "Aujourd'hui",
+    "detailTab": "Détail de l'incident",
+    "byServiceTab": "Incidents par service",
     "summary": {
       "incidents_one": "<0>{{count}}</0> incident",
       "incidents_other": "<0>{{count}}</0> incidents",
@@ -215,10 +217,7 @@
     },
     "resolutionTime": "Résolu en {{duration}}",
     "stillOngoing": "Toujours en cours",
-    "selectPrompt": "Cliquez sur un jour du calendrier pour voir ses incidents.",
-    "overview": {
-      "title": "Incidents par service"
-    }
+    "selectPrompt": "Cliquez sur un jour du calendrier pour voir ses incidents."
   },
   "boards": {
     "title": "Tableaux",
@@ -245,7 +244,7 @@
     "maintenanceCountLabel_one": "maintenance",
     "maintenanceCountLabel_other": "maintenances",
     "rename": "Renommer",
-    "onBoard": "Sur ce tableau",
+    "trackedServices": "Services suivis",
     "pickCategory": "Sélectionnez une catégorie pour parcourir les services.",
     "noServicesOnBoard": "Aucun service sur ce tableau pour le moment.",
     "activity": {
@@ -253,8 +252,7 @@
       "maintenanceTitle": "Maintenances actives",
       "viewAll": "Tout afficher",
       "noIncidents": "Aucun incident actif",
-      "noMaintenance": "Aucune maintenance active",
-      "allClear": "Tout va bien — aucun incident ni maintenance en cours"
+      "noMaintenance": "Aucune maintenance active"
     },
     "viewHistory": "Afficher l'historique de ce tableau",
     "lastIncident": {

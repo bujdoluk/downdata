@@ -203,6 +203,8 @@
     "unreachable": "Kunne ikke laste hendelseshistorikken.",
     "empty": "Ingen hendelser de siste 12 månedene.",
     "today": "I dag",
+    "detailTab": "Hendelsesdetaljer",
+    "byServiceTab": "Hendelser per tjeneste",
     "summary": {
       "incidents_one": "<0>{{count}}</0> hendelse",
       "incidents_other": "<0>{{count}}</0> hendelser",
@@ -215,10 +217,7 @@
     },
     "resolutionTime": "Løst på {{duration}}",
     "stillOngoing": "Fortsatt pågående",
-    "selectPrompt": "Klikk på en dag i kalenderen for å se hendelsene.",
-    "overview": {
-      "title": "Hendelser per tjeneste"
-    }
+    "selectPrompt": "Klikk på en dag i kalenderen for å se hendelsene."
   },
   "boards": {
     "title": "Tavler",
@@ -245,7 +244,7 @@
     "maintenanceCountLabel_one": "vedlikehold",
     "maintenanceCountLabel_other": "vedlikehold",
     "rename": "Gi nytt navn",
-    "onBoard": "På denne tavlen",
+    "trackedServices": "Sporede tjenester",
     "pickCategory": "Velg en kategori for å bla gjennom tjenester.",
     "noServicesOnBoard": "Ingen tjenester på denne tavlen ennå.",
     "activity": {
@@ -253,8 +252,7 @@
       "maintenanceTitle": "Aktivt vedlikehold",
       "viewAll": "Vis alle",
       "noIncidents": "Ingen aktive hendelser",
-      "noMaintenance": "Ikke noe aktivt vedlikehold",
-      "allClear": "Alt er i orden — ingen aktive hendelser eller vedlikehold"
+      "noMaintenance": "Ikke noe aktivt vedlikehold"
     },
     "viewHistory": "Vis historikk for denne tavlen",
     "lastIncident": {

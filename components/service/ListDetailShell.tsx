@@ -21,6 +21,7 @@ export default function ListDetailShell({
   list,
   detailRef,
   detail,
+  pagination,
 }: {
   title: string;
   subtitle: string;
@@ -39,9 +40,13 @@ export default function ListDetailShell({
   list: ReactNode;
   detailRef: RefObject<HTMLDivElement | null>;
   detail: ReactNode;
+  // Rendered as its own centered row below the list/detail grid, not
+  // inside `list` — so it stays centered regardless of how tall or narrow
+  // the list column is.
+  pagination?: ReactNode;
 }) {
   return (
-    <div className="w-full self-start">
+    <div className="mx-auto w-full max-w-6xl self-start">
       <h1 className="text-xl font-semibold text-base-content">{title}</h1>
       <p className="text-base-content/60 mt-1 text-sm">{subtitle}</p>
       {header}
@@ -56,12 +61,16 @@ export default function ListDetailShell({
       ) : isEmpty ? (
         <p className="text-base-content/50 mt-4 text-sm">{emptyLabel}</p>
       ) : (
-        <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div>{filters}{list}</div>
-          <div ref={detailRef} className="card card-border bg-base-200 p-4">
-            {detail}
+        <>
+          <div className="mt-4">{filters}</div>
+          <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <div>{list}</div>
+            <div ref={detailRef} className="card card-border bg-base-200 p-4">
+              {detail}
+            </div>
           </div>
-        </div>
+          {pagination && <div className="mt-4 flex justify-center">{pagination}</div>}
+        </>
       )}
     </div>
   );

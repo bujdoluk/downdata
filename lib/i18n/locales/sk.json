@@ -204,6 +204,8 @@
     "unreachable": "Nepodarilo sa načítať históriu incidentov.",
     "empty": "Žiadne incidenty za posledných 12 mesiacov.",
     "today": "Dnes",
+    "detailTab": "Detail incidentu",
+    "byServiceTab": "Incidenty podľa služby",
     "summary": {
       "incidents_one": "<0>{{count}}</0> incident",
       "incidents_few": "{{count}} incidenty",
@@ -217,10 +219,7 @@
     },
     "resolutionTime": "Vyriešené za {{duration}}",
     "stillOngoing": "Stále trvá",
-    "selectPrompt": "Kliknite na deň v kalendári a zobrazte jeho incidenty.",
-    "overview": {
-      "title": "Incidenty podľa služby"
-    }
+    "selectPrompt": "Kliknite na deň v kalendári a zobrazte jeho incidenty."
   },
   "boards": {
     "title": "Nástenky",
@@ -250,7 +249,7 @@
     "maintenanceCountLabel_few": "údržby",
     "maintenanceCountLabel_other": "údržieb",
     "rename": "Premenovať",
-    "onBoard": "Na tejto nástenke",
+    "trackedServices": "Sledované služby",
     "pickCategory": "Vyberte kategóriu na prehliadanie služieb.",
     "noServicesOnBoard": "Na tejto nástenke zatiaľ nie sú žiadne služby.",
     "activity": {
@@ -258,8 +257,7 @@
       "maintenanceTitle": "Aktívne údržby",
       "viewAll": "Zobraziť všetko",
       "noIncidents": "Žiadne aktívne incidenty",
-      "noMaintenance": "Žiadna aktívna údržba",
-      "allClear": "Všetko v poriadku — žiadne aktívne incidenty ani údržba"
+      "noMaintenance": "Žiadna aktívna údržba"
     },
     "viewHistory": "Zobraziť históriu tejto nástenky",
     "lastIncident": {

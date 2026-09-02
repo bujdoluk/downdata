@@ -203,6 +203,8 @@
     "unreachable": "Não foi possível carregar o histórico de incidentes.",
     "empty": "Sem incidentes nos últimos 12 meses.",
     "today": "Hoje",
+    "detailTab": "Detalhe do incidente",
+    "byServiceTab": "Incidentes por serviço",
     "summary": {
       "incidents_one": "<0>{{count}}</0> incidente",
       "incidents_other": "<0>{{count}}</0> incidentes",
@@ -215,10 +217,7 @@
     },
     "resolutionTime": "Resolvido em {{duration}}",
     "stillOngoing": "Ainda em curso",
-    "selectPrompt": "Clique num dia do calendário para ver os seus incidentes.",
-    "overview": {
-      "title": "Incidentes por serviço"
-    }
+    "selectPrompt": "Clique num dia do calendário para ver os seus incidentes."
   },
   "boards": {
     "title": "Painéis",
@@ -245,7 +244,7 @@
     "maintenanceCountLabel_one": "manutenção",
     "maintenanceCountLabel_other": "manutenções",
     "rename": "Renomear",
-    "onBoard": "Neste painel",
+    "trackedServices": "Serviços monitorizados",
     "pickCategory": "Selecione uma categoria para explorar os serviços.",
     "noServicesOnBoard": "Ainda não há serviços neste painel.",
     "activity": {
@@ -253,8 +252,7 @@
       "maintenanceTitle": "Manutenções ativas",
       "viewAll": "Ver tudo",
       "noIncidents": "Nenhum incidente ativo",
-      "noMaintenance": "Nenhuma manutenção ativa",
-      "allClear": "Tudo certo — nenhum incidente ou manutenção ativos"
+      "noMaintenance": "Nenhuma manutenção ativa"
     },
     "viewHistory": "Ver histórico deste painel",
     "lastIncident": {

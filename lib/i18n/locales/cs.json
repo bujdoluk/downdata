@@ -204,6 +204,8 @@
     "unreachable": "Nepodařilo se načíst historii incidentů.",
     "empty": "Žádné incidenty za posledních 12 měsíců.",
     "today": "Dnes",
+    "detailTab": "Detail incidentu",
+    "byServiceTab": "Incidenty podle služby",
     "summary": {
       "incidents_one": "<0>{{count}}</0> incident",
       "incidents_few": "{{count}} incidenty",
@@ -217,10 +219,7 @@
     },
     "resolutionTime": "Vyřešeno za {{duration}}",
     "stillOngoing": "Stále trvá",
-    "selectPrompt": "Klikněte na den v kalendáři a zobrazte jeho incidenty.",
-    "overview": {
-      "title": "Incidenty podle služby"
-    }
+    "selectPrompt": "Klikněte na den v kalendáři a zobrazte jeho incidenty."
   },
   "boards": {
     "title": "Nástěnky",
@@ -250,7 +249,7 @@
     "maintenanceCountLabel_few": "údržby",
     "maintenanceCountLabel_other": "údržeb",
     "rename": "Přejmenovat",
-    "onBoard": "Na této nástěnce",
+    "trackedServices": "Sledované služby",
     "pickCategory": "Vyberte kategorii pro procházení služeb.",
     "noServicesOnBoard": "Na této nástěnce zatím nejsou žádné služby.",
     "activity": {
@@ -258,8 +257,7 @@
       "maintenanceTitle": "Aktivní údržby",
       "viewAll": "Zobrazit vše",
       "noIncidents": "Žádné aktivní incidenty",
-      "noMaintenance": "Žádná aktivní údržba",
-      "allClear": "Vše v pořádku — žádné aktivní incidenty ani údržba"
+      "noMaintenance": "Žádná aktivní údržba"
     },
     "viewHistory": "Zobrazit historii této nástěnky",
     "lastIncident": {

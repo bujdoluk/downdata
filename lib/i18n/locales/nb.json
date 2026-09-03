@@ -199,6 +199,11 @@
     "title": "Historikk",
     "subtitle": "Velg en tjeneste for å se hendelseshistorikken for de siste 12 månedene.",
     "selectService": "Velg en tjeneste…",
+    "searchPlaceholder": "Søk i hendelser…",
+    "filter": {
+      "allComponents": "Alle komponenter",
+      "componentsMethodology": "Viser bare komponenter som er nevnt i minst én hendelse for denne tjenesten."
+    },
     "loading": "Laster historikk…",
     "unreachable": "Kunne ikke laste hendelseshistorikken.",
     "empty": "Ingen hendelser de siste 12 månedene.",
@@ -217,6 +222,8 @@
     },
     "resolutionTime": "Løst på {{duration}}",
     "stillOngoing": "Fortsatt pågående",
+    "dayAriaLabel": "{{date}}: {{summary}}",
+    "dayAriaLabelEmpty": "{{date}}: ingen hendelser",
     "selectPrompt": "Klikk på en dag i kalenderen for å se hendelsene."
   },
   "boards": {

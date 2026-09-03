@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabaseClient } from "@/lib/supabase";
-import type { Incident, StatuspageIncidentSummary } from "@/types/service";
+import type { Incident, IncidentComponent, StatuspageIncidentSummary } from "@/types/service";
 
 export type StoredIncidentUpdate = {
   service_slug: string;
@@ -117,18 +117,6 @@ async function fetchUpdatesForIncidentIds(
   return results;
 }
 
-// Same rows as getStoredIncidentsForService but no incident_updates query at
-// all — powers /api/incidents' list response, polled every 60s by several
-// pages that only ever render one incident's full timeline at a time. Not
-// just trimming the response: skipping this query means that data never
-// leaves Postgres in the first place.
-//
-// Scoped to trackedSlugs *in the query* (not filtered afterward), same
-// reasoning as getAllStoredMaintenanceSummaries — this used to fetch
-// catalog-wide (up to .limit(1000), unfiltered) and let the route throw
-// away everything but the caller's tracked services, which meant every
-// 60s poll from every open tab paid full egress for the whole catalog's
-// incident history regardless of how few services anyone actually tracks.
 export async function getAllStoredIncidentSummaries(trackedSlugs: string[]): Promise<Omit<StoredIncident, "incident_updates">[]> {
   if (trackedSlugs.length === 0) return [];
   const supabase = getSupabaseClient();
@@ -141,20 +129,23 @@ export async function getAllStoredIncidentSummaries(trackedSlugs: string[]): Pro
   return (data as Omit<StoredIncident, "incident_updates">[]) ?? [];
 }
 
-// One service's incidents, newest-updated first — powers /api/history/[slug]
-// (unbounded: that page lets you browse any past year, so it genuinely
-// needs full history) and /api/summary/[slug] (passes a small `limit` — a
-// live status page showing a service's entire incident history, re-fetched
-// every 60s, is neither useful UX nor worth the egress; recent incidents
-// only, same idea as a real status page pointing elsewhere for history).
-export async function getStoredIncidentsForService(Slug: string, options?: { limit?: number }): Promise<StoredIncident[]> {
+export async function getStoredIncidentsForService(
+  Slug: string,
+  options?: { limit?: number; includeComponents?: boolean },
+): Promise<StoredIncident[]> {
   const supabase = getSupabaseClient();
 
-  let query = supabase
-    .from("incidents")
-    .select(INCIDENT_SUMMARY_COLUMNS)
-    .eq("service_slug", Slug)
-    .order("updated_at", { ascending: false });
+  let query = options?.includeComponents
+    ? supabase
+        .from("incidents")
+        .select(`${INCIDENT_SUMMARY_COLUMNS}, components`)
+        .eq("service_slug", Slug)
+        .order("updated_at", { ascending: false })
+    : supabase
+        .from("incidents")
+        .select(INCIDENT_SUMMARY_COLUMNS)
+        .eq("service_slug", Slug)
+        .order("updated_at", { ascending: false });
   if (options?.limit) query = query.limit(options.limit);
   const { data: incidents } = await query;
   if (!incidents?.length) return [];
@@ -172,13 +163,6 @@ export async function getStoredIncidentsForService(Slug: string, options?: { lim
   }));
 }
 
-// One service's incidents that overlap a trailing window (started inside
-// it, still ongoing, or resolved inside it) — powers the outage tracker on
-// ServiceDetail. Same trimmed columns as getAllStoredIncidentSummaries (no
-// incident_updates join), windowed the same way getAllStoredMaintenances
-// windows "still relevant": an incident that started before sinceIso but
-// hasn't resolved yet (or resolved after sinceIso) still belongs in the
-// window, not just ones created inside it.
 export async function getStoredIncidentSummariesForService(Slug: string, sinceIso: string): Promise<Omit<StoredIncident, "incident_updates">[]> {
   const supabase = getSupabaseClient();
   const { data } = await supabase
@@ -192,17 +176,12 @@ export async function getStoredIncidentSummariesForService(Slug: string, sinceIs
 
 export type IncidentCountByService = { service_slug: string; count: number };
 
-// Total incident count per service, for the history page's overview chart —
-// aggregated in Postgres (incident_counts_by_service()), not by pulling every
-// incident row into JS just to count them.
 export async function getIncidentCountsByService(): Promise<IncidentCountByService[]> {
   const supabase = getSupabaseClient();
   const { data } = await supabase.rpc("incident_counts_by_service");
   return (data as IncidentCountByService[]) ?? [];
 }
 
-// Same mapping as toIncidentApiShape, minus incident_updates — for the
-// summary rows getAllStoredIncidentSummaries() returns (no updates to map).
 export function toIncidentSummaryApiShape(incident: Omit<StoredIncident, "incident_updates">): StatuspageIncidentSummary {
   return {
     id: incident.id,
@@ -216,11 +195,6 @@ export function toIncidentSummaryApiShape(incident: Omit<StoredIncident, "incide
   };
 }
 
-// Maps the DB's stored shape (extra fields: service_slug, monitoring_at,
-// components) down to the Incident shape the UI already expects.
-// shortlink is nullable in the DB but not in that type — real Statuspage
-// incidents always have one, so "" only ever shows up if that assumption
-// is ever wrong.
 export function toIncidentApiShape(incident: StoredIncident): Incident {
   return {
     id: incident.id,
@@ -235,5 +209,6 @@ export function toIncidentApiShape(incident: StoredIncident): Incident {
       .slice()
       .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))
       .map((update) => ({ id: update.id, status: update.status, body: update.body, created_at: update.created_at })),
+    ...(incident.components ? { components: incident.components as IncidentComponent[] } : {}),
   };
 }

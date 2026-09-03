@@ -181,6 +181,16 @@ _No props._
 | error | Error & { digest?: string \| undefined; } | Yes | — |  |
 | retry | () => void | Yes | — |  |
 
+### ComponentFilterDropdown
+
+`components/history/ComponentFilterDropdown.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| options | { id: string; name: string; }[] | Yes | — |  |
+| selected | Set<string> | Yes | — |  |
+| onToggle | (id: string) => void | Yes | — |  |
+
 ### HistoryPageContent
 
 `components/history/HistoryPageContent.tsx`

@@ -201,6 +201,11 @@
     "title": "Historia",
     "subtitle": "Wybierz usługę, aby zobaczyć historię incydentów z ostatnich 12 miesięcy.",
     "selectService": "Wybierz usługę…",
+    "searchPlaceholder": "Szukaj incydentów…",
+    "filter": {
+      "allComponents": "Wszystkie komponenty",
+      "componentsMethodology": "Pokazuje tylko komponenty wymienione w co najmniej jednym incydencie tej usługi."
+    },
     "loading": "Ładowanie historii…",
     "unreachable": "Nie udało się załadować historii incydentów.",
     "empty": "Brak incydentów w ciągu ostatnich 12 miesięcy.",
@@ -221,6 +226,8 @@
     },
     "resolutionTime": "Rozwiązano w {{duration}}",
     "stillOngoing": "Nadal trwa",
+    "dayAriaLabel": "{{date}}: {{summary}}",
+    "dayAriaLabelEmpty": "{{date}}: brak incydentów",
     "selectPrompt": "Kliknij dzień w kalendarzu, aby zobaczyć jego incydenty."
   },
   "boards": {

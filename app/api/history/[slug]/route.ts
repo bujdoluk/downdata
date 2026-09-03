@@ -10,6 +10,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     return NextResponse.json({ error: "Unknown service" }, { status: 404 });
   }
 
-  const incidents = await getStoredIncidentsForService(slug);
+  const incidents = await getStoredIncidentsForService(slug, { includeComponents: true });
   return NextResponse.json({ incidents: incidents.map(toIncidentApiShape) });
 }

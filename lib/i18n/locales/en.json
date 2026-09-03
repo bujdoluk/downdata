@@ -199,6 +199,11 @@
     "title": "History",
     "subtitle": "Pick a service to see its incident history over the last 12 months.",
     "selectService": "Select a service…",
+    "searchPlaceholder": "Search incidents…",
+    "filter": {
+      "allComponents": "All components",
+      "componentsMethodology": "Only lists components that have been named in at least one of this service's incidents."
+    },
     "loading": "Loading history…",
     "unreachable": "Unable to load incident history.",
     "empty": "No incidents in the last 12 months.",
@@ -217,6 +222,8 @@
     },
     "resolutionTime": "Resolved in {{duration}}",
     "stillOngoing": "Still ongoing",
+    "dayAriaLabel": "{{date}}: {{summary}}",
+    "dayAriaLabelEmpty": "{{date}}: no incidents",
     "selectPrompt": "Click a day on the calendar to see its incidents."
   },
   "boards": {

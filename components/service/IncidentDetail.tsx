@@ -56,7 +56,6 @@ export default function IncidentDetail({
             </>
           )}
           <p className="text-base-content/40 text-xs">
-            {t("incidents.officialPageLabel")}{" "}
             <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
               {incident.shortlink}
             </a>
@@ -72,7 +71,7 @@ export default function IncidentDetail({
       ) : (
         <ul className="timeline timeline-vertical mt-8 [--timeline-col-start:auto]">
           {incident.incident_updates.map((update, i) => (
-            <li key={update.id}>
+            <li key={update.id} className="min-w-0">
               {i > 0 && <hr />}
               <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
                 {formatDateTime(update.created_at, timeZone)}
@@ -80,14 +79,14 @@ export default function IncidentDetail({
               <div className="timeline-middle">
                 <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
               </div>
-              <div className="timeline-end timeline-box bg-base-200">
-                <p className="flex items-center gap-2 text-base-content text-sm font-medium">
+              <div className="timeline-end timeline-box bg-base-200 min-w-0">
+                <p className="flex items-center gap-2 text-base-content text-sm font-medium wrap-anywhere">
                   {update.status}
                   {lastViewed !== undefined && epochMs(update.created_at) > lastViewed && (
                     <span className="badge badge-xs badge-primary">{t("incidents.new")}</span>
                   )}
                 </p>
-                <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
+                <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line wrap-anywhere">{stripHtml(update.body)}</p>
               </div>
               {i < incident.incident_updates.length - 1 && <hr />}
             </li>

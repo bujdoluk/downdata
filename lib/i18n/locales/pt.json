@@ -199,6 +199,11 @@
     "title": "Histórico",
     "subtitle": "Escolha um serviço para ver o histórico de incidentes dos últimos 12 meses.",
     "selectService": "Selecionar um serviço…",
+    "searchPlaceholder": "Pesquisar incidentes…",
+    "filter": {
+      "allComponents": "Todos os componentes",
+      "componentsMethodology": "Mostra apenas os componentes mencionados em pelo menos um incidente deste serviço."
+    },
     "loading": "A carregar histórico…",
     "unreachable": "Não foi possível carregar o histórico de incidentes.",
     "empty": "Sem incidentes nos últimos 12 meses.",
@@ -217,6 +222,8 @@
     },
     "resolutionTime": "Resolvido em {{duration}}",
     "stillOngoing": "Ainda em curso",
+    "dayAriaLabel": "{{date}}: {{summary}}",
+    "dayAriaLabelEmpty": "{{date}}: sem incidentes",
     "selectPrompt": "Clique num dia do calendário para ver os seus incidentes."
   },
   "boards": {

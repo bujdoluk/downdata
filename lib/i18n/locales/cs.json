@@ -200,6 +200,11 @@
     "title": "Historie",
     "subtitle": "Vyberte službu a zobrazte historii incidentů za posledních 12 měsíců.",
     "selectService": "Vyberte službu…",
+    "searchPlaceholder": "Hledat incidenty…",
+    "filter": {
+      "allComponents": "Všechny komponenty",
+      "componentsMethodology": "Zobrazuje jen komponenty, které se objevily alespoň v jednom incidentu této služby."
+    },
     "loading": "Načítá se historie…",
     "unreachable": "Nepodařilo se načíst historii incidentů.",
     "empty": "Žádné incidenty za posledních 12 měsíců.",
@@ -219,6 +224,8 @@
     },
     "resolutionTime": "Vyřešeno za {{duration}}",
     "stillOngoing": "Stále trvá",
+    "dayAriaLabel": "{{date}}: {{summary}}",
+    "dayAriaLabelEmpty": "{{date}}: žádné incidenty",
     "selectPrompt": "Klikněte na den v kalendáři a zobrazte jeho incidenty."
   },
   "boards": {

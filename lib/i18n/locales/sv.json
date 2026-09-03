@@ -199,6 +199,11 @@
     "title": "Historik",
     "subtitle": "Välj en tjänst för att se dess incidenthistorik för de senaste 12 månaderna.",
     "selectService": "Välj en tjänst…",
+    "searchPlaceholder": "Sök incidenter…",
+    "filter": {
+      "allComponents": "Alla komponenter",
+      "componentsMethodology": "Visar bara komponenter som nämnts i minst en incident för den här tjänsten."
+    },
     "loading": "Läser in historik…",
     "unreachable": "Det gick inte att läsa in incidenthistoriken.",
     "empty": "Inga incidenter de senaste 12 månaderna.",
@@ -217,6 +222,8 @@
     },
     "resolutionTime": "Löst på {{duration}}",
     "stillOngoing": "Fortfarande pågående",
+    "dayAriaLabel": "{{date}}: {{summary}}",
+    "dayAriaLabelEmpty": "{{date}}: inga incidenter",
     "selectPrompt": "Klicka på en dag i kalendern för att se dess incidenter."
   },
   "boards": {

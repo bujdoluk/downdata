@@ -51,6 +51,12 @@ export type IncidentUpdate = {
   created_at: string;
 };
 
+export type IncidentComponent = {
+  id: string;
+  name: string;
+  status: string;
+};
+
 export type Incident = {
   id: string;
   name: string;
@@ -61,6 +67,7 @@ export type Incident = {
   updated_at: string;
   shortlink: string;
   incident_updates: IncidentUpdate[];
+  components?: IncidentComponent[];
 };
 
 export type ServiceSummaryResponse = {

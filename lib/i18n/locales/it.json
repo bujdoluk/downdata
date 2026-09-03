@@ -199,6 +199,11 @@
     "title": "Cronologia",
     "subtitle": "Scegli un servizio per vedere la cronologia degli incidenti degli ultimi 12 mesi.",
     "selectService": "Seleziona un servizio…",
+    "searchPlaceholder": "Cerca incidenti…",
+    "filter": {
+      "allComponents": "Tutti i componenti",
+      "componentsMethodology": "Mostra solo i componenti citati in almeno un incidente di questo servizio."
+    },
     "loading": "Caricamento della cronologia…",
     "unreachable": "Impossibile caricare la cronologia degli incidenti.",
     "empty": "Nessun incidente negli ultimi 12 mesi.",
@@ -217,6 +222,8 @@
     },
     "resolutionTime": "Risolto in {{duration}}",
     "stillOngoing": "Ancora in corso",
+    "dayAriaLabel": "{{date}}: {{summary}}",
+    "dayAriaLabelEmpty": "{{date}}: nessun incidente",
     "selectPrompt": "Fai clic su un giorno nel calendario per vedere i suoi incidenti."
   },
   "boards": {

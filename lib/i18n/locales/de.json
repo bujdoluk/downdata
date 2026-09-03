@@ -199,6 +199,11 @@
     "title": "Verlauf",
     "subtitle": "Wähle einen Dienst, um dessen Vorfallverlauf der letzten 12 Monate zu sehen.",
     "selectService": "Dienst auswählen…",
+    "searchPlaceholder": "Vorfälle durchsuchen…",
+    "filter": {
+      "allComponents": "Alle Komponenten",
+      "componentsMethodology": "Zeigt nur Komponenten, die in mindestens einem Vorfall dieses Dienstes genannt wurden."
+    },
     "loading": "Verlauf wird geladen…",
     "unreachable": "Vorfallverlauf konnte nicht geladen werden.",
     "empty": "Keine Vorfälle in den letzten 12 Monaten.",
@@ -217,6 +222,8 @@
     },
     "resolutionTime": "Gelöst in {{duration}}",
     "stillOngoing": "Noch andauernd",
+    "dayAriaLabel": "{{date}}: {{summary}}",
+    "dayAriaLabelEmpty": "{{date}}: keine Vorfälle",
     "selectPrompt": "Klicke auf einen Tag im Kalender, um seine Vorfälle zu sehen."
   },
   "boards": {

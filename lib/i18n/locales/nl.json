@@ -199,6 +199,11 @@
     "title": "Geschiedenis",
     "subtitle": "Kies een dienst om de incidentgeschiedenis van de afgelopen 12 maanden te bekijken.",
     "selectService": "Selecteer een dienst…",
+    "searchPlaceholder": "Incidenten zoeken…",
+    "filter": {
+      "allComponents": "Alle componenten",
+      "componentsMethodology": "Toont alleen componenten die in minstens één incident van deze dienst zijn genoemd."
+    },
     "loading": "Geschiedenis laden…",
     "unreachable": "Kan de incidentgeschiedenis niet laden.",
     "empty": "Geen incidenten in de afgelopen 12 maanden.",
@@ -217,6 +222,8 @@
     },
     "resolutionTime": "Opgelost in {{duration}}",
     "stillOngoing": "Nog gaande",
+    "dayAriaLabel": "{{date}}: {{summary}}",
+    "dayAriaLabelEmpty": "{{date}}: geen incidenten",
     "selectPrompt": "Klik op een dag in de kalender om de incidenten te bekijken."
   },
   "boards": {

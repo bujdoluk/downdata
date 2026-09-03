@@ -16,17 +16,46 @@ import { queryKeys } from "@/lib/queryKeys";
 import type { IncidentCountByService } from "@/lib/getStoredIncident";
 import IncidentCalendar from "@/components/history/IncidentCalendar";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
+import ComponentFilterDropdown from "@/components/history/ComponentFilterDropdown";
 import ServiceSearchPicker from "@/components/service/ServiceSearchPicker";
 import ImpactFilterDropdown from "@/components/service/ImpactFilterDropdown";
+import SearchFilterInput from "@/components/service/SearchFilterInput";
 import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
 import { TAB_BG_STYLE } from "@/lib/utils";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import { useSelectedBoard } from "@/hooks/useSelectedBoard";
+import { useDebouncedUrlFilters } from "@/hooks/useDebouncedUrlFilters";
 import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/service/statusStyles";
 import LoadingOverlay from "@/components/LoadingOverlay";
 
 const POLL_INTERVAL_MS = 60_000;
+
+// Debounced-and-URL-synced component/text filters — same pattern as
+// ServiceDetail.tsx's ComponentFilters (see hooks/useDebouncedUrlFilters).
+// An empty `components` Set means "no filter" (unlike ImpactFilterDropdown,
+// where the full set is the default) — the component id list itself isn't
+// known until this service's incidents have loaded, so there's no fixed
+// "everything" set to default to up front.
+type HistoryFilters = { components: Set<string>; q: string };
+
+function parseHistoryFilters(searchParams: URLSearchParams): HistoryFilters {
+  return {
+    components: new Set((searchParams.get("components") ?? "").split(",").filter(Boolean)),
+    q: searchParams.get("q") ?? "",
+  };
+}
+
+function serializeHistoryFilters(f: HistoryFilters): string {
+  return JSON.stringify([[...f.components].sort(), f.q]);
+}
+
+function historyFiltersPatch(f: HistoryFilters): Record<string, string | null> {
+  return {
+    components: f.components.size === 0 ? null : [...f.components].sort().join(","),
+    q: f.q.trim() === "" ? null : f.q.trim(),
+  };
+}
 
 export default function HistoryPageContent({
   trackedServices,
@@ -113,7 +142,30 @@ export default function HistoryPageContent({
   }
 
   function selectService(newSlug: string) {
-    router.push(`/history?${mergeParams(searchParams, { service: newSlug, date: null }).toString()}`, { scroll: false });
+    // components/q reset alongside date — both are specific to whichever
+    // service was previously selected (component ids don't carry across
+    // services, and a stale search term filtering a new service's
+    // incidents would be confusing, not convenient).
+    router.push(
+      `/history?${mergeParams(searchParams, { service: newSlug, date: null, components: null, q: null }).toString()}`,
+      { scroll: false },
+    );
+  }
+
+  const { pendingFilters: filters, setPendingFilters: setFilters } = useDebouncedUrlFilters({
+    path: "/history",
+    parse: parseHistoryFilters,
+    serialize: serializeHistoryFilters,
+    toPatch: historyFiltersPatch,
+  });
+
+  function toggleComponent(id: string) {
+    setFilters((prev) => {
+      const next = new Set(prev.components);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return { ...prev, components: next };
+    });
   }
 
   // Years with any incident, oldest first, always including the current
@@ -143,10 +195,39 @@ export default function HistoryPageContent({
     updateParams({ tab: tab === "detail" ? null : tab });
   }
 
-  const relevantIncidents = useMemo(
-    () => (incidents ?? []).filter((incident) => selectedImpacts.has(incident.impact)),
-    [incidents, selectedImpacts],
-  );
+  // Every {id, name} this service's currently-loaded incidents mention,
+  // deduped and alphabetized — feeds ComponentFilterDropdown. Most services'
+  // incidents carry no per-component data, in which case this stays empty
+  // and the dropdown renders nothing.
+  const allComponents = useMemo(() => {
+    const byId = new Map<string, string>();
+    for (const incident of incidents ?? []) {
+      for (const component of incident.components ?? []) {
+        if (!byId.has(component.id)) byId.set(component.id, component.name);
+      }
+    }
+    return [...byId.entries()].map(([id, name]) => ({ id, name })).sort((a, b) => a.name.localeCompare(b.name));
+  }, [incidents]);
+
+  const relevantIncidents = useMemo(() => {
+    const q = filters.q.trim().toLowerCase();
+    return (incidents ?? []).filter((incident) => {
+      if (!selectedImpacts.has(incident.impact)) return false;
+      // An incident with no components listed is treated as broad/unclear —
+      // it stays visible no matter which components are checked. Only
+      // incidents that *do* list components get excluded when none of
+      // theirs are selected.
+      if (filters.components.size > 0 && incident.components && incident.components.length > 0) {
+        if (!incident.components.some((component) => filters.components.has(component.id))) return false;
+      }
+      if (q) {
+        const matchesName = incident.name.toLowerCase().includes(q);
+        const matchesUpdate = incident.incident_updates.some((update) => stripHtml(update.body).toLowerCase().includes(q));
+        if (!matchesName && !matchesUpdate) return false;
+      }
+      return true;
+    });
+  }, [incidents, selectedImpacts, filters.components, filters.q]);
 
   function toggleImpact(impact: string) {
     const next = new Set(selectedImpacts);
@@ -200,6 +281,12 @@ export default function HistoryPageContent({
         <div className="flex flex-wrap items-center gap-4">
           <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
           <ImpactFilterDropdown selected={selectedImpacts} onToggle={toggleImpact} />
+          <ComponentFilterDropdown options={allComponents} selected={filters.components} onToggle={toggleComponent} />
+          <SearchFilterInput
+            value={filters.q}
+            onChange={(q) => setFilters((prev) => ({ ...prev, q }))}
+            label={t("history.searchPlaceholder")}
+          />
         </div>
 
         {!slug ? null : isLoading ? null : error ? (
@@ -286,7 +373,7 @@ export default function HistoryPageContent({
                               </p>
                               <ul className="timeline timeline-vertical mt-2 [--timeline-col-start:auto]">
                                 {incident.incident_updates.map((update, i) => (
-                                  <li key={update.id}>
+                                  <li key={update.id} className="min-w-0">
                                     {i > 0 && <hr />}
                                     <div className="timeline-start text-base-content/50 w-36 text-right text-xs whitespace-nowrap">
                                       {formatDateTime(update.created_at, timeZone)}
@@ -294,9 +381,9 @@ export default function HistoryPageContent({
                                     <div className="timeline-middle">
                                       <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
                                     </div>
-                                    <div className="timeline-end timeline-box bg-base-200">
-                                      <p className="text-base-content text-sm font-medium">{update.status}</p>
-                                      <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line">{stripHtml(update.body)}</p>
+                                    <div className="timeline-end timeline-box bg-base-200 min-w-0">
+                                      <p className="text-base-content text-sm font-medium wrap-anywhere">{update.status}</p>
+                                      <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line wrap-anywhere">{stripHtml(update.body)}</p>
                                     </div>
                                     {i < incident.incident_updates.length - 1 && <hr />}
                                   </li>

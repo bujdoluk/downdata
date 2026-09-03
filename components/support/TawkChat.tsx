@@ -3,7 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
 import { usePathname } from "next/navigation";
+import { useTranslation } from "react-i18next";
+import "@/lib/i18n/i18n";
 import { useCookieConsent } from "@/components/cookies/CookieConsent";
+import { CloseIcon } from "@/components/icons/NavIcons";
 
 declare global {
   interface Window {
@@ -12,7 +15,8 @@ declare global {
 }
 
 export default function TawkChat() {
-  const { consent } = useCookieConsent();
+  const { t } = useTranslation();
+  const { consent, savePreferences } = useCookieConsent();
   const pathname = usePathname();
   const propertyId = process.env.NEXT_PUBLIC_TAWKTO_PROPERTY_ID;
   const widgetId = process.env.NEXT_PUBLIC_TAWKTO_WIDGET_ID;
@@ -55,25 +59,42 @@ export default function TawkChat() {
     if (hasLoadedOnce) applyVisibilityRef.current();
   }, [consent.supportChat, hasLoadedOnce]);
 
+  function handleDismiss() {
+    savePreferences({ ...consent, supportChat: false });
+  }
+
   if (!propertyId || !widgetId || isSharedPage || !hasLoadedOnce) return null;
 
   return (
-    <Script id="tawk-to" strategy="lazyOnload">
-      {`
-        var Tawk_API = Tawk_API || {};
-        Tawk_API.onLoad = function () {
-          if (window.__tawkApplyVisibility) window.__tawkApplyVisibility();
-        };
-        var Tawk_LoadStart = new Date();
-        (function () {
-          var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-          s1.async = true;
-          s1.src = "https://embed.tawk.to/${propertyId}/${widgetId}";
-          s1.charset = "UTF-8";
-          s1.setAttribute("crossorigin", "*");
-          s0.parentNode.insertBefore(s1, s0);
-        })();
-      `}
-    </Script>
+    <>
+      <Script id="tawk-to" strategy="lazyOnload">
+        {`
+          var Tawk_API = Tawk_API || {};
+          Tawk_API.onLoad = function () {
+            if (window.__tawkApplyVisibility) window.__tawkApplyVisibility();
+          };
+          var Tawk_LoadStart = new Date();
+          (function () {
+            var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = "https://embed.tawk.to/${propertyId}/${widgetId}";
+            s1.charset = "UTF-8";
+            s1.setAttribute("crossorigin", "*");
+            s0.parentNode.insertBefore(s1, s0);
+          })();
+        `}
+      </Script>
+      {consent.supportChat && (
+        <button
+          type="button"
+          onClick={handleDismiss}
+          aria-label={t("support.hideChatButton")}
+          title={t("support.hideChatButton")}
+          className="btn btn-circle btn-xs bg-base-100 border-base-300 text-base-content/70 hover:text-base-content fixed right-3 bottom-[76px] z-[2147483002] border shadow-md"
+        >
+          <CloseIcon />
+        </button>
+      )}
+    </>
   );
 }

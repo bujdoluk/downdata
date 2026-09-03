@@ -11,13 +11,7 @@ import type { Board } from "@/types/board";
 import CatalogBrowser from "@/components/service/CatalogBrowser";
 import RequestCard from "@/components/RequestCard";
 import { queryKeys } from "@/lib/queryKeys";
-
-// daisyUI's tabs-lift reads the active tab's background from --tab-bg
-// (defaults to base-100 unconditionally on every .tab, so it can't be
-// overridden by setting the variable on an ancestor — see
-// node_modules/daisyui/components/tab.css). Matches the tab-content
-// panels' own bg-base-200 below.
-const TAB_BG_STYLE = { "--tab-bg": "var(--color-base-200)" } as React.CSSProperties;
+import { TAB_BG_STYLE } from "@/lib/utils";
 
 export default function ServiceCatalogPicker({
   catalog,

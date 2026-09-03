@@ -6,26 +6,8 @@ import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { UserIcon } from "@/components/icons/NavIcons";
-import { nowMs } from "@/lib/formatTime";
+import { validateImageFile, uploadImageToBucket } from "@/lib/imageUpload";
 import Spinner from "@/components/Spinner";
-
-const MAX_BYTES = 2 * 1024 * 1024;
-// Every format that reliably renders via <img src> in all major browsers.
-// Deliberately excludes formats a browser will still tag as "image/*" but
-// won't actually display that way — HEIC/HEIF (Safari-only), TIFF, JPEG
-// 2000 — which would let the upload succeed while the avatar shows broken
-// almost everywhere.
-const ALLOWED_TYPES = [
-  "image/png",
-  "image/jpeg",
-  "image/webp",
-  "image/gif",
-  "image/avif",
-  "image/svg+xml",
-  "image/bmp",
-  "image/x-icon",
-  "image/vnd.microsoft.icon", // the other MIME type browsers/OSes report for .ico, alongside image/x-icon
-];
 
 export default function AvatarUpload({
   supabase,
@@ -49,15 +31,7 @@ export default function AvatarUpload({
 
   const uploadMutation = useMutation({
     mutationFn: async (file: File) => {
-      const { error: uploadError } = await supabase.storage
-        .from("avatars")
-        .upload(path, file, { upsert: true, contentType: file.type });
-      if (uploadError) throw uploadError;
-
-      // Cache-bust: the path is stable per user, so without this the
-      // browser would keep showing the previous image at the same URL.
-      const { data } = supabase.storage.from("avatars").getPublicUrl(path);
-      const newUrl = `${data.publicUrl}?t=${nowMs()}`;
+      const newUrl = await uploadImageToBucket(supabase, "avatars", path, file);
 
       const { error: updateError } = await supabase.auth.updateUser({ data: { avatar_url: newUrl } });
       if (updateError) throw updateError;
@@ -88,12 +62,9 @@ export default function AvatarUpload({
 
     setValidationError(null);
     uploadMutation.reset();
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setValidationError("nav.avatarInvalidType");
-      return;
-    }
-    if (file.size > MAX_BYTES) {
-      setValidationError("nav.avatarTooLarge");
+    const validationKey = validateImageFile(file);
+    if (validationKey) {
+      setValidationError(validationKey);
       return;
     }
 

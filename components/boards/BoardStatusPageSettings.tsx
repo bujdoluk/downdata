@@ -4,30 +4,29 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchJson } from "@/lib/fetchJson";
+import { fetchJson, requestJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { slugify } from "@/lib/slugify";
 import { createClient } from "@/lib/supabase/client";
+import { useOrigin } from "@/hooks/useOrigin";
+import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import type { BoardStatusPage } from "@/types/statusPage";
 import StatusPageLogoUpload from "@/components/statusPage/StatusPageLogoUpload";
 import Spinner from "@/components/Spinner";
-import { CopyIcon, CheckIcon, RadarIcon } from "@/components/icons/NavIcons";
+import { CopyIcon, CheckIcon } from "@/components/icons/NavIcons";
 
-// Create → configure → publish → share, all in one collapsible panel on
-// the board detail page. Kept out of BoardDetailContent's own file since
-// it's a self-contained data-fetching unit (its own useQuery), same
-// reasoning as BoardActiveIncidentsPanel/BoardTrackedServicesGrid.
+// Create → configure → publish → share, all in one panel. Bare content
+// only, no outer margin/card/sizing — BoardDetailContent's grid owns that
+// uniformly across all 6 cells (see its own comment), same convention as
+// BoardActiveIncidentsPanel/BoardActiveMaintenancePanel. Kept as its own
+// component since it's a self-contained data-fetching unit (its own
+// useQuery), not because of any layout need of its own.
 export default function BoardStatusPageSettings({ boardId, boardName }: { boardId: string; boardName: string }) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [supabase] = useState(() => createClient());
-  const [origin, setOrigin] = useState(""); // filled client-side only — window isn't available during SSR
-
-  useEffect(() => {
-    // window isn't available during SSR — this can only run post-mount.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setOrigin(window.location.origin);
-  }, []);
+  const origin = useOrigin();
+  const { copied, copy } = useCopyToClipboard();
 
   const { data, isLoading } = useQuery({
     queryKey: queryKeys.boards.statusPage(boardId),
@@ -38,7 +37,6 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
   const [companyName, setCompanyName] = useState("");
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [hideBranding, setHideBranding] = useState(false);
-  const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Resync the draft from the server whenever the query result's identity
@@ -58,16 +56,11 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
   }, [data, boardName]);
 
   const saveMutation = useMutation({
-    mutationFn: async () => {
-      const res = await fetch(`/api/boards/${boardId}/status-page`, {
+    mutationFn: () =>
+      requestJson<BoardStatusPage>(`/api/boards/${boardId}/status-page`, t("boards.statusPage.saveFailed"), {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug, companyName, logoUrl, hideBranding }),
-      });
-      const body = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(body?.error ?? t("boards.statusPage.saveFailed"));
-      return body as BoardStatusPage;
-    },
+        body: { slug, companyName, logoUrl, hideBranding },
+      }),
     onSuccess: (statusPage) => {
       setError(null);
       queryClient.setQueryData(queryKeys.boards.statusPage(boardId), statusPage);
@@ -76,15 +69,12 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
   });
 
   const enableMutation = useMutation({
-    mutationFn: async (enabled: boolean) => {
-      const res = await fetch(`/api/boards/${boardId}/status-page/enable`, { method: enabled ? "POST" : "DELETE" });
-      const body = await res.json().catch(() => null);
-      if (!res.ok) throw new Error(body?.error ?? t("boards.statusPage.enableFailed"));
-      return body as BoardStatusPage;
-    },
+    mutationFn: (enabled: boolean) =>
+      requestJson<BoardStatusPage>(`/api/boards/${boardId}/status-page/enable`, t("boards.statusPage.enableFailed"), {
+        method: enabled ? "POST" : "DELETE",
+      }),
     onSuccess: (statusPage) => {
       setError(null);
-      setCopied(false);
       queryClient.setQueryData(queryKeys.boards.statusPage(boardId), statusPage);
     },
     onError: (err: Error) => setError(err.message),
@@ -94,106 +84,117 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
   const saving = saveMutation.isPending;
   const publishing = enableMutation.isPending;
 
-  async function handleCopy() {
-    if (!publicPath) return;
-    try {
-      await navigator.clipboard.writeText(`${origin}${publicPath}`);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // ignore — clipboard access can be denied by the browser; the URL is
-      // still shown as plain text for a manual copy
+  // Publishing (unpublished → published) persists the current draft first —
+  // enableMutation only ever flips the `enabled` column, so without this an
+  // unsaved edit (e.g. just-toggled hideBranding) would silently never reach
+  // the database and the public page would keep showing the last-saved state.
+  // Unpublishing needs no save step; it's just turning the page off.
+  async function handleTogglePublish() {
+    if (!data) return;
+    if (!data.enabled) {
+      try {
+        await saveMutation.mutateAsync();
+      } catch {
+        return; // saveMutation's onError already surfaced the message
+      }
     }
+    enableMutation.mutate(!data.enabled);
   }
 
   return (
-    <div className="collapse collapse-arrow border-base-300 bg-base-200 mt-6 border">
-      <input type="checkbox" />
-      <div className="collapse-title flex items-center gap-2 font-semibold">
-        <RadarIcon className="text-base-content/60" />
-        {t("boards.statusPage.title")}
+    <>
+      <div className="flex items-center justify-between">
+        <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("boards.statusPage.title")}</h2>
         {data?.enabled && <span className="badge badge-success badge-xs">{t("boards.statusPage.live")}</span>}
       </div>
-      <div className="collapse-content">
-        {isLoading ? (
-          <Spinner size="sm" />
-        ) : (
-          <div className="flex flex-col gap-4 pt-2">
-            <p className="text-base-content/60 text-sm">{t("boards.statusPage.description")}</p>
 
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">{t("boards.statusPage.slugLabel")}</legend>
-              <label className="input input-bordered flex items-center gap-1">
-                <span className="text-base-content/40 text-sm whitespace-nowrap">{origin || "…"}/status/</span>
-                <input
-                  type="text"
-                  value={slug}
-                  onChange={(e) => setSlug(slugify(e.target.value))}
-                  className="grow"
-                  maxLength={63}
-                />
-              </label>
-            </fieldset>
-
-            <fieldset className="fieldset">
-              <legend className="fieldset-legend">{t("boards.statusPage.companyNameLabel")}</legend>
+      {isLoading ? (
+        <Spinner size="sm" className="mt-3" />
+      ) : (
+        <div className="mt-3 flex flex-col gap-3">
+          <fieldset className="fieldset py-0">
+            <legend className="fieldset-legend">{t("boards.statusPage.slugLabel")}</legend>
+            <label className="input input-bordered input-sm flex items-center gap-1">
+              <span className="text-base-content/40 shrink-0 text-xs whitespace-nowrap">{origin || "…"}/status/</span>
               <input
                 type="text"
-                value={companyName}
-                onChange={(e) => setCompanyName(e.target.value)}
-                placeholder={boardName}
-                className="input input-bordered w-full"
-                maxLength={120}
+                value={slug}
+                onChange={(e) => setSlug(slugify(e.target.value))}
+                className="grow"
+                maxLength={63}
               />
-            </fieldset>
+            </label>
+          </fieldset>
 
-            <StatusPageLogoUpload supabase={supabase} boardId={boardId} logoUrl={logoUrl} onChange={setLogoUrl} />
+          <fieldset className="fieldset py-0">
+            <legend className="fieldset-legend">{t("boards.statusPage.companyNameLabel")}</legend>
+            <input
+              type="text"
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              placeholder={boardName}
+              className="input input-bordered input-sm w-full"
+              maxLength={120}
+            />
+          </fieldset>
 
-            {!logoUrl && (
-              <label className="label cursor-pointer justify-start gap-2">
-                <input
-                  type="checkbox"
-                  checked={hideBranding}
-                  onChange={(e) => setHideBranding(e.target.checked)}
-                  className="checkbox checkbox-sm"
-                />
-                {t("boards.statusPage.hideBranding")}
-              </label>
-            )}
+          <StatusPageLogoUpload
+            supabase={supabase}
+            boardId={boardId}
+            logoUrl={logoUrl}
+            hideBranding={hideBranding}
+            onChange={setLogoUrl}
+          />
 
-            {error && <p className="text-error text-sm">{error}</p>}
+          {!logoUrl && (
+            <label className="label cursor-pointer justify-start gap-2 text-xs">
+              <input
+                type="checkbox"
+                checked={hideBranding}
+                onChange={(e) => setHideBranding(e.target.checked)}
+                className="checkbox checkbox-xs"
+              />
+              {t("boards.statusPage.hideBranding")}
+            </label>
+          )}
 
-            <div className="flex flex-wrap items-center gap-2">
-              <button type="button" disabled={saving || !slug} onClick={() => saveMutation.mutate()} className="btn btn-info btn-sm">
-                {saving ? <Spinner size="xs" /> : t("boards.statusPage.save")}
+          {error && <p className="text-error text-xs">{error}</p>}
+
+          <div className="flex flex-wrap items-center gap-2">
+            <button type="button" disabled={saving || !slug} onClick={() => saveMutation.mutate()} className="btn btn-info btn-xs">
+              {saving ? <Spinner size="xs" /> : t("boards.statusPage.save")}
+            </button>
+
+            {data && (
+              <button
+                type="button"
+                disabled={publishing || saving}
+                onClick={handleTogglePublish}
+                className={`btn btn-xs ${data.enabled ? "btn-ghost" : "btn-success"}`}
+              >
+                {publishing ? <Spinner size="xs" /> : data.enabled ? t("boards.statusPage.unpublish") : t("boards.statusPage.publish")}
               </button>
-
-              {data && (
-                <button
-                  type="button"
-                  disabled={publishing}
-                  onClick={() => enableMutation.mutate(!data.enabled)}
-                  className={`btn btn-sm ${data.enabled ? "btn-ghost" : "btn-success"}`}
-                >
-                  {publishing ? <Spinner size="xs" /> : data.enabled ? t("boards.statusPage.unpublish") : t("boards.statusPage.publish")}
-                </button>
-              )}
-            </div>
-
-            {data?.enabled && publicPath && (
-              <div className="bg-base-100 border-base-300 flex items-center gap-2 rounded-lg border p-2">
-                <a href={publicPath} target="_blank" rel="noreferrer" className="link link-hover min-w-0 flex-1 truncate text-sm">
-                  {origin}
-                  {publicPath}
-                </a>
-                <button type="button" onClick={handleCopy} className="btn btn-ghost btn-xs" aria-label={t("boards.statusPage.copyLink")}>
-                  {copied ? <CheckIcon className="text-success" /> : <CopyIcon />}
-                </button>
-              </div>
             )}
           </div>
-        )}
-      </div>
-    </div>
+
+          {data?.enabled && publicPath && (
+            <div className="bg-base-100 border-base-300 flex items-start gap-2 rounded-lg border p-2">
+              <a href={publicPath} target="_blank" rel="noreferrer" className="link link-hover min-w-0 flex-1 break-all text-xs">
+                {origin}
+                {publicPath}
+              </a>
+              <button
+                type="button"
+                onClick={() => copy(`${origin}${publicPath}`)}
+                className="btn btn-ghost btn-xs"
+                aria-label={t("boards.statusPage.copyLink")}
+              >
+                {copied ? <CheckIcon className="text-success" /> : <CopyIcon />}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+    </>
   );
 }

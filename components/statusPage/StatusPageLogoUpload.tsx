@@ -5,59 +5,49 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import { nowMs } from "@/lib/formatTime";
+import { validateImageFile, uploadImageToBucket } from "@/lib/imageUpload";
 import Spinner from "@/components/Spinner";
+import Logo from "@/components/navbar/Logo";
 
 // Same validation/upload shape as components/account/AvatarUpload.tsx —
-// see that file's own comments for why these particular formats/limits.
-// Unlike AvatarUpload, this doesn't persist logoUrl anywhere itself: it
-// only writes to Storage and hands the new URL back via onChange, since
-// this control lives inside BoardStatusPageSettings' single save-together
-// form rather than a page of independently-instant-saving widgets.
-const MAX_BYTES = 2 * 1024 * 1024;
-const ALLOWED_TYPES = [
-  "image/png",
-  "image/jpeg",
-  "image/webp",
-  "image/gif",
-  "image/avif",
-  "image/svg+xml",
-  "image/bmp",
-  "image/x-icon",
-  "image/vnd.microsoft.icon",
-];
+// both now share lib/imageUpload.ts for that part. Unlike AvatarUpload,
+// this doesn't persist logoUrl anywhere itself: it only writes to Storage
+// and hands the new URL back via onChange, since this control lives
+// inside BoardStatusPageSettings' single save-together form rather than a
+// page of independently-instant-saving widgets.
 
 export default function StatusPageLogoUpload({
   supabase,
   boardId,
   logoUrl,
+  hideBranding,
   onChange,
 }: {
   supabase: SupabaseClient;
   boardId: string;
   logoUrl: string | null;
+  hideBranding: boolean;
   onChange: (logoUrl: string | null) => void;
 }) {
   const { t } = useTranslation();
   const inputId = useId();
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  // Fixed path per board (not per user, unlike avatars) — a re-upload is
-  // then a plain upsert onto the same key, matching the RLS ownership
-  // check in 0025_board_status_pages.sql, which reads this same segment.
-  const path = `${boardId}/logo`;
-
+  // Path is <user_id>/<board_id>/logo, not just <board_id>/logo — the RLS
+  // ownership check (0026_fix_status_page_logo_rls.sql) compares the
+  // path's first segment directly against auth.uid(), the same flat
+  // comparison the avatars bucket uses, rather than looking the board up
+  // in another table (see that migration for why the board-lookup shape
+  // reliably failed). A re-upload is still a plain upsert onto the same
+  // key either way.
   const uploadMutation = useMutation({
     mutationFn: async (file: File) => {
-      const { error: uploadError } = await supabase.storage
-        .from("status-page-logos")
-        .upload(path, file, { upsert: true, contentType: file.type });
-      if (uploadError) throw uploadError;
-
-      // Cache-bust: the path is stable per board, so without this the
-      // browser would keep showing the previous image at the same URL.
-      const { data } = supabase.storage.from("status-page-logos").getPublicUrl(path);
-      return `${data.publicUrl}?t=${nowMs()}`;
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+      if (userError || !user) throw userError ?? new Error("Not signed in.");
+      return uploadImageToBucket(supabase, "status-page-logos", `${user.id}/${boardId}/logo`, file);
     },
     onSuccess: onChange,
   });
@@ -72,12 +62,9 @@ export default function StatusPageLogoUpload({
 
     setValidationError(null);
     uploadMutation.reset();
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      setValidationError("nav.avatarInvalidType");
-      return;
-    }
-    if (file.size > MAX_BYTES) {
-      setValidationError("nav.avatarTooLarge");
+    const validationKey = validateImageFile(file);
+    if (validationKey) {
+      setValidationError(validationKey);
       return;
     }
 
@@ -98,9 +85,19 @@ export default function StatusPageLogoUpload({
               <img src={logoUrl} alt="" />
             </div>
           </div>
+        ) : hideBranding ? (
+          // Matches PublicStatusPageContent exactly: no custom logo + hidden
+          // branding means the public page's header renders no mark at all —
+          // an empty dashed circle here says that plainly, instead of the
+          // downDATA mark below, which would misleadingly suggest it'll show.
+          <div className="avatar avatar-placeholder">
+            <div className="border-base-content/20 w-12 rounded-full border border-dashed" />
+          </div>
         ) : (
           <div className="avatar avatar-placeholder">
-            <div className="bg-neutral text-neutral-content w-12 rounded-full text-xs">dD</div>
+            <div className="bg-base-100 flex w-12 items-center justify-center rounded-full border">
+              <Logo className="h-8 w-8" />
+            </div>
           </div>
         )}
 

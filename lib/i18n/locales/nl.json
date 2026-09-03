@@ -24,6 +24,7 @@
     "maintenanceBadgeTooltip": "Lopend onderhoud",
     "maintenances": "Onderhoud",
     "integrations": "Integraties",
+    "statusPages": "Statuspagina's",
     "slack": "Slack",
     "email": "E-mail",
     "sms": "SMS",
@@ -32,14 +33,15 @@
     "settings": "Instellingen",
     "account": "Account",
     "billing": "Facturering",
+    "support": "Ondersteuning",
     "preferences": "Voorkeuren",
     "logout": "Uitloggen",
     "avatar": "Profielfoto",
     "avatarChoose": "Foto kiezen",
-    "avatarMaxSize": "Max. 2 MB",
+    "avatarMaxSize": "Max. 4 MB",
     "avatarRemove": "Verwijderen",
     "avatarInvalidType": "Kies een afbeeldingsbestand.",
-    "avatarTooLarge": "De afbeelding moet kleiner zijn dan 2 MB.",
+    "avatarTooLarge": "De afbeelding moet kleiner zijn dan 4 MB.",
     "avatarUploadFailed": "Kan de afbeelding niet bijwerken. Probeer het opnieuw.",
     "theme": "Thema",
     "timezone": "Tijdzone"
@@ -177,6 +179,11 @@
       "button": "Integratie aanvragen"
     }
   },
+  "statusPages": {
+    "title": "Statuspagina's",
+    "subtitle": "Beheer de openbare statuspagina voor elk van je borden.",
+    "empty": "Nog geen borden. Maak er een om een statuspagina in te stellen."
+  },
   "earlyWarnings": {
     "title": "Vroege Waarschuwingen",
     "subtitle": "Houd trefwoorden op het web in de gaten en signaleer vermeldingen voordat ze een probleem worden.",
@@ -269,13 +276,15 @@
     "statusPage": {
       "title": "Openbare statuspagina",
       "live": "Live",
+      "notPublished": "Niet gepubliceerd",
+      "manage": "Beheren →",
       "description": "Deel een openbare, alleen-lezen statuspagina voor de gevolgde services van dit bord.",
       "slugLabel": "Openbare URL",
       "companyNameLabel": "Bedrijfsnaam",
       "logoLabel": "Logo",
       "logoChoose": "Logo kiezen",
       "logoRemove": "Verwijderen",
-      "logoHint": "PNG, JPG, WEBP of SVG. Max. 2 MB.",
+      "logoHint": "PNG, JPG, WEBP of SVG. Max. 4 MB.",
       "logoUploadFailed": "Het logo kon niet worden geüpload. Probeer het opnieuw.",
       "hideBranding": "downDATA-logo verbergen",
       "save": "Opslaan",
@@ -546,6 +555,7 @@
     "chatHeading": "Livechat",
     "chatBody": "Chat rechtstreeks met ons in de app — we reageren meestal binnen een paar uur.",
     "chatButton": "Chat openen",
+    "hideChatButton": "Chat verbergen",
     "emailHeading": "E-mail",
     "emailBody": "Liever e-mail? Schrijf ons en we nemen contact op.",
     "faqHeading": "Bekijk de veelgestelde vragen",

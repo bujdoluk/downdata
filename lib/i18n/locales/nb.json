@@ -24,6 +24,7 @@
     "maintenanceBadgeTooltip": "Pågående vedlikehold",
     "maintenances": "Vedlikehold",
     "integrations": "Integrasjoner",
+    "statusPages": "Statussider",
     "slack": "Slack",
     "email": "E-post",
     "sms": "SMS",
@@ -32,14 +33,15 @@
     "settings": "Innstillinger",
     "account": "Konto",
     "billing": "Fakturering",
+    "support": "Kundestøtte",
     "preferences": "Preferanser",
     "logout": "Logg ut",
     "avatar": "Profilbilde",
     "avatarChoose": "Velg bilde",
-    "avatarMaxSize": "Maks. 2 MB",
+    "avatarMaxSize": "Maks. 4 MB",
     "avatarRemove": "Fjern",
     "avatarInvalidType": "Velg en bildefil.",
-    "avatarTooLarge": "Bildet må være mindre enn 2 MB.",
+    "avatarTooLarge": "Bildet må være mindre enn 4 MB.",
     "avatarUploadFailed": "Kunne ikke oppdatere bildet. Prøv igjen.",
     "theme": "Tema",
     "timezone": "Tidssone"
@@ -177,6 +179,11 @@
       "button": "Be om integrasjon"
     }
   },
+  "statusPages": {
+    "title": "Statussider",
+    "subtitle": "Administrer den offentlige statussiden for hver av tavlene dine.",
+    "empty": "Ingen tavler ennå. Opprett en for å sette opp en statusside."
+  },
   "earlyWarnings": {
     "title": "Tidlige Varsler",
     "subtitle": "Overvåk nøkkelord på nettet og fang opp omtaler før de blir et problem.",
@@ -269,13 +276,15 @@
     "statusPage": {
       "title": "Offentlig statusside",
       "live": "Direkte",
+      "notPublished": "Ikke publisert",
+      "manage": "Administrer →",
       "description": "Del en offentlig, skrivebeskyttet statusside for tavlens sporede tjenester.",
       "slugLabel": "Offentlig URL",
       "companyNameLabel": "Firmanavn",
       "logoLabel": "Logo",
       "logoChoose": "Velg logo",
       "logoRemove": "Fjern",
-      "logoHint": "PNG, JPG, WEBP eller SVG. Maks 2 MB.",
+      "logoHint": "PNG, JPG, WEBP eller SVG. Maks 4 MB.",
       "logoUploadFailed": "Kunne ikke laste opp logoen. Prøv igjen.",
       "hideBranding": "Skjul downDATA-logoen",
       "save": "Lagre",
@@ -546,6 +555,7 @@
     "chatHeading": "Livechat",
     "chatBody": "Chat med oss direkte i appen — vi svarer vanligvis innen noen timer.",
     "chatButton": "Åpne chat",
+    "hideChatButton": "Skjul chat",
     "emailHeading": "E-post",
     "emailBody": "Foretrekker du e-post? Skriv til oss, så svarer vi.",
     "faqHeading": "Se ofte stilte spørsmål",

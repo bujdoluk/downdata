@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { createClient } from "@/lib/supabase/server";
 import SupportContent from "@/components/landing-page/SupportContent";
 
 const title = "Support — downDATA";
@@ -24,6 +25,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page() {
-  return <SupportContent />;
+export default async function Page() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return <SupportContent isAuthenticated={Boolean(user)} />;
 }

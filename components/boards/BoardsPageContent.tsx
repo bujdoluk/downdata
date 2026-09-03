@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
@@ -21,6 +21,7 @@ const POLL_INTERVAL_MS = 60_000;
 export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const createRef = useRef<HTMLDetailsElement>(null);
   const [query, setQuery] = useState("");
   const { pinned, togglePin } = usePinned("pinnedBoards");
@@ -72,7 +73,19 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
             {t("boards.addBoard")}
           </summary>
           <div className="dropdown-content bg-base-100 border-base-300 z-30 mt-2 w-72 rounded-box border p-3 shadow-xl">
-            <CreateBoardForm onCreated={(board) => router.push(`/boards/${board.id}`)} />
+            <CreateBoardForm
+              onCreated={(board) => {
+                // Sidebar's BoardSelect reads this same query key from its
+                // own cache and stays mounted across this navigation, so
+                // without this it wouldn't show the new board until a full
+                // reload — see BoardSelect.tsx's own create flow, which
+                // already does this same update.
+                queryClient.setQueryData<Board[]>(queryKeys.boards.list(), (prev) =>
+                  [...(prev ?? []), board].sort((a, b) => a.name.localeCompare(b.name)),
+                );
+                router.push(`/boards/${board.id}`);
+              }}
+            />
           </div>
         </details>
       </div>

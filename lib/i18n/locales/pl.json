@@ -24,6 +24,7 @@
     "maintenanceBadgeTooltip": "Trwające konserwacje",
     "maintenances": "Konserwacje",
     "integrations": "Integracje",
+    "statusPages": "Strony statusu",
     "slack": "Slack",
     "email": "E-mail",
     "sms": "SMS",
@@ -32,14 +33,15 @@
     "settings": "Ustawienia",
     "account": "Konto",
     "billing": "Płatności",
+    "support": "Wsparcie",
     "preferences": "Preferencje",
     "logout": "Wyloguj się",
     "avatar": "Zdjęcie profilowe",
     "avatarChoose": "Wybierz zdjęcie",
-    "avatarMaxSize": "Maks. 2 MB",
+    "avatarMaxSize": "Maks. 4 MB",
     "avatarRemove": "Usuń",
     "avatarInvalidType": "Wybierz plik obrazu.",
-    "avatarTooLarge": "Obraz musi być mniejszy niż 2 MB.",
+    "avatarTooLarge": "Obraz musi być mniejszy niż 4 MB.",
     "avatarUploadFailed": "Nie udało się zaktualizować zdjęcia. Spróbuj ponownie.",
     "theme": "Motyw",
     "timezone": "Strefa czasowa"
@@ -179,6 +181,11 @@
       "button": "Poproś o integrację"
     }
   },
+  "statusPages": {
+    "title": "Strony statusu",
+    "subtitle": "Zarządzaj publiczną stroną statusu dla każdej ze swoich tablic.",
+    "empty": "Nie masz jeszcze żadnych tablic. Utwórz jedną, aby skonfigurować stronę statusu."
+  },
   "earlyWarnings": {
     "title": "Wczesne ostrzeżenia",
     "subtitle": "Obserwuj słowa kluczowe w sieci i wychwytuj wzmianki, zanim staną się problemem.",
@@ -279,13 +286,15 @@
     "statusPage": {
       "title": "Publiczna strona statusu",
       "live": "Na żywo",
+      "notPublished": "Niepublikowane",
+      "manage": "Zarządzaj →",
       "description": "Udostępnij publiczną stronę statusu (tylko do odczytu) dla śledzonych usług tej tablicy.",
       "slugLabel": "Publiczny adres URL",
       "companyNameLabel": "Nazwa firmy",
       "logoLabel": "Logo",
       "logoChoose": "Wybierz logo",
       "logoRemove": "Usuń",
-      "logoHint": "PNG, JPG, WEBP lub SVG. Maks. 2 MB.",
+      "logoHint": "PNG, JPG, WEBP lub SVG. Maks. 4 MB.",
       "logoUploadFailed": "Nie udało się przesłać logo. Spróbuj ponownie.",
       "hideBranding": "Ukryj logo downDATA",
       "save": "Zapisz",
@@ -556,6 +565,7 @@
     "chatHeading": "Czat na żywo",
     "chatBody": "Napisz do nas bezpośrednio w aplikacji — zwykle odpowiadamy w ciągu kilku godzin.",
     "chatButton": "Otwórz czat",
+    "hideChatButton": "Ukryj czat",
     "emailHeading": "E-mail",
     "emailBody": "Wolisz e-mail? Napisz do nas, a odpowiemy.",
     "faqHeading": "Sprawdź najczęstsze pytania",

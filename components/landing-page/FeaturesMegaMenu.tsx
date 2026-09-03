@@ -14,7 +14,7 @@ export default function FeaturesMegaMenu() {
       entries={FEATURE_CATALOG}
       hrefPrefix="/features"
       menuClassName="w-96 xl:w-[40rem] xl:grid-cols-2"
-      renderIcon={(entry) => <entry.icon className="text-primary mt-0.5 h-5 w-5 shrink-0" />}
+      renderIcon={(entry) => <entry.icon className="text-info mt-0.5 h-5 w-5 shrink-0" />}
       renderLabel={(entry) => t(`nav.${entry.slug}`)}
       renderDescription={(entry) => t(`features.${entry.slug}`)}
     />

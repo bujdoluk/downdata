@@ -17,11 +17,7 @@ export default function PricingContent() {
       <PricingSection />
 
       {/* Closing CTA — same block LandingPage.tsx ends on */}
-      <div className="border-base-300 relative overflow-hidden border-t py-28 text-center">
-        <div
-          aria-hidden="true"
-          className="bg-primary/10 pointer-events-none absolute top-1/2 left-1/2 h-[24rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"
-        />
+      <div className="border-base-300 border-t py-28 text-center">
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-7 px-8">
           <h2 className="max-w-md text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
             {t("landing.closing.heading")}

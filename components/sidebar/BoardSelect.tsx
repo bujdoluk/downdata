@@ -61,12 +61,16 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
   // Distinct from selectValue below: this only reflects an actual board
   // detail page, for the icon's active-state color.
   const matchedBoardId = pathname?.match(/^\/boards\/([^/]+)/)?.[1] ?? "";
+  // The literal "all boards" list page always means VIEW_ALL, regardless of
+  // whatever board was last picked elsewhere — it's not just another
+  // board-aware page falling back to the persisted pick.
+  const isBoardsIndex = pathname === "/boards";
   // Falls back to the persisted cross-page pick (see hooks/useSelectedBoard),
   // then "All boards" (VIEW_ALL) — a native <select> never fires onChange
   // when you reselect the value it's already showing, so if this defaulted
   // to a real board, clicking that one specific board would silently do
   // nothing.
-  const selectValue = matchedBoardId || selectedBoardId || VIEW_ALL;
+  const selectValue = isBoardsIndex ? VIEW_ALL : matchedBoardId || selectedBoardId || VIEW_ALL;
 
   // Arriving at a board page any way — a BoardCard click on /boards,
   // browser back/forward, not just this dropdown — keeps the persisted
@@ -74,6 +78,15 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
   useEffect(() => {
     if (matchedBoardId && matchedBoardId !== selectedBoardId) setSelectedBoardId(matchedBoardId);
   }, [matchedBoardId, selectedBoardId, setSelectedBoardId]);
+
+  // Same idea in the other direction: landing on /boards by ANY route (not
+  // just this component's own Link below, which already clears it
+  // optimistically on click) should stop other board-aware pages from
+  // still defaulting to whatever board was picked before — a browser-back
+  // or BoardDetailContent's own "← Back" link both bypass that onClick.
+  useEffect(() => {
+    if (isBoardsIndex && selectedBoardId) setSelectedBoardId("");
+  }, [isBoardsIndex, selectedBoardId, setSelectedBoardId]);
 
   function handleChange(e: ChangeEvent<HTMLSelectElement>) {
     const value = e.target.value;

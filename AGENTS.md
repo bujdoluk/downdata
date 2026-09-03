@@ -57,6 +57,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   │   ├── incidents/page.tsx        # /incidents — live incident list across your own tracked services, filterable by board
 │   │   ├── maintenance/page.tsx      # /maintenance — scheduled/in-progress maintenance list, filterable by board
 │   │   ├── integrations/page.tsx     # /integrations — connect/manage your own integrations (Slack, Email, SMS) + their recipients
+│   │   ├── status-pages/page.tsx     # /status-pages — one card per board, each managing that board's public status page (BoardStatusPageSettings)
 │   │   └── billing/page.tsx          # /billing — current plan/status, cancel/resume, free-tier plan picker (auto-checkout via ?plan=&interval=)
 │   ├── api/
 │   │   ├── status/catalog/route.ts       # GET — batch status for the whole catalog (add-service page, landing demo)
@@ -84,7 +85,9 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 │   ├── service/                      # the whole tracked-services feature
 │   │   ├── logos/                     # one hand-drawn SVG per known service + FallbackLogo + index.tsx registry
 │   │   └── *.tsx                      # cards/grids/detail/search/status-summary/incidents/maintenance; statusStyles.ts (indicator → color/label)
-│   ├── boards/                       # BoardsPageContent, BoardDetailContent, BoardCard, BoardActivityPanel, BoardLastIncidentTable, CreateBoardForm
+│   ├── boards/                       # BoardsPageContent, BoardDetailContent, BoardCard, BoardActiveIncidentsPanel, BoardActiveMaintenancePanel, BoardTrackedServicesGrid, BoardStatusPageSettings (the full form, used on /status-pages), BoardStatusPageSummary (the board-detail grid cell's compact live/not-published + link), CreateBoardForm
+│   ├── statusPages/                  # StatusPagesPageContent — /status-pages, one card per board wrapping BoardStatusPageSettings
+│   ├── statusPage/                   # StatusPageLogoUpload (mirrors account/AvatarUpload.tsx for board logos), PublicStatusPageContent (the public, unauthenticated /status/:slug page)
 │   ├── history/                      # HistoryPageContent, IncidentCalendar, IncidentCountsChart
 │   ├── integrations/                 # IntegrationsPageContent, IntegrationCard, SlackLogo, EmailLogo, SmsLogo, EmailConnectForm, SmsConnectForm
 │   ├── billing/                      # BillingPageContent — current-plan card + free-tier plan picker, custom cancel/resume dialog

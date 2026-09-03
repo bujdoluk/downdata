@@ -24,6 +24,7 @@
     "maintenanceBadgeTooltip": "Pågående underhåll",
     "maintenances": "Underhåll",
     "integrations": "Integrationer",
+    "statusPages": "Statussidor",
     "slack": "Slack",
     "email": "E-post",
     "sms": "SMS",
@@ -32,14 +33,15 @@
     "settings": "Inställningar",
     "account": "Konto",
     "billing": "Fakturering",
+    "support": "Support",
     "preferences": "Inställningsalternativ",
     "logout": "Logga ut",
     "avatar": "Profilbild",
     "avatarChoose": "Välj bild",
-    "avatarMaxSize": "Max 2 MB",
+    "avatarMaxSize": "Max 4 MB",
     "avatarRemove": "Ta bort",
     "avatarInvalidType": "Välj en bildfil.",
-    "avatarTooLarge": "Bilden måste vara mindre än 2 MB.",
+    "avatarTooLarge": "Bilden måste vara mindre än 4 MB.",
     "avatarUploadFailed": "Det gick inte att uppdatera bilden. Försök igen.",
     "theme": "Tema",
     "timezone": "Tidszon"
@@ -177,6 +179,11 @@
       "button": "Begär integration"
     }
   },
+  "statusPages": {
+    "title": "Statussidor",
+    "subtitle": "Hantera den offentliga statussidan för var och en av dina tavlor.",
+    "empty": "Inga tavlor än. Skapa en för att ställa in en statussida."
+  },
   "earlyWarnings": {
     "title": "Tidiga Varningar",
     "subtitle": "Bevaka nyckelord på webben och upptäck omnämnanden innan de blir ett problem.",
@@ -269,13 +276,15 @@
     "statusPage": {
       "title": "Offentlig statussida",
       "live": "Live",
+      "notPublished": "Inte publicerad",
+      "manage": "Hantera →",
       "description": "Dela en offentlig, skrivskyddad statussida för den här tavlans bevakade tjänster.",
       "slugLabel": "Offentlig URL",
       "companyNameLabel": "Företagsnamn",
       "logoLabel": "Logotyp",
       "logoChoose": "Välj logotyp",
       "logoRemove": "Ta bort",
-      "logoHint": "PNG, JPG, WEBP eller SVG. Max 2 MB.",
+      "logoHint": "PNG, JPG, WEBP eller SVG. Max 4 MB.",
       "logoUploadFailed": "Det gick inte att ladda upp logotypen. Försök igen.",
       "hideBranding": "Dölj downDATA-logotypen",
       "save": "Spara",
@@ -546,6 +555,7 @@
     "chatHeading": "Livechatt",
     "chatBody": "Chatta med oss direkt i appen — vi svarar oftast inom några timmar.",
     "chatButton": "Öppna chatt",
+    "hideChatButton": "Dölj chatt",
     "emailHeading": "E-post",
     "emailBody": "Föredrar du e-post? Skriv till oss så återkommer vi.",
     "faqHeading": "Kolla vanliga frågor",

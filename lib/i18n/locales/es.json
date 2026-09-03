@@ -24,6 +24,7 @@
     "maintenanceBadgeTooltip": "Mantenimientos en curso",
     "maintenances": "Mantenimientos",
     "integrations": "Integraciones",
+    "statusPages": "Páginas de estado",
     "slack": "Slack",
     "email": "Correo electrónico",
     "sms": "SMS",
@@ -32,14 +33,15 @@
     "settings": "Ajustes",
     "account": "Cuenta",
     "billing": "Facturación",
+    "support": "Soporte",
     "preferences": "Preferencias",
     "logout": "Cerrar sesión",
     "avatar": "Foto de perfil",
     "avatarChoose": "Elegir foto",
-    "avatarMaxSize": "Máx. 2 MB",
+    "avatarMaxSize": "Máx. 4 MB",
     "avatarRemove": "Quitar",
     "avatarInvalidType": "Elige un archivo de imagen.",
-    "avatarTooLarge": "La imagen debe ser menor de 2 MB.",
+    "avatarTooLarge": "La imagen debe ser menor de 4 MB.",
     "avatarUploadFailed": "No se pudo actualizar la imagen. Inténtalo de nuevo.",
     "theme": "Tema",
     "timezone": "Zona horaria"
@@ -177,6 +179,11 @@
       "button": "Solicitar integración"
     }
   },
+  "statusPages": {
+    "title": "Páginas de estado",
+    "subtitle": "Gestiona la página de estado pública de cada uno de tus tableros.",
+    "empty": "Aún no tienes tableros. Crea uno para configurar una página de estado."
+  },
   "earlyWarnings": {
     "title": "Alertas Tempranas",
     "subtitle": "Vigila palabras clave en la web y detecta menciones antes de que se conviertan en un problema.",
@@ -269,13 +276,15 @@
     "statusPage": {
       "title": "Página de estado pública",
       "live": "En vivo",
+      "notPublished": "Sin publicar",
+      "manage": "Gestionar →",
       "description": "Comparte una página de estado pública, de solo lectura, para los servicios rastreados de este tablero.",
       "slugLabel": "URL pública",
       "companyNameLabel": "Nombre de la empresa",
       "logoLabel": "Logotipo",
       "logoChoose": "Elegir logotipo",
       "logoRemove": "Quitar",
-      "logoHint": "PNG, JPG, WEBP o SVG. Máx. 2 MB.",
+      "logoHint": "PNG, JPG, WEBP o SVG. Máx. 4 MB.",
       "logoUploadFailed": "No se pudo subir el logotipo. Inténtalo de nuevo.",
       "hideBranding": "Ocultar el logotipo de downDATA",
       "save": "Guardar",
@@ -546,6 +555,7 @@
     "chatHeading": "Chat en directo",
     "chatBody": "Chatea con nosotros directamente en la app — solemos responder en pocas horas.",
     "chatButton": "Abrir chat",
+    "hideChatButton": "Ocultar chat",
     "emailHeading": "Correo electrónico",
     "emailBody": "¿Prefieres el correo? Escríbenos y te responderemos.",
     "faqHeading": "Consulta las preguntas frecuentes",

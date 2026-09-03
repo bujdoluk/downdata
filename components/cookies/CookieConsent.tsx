@@ -130,7 +130,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
                 <button type="button" className="btn btn-outline btn-sm" onClick={openPreferences}>
                   {t("cookieConsent.customize")}
                 </button>
-                <button type="button" className="btn btn-primary btn-sm" onClick={acceptAll}>
+                <button type="button" className="btn btn-info btn-sm" onClick={acceptAll}>
                   {t("cookieConsent.acceptAll")}
                 </button>
               </div>
@@ -158,7 +158,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
                 </div>
                 <input
                   type="checkbox"
-                  className="toggle toggle-sm mt-1 shrink-0"
+                  className="toggle toggle-sm toggle-info mt-1 shrink-0"
                   checked
                   disabled
                   aria-label={t("cookieConsent.necessaryTitle")}
@@ -174,7 +174,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
                 </div>
                 <input
                   type="checkbox"
-                  className="toggle toggle-sm toggle-primary mt-1 shrink-0"
+                  className="toggle toggle-sm toggle-info mt-1 shrink-0"
                   checked={draft.analytics}
                   onChange={(event) => setDraft((prev) => ({ ...prev, analytics: event.target.checked }))}
                   aria-label={t("cookieConsent.analyticsTitle")}
@@ -190,7 +190,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
                 </div>
                 <input
                   type="checkbox"
-                  className="toggle toggle-sm toggle-primary mt-1 shrink-0"
+                  className="toggle toggle-sm toggle-info mt-1 shrink-0"
                   checked={draft.supportChat}
                   onChange={(event) => setDraft((prev) => ({ ...prev, supportChat: event.target.checked }))}
                   aria-label={t("cookieConsent.supportChatTitle")}
@@ -204,7 +204,7 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
               </button>
               <button
                 type="button"
-                className="btn btn-primary btn-sm"
+                className="btn btn-info btn-sm"
                 onClick={() => commit(draft)}
               >
                 {t("cookieConsent.save")}

@@ -31,11 +31,7 @@ export default function LandingPage() {
       <LandingNavbar />
 
       {/* Hero */}
-      <header className="relative overflow-hidden">
-        <div
-          aria-hidden="true"
-          className="bg-primary/20 pointer-events-none absolute top-[-10rem] left-1/2 h-[36rem] w-[56rem] -translate-x-1/2 rounded-full blur-[120px]"
-        />
+      <header>
         <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-8 py-16 lg:grid-cols-[1.05fr_1fr] lg:py-24">
           <div className="flex flex-col items-center gap-7 text-center lg:items-start lg:text-left">
             <h1 className="max-w-xl text-5xl leading-[1.05] font-black tracking-tight text-balance sm:text-6xl">
@@ -61,7 +57,7 @@ export default function LandingPage() {
 
           {/* Demo panel — the hero visual */}
           <div className="relative mx-auto w-full max-w-md lg:mx-0">
-            <div className="bg-primary/10 absolute inset-0 translate-x-3 translate-y-3 rounded-2xl" aria-hidden="true" />
+            <div className="bg-info/10 absolute inset-0 translate-x-3 translate-y-3 rounded-2xl" aria-hidden="true" />
             <div className="card card-border bg-base-200 relative shadow-2xl">
               <div className="card-body gap-3 p-6">
                 <div className="flex items-center justify-between px-1">
@@ -114,14 +110,14 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             <RevealOnScroll className="md:col-span-1 lg:col-span-2">
-              <div className="card card-border bg-primary/5 border-primary/20 hover:border-primary/40 h-full transition-colors">
+              <div className="card card-border bg-info/5 border-info/20 hover:border-info/40 h-full transition-colors">
                 <div className="card-body gap-4 p-7">
                   <div className="flex items-start justify-between">
-                    <div className="bg-primary/10 flex h-11 w-11 items-center justify-center rounded-xl">
-                      <BoltIcon className="text-primary h-6 w-6" />
+                    <div className="bg-info/10 flex h-11 w-11 items-center justify-center rounded-xl">
+                      <BoltIcon className="text-info h-6 w-6" />
                     </div>
-                    <div className={`text-primary flex items-baseline gap-1.5 text-3xl font-bold ${mono}`}>
-                      <span className="bg-primary animate-pulse-ring inline-block h-2 w-2 rounded-full" aria-hidden="true" />
+                    <div className={`text-info flex items-baseline gap-1.5 text-3xl font-bold ${mono}`}>
+                      <span className="bg-info animate-pulse-ring inline-block h-2 w-2 rounded-full" aria-hidden="true" />
                       30s
                     </div>
                   </div>
@@ -151,8 +147,8 @@ export default function LandingPage() {
             <RevealOnScroll delayMs={140} className="md:col-span-1 lg:col-span-1">
               <div className="card card-border bg-base-200 hover:border-base-content/20 h-full transition-colors">
                 <div className="card-body gap-4 p-7">
-                  <div className="bg-primary/10 flex h-11 w-11 items-center justify-center rounded-xl">
-                    <UserGroupIcon className="text-primary h-6 w-6" />
+                  <div className="bg-info/10 flex h-11 w-11 items-center justify-center rounded-xl">
+                    <UserGroupIcon className="text-info h-6 w-6" />
                   </div>
                   <h3 className="card-title text-base">{t("landing.features.seatsTitle")}</h3>
                   <p className="text-base-content/70 text-sm leading-relaxed">{t("landing.features.seatsBody")}</p>
@@ -163,8 +159,8 @@ export default function LandingPage() {
             <RevealOnScroll delayMs={200} className="md:col-span-1 lg:col-span-2">
               <div className="card card-border bg-base-200 hover:border-base-content/20 h-full transition-colors">
                 <div className="card-body gap-4 p-7 sm:flex-row sm:items-center">
-                  <div className="bg-primary/10 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
-                    <BoardIcon className="text-primary h-6 w-6" />
+                  <div className="bg-info/10 flex h-11 w-11 shrink-0 items-center justify-center rounded-xl">
+                    <BoardIcon className="text-info h-6 w-6" />
                   </div>
                   <div>
                     <h3 className="card-title text-base">{t("landing.features.boardsTitle")}</h3>
@@ -182,11 +178,7 @@ export default function LandingPage() {
       <FaqSection />
 
       {/* Closing CTA */}
-      <div className="border-base-300 relative overflow-hidden border-t py-28 text-center">
-        <div
-          aria-hidden="true"
-          className="bg-primary/10 pointer-events-none absolute top-1/2 left-1/2 h-[24rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"
-        />
+      <div className="border-base-300 border-t py-28 text-center">
         <div className="relative mx-auto flex max-w-6xl flex-col items-center gap-7 px-8">
           <h2 className="max-w-md text-3xl font-extrabold tracking-tight text-balance sm:text-4xl">
             {t("landing.closing.heading")}

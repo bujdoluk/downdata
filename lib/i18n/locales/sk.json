@@ -24,6 +24,7 @@
     "maintenanceBadgeTooltip": "Prebiehajúce údržby",
     "maintenances": "Údržby",
     "integrations": "Integrácie",
+    "statusPages": "Stránky stavu",
     "slack": "Slack",
     "email": "E-mail",
     "sms": "SMS",
@@ -32,14 +33,15 @@
     "settings": "Nastavenia",
     "account": "Účet",
     "billing": "Fakturácia",
+    "support": "Podpora",
     "preferences": "Predvoľby",
     "logout": "Odhlásiť sa",
     "avatar": "Profilová fotka",
     "avatarChoose": "Vybrať fotku",
-    "avatarMaxSize": "Max. 2 MB",
+    "avatarMaxSize": "Max. 4 MB",
     "avatarRemove": "Odstrániť",
     "avatarInvalidType": "Vyberte, prosím, obrázok.",
-    "avatarTooLarge": "Obrázok musí byť menší než 2 MB.",
+    "avatarTooLarge": "Obrázok musí byť menší než 4 MB.",
     "avatarUploadFailed": "Obrázok sa nepodarilo aktualizovať. Skúste to znova.",
     "theme": "Motív",
     "timezone": "Časové pásmo"
@@ -178,6 +180,11 @@
       "button": "Vyžiadať integráciu"
     }
   },
+  "statusPages": {
+    "title": "Stránky stavu",
+    "subtitle": "Spravujte verejnú stránku stavu pre každú zo svojich nástenok.",
+    "empty": "Zatiaľ žiadne nástenky. Vytvorte jednu a nastavte stránku stavu."
+  },
   "earlyWarnings": {
     "title": "Včasné varovania",
     "subtitle": "Sledujte kľúčové slová naprieč webom a zachyťte zmienky skôr, než sa stanú problémom.",
@@ -274,13 +281,15 @@
     "statusPage": {
       "title": "Verejná stránka stavu",
       "live": "Naživo",
+      "notPublished": "Nezverejnené",
+      "manage": "Spravovať →",
       "description": "Zdieľajte verejnú stránku stavu (len na čítanie) pre sledované služby tejto nástenky.",
       "slugLabel": "Verejná URL adresa",
       "companyNameLabel": "Názov spoločnosti",
       "logoLabel": "Logo",
       "logoChoose": "Vybrať logo",
       "logoRemove": "Odstrániť",
-      "logoHint": "PNG, JPG, WEBP alebo SVG. Max. 2 MB.",
+      "logoHint": "PNG, JPG, WEBP alebo SVG. Max. 4 MB.",
       "logoUploadFailed": "Logo sa nepodarilo nahrať. Skúste to znova.",
       "hideBranding": "Skryť logo downDATA",
       "save": "Uložiť",
@@ -551,6 +560,7 @@
     "chatHeading": "Live chat",
     "chatBody": "Napíš nám priamo v appke — zvyčajne odpovedáme do pár hodín.",
     "chatButton": "Otvoriť chat",
+    "hideChatButton": "Skryť chat",
     "emailHeading": "E-mail",
     "emailBody": "Radšej e-mailom? Napíš nám a ozveme sa ti.",
     "faqHeading": "Pozri si časté otázky",

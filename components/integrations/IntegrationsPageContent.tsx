@@ -13,6 +13,7 @@ import SlackLogo from "@/components/integrations/SlackLogo";
 import EmailLogo from "@/components/integrations/EmailLogo";
 import SmsLogo from "@/components/integrations/SmsLogo";
 import RequestCard from "@/components/RequestCard";
+import { postJson } from "@/lib/fetchJson";
 
 const EmailConnectForm = dynamic(() => import("@/components/integrations/EmailConnectForm"));
 const SmsConnectForm = dynamic(() => import("@/components/integrations/SmsConnectForm"));
@@ -30,14 +31,6 @@ const INTEGRATION_LOGOS: Record<string, React.ComponentType<{ size?: number }>> 
 const CONNECT_HREFS: Record<string, string> = {
   slack: "/api/integrations/slack/start",
 };
-
-async function postJson(url: string, body: unknown, fallbackError: string): Promise<void> {
-  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(typeof data.error === "string" ? data.error : fallbackError);
-  }
-}
 
 export default function IntegrationsPageContent({
   catalog,

@@ -7,18 +7,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import Spinner from "@/components/Spinner";
-import { fetchJson } from "@/lib/fetchJson";
+import { fetchJson, postJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { formatDateTime } from "@/lib/formatTime";
 import { isBillingInterval, isPlanTier, PLAN_CATALOG } from "@/lib/plans";
 import type { BillingInterval, PlanTier, Subscription } from "@/types/subscription";
-
-async function postJson<T>(url: string, body: unknown, fallbackError: string): Promise<T> {
-  const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(typeof data.error === "string" ? data.error : fallbackError);
-  return data as T;
-}
 
 type CancelResult = { status: string; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean };
 
@@ -202,7 +195,7 @@ function FreeTierCard() {
         <h2 className="text-base font-semibold">{t("billing.freePlanTitle")}</h2>
         <p className="text-base-content/60 mt-1 text-sm">{t("billing.freePlanSubtitle")}</p>
         <div className="card-actions mt-4">
-          <Link href="/pricing" className="btn btn-primary btn-sm">
+          <Link href="/pricing" className="btn btn-info btn-sm">
             {t("billing.viewPlans")}
           </Link>
         </div>

@@ -24,6 +24,7 @@
     "maintenanceBadgeTooltip": "In-progress maintenances",
     "maintenances": "Maintenances",
     "integrations": "Integrations",
+    "statusPages": "Status Pages",
     "slack": "Slack",
     "email": "Email",
     "sms": "SMS",
@@ -32,14 +33,15 @@
     "settings": "Settings",
     "account": "Account",
     "billing": "Billing",
+    "support": "Support",
     "preferences": "Preferences",
     "logout": "Log out",
     "avatar": "Profile picture",
     "avatarChoose": "Choose photo",
-    "avatarMaxSize": "Max 2MB",
+    "avatarMaxSize": "Max 4MB",
     "avatarRemove": "Remove",
     "avatarInvalidType": "Please choose an image file.",
-    "avatarTooLarge": "Image must be smaller than 2MB.",
+    "avatarTooLarge": "Image must be smaller than 4MB.",
     "avatarUploadFailed": "Couldn't update your picture. Try again.",
     "theme": "Theme",
     "timezone": "Timezone"
@@ -177,6 +179,11 @@
       "button": "Request integration"
     }
   },
+  "statusPages": {
+    "title": "Status Pages",
+    "subtitle": "Manage the public status page for each of your boards.",
+    "empty": "No boards yet. Create one to set up a status page."
+  },
   "earlyWarnings": {
     "title": "Early Warnings",
     "subtitle": "Watch keywords across the web and catch mentions before they become a problem.",
@@ -269,13 +276,15 @@
     "statusPage": {
       "title": "Public status page",
       "live": "Live",
+      "notPublished": "Not published",
+      "manage": "Manage →",
       "description": "Share a public, read-only status page for this board's tracked services.",
       "slugLabel": "Public URL",
       "companyNameLabel": "Company name",
       "logoLabel": "Logo",
       "logoChoose": "Choose logo",
       "logoRemove": "Remove",
-      "logoHint": "PNG, JPG, WEBP, or SVG. Max 2 MB.",
+      "logoHint": "PNG, JPG, WEBP, or SVG. Max 4 MB.",
       "logoUploadFailed": "Couldn't upload that logo. Try again.",
       "hideBranding": "Hide the downDATA logo",
       "save": "Save",
@@ -546,6 +555,7 @@
     "chatHeading": "Live chat",
     "chatBody": "Chat with us right in the app — we typically reply within a few hours.",
     "chatButton": "Open chat",
+    "hideChatButton": "Hide chat",
     "emailHeading": "Email",
     "emailBody": "Prefer email? Write to us and we'll get back to you.",
     "faqHeading": "Check the FAQ",

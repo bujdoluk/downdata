@@ -17,9 +17,8 @@ import { isActiveIncident } from "@/lib/isActiveIncident";
 import StatusSummary from "@/components/service/StatusSummary";
 import BoardActiveIncidentsPanel from "@/components/boards/BoardActiveIncidentsPanel";
 import BoardActiveMaintenancePanel from "@/components/boards/BoardActiveMaintenancePanel";
-import BoardLastIncidentTable from "@/components/boards/BoardLastIncidentTable";
 import BoardTrackedServicesGrid from "@/components/boards/BoardTrackedServicesGrid";
-import BoardStatusPageSettings from "@/components/boards/BoardStatusPageSettings";
+import BoardStatusPageSummary from "@/components/boards/BoardStatusPageSummary";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
 import { InfoIcon, PencilIcon } from "@/components/icons/NavIcons";
@@ -81,14 +80,6 @@ export default function BoardDetailContent({
   const boardIncidents = (incidentsData?.incidents ?? []).filter((incident) => boardSlugs.has(incident.service.slug));
   const boardMaintenances = (maintenanceData?.maintenances ?? []).filter((maintenance) => boardSlugs.has(maintenance.service.slug));
   const activeIncidents = boardIncidents.filter(isActiveIncident);
-
-  const activeSlugs = new Set(activeIncidents.map((incident) => incident.service.slug));
-  const calmEntries = onBoardEntries
-    .filter((entry) => !activeSlugs.has(entry.slug))
-    .map((entry) => ({
-      service: entry,
-      lastIncident: boardIncidents.find((incident) => incident.service.slug === entry.slug) ?? null,
-    }));
 
   const deleteBoardMutation = useMutation({
     mutationFn: () => fetch(`/api/boards/${board.id}`, { method: "DELETE" }),
@@ -213,13 +204,13 @@ export default function BoardDetailContent({
               deliberately left empty rather than stretched to fill. */}
           <div className="mt-6 grid grid-cols-3 gap-4">
             <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
+              <BoardTrackedServicesGrid boardId={board.id} entries={onBoardEntries} data={data} fetchFailed={fetchFailed} />
+            </div>
+            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
               <BoardActiveIncidentsPanel boardId={board.id} activeIncidents={activeIncidents} />
             </div>
             <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
-              <BoardActiveMaintenancePanel boardId={board.id} maintenances={boardMaintenances} timeZone={timeZone} />
-            </div>
-            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
-              <BoardLastIncidentTable entries={calmEntries} timeZone={timeZone} />
+              <BoardStatusPageSummary boardId={board.id} />
             </div>
             <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
               <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("history.byServiceTab")}</h2>
@@ -233,7 +224,7 @@ export default function BoardDetailContent({
               </div>
             </div>
             <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
-              <BoardTrackedServicesGrid boardId={board.id} entries={onBoardEntries} data={data} fetchFailed={fetchFailed} />
+              <BoardActiveMaintenancePanel boardId={board.id} maintenances={boardMaintenances} timeZone={timeZone} />
             </div>
           </div>
         </>
@@ -246,8 +237,6 @@ export default function BoardDetailContent({
           <BoardTrackedServicesGrid boardId={board.id} entries={onBoardEntries} data={data} fetchFailed={fetchFailed} />
         </div>
       )}
-
-      <BoardStatusPageSettings boardId={board.id} boardName={board.name} />
     </div>
   );
 }

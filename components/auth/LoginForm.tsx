@@ -228,7 +228,7 @@ function LoginForm() {
 
             <p className="mt-4 text-center text-sm">
               {mode === "reset" ? (
-                <button type="button" className="link link-primary font-medium" onClick={() => switchMode("login")}>
+                <button type="button" className="link link-info font-medium" onClick={() => switchMode("login")}>
                   {t("auth.backToLogin")}
                 </button>
               ) : (
@@ -238,7 +238,7 @@ function LoginForm() {
                     switchLink: (
                       <button
                         type="button"
-                        className="link link-primary font-medium"
+                        className="link link-info font-medium"
                         onClick={() => switchMode(mode === "login" ? "signup" : "login")}
                       />
                     ),

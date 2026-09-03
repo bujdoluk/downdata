@@ -584,5 +584,17 @@
     "description": "An unexpected error occurred. Try again, or head back home.",
     "retryButton": "Try again",
     "homeButton": "Back to downDATA"
+  },
+  "mvp": {
+    "title": "What downDATA does",
+    "bullets": {
+      "monitoring": "Track any status page's uptime in one place, updated every 60 seconds",
+      "notifications": "Get notified the moment something breaks, over Slack, email, or SMS",
+      "boards": "Group services into boards, one per team or project",
+      "history": "See incident and maintenance history, not just current state",
+      "statusPage": "Publish your own public status page for customers"
+    },
+    "cta": "Try app",
+    "ctaHint": "No account needed"
   }
 }

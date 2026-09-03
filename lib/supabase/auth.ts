@@ -58,6 +58,11 @@ export async function continueWithGoogle(supabase: SupabaseClient, redirectTo: s
   if (error) throw new AuthActionError("generic", error);
 }
 
+export async function continueAnonymously(supabase: SupabaseClient): Promise<void> {
+  const { error } = await supabase.auth.signInAnonymously();
+  if (error) throw new AuthActionError("generic", error);
+}
+
 export async function resetPassword(supabase: SupabaseClient, email: string, redirectTo: string): Promise<void> {
   const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
   if (error) throw new AuthActionError("generic", error);

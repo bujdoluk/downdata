@@ -5,6 +5,7 @@ import { NextResponse, type NextRequest } from "next/server";
 // route read/write per-account data now that boards are RLS-scoped.
 const PUBLIC_EXACT = new Set([
   "/landing-page",
+  "/mvp",
   "/login",
   "/reset-password",
   "/privacy",

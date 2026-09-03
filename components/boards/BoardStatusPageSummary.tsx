@@ -28,11 +28,17 @@ export default function BoardStatusPageSummary({ boardId }: { boardId: string })
     queryKey: queryKeys.boards.statusPage(boardId),
     queryFn: () => fetchJson<BoardStatusPage | null>(`/api/boards/${boardId}/status-page`),
   });
+  // This board has at most one public status page, so "published count"
+  // here is just whether it's currently live (0 or 1) — not a services
+  // count. Matches the same `data?.enabled` check used below for the badge.
+  const publishedCount = data?.enabled ? 1 : 0;
 
   return (
     <>
       <div className="flex items-center justify-between">
-        <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("boards.statusPage.title")}</h2>
+        <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">
+          {t("boards.statusPage.title")} ({publishedCount})
+        </h2>
         <Link href="/status-pages" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
           {t("boards.statusPage.manage")}
         </Link>

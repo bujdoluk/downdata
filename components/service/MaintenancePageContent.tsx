@@ -276,7 +276,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
 
   return (
     <ListDetailShell
-      title={t("maintenances.title")}
+      title={`${t("maintenances.title")} (${filteredMaintenances.length})`}
       subtitle={t("maintenances.subtitle")}
       isLoading={isLoading}
       isError={!!error}

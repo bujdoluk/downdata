@@ -77,7 +77,9 @@ export default function MonitorsPageContent({
   return (
     <div className="mx-auto w-full max-w-6xl self-start">
       <div className="flex items-start justify-between gap-4">
-        <h1 className="text-base-content text-lg font-semibold">{t("monitors.myServices")}</h1>
+        <h1 className="text-base-content text-lg font-semibold">
+          {t("monitors.myServices")} ({myServices.length})
+        </h1>
         <AddServiceButton />
       </div>
       <p className="text-base-content/60 mt-1 text-sm">{t("services.subtitle")}</p>

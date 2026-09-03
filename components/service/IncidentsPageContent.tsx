@@ -330,7 +330,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
 
   return (
     <ListDetailShell
-      title={t("incidents.title")}
+      title={`${t("incidents.title")} (${filteredIncidents.length})`}
       subtitle={t("incidents.subtitle")}
       isLoading={isLoading}
       isError={!!error}

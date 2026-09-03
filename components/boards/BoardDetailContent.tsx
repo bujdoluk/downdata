@@ -198,21 +198,17 @@ export default function BoardDetailContent({
               {t("boards.viewHistory")}
             </Link>
           </div>
-          {/* 2 rows x 3 columns, every cell the same fixed size (h-80,
-              overflow-y-auto for whichever cell's content runs long) —
-              only 5 of the 6 cells have content right now, the 6th is
-              deliberately left empty rather than stretched to fill. */}
           <div className="mt-6 grid grid-cols-3 gap-4">
-            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
+            <div className="card card-border bg-base-200 h-88 overflow-y-auto p-4">
               <BoardTrackedServicesGrid boardId={board.id} entries={onBoardEntries} data={data} fetchFailed={fetchFailed} />
             </div>
-            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
+            <div className="card card-border bg-base-200 h-88 overflow-y-auto p-4">
               <BoardActiveIncidentsPanel boardId={board.id} activeIncidents={activeIncidents} />
             </div>
-            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
+            <div className="card card-border bg-base-200 h-88 overflow-y-auto p-4">
               <BoardStatusPageSummary boardId={board.id} />
             </div>
-            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
+            <div className="card card-border bg-base-200 h-88 overflow-y-auto p-4">
               <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("history.byServiceTab")}</h2>
               <div className="mt-3">
                 <IncidentCountsChart
@@ -223,16 +219,12 @@ export default function BoardDetailContent({
                 />
               </div>
             </div>
-            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
+            <div className="card card-border bg-base-200 h-88 overflow-y-auto p-4">
               <BoardActiveMaintenancePanel boardId={board.id} maintenances={boardMaintenances} timeZone={timeZone} />
             </div>
           </div>
         </>
       ) : (
-        // Empty board: skip the stat/activity grid entirely (nothing for
-        // it to show yet), but still surface the Add Monitor button — its
-        // only home now, since the old always-visible "On this board"
-        // section was removed — so a brand-new board isn't a dead end.
         <div className="mt-6 card card-border bg-base-200 p-4">
           <BoardTrackedServicesGrid boardId={board.id} entries={onBoardEntries} data={data} fetchFailed={fetchFailed} />
         </div>

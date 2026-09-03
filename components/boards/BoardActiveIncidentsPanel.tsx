@@ -26,7 +26,7 @@ export default function BoardActiveIncidentsPanel({
     <>
       <div className="flex items-center justify-between">
         <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">
-          {t("boards.activity.incidentsTitle")}
+          {t("boards.activity.incidentsTitle")} ({activeIncidents.length})
         </h2>
         <Link
           href={`/incidents?board=${boardId}`}

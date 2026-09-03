@@ -22,12 +22,13 @@ export default function BoardActiveMaintenancePanel({
   timeZone: string;
 }) {
   const { t } = useTranslation();
+  const activeCount = maintenances.filter(isInProgressMaintenance).length;
 
   return (
     <>
       <div className="flex items-center justify-between">
         <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">
-          {t("boards.activity.maintenanceTitle")}
+          {t("boards.activity.maintenanceTitle")} ({activeCount})
         </h2>
         <Link
           href={`/maintenance?board=${boardId}`}

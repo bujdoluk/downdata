@@ -2,7 +2,11 @@
 
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
+import { useQueries } from "@tanstack/react-query";
 import type { Board } from "@/types/board";
+import type { BoardStatusPage } from "@/types/statusPage";
+import { fetchJson } from "@/lib/fetchJson";
+import { queryKeys } from "@/lib/queryKeys";
 import BoardStatusPageSettings from "@/components/boards/BoardStatusPageSettings";
 
 // One card per board, each wrapping the same BoardStatusPageSettings form
@@ -12,9 +16,22 @@ import BoardStatusPageSettings from "@/components/boards/BoardStatusPageSettings
 export default function StatusPagesPageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
 
+  // Same query key each card's own BoardStatusPageSettings uses, so this
+  // shares its cache entries instead of double-fetching — just read here
+  // too, to aggregate a published count for the page title.
+  const statusPageQueries = useQueries({
+    queries: boards.map((board) => ({
+      queryKey: queryKeys.boards.statusPage(board.id),
+      queryFn: () => fetchJson<BoardStatusPage | null>(`/api/boards/${board.id}/status-page`),
+    })),
+  });
+  const publishedCount = statusPageQueries.filter((query) => query.data?.enabled).length;
+
   return (
     <div className="mx-auto w-full max-w-3xl self-start">
-      <h1 className="text-base-content text-lg font-semibold">{t("statusPages.title")}</h1>
+      <h1 className="text-base-content text-lg font-semibold">
+        {t("statusPages.title")} ({publishedCount})
+      </h1>
       <p className="text-base-content/60 mt-1 text-sm">{t("statusPages.subtitle")}</p>
 
       {boards.length === 0 ? (

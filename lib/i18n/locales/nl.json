@@ -265,6 +265,25 @@
     "lastIncident": {
       "title": "Recente incidenten",
       "none": "Geen incidentgeschiedenis"
+    },
+    "statusPage": {
+      "title": "Openbare statuspagina",
+      "live": "Live",
+      "description": "Deel een openbare, alleen-lezen statuspagina voor de gevolgde services van dit bord.",
+      "slugLabel": "Openbare URL",
+      "companyNameLabel": "Bedrijfsnaam",
+      "logoLabel": "Logo",
+      "logoChoose": "Logo kiezen",
+      "logoRemove": "Verwijderen",
+      "logoHint": "PNG, JPG, WEBP of SVG. Max. 2 MB.",
+      "logoUploadFailed": "Het logo kon niet worden geüpload. Probeer het opnieuw.",
+      "hideBranding": "downDATA-logo verbergen",
+      "save": "Opslaan",
+      "saveFailed": "De instellingen van de statuspagina konden niet worden opgeslagen. Probeer het opnieuw.",
+      "publish": "Publiceren",
+      "unpublish": "Publicatie ongedaan maken",
+      "enableFailed": "De statuspagina kon niet worden bijgewerkt. Probeer het opnieuw.",
+      "copyLink": "Link kopiëren"
     }
   },
   "addService": {

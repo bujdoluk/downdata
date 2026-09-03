@@ -265,6 +265,25 @@
     "lastIncident": {
       "title": "Recent Incidents",
       "none": "No incident history"
+    },
+    "statusPage": {
+      "title": "Public status page",
+      "live": "Live",
+      "description": "Share a public, read-only status page for this board's tracked services.",
+      "slugLabel": "Public URL",
+      "companyNameLabel": "Company name",
+      "logoLabel": "Logo",
+      "logoChoose": "Choose logo",
+      "logoRemove": "Remove",
+      "logoHint": "PNG, JPG, WEBP, or SVG. Max 2 MB.",
+      "logoUploadFailed": "Couldn't upload that logo. Try again.",
+      "hideBranding": "Hide the downDATA logo",
+      "save": "Save",
+      "saveFailed": "Couldn't save your status page settings. Try again.",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "enableFailed": "Couldn't update your status page. Try again.",
+      "copyLink": "Copy link"
     }
   },
   "addService": {

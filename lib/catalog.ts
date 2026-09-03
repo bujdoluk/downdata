@@ -1,4 +1,5 @@
 import { getSupabaseClient } from "@/lib/supabase";
+import { slugify } from "@/lib/slugify";
 import type { Catalog } from "@/types/service";
 
 export async function getCatalog(): Promise<Catalog[]> {
@@ -23,14 +24,6 @@ export async function resolveCatalogEntryBySlug(slug: string): Promise<Catalog |
 export function buildTrackedServiceLookup(trackedSlugs: string[], catalog: Catalog[]): Map<string, Catalog> {
   const tracked = new Set(trackedSlugs);
   return new Map(catalog.filter((entry) => tracked.has(entry.slug)).map((entry) => [entry.slug, entry]));
-}
-
-function slugify(name: string): string {
-  return name
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
 }
 
 // Ensures a host has a catalog entry, creating one if it's brand new —

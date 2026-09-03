@@ -265,6 +265,25 @@
     "lastIncident": {
       "title": "Nylige hendelser",
       "none": "Ingen hendelseshistorikk"
+    },
+    "statusPage": {
+      "title": "Offentlig statusside",
+      "live": "Direkte",
+      "description": "Del en offentlig, skrivebeskyttet statusside for tavlens sporede tjenester.",
+      "slugLabel": "Offentlig URL",
+      "companyNameLabel": "Firmanavn",
+      "logoLabel": "Logo",
+      "logoChoose": "Velg logo",
+      "logoRemove": "Fjern",
+      "logoHint": "PNG, JPG, WEBP eller SVG. Maks 2 MB.",
+      "logoUploadFailed": "Kunne ikke laste opp logoen. Prøv igjen.",
+      "hideBranding": "Skjul downDATA-logoen",
+      "save": "Lagre",
+      "saveFailed": "Kunne ikke lagre innstillingene for statussiden. Prøv igjen.",
+      "publish": "Publiser",
+      "unpublish": "Avpubliser",
+      "enableFailed": "Kunne ikke oppdatere statussiden. Prøv igjen.",
+      "copyLink": "Kopier lenke"
     }
   },
   "addService": {

@@ -270,6 +270,25 @@
     "lastIncident": {
       "title": "Nedávné incidenty",
       "none": "Žádná historie incidentů"
+    },
+    "statusPage": {
+      "title": "Veřejná stránka stavu",
+      "live": "Naživo",
+      "description": "Sdílejte veřejnou stránku stavu (pouze pro čtení) pro sledované služby této nástěnky.",
+      "slugLabel": "Veřejná URL adresa",
+      "companyNameLabel": "Název společnosti",
+      "logoLabel": "Logo",
+      "logoChoose": "Vybrat logo",
+      "logoRemove": "Odebrat",
+      "logoHint": "PNG, JPG, WEBP nebo SVG. Max. 2 MB.",
+      "logoUploadFailed": "Logo se nepodařilo nahrát. Zkuste to znovu.",
+      "hideBranding": "Skrýt logo downDATA",
+      "save": "Uložit",
+      "saveFailed": "Nastavení stránky stavu se nepodařilo uložit. Zkuste to znovu.",
+      "publish": "Zveřejnit",
+      "unpublish": "Zrušit zveřejnění",
+      "enableFailed": "Stránku stavu se nepodařilo aktualizovat. Zkuste to znovu.",
+      "copyLink": "Kopírovat odkaz"
     }
   },
   "addService": {

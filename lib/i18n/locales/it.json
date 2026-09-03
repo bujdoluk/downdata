@@ -265,6 +265,25 @@
     "lastIncident": {
       "title": "Incidenti recenti",
       "none": "Nessuna cronologia incidenti"
+    },
+    "statusPage": {
+      "title": "Pagina di stato pubblica",
+      "live": "In diretta",
+      "description": "Condividi una pagina di stato pubblica, di sola lettura, per i servizi monitorati di questa bacheca.",
+      "slugLabel": "URL pubblico",
+      "companyNameLabel": "Nome azienda",
+      "logoLabel": "Logo",
+      "logoChoose": "Scegli logo",
+      "logoRemove": "Rimuovi",
+      "logoHint": "PNG, JPG, WEBP o SVG. Max 2 MB.",
+      "logoUploadFailed": "Impossibile caricare il logo. Riprova.",
+      "hideBranding": "Nascondi il logo downDATA",
+      "save": "Salva",
+      "saveFailed": "Impossibile salvare le impostazioni della pagina di stato. Riprova.",
+      "publish": "Pubblica",
+      "unpublish": "Rimuovi pubblicazione",
+      "enableFailed": "Impossibile aggiornare la pagina di stato. Riprova.",
+      "copyLink": "Copia link"
     }
   },
   "addService": {

@@ -265,6 +265,25 @@
     "lastIncident": {
       "title": "Incidentes recentes",
       "none": "Sem histórico de incidentes"
+    },
+    "statusPage": {
+      "title": "Página de status pública",
+      "live": "Ao vivo",
+      "description": "Compartilhe uma página de status pública e somente leitura para os serviços monitorados deste quadro.",
+      "slugLabel": "URL pública",
+      "companyNameLabel": "Nome da empresa",
+      "logoLabel": "Logotipo",
+      "logoChoose": "Escolher logotipo",
+      "logoRemove": "Remover",
+      "logoHint": "PNG, JPG, WEBP ou SVG. Máx. 2 MB.",
+      "logoUploadFailed": "Não foi possível enviar o logotipo. Tente novamente.",
+      "hideBranding": "Ocultar o logotipo da downDATA",
+      "save": "Salvar",
+      "saveFailed": "Não foi possível salvar as configurações da página de status. Tente novamente.",
+      "publish": "Publicar",
+      "unpublish": "Despublicar",
+      "enableFailed": "Não foi possível atualizar a página de status. Tente novamente.",
+      "copyLink": "Copiar link"
     }
   },
   "addService": {

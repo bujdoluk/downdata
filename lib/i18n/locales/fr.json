@@ -265,6 +265,25 @@
     "lastIncident": {
       "title": "Incidents récents",
       "none": "Aucun historique d'incidents"
+    },
+    "statusPage": {
+      "title": "Page de statut publique",
+      "live": "En direct",
+      "description": "Partagez une page de statut publique, en lecture seule, pour les services suivis de ce tableau.",
+      "slugLabel": "URL publique",
+      "companyNameLabel": "Nom de l'entreprise",
+      "logoLabel": "Logo",
+      "logoChoose": "Choisir un logo",
+      "logoRemove": "Supprimer",
+      "logoHint": "PNG, JPG, WEBP ou SVG. Max. 2 Mo.",
+      "logoUploadFailed": "Impossible d'importer ce logo. Réessayez.",
+      "hideBranding": "Masquer le logo downDATA",
+      "save": "Enregistrer",
+      "saveFailed": "Impossible d'enregistrer les paramètres de la page de statut. Réessayez.",
+      "publish": "Publier",
+      "unpublish": "Dépublier",
+      "enableFailed": "Impossible de mettre à jour la page de statut. Réessayez.",
+      "copyLink": "Copier le lien"
     }
   },
   "addService": {

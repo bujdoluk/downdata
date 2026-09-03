@@ -275,6 +275,25 @@
     "lastIncident": {
       "title": "Ostatnie incydenty",
       "none": "Brak historii incydentów"
+    },
+    "statusPage": {
+      "title": "Publiczna strona statusu",
+      "live": "Na żywo",
+      "description": "Udostępnij publiczną stronę statusu (tylko do odczytu) dla śledzonych usług tej tablicy.",
+      "slugLabel": "Publiczny adres URL",
+      "companyNameLabel": "Nazwa firmy",
+      "logoLabel": "Logo",
+      "logoChoose": "Wybierz logo",
+      "logoRemove": "Usuń",
+      "logoHint": "PNG, JPG, WEBP lub SVG. Maks. 2 MB.",
+      "logoUploadFailed": "Nie udało się przesłać logo. Spróbuj ponownie.",
+      "hideBranding": "Ukryj logo downDATA",
+      "save": "Zapisz",
+      "saveFailed": "Nie udało się zapisać ustawień strony statusu. Spróbuj ponownie.",
+      "publish": "Publikuj",
+      "unpublish": "Cofnij publikację",
+      "enableFailed": "Nie udało się zaktualizować strony statusu. Spróbuj ponownie.",
+      "copyLink": "Kopiuj link"
     }
   },
   "addService": {

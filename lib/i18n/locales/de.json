@@ -265,6 +265,25 @@
     "lastIncident": {
       "title": "Letzte Vorfälle",
       "none": "Kein Vorfallsverlauf"
+    },
+    "statusPage": {
+      "title": "Öffentliche Statusseite",
+      "live": "Live",
+      "description": "Teilen Sie eine öffentliche, schreibgeschützte Statusseite für die verfolgten Dienste dieses Boards.",
+      "slugLabel": "Öffentliche URL",
+      "companyNameLabel": "Firmenname",
+      "logoLabel": "Logo",
+      "logoChoose": "Logo auswählen",
+      "logoRemove": "Entfernen",
+      "logoHint": "PNG, JPG, WEBP oder SVG. Max. 2 MB.",
+      "logoUploadFailed": "Das Logo konnte nicht hochgeladen werden. Bitte erneut versuchen.",
+      "hideBranding": "downDATA-Logo ausblenden",
+      "save": "Speichern",
+      "saveFailed": "Die Einstellungen der Statusseite konnten nicht gespeichert werden. Bitte erneut versuchen.",
+      "publish": "Veröffentlichen",
+      "unpublish": "Veröffentlichung aufheben",
+      "enableFailed": "Die Statusseite konnte nicht aktualisiert werden. Bitte erneut versuchen.",
+      "copyLink": "Link kopieren"
     }
   },
   "addService": {

@@ -30,7 +30,19 @@ const PUBLIC_EXACT = new Set([
 // pages like /integrations/slack — the bare "/integrations" (no trailing
 // segment) is the protected dashboard connect/manage page and doesn't
 // start with this prefix, so it stays gated.
-const PUBLIC_PREFIXES = ["/auth/", "/api/cron/", "/features/", "/integrations/"];
+const PUBLIC_PREFIXES = [
+  "/auth/",
+  "/api/cron/",
+  "/features/",
+  "/integrations/",
+  // A board's public status page and the endpoint it polls client-side —
+  // both unauthenticated by design (see app/status/[slug]/page.tsx and
+  // app/api/public/status/[slug]/route.ts). Two separate entries, not
+  // one: the page route alone would still leave the polling endpoint
+  // session-gated, 401ing every logged-out viewer's refresh.
+  "/status/",
+  "/api/public/status/",
+];
 
 function isPublicPath(pathname: string): boolean {
   return PUBLIC_EXACT.has(pathname) || PUBLIC_PREFIXES.some((prefix) => pathname.startsWith(prefix));

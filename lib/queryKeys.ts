@@ -20,6 +20,7 @@ export const queryKeys = {
   },
   boards: {
     list: () => ["boards", "list"] as const,
+    statusPage: (boardId: string) => ["boards", "statusPage", boardId] as const,
   },
   integrations: {
     list: () => ["integrations", "list"] as const,
@@ -29,6 +30,7 @@ export const queryKeys = {
     sources: () => ["earlyWarnings", "sources"] as const,
     matches: () => ["earlyWarnings", "matches"] as const,
   },
+  publicStatusPage: (slug: string) => ["publicStatusPage", slug] as const,
   account: () => ["account"] as const,
   subscription: () => ["subscription"] as const,
 };

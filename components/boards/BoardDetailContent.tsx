@@ -19,6 +19,7 @@ import BoardActiveIncidentsPanel from "@/components/boards/BoardActiveIncidentsP
 import BoardActiveMaintenancePanel from "@/components/boards/BoardActiveMaintenancePanel";
 import BoardLastIncidentTable from "@/components/boards/BoardLastIncidentTable";
 import BoardTrackedServicesGrid from "@/components/boards/BoardTrackedServicesGrid";
+import BoardStatusPageSettings from "@/components/boards/BoardStatusPageSettings";
 import IncidentCountsChart from "@/components/history/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
 import { InfoIcon, PencilIcon } from "@/components/icons/NavIcons";
@@ -245,6 +246,8 @@ export default function BoardDetailContent({
           <BoardTrackedServicesGrid boardId={board.id} entries={onBoardEntries} data={data} fetchFailed={fetchFailed} />
         </div>
       )}
+
+      <BoardStatusPageSettings boardId={board.id} boardName={board.name} />
     </div>
   );
 }

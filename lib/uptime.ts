@@ -1,6 +1,7 @@
 import type { Slug, StatuspageIncidentSummary } from "@/types/service";
 import { getSupabaseClient } from "@/lib/supabase";
-import { epochMs, nowIso } from "@/lib/formatTime";
+import { epochMs, nowIso, isoDaysAgo } from "@/lib/formatTime";
+import { getStoredIncidentSummariesForService, toIncidentSummaryApiShape } from "@/lib/getStoredIncident";
 
 export type UptimeStats = { trackedSince: string; officialAllTimeUptime: number };
 
@@ -72,4 +73,51 @@ export function computeOfficial30DaysUptime(
   }
 
   return clampPercent((1 - downtimeMs / windowMs) * 100);
+}
+
+const OUTAGE_TRACKER_DAYS = 30;
+
+export type ServiceUptimeSummary = {
+  last30DaysIncidents: StatuspageIncidentSummary[];
+  trackedSince: string | null;
+  official30daysUptime: number;
+  uptimeWindowDays: number;
+  officialAllTimeUptime: number | null;
+};
+
+// The one-service uptime/incident bundle — originally inline in
+// app/api/summary/[slug]/route.ts, factored out here so the public status
+// page route (one board's worth of services, not just one) can compute the
+// same figures per service without duplicating the trackedSince-clipping
+// logic in (B) below.
+export async function getServiceUptimeSummary(slug: Slug): Promise<ServiceUptimeSummary> {
+  // Fixed 30-day window — always used for fetching stored incidents, so
+  // the tracker chart gets the full grid regardless of trackedSince.
+  const windowStart = isoDaysAgo(OUTAGE_TRACKER_DAYS);
+  const [last30DaysRows, uptimeStats] = await Promise.all([
+    getStoredIncidentSummariesForService(slug, windowStart),
+    getAllTimeUptimeStats(slug),
+  ]);
+  const last30DaysIncidents = last30DaysRows.map(toIncidentSummaryApiShape);
+
+  // (B) the uptime percentage's own window is clipped to trackedSince when
+  // tracking started less than 30 days ago — otherwise a newly-tracked
+  // service would divide by 30 days it was never actually observed for.
+  // Compared via epochMs(), not raw string comparison: windowStart/nowIso()
+  // are this app's own fixed-format Temporal output, but trackedSince comes
+  // back from Postgres/PostgREST in whatever timestamptz string shape that
+  // layer returns, which isn't guaranteed byte-comparable to the other two.
+  const now = nowIso();
+  const effectiveWindowStart =
+    uptimeStats?.trackedSince && epochMs(uptimeStats.trackedSince) > epochMs(windowStart) ? uptimeStats.trackedSince : windowStart;
+  const official30daysUptime = computeOfficial30DaysUptime(last30DaysIncidents, effectiveWindowStart, now);
+  const uptimeWindowDays = Math.max(1, Math.round((epochMs(now) - epochMs(effectiveWindowStart)) / 86_400_000));
+
+  return {
+    last30DaysIncidents,
+    trackedSince: uptimeStats?.trackedSince ?? null,
+    official30daysUptime,
+    uptimeWindowDays,
+    officialAllTimeUptime: uptimeStats?.officialAllTimeUptime ?? null,
+  };
 }

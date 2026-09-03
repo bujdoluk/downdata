@@ -265,6 +265,25 @@
     "lastIncident": {
       "title": "Senaste incidenter",
       "none": "Ingen incidenthistorik"
+    },
+    "statusPage": {
+      "title": "Offentlig statussida",
+      "live": "Live",
+      "description": "Dela en offentlig, skrivskyddad statussida för den här tavlans bevakade tjänster.",
+      "slugLabel": "Offentlig URL",
+      "companyNameLabel": "Företagsnamn",
+      "logoLabel": "Logotyp",
+      "logoChoose": "Välj logotyp",
+      "logoRemove": "Ta bort",
+      "logoHint": "PNG, JPG, WEBP eller SVG. Max 2 MB.",
+      "logoUploadFailed": "Det gick inte att ladda upp logotypen. Försök igen.",
+      "hideBranding": "Dölj downDATA-logotypen",
+      "save": "Spara",
+      "saveFailed": "Det gick inte att spara inställningarna för statussidan. Försök igen.",
+      "publish": "Publicera",
+      "unpublish": "Avpublicera",
+      "enableFailed": "Det gick inte att uppdatera statussidan. Försök igen.",
+      "copyLink": "Kopiera länk"
     }
   },
   "addService": {

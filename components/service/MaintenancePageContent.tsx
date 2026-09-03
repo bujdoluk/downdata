@@ -221,14 +221,16 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
                   <div className="min-w-0 flex-1">
                     <p className="text-base-content/50 text-xs">{maintenance.service.name}</p>
                     <p className="text-base-content truncate text-sm font-medium">{maintenance.name}</p>
-                    {isActive ? (
-                      <span className="badge badge-info badge-xs mt-1 gap-1.5">
-                        <span className="bg-info-content text-info-content animate-pulse-ring h-1.5 w-1.5 rounded-full" />
-                        {t("maintenances.inProgress")}
-                      </span>
-                    ) : (
-                      <p className="text-base-content/50 text-xs">{maintenance.status}</p>
-                    )}
+                    <div className="mt-1 flex h-4 items-center">
+                      {isActive ? (
+                        <span className="badge badge-info badge-xs gap-1.5">
+                          <span className="bg-info-content text-info-content animate-pulse-ring h-1.5 w-1.5 rounded-full" />
+                          {t("maintenances.inProgress")}
+                        </span>
+                      ) : (
+                        <p className="text-base-content/50 text-xs">{maintenance.status}</p>
+                      )}
+                    </div>
                   </div>
                   <p className="text-base-content/50 self-end text-xs whitespace-nowrap">
                     {formatDateTime(maintenance.scheduled_for, timeZone)} – {formatDateTime(maintenance.scheduled_until, timeZone)}

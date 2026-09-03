@@ -265,6 +265,25 @@
     "lastIncident": {
       "title": "Incidentes recientes",
       "none": "Sin historial de incidentes"
+    },
+    "statusPage": {
+      "title": "Página de estado pública",
+      "live": "En vivo",
+      "description": "Comparte una página de estado pública, de solo lectura, para los servicios rastreados de este tablero.",
+      "slugLabel": "URL pública",
+      "companyNameLabel": "Nombre de la empresa",
+      "logoLabel": "Logotipo",
+      "logoChoose": "Elegir logotipo",
+      "logoRemove": "Quitar",
+      "logoHint": "PNG, JPG, WEBP o SVG. Máx. 2 MB.",
+      "logoUploadFailed": "No se pudo subir el logotipo. Inténtalo de nuevo.",
+      "hideBranding": "Ocultar el logotipo de downDATA",
+      "save": "Guardar",
+      "saveFailed": "No se pudo guardar la configuración de la página de estado. Inténtalo de nuevo.",
+      "publish": "Publicar",
+      "unpublish": "Anular publicación",
+      "enableFailed": "No se pudo actualizar la página de estado. Inténtalo de nuevo.",
+      "copyLink": "Copiar enlace"
     }
   },
   "addService": {

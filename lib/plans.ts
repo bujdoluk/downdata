@@ -45,14 +45,14 @@ export const PLAN_CATALOG: Record<PlanTier, PlanDefinition> = {
     monthlyPrice: 19.99,
     available: true,
     trialDays: 14,
-    features: { monitors: "50", checkInterval: "15s", statusPages: "5", teamSeats: "unlimited", history: "6 mo" },
+    features: { monitors: "50", checkInterval: "15s", statusPages: "2", teamSeats: "unlimited", history: "6 mo" },
   },
   pro: {
     tier: "pro",
     monthlyPrice: 49.99,
     available: true,
     badge: "mostTeams",
-    features: { monitors: "250", checkInterval: "10s", statusPages: "unlimited", teamSeats: "unlimited", history: "12 mo" },
+    features: { monitors: "250", checkInterval: "10s", statusPages: "5", teamSeats: "unlimited", history: "12 mo" },
   },
   business: {
     tier: "business",
@@ -72,4 +72,19 @@ export function isBillingInterval(value: string | null): value is BillingInterva
 
 export function isPlanTier(value: string | null): value is PlanTier {
   return value === "starter" || value === "pro" || value === "business";
+}
+
+// No PLAN_CATALOG entry for "no subscription row" (the free tier — see
+// types/subscription.ts) since PLAN_CATALOG only covers purchasable/
+// in-the-making tiers. A taste of the status page feature, below
+// starter's own quota.
+export const FREE_TIER_STATUS_PAGES = 1;
+
+// Resolves a tier's features.statusPages ("2", "5", "unlimited") to a
+// comparable number — the one place that string gets parsed, so the enable
+// route's quota check and any future display of "X of Y used" agree.
+export function statusPageQuota(tier: PlanTier | null): number {
+  if (tier === null) return FREE_TIER_STATUS_PAGES;
+  const value = PLAN_CATALOG[tier].features.statusPages;
+  return value === "unlimited" ? Infinity : Number(value);
 }

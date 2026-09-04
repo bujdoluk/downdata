@@ -1,7 +1,7 @@
 import type { ComponentType } from "react";
-import { ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, HistoryIcon, BoardIcon } from "@/components/icons/NavIcons";
+import { ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, HistoryIcon, BoardIcon, GlobeIcon } from "@/components/icons/NavIcons";
 
-export type FeatureSlug = "monitors" | "incidents" | "maintenances" | "integrations" | "history" | "boards";
+export type FeatureSlug = "monitors" | "incidents" | "maintenances" | "integrations" | "history" | "boards" | "statusPages";
 
 export type FeatureEntry = {
   slug: FeatureSlug;
@@ -15,6 +15,7 @@ export const FEATURE_CATALOG: FeatureEntry[] = [
   { slug: "integrations", icon: PlugIcon },
   { slug: "history", icon: HistoryIcon },
   { slug: "boards", icon: BoardIcon },
+  { slug: "statusPages", icon: GlobeIcon },
 ];
 
 export function resolveFeature(slug: string): FeatureEntry | undefined {

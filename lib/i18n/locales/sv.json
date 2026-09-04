@@ -572,7 +572,8 @@
     "email": "Få incidenter och statusuppdateringar levererade direkt till e-posten. Lägg till en eller flera adresser så håller sig alla uppdaterade, utan inloggning.",
     "sms": "Få ett sms i samma stund som något allvarligt eller kritiskt går ner. Lägg till ett eller flera nummer och välj vilka allvarlighetsgrader som är värda ett sms, från enbart kritiska till alla.",
     "history": "Välj vilken bevakad tjänst som helst och se dess incidenthistorik för de senaste 12 månaderna, praktiskt nästa gång någon undrar om det här har hänt förut.",
-    "boards": "Gruppera dina bevakade tjänster i tavlor för olika team, så att alla bara ser de tjänster som är relevanta för dem."
+    "boards": "Gruppera dina bevakade tjänster i tavlor för olika team, så att alla bara ser de tjänster som är relevanta för dem.",
+    "statusPages": "Publicera en offentlig, skrivskyddad statussida för en tavlas bevakade tjänster, så att dina kunder kan kontrollera själva innan de öppnar ett ärende."
   },
   "notFound": {
     "title": "Sidan hittades inte",

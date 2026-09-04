@@ -572,7 +572,8 @@
     "email": "Lass dir Vorfälle und Statusupdates direkt per E-Mail zustellen. Füge eine oder mehrere Adressen hinzu, und alle bleiben informiert, ganz ohne Login.",
     "sms": "Erhalte eine SMS, sobald etwas Schwerwiegendes oder Kritisches ausfällt. Füge eine oder mehrere Nummern hinzu und wähle, welche Schweregrade eine SMS wert sind, von nur kritisch bis hin zu allem.",
     "history": "Wähle einen getrackten Dienst und sieh dir seine Incident-Historie der letzten 12 Monate an, praktisch, wenn jemand fragt, ob das schon mal vorgekommen ist.",
-    "boards": "Gruppiere deine getrackten Dienste in Boards für verschiedene Teams, damit jeder nur die Dienste sieht, die für ihn wichtig sind."
+    "boards": "Gruppiere deine getrackten Dienste in Boards für verschiedene Teams, damit jeder nur die Dienste sieht, die für ihn wichtig sind.",
+    "statusPages": "Veröffentliche eine öffentliche, nur lesbare Statusseite für die getrackten Dienste eines beliebigen Boards, damit deine Kunden selbst nachsehen können, bevor sie ein Ticket eröffnen."
   },
   "notFound": {
     "title": "Seite nicht gefunden",

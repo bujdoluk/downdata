@@ -572,7 +572,8 @@
     "email": "Recibe incidentes y actualizaciones de estado directamente en el correo. Añade una o varias direcciones y todo el mundo se mantiene al día, sin necesidad de iniciar sesión.",
     "sms": "Recibe un SMS en el momento en que algo falle de forma grave o crítica. Añade uno o varios números y elige qué niveles de gravedad merecen un SMS, desde solo crítico hasta todos.",
     "history": "Elige cualquier servicio monitorizado y consulta su historial de incidentes de los últimos 12 meses, útil la próxima vez que alguien pregunte si esto ya había pasado antes.",
-    "boards": "Agrupa tus servicios monitorizados en tableros para distintos equipos, para que cada uno vea solo los servicios que le importan."
+    "boards": "Agrupa tus servicios monitorizados en tableros para distintos equipos, para que cada uno vea solo los servicios que le importan.",
+    "statusPages": "Publica una página de estado pública, de solo lectura, con los servicios monitorizados de cualquier tablero, para que tus clientes puedan comprobarlo por sí mismos antes de abrir un ticket."
   },
   "notFound": {
     "title": "Página no encontrada",

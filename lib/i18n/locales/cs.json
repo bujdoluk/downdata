@@ -577,7 +577,8 @@
     "email": "Nech si posílat incidenty a změny stavu přímo na e-mail. Přidej jednu nebo více adres a všichni budou v obraze, bez přihlašování.",
     "sms": "Nech si poslat SMS ve chvíli, kdy nastane vážný nebo kritický výpadek. Přidej jedno nebo více čísel a vyber, které závažnosti stojí za zprávu, od pouze kritických až po úplně všechny.",
     "history": "Vyber si libovolnou sledovanou službu a podívej se na historii jejích incidentů za posledních 12 měsíců, hodí se, když se někdo zeptá, jestli se to už někdy stalo.",
-    "boards": "Seskup své sledované služby do nástěnek pro různé týmy, aby každý viděl jen služby, na kterých mu záleží."
+    "boards": "Seskup své sledované služby do nástěnek pro různé týmy, aby každý viděl jen služby, na kterých mu záleží.",
+    "statusPages": "Zveřejni veřejnou stránku se stavem (jen ke čtení) pro sledované služby libovolné nástěnky, aby si zákazníci mohli stav ověřit sami ještě před založením tiketu."
   },
   "notFound": {
     "title": "Stránka nenalezena",

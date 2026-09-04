@@ -572,7 +572,8 @@
     "email": "Recevez les incidents et les mises à jour de statut directement par e-mail. Ajoutez une ou plusieurs adresses et toute l'équipe reste informée, sans avoir à se connecter.",
     "sms": "Recevez un SMS dès qu'un incident majeur ou critique survient. Ajoutez un ou plusieurs numéros et choisissez les niveaux de gravité qui méritent un SMS, du critique uniquement à tous les niveaux.",
     "history": "Choisissez un service suivi et consultez son historique d'incidents des 12 derniers mois, utile la prochaine fois que quelqu'un demande si c'est déjà arrivé.",
-    "boards": "Regroupez vos services suivis dans des tableaux pour différentes équipes, afin que chacun ne voie que les services qui le concernent."
+    "boards": "Regroupez vos services suivis dans des tableaux pour différentes équipes, afin que chacun ne voie que les services qui le concernent.",
+    "statusPages": "Publiez une page de statut publique, en lecture seule, pour les services suivis d'un tableau, afin que vos clients puissent vérifier par eux-mêmes avant d'ouvrir un ticket."
   },
   "notFound": {
     "title": "Page introuvable",

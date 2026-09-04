@@ -18,11 +18,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.APP_URL ?? "http://localhost:3000"),
   title: "downDATA",
   description: "Is GitHub up? A tiny service status monitor.",
 };
-
-export const dynamic = "force-dynamic";
 
 export default function RootLayout({
   children,

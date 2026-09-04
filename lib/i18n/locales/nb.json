@@ -572,7 +572,8 @@
     "email": "Få hendelser og statusoppdateringer rett til e-posten. Legg til én eller flere adresser, så holder alle seg oppdatert uten å logge inn.",
     "sms": "Få en SMS i det øyeblikket noe alvorlig eller kritisk går ned. Legg til ett eller flere numre og velg hvilke alvorlighetsgrader som er verdt en SMS, fra kun kritisk til alle.",
     "history": "Velg en hvilken som helst tjeneste du følger, og se hendelseshistorikken for de siste 12 månedene, nyttig neste gang noen spør om dette har skjedd før.",
-    "boards": "Grupper tjenestene du følger i tavler for ulike team, slik at alle bare ser tjenestene som er relevante for dem."
+    "boards": "Grupper tjenestene du følger i tavler for ulike team, slik at alle bare ser tjenestene som er relevante for dem.",
+    "statusPages": "Publiser en offentlig, skrivebeskyttet statusside for tjenestene på en hvilken som helst tavle, slik at kundene dine kan sjekke selv før de åpner en sak."
   },
   "notFound": {
     "title": "Siden ble ikke funnet",

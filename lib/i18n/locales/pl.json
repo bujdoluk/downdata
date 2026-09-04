@@ -582,7 +582,8 @@
     "email": "Otrzymuj incydenty i aktualizacje statusu prosto na e-mail. Dodaj jeden lub kilka adresów, a wszyscy będą na bieżąco, bez logowania.",
     "sms": "Otrzymaj SMS w chwili, gdy coś ulegnie poważnej lub krytycznej awarii. Dodaj jeden lub więcej numerów i wybierz, które poziomy ważności zasługują na SMS, od samych krytycznych po wszystkie.",
     "history": "Wybierz dowolną monitorowaną usługę i zobacz jej historię incydentów z ostatnich 12 miesięcy, przydaje się, gdy ktoś zapyta, czy to już się kiedyś zdarzyło.",
-    "boards": "Grupuj monitorowane usługi w tablice dla różnych zespołów, dzięki czemu każdy widzi tylko te usługi, na których mu zależy."
+    "boards": "Grupuj monitorowane usługi w tablice dla różnych zespołów, dzięki czemu każdy widzi tylko te usługi, na których mu zależy.",
+    "statusPages": "Opublikuj publiczną stronę statusu (tylko do odczytu) dla monitorowanych usług dowolnej tablicy, aby klienci mogli sami sprawdzić status, zanim założą zgłoszenie."
   },
   "notFound": {
     "title": "Nie znaleziono strony",

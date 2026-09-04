@@ -572,7 +572,8 @@
     "email": "Laat incidenten en statusupdates rechtstreeks in de mailbox bezorgen. Voeg één of meerdere adressen toe en iedereen blijft op de hoogte, zonder in te loggen.",
     "sms": "Ontvang een sms zodra er iets groots of kritieks uitvalt. Voeg één of meerdere nummers toe en kies welke ernstniveaus een sms waard zijn, van alleen kritiek tot alles.",
     "history": "Kies een gevolgde dienst en bekijk de incidentgeschiedenis van de afgelopen 12 maanden, handig als iemand ooit vraagt of dit al eerder is gebeurd.",
-    "boards": "Groepeer je gevolgde diensten in borden voor verschillende teams, zodat iedereen alleen de diensten ziet die voor hen relevant zijn."
+    "boards": "Groepeer je gevolgde diensten in borden voor verschillende teams, zodat iedereen alleen de diensten ziet die voor hen relevant zijn.",
+    "statusPages": "Publiceer een openbare, alleen-lezen statuspagina voor de gevolgde diensten van een willekeurig bord, zodat je klanten het zelf kunnen checken voordat ze een ticket openen."
   },
   "notFound": {
     "title": "Pagina niet gevonden",

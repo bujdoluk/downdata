@@ -6,7 +6,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
-import type { TrackedIncidentSummary, TrackedMaintenanceSummary } from "@/types/service";
+import type { ServiceStatusBatchResponse, TrackedIncidentSummary, TrackedMaintenanceSummary } from "@/types/service";
 import BoardCard from "@/components/boards/BoardCard";
 import CreateBoardForm from "@/components/boards/CreateBoardForm";
 import { PlusIcon } from "@/components/icons/NavIcons";
@@ -17,6 +17,20 @@ import { usePinned } from "@/hooks/usePinned";
 import { isActiveIncident } from "@/lib/isActiveIncident";
 
 const POLL_INTERVAL_MS = 60_000;
+const SEVERITY_ORDER = ["critical", "major", "minor", "none"] as const;
+
+function worstIndicator(board: Board, data: ServiceStatusBatchResponse | undefined) {
+  let worst: (typeof SEVERITY_ORDER)[number] | undefined;
+  for (const slug of board.Slugs) {
+    const entry = data?.[slug];
+    const raw = entry && "status" in entry ? entry.status.indicator : undefined;
+    if (raw !== "critical" && raw !== "major" && raw !== "minor" && raw !== "none") continue;
+    if (!worst || SEVERITY_ORDER.indexOf(raw) < SEVERITY_ORDER.indexOf(worst)) {
+      worst = raw;
+    }
+  }
+  return worst;
+}
 
 export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
@@ -25,10 +39,6 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   const createRef = useRef<HTMLDetailsElement>(null);
   const [query, setQuery] = useState("");
   const { pinned, togglePin } = usePinned("pinnedBoards");
-  // Same query keys Sidebar/IncidentsPageContent/MaintenancePageContent
-  // already poll — React Query shares one cache entry per key across every
-  // component asking for it, so this adds no extra network traffic on top
-  // of what's already happening.
   const { data: incidentsData } = useQuery({
     queryKey: queryKeys.incidents.list(),
     queryFn: () => fetchJson<{ incidents: TrackedIncidentSummary[] }>("/api/incidents", { cache: "no-store" }),
@@ -39,6 +49,12 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
     queryFn: () => fetchJson<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance", { cache: "no-store" }),
     refetchInterval: POLL_INTERVAL_MS,
   });
+  const { data: statusData, isError: statusFailed } = useQuery({
+    queryKey: queryKeys.catalogStatus(),
+    queryFn: () => fetchJson<ServiceStatusBatchResponse>("/api/status/catalog", { cache: "no-store" }),
+    refetchInterval: POLL_INTERVAL_MS,
+  });
+  const statusLoading = !statusData && !statusFailed;
 
   useCloseDetailsOnOutsideClick(createRef);
 
@@ -110,7 +126,15 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
       ) : (
         <ul className="mt-4 flex flex-col gap-3">
           {filteredBoards.map((board) => (
-            <BoardCard key={board.id} board={board} {...countsFor(board)} isPinned={pinned.has(board.id)} onTogglePin={togglePin} />
+            <BoardCard
+              key={board.id}
+              board={board}
+              {...countsFor(board)}
+              indicator={worstIndicator(board, statusData)}
+              isLoading={statusLoading}
+              isPinned={pinned.has(board.id)}
+              onTogglePin={togglePin}
+            />
           ))}
         </ul>
       )}

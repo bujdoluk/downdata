@@ -41,6 +41,27 @@ export async function renameBoard(id: string, name: string): Promise<Board | und
   return data ? toBoard(data as BoardRow) : undefined;
 }
 
+// One insert copying the source board's service_slugs directly, rather than
+// looping addServiceToBoard once per slug — a single round trip, and no
+// half-cloned board if something fails partway through. Deliberately
+// doesn't touch board_status_pages (0025_board_status_pages.sql) — that
+// table is keyed off boards.id separately, so a clone correctly starts with
+// no public status page of its own instead of inheriting the source
+// board's public URL.
+export async function cloneBoard(id: string, name: string): Promise<Board | undefined> {
+  const board = await resolveBoardById(id);
+  if (!board) return undefined;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("boards")
+    .insert({ name: name.trim(), service_slugs: board.Slugs })
+    .select("id, name, service_slugs")
+    .single();
+  if (error) throw error;
+  return toBoard(data as BoardRow);
+}
+
 export async function removeBoard(id: string): Promise<boolean> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("boards").delete().eq("id", id).select();

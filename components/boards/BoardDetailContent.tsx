@@ -9,7 +9,7 @@ import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
 import type { Catalog, ServiceStatusBatchResponse, TrackedIncidentSummary, TrackedMaintenanceSummary } from "@/types/service";
 import type { IncidentCountByService } from "@/lib/getStoredIncident";
-import { fetchJson } from "@/lib/fetchJson";
+import { fetchJson, postJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { useBoardRename } from "@/hooks/useBoardRename";
 import { useTimeZone } from "@/hooks/useTimeZone";
@@ -94,6 +94,15 @@ export default function BoardDetailContent({
     },
   });
 
+  const cloneBoardMutation = useMutation({
+    mutationFn: () =>
+      postJson<Board>(`/api/boards/${board.id}/clone`, { name: t("boards.cloneName", { name: board.name }) }, t("boards.cloneFailed")),
+    onSuccess: (clonedBoard) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.boards.list() });
+      router.push(`/boards/${clonedBoard.id}`);
+    },
+  });
+
   return (
     <div className="w-full self-start">
       <Link href="/boards" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
@@ -139,6 +148,14 @@ export default function BoardDetailContent({
           )}
         </div>
         <div className="flex shrink-0 items-center gap-1.5">
+          <button
+            type="button"
+            disabled={cloneBoardMutation.isPending}
+            onClick={() => cloneBoardMutation.mutate()}
+            className="btn btn-ghost btn-sm"
+          >
+            {cloneBoardMutation.isPending ? t("boards.cloning") : t("boards.clone")}
+          </button>
           <button
             type="button"
             disabled={deleteBoardMutation.isPending || boardCount <= 1}

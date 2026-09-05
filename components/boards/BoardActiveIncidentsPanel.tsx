@@ -8,11 +8,6 @@ import { SERVICE_LOGOS } from "@/components/service/logos";
 import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 
-// Bare content only, no outer margin/card/sizing — BoardDetailContent's
-// grid owns that uniformly across all 6 cells (see its own comment).
-// Split out of the old BoardActivityPanel (which paired this with
-// BoardActiveMaintenancePanel below in a 2-column layout) so each half can
-// be its own same-size grid cell instead.
 export default function BoardActiveIncidentsPanel({
   boardId,
   activeIncidents,

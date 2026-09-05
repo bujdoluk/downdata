@@ -12,13 +12,6 @@ import type { BoardStatusPage } from "@/types/statusPage";
 import Spinner from "@/components/Spinner";
 import { GlobeIcon, CopyIcon, CheckIcon } from "@/components/icons/NavIcons";
 
-// Bare content only, no outer margin/card/sizing — BoardDetailContent's
-// grid owns that uniformly across all 6 cells, same convention as its
-// siblings. Deliberately just a summary + link, not the full form — the
-// full BoardStatusPageSettings form now lives only on /status-pages,
-// reading the same queryKeys.boards.statusPage(boardId) cache entry so
-// navigating there doesn't cost a second fetch if this cell already
-// loaded it.
 export default function BoardStatusPageSummary({ boardId }: { boardId: string }) {
   const { t } = useTranslation();
   const origin = useOrigin();
@@ -28,9 +21,6 @@ export default function BoardStatusPageSummary({ boardId }: { boardId: string })
     queryKey: queryKeys.boards.statusPage(boardId),
     queryFn: () => fetchJson<BoardStatusPage | null>(`/api/boards/${boardId}/status-page`),
   });
-  // This board has at most one public status page, so "published count"
-  // here is just whether it's currently live (0 or 1) — not a services
-  // count. Matches the same `data?.enabled` check used below for the badge.
   const publishedCount = data?.enabled ? 1 : 0;
 
   return (

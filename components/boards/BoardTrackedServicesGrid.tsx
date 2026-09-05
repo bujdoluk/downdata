@@ -9,14 +9,6 @@ import FallbackLogo from "@/components/service/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
 import { PlusIcon } from "@/components/icons/NavIcons";
 
-// Bare content only, no outer margin/card/sizing — BoardDetailContent's
-// grid owns that uniformly across all 6 cells. Each tile is a stripped-down
-// CatalogServiceCard: just the logo and its right-edge status stripe (same
-// stripeColor logic that card uses), no name/badge text — this cell is a
-// compact overview, not the full per-service card grid this route used to
-// have. The Add Monitor button moved here too, into this cell's own
-// heading row, since the section it used to live in (the full "On this
-// board" cards grid) is gone.
 export default function BoardTrackedServicesGrid({
   boardId,
   entries,

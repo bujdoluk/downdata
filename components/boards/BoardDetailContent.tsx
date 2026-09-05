@@ -236,7 +236,7 @@ export default function BoardDetailContent({
                 />
               </div>
             </div>
-            <div className="card card-border bg-base-200 h-88 overflow-y-auto p-4">
+            <div className="card card-border bg-base-200 h-80 overflow-y-auto p-4">
               <BoardActiveMaintenancePanel boardId={board.id} maintenances={boardMaintenances} timeZone={timeZone} />
             </div>
           </div>

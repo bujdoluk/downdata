@@ -2,6 +2,7 @@ import { getCatalog } from "@/lib/catalog";
 import { getAllIntegrationsAcrossUsers } from "@/features/integrations/services/integrations";
 import { getSupabaseClient } from "@/lib/supabase";
 import { runInBatches } from "@/lib/runInBatches";
+import { hasMatchingComponent } from "@/lib/componentNamePrefix";
 
 // The full upstream Statuspage payload — deliberately not types/service.ts's
 // Incident, which only ever modeled what the current UI reads and
@@ -62,12 +63,23 @@ export const LOCK_STALE_MS = 10 * 60 * 1000;
 // upsert_incident_update) was thousands of round-trips per cycle, which is
 // what was actually exceeding the poll route's 60s budget — not
 // serialization, volume. See supabase/migrations/0007_bulk_upsert_functions.sql.
-async function pollOneServiceIncidents(service: { slug: string; host: string }): Promise<{ incidentCount: number; failed: number }> {
+async function pollOneServiceIncidents(service: {
+  slug: string;
+  host: string;
+  componentNamePrefix?: string;
+}): Promise<{ incidentCount: number; failed: number }> {
   const res = await fetch(`https://${service.host}/api/v2/incidents.json`, { signal: AbortSignal.timeout(8_000) });
   if (!res.ok) throw new Error(`Upstream returned ${res.status}`);
 
   const data = await res.json();
-  const incidents = (data.incidents ?? []) as RawIncident[];
+  // A componentNamePrefix means this host's feed covers more than one
+  // product (see lib/componentNamePrefix.ts) — drop anything that doesn't
+  // touch at least one of this service's own components before it's ever
+  // stored, so incidents belonging to some other product on the same
+  // shared page never end up under this slug at all.
+  const rawIncidents = (data.incidents ?? []) as RawIncident[];
+  const prefix = service.componentNamePrefix;
+  const incidents = prefix ? rawIncidents.filter((incident) => hasMatchingComponent(incident.components, prefix)) : rawIncidents;
   if (incidents.length === 0) return { incidentCount: 0, failed: 0 };
 
   const supabase = getSupabaseClient();
@@ -122,14 +134,23 @@ async function pollOneServiceIncidents(service: { slug: string; host: string }):
 // pre-start forever. This endpoint returns the last ~50 regardless of
 // status (scheduled/in_progress/completed); getAllStoredMaintenances
 // already filters completed/stale ones back out at read time.
-async function pollOneServiceMaintenances(service: { slug: string; host: string }): Promise<{ maintenanceCount: number; failed: number }> {
+async function pollOneServiceMaintenances(service: {
+  slug: string;
+  host: string;
+  componentNamePrefix?: string;
+}): Promise<{ maintenanceCount: number; failed: number }> {
   const res = await fetch(`https://${service.host}/api/v2/scheduled-maintenances.json`, {
     signal: AbortSignal.timeout(8_000),
   });
   if (!res.ok) throw new Error(`Upstream returned ${res.status}`);
 
   const data = await res.json();
-  const maintenances = (data.scheduled_maintenances ?? []) as RawMaintenance[];
+  // See the matching comment in pollOneServiceIncidents — same reasoning.
+  const rawMaintenances = (data.scheduled_maintenances ?? []) as RawMaintenance[];
+  const prefix = service.componentNamePrefix;
+  const maintenances = prefix
+    ? rawMaintenances.filter((maintenance) => hasMatchingComponent(maintenance.components, prefix))
+    : rawMaintenances;
   if (maintenances.length === 0) return { maintenanceCount: 0, failed: 0 };
 
   const supabase = getSupabaseClient();

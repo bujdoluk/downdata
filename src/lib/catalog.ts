@@ -2,11 +2,22 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { slugify } from "@/lib/slugify";
 import type { Catalog } from "@/types/service";
 
+type CatalogRow = { slug: string; name: string; host: string; category: string; component_name_prefix: string | null };
+
 export async function getCatalog(): Promise<Catalog[]> {
   const supabase = getSupabaseClient();
-  const { data, error } = await supabase.from("catalog").select("slug, name, host, category").order("name");
+  const { data, error } = await supabase
+    .from("catalog")
+    .select("slug, name, host, category, component_name_prefix")
+    .order("name");
   if (error) throw error;
-  return data ?? [];
+  return ((data ?? []) as CatalogRow[]).map((row) => ({
+    slug: row.slug,
+    name: row.name,
+    host: row.host,
+    category: row.category as Catalog["category"],
+    componentNamePrefix: row.component_name_prefix ?? undefined,
+  }));
 }
 
 // Used only to confirm a slug is a real, known host (detail/history pages

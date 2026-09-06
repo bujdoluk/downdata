@@ -22,6 +22,13 @@ export type Catalog = {
   name: string;
   host: string;
   category: Category;
+  // Set only for a catalog entry whose host now redirects into a shared,
+  // multi-product status page (e.g. SendGrid's into Twilio's combined
+  // one) — components/incidents/maintenances are kept only if at least
+  // one affected component's name starts with this (case-insensitive).
+  // undefined/absent means "use everything," the existing behavior for
+  // every other service. See lib/componentNamePrefix.ts.
+  componentNamePrefix?: string;
 };
 
 export type Indicator = "none" | "minor" | "major" | "critical" | string;

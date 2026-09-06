@@ -5,9 +5,26 @@ import type { StatuspageComponent } from "@/types/service";
 // free-text names, so it's a heuristic, not a guarantee: most components
 // (most services, even) name a feature, not a place, and correctly resolve
 // to `null` rather than being force-fit into a continent.
-export type Continent = "africa" | "asia" | "australia" | "europe" | "northAmerica" | "southAmerica";
+export type Continent =
+  | "africa"
+  | "asia"
+  | "australia"
+  | "europe"
+  | "latinAmerica"
+  | "middleEastAfrica"
+  | "northAmerica"
+  | "southAmerica";
 
-export const ALL_CONTINENTS: Continent[] = ["africa", "asia", "australia", "europe", "northAmerica", "southAmerica"];
+export const ALL_CONTINENTS: Continent[] = [
+  "africa",
+  "asia",
+  "australia",
+  "europe",
+  "latinAmerica",
+  "middleEastAfrica",
+  "northAmerica",
+  "southAmerica",
+];
 
 export const CONTINENT_LABEL_KEYS: Record<Continent, string> = {
   africa: "serviceDetail.continentAfrica",
@@ -16,6 +33,20 @@ export const CONTINENT_LABEL_KEYS: Record<Continent, string> = {
   // there's no separate "Oceania" bucket, matches how this was asked for.
   australia: "serviceDetail.continentAustralia",
   europe: "serviceDetail.continentEurope",
+  // Twilio's status page (which SendGrid's now redirects into) names a
+  // component's region "Voice, Latin America" / "SMS, Latin America" as a
+  // leaf with no child country components — unlike Cloudflare's "Latin
+  // America & the Caribbean" group, there's nothing to fall back on, so
+  // this can't reuse the "let the children resolve individually" escape
+  // hatch. A dedicated bucket, not folded into North or South America:
+  // Latin America spans both, and force-fitting it into either would make
+  // "filter by North America" silently include (or exclude) it.
+  latinAmerica: "serviceDetail.continentLatinAmerica",
+  // Same reasoning as latinAmerica: Twilio's "Voice, Middle East & Africa"
+  // spans two of the existing buckets (Middle East reads as Asia
+  // elsewhere in this file; Africa is its own continent) — a dedicated
+  // bucket instead of silently picking one.
+  middleEastAfrica: "serviceDetail.continentMiddleEastAfrica",
   northAmerica: "serviceDetail.continentNorthAmerica",
   southAmerica: "serviceDetail.continentSouthAmerica",
 };
@@ -92,6 +123,17 @@ const COUNTRY_TO_CONTINENT: Record<string, Continent> = {
 // correctly on their own via COUNTRY_TO_CONTINENT, so the group's own
 // ambiguity never actually matters.
 const CONTINENT_NAME_PATTERNS: [RegExp, Continent][] = [
+  // Combined-region names must be checked first — matchContinentLiteral
+  // returns on the first hit, so if the plain "africa" pattern below ran
+  // first it would swallow "Middle East & Africa" as just "africa" before
+  // this more specific pattern ever got a chance. Order-independent on
+  // which word comes first (lookahead, not a fixed "middle east ... africa"
+  // sequence), but still requires *both* words — a component named plainly
+  // "Middle East" (no "Africa") is untouched and keeps resolving to asia
+  // via the existing pattern further down, since that's the only shape
+  // actually verified so far.
+  [/(?=.*\bmiddle east\b)(?=.*\bafrica\b)/i, "middleEastAfrica"],
+  [/\blatin america\b/i, "latinAmerica"],
   [/\bafrica\b/i, "africa"],
   [/\basia([- ]pacific)?\b|\bapac\b|\bmiddle east\b/i, "asia"],
   [/\baustralia\b|\boceania\b/i, "australia"],
@@ -146,6 +188,22 @@ const LEADING_REGION_CODES: Record<string, Continent> = {
 // an unrelated name that merely contains a code-shaped substring somewhere.
 const LEADING_REGION_CODE_PATTERN = /^([a-z]{2}(?:-[a-z0-9]+){1,2})\s+\(/;
 
+// A bare two-letter region word leading the name with nothing but a space
+// after it — e.g. Sentry's "US Errors Alerting" / "EU Ingestion"
+// (status.sentry.io, verified 2026-09-06). Distinct from LEADING_REGION_CODES
+// (which requires a hyphenated code plus a parenthesized city) and from
+// COUNTRY_TO_CONTINENT (reusing its full alias list here would also treat a
+// component starting with a plain country name — "chad", "togo", "peru" are
+// all keys there too — as a region signal, for services that were never
+// checked). Keyed to this naming shape, not to Sentry specifically: any
+// other service using the same bare-leading-word convention picks up free
+// support the moment its abbreviation is added here.
+const LEADING_ABBREVIATION_WORDS: Record<string, Continent> = {
+  us: "northAmerica",
+  eu: "europe",
+};
+const LEADING_ABBREVIATION_PATTERN = /^([a-z]{2})\b/;
+
 const CODE_SUFFIX = /\s*-\s*\([^)]*\)\s*$/;
 
 function matchContinentLiteral(name: string): Continent | null {
@@ -180,6 +238,13 @@ function matchName(name: string): Continent | null {
   if (leadingCode) {
     const byLeadingCode = LEADING_REGION_CODES[leadingCode];
     if (byLeadingCode) return byLeadingCode;
+  }
+
+  const leadingWordMatch = LEADING_ABBREVIATION_PATTERN.exec(lower);
+  const leadingWord = leadingWordMatch?.[1];
+  if (leadingWord) {
+    const byLeadingWord = LEADING_ABBREVIATION_WORDS[leadingWord];
+    if (byLeadingWord) return byLeadingWord;
   }
 
   return null;

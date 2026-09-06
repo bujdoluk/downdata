@@ -8,6 +8,14 @@ import { hasMatchingComponent } from "@/lib/componentNamePrefix";
 // Incident, which only ever modeled what the current UI reads and
 // is read structurally across service/, history/, incidents/ (see AGENTS.md).
 // This type is local to the poller on purpose.
+//
+// Several fields below are optional even though Atlassian's own feeds
+// always send them (as a real value or explicit null) — incident.io-hosted
+// pages (e.g. status.brevo.com) omit them from the JSON entirely instead.
+// Marked optional here, honestly, rather than left required-but-sometimes-
+// undefined-at-runtime: upsert_incident_update/upsert_maintenance_update's
+// deliver_notifications bug (see migration 0028) was exactly this kind of
+// gap between what the type promised and what a real feed actually sent.
 type RawComponent = { id: string; name: string; status: string };
 
 type RawIncidentUpdate = {
@@ -15,13 +23,13 @@ type RawIncidentUpdate = {
   incident_id: string;
   status: string;
   body: string;
-  affected_components: RawComponent[] | null;
+  affected_components?: RawComponent[] | null;
   created_at: string;
   updated_at: string;
   display_at: string | null;
-  deliver_notifications: boolean;
-  custom_tweet: string | null;
-  tweet_id: string | null;
+  deliver_notifications?: boolean;
+  custom_tweet?: string | null;
+  tweet_id?: string | null;
 };
 
 type RawIncident = {
@@ -31,10 +39,10 @@ type RawIncident = {
   impact: string;
   created_at: string;
   updated_at: string;
-  monitoring_at: string | null;
+  monitoring_at?: string | null;
   resolved_at: string | null;
-  shortlink: string;
-  components: RawComponent[] | null;
+  shortlink?: string;
+  components?: RawComponent[] | null;
   incident_updates: RawIncidentUpdate[];
 };
 

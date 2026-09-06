@@ -126,8 +126,13 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
   const isLoading = !data && !error;
   const overallStyle = INDICATOR_STYLES[data?.status.indicator ?? "unknown"] ?? FALLBACK_STYLE;
   const allComponents = data?.components ?? [];
+  // !c.group_id, not === null: Atlassian always sends group_id (null when
+  // top-level), but incident.io-hosted pages (e.g. status.brevo.com) omit
+  // the field entirely instead of sending it as null — a strict-equality
+  // check against null left every component un-top-level there, so the
+  // whole grid rendered empty despite the feed having real components.
   const topLevelItems = allComponents
-    .filter((c) => c.group_id === null)
+    .filter((c) => !c.group_id)
     .sort((a, b) => a.position - b.position);
   const childrenOf = (groupId: string) =>
     allComponents.filter((c) => c.group_id === groupId).sort((a, b) => a.position - b.position);

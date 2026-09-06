@@ -46,9 +46,15 @@ export type StatuspageComponent = {
   name: string;
   status: Status;
   position: number;
-  group_id: string | null;
+  // Atlassian always sends both (group_id null, group false, for a
+  // top-level component) — incident.io (e.g. status.brevo.com) omits them
+  // entirely instead. Optional here so a `c.group_id === null` check reads
+  // as suspiciously narrow at the call site instead of silently passing
+  // type-check while failing at runtime — see ServiceDetail.tsx's
+  // !c.group_id fix for exactly that bug.
+  group_id?: string | null;
   showcase: boolean;
-  group: boolean;
+  group?: boolean;
 };
 
 export type IncidentUpdate = {

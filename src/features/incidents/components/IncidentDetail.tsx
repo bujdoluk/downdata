@@ -55,11 +55,16 @@ export default function IncidentDetail({
               )}
             </>
           )}
-          <p className="text-base-content/40 text-xs">
-            <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
-              {incident.shortlink}
-            </a>
-          </p>
+          {/* incident.io-hosted pages (e.g. status.brevo.com) don't send a
+              shortlink at all, unlike Atlassian which always includes one —
+              an unconditional <a> here would render empty and unclickable. */}
+          {incident.shortlink && (
+            <p className="text-base-content/40 text-xs">
+              <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
+                {incident.shortlink}
+              </a>
+            </p>
+          )}
         </div>
         <span className={`badge badge-xs ml-auto shrink-0 whitespace-nowrap ${impactStyle.badge} text-white`}>
           {t(impactStyle.labelKey)}

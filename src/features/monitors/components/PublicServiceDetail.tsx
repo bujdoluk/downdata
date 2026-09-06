@@ -79,8 +79,9 @@ export default function PublicServiceDetail({ slug }: { slug: Slug }) {
   const Logo = SERVICE_LOGOS[slug] ?? FallbackLogo;
 
   const allComponents = data?.components ?? [];
+  // !c.group_id, not === null — see the matching comment in ServiceDetail.tsx.
   const topLevelItems = allComponents
-    .filter((c) => c.group_id === null)
+    .filter((c) => !c.group_id)
     .sort((a, b) => a.position - b.position);
   const childrenOf = (groupId: string) =>
     allComponents.filter((c) => c.group_id === groupId).sort((a, b) => a.position - b.position);

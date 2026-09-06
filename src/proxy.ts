@@ -26,6 +26,10 @@ const PUBLIC_EXACT = new Set([
   // session — unlike the entries above, a session here is still read when
   // present (to attach the submitter's user_id), just not required.
   "/api/requests",
+  // Public reference data (see lib/catalog.ts) — powers the public
+  // navbar's service search and the landing footer's Popular Services
+  // list, both logged-out surfaces.
+  "/api/catalog",
 ]);
 // "/integrations/" (trailing slash) only matches per-provider marketing
 // pages like /integrations/slack — the bare "/integrations" (no trailing
@@ -43,6 +47,19 @@ const PUBLIC_PREFIXES = [
   // session-gated, 401ing every logged-out viewer's refresh.
   "/status/",
   "/api/public/status/",
+  // A public per-service detail page (see app/services/[slug]/page.tsx)
+  // and the two live-data endpoints it and the landing footer's Popular
+  // Services list depend on. Neither endpoint reads any account-specific
+  // data — /api/summary/[slug] is the same summary the authenticated
+  // /monitors/:slug page already uses (verified it carries nothing
+  // per-account: trackedSince is this service's first-ever poll by the
+  // app, not "since I added it"), and /api/status/[slug] is just a live
+  // indicator/description lookup. This also makes the existing
+  // /api/status/catalog route public as a side effect of sharing the
+  // /api/status/ prefix — same public-catalog-data class as the rest.
+  "/services/",
+  "/api/summary/",
+  "/api/status/",
 ];
 
 function isPublicPath(pathname: string): boolean {

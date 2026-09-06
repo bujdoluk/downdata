@@ -8,7 +8,11 @@ import type { Service } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/logos";
 import FallbackLogo from "@/components/logos/FallbackLogo";
 
-export default function ServiceSearch({ services }: { services: Service[] }) {
+// linkPrefix defaults to the authenticated monitors detail page; the
+// public landing navbar passes "/services" instead (see
+// app/services/[slug]/page.tsx) — same component, same UI, different
+// destination depending on whether the caller has a session.
+export default function ServiceSearch({ services, linkPrefix = "/monitors" }: { services: Service[]; linkPrefix?: string }) {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const trimmed = query.trim();
@@ -38,7 +42,7 @@ export default function ServiceSearch({ services }: { services: Service[] }) {
               const Logo = SERVICE_LOGOS[service.slug] ?? FallbackLogo;
               return (
                 <li key={service.slug}>
-                  <Link href={`/monitors/${service.slug}`} className="flex items-center gap-2.5">
+                  <Link href={`${linkPrefix}/${service.slug}`} className="flex items-center gap-2.5">
                     <Logo size={18} name={service.name} />
                     {service.name}
                   </Link>

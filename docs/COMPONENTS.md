@@ -1134,6 +1134,14 @@ _No props._
 | className | string \| undefined | No |  |  |
 | iconClassName | string \| undefined | No | h-4 w-4 |  |
 
+### PublicServiceDetail
+
+`src/features/monitors/components/PublicServiceDetail.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| slug | string | Yes | — |  |
+
 ### ServiceCatalogPicker
 
 `src/features/monitors/components/ServiceCatalogPicker.tsx`
@@ -1159,6 +1167,7 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | services | Service[] | Yes | — |  |
+| linkPrefix | string \| undefined | No | /monitors |  |
 
 ### ServiceSearchPicker
 

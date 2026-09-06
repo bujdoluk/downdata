@@ -8,6 +8,7 @@ import Logo from "@/components/navbar/Logo";
 import { useCookieConsent } from "@/components/cookies/CookieConsent";
 import { FEATURE_CATALOG } from "@/lib/featureCatalog";
 import { INTEGRATION_CATALOG } from "@/lib/integrationCatalog";
+import PopularServicesList from "@/components/landing-page/PopularServicesList";
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -46,6 +47,11 @@ export default function Footer() {
             {t(`nav.${slug}`)}
           </Link>
         ))}
+      </nav>
+
+      <nav>
+        <h6 className="footer-title">{t("footer.popularServicesTitle")}</h6>
+        <PopularServicesList />
       </nav>
 
       <nav>

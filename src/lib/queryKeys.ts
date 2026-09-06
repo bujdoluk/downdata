@@ -3,7 +3,13 @@
 // query it's meant to invalidate.
 export const queryKeys = {
   catalogStatus: () => ["status", "catalog"] as const,
+  catalogAll: () => ["catalog", "all"] as const,
   serviceStatus: (slug: string) => ["status", "service", slug] as const,
+  // Deliberately distinct from serviceStatus(slug) above — that key is
+  // /api/summary/[slug]'s full-detail shape; this is /api/status/[slug]'s
+  // much smaller live-status-only shape. Reusing the same key for both
+  // would corrupt the cache.
+  quickStatus: (slug: string) => ["status", "quick", slug] as const,
   incidents: {
     list: () => ["incidents", "list"] as const,
     count: () => ["incidents", "count"] as const,

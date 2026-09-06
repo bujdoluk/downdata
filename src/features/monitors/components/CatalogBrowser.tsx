@@ -61,7 +61,7 @@ export default function CatalogBrowser({
   const trimmedQuery = query.trim().toLowerCase();
   // A non-empty search overrides category browsing entirely.
   const visibleEntries = trimmedQuery
-    ? catalog.filter((entry) => entry.name.toLowerCase().includes(trimmedQuery))
+    ? catalog.filter((entry) => entry.name.toLowerCase().startsWith(trimmedQuery))
     : selectedCategory
       ? catalog.filter((entry) => entry.category === selectedCategory)
       : [];

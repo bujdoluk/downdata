@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Service } from "@/types/service";
@@ -14,21 +15,47 @@ import FallbackLogo from "@/components/logos/FallbackLogo";
 // destination depending on whether the caller has a session.
 export default function ServiceSearch({ services, linkPrefix = "/monitors" }: { services: Service[]; linkPrefix?: string }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const [query, setQuery] = useState("");
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const trimmed = query.trim();
 
   const results = trimmed
     ? services.filter((service) =>
-        service.name.toLowerCase().includes(trimmed.toLowerCase()),
+        service.name.toLowerCase().startsWith(trimmed.toLowerCase()),
       )
     : [];
+
+  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (results.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlightedIndex((i) => Math.min(i + 1, results.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlightedIndex((i) => Math.max(i - 1, 0));
+    } else if (e.key === "Enter") {
+      const service = results[highlightedIndex];
+      if (service) {
+        e.preventDefault();
+        router.push(`${linkPrefix}/${service.slug}`);
+      }
+    } else if (e.key === "Escape") {
+      setQuery("");
+      setHighlightedIndex(-1);
+    }
+  }
 
   return (
     <div className="relative w-56 min-w-56">
       <input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setHighlightedIndex(-1);
+        }}
+        onKeyDown={handleKeyDown}
         placeholder={t("nav.searchPlaceholder")}
         className="input input-bordered input-sm w-full"
       />
@@ -38,11 +65,15 @@ export default function ServiceSearch({ services, linkPrefix = "/monitors" }: { 
           {results.length === 0 ? (
             <li className="text-base-content/50 px-3 py-2.5 text-sm">{t("nav.noServicesFound")}</li>
           ) : (
-            results.map((service) => {
+            results.map((service, index) => {
               const Logo = SERVICE_LOGOS[service.slug] ?? FallbackLogo;
               return (
                 <li key={service.slug}>
-                  <Link href={`${linkPrefix}/${service.slug}`} className="flex items-center gap-2.5">
+                  <Link
+                    href={`${linkPrefix}/${service.slug}`}
+                    onMouseEnter={() => setHighlightedIndex(index)}
+                    className={`flex items-center gap-2.5 ${index === highlightedIndex ? "menu-focus" : ""}`}
+                  >
                     <Logo size={18} name={service.name} />
                     {service.name}
                   </Link>

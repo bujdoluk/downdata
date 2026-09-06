@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { resolveIntegrationBySlug, addServiceToIntegrationTarget, removeServiceFromIntegrationTarget } from "@/lib/integrations";
-import { getAllTrackedSlugs } from "@/lib/boards";
+import { resolveIntegrationBySlug, addServiceToIntegrationTarget, removeServiceFromIntegrationTarget } from "@/features/integrations/services/integrations";
+import { getAllTrackedSlugs } from "@/features/boards/services/boards";
 
 // Turns this service on as a trigger for the caller's own integration —
 // mirrors app/api/boards/[id]/services/[slug]'s add/remove shape exactly.

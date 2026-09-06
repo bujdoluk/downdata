@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { setSourceEnabled } from "@/lib/earlyWarnings";
-import { resolveKeywordSource } from "@/lib/keywordSources";
+import { setSourceEnabled } from "@/features/early-warnings/services/earlyWarnings";
+import { resolveKeywordSource } from "@/features/early-warnings/services/keywordSources";
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ source: string }> }) {
   const { source } = await params;

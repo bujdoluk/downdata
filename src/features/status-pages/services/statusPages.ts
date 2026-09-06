@@ -3,7 +3,7 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { getCatalog } from "@/lib/catalog";
 import { fetchStatusBatch } from "@/lib/statusBatch";
 import { getServiceUptimeSummary } from "@/lib/uptime";
-import type { BoardStatusPage, PublicStatusPage, PublicStatusPageService } from "@/types/statusPage";
+import type { BoardStatusPage, PublicStatusPage, PublicStatusPageService } from "@/features/status-pages/types";
 
 type StatusPageRow = {
   board_id: string;

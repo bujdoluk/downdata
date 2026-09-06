@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { getStripeClient } from "@/lib/stripe";
-import { applyCancelState, getOwnStripeSubscriptionId } from "@/lib/subscriptions";
+import { getStripeClient } from "@/features/billing/services/stripe";
+import { applyCancelState, getOwnStripeSubscriptionId } from "@/features/billing/services/subscriptions";
 import { isoFromUnixSeconds } from "@/lib/formatTime";
 
 // Custom in-app cancel/resume (not Stripe's hosted Customer Portal) —

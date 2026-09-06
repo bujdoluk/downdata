@@ -2,7 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
 import Spinner from "@/components/Spinner";
 
 const TIER_ORDER = ["critical", "major", "minor", "none"] as const;

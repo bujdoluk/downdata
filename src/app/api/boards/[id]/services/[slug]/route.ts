@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { resolveBoardById, removeServiceFromBoard } from "@/lib/boards";
+import { resolveBoardById, removeServiceFromBoard } from "@/features/boards/services/boards";
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string; slug: string }> }) {
   const { id, slug } = await params;

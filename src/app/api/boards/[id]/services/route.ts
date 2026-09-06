@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { resolveBoardById, addServiceToBoard } from "@/lib/boards";
+import { resolveBoardById, addServiceToBoard } from "@/features/boards/services/boards";
 import { resolveCatalogEntryBySlug, ensureCatalogEntry } from "@/lib/catalog";
 
 // Accepts either { slug } (an existing catalog entry) or { name, host } (a

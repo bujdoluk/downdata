@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { resolveBoardById } from "@/lib/boards";
-import { getStatusPage, upsertStatusPage } from "@/lib/statusPages";
+import { resolveBoardById } from "@/features/boards/services/boards";
+import { getStatusPage, upsertStatusPage } from "@/features/status-pages/services/statusPages";
 
 // Public URL slugs: lowercase letters/digits/hyphens, no leading/trailing/
 // doubled hyphen, 3-63 chars — short enough to type, long enough to avoid

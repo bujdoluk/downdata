@@ -1,5 +1,5 @@
-import { KEYWORD_SOURCES } from "@/lib/keywordSources";
-import type { RawMatch } from "@/lib/keywordSources/types";
+import { KEYWORD_SOURCES } from "@/features/early-warnings/services/keywordSources";
+import type { RawMatch } from "@/features/early-warnings/services/keywordSources/types";
 import { getSupabaseClient } from "@/lib/supabase";
 import { nowPlusIso } from "@/lib/formatTime";
 

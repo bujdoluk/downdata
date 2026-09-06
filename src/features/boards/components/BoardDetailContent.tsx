@@ -11,15 +11,15 @@ import type { Catalog, ServiceStatusBatchResponse, TrackedIncidentSummary, Track
 import type { IncidentCountByService } from "@/lib/getStoredIncident";
 import { fetchJson, postJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
-import { useBoardRename } from "@/hooks/useBoardRename";
+import { useBoardRename } from "@/features/boards/hooks/useBoardRename";
 import { useTimeZone } from "@/hooks/useTimeZone";
-import { isActiveIncident } from "@/lib/isActiveIncident";
-import StatusSummary from "@/components/service/StatusSummary";
-import BoardActiveIncidentsPanel from "@/components/boards/BoardActiveIncidentsPanel";
-import BoardActiveMaintenancePanel from "@/components/boards/BoardActiveMaintenancePanel";
-import BoardTrackedServicesGrid from "@/components/boards/BoardTrackedServicesGrid";
-import BoardStatusPageSummary from "@/components/boards/BoardStatusPageSummary";
-import IncidentCountsChart from "@/components/history/IncidentCountsChart";
+import { isActiveIncident } from "@/features/boards/services/isActiveIncident";
+import StatusSummary from "@/features/monitors/components/StatusSummary";
+import BoardActiveIncidentsPanel from "@/features/boards/components/BoardActiveIncidentsPanel";
+import BoardActiveMaintenancePanel from "@/features/boards/components/BoardActiveMaintenancePanel";
+import BoardTrackedServicesGrid from "@/features/boards/components/BoardTrackedServicesGrid";
+import BoardStatusPageSummary from "@/features/status-pages/components/BoardStatusPageSummary";
+import IncidentCountsChart from "@/features/history/components/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
 import { InfoIcon, PencilIcon } from "@/components/icons/NavIcons";
 

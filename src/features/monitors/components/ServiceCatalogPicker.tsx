@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Catalog } from "@/types/service";
 import type { Board } from "@/types/board";
-import CatalogBrowser from "@/components/service/CatalogBrowser";
+import CatalogBrowser from "@/features/monitors/components/CatalogBrowser";
 import RequestCard from "@/components/RequestCard";
 import { queryKeys } from "@/lib/queryKeys";
 import { TAB_BG_STYLE } from "@/lib/utils";

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllBoards, addBoard } from "@/lib/boards";
+import { getAllBoards, addBoard } from "@/features/boards/services/boards";
 
 export async function GET() {
   return NextResponse.json(await getAllBoards());

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { submitFeatureRequest } from "@/lib/featureRequests";
-import { getResendClient } from "@/lib/resend";
+import { getResendClient } from "@/features/integrations/services/resend";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 
 const MAX_MESSAGE_LENGTH = 500;

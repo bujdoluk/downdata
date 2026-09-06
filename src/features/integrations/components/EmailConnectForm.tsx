@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Recipient } from "@/types/integration";
-import VerifiedRecipientRow from "@/components/integrations/VerifiedRecipientRow";
+import VerifiedRecipientRow from "@/features/integrations/components/VerifiedRecipientRow";
 import Spinner from "@/components/Spinner";
 
 // Recipient verification means "connect" is no longer a single bulk

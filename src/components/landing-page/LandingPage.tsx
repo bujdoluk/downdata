@@ -10,7 +10,7 @@ import PricingSection from "@/components/landing-page/PricingSection";
 import TrustedServicesRow from "@/components/landing-page/TrustedServicesRow";
 import RevealOnScroll from "@/components/landing-page/RevealOnScroll";
 import LiveDashboardPanel from "@/components/landing-page/LiveDashboardPanel";
-import { INDICATOR_STYLES } from "@/components/service/statusStyles";
+import { INDICATOR_STYLES } from "@/components/statusStyles";
 import { AlertIcon, BoardIcon, BoltIcon, UserGroupIcon } from "@/components/icons/NavIcons";
 
 const mono = "font-mono";

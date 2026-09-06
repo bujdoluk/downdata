@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseClient } from "@/lib/supabase";
 import { nowIso } from "@/lib/formatTime";
-import type { BillingInterval, PlanTier, Subscription } from "@/types/subscription";
+import type { BillingInterval, PlanTier, Subscription } from "@/features/billing/types";
 
 type SubscriptionRow = {
   stripe_customer_id: string | null;

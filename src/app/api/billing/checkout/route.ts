@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { createClient } from "@/lib/supabase/server";
-import { getStripeClient, resolvePriceId } from "@/lib/stripe";
-import { getStripeCustomerId } from "@/lib/subscriptions";
-import { isBillingInterval, isPlanTier, PLAN_CATALOG } from "@/lib/plans";
+import { getStripeClient, resolvePriceId } from "@/features/billing/services/stripe";
+import { getStripeCustomerId } from "@/features/billing/services/subscriptions";
+import { isBillingInterval, isPlanTier, PLAN_CATALOG } from "@/features/billing/services/plans";
 
 // Starts a subscription Checkout Session for the caller's chosen plan.
 // Never includes payment_method_types — Stripe determines eligible

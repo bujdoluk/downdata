@@ -8,7 +8,7 @@ import { ArrowLeftIcon, EyeIcon, EyeSlashIcon, GoogleIcon } from "@/components/i
 import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import { AuthActionError, continueWithGoogle, logIn, resetPassword, signUp } from "@/lib/supabase/auth";
 import { createClient } from "@/lib/supabase/client";
-import { forgetSessionOnBrowserClose } from "@/lib/supabase/rememberMe";
+import { forgetSessionOnBrowserClose } from "@/features/auth/services/rememberMe";
 import Spinner from "@/components/Spinner";
 
 type Mode = "login" | "signup" | "reset";

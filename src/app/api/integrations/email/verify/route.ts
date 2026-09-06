@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { verifyEmailRecipient } from "@/lib/integrations";
+import { verifyEmailRecipient } from "@/features/integrations/services/integrations";
 
 // Public — see proxy.ts's PUBLIC_EXACT entry for why: this is clicked
 // from an email client, not this app, so the browser completing it may

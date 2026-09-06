@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllKeywordWatches, addKeywordWatch } from "@/lib/earlyWarnings";
+import { getAllKeywordWatches, addKeywordWatch } from "@/features/early-warnings/services/earlyWarnings";
 
 export async function GET() {
   return NextResponse.json(await getAllKeywordWatches());

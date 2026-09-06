@@ -1,5 +1,5 @@
 import { getCatalog } from "@/lib/catalog";
-import { getAllIntegrationsAcrossUsers } from "@/lib/integrations";
+import { getAllIntegrationsAcrossUsers } from "@/features/integrations/services/integrations";
 import { getSupabaseClient } from "@/lib/supabase";
 import { runInBatches } from "@/lib/runInBatches";
 

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { addIntegration, addRecipient, generateVerification, integrationExists } from "@/lib/integrations";
-import { backfillNewIntegration } from "@/lib/backfillNewIntegration";
-import { getResendClient } from "@/lib/resend";
+import { addIntegration, addRecipient, generateVerification, integrationExists } from "@/features/integrations/services/integrations";
+import { backfillNewIntegration } from "@/features/integrations/services/backfillNewIntegration";
+import { getResendClient } from "@/features/integrations/services/resend";
 
 // The WHATWG HTML Living Standard's own email regex — the same one
 // browsers use to validate <input type="email">. Full RFC 5322 permits

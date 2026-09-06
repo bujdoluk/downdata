@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Category, Catalog, ServiceStatusBatchResponse } from "@/types/service";
-import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
+import CatalogServiceGrid from "@/features/monitors/components/CatalogServiceGrid";
 
 const CATEGORY_ORDER: Category[] = [
   "infrastructure",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { getAllBoards } from "@/lib/boards";
+import { getAllBoards } from "@/features/boards/services/boards";
 import { getCatalog } from "@/lib/catalog";
-import ServiceCatalogPicker from "@/components/service/ServiceCatalogPicker";
+import ServiceCatalogPicker from "@/features/monitors/components/ServiceCatalogPicker";
 
 export const metadata: Metadata = {
   title: "Add Service · downDATA",

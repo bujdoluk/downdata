@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import { resolveTimeZone } from "@/lib/account";
-import { getSubscription } from "@/lib/subscriptions";
-import BillingPageContent from "@/components/billing/BillingPageContent";
+import { getSubscription } from "@/features/billing/services/subscriptions";
+import BillingPageContent from "@/features/billing/components/BillingPageContent";
 
 export const metadata: Metadata = {
   title: "Billing · downDATA",

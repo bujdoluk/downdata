@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import type { BillingInterval, PlanTier } from "@/types/subscription";
+import type { BillingInterval, PlanTier } from "@/features/billing/types";
 
 // Lazy, server-only client — same shape as lib/resend.ts's
 // getResendClient(). No apiVersion pin: the installed "stripe" package

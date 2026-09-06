@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { resolveCatalogEntryBySlug } from "@/lib/catalog";
-import { getStoredMaintenanceWithUpdates, toMaintenanceApiShape } from "@/lib/getStoredMaintenance";
+import { getStoredMaintenanceWithUpdates, toMaintenanceApiShape } from "@/features/maintenance/services/getStoredMaintenance";
 
 // One maintenance's full timeline, fetched on demand for whichever item the
 // Maintenance/Boards pages currently have selected — the list endpoint

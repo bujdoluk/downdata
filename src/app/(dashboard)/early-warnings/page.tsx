@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getAllKeywordWatches, getAllSourceSettings, getMatchesForOwnKeywords } from "@/lib/earlyWarnings";
-import EarlyWarningsPageContent from "@/components/early-warnings/EarlyWarningsPageContent";
+import { getAllKeywordWatches, getAllSourceSettings, getMatchesForOwnKeywords } from "@/features/early-warnings/services/earlyWarnings";
+import EarlyWarningsPageContent from "@/features/early-warnings/components/EarlyWarningsPageContent";
 
 export const metadata: Metadata = {
   title: "Early Warnings · downDATA",

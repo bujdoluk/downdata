@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllBoards, resolveBoardById } from "@/lib/boards";
+import { getAllBoards, resolveBoardById } from "@/features/boards/services/boards";
 import { getCatalog } from "@/lib/catalog";
-import BoardDetailContent from "@/components/boards/BoardDetailContent";
+import BoardDetailContent from "@/features/boards/components/BoardDetailContent";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;

@@ -1,7 +1,7 @@
 "use client";
 
 import type { Catalog, ServiceStatusBatchResponse } from "@/types/service";
-import CatalogServiceCard from "@/components/service/CatalogServiceCard";
+import CatalogServiceCard from "@/features/monitors/components/CatalogServiceCard";
 import { usePinned } from "@/hooks/usePinned";
 
 const INDICATOR_SEVERITY: Record<string, number> = {

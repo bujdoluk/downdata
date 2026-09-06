@@ -3,8 +3,8 @@ import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDate, minutesBetween, formatDuration } from "@/lib/formatTime";
-import { INDICATOR_STYLES } from "@/components/service/statusStyles";
-import type { CalendarDay, IncidentCalendarData } from "@/lib/buildIncidentCalendar";
+import { INDICATOR_STYLES } from "@/components/statusStyles";
+import type { CalendarDay, IncidentCalendarData } from "@/features/history/services/buildIncidentCalendar";
 
 const EMPTY_DAY_COLOR = "bg-base-content/10";
 const TOOLTIP_GAP = 8;

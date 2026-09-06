@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { addIntegration, addRecipient, generateVerification, resolveIntegrationBySlug, integrationExists, updateSmsNotifyImpacts } from "@/lib/integrations";
-import { backfillNewIntegration } from "@/lib/backfillNewIntegration";
-import { sendSms } from "@/lib/twilio";
-import { ALL_IMPACTS } from "@/components/service/statusStyles";
+import { addIntegration, addRecipient, generateVerification, resolveIntegrationBySlug, integrationExists, updateSmsNotifyImpacts } from "@/features/integrations/services/integrations";
+import { backfillNewIntegration } from "@/features/integrations/services/backfillNewIntegration";
+import { sendSms } from "@/features/integrations/services/twilio";
+import { ALL_IMPACTS } from "@/components/statusStyles";
 
 // E.164 — the format Twilio (and phone numbers generally) require: a
 // leading "+", country code, 8-15 digits total, no spaces/punctuation.

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllBoards, resolveBoardById, renameBoard, removeBoard } from "@/lib/boards";
+import { getAllBoards, resolveBoardById, renameBoard, removeBoard } from "@/features/boards/services/boards";
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

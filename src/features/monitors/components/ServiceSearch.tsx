@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Service } from "@/types/service";
-import { SERVICE_LOGOS } from "@/components/service/logos";
-import FallbackLogo from "@/components/service/logos/FallbackLogo";
+import { SERVICE_LOGOS } from "@/components/logos";
+import FallbackLogo from "@/components/logos/FallbackLogo";
 
 export default function ServiceSearch({ services }: { services: Service[] }) {
   const { t } = useTranslation();

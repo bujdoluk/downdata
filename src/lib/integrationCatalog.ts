@@ -1,7 +1,7 @@
 import type { ComponentType } from "react";
-import SlackLogo from "@/components/integrations/SlackLogo";
-import EmailLogo from "@/components/integrations/EmailLogo";
-import SmsLogo from "@/components/integrations/SmsLogo";
+import SlackLogo from "@/features/integrations/components/SlackLogo";
+import EmailLogo from "@/features/integrations/components/EmailLogo";
+import SmsLogo from "@/features/integrations/components/SmsLogo";
 
 // Distinct from types/integration.ts's Integration/IntegrationDefinition on
 // purpose — those describe a connected integration's data (dashboard

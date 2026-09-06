@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { removeServiceFromAllBoards } from "@/lib/boards";
+import { removeServiceFromAllBoards } from "@/features/boards/services/boards";
 
 // Untrack from every one of the caller's own boards at once — the
 // /monitors aggregate view's remove action. Untracking from just one

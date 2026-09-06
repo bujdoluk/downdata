@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { resolveCatalogEntryBySlug } from "@/lib/catalog";
 import { getStoredIncidentsForService, toIncidentApiShape } from "@/lib/getStoredIncident";
-import { getAllStoredMaintenanceSummaries, toMaintenanceSummaryApiShape } from "@/lib/getStoredMaintenance";
+import { getAllStoredMaintenanceSummaries, toMaintenanceSummaryApiShape } from "@/features/maintenance/services/getStoredMaintenance";
 import { getServiceUptimeSummary } from "@/lib/uptime";
 
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {

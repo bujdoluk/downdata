@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getPublicStatusPage } from "@/lib/statusPages";
-import PublicStatusPageContent from "@/components/statusPage/PublicStatusPageContent";
+import { getPublicStatusPage } from "@/features/status-pages/services/statusPages";
+import PublicStatusPageContent from "@/features/status-pages/components/PublicStatusPageContent";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;

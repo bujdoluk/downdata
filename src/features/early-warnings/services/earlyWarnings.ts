@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseClient } from "@/lib/supabase";
-import { KEYWORD_SOURCES } from "@/lib/keywordSources";
-import type { KeywordWatch, SourceSetting, KeywordMatch } from "@/types/earlyWarning";
+import { KEYWORD_SOURCES } from "@/features/early-warnings/services/keywordSources";
+import type { KeywordWatch, SourceSetting, KeywordMatch } from "@/features/early-warnings/types";
 
 type WatchRow = { id: string; keyword: string };
 type SettingRow = { source: string; enabled: boolean };

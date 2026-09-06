@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { getAllTrackedSlugs, getAllBoards } from "@/lib/boards";
+import { getAllTrackedSlugs, getAllBoards } from "@/features/boards/services/boards";
 import { getCatalog } from "@/lib/catalog";
-import HistoryPageContent from "@/components/history/HistoryPageContent";
+import HistoryPageContent from "@/features/history/components/HistoryPageContent";
 
 export const metadata: Metadata = {
   title: "History · downDATA",

@@ -1,5 +1,5 @@
-import { redditSource } from "@/lib/keywordSources/reddit";
-import type { KeywordSource } from "@/lib/keywordSources/types";
+import { redditSource } from "@/features/early-warnings/services/keywordSources/reddit";
+import type { KeywordSource } from "@/features/early-warnings/services/keywordSources/types";
 
 // The registry a future platform gets added to — one new file implementing
 // KeywordSource, one new entry here, and both the poller and the UI's

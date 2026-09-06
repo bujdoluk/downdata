@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import { annualBilledTotal, discountedMonthlyPrice, PLAN_CATALOG } from "@/lib/plans";
+import { annualBilledTotal, discountedMonthlyPrice, PLAN_CATALOG } from "@/features/billing/services/plans";
 import RevealOnScroll from "@/components/landing-page/RevealOnScroll";
 
 const mono = "font-mono";

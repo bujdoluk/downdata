@@ -1,5 +1,5 @@
 import { XMLParser } from "fast-xml-parser";
-import type { KeywordSource, RawMatch } from "@/lib/keywordSources/types";
+import type { KeywordSource, RawMatch } from "@/features/early-warnings/services/keywordSources/types";
 
 // Reddit's own guidance for unauthenticated access is a descriptive User-
 // Agent identifying the app — confirmed live (see the Early Warnings plan)

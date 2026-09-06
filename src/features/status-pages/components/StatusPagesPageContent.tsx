@@ -4,10 +4,10 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { useQueries } from "@tanstack/react-query";
 import type { Board } from "@/types/board";
-import type { BoardStatusPage } from "@/types/statusPage";
+import type { BoardStatusPage } from "@/features/status-pages/types";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
-import BoardStatusPageSettings from "@/components/boards/BoardStatusPageSettings";
+import BoardStatusPageSettings from "@/features/status-pages/components/BoardStatusPageSettings";
 
 // One card per board, each wrapping the same BoardStatusPageSettings form
 // the board detail grid used to show directly — that component is already

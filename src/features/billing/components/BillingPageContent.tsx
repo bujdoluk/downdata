@@ -10,8 +10,8 @@ import Spinner from "@/components/Spinner";
 import { fetchJson, postJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { formatDateTime } from "@/lib/formatTime";
-import { isBillingInterval, isPlanTier, PLAN_CATALOG } from "@/lib/plans";
-import type { BillingInterval, PlanTier, Subscription } from "@/types/subscription";
+import { isBillingInterval, isPlanTier, PLAN_CATALOG } from "@/features/billing/services/plans";
+import type { BillingInterval, PlanTier, Subscription } from "@/features/billing/types";
 
 type CancelResult = { status: string; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean };
 

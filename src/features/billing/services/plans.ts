@@ -4,7 +4,7 @@
 // used to be PricingSection's own local `plans` array so the two pages
 // can't drift apart. Client-safe: no Stripe secrets or price ids live
 // here (see lib/stripe.ts's resolvePriceId() for that, server-only).
-import type { BillingInterval, PlanTier } from "@/types/subscription";
+import type { BillingInterval, PlanTier } from "@/features/billing/types";
 
 export const ANNUAL_DISCOUNT = 0.2;
 

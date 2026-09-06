@@ -4,8 +4,8 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { TrackedMaintenanceSummary } from "@/types/service";
-import { SERVICE_LOGOS } from "@/components/service/logos";
-import FallbackLogo from "@/components/service/logos/FallbackLogo";
+import { SERVICE_LOGOS } from "@/components/logos";
+import FallbackLogo from "@/components/logos/FallbackLogo";
 import { formatDateTime } from "@/lib/formatTime";
 import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
 

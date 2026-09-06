@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { resolveCatalogEntryBySlug } from "@/lib/catalog";
-import ServiceDetail from "@/components/service/ServiceDetail";
+import ServiceDetail from "@/features/monitors/components/ServiceDetail";
 
 export async function generateMetadata({
   params,

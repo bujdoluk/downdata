@@ -8,15 +8,15 @@ import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { IntegrationDefinition } from "@/types/integration";
-import IntegrationCard from "@/components/integrations/IntegrationCard";
-import SlackLogo from "@/components/integrations/SlackLogo";
-import EmailLogo from "@/components/integrations/EmailLogo";
-import SmsLogo from "@/components/integrations/SmsLogo";
+import IntegrationCard from "@/features/integrations/components/IntegrationCard";
+import SlackLogo from "@/features/integrations/components/SlackLogo";
+import EmailLogo from "@/features/integrations/components/EmailLogo";
+import SmsLogo from "@/features/integrations/components/SmsLogo";
 import RequestCard from "@/components/RequestCard";
 import { postJson } from "@/lib/fetchJson";
 
-const EmailConnectForm = dynamic(() => import("@/components/integrations/EmailConnectForm"));
-const SmsConnectForm = dynamic(() => import("@/components/integrations/SmsConnectForm"));
+const EmailConnectForm = dynamic(() => import("@/features/integrations/components/EmailConnectForm"));
+const SmsConnectForm = dynamic(() => import("@/features/integrations/components/SmsConnectForm"));
 
 const INTEGRATION_LOGOS: Record<string, React.ComponentType<{ size?: number }>> = {
   slack: SlackLogo,

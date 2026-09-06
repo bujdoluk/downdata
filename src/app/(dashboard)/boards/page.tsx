@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getAllBoards } from "@/lib/boards";
-import BoardsPageContent from "@/components/boards/BoardsPageContent";
+import { getAllBoards } from "@/features/boards/services/boards";
+import BoardsPageContent from "@/features/boards/components/BoardsPageContent";
 
 export const metadata: Metadata = {
   title: "Boards · downDATA",

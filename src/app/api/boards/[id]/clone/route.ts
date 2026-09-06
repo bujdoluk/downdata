@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { resolveBoardById, cloneBoard } from "@/lib/boards";
+import { resolveBoardById, cloneBoard } from "@/features/boards/services/boards";
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

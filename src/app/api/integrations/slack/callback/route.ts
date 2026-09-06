@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { addIntegration } from "@/lib/integrations";
-import { backfillNewIntegration } from "@/lib/backfillNewIntegration";
+import { addIntegration } from "@/features/integrations/services/integrations";
+import { backfillNewIntegration } from "@/features/integrations/services/backfillNewIntegration";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);

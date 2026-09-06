@@ -9,7 +9,7 @@ import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import Sidebar from "@/components/sidebar/Sidebar";
 import { useCookieConsent } from "@/components/cookies/CookieConsent";
 import { hasNavigatedClientSide } from "@/lib/clientNavigationTracker";
-import { openSupportChat } from "@/lib/tawkChat";
+import { openSupportChat } from "@/features/support/services/tawkChat";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 
 export default function SupportContent({ isAuthenticated }: { isAuthenticated: boolean }) {

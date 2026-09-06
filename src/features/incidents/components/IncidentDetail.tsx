@@ -4,9 +4,9 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDateTime, formatDuration, minutesBetween, epochMs } from "@/lib/formatTime";
 import type { TrackedIncident, TrackedMaintenance } from "@/types/service";
-import { SERVICE_LOGOS } from "@/components/service/logos";
-import FallbackLogo from "@/components/service/logos/FallbackLogo";
-import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import { SERVICE_LOGOS } from "@/components/logos";
+import FallbackLogo from "@/components/logos/FallbackLogo";
+import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
 import { stripHtml } from "@/lib/stripHtml";
 
 // Shared by the Incidents and Maintenance pages' detail column —

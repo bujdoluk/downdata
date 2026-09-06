@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { resolveBoardById } from "@/lib/boards";
-import { getStatusPage, setEnabled, countEnabledStatusPages } from "@/lib/statusPages";
-import { getSubscription } from "@/lib/subscriptions";
-import { statusPageQuota } from "@/lib/plans";
+import { resolveBoardById } from "@/features/boards/services/boards";
+import { getStatusPage, setEnabled, countEnabledStatusPages } from "@/features/status-pages/services/statusPages";
+import { getSubscription } from "@/features/billing/services/subscriptions";
+import { statusPageQuota } from "@/features/billing/services/plans";
 
 // Publishes the board's status page — kept separate from PUT
 // .../status-page so the quota check only ever runs here, at the moment a

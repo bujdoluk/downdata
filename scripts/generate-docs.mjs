@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // Generates docs/COMPONENTS.md — a props reference for every React
-// component under components/, extracted straight from their TypeScript
-// types via react-docgen-typescript (drives the real TS compiler, so it
-// resolves the @/* alias and cross-file imported prop types correctly).
+// component under src/components/ (shared) and src/features/*/components/
+// (feature-owned), extracted straight from their TypeScript types via
+// react-docgen-typescript (drives the real TS compiler, so it resolves the
+// @/* alias and cross-file imported prop types correctly).
 //
 // Run with: npm run docs:components
 
@@ -11,7 +12,7 @@ import path from "node:path";
 import { withCustomConfig } from "react-docgen-typescript";
 
 const ROOT = process.cwd();
-const COMPONENTS_DIR = path.join(ROOT, "components");
+const COMPONENT_DIRS = [path.join(ROOT, "src", "components"), path.join(ROOT, "src", "features")];
 const OUT_FILE = path.join(ROOT, "docs", "COMPONENTS.md");
 
 function listTsxFiles(dir) {
@@ -56,7 +57,7 @@ function renderComponent(doc) {
 }
 
 function main() {
-  const files = listTsxFiles(COMPONENTS_DIR);
+  const files = COMPONENT_DIRS.flatMap(listTsxFiles);
   const parser = withCustomConfig(path.join(ROOT, "tsconfig.json"), {});
 
   const docs = [];

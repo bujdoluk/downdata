@@ -2,7 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { KeywordWatch } from "@/types/earlyWarning";
+import type { KeywordWatch } from "@/features/early-warnings/types";
 
 export default function KeywordBadgeList({ keywords, onRemove }: { keywords: KeywordWatch[]; onRemove: (id: string) => void }) {
   const { t } = useTranslation();

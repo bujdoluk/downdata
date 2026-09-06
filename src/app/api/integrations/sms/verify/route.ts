@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { resolveIntegrationBySlug, verifySmsRecipient } from "@/lib/integrations";
+import { resolveIntegrationBySlug, verifySmsRecipient } from "@/features/integrations/services/integrations";
 
 export async function POST(request: Request) {
   let body: unknown;

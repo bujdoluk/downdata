@@ -6,14 +6,14 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { useTimeZone } from "@/hooks/useTimeZone";
-import type { PublicStatusPage } from "@/types/statusPage";
-import { SERVICE_LOGOS } from "@/components/service/logos";
-import FallbackLogo from "@/components/service/logos/FallbackLogo";
-import OutageTracker from "@/components/service/OutageTracker";
-import StatusSummary from "@/components/service/StatusSummary";
+import type { PublicStatusPage } from "@/features/status-pages/types";
+import { SERVICE_LOGOS } from "@/components/logos";
+import FallbackLogo from "@/components/logos/FallbackLogo";
+import OutageTracker from "@/features/monitors/components/OutageTracker";
+import StatusSummary from "@/features/monitors/components/StatusSummary";
 import Logo from "@/components/navbar/Logo";
 import { InfoIcon } from "@/components/icons/NavIcons";
-import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
 
 const POLL_INTERVAL_MS = 60_000;
 

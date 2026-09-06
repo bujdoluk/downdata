@@ -10,7 +10,7 @@ import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import Logo from "@/components/navbar/Logo";
 import { useCookieConsent } from "@/components/cookies/CookieConsent";
 import { hasNavigatedClientSide } from "@/lib/clientNavigationTracker";
-import { openSupportChat } from "@/lib/tawkChat";
+import { openSupportChat } from "@/features/support/services/tawkChat";
 import lukasPhoto from "./lukas.webp";
 
 // TODO: replace with downDATA's real X/Twitter handle once one exists —

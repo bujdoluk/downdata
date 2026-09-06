@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getPublicStatusPage } from "@/lib/statusPages";
+import { getPublicStatusPage } from "@/features/status-pages/services/statusPages";
 
 // Public, unauthenticated — no session read here at all (unlike every
 // other route under app/api/, see proxy.ts). Powers both app/status/

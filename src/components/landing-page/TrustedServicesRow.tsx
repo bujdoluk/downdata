@@ -2,7 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import { SERVICE_LOGOS } from "@/components/service/logos";
+import { SERVICE_LOGOS } from "@/components/logos";
 import RevealOnScroll from "@/components/landing-page/RevealOnScroll";
 
 // Every hand-drawn brand logo in the catalog (see components/service/logos/index.tsx) —

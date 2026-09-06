@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { getAllTrackedSlugs } from "@/lib/boards";
+import { getAllTrackedSlugs } from "@/features/boards/services/boards";
 import { getCatalog, buildTrackedServiceLookup } from "@/lib/catalog";
-import { getAllStoredMaintenanceSummaries, toMaintenanceSummaryApiShape } from "@/lib/getStoredMaintenance";
+import { getAllStoredMaintenanceSummaries, toMaintenanceSummaryApiShape } from "@/features/maintenance/services/getStoredMaintenance";
 import type { TrackedMaintenanceSummary } from "@/types/service";
 
 export async function GET() {

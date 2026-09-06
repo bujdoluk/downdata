@@ -6,9 +6,9 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
-import { useOrigin } from "@/hooks/useOrigin";
-import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
-import type { BoardStatusPage } from "@/types/statusPage";
+import { useOrigin } from "@/features/status-pages/hooks/useOrigin";
+import { useCopyToClipboard } from "@/features/status-pages/hooks/useCopyToClipboard";
+import type { BoardStatusPage } from "@/features/status-pages/types";
 import Spinner from "@/components/Spinner";
 import { GlobeIcon, CopyIcon, CheckIcon } from "@/components/icons/NavIcons";
 

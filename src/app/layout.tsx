@@ -4,7 +4,7 @@ import QueryProvider from "@/components/providers/QueryProvider";
 import ClientNavigationTracker from "@/components/providers/ClientNavigationTracker";
 import { CookieConsentProvider } from "@/components/cookies/CookieConsent";
 import ConsentedAnalytics from "@/components/cookies/ConsentedAnalytics";
-import TawkChat from "@/components/support/TawkChat";
+import TawkChat from "@/features/support/components/TawkChat";
 import "./globals.css";
 
 const nunito = Nunito({

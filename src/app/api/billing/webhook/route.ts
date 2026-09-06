@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { getStripeClient, resolvePlanFromPriceId } from "@/lib/stripe";
-import { upsertFromStripeEvent } from "@/lib/subscriptions";
+import { getStripeClient, resolvePlanFromPriceId } from "@/features/billing/services/stripe";
+import { upsertFromStripeEvent } from "@/features/billing/services/subscriptions";
 import { isoFromUnixSeconds } from "@/lib/formatTime";
 
 // Public route (see proxy.ts's PUBLIC_EXACT) — Stripe carries no session

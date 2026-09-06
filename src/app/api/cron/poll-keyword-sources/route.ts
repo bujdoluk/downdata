@@ -2,7 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 import { Temporal } from "temporal-polyfill";
 import { NextResponse, after } from "next/server";
 import { getSupabaseClient } from "@/lib/supabase";
-import { pollAllKeywordSources } from "@/lib/pollKeywordSources";
+import { pollAllKeywordSources } from "@/features/early-warnings/services/pollKeywordSources";
 import { nowIso } from "@/lib/formatTime";
 
 // A full cycle can run long given how deliberately paced the Reddit

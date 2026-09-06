@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { resolveIntegrationBySlug, removeRecipient } from "@/lib/integrations";
+import { resolveIntegrationBySlug, removeRecipient } from "@/features/integrations/services/integrations";
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ slug: string; value: string }> }) {
   const { slug, value } = await params;

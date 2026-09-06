@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllTrackedSlugs } from "@/lib/boards";
+import { getAllTrackedSlugs } from "@/features/boards/services/boards";
 import { getCatalog, buildTrackedServiceLookup } from "@/lib/catalog";
 import { getAllStoredIncidentSummaries, toIncidentSummaryApiShape } from "@/lib/getStoredIncident";
 import type { TrackedIncidentSummary } from "@/types/service";

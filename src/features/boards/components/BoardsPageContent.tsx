@@ -7,14 +7,14 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
 import type { ServiceStatusBatchResponse, TrackedIncidentSummary, TrackedMaintenanceSummary } from "@/types/service";
-import BoardCard from "@/components/boards/BoardCard";
-import CreateBoardForm from "@/components/boards/CreateBoardForm";
+import BoardCard from "@/features/boards/components/BoardCard";
+import CreateBoardForm from "@/features/boards/components/CreateBoardForm";
 import { PlusIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { usePinned } from "@/hooks/usePinned";
-import { isActiveIncident } from "@/lib/isActiveIncident";
+import { isActiveIncident } from "@/features/boards/services/isActiveIncident";
 
 const POLL_INTERVAL_MS = 60_000;
 const SEVERITY_ORDER = ["critical", "major", "minor", "none"] as const;

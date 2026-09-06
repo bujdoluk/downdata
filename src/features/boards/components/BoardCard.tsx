@@ -6,7 +6,7 @@ import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
 import type { Indicator } from "@/types/service";
 import { PinIcon } from "@/components/icons/NavIcons";
-import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
 
 export default function BoardCard({
   board,

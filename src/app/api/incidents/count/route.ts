@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAllTrackedSlugs } from "@/lib/boards";
+import { getAllTrackedSlugs } from "@/features/boards/services/boards";
 import { getSupabaseClient } from "@/lib/supabase";
 
 export async function GET() {

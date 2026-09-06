@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { SourceSetting } from "@/types/earlyWarning";
+import type { SourceSetting } from "@/features/early-warnings/types";
 
 // One row per lib/keywordSources entry — built from that array (via the
 // `sources` prop, sourced server-side from lib/earlyWarnings.ts's

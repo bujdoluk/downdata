@@ -4,9 +4,9 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { TrackedIncidentSummary } from "@/types/service";
-import { SERVICE_LOGOS } from "@/components/service/logos";
-import FallbackLogo from "@/components/service/logos/FallbackLogo";
-import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/service/statusStyles";
+import { SERVICE_LOGOS } from "@/components/logos";
+import FallbackLogo from "@/components/logos/FallbackLogo";
+import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
 
 export default function BoardActiveIncidentsPanel({
   boardId,

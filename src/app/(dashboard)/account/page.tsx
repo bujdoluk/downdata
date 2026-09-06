@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
-import { getAllBoards, getAllTrackedSlugs } from "@/lib/boards";
-import { getAllIntegrations } from "@/lib/integrations";
+import { getAllBoards, getAllTrackedSlugs } from "@/features/boards/services/boards";
+import { getAllIntegrations } from "@/features/integrations/services/integrations";
 import { resolveTimeZone } from "@/lib/account";
-import AccountPageContent from "@/components/account/AccountPageContent";
+import AccountPageContent from "@/features/account/components/AccountPageContent";
 
 export const metadata: Metadata = {
   title: "Account · downDATA",

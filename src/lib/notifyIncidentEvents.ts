@@ -1,8 +1,8 @@
-import { getAllIntegrationsAcrossUsers } from "@/lib/integrations";
-import { getAllTrackedSlugsAcrossUsers } from "@/lib/boards";
+import { getAllIntegrationsAcrossUsers } from "@/features/integrations/services/integrations";
+import { getAllTrackedSlugsAcrossUsers } from "@/features/boards/services/boards";
 import { getSupabaseClient } from "@/lib/supabase";
-import { getResendClient } from "@/lib/resend";
-import { sendSms as sendSmsMessage } from "@/lib/twilio";
+import { getResendClient } from "@/features/integrations/services/resend";
+import { sendSms as sendSmsMessage } from "@/features/integrations/services/twilio";
 import { getStoredIncidentWithUpdates } from "@/lib/getStoredIncident";
 import { runInBatches } from "@/lib/runInBatches";
 import type { IntegrationDefinition } from "@/types/integration";

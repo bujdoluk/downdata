@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { removeKeywordWatch } from "@/lib/earlyWarnings";
+import { removeKeywordWatch } from "@/features/early-warnings/services/earlyWarnings";
 
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

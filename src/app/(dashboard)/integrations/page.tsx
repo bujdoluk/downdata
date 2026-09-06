@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getAllIntegrations } from "@/lib/integrations";
-import IntegrationsPageContent from "@/components/integrations/IntegrationsPageContent";
+import { getAllIntegrations } from "@/features/integrations/services/integrations";
+import IntegrationsPageContent from "@/features/integrations/components/IntegrationsPageContent";
 
 export const metadata: Metadata = {
   title: "Integrations · downDATA",

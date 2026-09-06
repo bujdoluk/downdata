@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { formatDate, minutesBetween, formatDuration } from "@/lib/formatTime";
-import { buildOutageTrackerDays } from "@/lib/buildIncidentCalendar";
-import { INDICATOR_STYLES } from "@/components/service/statusStyles";
+import { buildOutageTrackerDays } from "@/features/history/services/buildIncidentCalendar";
+import { INDICATOR_STYLES } from "@/components/statusStyles";
 import type { StatuspageIncidentSummary } from "@/types/service";
 
 const TRACKER_DAYS = 30;

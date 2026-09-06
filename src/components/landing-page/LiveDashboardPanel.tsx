@@ -2,7 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import CatalogServiceCard from "@/components/service/CatalogServiceCard";
+import CatalogServiceCard from "@/features/monitors/components/CatalogServiceCard";
 
 const mono = "font-mono";
 

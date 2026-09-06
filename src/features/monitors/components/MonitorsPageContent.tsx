@@ -11,9 +11,9 @@ import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { mergeParams } from "@/lib/mergeParams";
 import { useSelectedBoard } from "@/hooks/useSelectedBoard";
-import CatalogServiceGrid from "@/components/service/CatalogServiceGrid";
-import AddServiceButton from "@/components/service/AddServiceButton";
-import NoServicesMessage from "@/components/service/NoServicesMessage";
+import CatalogServiceGrid from "@/features/monitors/components/CatalogServiceGrid";
+import AddServiceButton from "@/features/monitors/components/AddServiceButton";
+import NoServicesMessage from "@/features/monitors/components/NoServicesMessage";
 
 const POLL_INTERVAL_MS = 60_000;
 

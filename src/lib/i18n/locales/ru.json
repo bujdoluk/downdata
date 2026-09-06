@@ -88,7 +88,12 @@
     "noIntegrationsConnected": "Пока нет подключённых интеграций.",
     "manageIntegrations": "Управлять интеграциями",
     "notifyMe": "Уведомлять меня",
-    "lastUpdated": "Последнее обновление {{time}}"
+    "lastUpdated": "Последнее обновление {{time}}",
+    "recommendedTitle": "Возможно, вы захотите отслеживать",
+    "seeMore_one": "Показать ещё {{count}}",
+    "seeMore_few": "Показать ещё {{count}}",
+    "seeMore_many": "Показать ещё {{count}}",
+    "seeMore_other": "Показать ещё {{count}}"
   },
   "incidents": {
     "title": "Инциденты",

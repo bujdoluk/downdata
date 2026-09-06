@@ -53,8 +53,8 @@ export default function MvpPage() {
               ))}
             </ul>
 
-            <div className="mt-2 flex flex-col items-center gap-2 lg:items-start">
-              <button type="button" onClick={handleTryApp} disabled={submitting} className="btn btn-info rounded-full shadow-lg">
+            <div className="mt-2 flex w-full flex-col items-center gap-2">
+              <button type="button" onClick={handleTryApp} disabled={submitting} className="btn btn-info btn-lg rounded-full shadow-lg">
                 {submitting ? <Spinner size="xs" /> : t("mvp.cta")}
               </button>
               <span className="text-base-content/50 text-sm">{t("mvp.ctaHint")}</span>

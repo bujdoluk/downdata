@@ -5,8 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import Spinner from "@/components/Spinner";
-
-const MAX_MESSAGE_LENGTH = 500;
+import { MAX_MESSAGE_LENGTH } from "@/lib/constants";
 
 // A small "can't find what you're looking for?" prompt — used on the
 // integrations page, the add-service catalog browser, and the landing

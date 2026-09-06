@@ -50,6 +50,8 @@ export default function LandingNavbar() {
           <Link href="/boards" className="btn btn-info btn-sm rounded-full">
             {t("landing.nav.startTrial")}
           </Link>
+        </div>
+        <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher />
           <ThemeToggle />
         </div>

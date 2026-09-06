@@ -86,7 +86,10 @@
     "noIntegrationsConnected": "Nog geen integraties verbonden.",
     "manageIntegrations": "Integraties beheren",
     "notifyMe": "Meld mij",
-    "lastUpdated": "Laatst bijgewerkt {{time}}"
+    "lastUpdated": "Laatst bijgewerkt {{time}}",
+    "recommendedTitle": "Dit wil je misschien ook volgen",
+    "seeMore_one": "Bekijk {{count}} meer",
+    "seeMore_other": "Bekijk {{count}} meer"
   },
   "incidents": {
     "title": "Incidenten",

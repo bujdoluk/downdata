@@ -86,7 +86,10 @@
     "noIntegrationsConnected": "Ingen integrasjoner koblet til ennå.",
     "manageIntegrations": "Administrer integrasjoner",
     "notifyMe": "Varsle meg",
-    "lastUpdated": "Sist oppdatert {{time}}"
+    "lastUpdated": "Sist oppdatert {{time}}",
+    "recommendedTitle": "Du vil kanskje også spore",
+    "seeMore_one": "Se {{count}} til",
+    "seeMore_other": "Se {{count}} til"
   },
   "incidents": {
     "title": "Hendelser",

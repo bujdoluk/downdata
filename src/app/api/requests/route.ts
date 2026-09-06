@@ -2,9 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { submitFeatureRequest } from "@/lib/featureRequests";
 import { getResendClient } from "@/features/integrations/services/resend";
-import { SUPPORT_EMAIL } from "@/lib/constants";
-
-const MAX_MESSAGE_LENGTH = 500;
+import { SUPPORT_EMAIL, MAX_MESSAGE_LENGTH } from "@/lib/constants";
 
 // Public (see proxy.ts's PUBLIC_EXACT) — the landing page's RequestCard
 // calls this with no session at all.
@@ -23,7 +21,7 @@ export async function POST(request: Request) {
   }
   const message = typeof rawMessage === "string" ? rawMessage.trim() : "";
   if (!message || message.length > MAX_MESSAGE_LENGTH) {
-    return NextResponse.json({ error: "Please enter a message up to 500 characters." }, { status: 400 });
+    return NextResponse.json({ error: `Please enter a message up to ${MAX_MESSAGE_LENGTH} characters.` }, { status: 400 });
   }
 
   // Optional — anonymous landing-page visitors have no session, which is

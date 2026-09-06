@@ -86,7 +86,10 @@
     "noIntegrationsConnected": "Aucune intégration connectée pour l'instant.",
     "manageIntegrations": "Gérer les intégrations",
     "notifyMe": "Me notifier",
-    "lastUpdated": "Dernière mise à jour {{time}}"
+    "lastUpdated": "Dernière mise à jour {{time}}",
+    "recommendedTitle": "Vous pourriez aussi vouloir suivre",
+    "seeMore_one": "Voir {{count}} de plus",
+    "seeMore_other": "Voir {{count}} de plus"
   },
   "incidents": {
     "title": "Incidents",

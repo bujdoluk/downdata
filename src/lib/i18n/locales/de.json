@@ -86,7 +86,10 @@
     "noIntegrationsConnected": "Noch keine Integrationen verbunden.",
     "manageIntegrations": "Integrationen verwalten",
     "notifyMe": "Mich benachrichtigen",
-    "lastUpdated": "Zuletzt aktualisiert {{time}}"
+    "lastUpdated": "Zuletzt aktualisiert {{time}}",
+    "recommendedTitle": "Das möchten Sie vielleicht auch verfolgen",
+    "seeMore_one": "{{count}} weitere anzeigen",
+    "seeMore_other": "{{count}} weitere anzeigen"
   },
   "incidents": {
     "title": "Vorfälle",

@@ -10,6 +10,7 @@ export { default as NoServicesMessage } from "./components/NoServicesMessage";
 export { default as OutageTracker } from "./components/OutageTracker";
 export { default as PinButton } from "./components/PinButton";
 export { default as PublicServiceDetail } from "./components/PublicServiceDetail";
+export { default as RecommendedServices } from "./components/RecommendedServices";
 export { default as ServiceCatalogPicker } from "./components/ServiceCatalogPicker";
 export { default as ServiceDetail } from "./components/ServiceDetail";
 export { default as ServiceSearch } from "./components/ServiceSearch";

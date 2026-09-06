@@ -1142,6 +1142,14 @@ _No props._
 |---|---|---|---|---|
 | slug | string | Yes | — |  |
 
+### RecommendedServices
+
+`src/features/monitors/components/RecommendedServices.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| currentSlug | string | Yes | — |  |
+
 ### ServiceCatalogPicker
 
 `src/features/monitors/components/ServiceCatalogPicker.tsx`

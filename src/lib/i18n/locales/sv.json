@@ -86,7 +86,10 @@
     "noIntegrationsConnected": "Inga integrationer anslutna än.",
     "manageIntegrations": "Hantera integrationer",
     "notifyMe": "Meddela mig",
-    "lastUpdated": "Senast uppdaterad {{time}}"
+    "lastUpdated": "Senast uppdaterad {{time}}",
+    "recommendedTitle": "Du kanske också vill spåra",
+    "seeMore_one": "Se {{count}} till",
+    "seeMore_other": "Se {{count}} till"
   },
   "incidents": {
     "title": "Incidenter",

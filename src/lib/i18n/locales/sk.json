@@ -87,7 +87,11 @@
     "noIntegrationsConnected": "Zatiaľ nie sú pripojené žiadne integrácie.",
     "manageIntegrations": "Spravovať integrácie",
     "notifyMe": "Upozorniť ma",
-    "lastUpdated": "Naposledy aktualizované {{time}}"
+    "lastUpdated": "Naposledy aktualizované {{time}}",
+    "recommendedTitle": "Možno budete chcieť sledovať aj tieto",
+    "seeMore_one": "Zobraziť {{count}} ďalší",
+    "seeMore_few": "Zobraziť {{count}} ďalšie",
+    "seeMore_other": "Zobraziť {{count}} ďalších"
   },
   "incidents": {
     "title": "Incidenty",

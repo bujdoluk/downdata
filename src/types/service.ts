@@ -15,6 +15,21 @@ export type Category =
   | "payments"
   | "auth"
   | "projectManagement"
+  | "accounting"
+  | "analytics"
+  | "automation"
+  | "cryptocurrencies"
+  | "cybersecurity"
+  | "design"
+  | "education"
+  | "healthcare"
+  | "hr"
+  | "legal"
+  | "logistics"
+  | "marketing"
+  | "realEstate"
+  | "sales"
+  | "socialMedia"
   | "other";
 
 export type Catalog = {

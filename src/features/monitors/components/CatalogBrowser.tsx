@@ -6,18 +6,6 @@ import "@/lib/i18n/i18n";
 import type { Category, Catalog, ServiceStatusBatchResponse } from "@/types/service";
 import CatalogServiceGrid from "@/features/monitors/components/CatalogServiceGrid";
 
-const CATEGORY_ORDER: Category[] = [
-  "infrastructure",
-  "devtools",
-  "database",
-  "communication",
-  "ai",
-  "payments",
-  "auth",
-  "projectManagement",
-  "other",
-];
-
 // Categories column + services-in-category column — the shared "browse the
 // catalog and add a service" UI, used both by the add-service page and by a
 // board's "add a service to this board" flow. A caller-specific third column
@@ -42,15 +30,23 @@ export default function CatalogBrowser({
   onAdd?: (entry: Catalog) => void;
   query: string;
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   // Fixed per-category catalog totals — deliberately not "how many are
   // still addable", so the count doesn't shrink/jump around as services get
   // added, matching entries themselves never disappearing from column 2.
-  const categoryCounts = CATEGORY_ORDER.map((category) => ({
-    category,
-    count: catalog.filter((entry) => entry.category === category).length,
-  })).filter((group) => group.count > 0);
+  // Categories present are derived from the catalog itself rather than a
+  // separately-maintained list (the Category union in types/service.ts is
+  // the one source of truth for which values are valid) and sorted by each
+  // viewer's own translated label — alphabetical order genuinely differs
+  // per language, so a single fixed order could never be "A-Z" for more
+  // than one locale at a time.
+  const categoryCounts = Array.from(new Set(catalog.map((entry) => entry.category)))
+    .map((category) => ({
+      category,
+      count: catalog.filter((entry) => entry.category === category).length,
+    }))
+    .sort((a, b) => t(`addService.category.${a.category}`).localeCompare(t(`addService.category.${b.category}`), i18n.language));
 
   // Defaults to the first non-empty category so column 2 shows something
   // useful the moment you land on the page, instead of an empty prompt.
@@ -91,7 +87,7 @@ export default function CatalogBrowser({
         {visibleEntries.length === 0 ? (
           <p className="text-base-content/50 text-sm">{trimmedQuery ? t("nav.noServicesFound") : t("boards.pickCategory")}</p>
         ) : (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] gap-3">
+          <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
             <CatalogServiceGrid
               catalog={visibleEntries}
               trackedHosts={trackedHosts}
@@ -100,6 +96,7 @@ export default function CatalogBrowser({
               pendingHost={pendingHost}
               addedHosts={addedHosts}
               onAdd={onAdd}
+              isFullWidth
             />
           </div>
         )}

@@ -56,7 +56,7 @@ export default function ServiceSearch({ services, linkPrefix = "/monitors" }: { 
           setHighlightedIndex(-1);
         }}
         onKeyDown={handleKeyDown}
-        placeholder={t("nav.searchPlaceholder")}
+        placeholder={t("nav.searchPlaceholder", { count: services.length })}
         className="input input-bordered input-sm w-full"
       />
 

@@ -88,19 +88,22 @@ export default function ServiceCatalogPicker({
         </select>
       </div>
 
-      {/* Radio-input tabs: selection is pure CSS (:checked + sibling
-          selector), which only works with each tab-content as the
-          immediate next sibling of its own radio — so both panels stay
-          mounted, no React state needed to switch between them. */}
-      <div role="tablist" className="tabs tabs-lift mt-4">
-        <input type="radio" name="addServiceTabs" className="tab" aria-label={t("addService.tabService")} style={TAB_BG_STYLE} defaultChecked />
-        <div className="tab-content bg-base-200 border-base-300 flex items-start gap-6 p-6">
-          <div className="min-w-0 flex-1">
+      {/* RequestCard sits outside the tabs entirely (not inside either
+          tab-content) so it stays visible across both tabs instead of
+          disappearing when "Website" is selected. */}
+      <div className="mt-4 flex flex-col items-start gap-6 lg:flex-row">
+        {/* Radio-input tabs: selection is pure CSS (:checked + sibling
+            selector), which only works with each tab-content as the
+            immediate next sibling of its own radio — so both panels stay
+            mounted, no React state needed to switch between them. */}
+        <div role="tablist" className="tabs tabs-lift min-w-0 flex-1">
+          <input type="radio" name="addServiceTabs" className="tab" aria-label={t("addService.tabService")} style={TAB_BG_STYLE} defaultChecked />
+          <div className="tab-content bg-base-200 border-base-300 p-6">
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder={t("nav.searchPlaceholder")}
+              placeholder={t("nav.searchPlaceholder", { count: catalog.length })}
               className="input input-bordered input-sm w-full max-w-sm"
               autoFocus
             />
@@ -123,13 +126,13 @@ export default function ServiceCatalogPicker({
             </div>
           </div>
 
-          <RequestCard title={t("addService.requestCard.title")} buttonLabel={t("addService.requestCard.button")} kind="service" />
+          <input type="radio" name="addServiceTabs" className="tab" aria-label={t("addService.tabWebsite")} style={TAB_BG_STYLE} />
+          <div className="tab-content bg-base-200 border-base-300 p-6">
+            <p className="text-base-content/50 text-sm">{t("addService.websiteComingSoon")}</p>
+          </div>
         </div>
 
-        <input type="radio" name="addServiceTabs" className="tab" aria-label={t("addService.tabWebsite")} style={TAB_BG_STYLE} />
-        <div className="tab-content bg-base-200 border-base-300 p-6">
-          <p className="text-base-content/50 text-sm">{t("addService.websiteComingSoon")}</p>
-        </div>
+        <RequestCard title={t("addService.requestCard.title")} buttonLabel={t("addService.requestCard.button")} kind="service" />
       </div>
     </div>
   );

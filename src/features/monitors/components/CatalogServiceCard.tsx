@@ -42,6 +42,7 @@ export default function CatalogServiceCard({
   removable,
   pinned,
   onTogglePin,
+  isFullWidth = false,
 }: {
   slug: string;
   name: string;
@@ -54,6 +55,12 @@ export default function CatalogServiceCard({
   removable?: { removing: boolean; onRemove: () => void };
   pinned?: boolean;
   onTogglePin?: () => void;
+  // Lets a 2-up grid track (add-service's catalog browser) stretch the card
+  // to fill it instead of capping at 370px — every other caller (the
+  // /monitors auto-fill grid, the landing page's uncapped hero mockup list)
+  // still wants the fixed cap, so this defaults off rather than changing
+  // their layout as a side effect.
+  isFullWidth?: boolean;
 }) {
   const { t } = useTranslation();
   const menuRef = useRef<HTMLDetailsElement>(null);
@@ -64,7 +71,9 @@ export default function CatalogServiceCard({
   useCloseDetailsOnOutsideClick(menuRef);
 
   return (
-    <div className="card card-border bg-base-200 hover:border-base-content/20 relative flex w-full min-w-0 flex-col overflow-hidden shadow-md transition-colors lg:max-w-[370px]">
+    <div
+      className={`card card-border bg-base-200 hover:border-base-content/20 relative flex w-full min-w-0 flex-col overflow-hidden shadow-md transition-colors ${isFullWidth ? "" : "lg:max-w-[370px]"}`}
+    >
       {removable && (
         <div className="absolute top-2 right-7 z-10 flex items-center gap-1">
           {onTogglePin && (

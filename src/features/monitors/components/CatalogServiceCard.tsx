@@ -43,6 +43,7 @@ export default function CatalogServiceCard({
   pinned,
   onTogglePin,
   isFullWidth = false,
+  isElevatedBg = false,
 }: {
   slug: string;
   name: string;
@@ -61,6 +62,13 @@ export default function CatalogServiceCard({
   // still wants the fixed cap, so this defaults off rather than changing
   // their layout as a side effect.
   isFullWidth?: boolean;
+  // Renders on globals.css's --color-surface-2 (the elevation ladder's card
+  // tier) instead of bg-base-200 — for a card sitting inside a
+  // --color-surface-1 tab panel, where plain base-200 would collide with
+  // it (add-service's original bug). Off by default for the same reason as
+  // isFullWidth: every other caller's card sits directly on the page
+  // background and already contrasts fine as-is.
+  isElevatedBg?: boolean;
 }) {
   const { t } = useTranslation();
   const menuRef = useRef<HTMLDetailsElement>(null);
@@ -72,7 +80,7 @@ export default function CatalogServiceCard({
 
   return (
     <div
-      className={`card card-border bg-base-200 hover:border-base-content/20 relative flex w-full min-w-0 flex-col overflow-hidden shadow-md transition-colors ${isFullWidth ? "" : "lg:max-w-[370px]"}`}
+      className={`card card-border hover:border-base-content/20 relative flex w-full min-w-0 flex-col overflow-hidden shadow-md transition-colors ${isElevatedBg ? "bg-[var(--color-surface-2)]" : "bg-base-200"} ${isFullWidth ? "" : "lg:max-w-[370px]"}`}
     >
       {removable && (
         <div className="absolute top-2 right-7 z-10 flex items-center gap-1">

@@ -30,5 +30,6 @@ export const focusRing =
 // (defaults to base-100 unconditionally on every .tab, so it can't be
 // overridden by setting the variable on an ancestor — see
 // node_modules/daisyui/components/tab.css). Shared by every radio-input
-// tabs-lift group in the app so its tab-content panels (bg-base-200) match.
-export const TAB_BG_STYLE = { "--tab-bg": "var(--color-base-200)" } as CSSProperties;
+// tabs-lift group in the app so its tab-content panels (--color-surface-1,
+// globals.css's elevation ladder) match.
+export const TAB_BG_STYLE = { "--tab-bg": "var(--color-surface-1)" } as CSSProperties;

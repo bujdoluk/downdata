@@ -28,6 +28,7 @@ export default function CatalogServiceGrid({
   removingSlug,
   onRemove,
   isFullWidth = false,
+  isElevatedBg = false,
 }: {
   catalog: Catalog[];
   trackedHosts: string[];
@@ -39,6 +40,7 @@ export default function CatalogServiceGrid({
   removingSlug?: string | null;
   onRemove?: (entry: Catalog) => void;
   isFullWidth?: boolean;
+  isElevatedBg?: boolean;
 }) {
   const isAddMode = Boolean(onAdd);
   const monitoredHosts = new Set(trackedHosts);
@@ -84,6 +86,7 @@ export default function CatalogServiceGrid({
             pinned={pinned.has(entry.slug)}
             onTogglePin={onRemove ? () => togglePin(entry.slug) : undefined}
             isFullWidth={isFullWidth}
+            isElevatedBg={isElevatedBg}
           />
         );
       })}

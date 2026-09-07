@@ -298,7 +298,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
               style={TAB_BG_STYLE}
               defaultChecked
             />
-            <div className="tab-content bg-base-200 border-base-300 p-6">
+            <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
               <div className="mb-3">
                 <SearchFilterInput
                   value={componentQuery}
@@ -367,7 +367,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
             </div>
 
             <input type="radio" name="serviceDetailTabs" className="tab" aria-label={t("serviceDetail.incidents")} style={TAB_BG_STYLE} />
-            <div className="tab-content bg-base-200 border-base-300 p-6">
+            <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
               {data.incidents.length === 0 ? (
                 <p className="text-base-content/50 text-sm">{t("serviceDetail.noIncidents")}</p>
               ) : (
@@ -395,7 +395,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
             </div>
 
             <input type="radio" name="serviceDetailTabs" className="tab" aria-label={t("serviceDetail.maintenances")} style={TAB_BG_STYLE} />
-            <div className="tab-content bg-base-200 border-base-300 p-6">
+            <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
               {data.maintenances.length === 0 ? (
                 <p className="text-base-content/50 text-sm">{t("serviceDetail.noMaintenances")}</p>
               ) : (
@@ -423,7 +423,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
             </div>
 
             <input type="radio" name="serviceDetailTabs" className="tab" aria-label={t("serviceDetail.notifications")} style={TAB_BG_STYLE} />
-            <div className="tab-content bg-base-200 border-base-300 p-6">
+            <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
               <NotificationsCard slug={slug} />
             </div>
           </div>

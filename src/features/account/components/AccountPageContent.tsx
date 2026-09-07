@@ -97,7 +97,7 @@ export default function AccountPageContent({
           mounted, no React state needed to switch between them. */}
       <div role="tablist" className="tabs tabs-lift">
         <input type="radio" name="accountTabs" className="tab" aria-label={t("account.detailsTitle")} style={TAB_BG_STYLE} defaultChecked />
-        <div className="tab-content bg-base-200 border-base-300 p-6">
+        <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
           <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
             <dt className="text-base-content/60">{t("account.email")}</dt>
             <dd>{email}</dd>
@@ -119,7 +119,7 @@ export default function AccountPageContent({
         </div>
 
         <input type="radio" name="accountTabs" className="tab" aria-label={t("nav.preferences")} style={TAB_BG_STYLE} />
-        <div className="tab-content bg-base-200 border-base-300 p-6">
+        <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
           <div>
             <h2 className="text-xs font-semibold tracking-wide text-base-content/60 uppercase">{t("nav.theme")}</h2>
             <div className="mt-2">

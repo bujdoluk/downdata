@@ -97,14 +97,26 @@ export default function ServiceCatalogPicker({
             immediate next sibling of its own radio — so both panels stay
             mounted, no React state needed to switch between them. */}
         <div role="tablist" className="tabs tabs-lift min-w-0 flex-1">
-          <input type="radio" name="addServiceTabs" className="tab" aria-label={t("addService.tabService")} style={TAB_BG_STYLE} defaultChecked />
-          <div className="tab-content bg-base-200 border-base-300 p-6">
+          <input
+            type="radio"
+            name="addServiceTabs"
+            className="tab"
+            aria-label={t("addService.tabService")}
+            style={TAB_BG_STYLE}
+            defaultChecked
+          />
+          <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder={t("nav.searchPlaceholder", { count: catalog.length })}
               className="input input-bordered input-sm w-full max-w-sm"
+              // .input's own background-color rule (globals.css) is
+              // unlayered, so it beats a plain Tailwind bg-[...] utility
+              // regardless of source order — inline style is what actually
+              // wins here.
+              style={{ backgroundColor: "var(--color-surface-2)" }}
               autoFocus
             />
 
@@ -126,8 +138,14 @@ export default function ServiceCatalogPicker({
             </div>
           </div>
 
-          <input type="radio" name="addServiceTabs" className="tab" aria-label={t("addService.tabWebsite")} style={TAB_BG_STYLE} />
-          <div className="tab-content bg-base-200 border-base-300 p-6">
+          <input
+            type="radio"
+            name="addServiceTabs"
+            className="tab"
+            aria-label={t("addService.tabWebsite")}
+            style={TAB_BG_STYLE}
+          />
+          <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
             <p className="text-base-content/50 text-sm">{t("addService.websiteComingSoon")}</p>
           </div>
         </div>

@@ -345,7 +345,7 @@ export default function HistoryPageContent({
                 checked={activeTab === "detail"}
                 onChange={() => selectTab("detail")}
               />
-              <div className="tab-content bg-base-200 border-base-300 p-6">
+              <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
                 {selectedDay && selectedDay.incidents.length > 0 ? (
                   <ul className="flex flex-col gap-3">
                     {selectedDay.incidents.map((incident) => {
@@ -381,7 +381,12 @@ export default function HistoryPageContent({
                                     <div className="timeline-middle">
                                       <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
                                     </div>
-                                    <div className="timeline-end timeline-box bg-base-200 min-w-0">
+                                    {/* Was bg-base-200 — the same tone as the tab-content
+                                        panel it sits in, so it was already invisible
+                                        against it before this file's panel even moved to
+                                        --color-surface-1; promoted to the card tier so it
+                                        actually stands out. */}
+                                    <div className="timeline-end timeline-box bg-[var(--color-surface-2)] min-w-0">
                                       <p className="text-base-content text-sm font-medium wrap-anywhere">{update.status}</p>
                                       <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line wrap-anywhere">{stripHtml(update.body)}</p>
                                     </div>
@@ -409,7 +414,7 @@ export default function HistoryPageContent({
                 checked={activeTab === "byService"}
                 onChange={() => selectTab("byService")}
               />
-              <div className="tab-content bg-base-200 border-base-300 p-6">
+              <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
                 <IncidentCountsChart services={services} counts={countsData?.counts ?? []} selectedSlug={slug} onSelectService={selectService} />
               </div>
             </div>

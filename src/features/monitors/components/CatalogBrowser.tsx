@@ -97,6 +97,7 @@ export default function CatalogBrowser({
               addedHosts={addedHosts}
               onAdd={onAdd}
               isFullWidth
+              isElevatedBg
             />
           </div>
         )}

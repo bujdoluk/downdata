@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
@@ -12,7 +12,12 @@ import { queryKeys } from "@/lib/queryKeys";
 import { BoardIcon } from "@/components/icons/NavIcons";
 import { useSelectedBoard } from "@/hooks/useSelectedBoard";
 import SelectDropdown from "@/components/SelectDropdown";
-import Spinner from "@/components/Spinner";
+// Direct path, not the features/boards barrel — that barrel also re-exports
+// services/boards.ts (server-only, reads next/headers's cookies()), and
+// Next's client/server boundary check fails on importing anything from a
+// barrel that transitively touches server-only code, even an unrelated
+// named export.
+import CreateBoardModal from "@/features/boards/components/CreateBoardModal";
 
 const ADD_BOARD = "__add__";
 const VIEW_ALL = "__all__";
@@ -26,7 +31,7 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
   // One-shot fetch, no refetchInterval: this mounts on every dashboard
   // page, and boards only change on explicit create/rename/delete, so a
   // standing 60s poll here would just add egress for data that's already
-  // kept in sync locally (see the create-board mutation below) or
+  // kept in sync locally (see CreateBoardModal's onCreated below) or
   // refreshed by navigation.
   const { data: boards = [] } = useQuery({
     queryKey: queryKeys.boards.list(),
@@ -35,29 +40,6 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
 
   const { selectedBoardId, setSelectedBoardId } = useSelectedBoard();
   const createBoardRef = useRef<HTMLDialogElement>(null);
-  const [newBoardName, setNewBoardName] = useState("");
-
-  const createBoardMutation = useMutation({
-    mutationFn: async (name: string) => {
-      const res = await fetch("/api/boards", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? t("addService.somethingWrong"));
-      return data as Board;
-    },
-    onSuccess: (board) => {
-      queryClient.setQueryData<Board[]>(queryKeys.boards.list(), (prev) =>
-        [...(prev ?? []), board].sort((a, b) => a.name.localeCompare(b.name)),
-      );
-      setNewBoardName("");
-      createBoardRef.current?.close();
-      setSelectedBoardId(board.id);
-      router.push(`/boards/${board.id}`);
-    },
-  });
 
   // Distinct from selectValue below: this only reflects an actual board
   // detail page, for the icon's active-state color.
@@ -102,7 +84,6 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
       return;
     }
 
-    setNewBoardName("");
     createBoardRef.current?.showModal();
   }
 
@@ -135,41 +116,16 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
         />
       )}
 
-      <dialog ref={createBoardRef} className="modal">
-        <div className="modal-box">
-          <h3 className="text-lg font-bold">{t("boards.addBoard")}</h3>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              const trimmed = newBoardName.trim();
-              if (!trimmed) return;
-              createBoardMutation.mutate(trimmed);
-            }}
-            className="mt-4"
-          >
-            <input
-              type="text"
-              value={newBoardName}
-              onChange={(e) => setNewBoardName(e.target.value)}
-              placeholder={t("boards.namePlaceholder")}
-              className="input input-bordered w-full"
-              autoFocus
-            />
-            {createBoardMutation.isError && <p className="text-error mt-2 text-sm">{createBoardMutation.error.message}</p>}
-            <div className="modal-action">
-              <button type="button" onClick={() => createBoardRef.current?.close()} className="btn btn-sm">
-                {t("boards.cancel")}
-              </button>
-              <button type="submit" disabled={createBoardMutation.isPending || !newBoardName.trim()} className="btn btn-info btn-sm">
-                {createBoardMutation.isPending ? <Spinner size="xs" /> : t("boards.createSubmit")}
-              </button>
-            </div>
-          </form>
-        </div>
-        <form method="dialog" className="modal-backdrop">
-          <button>{t("boards.cancel")}</button>
-        </form>
-      </dialog>
+      <CreateBoardModal
+        dialogRef={createBoardRef}
+        onCreated={(board) => {
+          queryClient.setQueryData<Board[]>(queryKeys.boards.list(), (prev) =>
+            [...(prev ?? []), board].sort((a, b) => a.name.localeCompare(b.name)),
+          );
+          setSelectedBoardId(board.id);
+          router.push(`/boards/${board.id}`);
+        }}
+      />
     </div>
   );
 }

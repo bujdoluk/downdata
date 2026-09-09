@@ -8,9 +8,8 @@ import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
 import type { ServiceStatusBatchResponse, TrackedIncidentSummary, TrackedMaintenanceSummary } from "@/types/service";
 import BoardCard from "@/features/boards/components/BoardCard";
-import CreateBoardForm from "@/features/boards/components/CreateBoardForm";
+import CreateBoardModal from "@/features/boards/components/CreateBoardModal";
 import { PlusIcon } from "@/components/icons/NavIcons";
-import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { usePinned } from "@/hooks/usePinned";
@@ -36,7 +35,7 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
-  const createRef = useRef<HTMLDetailsElement>(null);
+  const createDialogRef = useRef<HTMLDialogElement>(null);
   const [query, setQuery] = useState("");
   const { pinned, togglePin } = usePinned("pinnedBoards");
   const { data: incidentsData } = useQuery({
@@ -56,8 +55,6 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   });
   const statusLoading = !statusData && !statusFailed;
 
-  useCloseDetailsOnOutsideClick(createRef);
-
   const trimmedQuery = query.trim().toLowerCase();
   const filteredBoards = boards
     .filter((board) => !trimmedQuery || board.name.toLowerCase().includes(trimmedQuery))
@@ -75,35 +72,10 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
     <div className="mx-auto w-full max-w-6xl self-start">
       <div className="flex items-start justify-between gap-4">
         <h1 className="text-base-content text-lg font-semibold">{t("boards.title")}</h1>
-        <details
-          ref={createRef}
-          className="dropdown dropdown-end"
-          onToggle={(e) => {
-            if (e.currentTarget.open) {
-              e.currentTarget.querySelector("input")?.focus();
-            }
-          }}
-        >
-          <summary className="btn btn-info btn-sm list-none">
-            <PlusIcon />
-            {t("boards.addBoard")}
-          </summary>
-          <div className="dropdown-content bg-[var(--color-surface-2)] border-base-300 z-30 mt-2 w-72 rounded-box border p-3 shadow-xl">
-            <CreateBoardForm
-              onCreated={(board) => {
-                // Sidebar's BoardSelect reads this same query key from its
-                // own cache and stays mounted across this navigation, so
-                // without this it wouldn't show the new board until a full
-                // reload — see BoardSelect.tsx's own create flow, which
-                // already does this same update.
-                queryClient.setQueryData<Board[]>(queryKeys.boards.list(), (prev) =>
-                  [...(prev ?? []), board].sort((a, b) => a.name.localeCompare(b.name)),
-                );
-                router.push(`/boards/${board.id}`);
-              }}
-            />
-          </div>
-        </details>
+        <button type="button" onClick={() => createDialogRef.current?.showModal()} className="btn btn-info btn-sm">
+          <PlusIcon />
+          {t("boards.addBoard")}
+        </button>
       </div>
       <p className="text-base-content/60 mt-1 text-sm">{t("boards.subtitle")}</p>
 
@@ -138,6 +110,21 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
           ))}
         </ul>
       )}
+
+      <CreateBoardModal
+        dialogRef={createDialogRef}
+        onCreated={(board) => {
+          // Sidebar's BoardSelect reads this same query key from its own
+          // cache and stays mounted across this navigation, so without this
+          // it wouldn't show the new board until a full reload — see
+          // BoardSelect.tsx's own create flow, which already does this same
+          // update.
+          queryClient.setQueryData<Board[]>(queryKeys.boards.list(), (prev) =>
+            [...(prev ?? []), board].sort((a, b) => a.name.localeCompare(b.name)),
+          );
+          router.push(`/boards/${board.id}`);
+        }}
+      />
     </div>
   );
 }

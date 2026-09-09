@@ -6,7 +6,7 @@ import "@/lib/i18n/i18n";
 import type { WebhookTarget } from "@/types/integration";
 import ImpactFilterCheckboxes from "@/features/integrations/components/ImpactFilterCheckboxes";
 import WebhookTargetRow from "@/features/integrations/components/WebhookTargetRow";
-import ModalFormFooter from "@/features/integrations/components/ModalFormFooter";
+import ModalFormFooter from "@/components/ModalFormFooter";
 import { useImpactToggle } from "@/features/integrations/hooks/useImpactToggle";
 
 // Unlike Email/SmsConnectForm, there's no pending/verified split — a
@@ -75,7 +75,12 @@ export default function WebhookConnectForm({
           autoFocus
         />
         {error && <p className="text-error text-xs">{error}</p>}
-        <ModalFormFooter onCancel={onCancel} submitLabel={t("integrations.addWebhook")} isSubmitting={isSubmitting} />
+        <ModalFormFooter
+          onCancel={onCancel}
+          cancelLabel={t("integrations.cancel")}
+          submitLabel={t("integrations.addWebhook")}
+          isSubmitting={isSubmitting}
+        />
       </form>
     </div>
   );

@@ -6,7 +6,7 @@ import "@/lib/i18n/i18n";
 import type { Recipient } from "@/types/integration";
 import ImpactFilterCheckboxes from "@/features/integrations/components/ImpactFilterCheckboxes";
 import VerifiedRecipientRow from "@/features/integrations/components/VerifiedRecipientRow";
-import ModalFormFooter from "@/features/integrations/components/ModalFormFooter";
+import ModalFormFooter from "@/components/ModalFormFooter";
 import { useImpactToggle } from "@/features/integrations/hooks/useImpactToggle";
 
 function PendingRecipientRow({
@@ -157,7 +157,12 @@ export default function SmsConnectForm({
           autoFocus
         />
         {error && <p className="text-error text-xs">{error}</p>}
-        <ModalFormFooter onCancel={onCancel} submitLabel={t("integrations.addRecipient")} isSubmitting={isSubmitting} />
+        <ModalFormFooter
+          onCancel={onCancel}
+          cancelLabel={t("integrations.cancel")}
+          submitLabel={t("integrations.addRecipient")}
+          isSubmitting={isSubmitting}
+        />
       </form>
     </div>
   );

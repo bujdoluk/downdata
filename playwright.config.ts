@@ -37,7 +37,11 @@ export default defineConfig({
   // concurrent runs would race on creating/verifying the same test user.
   fullyParallel: false,
   workers: 1,
-  reporter: "list",
+  // "list" for console output, plus a custom reporter that re-encodes every
+  // recorded video from .webm to a real, widely-playable .mp4 right after
+  // each test — see mp4VideoReporter.ts's header comment for why Playwright's
+  // own video recording can't just be configured to emit .mp4 directly.
+  reporter: [["list"], ["./e2e/mp4VideoReporter.ts"]],
   webServer: {
     // next build && next start, not next dev — next dev refuses to run a
     // second instance against the same project directory at all (a

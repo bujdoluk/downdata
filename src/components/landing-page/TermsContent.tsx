@@ -1,7 +1,7 @@
 import Footer from "@/components/landing-page/Footer";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 
-const lastUpdated = "28 August 2026";
+const lastUpdated = "8 September 2026";
 
 export default function TermsContent() {
   return (
@@ -85,7 +85,14 @@ export default function TermsContent() {
           damages resulting from an outage we failed to detect or notify you about.
         </p>
 
-        <h2 className="mt-8 mb-3 text-xl font-bold">10. Termination</h2>
+        <h2 className="mt-8 mb-3 text-xl font-bold">10. Force majeure</h2>
+        <p>
+          Neither of us is liable for a failure or delay caused by something reasonably outside our
+          control — for example, a power or internet outage, natural disaster, war, terrorism, labor
+          dispute, or a new law or government action that affects the service.
+        </p>
+
+        <h2 className="mt-8 mb-3 text-xl font-bold">11. Termination</h2>
         <p>
           You can stop using the service, or request that your account be deleted, at any time by
           contacting us at{" "}
@@ -95,19 +102,33 @@ export default function TermsContent() {
           . We may suspend or terminate accounts that violate these terms.
         </p>
 
-        <h2 className="mt-8 mb-3 text-xl font-bold">11. Governing law</h2>
+        <h2 className="mt-8 mb-3 text-xl font-bold">12. Governing law and legal entity</h2>
         <p>
-          These terms are governed by the laws of <strong>[Insert your governing-law jurisdiction here]</strong>,
-          without regard to its conflict-of-law principles.
+          This service is operated by <strong>[Insert your legal entity name here]</strong>, based
+          at <strong>[Insert your registered business address here]</strong>. These terms are
+          governed by the laws of Slovakia, without regard to its conflict-of-law principles.
         </p>
 
-        <h2 className="mt-8 mb-3 text-xl font-bold">12. Changes to these terms</h2>
+        <h2 className="mt-8 mb-3 text-xl font-bold">13. Changes to these terms</h2>
         <p>
           If we make material changes to these terms, we&rsquo;ll update the &ldquo;Last
           updated&rdquo; date above.
         </p>
 
-        <h2 className="mt-8 mb-3 text-xl font-bold">13. Contact</h2>
+        <h2 className="mt-8 mb-3 text-xl font-bold">14. Severability</h2>
+        <p>
+          If any part of these terms is found unenforceable or invalid, that part will be removed
+          and the rest of these terms will remain in full effect.
+        </p>
+
+        <h2 className="mt-8 mb-3 text-xl font-bold">15. Entire agreement</h2>
+        <p>
+          These terms, together with anything they expressly refer to (like our Privacy Policy),
+          make up the entire agreement between you and us about the service, and replace any earlier
+          agreement or understanding about it.
+        </p>
+
+        <h2 className="mt-8 mb-3 text-xl font-bold">16. Contact</h2>
         <p>
           Questions about these terms? Email us at{" "}
           <a href={`mailto:${SUPPORT_EMAIL}`} className="link">

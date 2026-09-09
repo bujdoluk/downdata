@@ -91,7 +91,7 @@ export default function IncidentDetail({
                 <p className="flex items-center gap-2 text-base-content text-sm font-medium wrap-anywhere">
                   {update.status}
                   {lastViewed !== undefined && epochMs(update.created_at) > lastViewed && (
-                    <span className="badge badge-xs badge-primary">{t("incidents.new")}</span>
+                    <span className="badge badge-xs badge-info text-white uppercase">{t("incidents.new")}</span>
                   )}
                 </p>
                 <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line wrap-anywhere">{stripHtml(update.body)}</p>

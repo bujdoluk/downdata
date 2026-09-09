@@ -219,10 +219,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
                     <p className="text-base-content truncate text-sm font-medium">{maintenance.name}</p>
                     <div className="mt-1 flex h-4 items-center">
                       {isActive ? (
-                        <span className="badge badge-info badge-xs gap-1.5">
-                          <span className="bg-info-content text-info-content animate-pulse-ring h-1.5 w-1.5 rounded-full" />
-                          {t("maintenances.inProgress")}
-                        </span>
+                        <span className="badge badge-info badge-xs">{t("maintenances.inProgress")}</span>
                       ) : (
                         <p className="text-base-content/50 text-xs">{maintenance.status}</p>
                       )}

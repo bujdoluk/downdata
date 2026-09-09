@@ -9,6 +9,7 @@ export { default as BoardDetailContent } from "./components/BoardDetailContent";
 export { default as BoardsPageContent } from "./components/BoardsPageContent";
 export { default as BoardTrackedServicesGrid } from "./components/BoardTrackedServicesGrid";
 export { default as CreateBoardForm } from "./components/CreateBoardForm";
+export { default as CreateBoardModal } from "./components/CreateBoardModal";
 export { useBoardRename } from "./hooks/useBoardRename";
 export * from "./services/boards";
 export * from "./services/isActiveIncident";

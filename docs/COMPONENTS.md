@@ -1014,6 +1014,18 @@ _No props._
 |---|---|---|---|---|
 | size | number \| undefined | No | 28 |  |
 
+### ModalFormFooter
+
+`src/components/ModalFormFooter.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| onCancel | () => void | Yes | — |  |
+| cancelLabel | ReactNode | Yes | — |  |
+| submitLabel | ReactNode | Yes | — |  |
+| isSubmitting | boolean | Yes | — |  |
+| submitDisabled | boolean \| undefined | No | false |  |
+
 ### LanguageSwitcher
 
 `src/components/navbar/LanguageSwitcher.tsx`
@@ -1231,6 +1243,17 @@ _No props._
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
+| dialogRef | RefObject<HTMLDialogElement \| null> | Yes | — |  |
+| onCreated | (board: Board) => void | Yes | — |  |
+| onCancel | () => void | Yes | — |  |
+
+### CreateBoardModal
+
+`src/features/boards/components/CreateBoardModal.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| dialogRef | RefObject<HTMLDialogElement \| null> | Yes | — |  |
 | onCreated | (board: Board) => void | Yes | — |  |
 
 ### AddKeywordForm
@@ -1385,16 +1408,6 @@ _No props._
 |---|---|---|---|---|
 | catalog | { slug: string; name: string; }[] | Yes | — |  |
 | integrations | IntegrationDefinition[] | Yes | — |  |
-
-### ModalFormFooter
-
-`src/features/integrations/components/ModalFormFooter.tsx`
-
-| Prop | Type | Required | Default | Description |
-|---|---|---|---|---|
-| onCancel | () => void | Yes | — |  |
-| submitLabel | ReactNode | Yes | — |  |
-| isSubmitting | boolean | Yes | — |  |
 
 ### SlackLogo
 

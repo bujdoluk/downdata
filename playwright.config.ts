@@ -12,6 +12,23 @@ import { loadTestEnv } from "./e2e/loadEnv";
 // fake. See the plan behind this file for why Vitest+jsdom can't cover this
 // particular flow.
 const TEST_PORT = 3100;
+// "localhost", not "127.0.0.1" — Next.js's own NextURL (used by
+// request.nextUrl, and by extension request.url in a Route Handler)
+// deliberately canonicalizes every loopback-family hostname (127.x.x.x,
+// [::1], "localhost") to the literal string "localhost"
+// (node_modules/next/dist/server/web/next-url.js's REGEX_LOCALHOST_HOSTNAME).
+// A route that redirects the browser via `new URL(path, request.url)` —
+// e.g. the email verify route's post-confirmation redirect — then always
+// targets "localhost:<port>", regardless of which loopback address the
+// browser actually connected with. Testing against 127.0.0.1 while that
+// canonicalization silently rewrites redirect targets to "localhost" means
+// the browser's session cookie (scoped to 127.0.0.1) doesn't carry over to
+// the redirect's target origin, and the flow bounces to /login as if
+// logged out. Using "localhost" everywhere here sidesteps the mismatch
+// entirely by already being what Next normalizes to. Confirmed this is
+// test-harness-only, not a production bug: production's real domain isn't
+// a loopback address, so the regex above never matches there.
+
 
 export default defineConfig({
   testDir: "./e2e",
@@ -29,13 +46,13 @@ export default defineConfig({
     // also has no such restriction and is arguably the more honest thing
     // to run a "production ready" test against anyway.
     command: `npm run build && npm run start -- -p ${TEST_PORT}`,
-    url: `http://127.0.0.1:${TEST_PORT}`,
+    url: `http://localhost:${TEST_PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
     env: { ...loadTestEnv(), E2E_DIST_DIR: ".next-e2e" },
   },
   use: {
-    baseURL: `http://127.0.0.1:${TEST_PORT}`,
+    baseURL: `http://localhost:${TEST_PORT}`,
     trace: "on-first-retry",
     // "on" (not the default "retain-on-failure") — a passing run's video
     // is exactly what's worth watching here, not just a failure's.

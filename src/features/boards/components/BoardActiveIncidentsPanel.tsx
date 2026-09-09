@@ -41,7 +41,7 @@ export default function BoardActiveIncidentsPanel({
               <li key={incident.id}>
                 <Link
                   href={`/incidents?board=${boardId}&id=${incident.id}`}
-                  className="card card-border bg-base-100 hover:border-base-content/20 flex flex-row items-center gap-3 p-3 shadow-sm transition-colors"
+                  className="card card-border bg-[var(--color-surface-2)] hover:border-base-content/20 flex flex-row items-center gap-3 p-3 shadow-sm transition-colors"
                 >
                   <Logo size={20} name={incident.service.name} />
                   <div className="min-w-0 flex-1">

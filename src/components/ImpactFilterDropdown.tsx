@@ -40,7 +40,7 @@ export default function ImpactFilterDropdown({
   return (
     <details ref={detailsRef} className="dropdown">
       <summary className="select select-bordered select-sm w-56 list-none truncate">{summary}</summary>
-      <ul className="dropdown-content menu bg-base-200 border-base-300 z-30 mt-1 w-52 rounded-box border p-2 shadow-xl">
+      <ul className="dropdown-content menu border-base-300 z-30 mt-1 w-52 rounded-box border bg-[var(--color-surface-2)] p-2 shadow-xl">
         {ALL_IMPACTS.map((impact) => (
           <li key={impact}>
             <label className="label cursor-pointer justify-start gap-2">

@@ -173,7 +173,7 @@ export default function Sidebar() {
             )}
             {!collapsed && <span className="hidden truncate md:inline">{account?.email ?? t("nav.settings")}</span>}
           </summary>
-          <ul className="dropdown-content menu menu-sm z-30 mt-2 w-40 rounded-box border border-base-300 bg-base-100 p-2 shadow-xl">
+          <ul className="dropdown-content menu menu-sm z-30 mt-2 w-40 rounded-box border border-base-300 bg-[var(--color-surface-2)] p-2 shadow-xl">
             <li>
               <Link href="/account" onClick={() => closeSettingsMenu()}>
                 {t("nav.account")}

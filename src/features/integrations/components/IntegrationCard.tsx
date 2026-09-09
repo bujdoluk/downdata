@@ -36,7 +36,7 @@ function ConnectPopover({
   return (
     <details ref={formRef} open={open} onToggle={(event) => setOpen(event.currentTarget.open)} className="dropdown dropdown-end shrink-0">
       <summary className="list-none">{trigger}</summary>
-      <div className="dropdown-content menu bg-base-100 border-base-300 z-30 mt-2 w-64 border p-3 shadow-xl">{content(() => setOpen(false))}</div>
+      <div className="dropdown-content menu bg-[var(--color-surface-2)] border-base-300 z-30 mt-2 w-64 border p-3 shadow-xl">{content(() => setOpen(false))}</div>
     </details>
   );
 }
@@ -80,7 +80,7 @@ export default function IntegrationCard({
             >
               <DotsIcon />
             </summary>
-            <ul className="dropdown-content menu menu-sm bg-base-100 border-base-300 z-30 mt-2 w-40 border shadow-xl">
+            <ul className="dropdown-content menu menu-sm bg-[var(--color-surface-2)] border-base-300 z-30 mt-2 w-40 border shadow-xl">
               <li>
                 <button type="button" disabled={removable.isRemoving} onClick={removable.onRemove} className="text-error">
                   {removable.isRemoving ? (

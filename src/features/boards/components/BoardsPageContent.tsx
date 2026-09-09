@@ -88,7 +88,7 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
             <PlusIcon />
             {t("boards.addBoard")}
           </summary>
-          <div className="dropdown-content bg-base-100 border-base-300 z-30 mt-2 w-72 rounded-box border p-3 shadow-xl">
+          <div className="dropdown-content bg-[var(--color-surface-2)] border-base-300 z-30 mt-2 w-72 rounded-box border p-3 shadow-xl">
             <CreateBoardForm
               onCreated={(board) => {
                 // Sidebar's BoardSelect reads this same query key from its

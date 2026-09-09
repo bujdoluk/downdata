@@ -77,7 +77,14 @@ export default function CatalogBrowser({
               }`}
             >
               <span>{t(`addService.category.${category}`)}</span>
-              <span className="badge badge-sm">{count}</span>
+              {/* badge has no badge-color modifier, so daisyUI's own default
+                  badge border falls back to base-200 — nearly identical to
+                  surface-2 in light theme (near-white colors compress
+                  contrast no matter how the fill is tuned). An explicit
+                  border-base-300 is what actually makes it legible there,
+                  the same bg+border-base-300 pairing used throughout the
+                  app for exactly this reason. */}
+              <span className="badge badge-sm border border-base-300 bg-[var(--color-surface-2)]">{count}</span>
             </button>
           );
         })}

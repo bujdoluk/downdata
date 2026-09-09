@@ -26,7 +26,7 @@ export default function MobileMenu() {
       <summary className="btn btn-ghost btn-circle btn-sm list-none" aria-label={t("landing.nav.menu")}>
         <MenuIcon />
       </summary>
-      <div className="dropdown-content bg-base-100 border-base-300 fixed inset-x-4 top-20 z-30 max-h-[70vh] overflow-y-auto rounded-box border p-3 shadow-xl">
+      <div className="dropdown-content bg-[var(--color-surface-2)] border-base-300 fixed inset-x-4 top-20 z-30 max-h-[70vh] overflow-y-auto rounded-box border p-3 shadow-xl">
         <span className="text-base-content/50 block px-2 pt-1 text-xs font-semibold tracking-wide uppercase">
           {t("landing.nav.features")}
         </span>

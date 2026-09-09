@@ -48,7 +48,7 @@ export default function BoardTrackedServicesGrid({
             const Logo = SERVICE_LOGOS[entry.slug] ?? FallbackLogo;
             return (
               <Link key={entry.slug} href={`/monitors/${entry.slug}`} className="tooltip" data-tip={entry.name}>
-                <div className="card card-border bg-base-100 hover:border-base-content/20 flex h-14 w-14 flex-row items-center overflow-hidden transition-colors">
+                <div className="card card-border bg-[var(--color-surface-2)] hover:border-base-content/20 flex h-14 w-14 flex-row items-center overflow-hidden transition-colors">
                   <span className="flex flex-1 items-center justify-center">
                     <Logo size={24} name={entry.name} />
                   </span>

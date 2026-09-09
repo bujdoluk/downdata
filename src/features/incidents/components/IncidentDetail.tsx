@@ -84,7 +84,10 @@ export default function IncidentDetail({
               <div className="timeline-middle">
                 <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
               </div>
-              <div className="timeline-end timeline-box bg-base-200 min-w-0">
+              {/* Was bg-base-200 — the same tone as ListDetailShell's detail-pane
+                  card it sits in, so it was invisible against it. See the matching
+                  fix/comment in HistoryPageContent.tsx. */}
+              <div className="timeline-end timeline-box bg-[var(--color-surface-2)] min-w-0">
                 <p className="flex items-center gap-2 text-base-content text-sm font-medium wrap-anywhere">
                   {update.status}
                   {lastViewed !== undefined && epochMs(update.created_at) > lastViewed && (

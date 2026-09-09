@@ -32,7 +32,7 @@ export default function ComponentFilterDropdown({
     <div className="flex items-center gap-1.5">
       <details ref={detailsRef} className="dropdown">
         <summary className="select select-bordered select-sm w-56 list-none truncate">{summary}</summary>
-        <ul className="dropdown-content menu bg-base-200 border-base-300 z-30 mt-1 max-h-64 w-56 flex-nowrap overflow-y-auto rounded-box border p-2 shadow-xl">
+        <ul className="dropdown-content menu border-base-300 z-30 mt-1 max-h-64 w-56 flex-nowrap overflow-y-auto rounded-box border bg-[var(--color-surface-2)] p-2 shadow-xl">
           {options.map((option) => (
             <li key={option.id}>
               <label className="label cursor-pointer justify-start gap-2">

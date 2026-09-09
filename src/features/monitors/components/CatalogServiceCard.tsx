@@ -101,7 +101,7 @@ export default function CatalogServiceCard({
             >
               <DotsIcon />
             </summary>
-            <ul className="dropdown-content menu menu-sm bg-base-100 border-base-300 z-30 mt-2 w-36 border shadow-xl">
+            <ul className="dropdown-content menu menu-sm bg-[var(--color-surface-2)] border-base-300 z-30 mt-2 w-36 border shadow-xl">
               <li>
                 <button type="button" disabled={removable.removing} onClick={removable.onRemove} className="text-error">
                   {removable.removing ? (

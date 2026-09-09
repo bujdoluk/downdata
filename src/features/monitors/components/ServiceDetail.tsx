@@ -88,7 +88,7 @@ function NotificationsCard({ slug }: { slug: Slug }) {
   }
 
   return (
-    <ul className="list bg-base-100 border-base-300 border">
+    <ul className="list bg-[var(--color-surface-2)] border-base-300 border">
       {integrations.map((integration) => {
         // excludedServiceSlugs is an exclusion list — enabled unless this
         // service is explicitly in it, so an integration with nothing
@@ -345,7 +345,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
               {visibleComponentCount === 0 ? (
                 <p className="text-base-content/50 text-sm">{t("serviceDetail.noComponentsMatchFilter")}</p>
               ) : (
-                <ul className="list bg-base-100 border-base-300 border">
+                <ul className="list bg-[var(--color-surface-2)] border-base-300 border">
                   {topLevelItems.flatMap((item) => {
                     if (item.group) {
                       const visibleChildren = childrenOf(item.id).filter(isVisible);
@@ -371,7 +371,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
               {data.incidents.length === 0 ? (
                 <p className="text-base-content/50 text-sm">{t("serviceDetail.noIncidents")}</p>
               ) : (
-                <ul className="list bg-base-100 border-base-300 border">
+                <ul className="list bg-[var(--color-surface-2)] border-base-300 border">
                   {data.incidents.map((incident) => (
                     <li key={incident.id} className="list-row items-center py-2.5">
                       <div className="list-col-grow min-w-0">
@@ -399,7 +399,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
               {data.maintenances.length === 0 ? (
                 <p className="text-base-content/50 text-sm">{t("serviceDetail.noMaintenances")}</p>
               ) : (
-                <ul className="list bg-base-100 border-base-300 border">
+                <ul className="list bg-[var(--color-surface-2)] border-base-300 border">
                   {data.maintenances.map((maintenance) => (
                     <li key={maintenance.id} className="list-row items-center py-2.5">
                       <div className="list-col-grow min-w-0">

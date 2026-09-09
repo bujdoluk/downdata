@@ -44,7 +44,7 @@ export default function LanguageSwitcher({
       className={
         inline
           ? "grid list-none grid-cols-6 gap-3"
-          : "dropdown-content bg-base-100 border-base-300 z-30 mt-2 grid w-40 list-none grid-cols-4 gap-2 rounded-box border p-3 shadow-xl"
+          : "dropdown-content bg-[var(--color-surface-2)] border-base-300 z-30 mt-2 grid w-40 list-none grid-cols-4 gap-2 rounded-box border p-3 shadow-xl"
       }
     >
       {languages.map((language) => {

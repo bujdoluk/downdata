@@ -61,7 +61,7 @@ export default function ServiceSearch({ services, linkPrefix = "/monitors" }: { 
       />
 
       {trimmed && (
-        <ul className="menu menu-sm bg-base-100 border-base-300 absolute top-full left-0 z-20 mt-2 w-full flex-nowrap border p-1 shadow-xl">
+        <ul className="menu menu-sm border-base-300 absolute top-full left-0 z-20 mt-2 w-full flex-nowrap border bg-[var(--color-surface-2)] p-1 shadow-xl">
           {results.length === 0 ? (
             <li className="text-base-content/50 px-3 py-2.5 text-sm">{t("nav.noServicesFound")}</li>
           ) : (

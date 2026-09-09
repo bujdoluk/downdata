@@ -48,7 +48,7 @@ export default function BoardActiveMaintenancePanel({
               <li key={maintenance.id}>
                 <Link
                   href={`/maintenance?board=${boardId}&id=${maintenance.id}`}
-                  className={`card card-border bg-base-100 hover:border-base-content/20 flex flex-row items-center gap-3 p-3 shadow-sm transition-colors ${isActive ? "border-info" : ""}`}
+                  className={`card card-border bg-[var(--color-surface-2)] hover:border-base-content/20 flex flex-row items-center gap-3 p-3 shadow-sm transition-colors ${isActive ? "border-info" : ""}`}
                 >
                   <Logo size={20} name={maintenance.service.name} />
                   <div className="min-w-0 flex-1">

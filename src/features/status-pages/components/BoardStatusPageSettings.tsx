@@ -178,7 +178,7 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
           </div>
 
           {data?.enabled && publicPath && (
-            <div className="bg-base-100 border-base-300 flex items-start gap-2 rounded-lg border p-2">
+            <div className="bg-[var(--color-surface-2)] border-base-300 flex items-start gap-2 rounded-lg border p-2">
               <a href={publicPath} target="_blank" rel="noreferrer" className="link link-hover min-w-0 flex-1 break-all text-xs">
                 {origin}
                 {publicPath}

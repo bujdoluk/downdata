@@ -3,6 +3,7 @@
 
 # next.js
 /.next/
+/.next-e2e/
 /out/
 
 # production
@@ -38,3 +39,9 @@ next-env.d.ts
 
 # claude
 .claude/settings.local.json
+
+# testing — playwright's own output, plus supabase's local dev volumes
+/test-results/
+/playwright-report/
+/blob-report/
+.supabase/

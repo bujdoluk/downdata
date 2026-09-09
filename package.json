@@ -15,6 +15,9 @@
     "type-check": "next typegen && tsc --noEmit -p .",
     "analyze": "next experimental-analyze",
     "docs:components": "node scripts/generate-docs.mjs",
+    "test:unit": "vitest run",
+    "test:e2e:setup": "node scripts/generate-e2e-env.mjs",
+    "test:e2e": "playwright test",
     "poll:incidents": "node --env-file=.env scripts/poll-incidents.mjs",
     "poll:keyword-sources": "node --env-file=.env scripts/poll-keyword-sources.mjs",
     "import:catalog": "node --env-file=.env scripts/import-catalog.mjs"
@@ -43,7 +46,7 @@
   "devDependencies": {
     "@commitlint/cli": "21.2.2",
     "@commitlint/config-conventional": "21.2.2",
-    "@playwright/test": "1.62.1",
+    "@playwright/test": "1.63.0",
     "@tailwindcss/postcss": "4",
     "@types/node": "24",
     "@types/react": "19",
@@ -54,8 +57,9 @@
     "husky": "9.1.7",
     "lint-staged": "16.4.0",
     "react-docgen-typescript": "2.4.0",
-    "supabase": "2.115.0",
+    "supabase": "2.117.0",
     "tailwindcss": "4",
-    "typescript": "5"
+    "typescript": "5",
+    "vitest": "5.0.0"
   }
 }

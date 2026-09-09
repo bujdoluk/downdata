@@ -122,6 +122,7 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
           onChange={handleSelect}
           ariaLabel={t("nav.boards")}
           className="w-full"
+          menuClassName="w-56"
           wrapperClassName="hidden w-full md:inline-flex"
           options={[
             { value: VIEW_ALL, label: t("boards.allBoards") },

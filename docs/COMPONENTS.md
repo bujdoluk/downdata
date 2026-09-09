@@ -1049,6 +1049,7 @@ _No props._
 | onChange | (value: T) => void | Yes | — |  |
 | ariaLabel | string | Yes | — |  |
 | className | string \| undefined | No |  |  |
+| menuClassName | string \| undefined | No | — |  |
 | wrapperClassName | string \| undefined | No |  |  |
 
 ### BoardSelect

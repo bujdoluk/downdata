@@ -154,6 +154,14 @@ _No props._
 |---|---|---|---|---|
 | className | string \| undefined | No | — |  |
 
+### ChevronDownIcon
+
+`src/components/icons/NavIcons.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| className | string \| undefined | No | — |  |
+
 ### InfoIcon
 
 `src/components/icons/NavIcons.tsx`
@@ -386,9 +394,145 @@ _No props._
 |---|---|---|---|---|
 | size | number \| undefined | No | 28 |  |
 
+### CalendlyLogo
+
+`src/components/logos/CalendlyLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CallFireLogo
+
+`src/components/logos/CallFireLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CampfireHqLogo
+
+`src/components/logos/CampfireHqLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CanvaLogo
+
+`src/components/logos/CanvaLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CashAppLogo
+
+`src/components/logos/CashAppLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
 ### CircleciLogo
 
 `src/components/logos/CircleciLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CiscoIotLogo
+
+`src/components/logos/CiscoIotLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CitrixSharefileLogo
+
+`src/components/logos/CitrixSharefileLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### ClearbitLogo
+
+`src/components/logos/ClearbitLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CleverLogo
+
+`src/components/logos/CleverLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### ClickfunnelsLogo
+
+`src/components/logos/ClickfunnelsLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### ClicksendLogo
+
+`src/components/logos/ClicksendLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### ClickupLogo
+
+`src/components/logos/ClickupLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CloseLogo
+
+`src/components/logos/CloseLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### Cloud66Logo
+
+`src/components/logos/Cloud66Logo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CloudappLogo
+
+`src/components/logos/CloudappLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CloudbeesLogo
+
+`src/components/logos/CloudbeesLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### ClouderaLogo
+
+`src/components/logos/ClouderaLogo.tsx`
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -410,9 +554,161 @@ _No props._
 |---|---|---|---|---|
 | size | number \| undefined | No | 28 |  |
 
+### CloudsmithLogo
+
+`src/components/logos/CloudsmithLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CloudwaysLogo
+
+`src/components/logos/CloudwaysLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CloverLogo
+
+`src/components/logos/CloverLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
 ### CockroachdbLogo
 
 `src/components/logos/CockroachdbLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CocoapodsLogo
+
+`src/components/logos/CocoapodsLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CodaLogo
+
+`src/components/logos/CodaLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CodecovLogo
+
+`src/components/logos/CodecovLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CodefreshLogo
+
+`src/components/logos/CodefreshLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CodewarsLogo
+
+`src/components/logos/CodewarsLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CognitoFormsLogo
+
+`src/components/logos/CognitoFormsLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CoinbaseCommerceLogo
+
+`src/components/logos/CoinbaseCommerceLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CoinbaseLogo
+
+`src/components/logos/CoinbaseLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CoinbasePrimeLogo
+
+`src/components/logos/CoinbasePrimeLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CoinmarketcapLogo
+
+`src/components/logos/CoinmarketcapLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### ContentfulLogo
+
+`src/components/logos/ContentfulLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CopperLogo
+
+`src/components/logos/CopperLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CourseraLogo
+
+`src/components/logos/CourseraLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CratesIoLogo
+
+`src/components/logos/CratesIoLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CryptoComLogo
+
+`src/components/logos/CryptoComLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CypressLogo
+
+`src/components/logos/CypressLogo.tsx`
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -486,6 +782,46 @@ _No props._
 ### GithubLogo
 
 `src/components/logos/GithubLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### ChargifyLogo
+
+`src/components/logos/ChargifyLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### ChatfuelLogo
+
+`src/components/logos/ChatfuelLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### CheckfrontLogo
+
+`src/components/logos/CheckfrontLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### ChefLogo
+
+`src/components/logos/ChefLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+
+### ChiliPiperLogo
+
+`src/components/logos/ChiliPiperLogo.tsx`
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -701,6 +1037,19 @@ _No props._
 | value | string | Yes | — |  |
 | onChange | (value: string) => void | Yes | — |  |
 | label | string | Yes | — |  |
+
+### SelectDropdown
+
+`src/components/SelectDropdown.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| value | string | Yes | — |  |
+| options | { value: T; label: ReactNode; }[] | Yes | — |  |
+| onChange | (value: T) => void | Yes | — |  |
+| ariaLabel | string | Yes | — |  |
+| className | string \| undefined | No |  |  |
+| wrapperClassName | string \| undefined | No |  |  |
 
 ### BoardSelect
 
@@ -957,6 +1306,7 @@ _No props._
 | recipients | Recipient[] | Yes | — |  |
 | onAdd | (value: string) => void | Yes | — |  |
 | onRemove | (value: string) => void | Yes | — |  |
+| onCancel | () => void | Yes | — |  |
 | isSubmitting | boolean | Yes | — |  |
 | error | string \| null | Yes | — |  |
 
@@ -988,7 +1338,7 @@ _No props._
 | logo | ReactNode | Yes | — |  |
 | connected | boolean | Yes | — |  |
 | connectHref | string \| undefined | No | — |  |
-| connectForm | ((close: () => void) => ReactNode) \| undefined | No | — |  |
+| onConnectClick | (() => void) \| undefined | No | — |  |
 | removable | { isRemoving: boolean; onRemove: () => void; } \| undefined | No | — |  |
 
 ### IntegrationsPageContent
@@ -999,6 +1349,16 @@ _No props._
 |---|---|---|---|---|
 | catalog | { slug: string; name: string; }[] | Yes | — |  |
 | integrations | IntegrationDefinition[] | Yes | — |  |
+
+### ModalFormFooter
+
+`src/features/integrations/components/ModalFormFooter.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| onCancel | () => void | Yes | — |  |
+| submitLabel | ReactNode | Yes | — |  |
+| isSubmitting | boolean | Yes | — |  |
 
 ### SlackLogo
 
@@ -1022,6 +1382,7 @@ _No props._
 | onVerify | (value: string, code: string) => void | Yes | — |  |
 | onResend | (value: string) => void | Yes | — |  |
 | onUpdateImpacts | (impacts: string[]) => void | Yes | — |  |
+| onCancel | () => void | Yes | — |  |
 | isSubmitting | boolean | Yes | — |  |
 | isVerifying | boolean | Yes | — |  |
 | error | string \| null | Yes | — |  |
@@ -1043,6 +1404,40 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | value | string | Yes | — |  |
+| onRemove | () => void | Yes | — |  |
+
+### WebhookConnectForm
+
+`src/features/integrations/components/WebhookConnectForm.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| targets | WebhookTarget[] | Yes | — |  |
+| notifyImpacts | string[] | Yes | — |  |
+| onAdd | (value: string) => void | Yes | — |  |
+| onRemove | (value: string) => void | Yes | — |  |
+| onUpdateImpacts | (impacts: string[]) => void | Yes | — |  |
+| onCancel | () => void | Yes | — |  |
+| isSubmitting | boolean | Yes | — |  |
+| error | string \| null | Yes | — |  |
+
+### WebhookLogo
+
+`src/features/integrations/components/WebhookLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 28 |  |
+| className | string \| undefined | No | — |  |
+
+### WebhookTargetRow
+
+`src/features/integrations/components/WebhookTargetRow.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| value | string | Yes | — |  |
+| secret | string | Yes | — |  |
 | onRemove | () => void | Yes | — |  |
 
 ### MaintenancePageContent
@@ -1085,6 +1480,8 @@ _No props._
 | removable | { removing: boolean; onRemove: () => void; } \| undefined | No | — |  |
 | pinned | boolean \| undefined | No | — |  |
 | onTogglePin | (() => void) \| undefined | No | — |  |
+| isFullWidth | boolean \| undefined | No | false |  |
+| isElevatedBg | boolean \| undefined | No | false |  |
 
 ### CatalogServiceGrid
 
@@ -1101,6 +1498,8 @@ _No props._
 | onAdd | ((entry: Catalog) => void) \| undefined | No | — |  |
 | removingSlug | string \| null \| undefined | No | — |  |
 | onRemove | ((entry: Catalog) => void) \| undefined | No | — |  |
+| isFullWidth | boolean \| undefined | No | false |  |
+| isElevatedBg | boolean \| undefined | No | false |  |
 
 ### MonitorsPageContent
 

@@ -8,6 +8,18 @@ import { ALL_IMPACTS } from "@/components/statusStyles";
 // leading "+", country code, 8-15 digits total, no spaces/punctuation.
 const PHONE_PATTERN = /^\+[1-9]\d{7,14}$/;
 
+// A caller-supplied notifyImpacts on POST is optional and best-effort — an
+// invalid/missing one just falls back to the hardcoded default below
+// rather than blocking the actual connect, unlike PATCH's strict
+// validation (choosing severities is secondary to successfully connecting
+// the number itself).
+function parseNotifyImpacts(body: unknown): string[] | undefined {
+  const notifyImpacts = (body as { notifyImpacts?: unknown })?.notifyImpacts;
+  if (!Array.isArray(notifyImpacts) || notifyImpacts.length === 0) return undefined;
+  if (!notifyImpacts.every((impact): impact is string => typeof impact === "string" && ALL_IMPACTS.includes(impact))) return undefined;
+  return notifyImpacts;
+}
+
 // Adds one recipient (connecting the sms integration, at the default
 // major/critical severity, on first use) and immediately texts it a
 // one-time code — nothing is sent to it by the notifier until that code
@@ -31,9 +43,17 @@ export async function POST(request: Request) {
   // another recipient (or resend) shouldn't re-touch delivery history.
   // notifyImpacts is likewise only seeded on first connect — passing it on
   // every call would silently reset a since-customized severity filter
-  // back to this default (see addIntegration's own comment).
+  // back to this default (see addIntegration's own comment). Preferring
+  // whatever the connect form actually had checked over the hardcoded
+  // default: before first connect, there's no integration row yet for a
+  // checkbox-toggle PATCH to update, so that's the only way choosing
+  // severities before ever connecting actually takes effect.
   const isFirstConnect = !(await integrationExists("sms"));
-  const { id } = await addIntegration({ slug: "sms", name: "SMS", ...(isFirstConnect ? { notifyImpacts: ["major", "critical"] } : {}) });
+  const { id } = await addIntegration({
+    slug: "sms",
+    name: "SMS",
+    ...(isFirstConnect ? { notifyImpacts: parseNotifyImpacts(body) ?? ["major", "critical"] } : {}),
+  });
 
   const { code, expiresAt } = generateVerification("sms");
   await addRecipient(id, "sms", value, code, expiresAt);

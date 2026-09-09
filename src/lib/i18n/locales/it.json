@@ -190,6 +190,7 @@
     "cancel": "Annulla",
     "webhookSeverityHelp": "Scegli quali livelli di gravità degli incidenti devono attivare questo webhook.",
     "smsSeverityHelp": "Scegli quali livelli di gravità degli incidenti devono attivare un messaggio di testo.",
+    "emailSeverityHelp": "Scegli quali livelli di gravità degli incidenti devono attivare un'email.",
     "recipientVerified": "Destinatario confermato.",
     "verifyLinkInvalid": "Il link di conferma non è valido o è scaduto.",
     "requestCard": {

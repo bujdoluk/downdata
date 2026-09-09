@@ -74,7 +74,8 @@ export default function IntegrationsPageContent({
   }
 
   const addEmailRecipientMutation = useMutation({
-    mutationFn: (value: string) => postJson("/api/integrations/email", { value }, t("integrations.somethingWrong")),
+    mutationFn: ({ value, notifyImpacts }: { value: string; notifyImpacts: string[] }) =>
+      postJson("/api/integrations/email", { value, notifyImpacts }, t("integrations.somethingWrong")),
     onSuccess: () => router.refresh(),
   });
   const removeEmailRecipientMutation = useMutation({
@@ -83,9 +84,21 @@ export default function IntegrationsPageContent({
       if (res.ok) router.refresh();
     },
   });
+  const updateEmailImpactsMutation = useMutation({
+    mutationFn: async (notifyImpacts: string[]) => {
+      const res = await fetch("/api/integrations/email", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notifyImpacts }),
+      });
+      if (!res.ok) throw new Error(t("integrations.somethingWrong"));
+    },
+    onSuccess: () => router.refresh(),
+  });
 
   const addSmsRecipientMutation = useMutation({
-    mutationFn: (value: string) => postJson("/api/integrations/sms", { value }, t("integrations.somethingWrong")),
+    mutationFn: ({ value, notifyImpacts }: { value: string; notifyImpacts: string[] }) =>
+      postJson("/api/integrations/sms", { value, notifyImpacts }, t("integrations.somethingWrong")),
     onSuccess: () => router.refresh(),
   });
   const removeSmsRecipientMutation = useMutation({
@@ -112,7 +125,8 @@ export default function IntegrationsPageContent({
   });
 
   const addWebhookMutation = useMutation({
-    mutationFn: (value: string) => postJson("/api/integrations/webhook", { value }, t("integrations.somethingWrong")),
+    mutationFn: ({ value, notifyImpacts }: { value: string; notifyImpacts: string[] }) =>
+      postJson("/api/integrations/webhook", { value, notifyImpacts }, t("integrations.somethingWrong")),
     onSuccess: () => router.refresh(),
   });
   const removeWebhookMutation = useMutation({
@@ -188,10 +202,12 @@ export default function IntegrationsPageContent({
           <div className="mt-4">
             <EmailConnectForm
               recipients={currentEmail?.recipients ?? []}
+              notifyImpacts={currentEmail?.notifyImpacts ?? ["major", "critical"]}
               isSubmitting={addEmailRecipientMutation.isPending}
               error={addEmailRecipientMutation.error?.message ?? null}
-              onAdd={(value) => addEmailRecipientMutation.mutate(value)}
+              onAdd={(value, notifyImpacts) => addEmailRecipientMutation.mutate({ value, notifyImpacts })}
               onRemove={(value) => removeEmailRecipientMutation.mutate(value)}
+              onUpdateImpacts={(impacts) => updateEmailImpactsMutation.mutate(impacts)}
               onCancel={() => emailDialogRef.current?.close()}
             />
           </div>
@@ -212,10 +228,10 @@ export default function IntegrationsPageContent({
               isVerifying={verifySmsMutation.isPending}
               error={addSmsRecipientMutation.error?.message ?? null}
               verifyError={verifySmsMutation.error?.message ?? null}
-              onAdd={(value) => addSmsRecipientMutation.mutate(value)}
+              onAdd={(value, notifyImpacts) => addSmsRecipientMutation.mutate({ value, notifyImpacts })}
               onRemove={(value) => removeSmsRecipientMutation.mutate(value)}
               onVerify={(value, code) => verifySmsMutation.mutate({ value, code })}
-              onResend={(value) => addSmsRecipientMutation.mutate(value)}
+              onResend={(value, notifyImpacts) => addSmsRecipientMutation.mutate({ value, notifyImpacts })}
               onUpdateImpacts={(impacts) => updateSmsImpactsMutation.mutate(impacts)}
               onCancel={() => smsDialogRef.current?.close()}
             />
@@ -232,10 +248,10 @@ export default function IntegrationsPageContent({
           <div className="mt-4">
             <WebhookConnectForm
               targets={currentWebhook?.targets ?? []}
-              notifyImpacts={currentWebhook?.notifyImpacts ?? ["none", "minor", "major", "critical"]}
+              notifyImpacts={currentWebhook?.notifyImpacts ?? ["major", "critical"]}
               isSubmitting={addWebhookMutation.isPending}
               error={addWebhookMutation.error?.message ?? null}
-              onAdd={(value) => addWebhookMutation.mutate(value)}
+              onAdd={(value, notifyImpacts) => addWebhookMutation.mutate({ value, notifyImpacts })}
               onRemove={(value) => removeWebhookMutation.mutate(value)}
               onUpdateImpacts={(impacts) => updateWebhookImpactsMutation.mutate(impacts)}
               onCancel={() => webhookDialogRef.current?.close()}

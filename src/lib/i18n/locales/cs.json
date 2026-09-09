@@ -194,6 +194,7 @@
     "cancel": "Zrušit",
     "webhookSeverityHelp": "Vyber, které závažnosti výpadků mají tento webhook spustit.",
     "smsSeverityHelp": "Vyber, které závažnosti výpadků mají spustit textovou zprávu.",
+    "emailSeverityHelp": "Vyber, které závažnosti výpadků mají spustit e-mail.",
     "recipientVerified": "Příjemce byl potvrzen.",
     "verifyLinkInvalid": "Tento potvrzovací odkaz je neplatný nebo vypršel.",
     "requestCard": {

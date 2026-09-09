@@ -190,6 +190,7 @@
     "cancel": "Avbryt",
     "webhookSeverityHelp": "Välj vilka allvarlighetsgrader för incidenter som ska utlösa denna webhook.",
     "smsSeverityHelp": "Välj vilka allvarlighetsgrader för incidenter som ska utlösa ett SMS.",
+    "emailSeverityHelp": "Välj vilka allvarlighetsgrader för incidenter som ska utlösa ett e-postmeddelande.",
     "recipientVerified": "Mottagaren bekräftad.",
     "verifyLinkInvalid": "Den bekräftelselänken är ogiltig eller har gått ut.",
     "requestCard": {

@@ -190,6 +190,7 @@
     "cancel": "Avbryt",
     "webhookSeverityHelp": "Velg hvilke alvorlighetsgrader for hendelser som skal utløse denne webhooken.",
     "smsSeverityHelp": "Velg hvilke alvorlighetsgrader for hendelser som skal utløse en SMS.",
+    "emailSeverityHelp": "Velg hvilke alvorlighetsgrader for hendelser som skal utløse en e-post.",
     "recipientVerified": "Mottaker bekreftet.",
     "verifyLinkInvalid": "Den bekreftelseslenken er ugyldig eller har utløpt.",
     "requestCard": {

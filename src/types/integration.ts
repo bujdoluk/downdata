@@ -15,7 +15,7 @@ export type Integration = {
 };
 
 export type SlackIntegration = Integration & { slug: "slack"; webhookUrl: string };
-export type EmailIntegration = Integration & { slug: "email"; recipients: Recipient[] };
+export type EmailIntegration = Integration & { slug: "email"; recipients: Recipient[]; notifyImpacts: string[] };
 export type SmsIntegration = Integration & { slug: "sms"; recipients: Recipient[]; notifyImpacts: string[] };
 
 // Not a Recipient — a webhook target has no verification state (see

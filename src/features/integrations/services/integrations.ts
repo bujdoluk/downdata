@@ -22,7 +22,14 @@ function toIntegration(row: IntegrationRow, recipients: Recipient[], webhookTarg
     return { id: row.id, slug: "slack", name: row.name, webhookUrl: row.webhook_url, excludedServiceSlugs: row.excluded_service_slugs };
   }
   if (row.slug === "email") {
-    return { id: row.id, slug: "email", name: row.name, recipients, excludedServiceSlugs: row.excluded_service_slugs };
+    return {
+      id: row.id,
+      slug: "email",
+      name: row.name,
+      recipients,
+      notifyImpacts: row.notify_impacts ?? ["major", "critical"],
+      excludedServiceSlugs: row.excluded_service_slugs,
+    };
   }
   if (row.slug === "sms") {
     return {
@@ -40,10 +47,11 @@ function toIntegration(row: IntegrationRow, recipients: Recipient[], webhookTarg
       slug: "webhook",
       name: row.name,
       targets: webhookTargets,
-      // Unlike sms, defaults to every impact — a webhook has no per-send
-      // cost, so "notify about everything unless narrowed" matches
-      // Slack/Email's existing default instead of sms's opt-in-only one.
-      notifyImpacts: row.notify_impacts ?? ["none", "minor", "major", "critical"],
+      // Every notifyImpacts-capable integration defaults to major/critical
+      // only — a low-severity "operational"/"minor" blip isn't worth
+      // interrupting anyone about on any channel, email and webhook
+      // included, not just sms's texting-cost-driven opt-in.
+      notifyImpacts: row.notify_impacts ?? ["major", "critical"],
       excludedServiceSlugs: row.excluded_service_slugs,
     };
   }
@@ -148,9 +156,9 @@ export async function resolveIntegrationBySlug(slug: string): Promise<{ id: stri
 export async function addIntegration(
   input:
     | { slug: "slack"; name: string; webhookUrl: string }
-    | { slug: "email"; name: string }
     // notifyImpacts is optional here on purpose — see the row-building
     // comment below for why passing it on every call was a real bug.
+    | { slug: "email"; name: string; notifyImpacts?: string[] }
     | { slug: "sms"; name: string; notifyImpacts?: string[] }
     | { slug: "webhook"; name: string; notifyImpacts?: string[] },
 ): Promise<{ id: string; slug: string }> {
@@ -160,22 +168,20 @@ export async function addIntegration(
   // shapes even when each member is individually valid.
   //
   // notify_impacts is only included when the caller actually passes it
-  // (first connect, to seed the right per-slug initial default — sms and
-  // webhook want different defaults, and the column's own DB default only
-  // matches one of them). PostgREST's upsert only touches columns present
-  // in the row on conflict, so omitting it here on every later call (a
-  // second target, resending an SMS code, rotating a webhook secret)
-  // leaves an already-customized severity filter alone instead of
-  // silently resetting it back to this call's hardcoded default —
-  // confirmed as a real bug: adding a second webhook target after
-  // narrowing to critical-only via PATCH was reverting it to "notify on
-  // everything" again.
+  // (first connect, to seed the shared major/critical default — the
+  // column's own DB default already matches it, but every other slug here
+  // seeds explicitly rather than relying on that silently). PostgREST's
+  // upsert only touches columns present in the row on conflict, so
+  // omitting it here on every later call (a second recipient/target,
+  // resending a code, rotating a webhook secret) leaves an
+  // already-customized severity filter alone instead of silently
+  // resetting it back to this call's hardcoded default — confirmed as a
+  // real bug: adding a second webhook target after narrowing to
+  // critical-only via PATCH was reverting it to the default again.
   const row: { slug: string; name: string; webhook_url?: string; notify_impacts?: string[] } =
     input.slug === "slack"
       ? { slug: input.slug, name: input.name, webhook_url: input.webhookUrl }
-      : input.slug === "sms" || input.slug === "webhook"
-        ? { slug: input.slug, name: input.name, ...(input.notifyImpacts ? { notify_impacts: input.notifyImpacts } : {}) }
-        : { slug: input.slug, name: input.name };
+      : { slug: input.slug, name: input.name, ...(input.notifyImpacts ? { notify_impacts: input.notifyImpacts } : {}) };
   const { data, error } = await supabase.from("integrations").upsert(row, { onConflict: "user_id,slug" }).select("id, slug").single();
   if (error) throw error;
   return data as { id: string; slug: string };

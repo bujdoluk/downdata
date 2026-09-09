@@ -190,6 +190,7 @@
     "cancel": "Abbrechen",
     "webhookSeverityHelp": "Wähle, welche Vorfallsschweregrade diesen Webhook auslösen sollen.",
     "smsSeverityHelp": "Wähle, welche Vorfallsschweregrade eine SMS auslösen sollen.",
+    "emailSeverityHelp": "Wähle, welche Vorfallsschweregrade eine E-Mail auslösen sollen.",
     "recipientVerified": "Empfänger bestätigt.",
     "verifyLinkInvalid": "Dieser Bestätigungslink ist ungültig oder abgelaufen.",
     "requestCard": {

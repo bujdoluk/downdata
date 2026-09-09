@@ -190,6 +190,7 @@
     "cancel": "Annuleren",
     "webhookSeverityHelp": "Kies welke ernstniveaus van incidenten deze webhook moeten activeren.",
     "smsSeverityHelp": "Kies welke ernstniveaus van incidenten een sms-bericht moeten activeren.",
+    "emailSeverityHelp": "Kies welke ernstniveaus van incidenten een e-mail moeten activeren.",
     "recipientVerified": "Ontvanger bevestigd.",
     "verifyLinkInvalid": "Deze bevestigingslink is ongeldig of verlopen.",
     "requestCard": {

@@ -4,6 +4,18 @@ import { backfillNewIntegration } from "@/features/integrations/services/backfil
 import { generateWebhookSecret, sendWebhookPing } from "@/features/integrations/services/webhook";
 import { ALL_IMPACTS } from "@/components/statusStyles";
 
+// A caller-supplied notifyImpacts on POST is optional and best-effort — an
+// invalid/missing one just falls back to the hardcoded default below
+// rather than blocking the actual connect, unlike PATCH's strict
+// validation (choosing severities is secondary to successfully connecting
+// the target itself).
+function parseNotifyImpacts(body: unknown): string[] | undefined {
+  const notifyImpacts = (body as { notifyImpacts?: unknown })?.notifyImpacts;
+  if (!Array.isArray(notifyImpacts) || notifyImpacts.length === 0) return undefined;
+  if (!notifyImpacts.every((impact): impact is string => typeof impact === "string" && ALL_IMPACTS.includes(impact))) return undefined;
+  return notifyImpacts;
+}
+
 // Adds one webhook target. Unlike email/sms, there's no async "confirm
 // later" step — the URL is validated (SSRF-safe, see validateWebhookUrl)
 // and sent a real test ping synchronously, and the row is only ever
@@ -37,12 +49,16 @@ export async function POST(request: Request) {
   // delivery history. notifyImpacts is likewise only seeded on first
   // connect — passing it on every call would silently reset a
   // since-customized severity filter back to this default (see
-  // addIntegration's own comment).
+  // addIntegration's own comment). Preferring whatever the connect form
+  // actually had checked over the hardcoded default: before first connect,
+  // there's no integration row yet for a checkbox-toggle PATCH to update,
+  // so that's the only way choosing severities before ever connecting
+  // actually takes effect.
   const isFirstConnect = !(await integrationExists("webhook"));
   const { id } = await addIntegration({
     slug: "webhook",
     name: "Webhook",
-    ...(isFirstConnect ? { notifyImpacts: ["none", "minor", "major", "critical"] } : {}),
+    ...(isFirstConnect ? { notifyImpacts: parseNotifyImpacts(body) ?? ["major", "critical"] } : {}),
   });
   await addWebhookTarget(id, value, secret);
 

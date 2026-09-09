@@ -11,6 +11,7 @@ import { useImpactToggle } from "@/features/integrations/hooks/useImpactToggle";
 
 function PendingRecipientRow({
   recipient,
+  notifyImpacts,
   onVerify,
   onResend,
   onRemove,
@@ -18,8 +19,9 @@ function PendingRecipientRow({
   verifyError,
 }: {
   recipient: Recipient;
+  notifyImpacts: string[];
   onVerify: (value: string, code: string) => void;
-  onResend: (value: string) => void;
+  onResend: (value: string, notifyImpacts: string[]) => void;
   onRemove: (value: string) => void;
   isVerifying: boolean;
   verifyError: string | null;
@@ -56,7 +58,7 @@ function PendingRecipientRow({
         <button type="submit" disabled={isVerifying} className="btn btn-xs btn-primary">
           {t("integrations.verify")}
         </button>
-        <button type="button" onClick={() => onResend(recipient.value)} className="link link-hover text-[10px]">
+        <button type="button" onClick={() => onResend(recipient.value, notifyImpacts)} className="link link-hover text-[10px]">
           {t("integrations.resendCode")}
         </button>
       </form>
@@ -84,10 +86,17 @@ export default function SmsConnectForm({
 }: {
   recipients: Recipient[];
   notifyImpacts: string[];
-  onAdd: (value: string) => void;
+  // Takes the currently-checked severities too, not just the number — the
+  // connect POST only ever seeds notifyImpacts on first connect (see
+  // addIntegration's comment), and before that first connect there's no
+  // integration row yet for a checkbox-toggle PATCH to update, so it's a
+  // silent no-op. Passing the current selection along with the very first
+  // add is the only way choosing severities before ever connecting
+  // actually takes effect.
+  onAdd: (value: string, notifyImpacts: string[]) => void;
   onRemove: (value: string) => void;
   onVerify: (value: string, code: string) => void;
-  onResend: (value: string) => void;
+  onResend: (value: string, notifyImpacts: string[]) => void;
   onUpdateImpacts: (impacts: string[]) => void;
   onCancel: () => void;
   isSubmitting: boolean;
@@ -103,7 +112,7 @@ export default function SmsConnectForm({
     event.preventDefault();
     const trimmed = value.trim();
     if (!trimmed) return;
-    onAdd(trimmed);
+    onAdd(trimmed, [...impacts]);
     setValue("");
   }
 
@@ -118,6 +127,7 @@ export default function SmsConnectForm({
               <PendingRecipientRow
                 key={recipient.value}
                 recipient={recipient}
+                notifyImpacts={[...impacts]}
                 onVerify={onVerify}
                 onResend={onResend}
                 onRemove={onRemove}

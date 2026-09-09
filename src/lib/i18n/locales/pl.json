@@ -196,6 +196,7 @@
     "cancel": "Anuluj",
     "webhookSeverityHelp": "Wybierz, które poziomy ważności incydentów mają wyzwalać ten webhook.",
     "smsSeverityHelp": "Wybierz, które poziomy ważności incydentów mają wyzwalać wiadomość SMS.",
+    "emailSeverityHelp": "Wybierz, które poziomy ważności incydentów mają wyzwalać e-mail.",
     "recipientVerified": "Odbiorca potwierdzony.",
     "verifyLinkInvalid": "Ten link potwierdzający jest nieprawidłowy lub wygasł.",
     "requestCard": {

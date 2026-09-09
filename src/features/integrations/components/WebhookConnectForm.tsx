@@ -27,7 +27,9 @@ export default function WebhookConnectForm({
 }: {
   targets: WebhookTarget[];
   notifyImpacts: string[];
-  onAdd: (value: string) => void;
+  // Takes the currently-checked severities too, not just the URL — see the
+  // comment on this same parameter in SmsConnectForm for why.
+  onAdd: (value: string, notifyImpacts: string[]) => void;
   onRemove: (value: string) => void;
   onUpdateImpacts: (impacts: string[]) => void;
   onCancel: () => void;
@@ -42,7 +44,7 @@ export default function WebhookConnectForm({
     event.preventDefault();
     const trimmed = value.trim();
     if (!trimmed) return;
-    onAdd(trimmed);
+    onAdd(trimmed, [...impacts]);
     setValue("");
   }
 

@@ -190,6 +190,7 @@
     "cancel": "Cancel",
     "webhookSeverityHelp": "Choose which incident severities should trigger this webhook.",
     "smsSeverityHelp": "Choose which incident severities should trigger a text message.",
+    "emailSeverityHelp": "Choose which incident severities should trigger an email.",
     "recipientVerified": "Recipient confirmed.",
     "verifyLinkInvalid": "That confirmation link is invalid or has expired.",
     "requestCard": {

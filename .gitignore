@@ -45,3 +45,6 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 .supabase/
+
+# scripts/render-email-preview.mjs's own build+output, not meant to be committed
+/scratch-email-preview/

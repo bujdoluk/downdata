@@ -1,3 +1,4 @@
+import { render } from "@react-email/render";
 import { getAllIntegrationsAcrossUsers } from "@/features/integrations/services/integrations";
 import { getAllTrackedSlugsAcrossUsers } from "@/features/boards/services/boards";
 import { getSupabaseClient } from "@/lib/supabase";
@@ -7,6 +8,8 @@ import { sendWebhook as sendWebhookRequest } from "@/features/integrations/servi
 import { getStoredIncidentWithUpdates } from "@/lib/getStoredIncident";
 import { runInBatches } from "@/lib/runInBatches";
 import { nowIso } from "@/lib/formatTime";
+import { emailLogoUrl } from "@/lib/emailLogoUrl";
+import IncidentNotification from "@/components/emails/IncidentNotification";
 import type { IntegrationDefinition } from "@/types/integration";
 import type { StoredIncident, StoredIncidentUpdate } from "@/lib/getStoredIncident";
 
@@ -69,16 +72,35 @@ function buildSlackText(serviceSlug: string, resolved: ResolvedEvent): string {
   return `${serviceSlug} — *${resolved.incident.name}* (${status}): ${preview}`;
 }
 
-function buildEmailContent(serviceSlug: string, resolved: ResolvedEvent): { subject: string; text: string } {
+function buildEmailContent(serviceSlug: string, resolved: ResolvedEvent): { subject: string; element: ReturnType<typeof IncidentNotification> } {
+  const logoUrl = emailLogoUrl();
   if (resolved.type === "incident_created") {
     return {
       subject: `New incident: ${resolved.incident.name}`,
-      text: `${serviceSlug} — ${resolved.incident.name} (${resolved.incident.impact})`,
+      element: IncidentNotification({
+        logoUrl,
+        serviceSlug,
+        incidentName: resolved.incident.name,
+        impact: resolved.incident.impact,
+        status: resolved.incident.status,
+        body: null,
+        shortlink: resolved.incident.shortlink,
+        isNew: true,
+      }),
     };
   }
   return {
     subject: `Update on ${resolved.incident.name}`,
-    text: `${serviceSlug} — ${resolved.incident.name} (${resolved.update.status}): ${resolved.update.body}`,
+    element: IncidentNotification({
+      logoUrl,
+      serviceSlug,
+      incidentName: resolved.incident.name,
+      impact: resolved.incident.impact,
+      status: resolved.update.status,
+      body: resolved.update.body,
+      shortlink: resolved.incident.shortlink,
+      isNew: false,
+    }),
   };
 }
 
@@ -130,12 +152,14 @@ async function sendEmail(integration: Extract<IntegrationDefinition, { slug: "em
   // has nothing to send to.
   if (!from || integration.recipients.length === 0) return false;
 
-  const { subject, text } = buildEmailContent(serviceSlug, resolved);
+  const { subject, element } = buildEmailContent(serviceSlug, resolved);
   try {
+    const [html, text] = await Promise.all([render(element), render(element, { plainText: true })]);
     const { error } = await getResendClient().emails.send({
-      from,
+      from: `downDATA <${from}>`,
       to: integration.recipients.map((recipient) => recipient.value),
       subject,
+      html,
       text,
     });
     return !error;

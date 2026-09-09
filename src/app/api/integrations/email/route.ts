@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
+import { render } from "@react-email/render";
 import { addIntegration, addRecipient, generateVerification, integrationExists, resolveIntegrationBySlug, updateNotifyImpacts } from "@/features/integrations/services/integrations";
 import { backfillNewIntegration } from "@/features/integrations/services/backfillNewIntegration";
 import { getResendClient } from "@/features/integrations/services/resend";
+import { emailLogoUrl } from "@/lib/emailLogoUrl";
+import ConfirmEmailAddress from "@/components/emails/ConfirmEmailAddress";
 import { ALL_IMPACTS } from "@/components/statusStyles";
 
 // The WHATWG HTML Living Standard's own email regex — the same one
@@ -70,11 +73,14 @@ export async function POST(request: Request) {
   const verifyUrl = new URL("/api/integrations/email/verify", request.url);
   verifyUrl.searchParams.set("token", code);
   try {
+    const element = ConfirmEmailAddress({ verifyUrl: verifyUrl.toString(), logoUrl: emailLogoUrl() });
+    const [html, text] = await Promise.all([render(element), render(element, { plainText: true })]);
     await getResendClient().emails.send({
-      from,
+      from: `downDATA <${from}>`,
       to: value,
       subject: "Confirm your downDATA notification email",
-      text: `Click to start receiving incident notifications at this address:\n\n${verifyUrl.toString()}\n\nThis link expires in 24 hours.`,
+      html,
+      text,
     });
   } catch {
     // ignore — the recipient stays pending and "resend" (re-submitting

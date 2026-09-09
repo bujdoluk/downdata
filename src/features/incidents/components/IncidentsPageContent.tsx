@@ -12,6 +12,7 @@ import FallbackLogo from "@/components/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/statusStyles";
 import Spinner from "@/components/Spinner";
 import ImpactFilterDropdown from "@/components/ImpactFilterDropdown";
+import SelectDropdown from "@/components/SelectDropdown";
 import PinButton from "@/features/monitors/components/PinButton";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
@@ -208,31 +209,30 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
         onChange={(q) => setPendingFilters((prev) => ({ ...prev, q }))}
         label={t("incidents.filter.searchService")}
       />
-      <select
-        className="select select-bordered select-sm w-40"
-        aria-label={t("incidents.filter.timeRange")}
+      <SelectDropdown
+        className="w-40"
+        ariaLabel={t("incidents.filter.timeRange")}
         value={pendingFilters.range}
-        onChange={(e) => setPendingFilters((prev) => ({ ...prev, range: e.target.value as TimeRange }))}
-      >
-        <option value="all">{t("incidents.filter.allTime")}</option>
-        <option value="24h">{t("incidents.filter.last24h")}</option>
-        <option value="7d">{t("incidents.filter.last7d")}</option>
-        <option value="30d">{t("incidents.filter.last30d")}</option>
-      </select>
-      <select
-        className="select select-bordered select-sm w-40"
-        aria-label={t("incidents.filter.status")}
+        onChange={(range) => setPendingFilters((prev) => ({ ...prev, range }))}
+        options={[
+          { value: "all", label: t("incidents.filter.allTime") },
+          { value: "24h", label: t("incidents.filter.last24h") },
+          { value: "7d", label: t("incidents.filter.last7d") },
+          { value: "30d", label: t("incidents.filter.last30d") },
+        ]}
+      />
+      <SelectDropdown
+        className="w-40"
+        ariaLabel={t("incidents.filter.status")}
         value={pendingFilters.status}
-        onChange={(e) => setPendingFilters((prev) => ({ ...prev, status: e.target.value as StatusFilter }))}
-      >
-        {ALL_STATUSES.filter(
+        onChange={(status) => setPendingFilters((prev) => ({ ...prev, status }))}
+        options={ALL_STATUSES.filter(
           (status) => status === "all" || countForStatus(status) > 0 || status === pendingFilters.status,
-        ).map((status) => (
-          <option key={status} value={status}>
-            {t(`incidents.filter.${STATUS_LABEL_KEY[status]}`)} ({countForStatus(status)})
-          </option>
-        ))}
-      </select>
+        ).map((status) => ({
+          value: status,
+          label: `${t(`incidents.filter.${STATUS_LABEL_KEY[status]}`)} (${countForStatus(status)})`,
+        }))}
+      />
       <ImpactFilterDropdown selected={pendingFilters.impacts} onToggle={toggleImpact} />
       {hasActiveFilters && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={clearFilters} />}
     </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { type ChangeEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,6 +11,7 @@ import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { BoardIcon } from "@/components/icons/NavIcons";
 import { useSelectedBoard } from "@/hooks/useSelectedBoard";
+import SelectDropdown from "@/components/SelectDropdown";
 import Spinner from "@/components/Spinner";
 
 const ADD_BOARD = "__add__";
@@ -66,10 +67,7 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
   // board-aware page falling back to the persisted pick.
   const isBoardsIndex = pathname === "/boards";
   // Falls back to the persisted cross-page pick (see hooks/useSelectedBoard),
-  // then "All boards" (VIEW_ALL) — a native <select> never fires onChange
-  // when you reselect the value it's already showing, so if this defaulted
-  // to a real board, clicking that one specific board would silently do
-  // nothing.
+  // then "All boards" (VIEW_ALL).
   const selectValue = isBoardsIndex ? VIEW_ALL : matchedBoardId || selectedBoardId || VIEW_ALL;
 
   // Arriving at a board page any way — a BoardCard click on /boards,
@@ -88,8 +86,11 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
     if (isBoardsIndex && selectedBoardId) setSelectedBoardId("");
   }, [isBoardsIndex, selectedBoardId, setSelectedBoardId]);
 
-  function handleChange(e: ChangeEvent<HTMLSelectElement>) {
-    const value = e.target.value;
+  // SelectDropdown closes its own dropdown after calling this — no need to
+  // manage that here (it used to be this function's own first line, back
+  // when this was a hand-rolled details/summary/ul instead of that shared
+  // component).
+  function handleSelect(value: string) {
     if (value === VIEW_ALL) {
       setSelectedBoardId("");
       router.push("/boards");
@@ -116,22 +117,21 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
         <BoardIcon className="shrink-0" />
       </Link>
       {!collapsed && (
-        <select
-          className="select select-bordered select-sm hidden w-full md:inline-flex"
-          aria-label={t("nav.boards")}
+        <SelectDropdown
           value={selectValue}
-          onChange={handleChange}
-        >
-          <option value={VIEW_ALL}>{t("boards.allBoards")}</option>
-          {boards.map((board) => (
-            <option key={board.id} value={board.id}>
-              {board.name}
-            </option>
-          ))}
-          <option value={ADD_BOARD} className="bg-info text-info-content">
-            {`+ ${t("boards.addBoard")}`}
-          </option>
-        </select>
+          onChange={handleSelect}
+          ariaLabel={t("nav.boards")}
+          className="w-full"
+          wrapperClassName="hidden w-full md:inline-flex"
+          options={[
+            { value: VIEW_ALL, label: t("boards.allBoards") },
+            ...boards.map((board) => ({ value: board.id, label: board.name })),
+            // A colored span on the label, not a className on the option
+            // itself — SelectDropdown doesn't expose per-option styling,
+            // and this is the only option that needs to stand out anyway.
+            { value: ADD_BOARD, label: <span className="text-info font-medium">{`+ ${t("boards.addBoard")}`}</span> },
+          ]}
+        />
       )}
 
       <dialog ref={createBoardRef} className="modal">

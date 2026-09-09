@@ -10,6 +10,7 @@ import type { Catalog } from "@/types/service";
 import type { Board } from "@/types/board";
 import CatalogBrowser from "@/features/monitors/components/CatalogBrowser";
 import RequestCard from "@/components/RequestCard";
+import SelectDropdown from "@/components/SelectDropdown";
 import { queryKeys } from "@/lib/queryKeys";
 import { TAB_BG_STYLE } from "@/lib/utils";
 
@@ -71,21 +72,16 @@ export default function ServiceCatalogPicker({
       <p className="text-base-content/60 mt-1 text-sm">{t("addService.subtitle")}</p>
 
       <div className="mt-4 flex max-w-xs flex-col gap-1">
-        <label htmlFor="add-service-board" className="text-base-content/60 text-xs">
-          {t("addService.board")}
-        </label>
-        <select
-          id="add-service-board"
+        {/* Not htmlFor-linked to the dropdown below — <details>/<summary>
+            isn't a labelable form control the way a real <select> is, so
+            the dropdown's own ariaLabel carries its accessible name instead. */}
+        <span className="text-base-content/60 text-xs">{t("addService.board")}</span>
+        <SelectDropdown
+          ariaLabel={t("addService.board")}
           value={boardId ?? ""}
-          onChange={(e) => setBoardId(e.target.value)}
-          className="select select-bordered select-sm"
-        >
-          {boards.map((b) => (
-            <option key={b.id} value={b.id}>
-              {b.name}
-            </option>
-          ))}
-        </select>
+          onChange={setBoardId}
+          options={boards.map((b) => ({ value: b.id, label: b.name }))}
+        />
       </div>
 
       {/* RequestCard sits outside the tabs entirely (not inside either

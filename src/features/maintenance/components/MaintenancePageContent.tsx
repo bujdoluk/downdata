@@ -26,6 +26,7 @@ import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
 import IncidentDetail from "@/features/incidents/components/IncidentDetail";
 import ListDetailShell from "@/components/ListDetailShell";
 import SearchFilterInput from "@/components/SearchFilterInput";
+import SelectDropdown from "@/components/SelectDropdown";
 import ClearFiltersButton from "@/components/ClearFiltersButton";
 
 type StatusFilter = "all" | "scheduled" | "in_progress";
@@ -170,26 +171,21 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
         onChange={(q) => setPendingFilters((prev) => ({ ...prev, q }))}
         label={t("incidents.filter.searchService")}
       />
-      <select
-        className="select select-bordered select-sm w-40"
-        aria-label={t("maintenances.filter.status")}
+      <SelectDropdown
+        className="w-40"
+        ariaLabel={t("maintenances.filter.status")}
         value={pendingFilters.status}
-        onChange={(e) => setPendingFilters((prev) => ({ ...prev, status: e.target.value as StatusFilter }))}
-      >
-        <option value="all">
-          {t("maintenances.filter.allStatuses")} ({countForStatus("all")})
-        </option>
-        {showScheduled && (
-          <option value="scheduled">
-            {t("maintenances.filter.scheduled")} ({countForStatus("scheduled")})
-          </option>
-        )}
-        {showInProgress && (
-          <option value="in_progress">
-            {t("maintenances.inProgress")} ({countForStatus("in_progress")})
-          </option>
-        )}
-      </select>
+        onChange={(status) => setPendingFilters((prev) => ({ ...prev, status }))}
+        options={[
+          { value: "all" as const, label: `${t("maintenances.filter.allStatuses")} (${countForStatus("all")})` },
+          ...(showScheduled
+            ? [{ value: "scheduled" as const, label: `${t("maintenances.filter.scheduled")} (${countForStatus("scheduled")})` }]
+            : []),
+          ...(showInProgress
+            ? [{ value: "in_progress" as const, label: `${t("maintenances.inProgress")} (${countForStatus("in_progress")})` }]
+            : []),
+        ]}
+      />
       {hasActiveFilters && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={clearFilters} />}
     </form>
   );

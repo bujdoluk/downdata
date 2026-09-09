@@ -12,6 +12,7 @@ import SourceToggleRow from "@/features/early-warnings/components/SourceToggleRo
 import AddKeywordForm from "@/features/early-warnings/components/AddKeywordForm";
 import KeywordBadgeList from "@/features/early-warnings/components/KeywordBadgeList";
 import ClearFiltersButton from "@/components/ClearFiltersButton";
+import SelectDropdown from "@/components/SelectDropdown";
 import { useSelectAndScrollOnMobile } from "@/hooks/useSelectAndScrollOnMobile";
 import { useAutoSelectFirstId } from "@/hooks/useAutoSelectFirstId";
 import { useEarlyWarningsLastViewed } from "@/features/early-warnings/hooks/useEarlyWarningsLastViewed";
@@ -196,19 +197,16 @@ export default function EarlyWarningsPageContent({
 
   const filters = availableKeywords.length > 0 && (
     <form className="flex flex-wrap items-center gap-2">
-      <select
-        className="select select-bordered select-sm w-48"
-        aria-label={t("earlyWarnings.filter.allKeywords")}
+      <SelectDropdown
+        className="w-48"
+        ariaLabel={t("earlyWarnings.filter.allKeywords")}
         value={selectedKeyword}
-        onChange={(e) => selectKeyword(e.target.value)}
-      >
-        <option value="">{t("earlyWarnings.filter.allKeywords")}</option>
-        {availableKeywords.map((keyword) => (
-          <option key={keyword} value={keyword}>
-            {keyword} ({keywordCounts.get(keyword)})
-          </option>
-        ))}
-      </select>
+        onChange={selectKeyword}
+        options={[
+          { value: "", label: t("earlyWarnings.filter.allKeywords") },
+          ...availableKeywords.map((keyword) => ({ value: keyword, label: `${keyword} (${keywordCounts.get(keyword)})` })),
+        ]}
+      />
       {selectedKeyword && <ClearFiltersButton label={t("incidents.filter.clearFilters")} onClick={() => selectKeyword("")} />}
     </form>
   );

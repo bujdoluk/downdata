@@ -5,7 +5,6 @@ export { default as BoardStatusPageSummary } from "./components/BoardStatusPageS
 export { default as PublicStatusPageContent } from "./components/PublicStatusPageContent";
 export { default as StatusPageLogoUpload } from "./components/StatusPageLogoUpload";
 export { default as StatusPagesPageContent } from "./components/StatusPagesPageContent";
-export { useCopyToClipboard } from "./hooks/useCopyToClipboard";
 export { useOrigin } from "./hooks/useOrigin";
 export * from "./services/statusPages";
 export type * from "./types";

@@ -9,7 +9,7 @@ import { queryKeys } from "@/lib/queryKeys";
 import { slugify } from "@/lib/slugify";
 import { createClient } from "@/lib/supabase/client";
 import { useOrigin } from "@/features/status-pages/hooks/useOrigin";
-import { useCopyToClipboard } from "@/features/status-pages/hooks/useCopyToClipboard";
+import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import type { BoardStatusPage } from "@/features/status-pages/types";
 import StatusPageLogoUpload from "@/features/status-pages/components/StatusPageLogoUpload";
 import Spinner from "@/components/Spinner";

@@ -48,11 +48,21 @@ function LoginForm() {
       if (mode === "login") {
         await logIn(supabase, email, password);
         if (!rememberMe) forgetSessionOnBrowserClose();
+        // refresh() before push(), not after — this page's own navbar
+        // (LandingNavbar) links to `next`-shaped destinations like /boards,
+        // which Next prefetches while still logged out. Without
+        // invalidating that cache first, push(next) can silently reuse the
+        // stale, pre-login prefetch (a "no session, redirect to /login"
+        // response) and bounce a just-authenticated user straight back to
+        // /login despite the sign-in actually succeeding.
+        router.refresh();
         router.push(next);
       } else {
         const redirectTo = `${window.location.origin}/auth/confirm?next=${encodeURIComponent(next)}`;
         const loggedIn = await signUp(supabase, email, password, redirectTo);
         if (loggedIn) {
+          // Same stale-prefetch reasoning as the login branch above.
+          router.refresh();
           router.push(next);
         } else {
           setConfirmEmailSent(true);

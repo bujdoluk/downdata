@@ -69,7 +69,7 @@ function buildSlackText(serviceSlug: string, resolved: ResolvedEvent): string {
   }
   const { body, status } = resolved.update;
   const preview = body.length > BODY_PREVIEW_LENGTH ? `${body.slice(0, BODY_PREVIEW_LENGTH)}…` : body;
-  return `${serviceSlug} — *${resolved.incident.name}* (${status}): ${preview}`;
+  return `*${resolved.incident.name}* on ${serviceSlug} (${status}): ${preview}`;
 }
 
 function buildEmailContent(serviceSlug: string, resolved: ResolvedEvent): { subject: string; element: ReturnType<typeof IncidentNotification> } {
@@ -106,9 +106,9 @@ function buildEmailContent(serviceSlug: string, resolved: ResolvedEvent): { subj
 
 function buildSmsBody(serviceSlug: string, resolved: ResolvedEvent): string {
   if (resolved.type === "incident_created") {
-    return `downDATA: New incident — ${resolved.incident.name} (${resolved.incident.impact}) on ${serviceSlug}`;
+    return `downDATA: New incident on ${serviceSlug}: ${resolved.incident.name} (${resolved.incident.impact})`;
   }
-  return `downDATA: Update on ${resolved.incident.name} (${resolved.incident.impact}) — ${resolved.update.status}: ${resolved.update.body}`;
+  return `downDATA: Update on ${resolved.incident.name} (${resolved.incident.impact}). Status: ${resolved.update.status}. ${resolved.update.body}`;
 }
 
 // schemaVersion is explicit and separate from event/type so a receiver can

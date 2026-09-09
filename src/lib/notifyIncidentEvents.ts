@@ -3,8 +3,10 @@ import { getAllTrackedSlugsAcrossUsers } from "@/features/boards/services/boards
 import { getSupabaseClient } from "@/lib/supabase";
 import { getResendClient } from "@/features/integrations/services/resend";
 import { sendSms as sendSmsMessage } from "@/features/integrations/services/twilio";
+import { sendWebhook as sendWebhookRequest } from "@/features/integrations/services/webhook";
 import { getStoredIncidentWithUpdates } from "@/lib/getStoredIncident";
 import { runInBatches } from "@/lib/runInBatches";
+import { nowIso } from "@/lib/formatTime";
 import type { IntegrationDefinition } from "@/types/integration";
 import type { StoredIncident, StoredIncidentUpdate } from "@/lib/getStoredIncident";
 
@@ -87,6 +89,26 @@ function buildSmsBody(serviceSlug: string, resolved: ResolvedEvent): string {
   return `downDATA: Update on ${resolved.incident.name} (${resolved.incident.impact}) — ${resolved.update.status}: ${resolved.update.body}`;
 }
 
+// schemaVersion is explicit and separate from event/type so a receiver can
+// branch on it before even looking at the rest of the shape — this can
+// evolve later (new fields, a renamed one) without silently breaking an
+// existing integration that only knows how to read version 1.
+function buildWebhookPayload(serviceSlug: string, resolved: ResolvedEvent) {
+  return {
+    schemaVersion: 1,
+    event: resolved.type === "incident_created" ? "incident.created" : "incident.updated",
+    timestamp: nowIso(),
+    service: { slug: serviceSlug },
+    incident: {
+      name: resolved.incident.name,
+      impact: resolved.incident.impact,
+      status: resolved.type === "incident_created" ? resolved.incident.status : resolved.update.status,
+      body: resolved.type === "update_added" ? resolved.update.body : null,
+      url: resolved.incident.shortlink,
+    },
+  };
+}
+
 async function sendSlack(integration: Extract<IntegrationDefinition, { slug: "slack" }>, serviceSlug: string, resolved: ResolvedEvent): Promise<boolean> {
   try {
     const res = await fetch(integration.webhookUrl, {
@@ -134,6 +156,30 @@ async function sendSms(integration: Extract<IntegrationDefinition, { slug: "sms"
   }
 }
 
+// A partial failure across targets retries the whole integration next
+// cycle — same "retry by omission" trade-off already accepted for Slack/
+// email/sms (see sendSms's comment) — a receiver that already got this
+// event may get a harmless duplicate on retry, never a silently dropped one.
+// Targets run through runInBatches (same SEND_CONCURRENCY cap as the
+// pairs loop below), not a raw Promise.all — an account isn't limited in
+// how many targets one webhook integration can have, so an unbounded
+// Promise.all here could fan out well past the concurrency the outer loop
+// was actually designed to cap.
+async function sendWebhook(
+  integration: Extract<IntegrationDefinition, { slug: "webhook" }>,
+  serviceSlug: string,
+  resolved: ResolvedEvent,
+  validationCache: Map<string, boolean>,
+): Promise<boolean> {
+  if (integration.targets.length === 0) return false;
+  const payload = buildWebhookPayload(serviceSlug, resolved);
+  const results: boolean[] = [];
+  await runInBatches(integration.targets, SEND_CONCURRENCY, async (target) => {
+    results.push(await sendWebhookRequest(target.value, target.secret, payload, validationCache));
+  });
+  return results.every(Boolean);
+}
+
 // Per-integration policy filter — kept separate from the sendXxx
 // functions above so their booleans keep meaning exactly one thing (did
 // the send succeed), not "succeeded, or was never applicable." Per-service
@@ -141,14 +187,25 @@ async function sendSms(integration: Extract<IntegrationDefinition, { slug: "sms"
 // the query that decides which events are even pending for an integration
 // in the first place — narrower query, not a post-hoc filter — so the only
 // thing left here is sms's severity filter.
+// A generic "does this integration have its own severity filter" check
+// (rather than an explicit slug !== "sms" && slug !== "webhook" allowlist)
+// so a future integration type that adds notifyImpacts gets this for free —
+// no edit needed here, and no silent "notifies on everything" gap if that
+// edit gets missed.
 function shouldNotify(integration: IntegrationDefinition, resolved: ResolvedEvent): boolean {
-  if (integration.slug !== "sms") return true;
+  if (!("notifyImpacts" in integration)) return true;
   return integration.notifyImpacts.includes(resolved.incident.impact);
 }
 
-async function sendNotification(integration: IntegrationDefinition, serviceSlug: string, resolved: ResolvedEvent): Promise<boolean> {
+async function sendNotification(
+  integration: IntegrationDefinition,
+  serviceSlug: string,
+  resolved: ResolvedEvent,
+  webhookValidationCache: Map<string, boolean>,
+): Promise<boolean> {
   if (integration.slug === "slack") return sendSlack(integration, serviceSlug, resolved);
   if (integration.slug === "email") return sendEmail(integration, serviceSlug, resolved);
+  if (integration.slug === "webhook") return sendWebhook(integration, serviceSlug, resolved, webhookValidationCache);
   return sendSms(integration, serviceSlug, resolved);
 }
 
@@ -206,6 +263,9 @@ export async function notifyPendingEvents(): Promise<void> {
 
   const sent: { event_id: string | number; integration_id: string }[] = [];
   const resolvedCache = new Map<IncidentEvent["id"], Promise<ResolvedEvent | null>>();
+  // Same "resolve once per cycle" idea as resolvedCache above, for webhook
+  // URL validation — see sendWebhook's own comment (webhook.ts) for why.
+  const webhookValidationCache = new Map<string, boolean>();
   await runInBatches(pairs, SEND_CONCURRENCY, async ({ integration, event }) => {
     const resolved = await resolveEventCached(event, resolvedCache);
     if (!resolved) return;
@@ -220,7 +280,7 @@ export async function notifyPendingEvents(): Promise<void> {
 
     // Only recorded as delivered on actual success — a failed send is
     // therefore automatically retried next cycle, for free, with no queue.
-    if (await sendNotification(integration, event.service_slug, resolved)) {
+    if (await sendNotification(integration, event.service_slug, resolved, webhookValidationCache)) {
       sent.push({ event_id: event.id, integration_id: integration.id });
     }
   });

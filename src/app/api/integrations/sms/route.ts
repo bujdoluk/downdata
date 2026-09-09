@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { addIntegration, addRecipient, generateVerification, resolveIntegrationBySlug, integrationExists, updateSmsNotifyImpacts } from "@/features/integrations/services/integrations";
+import { addIntegration, addRecipient, generateVerification, resolveIntegrationBySlug, integrationExists, updateNotifyImpacts } from "@/features/integrations/services/integrations";
 import { backfillNewIntegration } from "@/features/integrations/services/backfillNewIntegration";
 import { sendSms } from "@/features/integrations/services/twilio";
 import { ALL_IMPACTS } from "@/components/statusStyles";
@@ -29,8 +29,11 @@ export async function POST(request: Request) {
 
   // Backfill (below) only runs on first connect — re-submitting to add
   // another recipient (or resend) shouldn't re-touch delivery history.
+  // notifyImpacts is likewise only seeded on first connect — passing it on
+  // every call would silently reset a since-customized severity filter
+  // back to this default (see addIntegration's own comment).
   const isFirstConnect = !(await integrationExists("sms"));
-  const { id } = await addIntegration({ slug: "sms", name: "SMS", notifyImpacts: ["major", "critical"] });
+  const { id } = await addIntegration({ slug: "sms", name: "SMS", ...(isFirstConnect ? { notifyImpacts: ["major", "critical"] } : {}) });
 
   const { code, expiresAt } = generateVerification("sms");
   await addRecipient(id, "sms", value, code, expiresAt);
@@ -81,6 +84,6 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "SMS isn't connected yet." }, { status: 404 });
   }
 
-  await updateSmsNotifyImpacts(sms.id, notifyImpacts);
+  await updateNotifyImpacts(sms.id, notifyImpacts);
   return NextResponse.json({ notifyImpacts });
 }

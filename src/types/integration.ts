@@ -18,4 +18,10 @@ export type SlackIntegration = Integration & { slug: "slack"; webhookUrl: string
 export type EmailIntegration = Integration & { slug: "email"; recipients: Recipient[] };
 export type SmsIntegration = Integration & { slug: "sms"; recipients: Recipient[]; notifyImpacts: string[] };
 
-export type IntegrationDefinition = SlackIntegration | EmailIntegration | SmsIntegration;
+// Not a Recipient — a webhook target has no verification state (see
+// integration_recipients.webhook_secret's comment for why), but does carry
+// its own HMAC secret, which email/sms recipients have no equivalent of.
+export type WebhookTarget = { value: string; secret: string };
+export type WebhookIntegration = Integration & { slug: "webhook"; targets: WebhookTarget[]; notifyImpacts: string[] };
+
+export type IntegrationDefinition = SlackIntegration | EmailIntegration | SmsIntegration | WebhookIntegration;

@@ -10,6 +10,7 @@ const INTEGRATION_CATALOG = [
   { slug: "slack", name: "Slack" },
   { slug: "email", name: "Email" },
   { slug: "sms", name: "SMS" },
+  { slug: "webhook", name: "Webhook" },
 ];
 
 export default async function IntegrationsPage() {

@@ -1,0 +1,15 @@
+-- webhook_url has been `not null` since 0002_create_services_boards_integrations.sql,
+-- back when Slack was the only integration and every row had one. Email
+-- (0015), SMS (0016), and now webhook never set this column — 0015's own
+-- comment says "webhook_url stays not-null for them", so email/sms rows
+-- should have started failing this exact constraint the moment that
+-- feature shipped. Since they demonstrably work in production today, the
+-- real column must already be nullable there — someone ran the ALTER
+-- directly (SQL editor or similar) without ever committing the migration
+-- for it, so the two drifted apart. Confirmed by testing against a fresh
+-- database built purely from this repo's committed migrations (this
+-- feature's own Playwright E2E suite — see e2e/webhook-connect.spec.ts):
+-- it hit this constraint immediately on adding a webhook integration,
+-- meaning any true disaster-recovery restore or fresh environment would
+-- already have been broken for email/sms too, not just webhook.
+alter table integrations alter column webhook_url drop not null;

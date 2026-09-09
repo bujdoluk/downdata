@@ -55,6 +55,7 @@ const INTEGRATION_LABEL_KEYS: Record<IntegrationDefinition["slug"], string> = {
   slack: "nav.slack",
   email: "nav.email",
   sms: "nav.sms",
+  webhook: "nav.webhook",
 };
 
 // Reads/writes this one service's membership in each of the current

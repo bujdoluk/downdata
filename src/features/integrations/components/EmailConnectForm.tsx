@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Recipient } from "@/types/integration";
 import VerifiedRecipientRow from "@/features/integrations/components/VerifiedRecipientRow";
-import Spinner from "@/components/Spinner";
+import ModalFormFooter from "@/features/integrations/components/ModalFormFooter";
 
 // Recipient verification means "connect" is no longer a single bulk
 // submit — each address is added one at a time, starts pending, and
@@ -15,12 +15,14 @@ export default function EmailConnectForm({
   recipients,
   onAdd,
   onRemove,
+  onCancel,
   isSubmitting,
   error,
 }: {
   recipients: Recipient[];
   onAdd: (value: string) => void;
   onRemove: (value: string) => void;
+  onCancel: () => void;
   isSubmitting: boolean;
   error: string | null;
 }) {
@@ -66,11 +68,14 @@ export default function EmailConnectForm({
           onChange={(event) => setValue(event.target.value)}
           placeholder={t("integrations.emailPlaceholder")}
           className="input input-sm input-bordered w-full"
+          // <dialog>'s showModal() re-runs its own focusing steps on every
+          // call (not just once on mount like plain HTML autofocus), so
+          // this keeps working even though the dialog stays mounted and is
+          // just shown/hidden — see the sibling comment in SmsConnectForm.
+          autoFocus
         />
         {error && <p className="text-error text-xs">{error}</p>}
-        <button type="submit" disabled={isSubmitting} className="btn btn-primary btn-xs">
-          {isSubmitting ? <Spinner size="xs" /> : t("integrations.addRecipient")}
-        </button>
+        <ModalFormFooter onCancel={onCancel} submitLabel={t("integrations.addRecipient")} isSubmitting={isSubmitting} />
       </form>
     </div>
   );

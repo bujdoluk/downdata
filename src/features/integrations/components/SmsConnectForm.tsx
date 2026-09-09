@@ -6,7 +6,8 @@ import "@/lib/i18n/i18n";
 import type { Recipient } from "@/types/integration";
 import ImpactFilterCheckboxes from "@/features/integrations/components/ImpactFilterCheckboxes";
 import VerifiedRecipientRow from "@/features/integrations/components/VerifiedRecipientRow";
-import Spinner from "@/components/Spinner";
+import ModalFormFooter from "@/features/integrations/components/ModalFormFooter";
+import { useImpactToggle } from "@/features/integrations/hooks/useImpactToggle";
 
 function PendingRecipientRow({
   recipient,
@@ -75,6 +76,7 @@ export default function SmsConnectForm({
   onVerify,
   onResend,
   onUpdateImpacts,
+  onCancel,
   isSubmitting,
   isVerifying,
   error,
@@ -87,6 +89,7 @@ export default function SmsConnectForm({
   onVerify: (value: string, code: string) => void;
   onResend: (value: string) => void;
   onUpdateImpacts: (impacts: string[]) => void;
+  onCancel: () => void;
   isSubmitting: boolean;
   isVerifying: boolean;
   error: string | null;
@@ -94,17 +97,7 @@ export default function SmsConnectForm({
 }) {
   const { t } = useTranslation();
   const [value, setValue] = useState("");
-  const [impacts, setImpacts] = useState<Set<string>>(new Set(notifyImpacts));
-
-  function toggleImpact(impact: string) {
-    setImpacts((prev) => {
-      const next = new Set(prev);
-      if (next.has(impact)) next.delete(impact);
-      else next.add(impact);
-      onUpdateImpacts([...next]);
-      return next;
-    });
-  }
+  const { impacts, toggleImpact } = useImpactToggle(notifyImpacts, onUpdateImpacts);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -136,6 +129,7 @@ export default function SmsConnectForm({
         </ul>
       )}
       <div className="flex flex-col gap-1 py-1">
+        <p className="text-base-content/60 text-xs">{t("integrations.smsSeverityHelp")}</p>
         <ImpactFilterCheckboxes selected={impacts} onToggle={toggleImpact} />
       </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
@@ -145,11 +139,15 @@ export default function SmsConnectForm({
           onChange={(event) => setValue(event.target.value)}
           placeholder={t("integrations.smsPlaceholder")}
           className="input input-sm input-bordered w-full"
+          // <dialog>'s showModal() re-runs its own focusing steps on every
+          // call (not just once on mount like plain HTML autofocus), so
+          // this keeps working even though the dialog stays mounted and is
+          // just shown/hidden. Only on this main add-number input, not
+          // PendingRecipientRow's per-row code input above.
+          autoFocus
         />
         {error && <p className="text-error text-xs">{error}</p>}
-        <button type="submit" disabled={isSubmitting} className="btn btn-primary btn-xs">
-          {isSubmitting ? <Spinner size="xs" /> : t("integrations.addRecipient")}
-        </button>
+        <ModalFormFooter onCancel={onCancel} submitLabel={t("integrations.addRecipient")} isSubmitting={isSubmitting} />
       </form>
     </div>
   );

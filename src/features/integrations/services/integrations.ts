@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseClient } from "@/lib/supabase";
 import { nowIso, nowPlusIso } from "@/lib/formatTime";
-import type { IntegrationDefinition, Recipient } from "@/types/integration";
+import type { IntegrationDefinition, Recipient, WebhookTarget } from "@/types/integration";
 
 const SMS_CODE_TTL_MS = 10 * 60 * 1000;
 const EMAIL_TOKEN_TTL_MS = 24 * 60 * 60 * 1000;
@@ -15,9 +15,9 @@ type IntegrationRow = {
   excluded_service_slugs: string[] | null;
 };
 
-type RecipientRow = { integration_id: string; value: string; verified: boolean };
+type IntegrationRecipientRow = { integration_id: string; channel: string; value: string; verified: boolean; webhook_secret: string | null };
 
-function toIntegration(row: IntegrationRow, recipients: Recipient[]): IntegrationDefinition | null {
+function toIntegration(row: IntegrationRow, recipients: Recipient[], webhookTargets: WebhookTarget[]): IntegrationDefinition | null {
   if (row.slug === "slack" && row.webhook_url) {
     return { id: row.id, slug: "slack", name: row.name, webhookUrl: row.webhook_url, excludedServiceSlugs: row.excluded_service_slugs };
   }
@@ -34,28 +34,66 @@ function toIntegration(row: IntegrationRow, recipients: Recipient[]): Integratio
       excludedServiceSlugs: row.excluded_service_slugs,
     };
   }
+  if (row.slug === "webhook") {
+    return {
+      id: row.id,
+      slug: "webhook",
+      name: row.name,
+      targets: webhookTargets,
+      // Unlike sms, defaults to every impact — a webhook has no per-send
+      // cost, so "notify about everything unless narrowed" matches
+      // Slack/Email's existing default instead of sms's opt-in-only one.
+      notifyImpacts: row.notify_impacts ?? ["none", "minor", "major", "critical"],
+      excludedServiceSlugs: row.excluded_service_slugs,
+    };
+  }
   return null;
 }
 
-async function recipientsByIntegration(
+// One query covering email/sms recipients and webhook targets alike — they
+// used to be two separate queries against the same table (Promise.all'd,
+// but still double the round trips), which is exactly the kind of
+// per-cycle query multiplication that has already saturated this project's
+// Postgres compute once before (see AGENTS.md's Failure log on the
+// incident poller). onlyVerified only matters for email/sms — a webhook
+// row is always inserted with verified: true (see addWebhookTarget), so
+// filtering by it never excludes one.
+async function integrationTargetsByIntegration(
   supabase: Awaited<ReturnType<typeof createClient>> | ReturnType<typeof getSupabaseClient>,
   integrationIds: string[],
   onlyVerified: boolean,
-): Promise<Map<string, Recipient[]>> {
-  if (integrationIds.length === 0) return new Map();
+): Promise<{ recipients: Map<string, Recipient[]>; webhookTargets: Map<string, WebhookTarget[]> }> {
+  const recipients = new Map<string, Recipient[]>();
+  const webhookTargets = new Map<string, WebhookTarget[]>();
+  if (integrationIds.length === 0) return { recipients, webhookTargets };
 
-  let query = supabase.from("integration_recipients").select("integration_id, value, verified").in("integration_id", integrationIds);
+  let query = supabase.from("integration_recipients").select("integration_id, channel, value, verified, webhook_secret").in("integration_id", integrationIds);
   if (onlyVerified) query = query.eq("verified", true);
   const { data, error } = await query;
   if (error) throw error;
 
-  const byIntegration = new Map<string, Recipient[]>();
-  for (const row of (data as RecipientRow[] | null) ?? []) {
-    const list = byIntegration.get(row.integration_id) ?? [];
-    list.push({ value: row.value, verified: row.verified });
-    byIntegration.set(row.integration_id, list);
+  for (const row of (data as IntegrationRecipientRow[] | null) ?? []) {
+    if (row.channel === "webhook") {
+      if (!row.webhook_secret) {
+        // Shouldn't happen — every insert sets it (see addWebhookTarget) —
+        // but a silent `continue` here would otherwise make a webhook
+        // target vanish from the account's own integration with no error,
+        // no log line, nothing pointing at why it stopped firing. Logged,
+        // not thrown: one bad row shouldn't take down every other
+        // integration's read.
+        console.error(`integrationTargetsByIntegration: webhook target "${row.value}" (integration ${row.integration_id}) has no webhook_secret — skipping it.`);
+        continue;
+      }
+      const list = webhookTargets.get(row.integration_id) ?? [];
+      list.push({ value: row.value, secret: row.webhook_secret });
+      webhookTargets.set(row.integration_id, list);
+    } else {
+      const list = recipients.get(row.integration_id) ?? [];
+      list.push({ value: row.value, verified: row.verified });
+      recipients.set(row.integration_id, list);
+    }
   }
-  return byIntegration;
+  return { recipients, webhookTargets };
 }
 
 export async function getAllIntegrations(): Promise<IntegrationDefinition[]> {
@@ -65,13 +103,10 @@ export async function getAllIntegrations(): Promise<IntegrationDefinition[]> {
   const rows = (data as IntegrationRow[] | null) ?? [];
   if (rows.length === 0) return [];
 
-  const recipients = await recipientsByIntegration(
-    supabase,
-    rows.map((row) => row.id),
-    false,
-  );
+  const ids = rows.map((row) => row.id);
+  const { recipients, webhookTargets } = await integrationTargetsByIntegration(supabase, ids, false);
   return rows.flatMap((row) => {
-    const integration = toIntegration(row, recipients.get(row.id) ?? []);
+    const integration = toIntegration(row, recipients.get(row.id) ?? [], webhookTargets.get(row.id) ?? []);
     return integration ? [integration] : [];
   });
 }
@@ -92,13 +127,10 @@ export async function getAllIntegrationsAcrossUsers(): Promise<{ integration: In
   const rows = (data as (IntegrationRow & { user_id: string })[] | null) ?? [];
   if (rows.length === 0) return [];
 
-  const recipients = await recipientsByIntegration(
-    supabase,
-    rows.map((row) => row.id),
-    true,
-  );
+  const ids = rows.map((row) => row.id);
+  const { recipients, webhookTargets } = await integrationTargetsByIntegration(supabase, ids, true);
   return rows.flatMap((row) => {
-    const integration = toIntegration(row, recipients.get(row.id) ?? []);
+    const integration = toIntegration(row, recipients.get(row.id) ?? [], webhookTargets.get(row.id) ?? []);
     return integration ? [{ integration, userId: row.user_id }] : [];
   });
 }
@@ -117,17 +149,32 @@ export async function addIntegration(
   input:
     | { slug: "slack"; name: string; webhookUrl: string }
     | { slug: "email"; name: string }
-    | { slug: "sms"; name: string; notifyImpacts: string[] },
+    // notifyImpacts is optional here on purpose — see the row-building
+    // comment below for why passing it on every call was a real bug.
+    | { slug: "sms"; name: string; notifyImpacts?: string[] }
+    | { slug: "webhook"; name: string; notifyImpacts?: string[] },
 ): Promise<{ id: string; slug: string }> {
   const supabase = await createClient();
   // Built as one concrete row type (not left as the union `input` itself
   // is) — upsert()'s overloads reject a row typed as a union of two
   // shapes even when each member is individually valid.
+  //
+  // notify_impacts is only included when the caller actually passes it
+  // (first connect, to seed the right per-slug initial default — sms and
+  // webhook want different defaults, and the column's own DB default only
+  // matches one of them). PostgREST's upsert only touches columns present
+  // in the row on conflict, so omitting it here on every later call (a
+  // second target, resending an SMS code, rotating a webhook secret)
+  // leaves an already-customized severity filter alone instead of
+  // silently resetting it back to this call's hardcoded default —
+  // confirmed as a real bug: adding a second webhook target after
+  // narrowing to critical-only via PATCH was reverting it to "notify on
+  // everything" again.
   const row: { slug: string; name: string; webhook_url?: string; notify_impacts?: string[] } =
     input.slug === "slack"
       ? { slug: input.slug, name: input.name, webhook_url: input.webhookUrl }
-      : input.slug === "sms"
-        ? { slug: input.slug, name: input.name, notify_impacts: input.notifyImpacts }
+      : input.slug === "sms" || input.slug === "webhook"
+        ? { slug: input.slug, name: input.name, ...(input.notifyImpacts ? { notify_impacts: input.notifyImpacts } : {}) }
         : { slug: input.slug, name: input.name };
   const { data, error } = await supabase.from("integrations").upsert(row, { onConflict: "user_id,slug" }).select("id, slug").single();
   if (error) throw error;
@@ -144,7 +191,10 @@ export async function integrationExists(slug: string): Promise<boolean> {
   return data !== null;
 }
 
-export async function updateSmsNotifyImpacts(id: string, notifyImpacts: string[]): Promise<void> {
+// Not sms-specific despite the column's origin (0016 added notify_impacts
+// for sms first) — webhook reuses the exact same column/semantics, so this
+// is shared rather than a byte-for-byte updateWebhookNotifyImpacts copy.
+export async function updateNotifyImpacts(id: string, notifyImpacts: string[]): Promise<void> {
   const supabase = await createClient();
   const { error } = await supabase.from("integrations").update({ notify_impacts: notifyImpacts }).eq("id", id);
   if (error) throw error;
@@ -263,4 +313,20 @@ export async function verifySmsRecipient(integrationId: string, value: string, c
     .select();
   if (error) throw error;
   return (data?.length ?? 0) > 0;
+}
+
+// --- Webhook targets -----------------------------------------------------
+//
+// No verification_code/expires_at — the API route's caller (POST
+// /api/integrations/webhook) already confirmed the URL responds via
+// sendWebhookPing() *before* calling this, so the row is inserted
+// already-live (verified: true) rather than starting pending. Upserts on
+// (integration_id, value), same as addRecipient — re-adding an existing
+// target rotates its secret rather than erroring on a duplicate.
+export async function addWebhookTarget(integrationId: string, url: string, secret: string): Promise<void> {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("integration_recipients")
+    .upsert({ integration_id: integrationId, channel: "webhook", value: url, verified: true, webhook_secret: secret }, { onConflict: "integration_id,value" });
+  if (error) throw error;
 }

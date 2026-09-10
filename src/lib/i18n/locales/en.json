@@ -251,12 +251,19 @@
       "downtime": "Downtime"
     },
     "settings": {
+      "autoSaveNote": "Changes apply immediately. There's no save button.",
       "interval": "Frequency",
       "daily": "Daily",
       "weekly": "Weekly",
       "monthly": "Monthly",
       "boards": "Boards included",
+      "email": "Email",
       "emailNudge": "Email me when a new report is ready",
+      "sendTest": "Send test email",
+      "sendingTest": "Sending…",
+      "testSent": "Test email sent. Check your inbox.",
+      "testFailed": "Couldn't send the test email.",
+      "testCaption": "Sends a preview to your own email. If you don't track anything yet, it shows placeholder data.",
       "somethingWrong": "Something went wrong."
     }
   },

@@ -251,12 +251,19 @@
       "downtime": "Indisponibilité"
     },
     "settings": {
+      "autoSaveNote": "Les modifications sont appliquées immédiatement. Il n'y a pas de bouton d'enregistrement.",
       "interval": "Fréquence",
       "daily": "Quotidienne",
       "weekly": "Hebdomadaire",
       "monthly": "Mensuelle",
       "boards": "Tableaux inclus",
+      "email": "E-mail",
       "emailNudge": "M'avertir par e-mail quand un nouveau rapport est prêt",
+      "sendTest": "Envoyer un e-mail de test",
+      "sendingTest": "Envoi…",
+      "testSent": "E-mail de test envoyé. Vérifiez votre boîte de réception.",
+      "testFailed": "Impossible d'envoyer l'e-mail de test.",
+      "testCaption": "Envoie un aperçu à votre propre e-mail. Si vous ne suivez encore rien, il affichera des données d'exemple.",
       "somethingWrong": "Une erreur s'est produite."
     }
   },

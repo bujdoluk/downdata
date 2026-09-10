@@ -251,12 +251,19 @@
       "downtime": "Inactividad"
     },
     "settings": {
+      "autoSaveNote": "Los cambios se aplican de inmediato. No hay un botón de guardar.",
       "interval": "Frecuencia",
       "daily": "Diaria",
       "weekly": "Semanal",
       "monthly": "Mensual",
       "boards": "Tableros incluidos",
+      "email": "Correo electrónico",
       "emailNudge": "Avisarme por correo cuando haya un informe nuevo",
+      "sendTest": "Enviar correo de prueba",
+      "sendingTest": "Enviando…",
+      "testSent": "Correo de prueba enviado. Revisa tu bandeja de entrada.",
+      "testFailed": "No se pudo enviar el correo de prueba.",
+      "testCaption": "Envía una vista previa a tu propio correo. Si todavía no monitorizas nada, mostrará datos de ejemplo.",
       "somethingWrong": "Algo salió mal."
     }
   },

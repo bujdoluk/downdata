@@ -2,6 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
+import Spinner from "@/components/Spinner";
 import type { Board } from "@/types/board";
 import type { ReportInterval, ReportSettings } from "@/features/reports/types";
 
@@ -19,6 +20,9 @@ export default function ReportSettingsForm({
   onChangeInterval,
   onToggleBoard,
   onToggleEmailNudge,
+  isSendingTest,
+  testMessage,
+  onSendTest,
 }: {
   boards: Board[];
   settings: ReportSettings;
@@ -26,13 +30,21 @@ export default function ReportSettingsForm({
   onChangeInterval: (interval: ReportInterval) => void;
   onToggleBoard: (boardId: string, included: boolean) => void;
   onToggleEmailNudge: (enabled: boolean) => void;
+  isSendingTest: boolean;
+  // null once the last result has been superseded by a new send or never
+  // shown yet — kept as { text, isError } rather than two separate props
+  // since exactly one of the two is ever shown at a time.
+  testMessage: { text: string; isError: boolean } | null;
+  onSendTest: () => void;
 }) {
   const { t } = useTranslation();
   const excluded = new Set(settings.excludedBoardIds);
 
   return (
     <div className="card card-border bg-base-200 mt-4 flex flex-col gap-4 p-4">
-      <div className="flex flex-wrap items-center gap-3">
+      <p className="text-base-content/50 text-xs">{t("reports.settings.autoSaveNote")}</p>
+
+      <div className="flex flex-col gap-2">
         <span className="text-base-content/50 text-xs font-semibold tracking-wide uppercase">{t("reports.settings.interval")}</span>
         <div className="join">
           {INTERVALS.map((interval) => (
@@ -41,7 +53,7 @@ export default function ReportSettingsForm({
               type="button"
               disabled={isPending}
               onClick={() => onChangeInterval(interval)}
-              className={`btn join-item btn-sm ${settings.interval === interval ? "btn-primary" : "btn-outline"}`}
+              className={`btn join-item btn-sm ${settings.interval === interval ? "btn-info" : "btn-outline btn-info"}`}
             >
               {t(`reports.settings.${interval}`)}
             </button>
@@ -57,7 +69,7 @@ export default function ReportSettingsForm({
               <label key={board.id} className="flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
-                  className="checkbox checkbox-sm"
+                  className="checkbox checkbox-info checkbox-sm"
                   checked={!excluded.has(board.id)}
                   disabled={isPending}
                   onChange={(e) => onToggleBoard(board.id, e.target.checked)}
@@ -69,16 +81,35 @@ export default function ReportSettingsForm({
         </div>
       )}
 
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
-          className="toggle toggle-primary toggle-sm"
-          checked={settings.emailNudgeEnabled}
-          disabled={isPending}
-          onChange={(e) => onToggleEmailNudge(e.target.checked)}
-        />
-        {t("reports.settings.emailNudge")}
-      </label>
+      <div className="flex flex-col gap-2">
+        <span className="text-base-content/50 text-xs font-semibold tracking-wide uppercase">{t("reports.settings.email")}</span>
+        <div className="flex flex-wrap items-start justify-between gap-2">
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              className="toggle toggle-info toggle-sm"
+              checked={settings.emailNudgeEnabled}
+              disabled={isPending}
+              onChange={(e) => onToggleEmailNudge(e.target.checked)}
+            />
+            {t("reports.settings.emailNudge")}
+          </label>
+          <div className="flex flex-col items-end gap-1">
+            <button type="button" className="btn btn-info btn-outline btn-xs" disabled={isSendingTest} onClick={onSendTest}>
+              {isSendingTest ? (
+                <span className="inline-flex items-center gap-1.5">
+                  <Spinner size="xs" />
+                  {t("reports.settings.sendingTest")}
+                </span>
+              ) : (
+                t("reports.settings.sendTest")
+              )}
+            </button>
+            <p className="text-base-content/50 max-w-48 text-right text-xs">{t("reports.settings.testCaption")}</p>
+            {testMessage && <span className={`text-xs ${testMessage.isError ? "text-error" : "text-success"}`}>{testMessage.text}</span>}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

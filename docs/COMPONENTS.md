@@ -63,6 +63,8 @@ _No props._
 | overallUptimePercent | number | Yes | — |  |
 | incidentCount | number | Yes | — |  |
 | atRiskCount | number | Yes | — |  |
+| isTest | boolean \| undefined | No | false |  |
+| isPlaceholder | boolean \| undefined | No | false |  |
 
 ### ErrorContent
 
@@ -1687,6 +1689,9 @@ _No props._
 | onChangeInterval | (interval: ReportInterval) => void | Yes | — |  |
 | onToggleBoard | (boardId: string, included: boolean) => void | Yes | — |  |
 | onToggleEmailNudge | (enabled: boolean) => void | Yes | — |  |
+| isSendingTest | boolean | Yes | — |  |
+| testMessage | { text: string; isError: boolean; } \| null | Yes | — |  |
+| onSendTest | () => void | Yes | — |  |
 
 ### ReportsPageContent
 

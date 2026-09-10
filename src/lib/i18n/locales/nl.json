@@ -251,12 +251,19 @@
       "downtime": "Downtime"
     },
     "settings": {
+      "autoSaveNote": "Wijzigingen worden direct toegepast. Er is geen opslaan-knop.",
       "interval": "Frequentie",
       "daily": "Dagelijks",
       "weekly": "Wekelijks",
       "monthly": "Maandelijks",
       "boards": "Opgenomen borden",
+      "email": "E-mail",
       "emailNudge": "Mail me zodra een nieuw rapport klaar is",
+      "sendTest": "Testmail versturen",
+      "sendingTest": "Versturen…",
+      "testSent": "Testmail verstuurd. Controleer je inbox.",
+      "testFailed": "Kan de testmail niet versturen.",
+      "testCaption": "Stuurt een voorbeeld naar je eigen e-mailadres. Als je nog niets volgt, toont het voorbeeldgegevens.",
       "somethingWrong": "Er is iets misgegaan."
     }
   },

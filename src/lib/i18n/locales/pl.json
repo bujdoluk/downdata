@@ -267,12 +267,19 @@
       "downtime": "Przestój"
     },
     "settings": {
+      "autoSaveNote": "Zmiany są stosowane natychmiast. Nie ma tu przycisku zapisu.",
       "interval": "Częstotliwość",
       "daily": "Codziennie",
       "weekly": "Co tydzień",
       "monthly": "Co miesiąc",
       "boards": "Uwzględnione tablice",
+      "email": "E-mail",
       "emailNudge": "Powiadom mnie e-mailem, gdy nowy raport będzie gotowy",
+      "sendTest": "Wyślij e-mail testowy",
+      "sendingTest": "Wysyłanie…",
+      "testSent": "Wysłano e-mail testowy. Sprawdź swoją skrzynkę.",
+      "testFailed": "Nie udało się wysłać e-maila testowego.",
+      "testCaption": "Wysyła podgląd na Twój własny adres e-mail. Jeśli niczego jeszcze nie monitorujesz, pokaże przykładowe dane.",
       "somethingWrong": "Coś poszło nie tak."
     }
   },

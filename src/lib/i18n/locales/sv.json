@@ -251,12 +251,19 @@
       "downtime": "Driftstopp"
     },
     "settings": {
+      "autoSaveNote": "Ändringar tillämpas direkt. Det finns ingen spara-knapp.",
       "interval": "Frekvens",
       "daily": "Dagligen",
       "weekly": "Veckovis",
       "monthly": "Månadsvis",
       "boards": "Inkluderade tavlor",
+      "email": "E-post",
       "emailNudge": "Meddela mig via e-post när en ny rapport är klar",
+      "sendTest": "Skicka testmejl",
+      "sendingTest": "Skickar…",
+      "testSent": "Testmejl skickat. Kolla din inkorg.",
+      "testFailed": "Det gick inte att skicka testmejlet.",
+      "testCaption": "Skickar en förhandsvisning till din egen e-post. Om du inte bevakar något än visas exempeldata.",
       "somethingWrong": "Något gick fel."
     }
   },

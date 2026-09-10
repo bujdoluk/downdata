@@ -251,12 +251,19 @@
       "downtime": "Ausfallzeit"
     },
     "settings": {
+      "autoSaveNote": "Änderungen werden sofort übernommen. Es gibt keinen Speichern-Button.",
       "interval": "Häufigkeit",
       "daily": "Täglich",
       "weekly": "Wöchentlich",
       "monthly": "Monatlich",
       "boards": "Enthaltene Boards",
+      "email": "E-Mail",
       "emailNudge": "Per E-Mail benachrichtigen, wenn ein neuer Bericht bereit ist",
+      "sendTest": "Test-E-Mail senden",
+      "sendingTest": "Wird gesendet…",
+      "testSent": "Test-E-Mail gesendet. Schau in dein Postfach.",
+      "testFailed": "Die Test-E-Mail konnte nicht gesendet werden.",
+      "testCaption": "Sendet eine Vorschau an deine eigene E-Mail-Adresse. Falls du noch nichts trackst, enthält sie Beispieldaten.",
       "somethingWrong": "Etwas ist schiefgelaufen."
     }
   },

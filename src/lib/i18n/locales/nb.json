@@ -251,12 +251,19 @@
       "downtime": "Nedetid"
     },
     "settings": {
+      "autoSaveNote": "Endringer trer i kraft umiddelbart. Det finnes ingen lagre-knapp.",
       "interval": "Frekvens",
       "daily": "Daglig",
       "weekly": "Ukentlig",
       "monthly": "Månedlig",
       "boards": "Inkluderte tavler",
+      "email": "E-post",
       "emailNudge": "Send meg en e-post når en ny rapport er klar",
+      "sendTest": "Send test-e-post",
+      "sendingTest": "Sender…",
+      "testSent": "Test-e-post sendt. Sjekk innboksen din.",
+      "testFailed": "Kunne ikke sende test-e-posten.",
+      "testCaption": "Sender en forhåndsvisning til din egen e-post. Hvis du ikke følger noe ennå, vises eksempeldata.",
       "somethingWrong": "Noe gikk galt."
     }
   },

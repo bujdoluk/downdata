@@ -9,7 +9,8 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { render } from "@react-email/render";
 import { Temporal } from "temporal-polyfill";
 import { getSupabaseClient } from "@/lib/supabase";
-import { getAllBoardsAcrossUsers } from "@/features/boards/services/boards";
+import { createClient } from "@/lib/supabase/server";
+import { getAllBoards, getAllBoardsAcrossUsers } from "@/features/boards/services/boards";
 import { getAllIntegrationsAcrossUsers } from "@/features/integrations/services/integrations";
 import { getResendClient } from "@/features/integrations/services/resend";
 import { getCatalog } from "@/lib/catalog";
@@ -17,7 +18,8 @@ import { getStoredIncidentSummariesForService, toIncidentSummaryApiShape } from 
 import { getAllStoredMaintenanceSummaries } from "@/features/maintenance/services/getStoredMaintenance";
 import { getAllTimeUptimeStats, computeOfficial30DaysUptime } from "@/lib/uptime";
 import { emailLogoUrl } from "@/lib/emailLogoUrl";
-import { epochMs, isoFromEpochMs } from "@/lib/formatTime";
+import { epochMs, isoFromEpochMs, nowIso } from "@/lib/formatTime";
+import { resolveTimeZone } from "@/lib/account";
 import { runInBatches } from "@/lib/runInBatches";
 import ReportReady from "@/components/emails/ReportReady";
 import type { Board } from "@/types/board";
@@ -253,10 +255,19 @@ async function computeReportPayload(
   };
 }
 
-async function sendReportNudge(recipients: string[], interval: ReportInterval, periodStart: Temporal.PlainDate, periodEnd: Temporal.PlainDate, payload: ReportPayload): Promise<boolean> {
+async function sendReportNudge(
+  recipients: string[],
+  interval: ReportInterval,
+  periodStart: Temporal.PlainDate,
+  periodEnd: Temporal.PlainDate,
+  payload: ReportPayload,
+  options?: { isTest?: boolean; isPlaceholder?: boolean },
+): Promise<boolean> {
   const from = process.env.RESEND_FROM_EMAIL;
   if (!from) return false;
 
+  const isTest = options?.isTest ?? false;
+  const isPlaceholder = options?.isPlaceholder ?? false;
   const element = ReportReady({
     logoUrl: emailLogoUrl(),
     interval,
@@ -265,13 +276,15 @@ async function sendReportNudge(recipients: string[], interval: ReportInterval, p
     overallUptimePercent: payload.overallUptimePercent,
     incidentCount: payload.newIncidentCount,
     atRiskCount: payload.atRiskServiceSlugs.length,
+    isTest,
+    isPlaceholder,
   });
   try {
     const [html, text] = await Promise.all([render(element), render(element, { plainText: true })]);
     const { error } = await getResendClient().emails.send({
       from: `downDATA <${from}>`,
       to: recipients,
-      subject: `Your ${interval} report is ready`,
+      subject: isTest ? `[Test] Your ${interval} report` : `Your ${interval} report is ready`,
       html,
       text,
     });
@@ -279,6 +292,103 @@ async function sendReportNudge(recipients: string[], interval: ReportInterval, p
   } catch {
     return false;
   }
+}
+
+// A fabricated report, shown only when the "send test email" button
+// (sendTestReportEmail below) is used by an account that tracks nothing
+// yet — there's no real data to preview, but showing an empty/all-zero
+// report wouldn't actually demonstrate what a real one looks like. Every
+// fabricated label is prefixed "Test " so nothing in it can be mistaken
+// for a real service, board, or number — reinforced by ReportReady's own
+// isPlaceholder banner.
+function buildPlaceholderTestPayload(): ReportPayload {
+  const placeholderService: ServiceReportEntry = {
+    slug: "test-service",
+    name: "Test Service",
+    uptimePercent: 98.42,
+    incidentCount: 2,
+    downtimeMinutes: 47,
+    atRisk: true,
+  };
+  return {
+    overallUptimePercent: 98.42,
+    newIncidentCount: 2,
+    resolvedIncidentCount: 1,
+    totalDowntimeMinutes: 47,
+    longestOutageMinutes: 32,
+    atRiskServiceSlugs: [placeholderService.slug],
+    newlyTrackedServiceSlugs: [],
+    upcomingMaintenanceCount: 1,
+    completedMaintenanceCount: 1,
+    keywordMatchCount: 1,
+    boards: [{ boardId: "test-board", boardName: "Test Board", services: [placeholderService] }],
+  };
+}
+
+const TEST_SEND_LIMIT = 5;
+const TEST_SEND_WINDOW_MS = 60 * 60 * 1000;
+
+// The /reports "send test email" button's own service-role-free, purely
+// session-scoped path — deliberately separate from generateDueReports:
+// it never writes to `reports` (not a real generation event, see this
+// feature's settled scope), always recomputes live off whatever
+// interval/boards are currently selected (never a stale stored report),
+// and always sends to the caller's own login email, never an arbitrary or
+// integration-sourced address. Rate-limited server-side (not just a
+// disabled button, which a direct API call would bypass) via a fixed
+// window on the caller's own report_settings row.
+export async function sendTestReportEmail(): Promise<{ sent: boolean; retryAfterSeconds?: number }> {
+  const supabase = await createClient();
+  const { data: userData } = await supabase.auth.getUser();
+  if (!userData.user?.email) throw new Error("Your account has no email address to send a test to.");
+
+  const { data: settingsRow } = await supabase
+    .from("report_settings")
+    .select("report_interval, excluded_board_ids, test_send_count, test_send_window_start")
+    .maybeSingle();
+
+  const now = nowIso();
+  const windowStartIso = settingsRow?.test_send_window_start ?? null;
+  const windowExpired = !windowStartIso || epochMs(now) - epochMs(windowStartIso) >= TEST_SEND_WINDOW_MS;
+  const countInWindow = windowExpired ? 0 : (settingsRow?.test_send_count ?? 0);
+
+  if (countInWindow >= TEST_SEND_LIMIT) {
+    const retryAfterSeconds = Math.ceil((epochMs(windowStartIso!) + TEST_SEND_WINDOW_MS - epochMs(now)) / 1000);
+    return { sent: false, retryAfterSeconds };
+  }
+
+  // Reserved before the send actually happens (not after) — an account
+  // spamming the button while a slow send is still in flight can't rack
+  // up more attempts than the limit allows in the meantime.
+  const { error: reserveError } = await supabase.from("report_settings").upsert(
+    { user_id: userData.user.id, test_send_count: countInWindow + 1, test_send_window_start: windowExpired ? now : windowStartIso },
+    { onConflict: "user_id" },
+  );
+  if (reserveError) throw reserveError;
+
+  const interval: ReportInterval = settingsRow?.report_interval ?? "weekly";
+  const excludedBoardIds = new Set(settingsRow?.excluded_board_ids ?? []);
+  const includedBoards = (await getAllBoards()).filter((board) => !excludedBoardIds.has(board.id));
+  const allSlugs = [...new Set(includedBoards.flatMap((board) => board.Slugs))];
+
+  const timeZone = resolveTimeZone(userData.user.user_metadata.time_zone);
+  const today = Temporal.Now.zonedDateTimeISO(timeZone).toPlainDate();
+  const period = completedPeriodEnding(interval, today);
+
+  let payload: ReportPayload;
+  let isPlaceholder: boolean;
+  if (allSlugs.length === 0) {
+    payload = buildPlaceholderTestPayload();
+    isPlaceholder = true;
+  } else {
+    const catalog = await getCatalog();
+    const catalogBySlug = new Map(catalog.map((entry) => [entry.slug, entry]));
+    payload = await computeReportPayload(userData.user.id, includedBoards, period.start, period.end, catalogBySlug);
+    isPlaceholder = false;
+  }
+
+  const sent = await sendReportNudge([userData.user.email], interval, period.start, period.end, payload, { isTest: true, isPlaceholder });
+  return { sent };
 }
 
 type SettingsRow = { user_id: string; report_interval: ReportInterval; excluded_board_ids: string[] | null; email_nudge_enabled: boolean; time_zone: string };

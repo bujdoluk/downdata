@@ -40,6 +40,15 @@ export default function ReportsPageContent({
       requestJson<ReportSettings>("/api/reports/settings", t("reports.settings.somethingWrong"), { method: "PATCH", body: patch }),
   });
 
+  const testMutation = useMutation({
+    mutationFn: () => requestJson<{ sent: boolean }>("/api/reports/test", t("reports.settings.testFailed"), { method: "POST" }),
+  });
+  const testMessage = testMutation.isSuccess
+    ? { text: t("reports.settings.testSent"), isError: false }
+    : testMutation.isError
+      ? { text: testMutation.error.message, isError: true }
+      : null;
+
   function toggleBoard(boardId: string, included: boolean) {
     const current = new Set((settingsMutation.data ?? initialSettings).excludedBoardIds);
     if (included) current.delete(boardId);
@@ -55,6 +64,9 @@ export default function ReportsPageContent({
       onChangeInterval={(interval) => settingsMutation.mutate({ interval })}
       onToggleBoard={toggleBoard}
       onToggleEmailNudge={(emailNudgeEnabled) => settingsMutation.mutate({ emailNudgeEnabled })}
+      isSendingTest={testMutation.isPending}
+      testMessage={testMessage}
+      onSendTest={() => testMutation.mutate()}
     />
   );
 

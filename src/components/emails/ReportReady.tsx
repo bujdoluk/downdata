@@ -20,6 +20,8 @@ export default function ReportReady({
   overallUptimePercent,
   incidentCount,
   atRiskCount,
+  isTest = false,
+  isPlaceholder = false,
 }: {
   logoUrl: string;
   interval: ReportInterval;
@@ -28,12 +30,25 @@ export default function ReportReady({
   overallUptimePercent: number;
   incidentCount: number;
   atRiskCount: number;
+  // Set by sendTestReportEmail() (reportGeneration.ts) for the /reports
+  // "send test email" button — never by the real cron. isPlaceholder is
+  // narrower: only true when isTest is *also* true and the account tracks
+  // nothing real to show (see buildPlaceholderTestPayload), so the numbers
+  // below are fabricated, not just an early preview of real ones.
+  isTest?: boolean;
+  isPlaceholder?: boolean;
 }) {
   const label = INTERVAL_LABEL[interval];
   const reportUrl = new URL("/reports", process.env.APP_URL ?? "https://www.downdata.online").toString();
 
   return (
-    <EmailLayout previewText={`Your ${label} report is ready`} logoUrl={logoUrl}>
+    <EmailLayout previewText={isTest ? `[Test] Your ${label} report` : `Your ${label} report is ready`} logoUrl={logoUrl}>
+      {isTest && (
+        <Text style={{ fontSize: 13, color: "#92400e", backgroundColor: "#fef3c7", borderRadius: 6, padding: "8px 12px", margin: "0 0 16px" }}>
+          This is a test email you sent yourself from /reports. No one else received it.
+          {isPlaceholder && " The numbers below are example data, not real activity. Connect a board to see your own."}
+        </Text>
+      )}
       <Text style={{ fontSize: 15, color: "#1c222b", margin: "0 0 16px" }}>Hi,</Text>
       <Text style={{ fontSize: 15, color: "#1c222b", lineHeight: 1.6, margin: "0 0 16px" }}>
         Your {label} report for {periodStart} – {periodEnd} is ready.

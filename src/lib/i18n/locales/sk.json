@@ -260,12 +260,19 @@
       "downtime": "Výpadok"
     },
     "settings": {
+      "autoSaveNote": "Zmeny sa uplatnia okamžite. Tlačidlo Uložiť tu nie je.",
       "interval": "Frekvencia",
       "daily": "Denne",
       "weekly": "Týždenne",
       "monthly": "Mesačne",
       "boards": "Zahrnuté nástenky",
+      "email": "E-mail",
       "emailNudge": "Upozorniť ma e-mailom, keď je nový prehľad pripravený",
+      "sendTest": "Poslať testovací e-mail",
+      "sendingTest": "Odosielam…",
+      "testSent": "Testovací e-mail bol odoslaný. Skontrolujte si doručenú poštu.",
+      "testFailed": "Testovací e-mail sa nepodarilo odoslať.",
+      "testCaption": "Pošle ukážku na tvoj vlastný e-mail. Ak ešte nič nesleduješ, zobrazia sa v nej ukážkové dáta.",
       "somethingWrong": "Niečo sa pokazilo."
     }
   },

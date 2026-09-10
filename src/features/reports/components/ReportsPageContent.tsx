@@ -10,10 +10,11 @@ import { formatDate } from "@/lib/formatTime";
 import ListDetailShell from "@/components/ListDetailShell";
 import ReportSettingsForm from "@/features/reports/components/ReportSettingsForm";
 import ReportDetail from "@/features/reports/components/ReportDetail";
+import { useDebouncedSetting } from "@/features/reports/hooks/useDebouncedSetting";
 import { useSelectAndScrollOnMobile } from "@/hooks/useSelectAndScrollOnMobile";
 import { useAutoSelectFirstId } from "@/hooks/useAutoSelectFirstId";
 import type { Board } from "@/types/board";
-import type { ReportInterval, ReportSettings, StoredReport } from "@/features/reports/types";
+import type { ReportSettings, StoredReport } from "@/features/reports/types";
 
 export default function ReportsPageContent({
   boards,
@@ -35,10 +36,26 @@ export default function ReportsPageContent({
   const selectReport = useSelectAndScrollOnMobile("/reports", detailRef);
   useAutoSelectFirstId("/reports", selectedId, reports);
 
-  const settingsMutation = useMutation({
-    mutationFn: (patch: Partial<{ interval: ReportInterval; excludedBoardIds: string[]; emailNudgeEnabled: boolean }>) =>
-      requestJson<ReportSettings>("/api/reports/settings", t("reports.settings.somethingWrong"), { method: "PATCH", body: patch }),
-  });
+  // Three independent, optimistic + debounced fields, not one shared
+  // settings object with a disabled-while-saving flag — see
+  // useDebouncedSetting's own comment for why. Each control updates
+  // instantly on click and only actually persists ~500ms after the last
+  // change to that same field, so rapid clicking doesn't disable
+  // anything and doesn't fire one overlapping request per click either.
+  const intervalSetting = useDebouncedSetting(initialSettings.interval, (nextInterval) =>
+    requestJson<ReportSettings>("/api/reports/settings", t("reports.settings.somethingWrong"), { method: "PATCH", body: { interval: nextInterval } }).then((updated) => updated.interval),
+  );
+  const boardsSetting = useDebouncedSetting(initialSettings.excludedBoardIds, (nextExcludedBoardIds) =>
+    requestJson<ReportSettings>("/api/reports/settings", t("reports.settings.somethingWrong"), { method: "PATCH", body: { excludedBoardIds: nextExcludedBoardIds } }).then(
+      (updated) => updated.excludedBoardIds,
+    ),
+  );
+  const emailNudgeSetting = useDebouncedSetting(initialSettings.emailNudgeEnabled, (nextEmailNudgeEnabled) =>
+    requestJson<ReportSettings>("/api/reports/settings", t("reports.settings.somethingWrong"), { method: "PATCH", body: { emailNudgeEnabled: nextEmailNudgeEnabled } }).then(
+      (updated) => updated.emailNudgeEnabled,
+    ),
+  );
+  const settings: ReportSettings = { interval: intervalSetting.value, excludedBoardIds: boardsSetting.value, emailNudgeEnabled: emailNudgeSetting.value };
 
   const testMutation = useMutation({
     mutationFn: () => requestJson<{ sent: boolean }>("/api/reports/test", t("reports.settings.testFailed"), { method: "POST" }),
@@ -50,20 +67,22 @@ export default function ReportsPageContent({
       : null;
 
   function toggleBoard(boardId: string, included: boolean) {
-    const current = new Set((settingsMutation.data ?? initialSettings).excludedBoardIds);
+    const current = new Set(boardsSetting.value);
     if (included) current.delete(boardId);
     else current.add(boardId);
-    settingsMutation.mutate({ excludedBoardIds: [...current] });
+    boardsSetting.set([...current]);
   }
 
   const header = (
     <ReportSettingsForm
       boards={boards}
-      settings={settingsMutation.data ?? initialSettings}
-      isPending={settingsMutation.isPending}
-      onChangeInterval={(interval) => settingsMutation.mutate({ interval })}
+      settings={settings}
+      intervalError={intervalSetting.error}
+      boardsError={boardsSetting.error}
+      emailNudgeError={emailNudgeSetting.error}
+      onChangeInterval={intervalSetting.set}
       onToggleBoard={toggleBoard}
-      onToggleEmailNudge={(emailNudgeEnabled) => settingsMutation.mutate({ emailNudgeEnabled })}
+      onToggleEmailNudge={emailNudgeSetting.set}
       isSendingTest={testMutation.isPending}
       testMessage={testMessage}
       onSendTest={() => testMutation.mutate()}
@@ -118,6 +137,7 @@ export default function ReportsPageContent({
         list={list}
         detailRef={detailRef}
         detail={detail}
+        listColumnWidth="third"
       />
     </div>
   );

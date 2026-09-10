@@ -234,6 +234,7 @@
     "resolvedIncidents_other": "{{count}} opgelost",
     "downtime": "Downtime",
     "longestOutage": "Langste storing: {{duration}}",
+    "maintenanceCompleted": "Voltooid onderhoud",
     "atRisk_one": "{{count}} dienst heeft aandacht nodig",
     "atRisk_other": "{{count}} diensten hebben aandacht nodig",
     "newlyTracked": "Nieuw",

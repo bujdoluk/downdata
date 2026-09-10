@@ -391,6 +391,7 @@ _No props._
 | detailRef | RefObject<HTMLDivElement \| null> | Yes | — |  |
 | detail | ReactNode | Yes | — |  |
 | pagination | ReactNode | No | — |  |
+| listColumnWidth | "half" \| "third" \| undefined | No | half |  |
 
 ### LoadingOverlay
 
@@ -1065,6 +1066,14 @@ _No props._
 |---|---|---|---|---|
 | className | string \| undefined | No | — |  |
 
+### NavigationLoadingBoundary
+
+`src/components/NavigationLoadingBoundary.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| sidebar | ReactNode | Yes | — |  |
+
 ### Pagination
 
 `src/components/Pagination.tsx`
@@ -1683,7 +1692,9 @@ _No props._
 |---|---|---|---|---|
 | boards | Board[] | Yes | — |  |
 | settings | ReportSettings | Yes | — |  |
-| isPending | boolean | Yes | — |  |
+| intervalError | string \| null | Yes | — |  |
+| boardsError | string \| null | Yes | — |  |
+| emailNudgeError | string \| null | Yes | — |  |
 | onChangeInterval | (interval: ReportInterval) => void | Yes | — |  |
 | onToggleBoard | (boardId: string, included: boolean) => void | Yes | — |  |
 | onToggleEmailNudge | (enabled: boolean) => void | Yes | — |  |

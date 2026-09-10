@@ -242,6 +242,7 @@
     "resolvedIncidents_other": "{{count}} решено",
     "downtime": "Время простоя",
     "longestOutage": "Самый долгий сбой: {{duration}}",
+    "maintenanceCompleted": "Завершённое обслуживание",
     "atRisk_one": "{{count}} сервис требует внимания",
     "atRisk_few": "{{count}} сервиса требуют внимания",
     "atRisk_many": "{{count}} сервисов требуют внимания",

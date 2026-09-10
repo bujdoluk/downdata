@@ -234,6 +234,7 @@
     "resolvedIncidents_other": "{{count}} résolus",
     "downtime": "Temps d'indisponibilité",
     "longestOutage": "Panne la plus longue : {{duration}}",
+    "maintenanceCompleted": "Maintenance terminée",
     "atRisk_one": "{{count}} service nécessite votre attention",
     "atRisk_other": "{{count}} services nécessitent votre attention",
     "newlyTracked": "Nouveau",

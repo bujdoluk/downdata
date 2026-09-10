@@ -242,6 +242,7 @@
     "resolvedIncidents_other": "{{count}} rozwiązanego",
     "downtime": "Przestój",
     "longestOutage": "Najdłuższa przerwa: {{duration}}",
+    "maintenanceCompleted": "Zakończona konserwacja",
     "atRisk_one": "{{count}} usługa wymaga uwagi",
     "atRisk_few": "{{count}} usługi wymagają uwagi",
     "atRisk_many": "{{count}} usług wymaga uwagi",

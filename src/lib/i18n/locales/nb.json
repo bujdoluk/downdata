@@ -234,6 +234,7 @@
     "resolvedIncidents_other": "{{count}} løst",
     "downtime": "Nedetid",
     "longestOutage": "Lengste driftsstans: {{duration}}",
+    "maintenanceCompleted": "Fullført vedlikehold",
     "atRisk_one": "{{count}} tjeneste trenger oppfølging",
     "atRisk_other": "{{count}} tjenester trenger oppfølging",
     "newlyTracked": "Ny",

@@ -239,6 +239,7 @@
     "resolvedIncidents_other": "{{count}} vyřešených",
     "downtime": "Výpadek",
     "longestOutage": "Nejdelší výpadek: {{duration}}",
+    "maintenanceCompleted": "Dokončená údržba",
     "atRisk_one": "{{count}} služba vyžaduje pozornost",
     "atRisk_few": "{{count}} služby vyžadují pozornost",
     "atRisk_other": "{{count}} služeb vyžaduje pozornost",

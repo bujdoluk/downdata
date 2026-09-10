@@ -96,6 +96,11 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
             <div className="stat-desc">{t("reports.longestOutage", { duration: formatDuration(payload.longestOutageMinutes, t) })}</div>
           )}
         </div>
+        <div className="stat">
+          <div className="stat-title">{t("reports.maintenanceCompleted")}</div>
+          <div className="stat-value text-2xl">{payload.completedMaintenanceCount}</div>
+          <div className="stat-desc">{t("reports.upcomingMaintenance", { count: payload.upcomingMaintenanceCount })}</div>
+        </div>
       </div>
 
       {payload.atRiskServiceSlugs.length > 0 && (
@@ -104,11 +109,9 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
         </div>
       )}
 
-      {(payload.upcomingMaintenanceCount > 0 || payload.completedMaintenanceCount > 0 || payload.keywordMatchCount > 0) && (
+      {payload.keywordMatchCount > 0 && (
         <div className="text-base-content/60 flex flex-wrap gap-4 text-sm">
-          {payload.completedMaintenanceCount > 0 && <span>{t("reports.completedMaintenance", { count: payload.completedMaintenanceCount })}</span>}
-          {payload.upcomingMaintenanceCount > 0 && <span>{t("reports.upcomingMaintenance", { count: payload.upcomingMaintenanceCount })}</span>}
-          {payload.keywordMatchCount > 0 && <span>{t("reports.keywordMatches", { count: payload.keywordMatchCount })}</span>}
+          <span>{t("reports.keywordMatches", { count: payload.keywordMatchCount })}</span>
         </div>
       )}
 

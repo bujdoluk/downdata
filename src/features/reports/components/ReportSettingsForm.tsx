@@ -16,7 +16,9 @@ const INTERVALS: ReportInterval[] = ["daily", "weekly", "monthly"];
 export default function ReportSettingsForm({
   boards,
   settings,
-  isPending,
+  intervalError,
+  boardsError,
+  emailNudgeError,
   onChangeInterval,
   onToggleBoard,
   onToggleEmailNudge,
@@ -26,7 +28,13 @@ export default function ReportSettingsForm({
 }: {
   boards: Board[];
   settings: ReportSettings;
-  isPending: boolean;
+  // Three independent error slots, not a disabled-while-saving flag —
+  // each section is optimistic + debounced (see useDebouncedSetting), so
+  // there's nothing to disable; a failed save rolls its own value back
+  // and surfaces its own message here, without touching the other two.
+  intervalError: string | null;
+  boardsError: string | null;
+  emailNudgeError: string | null;
   onChangeInterval: (interval: ReportInterval) => void;
   onToggleBoard: (boardId: string, included: boolean) => void;
   onToggleEmailNudge: (enabled: boolean) => void;
@@ -51,7 +59,6 @@ export default function ReportSettingsForm({
             <button
               key={interval}
               type="button"
-              disabled={isPending}
               onClick={() => onChangeInterval(interval)}
               className={`btn join-item btn-sm ${settings.interval === interval ? "btn-info" : "btn-outline btn-info"}`}
             >
@@ -59,6 +66,7 @@ export default function ReportSettingsForm({
             </button>
           ))}
         </div>
+        {intervalError && <p className="text-error text-xs">{intervalError}</p>}
       </div>
 
       {boards.length > 0 && (
@@ -71,13 +79,13 @@ export default function ReportSettingsForm({
                   type="checkbox"
                   className="checkbox checkbox-info checkbox-sm"
                   checked={!excluded.has(board.id)}
-                  disabled={isPending}
                   onChange={(e) => onToggleBoard(board.id, e.target.checked)}
                 />
                 {board.name}
               </label>
             ))}
           </div>
+          {boardsError && <p className="text-error text-xs">{boardsError}</p>}
         </div>
       )}
 
@@ -89,7 +97,6 @@ export default function ReportSettingsForm({
               type="checkbox"
               className="toggle toggle-info toggle-sm"
               checked={settings.emailNudgeEnabled}
-              disabled={isPending}
               onChange={(e) => onToggleEmailNudge(e.target.checked)}
             />
             {t("reports.settings.emailNudge")}
@@ -109,6 +116,7 @@ export default function ReportSettingsForm({
             {testMessage && <span className={`text-xs ${testMessage.isError ? "text-error" : "text-success"}`}>{testMessage.text}</span>}
           </div>
         </div>
+        {emailNudgeError && <p className="text-error text-xs">{emailNudgeError}</p>}
       </div>
     </div>
   );

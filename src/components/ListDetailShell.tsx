@@ -22,6 +22,7 @@ export default function ListDetailShell({
   detailRef,
   detail,
   pagination,
+  listColumnWidth = "half",
 }: {
   title: string;
   subtitle: string;
@@ -44,6 +45,13 @@ export default function ListDetailShell({
   // inside `list` — so it stays centered regardless of how tall or narrow
   // the list column is.
   pagination?: ReactNode;
+  // "half" (the default, unchanged for /incidents, /maintenance, and
+  // /early-warnings) is an even 50/50 split; "third" narrows the list
+  // column to 1/3 and widens detail to 2/3 — /reports' own list items are
+  // short (one date range + a couple of numbers) next to a detail pane
+  // that's a full per-board/per-service breakdown, so the even split was
+  // wasting width the other 3 consumers don't have this problem with.
+  listColumnWidth?: "half" | "third";
 }) {
   return (
     <div className="mx-auto w-full max-w-6xl self-start">
@@ -63,9 +71,9 @@ export default function ListDetailShell({
       ) : (
         <>
           <div className="mt-4">{filters}</div>
-          <div className="mt-4 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div>{list}</div>
-            <div ref={detailRef} className="card card-border bg-base-200 p-4">
+          <div className={`mt-4 grid grid-cols-1 gap-6 ${listColumnWidth === "third" ? "lg:grid-cols-3" : "lg:grid-cols-2"}`}>
+            <div className={listColumnWidth === "third" ? "lg:col-span-1" : undefined}>{list}</div>
+            <div ref={detailRef} className={`card card-border bg-base-200 p-4 ${listColumnWidth === "third" ? "lg:col-span-2" : ""}`}>
               {detail}
             </div>
           </div>

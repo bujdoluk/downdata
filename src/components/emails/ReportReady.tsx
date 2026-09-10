@@ -56,11 +56,12 @@ export default function ReportReady({
   const reportUrl = new URL("/reports", process.env.APP_URL ?? "https://www.downdata.online").toString();
   const atRiskCount = payload.atRiskServiceSlugs.length;
 
-  const secondaryNotes = [
-    payload.completedMaintenanceCount > 0 && `${payload.completedMaintenanceCount} maintenance${payload.completedMaintenanceCount === 1 ? "" : "s"} completed`,
-    payload.upcomingMaintenanceCount > 0 && `${payload.upcomingMaintenanceCount} upcoming`,
-    payload.keywordMatchCount > 0 && `${payload.keywordMatchCount} keyword match${payload.keywordMatchCount === 1 ? "" : "es"}`,
-  ].filter((note): note is string => Boolean(note));
+  // Maintenance moved into its own line in the stat box below (mirroring
+  // ReportDetail.tsx's dedicated stat tile) — keywordMatchCount has no
+  // tile of its own, so it stays here.
+  const secondaryNotes = [payload.keywordMatchCount > 0 && `${payload.keywordMatchCount} keyword match${payload.keywordMatchCount === 1 ? "" : "es"}`].filter((note): note is string =>
+    Boolean(note),
+  );
 
   const boardsWithServices = payload.boards.filter((board) => board.services.length > 0);
 
@@ -90,6 +91,12 @@ export default function ReportReady({
               <Text style={{ fontSize: 14, color: "#374151", margin: "4px 0 0" }}>
                 {formatMinutes(payload.totalDowntimeMinutes)} downtime
                 {payload.longestOutageMinutes > 0 && ` (longest ${formatMinutes(payload.longestOutageMinutes)})`}
+              </Text>
+            )}
+            {(payload.completedMaintenanceCount > 0 || payload.upcomingMaintenanceCount > 0) && (
+              <Text style={{ fontSize: 14, color: "#374151", margin: "4px 0 0" }}>
+                {payload.completedMaintenanceCount} maintenance{payload.completedMaintenanceCount === 1 ? "" : "s"} completed
+                {payload.upcomingMaintenanceCount > 0 && ` · ${payload.upcomingMaintenanceCount} upcoming`}
               </Text>
             )}
           </td>

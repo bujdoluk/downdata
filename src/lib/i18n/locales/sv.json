@@ -234,6 +234,7 @@
     "resolvedIncidents_other": "{{count}} lösta",
     "downtime": "Driftstopp",
     "longestOutage": "Längsta avbrottet: {{duration}}",
+    "maintenanceCompleted": "Avslutat underhåll",
     "atRisk_one": "{{count}} tjänst behöver uppmärksamhet",
     "atRisk_other": "{{count}} tjänster behöver uppmärksamhet",
     "newlyTracked": "Ny",

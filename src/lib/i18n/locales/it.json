@@ -32,6 +32,7 @@
     "webhook": "Webhook",
     "history": "Cronologia",
     "earlyWarnings": "Avvisi Anticipati",
+    "reports": "Report",
     "settings": "Impostazioni",
     "account": "Account",
     "billing": "Fatturazione",
@@ -220,6 +221,44 @@
     },
     "selectPrompt": "Seleziona una corrispondenza a sinistra per vederne i dettagli.",
     "somethingWrong": "Qualcosa è andato storto."
+  },
+  "reports": {
+    "title": "Report",
+    "subtitle": "Un riepilogo periodico di uptime, incidenti e manutenzioni su tutte le tue bacheche.",
+    "empty": "Ancora nessun report. Torna a controllare dopo la fine del primo periodo.",
+    "selectPrompt": "Seleziona un report a sinistra per vederne i dettagli.",
+    "generatedOn": "Generato il {{date}}",
+    "overallUptime": "Uptime complessivo",
+    "incidents": "Nuovi incidenti",
+    "resolvedIncidents_one": "{{count}} risolto",
+    "resolvedIncidents_other": "{{count}} risolti",
+    "downtime": "Downtime",
+    "longestOutage": "Interruzione più lunga: {{duration}}",
+    "atRisk_one": "{{count}} servizio richiede attenzione",
+    "atRisk_other": "{{count}} servizi richiedono attenzione",
+    "newlyTracked": "Nuovo",
+    "noServicesOnBoard": "Nessun servizio in questa bacheca.",
+    "completedMaintenance_one": "{{count}} manutenzione completata",
+    "completedMaintenance_other": "{{count}} manutenzioni completate",
+    "upcomingMaintenance_one": "{{count}} manutenzione in programma",
+    "upcomingMaintenance_other": "{{count}} manutenzioni in programma",
+    "keywordMatches_one": "{{count}} corrispondenza di parola chiave",
+    "keywordMatches_other": "{{count}} corrispondenze di parole chiave",
+    "table": {
+      "service": "Servizio",
+      "uptime": "Uptime",
+      "incidents": "Incidenti",
+      "downtime": "Downtime"
+    },
+    "settings": {
+      "interval": "Frequenza",
+      "daily": "Giornaliera",
+      "weekly": "Settimanale",
+      "monthly": "Mensile",
+      "boards": "Bacheche incluse",
+      "emailNudge": "Avvisami via email quando un nuovo report è pronto",
+      "somethingWrong": "Qualcosa è andato storto."
+    }
   },
   "history": {
     "title": "Cronologia",

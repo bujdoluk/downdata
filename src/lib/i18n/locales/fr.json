@@ -32,6 +32,7 @@
     "webhook": "Webhook",
     "history": "Historique",
     "earlyWarnings": "Alertes Précoces",
+    "reports": "Rapports",
     "settings": "Paramètres",
     "account": "Compte",
     "billing": "Facturation",
@@ -220,6 +221,44 @@
     },
     "selectPrompt": "Sélectionnez une correspondance à gauche pour voir ses détails.",
     "somethingWrong": "Une erreur s'est produite."
+  },
+  "reports": {
+    "title": "Rapports",
+    "subtitle": "Un résumé périodique de la disponibilité, des incidents et de la maintenance sur tous vos tableaux.",
+    "empty": "Aucun rapport pour le moment. Revenez une fois votre première période terminée.",
+    "selectPrompt": "Sélectionnez un rapport à gauche pour voir ses détails.",
+    "generatedOn": "Généré le {{date}}",
+    "overallUptime": "Disponibilité globale",
+    "incidents": "Nouveaux incidents",
+    "resolvedIncidents_one": "{{count}} résolu",
+    "resolvedIncidents_other": "{{count}} résolus",
+    "downtime": "Temps d'indisponibilité",
+    "longestOutage": "Panne la plus longue : {{duration}}",
+    "atRisk_one": "{{count}} service nécessite votre attention",
+    "atRisk_other": "{{count}} services nécessitent votre attention",
+    "newlyTracked": "Nouveau",
+    "noServicesOnBoard": "Aucun service sur ce tableau.",
+    "completedMaintenance_one": "{{count}} maintenance terminée",
+    "completedMaintenance_other": "{{count}} maintenances terminées",
+    "upcomingMaintenance_one": "{{count}} maintenance à venir",
+    "upcomingMaintenance_other": "{{count}} maintenances à venir",
+    "keywordMatches_one": "{{count}} correspondance de mot-clé",
+    "keywordMatches_other": "{{count}} correspondances de mots-clés",
+    "table": {
+      "service": "Service",
+      "uptime": "Disponibilité",
+      "incidents": "Incidents",
+      "downtime": "Indisponibilité"
+    },
+    "settings": {
+      "interval": "Fréquence",
+      "daily": "Quotidienne",
+      "weekly": "Hebdomadaire",
+      "monthly": "Mensuelle",
+      "boards": "Tableaux inclus",
+      "emailNudge": "M'avertir par e-mail quand un nouveau rapport est prêt",
+      "somethingWrong": "Une erreur s'est produite."
+    }
   },
   "history": {
     "title": "Historique",

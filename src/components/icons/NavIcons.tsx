@@ -525,6 +525,29 @@ export function CloseIcon({ className }: { className?: string }) {
   );
 }
 
+export function ReportIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={20}
+      height={20}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+      <path d="M14 2v6h6" />
+      <path d="M9 17v-3" />
+      <path d="M12 17v-5" />
+      <path d="M15 17v-1" />
+    </svg>
+  );
+}
+
 export function UserGroupIcon({ className }: { className?: string }) {
   return (
     <svg

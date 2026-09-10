@@ -1,0 +1,32 @@
+import { createClient } from "@/lib/supabase/server";
+import type { ReportPayload, StoredReport } from "@/features/reports/types";
+
+type ReportRow = {
+  id: string;
+  report_interval: StoredReport["interval"];
+  period_start: string;
+  period_end: string;
+  generated_at: string;
+  payload: ReportPayload;
+};
+
+function toStoredReport(row: ReportRow): StoredReport {
+  return { id: row.id, interval: row.report_interval, periodStart: row.period_start, periodEnd: row.period_end, generatedAt: row.generated_at, payload: row.payload };
+}
+
+// Newest first, capped at 200 — comfortably more than even a daily
+// cadence produces in a year, and each row's payload is a small JSON blob
+// (a handful of aggregate numbers per board/service), not worth paginating
+// for v1.
+const LIST_LIMIT = 200;
+
+export async function getAllOwnReports(): Promise<StoredReport[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("reports")
+    .select("id, report_interval, period_start, period_end, generated_at, payload")
+    .order("period_start", { ascending: false })
+    .limit(LIST_LIMIT);
+  if (error) throw error;
+  return ((data as ReportRow[] | null) ?? []).map(toStoredReport);
+}

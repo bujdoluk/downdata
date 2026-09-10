@@ -32,6 +32,7 @@
     "webhook": "Webhook",
     "history": "Historikk",
     "earlyWarnings": "Tidlige Varsler",
+    "reports": "Rapporter",
     "settings": "Innstillinger",
     "account": "Konto",
     "billing": "Fakturering",
@@ -220,6 +221,44 @@
     },
     "selectPrompt": "Velg et treff til venstre for å se detaljer.",
     "somethingWrong": "Noe gikk galt."
+  },
+  "reports": {
+    "title": "Rapporter",
+    "subtitle": "En periodisk oppsummering av oppetid, hendelser og vedlikehold for alle tavlene dine.",
+    "empty": "Ingen rapporter ennå. Kom tilbake når din første periode er ferdig.",
+    "selectPrompt": "Velg en rapport til venstre for å se detaljer.",
+    "generatedOn": "Opprettet {{date}}",
+    "overallUptime": "Total oppetid",
+    "incidents": "Nye hendelser",
+    "resolvedIncidents_one": "{{count}} løst",
+    "resolvedIncidents_other": "{{count}} løst",
+    "downtime": "Nedetid",
+    "longestOutage": "Lengste driftsstans: {{duration}}",
+    "atRisk_one": "{{count}} tjeneste trenger oppfølging",
+    "atRisk_other": "{{count}} tjenester trenger oppfølging",
+    "newlyTracked": "Ny",
+    "noServicesOnBoard": "Ingen tjenester på denne tavlen.",
+    "completedMaintenance_one": "{{count}} fullført vedlikehold",
+    "completedMaintenance_other": "{{count}} fullførte vedlikehold",
+    "upcomingMaintenance_one": "{{count}} kommende vedlikehold",
+    "upcomingMaintenance_other": "{{count}} kommende vedlikehold",
+    "keywordMatches_one": "{{count}} nøkkelordtreff",
+    "keywordMatches_other": "{{count}} nøkkelordtreff",
+    "table": {
+      "service": "Tjeneste",
+      "uptime": "Oppetid",
+      "incidents": "Hendelser",
+      "downtime": "Nedetid"
+    },
+    "settings": {
+      "interval": "Frekvens",
+      "daily": "Daglig",
+      "weekly": "Ukentlig",
+      "monthly": "Månedlig",
+      "boards": "Inkluderte tavler",
+      "emailNudge": "Send meg en e-post når en ny rapport er klar",
+      "somethingWrong": "Noe gikk galt."
+    }
   },
   "history": {
     "title": "Historikk",

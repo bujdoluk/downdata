@@ -32,6 +32,7 @@
     "webhook": "Webhook",
     "history": "Geschiedenis",
     "earlyWarnings": "Vroege Waarschuwingen",
+    "reports": "Rapporten",
     "settings": "Instellingen",
     "account": "Account",
     "billing": "Facturering",
@@ -220,6 +221,44 @@
     },
     "selectPrompt": "Selecteer links een overeenkomst om de details te zien.",
     "somethingWrong": "Er is iets misgegaan."
+  },
+  "reports": {
+    "title": "Rapporten",
+    "subtitle": "Een periodiek overzicht van uptime, incidenten en onderhoud voor al je borden.",
+    "empty": "Nog geen rapporten. Kom terug zodra je eerste periode is afgelopen.",
+    "selectPrompt": "Selecteer links een rapport om de details te zien.",
+    "generatedOn": "Gegenereerd op {{date}}",
+    "overallUptime": "Totale uptime",
+    "incidents": "Nieuwe incidenten",
+    "resolvedIncidents_one": "{{count}} opgelost",
+    "resolvedIncidents_other": "{{count}} opgelost",
+    "downtime": "Downtime",
+    "longestOutage": "Langste storing: {{duration}}",
+    "atRisk_one": "{{count}} dienst heeft aandacht nodig",
+    "atRisk_other": "{{count}} diensten hebben aandacht nodig",
+    "newlyTracked": "Nieuw",
+    "noServicesOnBoard": "Geen diensten op dit bord.",
+    "completedMaintenance_one": "{{count}} afgerond onderhoud",
+    "completedMaintenance_other": "{{count}} afgeronde onderhoudswerkzaamheden",
+    "upcomingMaintenance_one": "{{count}} aankomend onderhoud",
+    "upcomingMaintenance_other": "{{count}} aankomende onderhoudswerkzaamheden",
+    "keywordMatches_one": "{{count}} trefwoordtreffer",
+    "keywordMatches_other": "{{count}} trefwoordtreffers",
+    "table": {
+      "service": "Dienst",
+      "uptime": "Uptime",
+      "incidents": "Incidenten",
+      "downtime": "Downtime"
+    },
+    "settings": {
+      "interval": "Frequentie",
+      "daily": "Dagelijks",
+      "weekly": "Wekelijks",
+      "monthly": "Maandelijks",
+      "boards": "Opgenomen borden",
+      "emailNudge": "Mail me zodra een nieuw rapport klaar is",
+      "somethingWrong": "Er is iets misgegaan."
+    }
   },
   "history": {
     "title": "Geschiedenis",

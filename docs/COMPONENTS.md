@@ -50,6 +50,20 @@ _No props._
 | shortlink | string \| null | Yes | — |  |
 | isNew | boolean | Yes | — |  |
 
+### ReportReady
+
+`src/components/emails/ReportReady.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| logoUrl | string | Yes | — |  |
+| interval | ReportInterval | Yes | — |  |
+| periodStart | string | Yes | — |  |
+| periodEnd | string | Yes | — |  |
+| overallUptimePercent | number | Yes | — |  |
+| incidentCount | number | Yes | — |  |
+| atRiskCount | number | Yes | — |  |
+
 ### ErrorContent
 
 `src/components/ErrorContent.tsx`
@@ -245,6 +259,14 @@ _No props._
 | className | string \| undefined | No | — |  |
 
 ### RadarIcon
+
+`src/components/icons/NavIcons.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| className | string \| undefined | No | — |  |
+
+### ReportIcon
 
 `src/components/icons/NavIcons.tsx`
 
@@ -1644,6 +1666,37 @@ _No props._
 |---|---|---|---|---|
 | counts | Record<"critical" \| "major" \| "minor" \| "none", number> | Yes | — |  |
 | isLoading | boolean | Yes | — |  |
+
+### ReportDetail
+
+`src/features/reports/components/ReportDetail.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| report | StoredReport | Yes | — |  |
+
+### ReportSettingsForm
+
+`src/features/reports/components/ReportSettingsForm.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| boards | Board[] | Yes | — |  |
+| settings | ReportSettings | Yes | — |  |
+| isPending | boolean | Yes | — |  |
+| onChangeInterval | (interval: ReportInterval) => void | Yes | — |  |
+| onToggleBoard | (boardId: string, included: boolean) => void | Yes | — |  |
+| onToggleEmailNudge | (enabled: boolean) => void | Yes | — |  |
+
+### ReportsPageContent
+
+`src/features/reports/components/ReportsPageContent.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| boards | Board[] | Yes | — |  |
+| initialSettings | ReportSettings | Yes | — |  |
+| initialReports | StoredReport[] | Yes | — |  |
 
 ### BoardStatusPageSettings
 

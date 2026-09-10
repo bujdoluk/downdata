@@ -32,6 +32,7 @@
     "webhook": "Webhook",
     "history": "History",
     "earlyWarnings": "Early Warnings",
+    "reports": "Reports",
     "settings": "Settings",
     "account": "Account",
     "billing": "Billing",
@@ -220,6 +221,44 @@
     },
     "selectPrompt": "Select a match on the left to see its details.",
     "somethingWrong": "Something went wrong."
+  },
+  "reports": {
+    "title": "Reports",
+    "subtitle": "A periodic summary of uptime, incidents, and maintenance across your boards.",
+    "empty": "No reports yet. Check back after your first period completes.",
+    "selectPrompt": "Select a report on the left to see its details.",
+    "generatedOn": "Generated {{date}}",
+    "overallUptime": "Overall uptime",
+    "incidents": "New incidents",
+    "resolvedIncidents_one": "{{count}} resolved",
+    "resolvedIncidents_other": "{{count}} resolved",
+    "downtime": "Downtime",
+    "longestOutage": "Longest outage: {{duration}}",
+    "atRisk_one": "{{count}} service needs attention",
+    "atRisk_other": "{{count}} services need attention",
+    "newlyTracked": "New",
+    "noServicesOnBoard": "No services on this board.",
+    "completedMaintenance_one": "{{count}} maintenance completed",
+    "completedMaintenance_other": "{{count}} maintenances completed",
+    "upcomingMaintenance_one": "{{count}} maintenance upcoming",
+    "upcomingMaintenance_other": "{{count}} maintenances upcoming",
+    "keywordMatches_one": "{{count}} keyword match",
+    "keywordMatches_other": "{{count}} keyword matches",
+    "table": {
+      "service": "Service",
+      "uptime": "Uptime",
+      "incidents": "Incidents",
+      "downtime": "Downtime"
+    },
+    "settings": {
+      "interval": "Frequency",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "boards": "Boards included",
+      "emailNudge": "Email me when a new report is ready",
+      "somethingWrong": "Something went wrong."
+    }
   },
   "history": {
     "title": "History",

@@ -32,6 +32,7 @@
     "webhook": "Webhook",
     "history": "Verlauf",
     "earlyWarnings": "Frühwarnungen",
+    "reports": "Berichte",
     "settings": "Einstellungen",
     "account": "Konto",
     "billing": "Abrechnung",
@@ -220,6 +221,44 @@
     },
     "selectPrompt": "Wähle links einen Treffer aus, um Details zu sehen.",
     "somethingWrong": "Etwas ist schiefgelaufen."
+  },
+  "reports": {
+    "title": "Berichte",
+    "subtitle": "Eine regelmäßige Zusammenfassung von Verfügbarkeit, Vorfällen und Wartungen über alle deine Boards.",
+    "empty": "Noch keine Berichte. Schau nach Ablauf des ersten Zeitraums wieder vorbei.",
+    "selectPrompt": "Wähle links einen Bericht aus, um Details zu sehen.",
+    "generatedOn": "Erstellt am {{date}}",
+    "overallUptime": "Gesamtverfügbarkeit",
+    "incidents": "Neue Vorfälle",
+    "resolvedIncidents_one": "{{count}} gelöst",
+    "resolvedIncidents_other": "{{count}} gelöst",
+    "downtime": "Ausfallzeit",
+    "longestOutage": "Längster Ausfall: {{duration}}",
+    "atRisk_one": "{{count}} Dienst benötigt Aufmerksamkeit",
+    "atRisk_other": "{{count}} Dienste benötigen Aufmerksamkeit",
+    "newlyTracked": "Neu",
+    "noServicesOnBoard": "Keine Dienste auf diesem Board.",
+    "completedMaintenance_one": "{{count}} abgeschlossene Wartung",
+    "completedMaintenance_other": "{{count}} abgeschlossene Wartungen",
+    "upcomingMaintenance_one": "{{count}} anstehende Wartung",
+    "upcomingMaintenance_other": "{{count}} anstehende Wartungen",
+    "keywordMatches_one": "{{count}} Schlüsselwort-Treffer",
+    "keywordMatches_other": "{{count}} Schlüsselwort-Treffer",
+    "table": {
+      "service": "Dienst",
+      "uptime": "Verfügbarkeit",
+      "incidents": "Vorfälle",
+      "downtime": "Ausfallzeit"
+    },
+    "settings": {
+      "interval": "Häufigkeit",
+      "daily": "Täglich",
+      "weekly": "Wöchentlich",
+      "monthly": "Monatlich",
+      "boards": "Enthaltene Boards",
+      "emailNudge": "Per E-Mail benachrichtigen, wenn ein neuer Bericht bereit ist",
+      "somethingWrong": "Etwas ist schiefgelaufen."
+    }
   },
   "history": {
     "title": "Verlauf",

@@ -139,3 +139,25 @@ export async function getAllTrackedSlugsAcrossUsers(): Promise<Map<string, Set<s
   }
   return byUser;
 }
+
+// Same cross-account, service-role read as getAllTrackedSlugsAcrossUsers,
+// but keeping each board's own identity (id/name/slugs) rather than
+// flattening to one set per account — the one extra caller that actually
+// needs per-board grouping: the report-generation cron
+// (features/reports/services/reportGeneration.ts), whose per-account
+// report has a per-board breakdown section. Never call this from a
+// user-facing code path — it bypasses RLS entirely and would leak every
+// account's boards.
+export async function getAllBoardsAcrossUsers(): Promise<Map<string, Board[]>> {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase.from("boards").select("id, user_id, name, service_slugs").order("name");
+  if (error) throw error;
+
+  const byUser = new Map<string, Board[]>();
+  for (const row of (data as (BoardRow & { user_id: string })[] | null) ?? []) {
+    const boards = byUser.get(row.user_id) ?? [];
+    boards.push(toBoard(row));
+    byUser.set(row.user_id, boards);
+  }
+  return byUser;
+}

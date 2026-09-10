@@ -32,6 +32,7 @@
     "webhook": "Webhook",
     "history": "Historik",
     "earlyWarnings": "Tidiga Varningar",
+    "reports": "Rapporter",
     "settings": "Inställningar",
     "account": "Konto",
     "billing": "Fakturering",
@@ -220,6 +221,44 @@
     },
     "selectPrompt": "Välj en träff till vänster för att se detaljer.",
     "somethingWrong": "Något gick fel."
+  },
+  "reports": {
+    "title": "Rapporter",
+    "subtitle": "En regelbunden sammanfattning av drifttid, incidenter och underhåll för alla dina tavlor.",
+    "empty": "Inga rapporter än. Kom tillbaka när din första period är klar.",
+    "selectPrompt": "Välj en rapport till vänster för att se detaljer.",
+    "generatedOn": "Skapad {{date}}",
+    "overallUptime": "Total drifttid",
+    "incidents": "Nya incidenter",
+    "resolvedIncidents_one": "{{count}} löst",
+    "resolvedIncidents_other": "{{count}} lösta",
+    "downtime": "Driftstopp",
+    "longestOutage": "Längsta avbrottet: {{duration}}",
+    "atRisk_one": "{{count}} tjänst behöver uppmärksamhet",
+    "atRisk_other": "{{count}} tjänster behöver uppmärksamhet",
+    "newlyTracked": "Ny",
+    "noServicesOnBoard": "Inga tjänster på den här tavlan.",
+    "completedMaintenance_one": "{{count}} avslutat underhåll",
+    "completedMaintenance_other": "{{count}} avslutade underhåll",
+    "upcomingMaintenance_one": "{{count}} kommande underhåll",
+    "upcomingMaintenance_other": "{{count}} kommande underhåll",
+    "keywordMatches_one": "{{count}} nyckelordsträff",
+    "keywordMatches_other": "{{count}} nyckelordsträffar",
+    "table": {
+      "service": "Tjänst",
+      "uptime": "Drifttid",
+      "incidents": "Incidenter",
+      "downtime": "Driftstopp"
+    },
+    "settings": {
+      "interval": "Frekvens",
+      "daily": "Dagligen",
+      "weekly": "Veckovis",
+      "monthly": "Månadsvis",
+      "boards": "Inkluderade tavlor",
+      "emailNudge": "Meddela mig via e-post när en ny rapport är klar",
+      "somethingWrong": "Något gick fel."
+    }
   },
   "history": {
     "title": "Historik",

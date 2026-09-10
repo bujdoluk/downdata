@@ -36,6 +36,10 @@ export const queryKeys = {
     sources: () => ["earlyWarnings", "sources"] as const,
     matches: () => ["earlyWarnings", "matches"] as const,
   },
+  reports: {
+    list: () => ["reports", "list"] as const,
+    settings: () => ["reports", "settings"] as const,
+  },
   publicStatusPage: (slug: string) => ["publicStatusPage", slug] as const,
   account: () => ["account"] as const,
   subscription: () => ["subscription"] as const,

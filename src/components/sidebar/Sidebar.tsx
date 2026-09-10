@@ -9,7 +9,7 @@ import "@/lib/i18n/i18n";
 import SidebarNavLink from "@/components/sidebar/SidebarNavLink";
 import BoardSelect from "@/components/sidebar/BoardSelect";
 import Logo from "@/components/navbar/Logo";
-import { ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, GlobeIcon, HistoryIcon, RadarIcon, UserIcon } from "@/components/icons/NavIcons";
+import { ActivityIcon, AlertIcon, WrenchIcon, PlugIcon, GlobeIcon, HistoryIcon, RadarIcon, ReportIcon, UserIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
@@ -147,6 +147,7 @@ export default function Sidebar() {
         <SidebarNavLink href="/status-pages" icon={<GlobeIcon className="shrink-0" />} label={t("nav.statusPages")} collapsed={collapsed} />
         <SidebarNavLink href="/early-warnings" icon={<RadarIcon className="shrink-0" />} label={t("nav.earlyWarnings")} collapsed={collapsed} />
         <SidebarNavLink href="/history" icon={<HistoryIcon className="shrink-0" />} label={t("nav.history")} collapsed={collapsed} />
+        <SidebarNavLink href="/reports" icon={<ReportIcon className="shrink-0" />} label={t("nav.reports")} collapsed={collapsed} />
       </div>
 
       <div className="mt-auto flex w-full flex-col">

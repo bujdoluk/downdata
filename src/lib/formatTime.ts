@@ -48,6 +48,15 @@ export function epochMs(iso: string): number {
   return Temporal.Instant.from(iso).epochMilliseconds;
 }
 
+// The inverse of epochMs() — needed wherever a window boundary gets
+// clamped in millisecond arithmetic (e.g. reportGeneration.ts clipping a
+// report's window to a service's own trackedSince) and then has to go
+// back to an ISO string for a query or a shape-mapper that only accepts
+// one.
+export function isoFromEpochMs(ms: number): string {
+  return Temporal.Instant.fromEpochMilliseconds(ms).toString({ smallestUnit: "millisecond" });
+}
+
 // millisecond precision, same "drop-in for a Date-written column" shape as
 // nowIso() — used for windowing a query to "the last N days".
 export function isoDaysAgo(days: number): string {

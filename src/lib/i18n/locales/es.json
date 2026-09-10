@@ -32,6 +32,7 @@
     "webhook": "Webhook",
     "history": "Historial",
     "earlyWarnings": "Alertas Tempranas",
+    "reports": "Informes",
     "settings": "Ajustes",
     "account": "Cuenta",
     "billing": "Facturación",
@@ -220,6 +221,44 @@
     },
     "selectPrompt": "Selecciona una coincidencia a la izquierda para ver sus detalles.",
     "somethingWrong": "Algo salió mal."
+  },
+  "reports": {
+    "title": "Informes",
+    "subtitle": "Un resumen periódico de la disponibilidad, los incidentes y el mantenimiento de todos tus tableros.",
+    "empty": "Aún no hay informes. Vuelve a consultar cuando termine tu primer período.",
+    "selectPrompt": "Selecciona un informe a la izquierda para ver sus detalles.",
+    "generatedOn": "Generado el {{date}}",
+    "overallUptime": "Disponibilidad general",
+    "incidents": "Incidentes nuevos",
+    "resolvedIncidents_one": "{{count}} resuelto",
+    "resolvedIncidents_other": "{{count}} resueltos",
+    "downtime": "Tiempo de inactividad",
+    "longestOutage": "Interrupción más larga: {{duration}}",
+    "atRisk_one": "{{count}} servicio necesita atención",
+    "atRisk_other": "{{count}} servicios necesitan atención",
+    "newlyTracked": "Nuevo",
+    "noServicesOnBoard": "No hay servicios en este tablero.",
+    "completedMaintenance_one": "{{count}} mantenimiento completado",
+    "completedMaintenance_other": "{{count}} mantenimientos completados",
+    "upcomingMaintenance_one": "{{count}} mantenimiento próximo",
+    "upcomingMaintenance_other": "{{count}} mantenimientos próximos",
+    "keywordMatches_one": "{{count}} coincidencia de palabra clave",
+    "keywordMatches_other": "{{count}} coincidencias de palabras clave",
+    "table": {
+      "service": "Servicio",
+      "uptime": "Disponibilidad",
+      "incidents": "Incidentes",
+      "downtime": "Inactividad"
+    },
+    "settings": {
+      "interval": "Frecuencia",
+      "daily": "Diaria",
+      "weekly": "Semanal",
+      "monthly": "Mensual",
+      "boards": "Tableros incluidos",
+      "emailNudge": "Avisarme por correo cuando haya un informe nuevo",
+      "somethingWrong": "Algo salió mal."
+    }
   },
   "history": {
     "title": "Historial",

@@ -32,6 +32,7 @@
     "webhook": "Webhook",
     "history": "Histórico",
     "earlyWarnings": "Alertas Antecipados",
+    "reports": "Relatórios",
     "settings": "Definições",
     "account": "Conta",
     "billing": "Faturação",
@@ -220,6 +221,44 @@
     },
     "selectPrompt": "Selecione uma correspondência à esquerda para ver os detalhes.",
     "somethingWrong": "Algo correu mal."
+  },
+  "reports": {
+    "title": "Relatórios",
+    "subtitle": "Um resumo periódico da disponibilidade, incidentes e manutenções em todos os seus quadros.",
+    "empty": "Ainda não há relatórios. Volte a verificar após o fim do primeiro período.",
+    "selectPrompt": "Selecione um relatório à esquerda para ver os detalhes.",
+    "generatedOn": "Gerado em {{date}}",
+    "overallUptime": "Disponibilidade geral",
+    "incidents": "Novos incidentes",
+    "resolvedIncidents_one": "{{count}} resolvido",
+    "resolvedIncidents_other": "{{count}} resolvidos",
+    "downtime": "Indisponibilidade",
+    "longestOutage": "Interrupção mais longa: {{duration}}",
+    "atRisk_one": "{{count}} serviço precisa de atenção",
+    "atRisk_other": "{{count}} serviços precisam de atenção",
+    "newlyTracked": "Novo",
+    "noServicesOnBoard": "Sem serviços neste quadro.",
+    "completedMaintenance_one": "{{count}} manutenção concluída",
+    "completedMaintenance_other": "{{count}} manutenções concluídas",
+    "upcomingMaintenance_one": "{{count}} manutenção agendada",
+    "upcomingMaintenance_other": "{{count}} manutenções agendadas",
+    "keywordMatches_one": "{{count}} correspondência de palavra-chave",
+    "keywordMatches_other": "{{count}} correspondências de palavras-chave",
+    "table": {
+      "service": "Serviço",
+      "uptime": "Disponibilidade",
+      "incidents": "Incidentes",
+      "downtime": "Indisponibilidade"
+    },
+    "settings": {
+      "interval": "Frequência",
+      "daily": "Diariamente",
+      "weekly": "Semanalmente",
+      "monthly": "Mensalmente",
+      "boards": "Quadros incluídos",
+      "emailNudge": "Enviar-me um e-mail quando um novo relatório estiver pronto",
+      "somethingWrong": "Algo correu mal."
+    }
   },
   "history": {
     "title": "Histórico",

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
 import SupportContent from "@/components/landing-page/SupportContent";
 
-const title = "Support — downDATA";
-const description = "Get help with downDATA — live chat, email, or the FAQ.";
+const title = "Support | downDATA";
+const description = "Get help with downDATA: live chat, email, or the FAQ.";
 
 export const metadata: Metadata = {
   title,

@@ -212,7 +212,7 @@
     "keywordPlaceholder": "Add a keyword to watch",
     "addKeyword": "Add",
     "removeKeyword": "Remove",
-    "empty": "No matches yet — add a keyword and turn on a source above.",
+    "empty": "No matches yet. Add a keyword and turn on a source above.",
     "noMatches": "No matches for this keyword.",
     "new": "New",
     "openLink": "Open on Reddit",
@@ -404,7 +404,7 @@
   "requestModal": {
     "placeholder": "Tell us what you're looking for…",
     "submit": "Send request",
-    "sent": "Thanks — we got your request!",
+    "sent": "Thanks! We got your request.",
     "somethingWrong": "Something went wrong. Try again.",
     "close": "Close"
   },
@@ -572,7 +572,7 @@
     "resumeSubscription": "Resume subscription",
     "confirmCancelTitle": "Cancel your subscription?",
     "confirmCancelMessage": "Your plan stays active until the end of the current billing period, then switches to Free. You can resume anytime before then.",
-    "checkoutSuccess": "Payment successful — your plan will update shortly.",
+    "checkoutSuccess": "Payment successful. Your plan will update shortly.",
     "checkoutCanceled": "Checkout canceled. No charge was made.",
     "somethingWrong": "Something went wrong.",
     "freePlanTitle": "You're on the Free plan",
@@ -591,7 +591,7 @@
   },
   "cookieConsent": {
     "title": "We use cookies",
-    "description": "We use cookies to keep you logged in, protect the site from bots, and — with your permission — understand how the site is used and offer live chat support.",
+    "description": "We use cookies to keep you logged in, protect the site from bots, and, with your permission, understand how the site is used and offer live chat support.",
     "privacyNotice": "Read our <privacyLink>Privacy Policy</privacyLink> to learn more about how we handle your data.",
     "acceptAll": "Accept All",
     "rejectAll": "Reject All",
@@ -620,9 +620,9 @@
   "about": {
     "title": "About <brand>down</brand>DATA",
     "storyHeading": "The story",
-    "storyBody": "<brand>down</brand>DATA started in August 2026, built by one developer annoyed that checking whether the tools your app depends on are having a bad day required either babysitting five different status pages or paying a service like StatusGator hundreds of dollars a month for something that's fundamentally just polling a public API. <brand>down</brand>DATA does the same job — tracking GitHub, Supabase, Cloudflare, and anything else on Atlassian Statuspage — for a fraction of the price.",
+    "storyBody": "<brand>down</brand>DATA started in August 2026, built by one developer annoyed that checking whether the tools your app depends on are having a bad day required either babysitting five different status pages or paying a service like StatusGator hundreds of dollars a month for something that's fundamentally just polling a public API. <brand>down</brand>DATA does the same job, tracking GitHub, Supabase, Cloudflare, and anything else on Atlassian Statuspage, for a fraction of the price.",
     "teamHeading": "Who's behind it",
-    "teamBody": "<brand>down</brand>DATA is built and maintained by Lukáš Bujdoš, a web developer based in Slovakia <flag/>, currently as a solo project. It's new — actively built in the open, one feature at a time — rather than a company with a headcount to pad out an About page.",
+    "teamBody": "<brand>down</brand>DATA is built and maintained by Lukáš Bujdoš, a web developer based in Slovakia <flag/>, currently as a solo project. It's new, actively built in the open, one feature at a time, rather than a company with a headcount to pad out an About page.",
     "followOnX": "Follow {{name}} on X",
     "chatWithUs": "Chat with us",
     "back": "← Back"
@@ -631,7 +631,7 @@
     "title": "Support",
     "subtitle": "Need a hand? Here's the fastest way to reach us.",
     "chatHeading": "Live chat",
-    "chatBody": "Chat with us right in the app — we typically reply within a few hours.",
+    "chatBody": "Chat with us right in the app. We typically reply within a few hours.",
     "chatButton": "Open chat",
     "hideChatButton": "Hide chat",
     "emailHeading": "Email",

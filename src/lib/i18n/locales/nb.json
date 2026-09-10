@@ -212,7 +212,7 @@
     "keywordPlaceholder": "Legg til et nøkkelord å overvåke",
     "addKeyword": "Legg til",
     "removeKeyword": "Fjern",
-    "empty": "Ingen treff ennå — legg til et nøkkelord og slå på en kilde ovenfor.",
+    "empty": "Ingen treff ennå. Legg til et nøkkelord og slå på en kilde ovenfor.",
     "noMatches": "Ingen treff for dette nøkkelordet.",
     "new": "Nytt",
     "openLink": "Åpne på Reddit",
@@ -404,7 +404,7 @@
   "requestModal": {
     "placeholder": "Fortell oss hva du leter etter…",
     "submit": "Send forespørsel",
-    "sent": "Takk — vi har mottatt forespørselen din!",
+    "sent": "Takk! Vi har mottatt forespørselen din.",
     "somethingWrong": "Noe gikk galt. Prøv igjen.",
     "close": "Lukk"
   },
@@ -572,7 +572,7 @@
     "resumeSubscription": "Gjenoppta abonnement",
     "confirmCancelTitle": "Si opp abonnementet ditt?",
     "confirmCancelMessage": "Planen din forblir aktiv til slutten av inneværende faktureringsperiode og bytter deretter til Free. Du kan gjenoppta den når som helst før det.",
-    "checkoutSuccess": "Betalingen var vellykket — planen din oppdateres snart.",
+    "checkoutSuccess": "Betalingen var vellykket. Planen din oppdateres snart.",
     "checkoutCanceled": "Kjøpet ble avbrutt. Ingenting ble trukket.",
     "somethingWrong": "Noe gikk galt.",
     "freePlanTitle": "Du bruker Free-planen",
@@ -591,7 +591,7 @@
   },
   "cookieConsent": {
     "title": "Vi bruker informasjonskapsler",
-    "description": "Vi bruker informasjonskapsler for å holde deg innlogget, beskytte nettstedet mot roboter og — med din tillatelse — forstå hvordan nettstedet brukes, samt tilby direktesupport via chat.",
+    "description": "Vi bruker informasjonskapsler for å holde deg innlogget, beskytte nettstedet mot roboter og, med din tillatelse, forstå hvordan nettstedet brukes, samt tilby direktesupport via chat.",
     "privacyNotice": "Les vår <privacyLink>personvernerklæring</privacyLink> for å lære mer om hvordan vi behandler dataene dine.",
     "acceptAll": "Godta alle",
     "rejectAll": "Avvis alle",
@@ -620,9 +620,9 @@
   "about": {
     "title": "Om <brand>down</brand>DATA",
     "storyHeading": "Historien",
-    "storyBody": "<brand>down</brand>DATA startet i august 2026 — bygget av én utvikler som ble irritert over at det å sjekke om verktøyene appen din er avhengig av har en dårlig dag, krevde enten å følge med på fem forskjellige statussider, eller å betale en tjeneste som StatusGator hundrevis av dollar i måneden for noe som i bunn og grunn bare er å spørre et offentlig API med jevne mellomrom. <brand>down</brand>DATA gjør den samme jobben — overvåker GitHub, Supabase, Cloudflare og alt annet bygget på Atlassian Statuspage — for en brøkdel av prisen.",
+    "storyBody": "<brand>down</brand>DATA startet i august 2026, bygget av én utvikler som ble irritert over at det å sjekke om verktøyene appen din er avhengig av har en dårlig dag, krevde enten å følge med på fem forskjellige statussider, eller å betale en tjeneste som StatusGator hundrevis av dollar i måneden for noe som i bunn og grunn bare er å spørre et offentlig API med jevne mellomrom. <brand>down</brand>DATA gjør den samme jobben, overvåker GitHub, Supabase, Cloudflare og alt annet bygget på Atlassian Statuspage, for en brøkdel av prisen.",
     "teamHeading": "Hvem som står bak",
-    "teamBody": "<brand>down</brand>DATA bygges og vedlikeholdes av Lukáš Bujdoš, en webutvikler basert i Slovakia <flag/>, foreløpig som et soloprosjekt. Det er nytt — bygget åpent, funksjon for funksjon — i stedet for av et selskap med en stab å fylle en Om oss-side med.",
+    "teamBody": "<brand>down</brand>DATA bygges og vedlikeholdes av Lukáš Bujdoš, en webutvikler basert i Slovakia <flag/>, foreløpig som et soloprosjekt. Det er nytt, bygget åpent, funksjon for funksjon, i stedet for av et selskap med en stab å fylle en Om oss-side med.",
     "followOnX": "Følg {{name}} på X",
     "chatWithUs": "Chat med oss",
     "back": "← Tilbake"
@@ -631,7 +631,7 @@
     "title": "Kundestøtte",
     "subtitle": "Trenger du hjelp? Dette er raskeste måten å nå oss på.",
     "chatHeading": "Livechat",
-    "chatBody": "Chat med oss direkte i appen — vi svarer vanligvis innen noen timer.",
+    "chatBody": "Chat med oss direkte i appen. Vi svarer vanligvis innen noen timer.",
     "chatButton": "Åpne chat",
     "hideChatButton": "Skjul chat",
     "emailHeading": "E-post",

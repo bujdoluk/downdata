@@ -32,7 +32,7 @@ function RecommendedServiceCard({ service }: { service: Catalog }) {
     <Link
       href={`/services/${service.slug}`}
       className="card card-border bg-[var(--color-surface-2)] hover:border-base-content/30 transition-colors"
-      title={statusLabel ? `${service.name} — ${statusLabel}` : service.name}
+      title={statusLabel ? `${service.name}: ${statusLabel}` : service.name}
     >
       <div className="card-body flex-row items-center gap-2 p-3">
         <Logo size={20} name={service.name} />

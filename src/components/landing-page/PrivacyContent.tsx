@@ -41,14 +41,14 @@ export default function PrivacyContent() {
         </p>
         <p className="mt-3">
           <strong>Usage data.</strong> If you opt in to analytics (see Cookies below), we collect
-          anonymized, aggregate usage data via Vercel Analytics and Speed Insights — page views and
+          anonymized, aggregate usage data via Vercel Analytics and Speed Insights: page views and
           performance metrics, not the specifics of what you track.
         </p>
 
         <h2 className="mt-8 mb-3 text-xl font-bold">2. How we use this information</h2>
         <ul className="list-disc space-y-1 pl-6">
-          <li>To provide the service — your dashboard, tracked services, boards, and incident history.</li>
-          <li>To operate your account — authentication and, where connected, your Slack integration.</li>
+          <li>To provide the service: your dashboard, tracked services, boards, and incident history.</li>
+          <li>To operate your account: authentication and, where connected, your Slack integration.</li>
           <li>To send the Slack notifications you configured when a tracked service&rsquo;s status changes.</li>
           <li>To protect the service from abuse.</li>
           <li>With your consent, to understand aggregate usage and improve the product, and to provide live chat support.</li>
@@ -62,16 +62,16 @@ export default function PrivacyContent() {
         </p>
         <ul className="mt-3 list-disc space-y-2 pl-6">
           <li>
-            <strong>Necessary</strong> — keeps you logged in and protects login forms from bots.
+            <strong>Necessary</strong>: keeps you logged in and protects login forms from bots.
             Always on: the site can&rsquo;t function without these, and GDPR/ePrivacy don&rsquo;t
             require consent for strictly necessary technology.
           </li>
           <li>
-            <strong>Analytics</strong> — Vercel Analytics and Speed Insights. Off by default; only
+            <strong>Analytics</strong>: Vercel Analytics and Speed Insights. Off by default; only
             loads once you opt in.
           </li>
           <li>
-            <strong>Support chat</strong> — the Tawk.to live chat widget. Off by default; only loads
+            <strong>Support chat</strong>: the Tawk.to live chat widget. Off by default; only loads
             once you opt in.
           </li>
         </ul>
@@ -83,12 +83,12 @@ export default function PrivacyContent() {
 
         <h2 className="mt-8 mb-3 text-xl font-bold">4. Third-party services we use</h2>
         <ul className="list-disc space-y-1 pl-6">
-          <li><strong>Supabase</strong> — authentication and database hosting for your account, tracked services, boards, and incident history.</li>
-          <li><strong>Vercel</strong> — hosting, and (opt-in only) analytics and performance monitoring.</li>
-          <li><strong>Slack</strong> — optional notification integration, only if you connect a workspace.</li>
-          <li><strong>Tawk.to</strong> — live chat support (opt-in only).</li>
+          <li><strong>Supabase</strong>: authentication and database hosting for your account, tracked services, boards, and incident history.</li>
+          <li><strong>Vercel</strong>: hosting, and (opt-in only) analytics and performance monitoring.</li>
+          <li><strong>Slack</strong>: optional notification integration, only if you connect a workspace.</li>
+          <li><strong>Tawk.to</strong>: live chat support (opt-in only).</li>
           <li>
-            <strong>Each tracked service&rsquo;s own status provider</strong> — live status shown on
+            <strong>Each tracked service&rsquo;s own status provider</strong>: live status shown on
             downDATA is fetched directly from that service&rsquo;s public Statuspage API, on
             demand; we don&rsquo;t store it beyond the incident history described above.
           </li>
@@ -109,7 +109,7 @@ export default function PrivacyContent() {
         <p>
           Depending on where you live, you may have the right to access, correct, export, or delete
           your personal information. downDATA doesn&rsquo;t yet have a self-service account page for
-          this — contact us at{" "}
+          this. Contact us at{" "}
           <a href={`mailto:${SUPPORT_EMAIL}`} className="link">
             {SUPPORT_EMAIL}
           </a>{" "}

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PrivacyContent from "@/components/landing-page/PrivacyContent";
 
-const title = "Privacy Policy — downDATA";
+const title = "Privacy Policy | downDATA";
 const description = "How downDATA collects, uses, and protects your information.";
 
 export const metadata: Metadata = {

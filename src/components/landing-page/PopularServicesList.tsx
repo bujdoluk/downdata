@@ -28,7 +28,7 @@ function PopularServiceRow({ service }: { service: Catalog }) {
     <Link
       href={`/services/${service.slug}`}
       className="link link-hover inline-flex items-center gap-1.5"
-      title={statusLabel ? `${service.name} — ${statusLabel}` : service.name}
+      title={statusLabel ? `${service.name}: ${statusLabel}` : service.name}
     >
       <Logo size={14} name={service.name} />
       {service.name}

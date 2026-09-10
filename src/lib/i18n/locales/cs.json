@@ -216,7 +216,7 @@
     "keywordPlaceholder": "Přidat klíčové slovo ke sledování",
     "addKeyword": "Přidat",
     "removeKeyword": "Odebrat",
-    "empty": "Zatím žádné shody — přidejte klíčové slovo a zapněte zdroj výše.",
+    "empty": "Zatím žádné shody. Přidejte klíčové slovo a zapněte zdroj výše.",
     "noMatches": "Žádné shody pro toto klíčové slovo.",
     "new": "Nové",
     "openLink": "Otevřít na Redditu",
@@ -417,7 +417,7 @@
   "requestModal": {
     "placeholder": "Napište nám, co hledáte…",
     "submit": "Odeslat žádost",
-    "sent": "Děkujeme — vaši žádost jsme dostali!",
+    "sent": "Děkujeme! Vaši žádost jsme dostali.",
     "somethingWrong": "Něco se pokazilo. Zkuste to znovu.",
     "close": "Zavřít"
   },
@@ -585,7 +585,7 @@
     "resumeSubscription": "Obnovit předplatné",
     "confirmCancelTitle": "Zrušit předplatné?",
     "confirmCancelMessage": "Váš plán zůstane aktivní do konce aktuálního fakturačního období a poté se přepne na Free. Do té doby ho můžete kdykoli obnovit.",
-    "checkoutSuccess": "Platba proběhla úspěšně — váš plán se brzy aktualizuje.",
+    "checkoutSuccess": "Platba proběhla úspěšně. Váš plán se brzy aktualizuje.",
     "checkoutCanceled": "Platba byla zrušena. Nic jsme vám neúčtovali.",
     "somethingWrong": "Něco se pokazilo.",
     "freePlanTitle": "Používáte plán Free",
@@ -604,7 +604,7 @@
   },
   "cookieConsent": {
     "title": "Používáme cookies",
-    "description": "Cookies používáme k tomu, abychom tě udrželi přihlášeného, chránili stránku před boty a — s tvým souhlasem — pochopili, jak se stránka používá, a nabídli živý chat podpory.",
+    "description": "Cookies používáme k tomu, abychom tě udrželi přihlášeného, chránili stránku před boty a, s tvým souhlasem, pochopili, jak se stránka používá, a nabídli živý chat podpory.",
     "privacyNotice": "Více o tom, jak nakládáme s tvými údaji, se dozvíš v našich <privacyLink>Zásadách ochrany osobních údajů</privacyLink>.",
     "acceptAll": "Přijmout vše",
     "rejectAll": "Odmítnout vše",
@@ -633,9 +633,9 @@
   "about": {
     "title": "O <brand>down</brand>DATA",
     "storyHeading": "Příběh",
-    "storyBody": "<brand>down</brand>DATA vznikla v srpnu 2026 — postavil ji jeden vývojář, kterého štvalo, že zjistit, jestli nástroje, na které se tvoje aplikace spoléhá, zrovna nemají špatný den, vyžadovalo buď sledování pěti různých stavových stránek, nebo placení stovek dolarů měsíčně službě jako StatusGator za něco, co je v podstatě jen pravidelné volání veřejného API. <brand>down</brand>DATA dělá tu samou práci — sleduje GitHub, Supabase, Cloudflare a cokoli dalšího postaveného na Atlassian Statuspage — za zlomek ceny.",
+    "storyBody": "<brand>down</brand>DATA vznikla v srpnu 2026, postavil ji jeden vývojář, kterého štvalo, že zjistit, jestli nástroje, na které se tvoje aplikace spoléhá, zrovna nemají špatný den, vyžadovalo buď sledování pěti různých stavových stránek, nebo placení stovek dolarů měsíčně službě jako StatusGator za něco, co je v podstatě jen pravidelné volání veřejného API. <brand>down</brand>DATA dělá tu samou práci, sleduje GitHub, Supabase, Cloudflare a cokoli dalšího postaveného na Atlassian Statuspage, za zlomek ceny.",
     "teamHeading": "Kdo za tím stojí",
-    "teamBody": "<brand>down</brand>DATA vytváří a spravuje Lukáš Bujdoš, webový vývojář se sídlem na Slovensku <flag/>, zatím jako sólo projekt. Je nová, vzniká veřejně, funkce po funkci — místo toho, aby ji stavěla firma s týmem, kterým by šlo zaplnit stránku „O nás“.",
+    "teamBody": "<brand>down</brand>DATA vytváří a spravuje Lukáš Bujdoš, webový vývojář se sídlem na Slovensku <flag/>, zatím jako sólo projekt. Je nová, vzniká veřejně, funkce po funkci, místo toho, aby ji stavěla firma s týmem, kterým by šlo zaplnit stránku „O nás“.",
     "followOnX": "Sledujte {{name}} na X",
     "chatWithUs": "Napište nám",
     "back": "← Zpět"
@@ -644,7 +644,7 @@
     "title": "Podpora",
     "subtitle": "Potřebuješ pomoct? Tohle je nejrychlejší způsob, jak nás oslovit.",
     "chatHeading": "Live chat",
-    "chatBody": "Napiš nám přímo v appce — obvykle odpovídáme do pár hodin.",
+    "chatBody": "Napiš nám přímo v appce. Obvykle odpovídáme do pár hodin.",
     "chatButton": "Otevřít chat",
     "hideChatButton": "Skrýt chat",
     "emailHeading": "E-mail",

@@ -17,7 +17,7 @@ export async function generateMetadata({
   const feature = resolveFeature(slug);
   if (!feature) return {};
 
-  const title = `${en.nav[feature.slug]} — downDATA`;
+  const title = `${en.nav[feature.slug]} | downDATA`;
   const description = en.features[feature.slug];
 
   return {

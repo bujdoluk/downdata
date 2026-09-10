@@ -212,7 +212,7 @@
     "keywordPlaceholder": "Aggiungi una parola chiave da monitorare",
     "addKeyword": "Aggiungi",
     "removeKeyword": "Rimuovi",
-    "empty": "Ancora nessuna corrispondenza — aggiungi una parola chiave e attiva una fonte qui sopra.",
+    "empty": "Ancora nessuna corrispondenza. Aggiungi una parola chiave e attiva una fonte qui sopra.",
     "noMatches": "Nessuna corrispondenza per questa parola chiave.",
     "new": "Nuovo",
     "openLink": "Apri su Reddit",
@@ -404,7 +404,7 @@
   "requestModal": {
     "placeholder": "Dicci cosa stai cercando…",
     "submit": "Invia richiesta",
-    "sent": "Grazie — abbiamo ricevuto la tua richiesta!",
+    "sent": "Grazie! Abbiamo ricevuto la tua richiesta.",
     "somethingWrong": "Qualcosa è andato storto. Riprova.",
     "close": "Chiudi"
   },
@@ -572,7 +572,7 @@
     "resumeSubscription": "Riattiva abbonamento",
     "confirmCancelTitle": "Annullare l'abbonamento?",
     "confirmCancelMessage": "Il tuo piano resterà attivo fino alla fine del periodo di fatturazione corrente, poi passerà a Free. Puoi riattivarlo in qualsiasi momento prima di allora.",
-    "checkoutSuccess": "Pagamento riuscito — il tuo piano verrà aggiornato a breve.",
+    "checkoutSuccess": "Pagamento riuscito. Il tuo piano verrà aggiornato a breve.",
     "checkoutCanceled": "Pagamento annullato. Non è stato addebitato nulla.",
     "somethingWrong": "Qualcosa è andato storto.",
     "freePlanTitle": "Stai usando il piano Free",
@@ -591,7 +591,7 @@
   },
   "cookieConsent": {
     "title": "Usiamo i cookie",
-    "description": "Usiamo i cookie per mantenerti collegato, proteggere il sito dai bot e — con il tuo consenso — capire come viene usato il sito e offrire assistenza via chat dal vivo.",
+    "description": "Usiamo i cookie per mantenerti collegato, proteggere il sito dai bot e, con il tuo consenso, capire come viene usato il sito e offrire assistenza via chat dal vivo.",
     "privacyNotice": "Leggi la nostra <privacyLink>Informativa sulla privacy</privacyLink> per saperne di più su come trattiamo i tuoi dati.",
     "acceptAll": "Accetta tutto",
     "rejectAll": "Rifiuta tutto",
@@ -620,9 +620,9 @@
   "about": {
     "title": "Su <brand>down</brand>DATA",
     "storyHeading": "La storia",
-    "storyBody": "<brand>down</brand>DATA è nata ad agosto 2026 — creata da un singolo sviluppatore, stufo del fatto che controllare se gli strumenti da cui dipende la tua app stessero avendo una brutta giornata richiedesse o tenere d'occhio cinque pagine di stato diverse, oppure pagare centinaia di dollari al mese a un servizio come StatusGator per qualcosa che, in fondo, è solo interrogare periodicamente un'API pubblica. <brand>down</brand>DATA fa lo stesso lavoro — monitora GitHub, Supabase, Cloudflare e qualsiasi altro servizio basato su Atlassian Statuspage — per una frazione del prezzo.",
+    "storyBody": "<brand>down</brand>DATA è nata ad agosto 2026, creata da un singolo sviluppatore, stufo del fatto che controllare se gli strumenti da cui dipende la tua app stessero avendo una brutta giornata richiedesse o tenere d'occhio cinque pagine di stato diverse, oppure pagare centinaia di dollari al mese a un servizio come StatusGator per qualcosa che, in fondo, è solo interrogare periodicamente un'API pubblica. <brand>down</brand>DATA fa lo stesso lavoro, monitora GitHub, Supabase, Cloudflare e qualsiasi altro servizio basato su Atlassian Statuspage, per una frazione del prezzo.",
     "teamHeading": "Chi c'è dietro",
-    "teamBody": "<brand>down</brand>DATA è creata e mantenuta da Lukáš Bujdoš, sviluppatore web con base in Slovacchia <flag/>, per ora come progetto individuale. È nuova — costruita pubblicamente, una funzionalità alla volta — invece che da un'azienda con un organico capace di riempire una pagina «Chi siamo».",
+    "teamBody": "<brand>down</brand>DATA è creata e mantenuta da Lukáš Bujdoš, sviluppatore web con base in Slovacchia <flag/>, per ora come progetto individuale. È nuova, costruita pubblicamente, una funzionalità alla volta, invece che da un'azienda con un organico capace di riempire una pagina «Chi siamo».",
     "followOnX": "Segui {{name}} su X",
     "chatWithUs": "Scrivici in chat",
     "back": "← Indietro"
@@ -631,7 +631,7 @@
     "title": "Supporto",
     "subtitle": "Hai bisogno di aiuto? Ecco il modo più rapido per contattarci.",
     "chatHeading": "Chat dal vivo",
-    "chatBody": "Scrivici direttamente nell'app — di solito rispondiamo entro poche ore.",
+    "chatBody": "Scrivici direttamente nell'app. Di solito rispondiamo entro poche ore.",
     "chatButton": "Apri la chat",
     "hideChatButton": "Nascondi chat",
     "emailHeading": "Email",

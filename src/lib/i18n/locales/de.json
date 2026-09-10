@@ -212,7 +212,7 @@
     "keywordPlaceholder": "Schlüsselwort zum Beobachten hinzufügen",
     "addKeyword": "Hinzufügen",
     "removeKeyword": "Entfernen",
-    "empty": "Noch keine Treffer — füge oben ein Schlüsselwort hinzu und aktiviere eine Quelle.",
+    "empty": "Noch keine Treffer. Füge oben ein Schlüsselwort hinzu und aktiviere eine Quelle.",
     "noMatches": "Keine Treffer für dieses Schlüsselwort.",
     "new": "Neu",
     "openLink": "Auf Reddit öffnen",
@@ -404,7 +404,7 @@
   "requestModal": {
     "placeholder": "Sag uns, wonach du suchst…",
     "submit": "Anfrage senden",
-    "sent": "Danke — wir haben deine Anfrage erhalten!",
+    "sent": "Danke! Wir haben deine Anfrage erhalten.",
     "somethingWrong": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
     "close": "Schließen"
   },
@@ -572,7 +572,7 @@
     "resumeSubscription": "Abo fortsetzen",
     "confirmCancelTitle": "Abo kündigen?",
     "confirmCancelMessage": "Dein Plan bleibt bis zum Ende des aktuellen Abrechnungszeitraums aktiv und wechselt danach zu Free. Bis dahin kannst du jederzeit fortsetzen.",
-    "checkoutSuccess": "Zahlung erfolgreich — dein Plan wird in Kürze aktualisiert.",
+    "checkoutSuccess": "Zahlung erfolgreich. Dein Plan wird in Kürze aktualisiert.",
     "checkoutCanceled": "Bezahlvorgang abgebrochen. Es wurde nichts berechnet.",
     "somethingWrong": "Etwas ist schiefgelaufen.",
     "freePlanTitle": "Du nutzt den Free-Plan",
@@ -591,7 +591,7 @@
   },
   "cookieConsent": {
     "title": "Wir verwenden Cookies",
-    "description": "Wir verwenden Cookies, um dich angemeldet zu halten, die Seite vor Bots zu schützen und — mit deiner Erlaubnis — zu verstehen, wie die Seite genutzt wird, und Live-Chat-Support anzubieten.",
+    "description": "Wir verwenden Cookies, um dich angemeldet zu halten, die Seite vor Bots zu schützen und, mit deiner Erlaubnis, zu verstehen, wie die Seite genutzt wird, und Live-Chat-Support anzubieten.",
     "privacyNotice": "Lies unsere <privacyLink>Datenschutzerklärung</privacyLink>, um mehr darüber zu erfahren, wie wir mit deinen Daten umgehen.",
     "acceptAll": "Alle akzeptieren",
     "rejectAll": "Alle ablehnen",
@@ -620,9 +620,9 @@
   "about": {
     "title": "Über <brand>down</brand>DATA",
     "storyHeading": "Die Geschichte",
-    "storyBody": "<brand>down</brand>DATA ist im August 2026 entstanden — gebaut von einem einzelnen Entwickler, den es genervt hat, dass man entweder fünf verschiedene Statusseiten im Auge behalten oder einem Dienst wie StatusGator Hunderte Dollar im Monat für etwas zahlen musste, das im Grunde nur eine öffentliche API regelmäßig abfragt. <brand>down</brand>DATA macht dieselbe Arbeit — überwacht GitHub, Supabase, Cloudflare und alles andere auf Basis von Atlassian Statuspage — für einen Bruchteil des Preises.",
+    "storyBody": "<brand>down</brand>DATA ist im August 2026 entstanden, gebaut von einem einzelnen Entwickler, den es genervt hat, dass man entweder fünf verschiedene Statusseiten im Auge behalten oder einem Dienst wie StatusGator Hunderte Dollar im Monat für etwas zahlen musste, das im Grunde nur eine öffentliche API regelmäßig abfragt. <brand>down</brand>DATA macht dieselbe Arbeit, überwacht GitHub, Supabase, Cloudflare und alles andere auf Basis von Atlassian Statuspage, für einen Bruchteil des Preises.",
     "teamHeading": "Wer dahintersteckt",
-    "teamBody": "<brand>down</brand>DATA wird von Lukáš Bujdoš entwickelt und betreut, einem Webentwickler mit Sitz in der Slowakei <flag/>, bisher als Solo-Projekt. Es ist neu — entsteht öffentlich, Feature für Feature — statt von einer Firma mit einer Belegschaft gebaut zu werden, mit der sich eine Über-uns-Seite füllen ließe.",
+    "teamBody": "<brand>down</brand>DATA wird von Lukáš Bujdoš entwickelt und betreut, einem Webentwickler mit Sitz in der Slowakei <flag/>, bisher als Solo-Projekt. Es ist neu, entsteht öffentlich, Feature für Feature, statt von einer Firma mit einer Belegschaft gebaut zu werden, mit der sich eine Über-uns-Seite füllen ließe.",
     "followOnX": "{{name}} auf X folgen",
     "chatWithUs": "Chatte mit uns",
     "back": "← Zurück"
@@ -631,7 +631,7 @@
     "title": "Support",
     "subtitle": "Brauchst du Hilfe? So erreichst du uns am schnellsten.",
     "chatHeading": "Live-Chat",
-    "chatBody": "Chatte direkt in der App mit uns — wir antworten meist innerhalb weniger Stunden.",
+    "chatBody": "Chatte direkt in der App mit uns. Wir antworten meist innerhalb weniger Stunden.",
     "chatButton": "Chat öffnen",
     "hideChatButton": "Chat ausblenden",
     "emailHeading": "E-Mail",

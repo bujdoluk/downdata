@@ -216,7 +216,7 @@
     "keywordPlaceholder": "Pridať kľúčové slovo na sledovanie",
     "addKeyword": "Pridať",
     "removeKeyword": "Odstrániť",
-    "empty": "Zatiaľ žiadne zhody — pridajte kľúčové slovo a zapnite zdroj vyššie.",
+    "empty": "Zatiaľ žiadne zhody. Pridajte kľúčové slovo a zapnite zdroj vyššie.",
     "noMatches": "Žiadne zhody pre toto kľúčové slovo.",
     "new": "Nové",
     "openLink": "Otvoriť na Reddite",
@@ -417,7 +417,7 @@
   "requestModal": {
     "placeholder": "Napíšte nám, čo hľadáte…",
     "submit": "Odoslať žiadosť",
-    "sent": "Ďakujeme — vašu žiadosť sme dostali!",
+    "sent": "Ďakujeme! Vašu žiadosť sme dostali.",
     "somethingWrong": "Niečo sa pokazilo. Skúste to znova.",
     "close": "Zavrieť"
   },
@@ -585,7 +585,7 @@
     "resumeSubscription": "Obnoviť predplatné",
     "confirmCancelTitle": "Zrušiť predplatné?",
     "confirmCancelMessage": "Váš plán zostane aktívny do konca aktuálneho fakturačného obdobia a potom sa prepne na Free. Do tej doby ho môžete kedykoľvek obnoviť.",
-    "checkoutSuccess": "Platba prebehla úspešne — váš plán sa čoskoro aktualizuje.",
+    "checkoutSuccess": "Platba prebehla úspešne. Váš plán sa čoskoro aktualizuje.",
     "checkoutCanceled": "Platba bola zrušená. Nič sme vám neúčtovali.",
     "somethingWrong": "Niečo sa pokazilo.",
     "freePlanTitle": "Používate plán Free",
@@ -604,7 +604,7 @@
   },
   "cookieConsent": {
     "title": "Používame cookies",
-    "description": "Cookies používame na to, aby sme ťa udržali prihláseného, chránili stránku pred botmi a — s tvojím súhlasom — pochopili, ako sa stránka používa, a ponúkli živý chat podpory.",
+    "description": "Cookies používame na to, aby sme ťa udržali prihláseného, chránili stránku pred botmi a, s tvojím súhlasom, pochopili, ako sa stránka používa, a ponúkli živý chat podpory.",
     "privacyNotice": "Viac o tom, ako narábame s tvojimi údajmi, sa dozvieš v našich <privacyLink>Zásadách ochrany osobných údajov</privacyLink>.",
     "acceptAll": "Prijať všetko",
     "rejectAll": "Odmietnuť všetko",
@@ -633,7 +633,7 @@
   "about": {
     "title": "O <brand>down</brand>DATA",
     "storyHeading": "Príbeh",
-    "storyBody": "<brand>down</brand>DATA vznikla v auguste 2026 — postavil ju jeden vývojár, ktorého štvalo, že zistiť, či nástroje, na ktoré sa tvoja appka spolieha, práve nemajú zlý deň, si vyžadovalo buď sledovanie piatich rôznych stavových stránok, alebo platenie stoviek dolárov mesačne službe ako StatusGator za niečo, čo je v podstate len pravidelné volanie verejného API. <brand>down</brand>DATA robí tú istú prácu — sleduje GitHub, Supabase, Cloudflare a čokoľvek iné postavené na Atlassian Statuspage — za zlomok ceny.",
+    "storyBody": "<brand>down</brand>DATA vznikla v auguste 2026, postavil ju jeden vývojár, ktorého štvalo, že zistiť, či nástroje, na ktoré sa tvoja appka spolieha, práve nemajú zlý deň, si vyžadovalo buď sledovanie piatich rôznych stavových stránok, alebo platenie stoviek dolárov mesačne službe ako StatusGator za niečo, čo je v podstate len pravidelné volanie verejného API. <brand>down</brand>DATA robí tú istú prácu, sleduje GitHub, Supabase, Cloudflare a čokoľvek iné postavené na Atlassian Statuspage, za zlomok ceny.",
     "teamHeading": "Kto za tým stojí",
     "teamBody": "<brand>down</brand>DATA vytvára a spravuje Lukáš Bujdoš, webový vývojár so sídlom na Slovensku <flag/>, zatiaľ ako sólo projekt. Je nová, vzniká verejne, funkcia po funkcii namiesto toho, aby ju stavala firma s tímom, ktorým by sa dala vyplniť stránka „O nás“.",
     "followOnX": "Sledujte {{name}} na X",
@@ -644,7 +644,7 @@
     "title": "Podpora",
     "subtitle": "Potrebuješ pomôcť? Toto je najrýchlejší spôsob, ako nás osloviť.",
     "chatHeading": "Live chat",
-    "chatBody": "Napíš nám priamo v appke — zvyčajne odpovedáme do pár hodín.",
+    "chatBody": "Napíš nám priamo v appke. Zvyčajne odpovedáme do pár hodín.",
     "chatButton": "Otvoriť chat",
     "hideChatButton": "Skryť chat",
     "emailHeading": "E-mail",

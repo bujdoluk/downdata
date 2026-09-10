@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PricingContent from "@/components/landing-page/PricingContent";
 
-const title = "Pricing — downDATA";
+const title = "Pricing | downDATA";
 const description = "Simple, transparent pricing for downDATA's status monitoring.";
 
 export const metadata: Metadata = {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import TermsContent from "@/components/landing-page/TermsContent";
 
-const title = "Terms of Service — downDATA";
+const title = "Terms of Service | downDATA";
 const description = "The terms that govern your use of downDATA.";
 
 export const metadata: Metadata = {

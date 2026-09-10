@@ -17,7 +17,7 @@ export async function generateMetadata({
   const provider = resolveIntegrationProvider(slug);
   if (!provider) return {};
 
-  const title = `${en.nav[provider.slug]} — downDATA`;
+  const title = `${en.nav[provider.slug]} | downDATA`;
   const description = en.features[provider.slug];
 
   return {

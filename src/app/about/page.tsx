@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import AboutContent from "@/components/landing-page/AboutContent";
 
-const title = "About — downDATA";
+const title = "About | downDATA";
 const description = "The story behind downDATA and who's building it.";
 
 export const metadata: Metadata = {

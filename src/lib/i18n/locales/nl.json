@@ -212,7 +212,7 @@
     "keywordPlaceholder": "Trefwoord toevoegen om te volgen",
     "addKeyword": "Toevoegen",
     "removeKeyword": "Verwijderen",
-    "empty": "Nog geen overeenkomsten — voeg hierboven een trefwoord toe en zet een bron aan.",
+    "empty": "Nog geen overeenkomsten. Voeg hierboven een trefwoord toe en zet een bron aan.",
     "noMatches": "Geen overeenkomsten voor dit trefwoord.",
     "new": "Nieuw",
     "openLink": "Openen op Reddit",
@@ -404,7 +404,7 @@
   "requestModal": {
     "placeholder": "Vertel ons wat je zoekt…",
     "submit": "Verzoek versturen",
-    "sent": "Bedankt — we hebben je verzoek ontvangen!",
+    "sent": "Bedankt! We hebben je verzoek ontvangen.",
     "somethingWrong": "Er is iets misgegaan. Probeer het opnieuw.",
     "close": "Sluiten"
   },
@@ -572,7 +572,7 @@
     "resumeSubscription": "Abonnement hervatten",
     "confirmCancelTitle": "Abonnement opzeggen?",
     "confirmCancelMessage": "Je plan blijft actief tot het einde van de huidige factureringsperiode en schakelt daarna over naar Free. Je kunt het tot die tijd op elk moment hervatten.",
-    "checkoutSuccess": "Betaling gelukt — je plan wordt binnenkort bijgewerkt.",
+    "checkoutSuccess": "Betaling gelukt. Je plan wordt binnenkort bijgewerkt.",
     "checkoutCanceled": "Afrekenen geannuleerd. Er is niets in rekening gebracht.",
     "somethingWrong": "Er is iets misgegaan.",
     "freePlanTitle": "Je gebruikt het Free-plan",
@@ -591,7 +591,7 @@
   },
   "cookieConsent": {
     "title": "We gebruiken cookies",
-    "description": "We gebruiken cookies om je ingelogd te houden, de site tegen bots te beschermen en — met jouw toestemming — te begrijpen hoe de site wordt gebruikt en live chatondersteuning aan te bieden.",
+    "description": "We gebruiken cookies om je ingelogd te houden, de site tegen bots te beschermen en, met jouw toestemming, te begrijpen hoe de site wordt gebruikt en live chatondersteuning aan te bieden.",
     "privacyNotice": "Lees ons <privacyLink>privacybeleid</privacyLink> voor meer informatie over hoe we met je gegevens omgaan.",
     "acceptAll": "Alles accepteren",
     "rejectAll": "Alles weigeren",
@@ -620,9 +620,9 @@
   "about": {
     "title": "Over <brand>down</brand>DATA",
     "storyHeading": "Het verhaal",
-    "storyBody": "<brand>down</brand>DATA is in augustus 2026 ontstaan — gebouwd door één ontwikkelaar die er genoeg van had dat controleren of de tools waar je app van afhangt toevallig een slechte dag hebben, ofwel het in de gaten houden van vijf verschillende statuspagina's vereiste, ofwel honderden dollars per maand betalen aan een dienst als StatusGator voor iets wat in de kern gewoon een publieke API periodiek uitvragen is. <brand>down</brand>DATA doet hetzelfde werk — het volgt GitHub, Supabase, Cloudflare en alles anders gebaseerd op Atlassian Statuspage — voor een fractie van de prijs.",
+    "storyBody": "<brand>down</brand>DATA is in augustus 2026 ontstaan, gebouwd door één ontwikkelaar die er genoeg van had dat controleren of de tools waar je app van afhangt toevallig een slechte dag hebben, ofwel het in de gaten houden van vijf verschillende statuspagina's vereiste, ofwel honderden dollars per maand betalen aan een dienst als StatusGator voor iets wat in de kern gewoon een publieke API periodiek uitvragen is. <brand>down</brand>DATA doet hetzelfde werk, het volgt GitHub, Supabase, Cloudflare en alles anders gebaseerd op Atlassian Statuspage, voor een fractie van de prijs.",
     "teamHeading": "Wie erachter zit",
-    "teamBody": "<brand>down</brand>DATA wordt gebouwd en onderhouden door Lukáš Bujdoš, een webontwikkelaar gevestigd in Slowakije <flag/>, vooralsnog als soloproject. Het is nieuw — wordt in het openbaar gebouwd, functie voor functie — in plaats van gemaakt door een bedrijf met een team om een Over-ons-pagina mee te vullen.",
+    "teamBody": "<brand>down</brand>DATA wordt gebouwd en onderhouden door Lukáš Bujdoš, een webontwikkelaar gevestigd in Slowakije <flag/>, vooralsnog als soloproject. Het is nieuw, wordt in het openbaar gebouwd, functie voor functie, in plaats van gemaakt door een bedrijf met een team om een Over-ons-pagina mee te vullen.",
     "followOnX": "Volg {{name}} op X",
     "chatWithUs": "Chat met ons",
     "back": "← Terug"
@@ -631,7 +631,7 @@
     "title": "Ondersteuning",
     "subtitle": "Hulp nodig? Dit is de snelste manier om ons te bereiken.",
     "chatHeading": "Livechat",
-    "chatBody": "Chat rechtstreeks met ons in de app — we reageren meestal binnen een paar uur.",
+    "chatBody": "Chat rechtstreeks met ons in de app. We reageren meestal binnen een paar uur.",
     "chatButton": "Chat openen",
     "hideChatButton": "Chat verbergen",
     "emailHeading": "E-mail",

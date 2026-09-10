@@ -212,7 +212,7 @@
     "keywordPlaceholder": "Ajouter un mot-clé à surveiller",
     "addKeyword": "Ajouter",
     "removeKeyword": "Retirer",
-    "empty": "Aucune correspondance pour le moment — ajoutez un mot-clé et activez une source ci-dessus.",
+    "empty": "Aucune correspondance pour le moment. Ajoutez un mot-clé et activez une source ci-dessus.",
     "noMatches": "Aucune correspondance pour ce mot-clé.",
     "new": "Nouveau",
     "openLink": "Ouvrir sur Reddit",
@@ -404,7 +404,7 @@
   "requestModal": {
     "placeholder": "Dites-nous ce que vous cherchez…",
     "submit": "Envoyer la demande",
-    "sent": "Merci — nous avons bien reçu votre demande !",
+    "sent": "Merci ! Nous avons bien reçu votre demande.",
     "somethingWrong": "Une erreur s'est produite. Réessayez.",
     "close": "Fermer"
   },
@@ -572,7 +572,7 @@
     "resumeSubscription": "Reprendre l'abonnement",
     "confirmCancelTitle": "Annuler votre abonnement ?",
     "confirmCancelMessage": "Votre forfait reste actif jusqu'à la fin de la période de facturation en cours, puis passe à Free. Vous pouvez le reprendre à tout moment avant cela.",
-    "checkoutSuccess": "Paiement réussi — votre forfait sera mis à jour sous peu.",
+    "checkoutSuccess": "Paiement réussi. Votre forfait sera mis à jour sous peu.",
     "checkoutCanceled": "Paiement annulé. Aucun montant n'a été débité.",
     "somethingWrong": "Une erreur s'est produite.",
     "freePlanTitle": "Vous êtes sur le forfait Free",
@@ -591,7 +591,7 @@
   },
   "cookieConsent": {
     "title": "Nous utilisons des cookies",
-    "description": "Nous utilisons des cookies pour vous garder connecté, protéger le site contre les robots et — avec votre autorisation — comprendre comment le site est utilisé et proposer une assistance par chat en direct.",
+    "description": "Nous utilisons des cookies pour vous garder connecté, protéger le site contre les robots et, avec votre autorisation, comprendre comment le site est utilisé et proposer une assistance par chat en direct.",
     "privacyNotice": "Consultez notre <privacyLink>Politique de confidentialité</privacyLink> pour en savoir plus sur la façon dont nous traitons vos données.",
     "acceptAll": "Tout accepter",
     "rejectAll": "Tout refuser",
@@ -620,9 +620,9 @@
   "about": {
     "title": "À propos de <brand>down</brand>DATA",
     "storyHeading": "L'histoire",
-    "storyBody": "<brand>down</brand>DATA est né en août 2026 — créé par un développeur seul, agacé que vérifier si les outils dont dépend votre application traversent une mauvaise journée oblige soit à surveiller cinq pages de statut différentes, soit à payer des centaines de dollars par mois à un service comme StatusGator pour quelque chose qui revient, au fond, à interroger périodiquement une API publique. <brand>down</brand>DATA fait le même travail — il surveille GitHub, Supabase, Cloudflare et tout autre service basé sur Atlassian Statuspage — pour une fraction du prix.",
+    "storyBody": "<brand>down</brand>DATA est né en août 2026, créé par un développeur seul, agacé que vérifier si les outils dont dépend votre application traversent une mauvaise journée oblige soit à surveiller cinq pages de statut différentes, soit à payer des centaines de dollars par mois à un service comme StatusGator pour quelque chose qui revient, au fond, à interroger périodiquement une API publique. <brand>down</brand>DATA fait le même travail, il surveille GitHub, Supabase, Cloudflare et tout autre service basé sur Atlassian Statuspage, pour une fraction du prix.",
     "teamHeading": "Qui est derrière",
-    "teamBody": "<brand>down</brand>DATA est conçu et maintenu par Lukáš Bujdoš, développeur web basé en Slovaquie <flag/>, pour l'instant en tant que projet solo. Le produit est récent — construit publiquement, fonctionnalité après fonctionnalité — plutôt que par une entreprise disposant d'un effectif pour remplir une page « À propos ».",
+    "teamBody": "<brand>down</brand>DATA est conçu et maintenu par Lukáš Bujdoš, développeur web basé en Slovaquie <flag/>, pour l'instant en tant que projet solo. Le produit est récent, construit publiquement, fonctionnalité après fonctionnalité, plutôt que par une entreprise disposant d'un effectif pour remplir une page « À propos ».",
     "followOnX": "Suivre {{name}} sur X",
     "chatWithUs": "Discuter avec nous",
     "back": "← Retour"
@@ -631,7 +631,7 @@
     "title": "Assistance",
     "subtitle": "Besoin d'aide ? Voici le moyen le plus rapide de nous joindre.",
     "chatHeading": "Chat en direct",
-    "chatBody": "Discutez avec nous directement dans l'application — nous répondons généralement en quelques heures.",
+    "chatBody": "Discutez avec nous directement dans l'application. Nous répondons généralement en quelques heures.",
     "chatButton": "Ouvrir le chat",
     "hideChatButton": "Masquer le chat",
     "emailHeading": "E-mail",

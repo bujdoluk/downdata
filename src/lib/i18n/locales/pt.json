@@ -212,7 +212,7 @@
     "keywordPlaceholder": "Adicionar palavra-chave a monitorizar",
     "addKeyword": "Adicionar",
     "removeKeyword": "Remover",
-    "empty": "Ainda sem correspondências — adicione uma palavra-chave e ative uma fonte acima.",
+    "empty": "Ainda sem correspondências. Adicione uma palavra-chave e ative uma fonte acima.",
     "noMatches": "Sem correspondências para esta palavra-chave.",
     "new": "Novo",
     "openLink": "Abrir no Reddit",
@@ -404,7 +404,7 @@
   "requestModal": {
     "placeholder": "Diga-nos o que procura…",
     "submit": "Enviar pedido",
-    "sent": "Obrigado — recebemos o seu pedido!",
+    "sent": "Obrigado! Recebemos o seu pedido.",
     "somethingWrong": "Algo correu mal. Tente novamente.",
     "close": "Fechar"
   },
@@ -572,7 +572,7 @@
     "resumeSubscription": "Retomar subscrição",
     "confirmCancelTitle": "Cancelar a sua subscrição?",
     "confirmCancelMessage": "O seu plano mantém-se ativo até ao fim do período de faturação atual e depois passa para Free. Pode retomá-lo em qualquer altura antes disso.",
-    "checkoutSuccess": "Pagamento efetuado com sucesso — o seu plano será atualizado em breve.",
+    "checkoutSuccess": "Pagamento efetuado com sucesso. O seu plano será atualizado em breve.",
     "checkoutCanceled": "Compra cancelada. Não foi efetuada qualquer cobrança.",
     "somethingWrong": "Algo correu mal.",
     "freePlanTitle": "Está no plano Free",
@@ -591,7 +591,7 @@
   },
   "cookieConsent": {
     "title": "Utilizamos cookies",
-    "description": "Utilizamos cookies para o manter com sessão iniciada, proteger o site contra bots e — com a sua autorização — perceber como o site é utilizado e oferecer suporte por chat em direto.",
+    "description": "Utilizamos cookies para o manter com sessão iniciada, proteger o site contra bots e, com a sua autorização, perceber como o site é utilizado e oferecer suporte por chat em direto.",
     "privacyNotice": "Leia a nossa <privacyLink>Política de Privacidade</privacyLink> para saber mais sobre como tratamos os seus dados.",
     "acceptAll": "Aceitar tudo",
     "rejectAll": "Rejeitar tudo",
@@ -620,9 +620,9 @@
   "about": {
     "title": "Sobre a <brand>down</brand>DATA",
     "storyHeading": "A história",
-    "storyBody": "A <brand>down</brand>DATA nasceu em agosto de 2026 — criada por um único developer, incomodado por verificar se as ferramentas de que a sua aplicação depende estão a ter um mau dia exigir ou vigiar cinco páginas de estado diferentes, ou pagar centenas de dólares por mês a um serviço como o StatusGator por algo que, no fundo, é apenas consultar periodicamente uma API pública. A <brand>down</brand>DATA faz o mesmo trabalho — monitoriza o GitHub, o Supabase, o Cloudflare e tudo o resto baseado em Atlassian Statuspage — por uma fração do preço.",
+    "storyBody": "A <brand>down</brand>DATA nasceu em agosto de 2026, criada por um único developer, incomodado por verificar se as ferramentas de que a sua aplicação depende estão a ter um mau dia exigir ou vigiar cinco páginas de estado diferentes, ou pagar centenas de dólares por mês a um serviço como o StatusGator por algo que, no fundo, é apenas consultar periodicamente uma API pública. A <brand>down</brand>DATA faz o mesmo trabalho, monitoriza o GitHub, o Supabase, o Cloudflare e tudo o resto baseado em Atlassian Statuspage, por uma fração do preço.",
     "teamHeading": "Quem está por trás",
-    "teamBody": "A <brand>down</brand>DATA é criada e mantida por Lukáš Bujdoš, um web developer sediado na Eslováquia <flag/>, por agora como projeto individual. É recente — construída publicamente, funcionalidade a funcionalidade — em vez de ser feita por uma empresa com uma equipa capaz de preencher uma página «Sobre nós».",
+    "teamBody": "A <brand>down</brand>DATA é criada e mantida por Lukáš Bujdoš, um web developer sediado na Eslováquia <flag/>, por agora como projeto individual. É recente, construída publicamente, funcionalidade a funcionalidade, em vez de ser feita por uma empresa com uma equipa capaz de preencher uma página «Sobre nós».",
     "followOnX": "Seguir {{name}} no X",
     "chatWithUs": "Fale connosco",
     "back": "← Voltar"
@@ -631,7 +631,7 @@
     "title": "Suporte",
     "subtitle": "Precisa de ajuda? Esta é a forma mais rápida de nos contactar.",
     "chatHeading": "Chat em direto",
-    "chatBody": "Fale connosco diretamente na app — normalmente respondemos em poucas horas.",
+    "chatBody": "Fale connosco diretamente na app. Normalmente respondemos em poucas horas.",
     "chatButton": "Abrir chat",
     "hideChatButton": "Ocultar chat",
     "emailHeading": "E-mail",

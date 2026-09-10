@@ -17,8 +17,8 @@ export default function TermsContent() {
 
         <h2 className="mt-8 mb-3 text-xl font-bold">1. The service</h2>
         <p>
-          downDATA monitors the status of services you choose to track — GitHub, Supabase,
-          Cloudflare, and other Atlassian Statuspage-based providers — and shows their live status
+          downDATA monitors the status of services you choose to track, such as GitHub, Supabase,
+          Cloudflare, and other Atlassian Statuspage-based providers, and shows their live status
           and incident history. Creating an account lets you save the services you track, group them
           into boards, and connect Slack for notifications. Pricing plans shown on our site describe
           the tiers we offer; specific billing terms and payment details are presented at checkout
@@ -34,14 +34,14 @@ export default function TermsContent() {
 
         <h2 className="mt-8 mb-3 text-xl font-bold">3. Your data</h2>
         <p>
-          The services, boards, and Slack connections you configure are yours — we store them only
+          The services, boards, and Slack connections you configure are yours. We store them only
           to run your dashboard and send the notifications you asked for. We claim no ownership over
           how you choose to organize or label them.
         </p>
 
         <h2 className="mt-8 mb-3 text-xl font-bold">4. Plans and billing</h2>
         <p>
-          The pricing plans shown on our landing page describe the tiers we offer — monitor limits,
+          The pricing plans shown on our landing page describe the tiers we offer: monitor limits,
           check interval, status pages, and history retention. If we charge for a plan, the payment
           processor, billing cycle, and cancellation/refund policy will be disclosed at checkout
           before you pay, and you can cancel a paid plan at any time from your account.
@@ -66,7 +66,7 @@ export default function TermsContent() {
 
         <h2 className="mt-8 mb-3 text-xl font-bold">7. Intellectual property</h2>
         <p>
-          The service itself — its design, code, and branding — belongs to us and is protected by
+          The service itself, its design, code, and branding, belongs to us and is protected by
           applicable intellectual property law. These terms don&rsquo;t grant you any rights to it
           beyond using the service as intended.
         </p>
@@ -88,7 +88,7 @@ export default function TermsContent() {
         <h2 className="mt-8 mb-3 text-xl font-bold">10. Force majeure</h2>
         <p>
           Neither of us is liable for a failure or delay caused by something reasonably outside our
-          control — for example, a power or internet outage, natural disaster, war, terrorism, labor
+          control, for example a power or internet outage, natural disaster, war, terrorism, labor
           dispute, or a new law or government action that affects the service.
         </p>
 

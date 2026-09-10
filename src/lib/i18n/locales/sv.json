@@ -246,10 +246,16 @@
     "keywordMatches_other": "{{count}} nyckelordsträffar",
     "table": {
       "service": "Tjänst",
-      "uptime": "Drifttid",
       "incidents": "Incidenter",
+      "maintenance": "Underhåll",
+      "uptime": "Drifttid",
       "downtime": "Driftstopp"
     },
+    "delete": "Ta bort",
+    "deleting": "Tar bort…",
+    "deleteConfirmTitle": "Ta bort rapporten?",
+    "deleteConfirmMessage": "Detta tar bort rapporten för {{period}} permanent. Åtgärden kan inte ångras.",
+    "cancel": "Avbryt",
     "settings": {
       "autoSaveNote": "Ändringar tillämpas direkt. Det finns ingen spara-knapp.",
       "interval": "Frekvens",
@@ -350,6 +356,7 @@
       "description": "Dela en offentlig, skrivskyddad statussida för den här tavlans bevakade tjänster.",
       "slugLabel": "Offentlig URL",
       "companyNameLabel": "Företagsnamn",
+      "companyNamePlaceholder": "Företag XY",
       "logoLabel": "Logotyp",
       "logoChoose": "Välj logotyp",
       "logoRemove": "Ta bort",

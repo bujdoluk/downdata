@@ -262,10 +262,16 @@
     "keywordMatches_other": "{{count}} совпадения по ключевым словам",
     "table": {
       "service": "Сервис",
-      "uptime": "Доступность",
       "incidents": "Инциденты",
+      "maintenance": "Обслуживание",
+      "uptime": "Доступность",
       "downtime": "Время простоя"
     },
+    "delete": "Удалить",
+    "deleting": "Удаление…",
+    "deleteConfirmTitle": "Удалить отчёт?",
+    "deleteConfirmMessage": "Это навсегда удалит отчёт за период {{period}}. Это действие нельзя отменить.",
+    "cancel": "Отмена",
     "settings": {
       "autoSaveNote": "Изменения применяются сразу. Отдельной кнопки сохранения нет.",
       "interval": "Частота",
@@ -374,6 +380,7 @@
       "description": "Поделитесь публичной страницей статуса (только для чтения) для отслеживаемых сервисов этой доски.",
       "slugLabel": "Публичный URL",
       "companyNameLabel": "Название компании",
+      "companyNamePlaceholder": "Компания XY",
       "logoLabel": "Логотип",
       "logoChoose": "Выбрать логотип",
       "logoRemove": "Удалить",

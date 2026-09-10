@@ -246,10 +246,16 @@
     "keywordMatches_other": "{{count}} nøkkelordtreff",
     "table": {
       "service": "Tjeneste",
-      "uptime": "Oppetid",
       "incidents": "Hendelser",
+      "maintenance": "Vedlikehold",
+      "uptime": "Oppetid",
       "downtime": "Nedetid"
     },
+    "delete": "Slett",
+    "deleting": "Sletter…",
+    "deleteConfirmTitle": "Slette rapporten?",
+    "deleteConfirmMessage": "Dette vil slette rapporten for {{period}} permanent. Denne handlingen kan ikke angres.",
+    "cancel": "Avbryt",
     "settings": {
       "autoSaveNote": "Endringer trer i kraft umiddelbart. Det finnes ingen lagre-knapp.",
       "interval": "Frekvens",
@@ -350,6 +356,7 @@
       "description": "Del en offentlig, skrivebeskyttet statusside for tavlens sporede tjenester.",
       "slugLabel": "Offentlig URL",
       "companyNameLabel": "Firmanavn",
+      "companyNamePlaceholder": "Firma XY",
       "logoLabel": "Logo",
       "logoChoose": "Velg logo",
       "logoRemove": "Fjern",

@@ -30,3 +30,14 @@ export async function getAllOwnReports(): Promise<StoredReport[]> {
   if (error) throw error;
   return ((data as ReportRow[] | null) ?? []).map(toStoredReport);
 }
+
+// RLS (0034_report_deletion.sql's reports_delete) already scopes this to
+// the caller's own rows — a mismatched id (someone else's report, or one
+// that never existed) just matches zero rows rather than erroring, same
+// convention as features/boards/services/boards.ts's removeBoard.
+export async function deleteOwnReport(id: string): Promise<boolean> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("reports").delete().eq("id", id).select();
+  if (error) throw error;
+  return (data?.length ?? 0) > 0;
+}

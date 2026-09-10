@@ -60,9 +60,7 @@ _No props._
 | interval | ReportInterval | Yes | — |  |
 | periodStart | string | Yes | — |  |
 | periodEnd | string | Yes | — |  |
-| overallUptimePercent | number | Yes | — |  |
-| incidentCount | number | Yes | — |  |
-| atRiskCount | number | Yes | — |  |
+| payload | ReportPayload | Yes | — |  |
 | isTest | boolean \| undefined | No | false |  |
 | isPlaceholder | boolean \| undefined | No | false |  |
 

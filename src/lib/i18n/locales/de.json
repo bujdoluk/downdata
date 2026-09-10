@@ -246,10 +246,16 @@
     "keywordMatches_other": "{{count}} Schlüsselwort-Treffer",
     "table": {
       "service": "Dienst",
-      "uptime": "Verfügbarkeit",
       "incidents": "Vorfälle",
+      "maintenance": "Wartung",
+      "uptime": "Verfügbarkeit",
       "downtime": "Ausfallzeit"
     },
+    "delete": "Löschen",
+    "deleting": "Wird gelöscht…",
+    "deleteConfirmTitle": "Bericht löschen?",
+    "deleteConfirmMessage": "Dadurch wird der Bericht für {{period}} dauerhaft gelöscht. Dies kann nicht rückgängig gemacht werden.",
+    "cancel": "Abbrechen",
     "settings": {
       "autoSaveNote": "Änderungen werden sofort übernommen. Es gibt keinen Speichern-Button.",
       "interval": "Häufigkeit",
@@ -350,6 +356,7 @@
       "description": "Teilen Sie eine öffentliche, schreibgeschützte Statusseite für die verfolgten Dienste dieses Boards.",
       "slugLabel": "Öffentliche URL",
       "companyNameLabel": "Firmenname",
+      "companyNamePlaceholder": "Firma XY",
       "logoLabel": "Logo",
       "logoChoose": "Logo auswählen",
       "logoRemove": "Entfernen",

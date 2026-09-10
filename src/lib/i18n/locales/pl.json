@@ -262,10 +262,16 @@
     "keywordMatches_other": "{{count}} dopasowania słowa kluczowego",
     "table": {
       "service": "Usługa",
-      "uptime": "Dostępność",
       "incidents": "Incydenty",
+      "maintenance": "Konserwacja",
+      "uptime": "Dostępność",
       "downtime": "Przestój"
     },
+    "delete": "Usuń",
+    "deleting": "Usuwanie…",
+    "deleteConfirmTitle": "Usunąć raport?",
+    "deleteConfirmMessage": "Spowoduje to trwałe usunięcie raportu za okres {{period}}. Tej czynności nie można cofnąć.",
+    "cancel": "Anuluj",
     "settings": {
       "autoSaveNote": "Zmiany są stosowane natychmiast. Nie ma tu przycisku zapisu.",
       "interval": "Częstotliwość",
@@ -374,6 +380,7 @@
       "description": "Udostępnij publiczną stronę statusu (tylko do odczytu) dla śledzonych usług tej tablicy.",
       "slugLabel": "Publiczny adres URL",
       "companyNameLabel": "Nazwa firmy",
+      "companyNamePlaceholder": "Firma XY",
       "logoLabel": "Logo",
       "logoChoose": "Wybierz logo",
       "logoRemove": "Usuń",

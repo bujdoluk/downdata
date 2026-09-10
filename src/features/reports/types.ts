@@ -15,6 +15,16 @@ export type ServiceReportEntry = {
   name: string;
   uptimePercent: number;
   incidentCount: number;
+  // Completed-in-period + still-upcoming/in-progress maintenances for this
+  // service, summed — the per-service breakdown of the report-level
+  // upcomingMaintenanceCount/completedMaintenanceCount below. Genuinely
+  // optional, not just possibly-missing: a report generated before this
+  // field existed has no way to know its real value (the upcoming/
+  // in-progress half is a point-in-time snapshot with no history to
+  // reconstruct it from), so render sites show an explicit "not
+  // recorded" marker rather than defaulting to 0 — a fabricated zero
+  // would be indistinguishable from a service that genuinely had none.
+  maintenanceCount: number | undefined;
   downtimeMinutes: number;
   // Below the at-risk uptime threshold for this period, or currently has
   // an open major/critical incident — see reportGeneration.ts's

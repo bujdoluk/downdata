@@ -246,10 +246,16 @@
     "keywordMatches_other": "{{count}} corrispondenze di parole chiave",
     "table": {
       "service": "Servizio",
-      "uptime": "Uptime",
       "incidents": "Incidenti",
+      "maintenance": "Manutenzione",
+      "uptime": "Uptime",
       "downtime": "Downtime"
     },
+    "delete": "Elimina",
+    "deleting": "Eliminazione…",
+    "deleteConfirmTitle": "Eliminare il report?",
+    "deleteConfirmMessage": "Questa azione eliminerà definitivamente il report per {{period}}. Non potrà essere annullata.",
+    "cancel": "Annulla",
     "settings": {
       "autoSaveNote": "Le modifiche vengono applicate subito. Non esiste un pulsante di salvataggio.",
       "interval": "Frequenza",
@@ -350,6 +356,7 @@
       "description": "Condividi una pagina di stato pubblica, di sola lettura, per i servizi monitorati di questa bacheca.",
       "slugLabel": "URL pubblico",
       "companyNameLabel": "Nome azienda",
+      "companyNamePlaceholder": "Azienda XY",
       "logoLabel": "Logo",
       "logoChoose": "Scegli logo",
       "logoRemove": "Rimuovi",

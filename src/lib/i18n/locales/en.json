@@ -246,10 +246,16 @@
     "keywordMatches_other": "{{count}} keyword matches",
     "table": {
       "service": "Service",
-      "uptime": "Uptime",
       "incidents": "Incidents",
+      "maintenance": "Maintenance",
+      "uptime": "Uptime",
       "downtime": "Downtime"
     },
+    "delete": "Delete",
+    "deleting": "Deleting…",
+    "deleteConfirmTitle": "Delete report?",
+    "deleteConfirmMessage": "This will permanently delete the report for {{period}}. This can't be undone.",
+    "cancel": "Cancel",
     "settings": {
       "autoSaveNote": "Changes apply immediately. There's no save button.",
       "interval": "Frequency",
@@ -350,6 +356,7 @@
       "description": "Share a public, read-only status page for this board's tracked services.",
       "slugLabel": "Public URL",
       "companyNameLabel": "Company name",
+      "companyNamePlaceholder": "Company XY",
       "logoLabel": "Logo",
       "logoChoose": "Choose logo",
       "logoRemove": "Remove",

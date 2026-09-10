@@ -255,10 +255,16 @@
     "keywordMatches_other": "{{count}} shod klíčových slov",
     "table": {
       "service": "Služba",
-      "uptime": "Dostupnost",
       "incidents": "Incidenty",
+      "maintenance": "Údržba",
+      "uptime": "Dostupnost",
       "downtime": "Výpadek"
     },
+    "delete": "Smazat",
+    "deleting": "Mazání…",
+    "deleteConfirmTitle": "Smazat přehled?",
+    "deleteConfirmMessage": "Tímto trvale smažete přehled za období {{period}}. Tuto akci nelze vrátit zpět.",
+    "cancel": "Zrušit",
     "settings": {
       "autoSaveNote": "Změny se projeví okamžitě. Tlačítko Uložit tu není.",
       "interval": "Frekvence",
@@ -363,6 +369,7 @@
       "description": "Sdílejte veřejnou stránku stavu (pouze pro čtení) pro sledované služby této nástěnky.",
       "slugLabel": "Veřejná URL adresa",
       "companyNameLabel": "Název společnosti",
+      "companyNamePlaceholder": "Firma XY",
       "logoLabel": "Logo",
       "logoChoose": "Vybrat logo",
       "logoRemove": "Odebrat",

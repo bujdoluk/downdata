@@ -255,10 +255,16 @@
     "keywordMatches_other": "{{count}} zhôd kľúčových slov",
     "table": {
       "service": "Služba",
-      "uptime": "Dostupnosť",
       "incidents": "Incidenty",
+      "maintenance": "Údržba",
+      "uptime": "Dostupnosť",
       "downtime": "Výpadok"
     },
+    "delete": "Odstrániť",
+    "deleting": "Odstraňovanie…",
+    "deleteConfirmTitle": "Odstrániť prehľad?",
+    "deleteConfirmMessage": "Týmto natrvalo odstránite prehľad za obdobie {{period}}. Túto akciu nemožno vrátiť späť.",
+    "cancel": "Zrušiť",
     "settings": {
       "autoSaveNote": "Zmeny sa uplatnia okamžite. Tlačidlo Uložiť tu nie je.",
       "interval": "Frekvencia",
@@ -363,6 +369,7 @@
       "description": "Zdieľajte verejnú stránku stavu (len na čítanie) pre sledované služby tejto nástenky.",
       "slugLabel": "Verejná URL adresa",
       "companyNameLabel": "Názov spoločnosti",
+      "companyNamePlaceholder": "Firma XY",
       "logoLabel": "Logo",
       "logoChoose": "Vybrať logo",
       "logoRemove": "Odstrániť",

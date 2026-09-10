@@ -246,10 +246,16 @@
     "keywordMatches_other": "{{count}} correspondances de mots-clés",
     "table": {
       "service": "Service",
-      "uptime": "Disponibilité",
       "incidents": "Incidents",
+      "maintenance": "Maintenance",
+      "uptime": "Disponibilité",
       "downtime": "Indisponibilité"
     },
+    "delete": "Supprimer",
+    "deleting": "Suppression…",
+    "deleteConfirmTitle": "Supprimer le rapport ?",
+    "deleteConfirmMessage": "Cette action supprimera définitivement le rapport pour {{period}}. Elle est irréversible.",
+    "cancel": "Annuler",
     "settings": {
       "autoSaveNote": "Les modifications sont appliquées immédiatement. Il n'y a pas de bouton d'enregistrement.",
       "interval": "Fréquence",
@@ -350,6 +356,7 @@
       "description": "Partagez une page de statut publique, en lecture seule, pour les services suivis de ce tableau.",
       "slugLabel": "URL publique",
       "companyNameLabel": "Nom de l'entreprise",
+      "companyNamePlaceholder": "Société XY",
       "logoLabel": "Logo",
       "logoChoose": "Choisir un logo",
       "logoRemove": "Supprimer",

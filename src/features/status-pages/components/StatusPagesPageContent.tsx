@@ -37,7 +37,7 @@ export default function StatusPagesPageContent({ boards }: { boards: Board[] }) 
       {boards.length === 0 ? (
         <p className="text-base-content/50 mt-6 text-sm">{t("statusPages.empty")}</p>
       ) : (
-        <div className="mt-4 flex flex-col gap-4">
+        <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] items-start gap-4">
           {boards.map((board) => (
             <div key={board.id} className="card card-border bg-base-200 p-4">
               <h2 className="text-base-content text-sm font-semibold">{board.name}</h2>

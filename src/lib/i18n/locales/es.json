@@ -246,10 +246,16 @@
     "keywordMatches_other": "{{count}} coincidencias de palabras clave",
     "table": {
       "service": "Servicio",
-      "uptime": "Disponibilidad",
       "incidents": "Incidentes",
+      "maintenance": "Mantenimiento",
+      "uptime": "Disponibilidad",
       "downtime": "Inactividad"
     },
+    "delete": "Eliminar",
+    "deleting": "Eliminando…",
+    "deleteConfirmTitle": "¿Eliminar informe?",
+    "deleteConfirmMessage": "Esto eliminará permanentemente el informe de {{period}}. Esta acción no se puede deshacer.",
+    "cancel": "Cancelar",
     "settings": {
       "autoSaveNote": "Los cambios se aplican de inmediato. No hay un botón de guardar.",
       "interval": "Frecuencia",
@@ -350,6 +356,7 @@
       "description": "Comparte una página de estado pública, de solo lectura, para los servicios rastreados de este tablero.",
       "slugLabel": "URL pública",
       "companyNameLabel": "Nombre de la empresa",
+      "companyNamePlaceholder": "Empresa XY",
       "logoLabel": "Logotipo",
       "logoChoose": "Elegir logotipo",
       "logoRemove": "Quitar",

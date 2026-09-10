@@ -49,7 +49,13 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
     // keystroke — see the comment above this effect.
     /* eslint-disable react-hooks/set-state-in-effect */
     setSlug(data?.slug ?? slugify(boardName));
-    setCompanyName(data?.companyName ?? "");
+    // Defaults to the board's own name rather than an empty field — a
+    // status page with no explicit branding still needs *some* company
+    // name to show visitors, and the board's name is the obvious guess.
+    // The PUT route already normalizes an explicitly-cleared field to
+    // null (never an empty string), so this can't fight a real "no
+    // company name" choice on the next resync.
+    setCompanyName(data?.companyName ?? boardName);
     setLogoUrl(data?.logoUrl ?? null);
     setHideBranding(data?.hideBranding ?? false);
     /* eslint-enable react-hooks/set-state-in-effect */
@@ -83,29 +89,33 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
   const publicPath = data ? `/status/${data.slug}` : null;
   const saving = saveMutation.isPending;
   const publishing = enableMutation.isPending;
+  // No row yet (never saved) reads the same as "not published" — Publish
+  // itself creates the row via the save-first step below, so a board
+  // doesn't need an explicit prior Save before it can go live.
+  const isPublished = data?.enabled ?? false;
 
   // Publishing (unpublished → published) persists the current draft first —
   // enableMutation only ever flips the `enabled` column, so without this an
-  // unsaved edit (e.g. just-toggled hideBranding) would silently never reach
-  // the database and the public page would keep showing the last-saved state.
+  // unsaved edit (e.g. just-toggled hideBranding), or a board with no
+  // board_status_pages row at all yet, would never reach the database and
+  // the public page would keep showing the last-saved state (or 404).
   // Unpublishing needs no save step; it's just turning the page off.
   async function handleTogglePublish() {
-    if (!data) return;
-    if (!data.enabled) {
+    if (!isPublished) {
       try {
         await saveMutation.mutateAsync();
       } catch {
         return; // saveMutation's onError already surfaced the message
       }
     }
-    enableMutation.mutate(!data.enabled);
+    enableMutation.mutate(!isPublished);
   }
 
   return (
     <>
       <div className="flex items-center justify-between">
         <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("boards.statusPage.title")}</h2>
-        {data?.enabled && <span className="badge badge-success badge-xs">{t("boards.statusPage.live")}</span>}
+        {isPublished && <span className="badge badge-success badge-xs">{t("boards.statusPage.live")}</span>}
       </div>
 
       {isLoading ? (
@@ -114,7 +124,7 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
         <div className="mt-3 flex flex-col gap-3">
           <fieldset className="fieldset py-0">
             <legend className="fieldset-legend">{t("boards.statusPage.slugLabel")}</legend>
-            <label className="input input-bordered input-sm flex items-center gap-1">
+            <label className="input input-bordered input-sm flex w-full items-center gap-1">
               <span className="text-base-content/40 shrink-0 text-xs whitespace-nowrap">{origin || "…"}/status/</span>
               <input
                 type="text"
@@ -132,7 +142,7 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
               type="text"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
-              placeholder={boardName}
+              placeholder={t("boards.statusPage.companyNamePlaceholder")}
               className="input input-bordered input-sm w-full"
               maxLength={120}
             />
@@ -165,19 +175,17 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
               {saving ? <Spinner size="xs" /> : t("boards.statusPage.save")}
             </button>
 
-            {data && (
-              <button
-                type="button"
-                disabled={publishing || saving}
-                onClick={handleTogglePublish}
-                className={`btn btn-xs ${data.enabled ? "btn-ghost" : "btn-success"}`}
-              >
-                {publishing ? <Spinner size="xs" /> : data.enabled ? t("boards.statusPage.unpublish") : t("boards.statusPage.publish")}
-              </button>
-            )}
+            <button
+              type="button"
+              disabled={publishing || saving || !slug}
+              onClick={handleTogglePublish}
+              className={`btn btn-xs ${isPublished ? "btn-ghost" : "btn-success"}`}
+            >
+              {publishing ? <Spinner size="xs" /> : isPublished ? t("boards.statusPage.unpublish") : t("boards.statusPage.publish")}
+            </button>
           </div>
 
-          {data?.enabled && publicPath && (
+          {isPublished && publicPath && (
             <div className="bg-[var(--color-surface-2)] border-base-300 flex items-start gap-2 rounded-lg border p-2">
               <a href={publicPath} target="_blank" rel="noreferrer" className="link link-hover min-w-0 flex-1 break-all text-xs">
                 {origin}

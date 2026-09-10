@@ -207,6 +207,10 @@ async function computeReportPayload(
       name: catalogBySlug.get(slug)?.name ?? slug,
       uptimePercent,
       incidentCount: incidents.length,
+      // Filled in below once the maintenance queries (scoped to every
+      // slug at once, not one at a time inside this per-slug batch) come
+      // back — 0 here is a placeholder, not a real "no maintenance" claim.
+      maintenanceCount: 0,
       downtimeMinutes,
       atRisk: uptimePercent < AT_RISK_UPTIME_THRESHOLD || hasOpenOutage,
     });
@@ -231,14 +235,29 @@ async function computeReportPayload(
     getAllStoredMaintenanceSummaries(allSlugs),
     supabase
       .from("maintenances")
-      .select("id")
+      .select("id, service_slug")
       .in("service_slug", allSlugs)
       .eq("status", "completed")
       .gte("resolved_at", windowStartIso)
       .lte("resolved_at", windowEndIso)
-      .then(({ data }) => (data as { id: string }[] | null) ?? []),
+      .then(({ data }) => (data as { id: string; service_slug: string }[] | null) ?? []),
     countKeywordMatchesForUser(supabase, userId, windowStartIso, windowEndIso),
   ]);
+
+  // Per-service breakdown of the two totals above — completed-in-period
+  // and still-upcoming/in-progress, summed into one number per service
+  // (see ServiceReportEntry.maintenanceCount). Always a real number at
+  // this point (every entry started at 0 moments ago, in this same
+  // function) — the `?? 0` here is just to satisfy the field's type,
+  // which also has to allow undefined for reports read back from storage.
+  for (const maintenance of upcomingMaintenances) {
+    const entry = entryBySlug.get(maintenance.service_slug);
+    if (entry) entry.maintenanceCount = (entry.maintenanceCount ?? 0) + 1;
+  }
+  for (const maintenance of completedMaintenanceRows) {
+    const entry = entryBySlug.get(maintenance.service_slug);
+    if (entry) entry.maintenanceCount = (entry.maintenanceCount ?? 0) + 1;
+  }
 
   return {
     overallUptimePercent,
@@ -273,9 +292,7 @@ async function sendReportNudge(
     interval,
     periodStart: periodStart.toString(),
     periodEnd: periodEnd.toString(),
-    overallUptimePercent: payload.overallUptimePercent,
-    incidentCount: payload.newIncidentCount,
-    atRiskCount: payload.atRiskServiceSlugs.length,
+    payload,
     isTest,
     isPlaceholder,
   });
@@ -307,6 +324,7 @@ function buildPlaceholderTestPayload(): ReportPayload {
     name: "Test Service",
     uptimePercent: 98.42,
     incidentCount: 2,
+    maintenanceCount: 2,
     downtimeMinutes: 47,
     atRisk: true,
   };
@@ -391,7 +409,19 @@ export async function sendTestReportEmail(): Promise<{ sent: boolean; retryAfter
   return { sent };
 }
 
-type SettingsRow = { user_id: string; report_interval: ReportInterval; excluded_board_ids: string[] | null; email_nudge_enabled: boolean; time_zone: string };
+type SettingsRow = {
+  user_id: string;
+  report_interval: ReportInterval;
+  excluded_board_ids: string[] | null;
+  email_nudge_enabled: boolean;
+  time_zone: string;
+  // Intervals that have ever had a report generated for this account,
+  // independent of whether that report row still exists (a user can now
+  // delete their own reports — reports_delete, 0034_report_deletion.sql).
+  // Tracked here instead of derived from counting `reports` rows so
+  // deleting history can never resurrect the "first report" path below.
+  reported_intervals: string[];
+};
 
 // Generates and persists every account's due report for this cron tick,
 // then sends the opt-out nudge email for each one generated. "Due" means
@@ -409,7 +439,7 @@ export async function generateDueReports(): Promise<{ generated: number; emailsS
   const [catalog, integrationsByUser, settingsRowsResult] = await Promise.all([
     getCatalog(),
     getAllIntegrationsAcrossUsers(),
-    supabase.from("report_settings").select("user_id, report_interval, excluded_board_ids, email_nudge_enabled, time_zone"),
+    supabase.from("report_settings").select("user_id, report_interval, excluded_board_ids, email_nudge_enabled, time_zone, reported_intervals"),
   ]);
   const catalogBySlug = new Map(catalog.map((entry) => [entry.slug, entry]));
   const settingsByUser = new Map(((settingsRowsResult.data as SettingsRow[] | null) ?? []).map((row) => [row.user_id, row]));
@@ -442,12 +472,7 @@ export async function generateDueReports(): Promise<{ generated: number; emailsS
       const local = Temporal.Now.zonedDateTimeISO(timeZone);
       const today = local.toPlainDate();
 
-      const { count: existingCount } = await supabase
-        .from("reports")
-        .select("id", { count: "exact", head: true })
-        .eq("user_id", userId)
-        .eq("report_interval", interval);
-      const isFirstReport = (existingCount ?? 0) === 0;
+      const isFirstReport = !(settings?.reported_intervals ?? []).includes(interval);
 
       if (!isFirstReport && !(isBoundaryDay(interval, today) && local.hour === REPORT_SEND_HOUR)) return;
       const period = completedPeriodEnding(interval, today);
@@ -471,6 +496,15 @@ export async function generateDueReports(): Promise<{ generated: number; emailsS
         .insert({ user_id: userId, report_interval: interval, period_start: period.start.toString(), period_end: period.end.toString(), payload });
       if (insertError) throw insertError;
       generated++;
+
+      // Only written the first time this interval is ever reported for
+      // this account — every later run already finds it in
+      // reported_intervals and skips the write.
+      if (isFirstReport) {
+        const nextIntervals = [...new Set([...(settings?.reported_intervals ?? []), interval])];
+        const { error: markError } = await supabase.from("report_settings").upsert({ user_id: userId, reported_intervals: nextIntervals }, { onConflict: "user_id" });
+        if (markError) throw markError;
+      }
 
       if (emailNudgeEnabled) {
         const recipients = emailRecipientsByUser.get(userId) ?? [];

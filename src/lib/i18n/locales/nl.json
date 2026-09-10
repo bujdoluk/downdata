@@ -246,10 +246,16 @@
     "keywordMatches_other": "{{count}} trefwoordtreffers",
     "table": {
       "service": "Dienst",
-      "uptime": "Uptime",
       "incidents": "Incidenten",
+      "maintenance": "Onderhoud",
+      "uptime": "Uptime",
       "downtime": "Downtime"
     },
+    "delete": "Verwijderen",
+    "deleting": "Verwijderen…",
+    "deleteConfirmTitle": "Rapport verwijderen?",
+    "deleteConfirmMessage": "Dit verwijdert het rapport voor {{period}} permanent. Dit kan niet ongedaan worden gemaakt.",
+    "cancel": "Annuleren",
     "settings": {
       "autoSaveNote": "Wijzigingen worden direct toegepast. Er is geen opslaan-knop.",
       "interval": "Frequentie",
@@ -350,6 +356,7 @@
       "description": "Deel een openbare, alleen-lezen statuspagina voor de gevolgde services van dit bord.",
       "slugLabel": "Openbare URL",
       "companyNameLabel": "Bedrijfsnaam",
+      "companyNamePlaceholder": "Bedrijf XY",
       "logoLabel": "Logo",
       "logoChoose": "Logo kiezen",
       "logoRemove": "Verwijderen",

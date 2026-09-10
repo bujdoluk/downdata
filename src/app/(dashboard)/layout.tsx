@@ -1,10 +1,6 @@
 import Sidebar from "@/components/sidebar/Sidebar";
+import NavigationLoadingBoundary from "@/components/NavigationLoadingBoundary";
 
 export default function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <div className="flex flex-1">
-      <Sidebar />
-      {children}
-    </div>
-  );
+  return <NavigationLoadingBoundary sidebar={<Sidebar />}>{children}</NavigationLoadingBoundary>;
 }

@@ -246,10 +246,16 @@
     "keywordMatches_other": "{{count}} correspondências de palavras-chave",
     "table": {
       "service": "Serviço",
-      "uptime": "Disponibilidade",
       "incidents": "Incidentes",
+      "maintenance": "Manutenção",
+      "uptime": "Disponibilidade",
       "downtime": "Indisponibilidade"
     },
+    "delete": "Eliminar",
+    "deleting": "A eliminar…",
+    "deleteConfirmTitle": "Eliminar relatório?",
+    "deleteConfirmMessage": "Isto irá eliminar permanentemente o relatório de {{period}}. Esta ação não pode ser anulada.",
+    "cancel": "Cancelar",
     "settings": {
       "autoSaveNote": "As alterações são aplicadas de imediato. Não existe um botão de guardar.",
       "interval": "Frequência",
@@ -350,6 +356,7 @@
       "description": "Compartilhe uma página de status pública e somente leitura para os serviços monitorados deste quadro.",
       "slugLabel": "URL pública",
       "companyNameLabel": "Nome da empresa",
+      "companyNamePlaceholder": "Empresa XY",
       "logoLabel": "Logotipo",
       "logoChoose": "Escolher logotipo",
       "logoRemove": "Remover",

@@ -32,6 +32,7 @@ The app reads several env vars at module scope, so `.env` needs to exist with ev
 | `npm run import:catalog` | Seed/update the `catalog` table from `scripts/import-catalog.mjs` |
 | `npm run poll:incidents` | One-shot local trigger for the cron poll+notify endpoint |
 | `npm run poll:keyword-sources` | One-shot local trigger for the early-warnings keyword poller |
+| `npm run generate:reports` | One-shot local trigger for the account-report generation cron (see below — this one needs an hourly schedule, not a daily one) |
 | `npm run test:unit` | Run the Vitest unit tests |
 | `npm run test:e2e:setup` | Generate `.env.test.local` from a running local Supabase instance (see below) |
 | `npm run test:e2e` | Run the Playwright end-to-end tests |

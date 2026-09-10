@@ -20,6 +20,7 @@
     "test:e2e": "playwright test",
     "poll:incidents": "node --env-file=.env scripts/poll-incidents.mjs",
     "poll:keyword-sources": "node --env-file=.env scripts/poll-keyword-sources.mjs",
+    "generate:reports": "node --env-file=.env scripts/generate-reports.mjs",
     "import:catalog": "node --env-file=.env scripts/import-catalog.mjs"
   },
   "lint-staged": {

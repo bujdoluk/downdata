@@ -125,16 +125,6 @@ export async function removeServiceFromBoard(id: string, slug: string): Promise<
   return updateServiceSlugs(id, (current) => (current.includes(slug) ? current.filter((s) => s !== slug) : current));
 }
 
-// Untracks a service everywhere at once — the /monitors aggregate view's
-// remove action, where "which board did you mean" doesn't apply since a
-// service can be on several of the caller's own boards simultaneously.
-// One server round trip owning the whole operation, rather than the
-// client fetching the board list itself and firing one DELETE per board.
-export async function removeServiceFromAllBoards(slug: string): Promise<void> {
-  const boards = (await getAllBoards()).filter((board) => board.Slugs.includes(slug));
-  await Promise.all(boards.map((board) => removeServiceFromBoard(board.id, slug)));
-}
-
 // Every service on any of the current user's own boards, deduped — the
 // "am I tracking this" signal for /monitors, /api/incidents,
 // /api/maintenance, /api/history/*. Session-scoped client: getAllBoards()

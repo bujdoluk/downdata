@@ -349,7 +349,6 @@
   "boards": {
     "title": "Tableaux",
     "subtitle": "Regroupez vos services suivis en tableaux pour différentes équipes.",
-    "searchPlaceholder": "Rechercher des tableaux…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Ajouter un tableau",
     "allBoards": "Tous les tableaux",
@@ -357,7 +356,7 @@
     "createSubmit": "Créer",
     "clearName": "Effacer",
     "empty": "Aucun tableau pour le moment. Créez-en un pour commencer à regrouper des services.",
-    "noMatches": "Aucun tableau trouvé.",
+    "duplicateNameWarning": "Vous avez déjà un tableau nommé « {{name}} ».",
     "delete": "Supprimer",
     "deleting": "Suppression…",
     "deleteConfirmTitle": "Supprimer le tableau ?",
@@ -551,7 +550,8 @@
   },
   "monitors": {
     "myServices": "Moniteurs",
-    "noServices": "Aucun service surveillé pour l'instant. Ajoutez-en un pour commencer."
+    "noServices": "Aucun service surveillé pour l'instant. Ajoutez-en un pour commencer.",
+    "addMonitor": "Ajouter un moniteur"
   },
   "services": {
     "monitoring": "Surveillé",

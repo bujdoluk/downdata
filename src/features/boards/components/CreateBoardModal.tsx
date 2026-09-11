@@ -17,9 +17,13 @@ import ModalCloseButton from "@/components/ModalCloseButton";
 // other <dialog> in this app (see IntegrationsPageContent's dialogRefs).
 export default function CreateBoardModal({
   dialogRef,
+  boards,
   onCreated,
 }: {
   dialogRef: RefObject<HTMLDialogElement | null>;
+  // For the duplicate-name warning in CreateBoardForm — both current
+  // callers already have the caller's own board list in scope.
+  boards: Board[];
   onCreated: (board: Board) => void;
 }) {
   const { t } = useTranslation();
@@ -32,6 +36,7 @@ export default function CreateBoardModal({
         <div className="mt-4">
           <CreateBoardForm
             dialogRef={dialogRef}
+            existingNames={boards.map((board) => board.name)}
             onCreated={(board) => {
               // Closing here, not left to each caller: this component is
               // the one place that could otherwise be forgotten by a future

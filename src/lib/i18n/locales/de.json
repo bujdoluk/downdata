@@ -349,7 +349,6 @@
   "boards": {
     "title": "Boards",
     "subtitle": "Gruppiere deine getrackten Dienste in Boards für verschiedene Teams.",
-    "searchPlaceholder": "Boards suchen…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Board hinzufügen",
     "allBoards": "Alle Boards",
@@ -357,7 +356,7 @@
     "createSubmit": "Erstellen",
     "clearName": "Leeren",
     "empty": "Noch keine Boards. Erstelle eines, um Dienste zu gruppieren.",
-    "noMatches": "Keine Boards gefunden.",
+    "duplicateNameWarning": "Du hast bereits ein Board namens „{{name}}“.",
     "delete": "Löschen",
     "deleting": "Wird gelöscht…",
     "deleteConfirmTitle": "Board löschen?",
@@ -551,7 +550,8 @@
   },
   "monitors": {
     "myServices": "Monitore",
-    "noServices": "Es werden noch keine Dienste überwacht. Füge einen hinzu, um loszulegen."
+    "noServices": "Es werden noch keine Dienste überwacht. Füge einen hinzu, um loszulegen.",
+    "addMonitor": "Monitor hinzufügen"
   },
   "services": {
     "monitoring": "Überwacht",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -36,7 +36,6 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const createDialogRef = useRef<HTMLDialogElement>(null);
-  const [query, setQuery] = useState("");
   const { pinned, togglePin } = usePinned("pinnedBoards");
   const { data: incidentsData } = useQuery({
     queryKey: queryKeys.incidents.list(),
@@ -55,10 +54,7 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   });
   const statusLoading = !statusData && !statusFailed;
 
-  const trimmedQuery = query.trim().toLowerCase();
-  const filteredBoards = boards
-    .filter((board) => !trimmedQuery || board.name.toLowerCase().includes(trimmedQuery))
-    .sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id)));
+  const sortedBoards = [...boards].sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id)));
 
   function countsFor(board: Board) {
     const slugs = new Set(board.Slugs);
@@ -79,25 +75,17 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
       </div>
       <p className="text-base-content/60 mt-1 text-sm">{t("boards.subtitle")}</p>
 
-      {boards.length > 0 && (
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={t("boards.searchPlaceholder")}
-          className="input input-bordered input-sm mt-4 w-full max-w-sm"
-        />
-      )}
-
       {boards.length === 0 ? (
-        <div className="border-base-300 mt-4 flex flex-col items-center gap-1 rounded-box border border-dashed py-16 text-center">
+        <div className="border-base-300 mt-4 flex flex-col items-center gap-3 rounded-box border border-dashed py-16 text-center">
           <p className="text-base-content/60 text-sm">{t("boards.empty")}</p>
+          <button type="button" onClick={() => createDialogRef.current?.showModal()} className="btn btn-info btn-sm">
+            <PlusIcon />
+            {t("boards.addBoard")}
+          </button>
         </div>
-      ) : filteredBoards.length === 0 ? (
-        <p className="text-base-content/50 mt-4 text-sm">{t("boards.noMatches")}</p>
       ) : (
         <ul className="mt-4 flex flex-col gap-3">
-          {filteredBoards.map((board) => (
+          {sortedBoards.map((board) => (
             <BoardCard
               key={board.id}
               board={board}
@@ -113,6 +101,7 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
 
       <CreateBoardModal
         dialogRef={createDialogRef}
+        boards={boards}
         onCreated={(board) => {
           // Sidebar's BoardSelect reads this same query key from its own
           // cache and stays mounted across this navigation, so without this

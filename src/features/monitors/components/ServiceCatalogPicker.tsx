@@ -18,10 +18,16 @@ export default function ServiceCatalogPicker({
   catalog,
   boards: initialBoards,
   initialBoardId,
+  backHref,
 }: {
   catalog: Catalog[];
   boards: Board[];
   initialBoardId?: string;
+  // Where the "← Back" link actually returns to — the specific board's own
+  // page when arrived via ?board=<id>, otherwise the generic boards list.
+  // Resolved server-side in add-service/page.tsx, where the raw (pre-
+  // fallback) ?board= value is still available.
+  backHref: string;
 }) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -80,7 +86,7 @@ export default function ServiceCatalogPicker({
 
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col self-start">
-      <Link href="/boards" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
+      <Link href={backHref} className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
         {t("addService.back")}
       </Link>
 
@@ -97,6 +103,13 @@ export default function ServiceCatalogPicker({
           value={boardId ?? ""}
           onChange={setBoardId}
           options={boards.map((b) => ({ value: b.id, label: b.name }))}
+          // No className meant no width utility on either the trigger or
+          // the menu (menuClassName falls back to className) — the trigger
+          // happened to stretch to fill this flex-col wrapper, but the menu
+          // fell back to shrink-to-content, so it never matched the
+          // trigger's actual rendered width. Every other SelectDropdown
+          // caller already passes an explicit width for exactly this reason.
+          className="w-full"
         />
       </div>
 

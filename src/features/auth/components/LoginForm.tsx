@@ -19,8 +19,16 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const next = searchParams.get("next") ?? "/boards";
 
+  const errorParam = searchParams.get("error");
+
   const [supabase] = useState(() => createClient());
-  const [mode, setMode] = useState<Mode>(() => (searchParams.get("mode") === "signup" ? "signup" : "login"));
+  const [mode, setMode] = useState<Mode>(() => {
+    // An expired recovery link drops the user straight back into the reset
+    // form instead of the login form — the obvious next action after a
+    // failed reset, rather than making them click "Forgot password?" again.
+    if (errorParam === "expired") return "reset";
+    return searchParams.get("mode") === "signup" ? "signup" : "login";
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -28,7 +36,11 @@ function LoginForm() {
   const [submitting, setSubmitting] = useState(false);
   const [googleSubmitting, setGoogleSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(
-    searchParams.get("error") === "auth" ? t("auth.errors.generic") : null,
+    errorParam === "expired"
+      ? t("auth.errors.linkExpired")
+      : errorParam === "auth"
+        ? t("auth.errors.generic")
+        : null,
   );
   const [confirmEmailSent, setConfirmEmailSent] = useState(false);
   const [resetLinkSent, setResetLinkSent] = useState(false);

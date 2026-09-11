@@ -118,6 +118,7 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
 
       <CreateBoardModal
         dialogRef={createBoardRef}
+        boards={boards}
         onCreated={(board) => {
           queryClient.setQueryData<Board[]>(queryKeys.boards.list(), (prev) =>
             [...(prev ?? []), board].sort((a, b) => a.name.localeCompare(b.name)),

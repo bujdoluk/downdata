@@ -349,7 +349,6 @@
   "boards": {
     "title": "Painéis",
     "subtitle": "Agrupe os seus serviços monitorizados em painéis para equipas diferentes.",
-    "searchPlaceholder": "Pesquisar painéis…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Adicionar painel",
     "allBoards": "Todos os painéis",
@@ -357,7 +356,7 @@
     "createSubmit": "Criar",
     "clearName": "Limpar",
     "empty": "Ainda não há painéis. Crie um para começar a agrupar serviços.",
-    "noMatches": "Nenhum painel encontrado.",
+    "duplicateNameWarning": "Já tem um painel com o nome \"{{name}}\".",
     "delete": "Eliminar",
     "deleting": "A eliminar…",
     "deleteConfirmTitle": "Eliminar painel?",
@@ -551,7 +550,8 @@
   },
   "monitors": {
     "myServices": "Monitores",
-    "noServices": "Ainda não está a monitorizar nenhum serviço. Adicione um para começar."
+    "noServices": "Ainda não está a monitorizar nenhum serviço. Adicione um para começar.",
+    "addMonitor": "Adicionar monitor"
   },
   "services": {
     "monitoring": "Monitorando",

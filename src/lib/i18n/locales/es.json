@@ -349,7 +349,6 @@
   "boards": {
     "title": "Tableros",
     "subtitle": "Agrupa tus servicios monitorizados en tableros para distintos equipos.",
-    "searchPlaceholder": "Buscar tableros…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Añadir tablero",
     "allBoards": "Todos los tableros",
@@ -357,7 +356,7 @@
     "createSubmit": "Crear",
     "clearName": "Borrar",
     "empty": "Aún no hay tableros. Crea uno para empezar a agrupar servicios.",
-    "noMatches": "No se encontraron tableros.",
+    "duplicateNameWarning": "Ya tienes un tablero llamado «{{name}}».",
     "delete": "Eliminar",
     "deleting": "Eliminando…",
     "deleteConfirmTitle": "¿Eliminar tablero?",
@@ -551,7 +550,8 @@
   },
   "monitors": {
     "myServices": "Monitores",
-    "noServices": "Todavía no monitorizas ningún servicio. Añade uno para empezar."
+    "noServices": "Todavía no monitorizas ningún servicio. Añade uno para empezar.",
+    "addMonitor": "Añadir monitor"
   },
   "services": {
     "monitoring": "Monitoreando",

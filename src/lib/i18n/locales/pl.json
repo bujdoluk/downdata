@@ -362,7 +362,6 @@
   "boards": {
     "title": "Tablice",
     "subtitle": "Grupuj monitorowane usługi w tablice dla różnych zespołów.",
-    "searchPlaceholder": "Szukaj tablic…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Dodaj tablicę",
     "allBoards": "Wszystkie tablice",
@@ -370,7 +369,7 @@
     "createSubmit": "Utwórz",
     "clearName": "Wyczyść",
     "empty": "Brak tablic. Utwórz jedną, aby zacząć grupować usługi.",
-    "noMatches": "Nie znaleziono tablic.",
+    "duplicateNameWarning": "Masz już tablicę o nazwie „{{name}}”.",
     "delete": "Usuń",
     "deleting": "Usuwanie…",
     "deleteConfirmTitle": "Usunąć tablicę?",
@@ -570,7 +569,8 @@
   },
   "monitors": {
     "myServices": "Monitory",
-    "noServices": "Nie monitorujesz jeszcze żadnych usług. Dodaj pierwszą, aby zacząć."
+    "noServices": "Nie monitorujesz jeszcze żadnych usług. Dodaj pierwszą, aby zacząć.",
+    "addMonitor": "Dodaj monitor"
   },
   "services": {
     "monitoring": "Monitorowane",

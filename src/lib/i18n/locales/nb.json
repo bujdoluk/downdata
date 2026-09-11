@@ -349,7 +349,6 @@
   "boards": {
     "title": "Tavler",
     "subtitle": "Grupper dine sporede tjenester i tavler for ulike team.",
-    "searchPlaceholder": "Søk etter tavler…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Legg til tavle",
     "allBoards": "Alle tavler",
@@ -357,7 +356,7 @@
     "createSubmit": "Opprett",
     "clearName": "Tøm",
     "empty": "Ingen tavler ennå. Opprett en for å begynne å gruppere tjenester.",
-    "noMatches": "Ingen tavler funnet.",
+    "duplicateNameWarning": "Du har allerede en tavle som heter «{{name}}».",
     "delete": "Slett",
     "deleting": "Sletter…",
     "deleteConfirmTitle": "Slette tavlen?",
@@ -551,7 +550,8 @@
   },
   "monitors": {
     "myServices": "Overvåking",
-    "noServices": "Ingen tjenester overvåkes ennå. Legg til en for å komme i gang."
+    "noServices": "Ingen tjenester overvåkes ennå. Legg til en for å komme i gang.",
+    "addMonitor": "Legg til overvåking"
   },
   "services": {
     "monitoring": "Overvåkes",

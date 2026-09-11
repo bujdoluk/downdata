@@ -349,7 +349,6 @@
   "boards": {
     "title": "Tavlor",
     "subtitle": "Gruppera dina spårade tjänster i tavlor för olika team.",
-    "searchPlaceholder": "Sök tavlor…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Lägg till tavla",
     "allBoards": "Alla tavlor",
@@ -357,7 +356,7 @@
     "createSubmit": "Skapa",
     "clearName": "Rensa",
     "empty": "Inga tavlor ännu. Skapa en för att börja gruppera tjänster.",
-    "noMatches": "Inga tavlor hittades.",
+    "duplicateNameWarning": "Du har redan en tavla som heter \"{{name}}\".",
     "delete": "Ta bort",
     "deleting": "Tar bort…",
     "deleteConfirmTitle": "Ta bort tavlan?",
@@ -551,7 +550,8 @@
   },
   "monitors": {
     "myServices": "Övervakning",
-    "noServices": "Inga tjänster övervakas ännu. Lägg till en för att komma igång."
+    "noServices": "Inga tjänster övervakas ännu. Lägg till en för att komma igång.",
+    "addMonitor": "Lägg till övervakning"
   },
   "services": {
     "monitoring": "Övervakas",

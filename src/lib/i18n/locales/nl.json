@@ -349,7 +349,6 @@
   "boards": {
     "title": "Borden",
     "subtitle": "Groepeer je gevolgde diensten in borden voor verschillende teams.",
-    "searchPlaceholder": "Borden zoeken…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Bord toevoegen",
     "allBoards": "Alle borden",
@@ -357,7 +356,7 @@
     "createSubmit": "Aanmaken",
     "clearName": "Wissen",
     "empty": "Nog geen borden. Maak er een om diensten te groeperen.",
-    "noMatches": "Geen borden gevonden.",
+    "duplicateNameWarning": "Je hebt al een bord met de naam \"{{name}}\".",
     "delete": "Verwijderen",
     "deleting": "Verwijderen…",
     "deleteConfirmTitle": "Bord verwijderen?",
@@ -551,7 +550,8 @@
   },
   "monitors": {
     "myServices": "Monitoren",
-    "noServices": "Er worden nog geen diensten gevolgd. Voeg er een toe om te beginnen."
+    "noServices": "Er worden nog geen diensten gevolgd. Voeg er een toe om te beginnen.",
+    "addMonitor": "Monitor toevoegen"
   },
   "services": {
     "monitoring": "Gemonitord",

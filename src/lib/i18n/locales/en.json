@@ -349,7 +349,6 @@
   "boards": {
     "title": "Boards",
     "subtitle": "Group your tracked services into boards for different teams.",
-    "searchPlaceholder": "Search boards…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Add board",
     "allBoards": "All boards",
@@ -357,7 +356,7 @@
     "createSubmit": "Create",
     "clearName": "Clear",
     "empty": "No boards yet. Create one to start grouping services.",
-    "noMatches": "No boards found.",
+    "duplicateNameWarning": "You already have a board named \"{{name}}\".",
     "delete": "Delete",
     "deleting": "Deleting…",
     "deleteConfirmTitle": "Delete board?",
@@ -551,7 +550,8 @@
   },
   "monitors": {
     "myServices": "Monitors",
-    "noServices": "No services being monitored yet. Add one to get started."
+    "noServices": "No services being monitored yet. Add one to get started.",
+    "addMonitor": "Add monitor"
   },
   "services": {
     "monitoring": "Monitoring",
@@ -585,6 +585,8 @@
       "invalidCredentials": "Incorrect email or password.",
       "emailInUse": "An account with that email already exists.",
       "weakPassword": "Password must be at least 6 characters.",
+      "passwordMismatch": "Passwords don't match.",
+      "linkExpired": "This reset link has expired. Request a new one.",
       "generic": "Something went wrong. Please try again."
     }
   },
@@ -592,6 +594,7 @@
     "title": "Set a new password",
     "subtitle": "Choose a new password for your account.",
     "passwordLabel": "New password",
+    "confirmPasswordLabel": "Confirm new password",
     "submit": "Update password",
     "success": "Password updated. Redirecting…"
   },

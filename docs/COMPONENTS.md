@@ -1275,6 +1275,7 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | dialogRef | RefObject<HTMLDialogElement \| null> | Yes | — |  |
+| existingNames | string[] | Yes | — |  |
 | onCreated | (board: Board) => void | Yes | — |  |
 | onCancel | () => void | Yes | — |  |
 
@@ -1285,6 +1286,7 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | dialogRef | RefObject<HTMLDialogElement \| null> | Yes | — |  |
+| boards | Board[] | Yes | — |  |
 | onCreated | (board: Board) => void | Yes | — |  |
 
 ### AddKeywordForm
@@ -1529,6 +1531,14 @@ _No props._
 |---|---|---|---|---|
 | boards | Board[] | Yes | — |  |
 
+### AddServiceButton
+
+`src/features/monitors/components/AddServiceButton.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| boardId | string \| undefined | No | — |  |
+
 ### CatalogBrowser
 
 `src/features/monitors/components/CatalogBrowser.tsx`
@@ -1539,7 +1549,7 @@ _No props._
 | trackedHosts | string[] | Yes | — |  |
 | data | Partial<Record<string, ServiceStatusEntry>> \| null \| undefined | No | null |  |
 | fetchFailed | boolean \| undefined | No | false |  |
-| pendingHost | string \| null \| undefined | No | — |  |
+| pendingHosts | Set<string> \| undefined | No | — |  |
 | addedHosts | Set<string> \| undefined | No | — |  |
 | onAdd | ((entry: Catalog) => void) \| undefined | No | — |  |
 | query | string | Yes | — |  |
@@ -1574,13 +1584,26 @@ _No props._
 | trackedHosts | string[] | Yes | — |  |
 | data | Partial<Record<string, ServiceStatusEntry>> \| null \| undefined | No | null |  |
 | fetchFailed | boolean \| undefined | No | false |  |
-| pendingHost | string \| null \| undefined | No | — |  |
+| pendingHosts | Set<string> \| undefined | No | — |  |
 | addedHosts | Set<string> \| undefined | No | — |  |
 | onAdd | ((entry: Catalog) => void) \| undefined | No | — |  |
-| removingSlug | string \| null \| undefined | No | — |  |
+| removingSlugs | Set<string> \| undefined | No | — |  |
 | onRemove | ((entry: Catalog) => void) \| undefined | No | — |  |
 | isFullWidth | boolean \| undefined | No | false |  |
 | isElevatedBg | boolean \| undefined | No | false |  |
+
+### MonitorsBoardSection
+
+`src/features/monitors/components/MonitorsBoardSection.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| board | Board | Yes | — |  |
+| entries | Catalog[] | Yes | — |  |
+| data | Partial<Record<string, ServiceStatusEntry>> \| undefined | Yes | — |  |
+| fetchFailed | boolean | Yes | — |  |
+| removingSlugs | Set<string> | Yes | — |  |
+| onRemove | (entry: Catalog) => void | Yes | — |  |
 
 ### MonitorsPageContent
 
@@ -1591,6 +1614,14 @@ _No props._
 | catalog | Catalog[] | Yes | — |  |
 | trackedSlugs | string[] | Yes | — |  |
 | boards | Board[] | Yes | — |  |
+
+### NoServicesMessage
+
+`src/features/monitors/components/NoServicesMessage.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| board | Board \| undefined | No | — |  |
 
 ### OutageTracker
 
@@ -1639,6 +1670,7 @@ _No props._
 | catalog | Catalog[] | Yes | — |  |
 | boards | Board[] | Yes | — |  |
 | initialBoardId | string \| undefined | No | — |  |
+| backHref | string | Yes | — |  |
 
 ### ServiceDetail
 

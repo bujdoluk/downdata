@@ -9,6 +9,7 @@ import ModalFormFooter from "@/components/ModalFormFooter";
 
 export default function CreateBoardForm({
   dialogRef,
+  existingNames,
   onCreated,
   onCancel,
 }: {
@@ -16,11 +17,20 @@ export default function CreateBoardForm({
   // dialog's own open/close calls stay owned by CreateBoardModal, not this
   // form.
   dialogRef: RefObject<HTMLDialogElement | null>;
+  // Board switching elsewhere (BoardSelect's dropdown, /boards) is
+  // name-driven, so two boards sharing a name become genuinely hard to
+  // tell apart later. This is advisory, not a hard uniqueness constraint —
+  // the DB doesn't enforce one, and a real duplicate (two clients both
+  // wanting "Production") is legitimate, so submission still goes through.
+  existingNames: string[];
   onCreated: (board: Board) => void;
   onCancel: () => void;
 }) {
   const { t } = useTranslation();
   const [name, setName] = useState("");
+  const trimmedName = name.trim();
+  const isDuplicate =
+    trimmedName.length > 0 && existingNames.some((existing) => existing.trim().toLowerCase() === trimmedName.toLowerCase());
 
   // The dialog stays mounted between opens (see the input's own autoFocus
   // comment below), so without this, canceling via Escape or a backdrop
@@ -37,11 +47,11 @@ export default function CreateBoardForm({
   }, [dialogRef]);
 
   const createMutation = useMutation({
-    mutationFn: async (trimmedName: string) => {
+    mutationFn: async (boardName: string) => {
       const res = await fetch("/api/boards", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: trimmedName }),
+        body: JSON.stringify({ name: boardName }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? t("addService.somethingWrong"));
@@ -55,9 +65,8 @@ export default function CreateBoardForm({
 
   function handleCreate(e: React.FormEvent) {
     e.preventDefault();
-    const trimmed = name.trim();
-    if (!trimmed) return;
-    createMutation.mutate(trimmed);
+    if (!trimmedName) return;
+    createMutation.mutate(trimmedName);
   }
 
   return (
@@ -74,7 +83,13 @@ export default function CreateBoardForm({
         // shown/hidden — see the sibling comment in SmsConnectForm.
         autoFocus
       />
-      {createMutation.isError && <p className="text-error mt-2 text-xs">{createMutation.error.message}</p>}
+      {createMutation.isError ? (
+        <p className="text-error mt-2 text-xs">{createMutation.error.message}</p>
+      ) : (
+        isDuplicate && (
+          <p className="text-warning mt-2 text-xs">{t("boards.duplicateNameWarning", { name: trimmedName })}</p>
+        )
+      )}
       <ModalFormFooter
         onCancel={onCancel}
         cancelLabel={t("boards.cancel")}

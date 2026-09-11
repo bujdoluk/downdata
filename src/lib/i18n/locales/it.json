@@ -349,7 +349,6 @@
   "boards": {
     "title": "Bacheche",
     "subtitle": "Raggruppa i servizi monitorati in bacheche per team diversi.",
-    "searchPlaceholder": "Cerca bacheche…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Aggiungi bacheca",
     "allBoards": "Tutte le bacheche",
@@ -357,7 +356,7 @@
     "createSubmit": "Crea",
     "clearName": "Cancella",
     "empty": "Nessuna bacheca ancora. Creane una per iniziare a raggruppare i servizi.",
-    "noMatches": "Nessuna bacheca trovata.",
+    "duplicateNameWarning": "Hai già una bacheca chiamata «{{name}}».",
     "delete": "Elimina",
     "deleting": "Eliminazione…",
     "deleteConfirmTitle": "Eliminare la bacheca?",
@@ -551,7 +550,8 @@
   },
   "monitors": {
     "myServices": "Monitor",
-    "noServices": "Non stai ancora monitorando nessun servizio. Aggiungine uno per iniziare."
+    "noServices": "Non stai ancora monitorando nessun servizio. Aggiungine uno per iniziare.",
+    "addMonitor": "Aggiungi monitor"
   },
   "services": {
     "monitoring": "In monitoraggio",

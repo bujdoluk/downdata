@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
+import { EyeIcon, EyeSlashIcon } from "@/components/icons/NavIcons";
 import { AuthActionError, updatePassword } from "@/lib/supabase/auth";
 import { createClient } from "@/lib/supabase/client";
 import Spinner from "@/components/Spinner";
@@ -13,6 +14,8 @@ export default function ResetPasswordForm() {
   const router = useRouter();
   const [supabase] = useState(() => createClient());
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -20,6 +23,12 @@ export default function ResetPasswordForm() {
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     setError(null);
+
+    if (password !== confirmPassword) {
+      setError(t("auth.errors.passwordMismatch"));
+      return;
+    }
+
     setSubmitting(true);
     try {
       await updatePassword(supabase, password);
@@ -48,11 +57,34 @@ export default function ResetPasswordForm() {
             <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3">
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">{t("resetPassword.passwordLabel")}</legend>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="input input-bordered w-full pr-10"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    autoComplete="new-password"
+                    minLength={6}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="text-base-content/50 hover:text-base-content absolute inset-y-0 right-2 flex items-center"
+                    aria-label={showPassword ? t("auth.hidePassword") : t("auth.showPassword")}
+                    onClick={() => setShowPassword((value) => !value)}
+                  >
+                    {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
+                  </button>
+                </div>
+              </fieldset>
+
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">{t("resetPassword.confirmPasswordLabel")}</legend>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   className="input input-bordered w-full"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
+                  value={confirmPassword}
+                  onChange={(event) => setConfirmPassword(event.target.value)}
                   autoComplete="new-password"
                   minLength={6}
                   required

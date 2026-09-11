@@ -359,7 +359,6 @@
   "boards": {
     "title": "Nástenky",
     "subtitle": "Zoskupte svoje sledované služby do nástenok pre rôzne tímy.",
-    "searchPlaceholder": "Hľadať nástenky…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Pridať nástenku",
     "allBoards": "Všetky nástenky",
@@ -367,7 +366,7 @@
     "createSubmit": "Vytvoriť",
     "clearName": "Vymazať",
     "empty": "Zatiaľ žiadne nástenky. Vytvorte jednu a začnite zoskupovať služby.",
-    "noMatches": "Nenašli sa žiadne nástenky.",
+    "duplicateNameWarning": "Nástenku s názvom „{{name}}“ už máte.",
     "delete": "Odstrániť",
     "deleting": "Odstraňovanie…",
     "deleteConfirmTitle": "Odstrániť nástenku?",
@@ -564,7 +563,8 @@
   },
   "monitors": {
     "myServices": "Monitory",
-    "noServices": "Zatiaľ nesledujete žiadne služby. Pridajte prvú a začnite."
+    "noServices": "Zatiaľ nesledujete žiadne služby. Pridajte prvú a začnite.",
+    "addMonitor": "Pridať monitor"
   },
   "services": {
     "monitoring": "Sledované",

@@ -5,6 +5,7 @@ export { default as AddServiceButton } from "./components/AddServiceButton";
 export { default as CatalogBrowser } from "./components/CatalogBrowser";
 export { default as CatalogServiceCard } from "./components/CatalogServiceCard";
 export { default as CatalogServiceGrid } from "./components/CatalogServiceGrid";
+export { default as MonitorsBoardSection } from "./components/MonitorsBoardSection";
 export { default as MonitorsPageContent } from "./components/MonitorsPageContent";
 export { default as NoServicesMessage } from "./components/NoServicesMessage";
 export { default as OutageTracker } from "./components/OutageTracker";

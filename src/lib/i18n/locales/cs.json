@@ -359,7 +359,6 @@
   "boards": {
     "title": "Nástěnky",
     "subtitle": "Seskupte své sledované služby do nástěnek pro různé týmy.",
-    "searchPlaceholder": "Hledat nástěnky…",
     "namePlaceholder": "DevOps, Backend, Frontend…",
     "addBoard": "Přidat nástěnku",
     "allBoards": "Všechny nástěnky",
@@ -367,7 +366,7 @@
     "createSubmit": "Vytvořit",
     "clearName": "Vymazat",
     "empty": "Zatím žádné nástěnky. Vytvořte jednu a začněte seskupovat služby.",
-    "noMatches": "Nenalezeny žádné nástěnky.",
+    "duplicateNameWarning": "Nástěnku s názvem „{{name}}“ už máte.",
     "delete": "Smazat",
     "deleting": "Mazání…",
     "deleteConfirmTitle": "Smazat nástěnku?",
@@ -564,7 +563,8 @@
   },
   "monitors": {
     "myServices": "Monitory",
-    "noServices": "Zatím nesledujete žádné služby. Přidejte první a začněte."
+    "noServices": "Zatím nesledujete žádné služby. Přidejte první a začněte.",
+    "addMonitor": "Přidat monitor"
   },
   "services": {
     "monitoring": "Sledováno",

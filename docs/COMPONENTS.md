@@ -1439,6 +1439,7 @@ _No props._
 |---|---|---|---|---|
 | catalog | { slug: string; name: string; }[] | Yes | — |  |
 | integrations | IntegrationDefinition[] | Yes | — |  |
+| embedBoards | { boardId: string; boardName: string; slug: string; }[] | Yes | — |  |
 
 ### SlackLogo
 
@@ -1728,6 +1729,14 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | boardId | string | Yes | — |  |
+
+### EmbedConfigurator
+
+`src/features/status-pages/components/EmbedConfigurator.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| boards | { boardId: string; boardName: string; slug: string; }[] | Yes | — |  |
 
 ### PublicStatusPageContent
 

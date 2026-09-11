@@ -200,6 +200,31 @@
     "requestCard": {
       "title": "Hittar du inte din integration?",
       "button": "Begär integration"
+    },
+    "embeds": {
+      "tabIntegrations": "Integrationer",
+      "tabEmbeds": "Embeds",
+      "empty": "Embeds behöver först en tavla med en offentlig statussida.",
+      "emptyCta": "Skapa en statussida",
+      "board": "Tavla",
+      "variant": "Typ",
+      "variantStatus": "Status",
+      "variantUptime": "Drifttid",
+      "theme": "Tema",
+      "themeLight": "Ljust",
+      "themeDark": "Mörkt",
+      "size": "Storlek",
+      "sizeSmall": "Liten",
+      "sizeMedium": "Medium",
+      "sizeLarge": "Stor",
+      "layout": "Layout",
+      "layoutFlat": "Platt",
+      "layoutCard": "Kort",
+      "preview": "Förhandsgranskning",
+      "explanationTitle": "Vad är en embed?",
+      "explanationBody": "En embed är en liten live-bild som visar den offentliga statusen för en av dina tavlor. Klistra in den i en README, en dokumentationssida eller en intern instrumentpanel, så visar den alltid aktuell status utan att någon behöver besöka den här appen.",
+      "codeSampleTitle": "Inbäddningskod",
+      "altText": "Statusmärke"
     }
   },
   "statusPages": {

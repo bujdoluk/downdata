@@ -22,10 +22,10 @@ export default function CatalogServiceGrid({
   trackedHosts,
   data = null,
   fetchFailed = false,
-  pendingHost,
+  pendingHosts,
   addedHosts,
   onAdd,
-  removingSlug,
+  removingSlugs,
   onRemove,
   isFullWidth = false,
   isElevatedBg = false,
@@ -34,10 +34,10 @@ export default function CatalogServiceGrid({
   trackedHosts: string[];
   data?: ServiceStatusBatchResponse | null;
   fetchFailed?: boolean;
-  pendingHost?: string | null;
+  pendingHosts?: Set<string>;
   addedHosts?: Set<string>;
   onAdd?: (entry: Catalog) => void;
-  removingSlug?: string | null;
+  removingSlugs?: Set<string>;
   onRemove?: (entry: Catalog) => void;
   isFullWidth?: boolean;
   isElevatedBg?: boolean;
@@ -69,7 +69,7 @@ export default function CatalogServiceGrid({
             addState={
               onAdd
                 ? {
-                    isPending: pendingHost === entry.host,
+                    isPending: pendingHosts?.has(entry.host) ?? false,
                     isAdded: addedHosts?.has(entry.host) ?? false,
                     onAdd: () => onAdd(entry),
                   }
@@ -78,7 +78,7 @@ export default function CatalogServiceGrid({
             removable={
               onRemove
                 ? {
-                    removing: removingSlug === entry.slug,
+                    removing: removingSlugs?.has(entry.slug) ?? false,
                     onRemove: () => onRemove(entry),
                   }
                 : undefined

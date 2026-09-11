@@ -1,5 +1,6 @@
 import { Temporal } from "temporal-polyfill";
 import { getSupabaseClient } from "@/lib/supabase";
+import { OUTAGE_IMPACTS } from "@/lib/uptime";
 import type { Slug, ServiceStatusBatchResponse } from "@/types/service";
 
 // One batched DB read instead of N live incidents.json fetches — the
@@ -11,7 +12,15 @@ async function fetchOutagesLast24h(slugs: Slug[]): Promise<Record<string, number
   if (slugs.length === 0) return {};
   const supabase = getSupabaseClient();
   const cutoff = Temporal.Now.instant().subtract({ hours: 24 }).toString();
-  const { data } = await supabase.from("incidents").select("service_slug").in("service_slug", slugs).gte("created_at", cutoff);
+  // Only major/critical count as an "official" outage — matches uptime.ts's
+  // OUTAGE_IMPACTS, so this count agrees with what the service's own detail
+  // page reports as downtime (a minor incident isn't an "outage").
+  const { data } = await supabase
+    .from("incidents")
+    .select("service_slug")
+    .in("service_slug", slugs)
+    .in("impact", Array.from(OUTAGE_IMPACTS))
+    .gte("created_at", cutoff);
 
   const counts: Record<string, number> = {};
   for (const row of data ?? []) counts[row.service_slug] = (counts[row.service_slug] ?? 0) + 1;

@@ -146,9 +146,17 @@ async function computeReportPayload(
   periodStart: Temporal.PlainDate,
   periodEnd: Temporal.PlainDate,
   catalogBySlug: Map<string, Catalog>,
+  timeZone: string,
 ): Promise<ReportPayload> {
-  const windowStartIso = `${periodStart.toString()}T00:00:00.000Z`;
-  const windowEndIso = `${periodEnd.toString()}T23:59:59.999Z`;
+  // periodStart/periodEnd are calendar dates already computed in the
+  // account's own timeZone (see completedPeriodEnding's callers) — the
+  // window boundaries have to stay in that same timeZone too, or a
+  // non-UTC account's period silently shifts by its UTC offset (an
+  // incident near local midnight lands in the wrong period).
+  const windowStart = periodStart.toZonedDateTime({ timeZone, plainTime: "00:00:00" });
+  const windowEndExclusive = periodEnd.add({ days: 1 }).toZonedDateTime({ timeZone, plainTime: "00:00:00" });
+  const windowStartIso = windowStart.toInstant().toString();
+  const windowEndIso = windowEndExclusive.toInstant().subtract({ milliseconds: 1 }).toString();
   const windowStartMs = epochMs(windowStartIso);
   const windowEndMs = epochMs(windowEndIso);
 
@@ -401,7 +409,7 @@ export async function sendTestReportEmail(): Promise<{ sent: boolean; retryAfter
   } else {
     const catalog = await getCatalog();
     const catalogBySlug = new Map(catalog.map((entry) => [entry.slug, entry]));
-    payload = await computeReportPayload(userData.user.id, includedBoards, period.start, period.end, catalogBySlug);
+    payload = await computeReportPayload(userData.user.id, includedBoards, period.start, period.end, catalogBySlug, timeZone);
     isPlaceholder = false;
   }
 
@@ -441,8 +449,14 @@ export async function generateDueReports(): Promise<{ generated: number; emailsS
     getAllIntegrationsAcrossUsers(),
     supabase.from("report_settings").select("user_id, report_interval, excluded_board_ids, email_nudge_enabled, time_zone, reported_intervals"),
   ]);
+  // A failed read must not fall every account back to the hardcoded
+  // defaults below (weekly/UTC/nudges-on) — that would silently override a
+  // real per-account choice for this whole cron tick. Throw so the caller's
+  // catch logs it and skips marking last_success_at, instead of masking it
+  // as "no rows".
+  if (settingsRowsResult.error) throw settingsRowsResult.error;
   const catalogBySlug = new Map(catalog.map((entry) => [entry.slug, entry]));
-  const settingsByUser = new Map(((settingsRowsResult.data as SettingsRow[] | null) ?? []).map((row) => [row.user_id, row]));
+  const settingsByUser = new Map((settingsRowsResult.data as SettingsRow[]).map((row) => [row.user_id, row]));
 
   // Verified email recipients per account, reused from the one
   // cross-account integrations fetch above — same "one fetch for the whole
@@ -490,7 +504,7 @@ export async function generateDueReports(): Promise<{ generated: number; emailsS
         .maybeSingle();
       if (existingPeriod) return;
 
-      const payload = await computeReportPayload(userId, includedBoards, period.start, period.end, catalogBySlug);
+      const payload = await computeReportPayload(userId, includedBoards, period.start, period.end, catalogBySlug, timeZone);
       const { error: insertError } = await supabase
         .from("reports")
         .insert({ user_id: userId, report_interval: interval, period_start: period.start.toString(), period_end: period.end.toString(), payload });

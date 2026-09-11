@@ -65,6 +65,14 @@ const PUBLIC_PREFIXES = [
   "/services/",
   "/api/summary/",
   "/api/status/",
+  // The embeddable status/uptime badge (see features/status-pages/
+  // services/badge.ts) — same public-data class as the rest of this
+  // list: it only ever renders a board that already has enabled = true
+  // on its public status page, the same authorization
+  // GET /api/public/status/[slug] already relies on. Must stay public —
+  // it's fetched by an <img> tag on someone else's README/site, which
+  // carries no session cookie for this app at all.
+  "/api/badge/",
 ];
 
 function isPublicPath(pathname: string): boolean {

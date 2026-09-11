@@ -200,6 +200,31 @@
     "requestCard": {
       "title": "Vous ne trouvez pas votre intégration ?",
       "button": "Demander une intégration"
+    },
+    "embeds": {
+      "tabIntegrations": "Intégrations",
+      "tabEmbeds": "Embeds",
+      "empty": "Les embeds ont d'abord besoin d'un tableau avec une page de statut publique.",
+      "emptyCta": "Configurer une page de statut",
+      "board": "Tableau",
+      "variant": "Type",
+      "variantStatus": "Statut",
+      "variantUptime": "Disponibilité",
+      "theme": "Thème",
+      "themeLight": "Clair",
+      "themeDark": "Sombre",
+      "size": "Taille",
+      "sizeSmall": "Petit",
+      "sizeMedium": "Moyen",
+      "sizeLarge": "Grand",
+      "layout": "Mise en page",
+      "layoutFlat": "Plat",
+      "layoutCard": "Carte",
+      "preview": "Aperçu",
+      "explanationTitle": "Qu'est-ce qu'un embed ?",
+      "explanationBody": "Un embed est une petite image en direct affichant le statut public de l'un de vos tableaux. Collez-le dans un README, un site de documentation ou un tableau de bord interne : il affichera toujours le statut actuel, sans que personne n'ait besoin de visiter cette application.",
+      "codeSampleTitle": "Code à intégrer",
+      "altText": "Badge de statut"
     }
   },
   "statusPages": {

@@ -206,6 +206,31 @@
     "requestCard": {
       "title": "Nie widzisz swojej integracji?",
       "button": "Poproś o integrację"
+    },
+    "embeds": {
+      "tabIntegrations": "Integracje",
+      "tabEmbeds": "Embedy",
+      "empty": "Embedy wymagają najpierw tablicy z publiczną stroną statusu.",
+      "emptyCta": "Skonfiguruj stronę statusu",
+      "board": "Tablica",
+      "variant": "Typ",
+      "variantStatus": "Status",
+      "variantUptime": "Dostępność",
+      "theme": "Motyw",
+      "themeLight": "Jasny",
+      "themeDark": "Ciemny",
+      "size": "Rozmiar",
+      "sizeSmall": "Mały",
+      "sizeMedium": "Średni",
+      "sizeLarge": "Duży",
+      "layout": "Układ",
+      "layoutFlat": "Płaski",
+      "layoutCard": "Karta",
+      "preview": "Podgląd",
+      "explanationTitle": "Czym jest embed?",
+      "explanationBody": "Embed to mały, aktualny na żywo obrazek pokazujący publiczny status jednej z Twoich tablic. Wklej go do README, dokumentacji lub wewnętrznego dashboardu, a zawsze będzie pokazywał bieżący status, bez potrzeby odwiedzania tej aplikacji.",
+      "codeSampleTitle": "Kod do osadzenia",
+      "altText": "Odznaka statusu"
     }
   },
   "statusPages": {

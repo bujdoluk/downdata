@@ -200,6 +200,31 @@
     "requestCard": {
       "title": "Non trovi la tua integrazione?",
       "button": "Richiedi integrazione"
+    },
+    "embeds": {
+      "tabIntegrations": "Integrazioni",
+      "tabEmbeds": "Embed",
+      "empty": "Gli embed richiedono prima una bacheca con una pagina di stato pubblica.",
+      "emptyCta": "Configura una pagina di stato",
+      "board": "Bacheca",
+      "variant": "Tipo",
+      "variantStatus": "Stato",
+      "variantUptime": "Uptime",
+      "theme": "Tema",
+      "themeLight": "Chiaro",
+      "themeDark": "Scuro",
+      "size": "Dimensione",
+      "sizeSmall": "Piccola",
+      "sizeMedium": "Media",
+      "sizeLarge": "Grande",
+      "layout": "Layout",
+      "layoutFlat": "Piatto",
+      "layoutCard": "Scheda",
+      "preview": "Anteprima",
+      "explanationTitle": "Cos'è un embed?",
+      "explanationBody": "Un embed è una piccola immagine live che mostra lo stato pubblico di una delle tue bacheche. Incollalo in un README, un sito di documentazione o una dashboard interna: mostrerà sempre lo stato attuale, senza che nessuno debba visitare questa app.",
+      "codeSampleTitle": "Codice da incorporare",
+      "altText": "Badge di stato"
     }
   },
   "statusPages": {

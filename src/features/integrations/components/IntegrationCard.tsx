@@ -43,7 +43,7 @@ export default function IntegrationCard({
   useCloseDetailsOnOutsideClick(menuRef);
 
   return (
-    <div className="card card-border bg-base-200 hover:border-base-content/20 relative flex w-full min-w-0 flex-col shadow-md transition-colors lg:max-w-[370px]">
+    <div className="card card-border bg-base-100 hover:border-base-content/20 relative flex w-full min-w-0 flex-col shadow-md transition-colors lg:max-w-[370px]">
       {removable && (
         <div className="absolute top-2 right-2 z-10">
           <details ref={menuRef} className="dropdown dropdown-end">

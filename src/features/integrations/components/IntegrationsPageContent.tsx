@@ -13,7 +13,13 @@ import SmsLogo from "@/features/integrations/components/SmsLogo";
 import WebhookLogo from "@/features/integrations/components/WebhookLogo";
 import RequestCard from "@/components/RequestCard";
 import ModalCloseButton from "@/components/ModalCloseButton";
+// Imported directly, not via features/status-pages' barrel — that barrel
+// also re-exports its server-only services/statusPages.ts (next/headers,
+// createClient), and this file is a Client Component, so pulling it in
+// through the barrel drags server-only code into the client bundle.
+import EmbedConfigurator from "@/features/status-pages/components/EmbedConfigurator";
 import { postJson } from "@/lib/fetchJson";
+import { TAB_BG_STYLE } from "@/lib/utils";
 // Static, not dynamic() — each was its own lazy chunk, and the very first
 // time a given modal opened, showModal() (called synchronously in the
 // click handler) ran its native focusing steps before that chunk had
@@ -43,14 +49,24 @@ const CONNECT_HREFS: Record<string, string> = {
 export default function IntegrationsPageContent({
   catalog,
   integrations,
+  embedBoards,
 }: {
   catalog: { slug: string; name: string }[];
   integrations: IntegrationDefinition[];
+  // Boards with an enabled public status page — the "Embeds" tab's board
+  // picker. Fetched here (features/status-pages' own getAllEnabledStatusPages)
+  // rather than inside EmbedConfigurator itself, same reasoning every other
+  // Server Component page in this app fetches its own data: no client
+  // round trip needed for something that's already known at request time.
+  embedBoards: { boardId: string; boardName: string; slug: string }[];
 }) {
   const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [removingSlug, setRemovingSlug] = useState<string | null>(null);
+  // A Set, not a single slug — several integration cards can each have
+  // their own disconnect in flight; a single shared value got clobbered by
+  // a second disconnect click before the first request settled.
+  const [removingSlugs, setRemovingSlugs] = useState<Set<string>>(new Set());
   const hasError = searchParams.get("error") !== null;
   const verified = searchParams.get("verified");
   const emailDialogRef = useRef<HTMLDialogElement>(null);
@@ -63,14 +79,22 @@ export default function IntegrationsPageContent({
 
   const disconnectMutation = useMutation({
     mutationFn: (slug: string) => fetch(`/api/integrations/${slug}`, { method: "DELETE" }),
-    onSettled: () => setRemovingSlug(null),
+    // `slug` here is this specific call's own variable — only clear that
+    // one integration's pending state, not whichever disconnect happened
+    // to be in flight when this one settled.
+    onSettled: (_data, _error, slug) =>
+      setRemovingSlugs((prev) => {
+        const next = new Set(prev);
+        next.delete(slug);
+        return next;
+      }),
     onSuccess: (res) => {
       if (res.ok) router.refresh();
     },
   });
 
   function handleDisconnect(slug: string) {
-    setRemovingSlug(slug);
+    setRemovingSlugs((prev) => new Set(prev).add(slug));
     disconnectMutation.mutate(slug);
   }
 
@@ -169,27 +193,41 @@ export default function IntegrationsPageContent({
       {verified === "1" && <p className="alert alert-success alert-soft mt-4 text-sm">{t("integrations.recipientVerified")}</p>}
       {verified === "0" && <p className="alert alert-error alert-soft mt-4 text-sm">{t("integrations.verifyLinkInvalid")}</p>}
 
-      <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] gap-4">
-        {catalog.map((entry) => {
-          const integration = integrations.find((i) => i.slug === entry.slug);
-          const Logo = INTEGRATION_LOGOS[entry.slug];
-          const dialogRef = dialogRefs[entry.slug];
-          return (
-            <IntegrationCard
-              key={entry.slug}
-              name={entry.name}
-              logo={Logo ? <Logo size={28} /> : null}
-              connected={!!integration}
-              connectHref={CONNECT_HREFS[entry.slug]}
-              onConnectClick={dialogRef ? () => dialogRef.current?.showModal() : undefined}
-              removable={integration ? { isRemoving: removingSlug === entry.slug, onRemove: () => handleDisconnect(entry.slug) } : undefined}
-            />
-          );
-        })}
-      </div>
+      {/* Radio-input tabs: selection is pure CSS (:checked + sibling
+          selector), same idiom as add-service's own category tabs — both
+          panels stay mounted, no React state needed to switch between
+          them. */}
+      <div role="tablist" className="tabs tabs-lift mt-4">
+        <input type="radio" name="integrationsTabs" className="tab" aria-label={t("integrations.embeds.tabIntegrations")} style={TAB_BG_STYLE} defaultChecked />
+        <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] gap-4">
+            {catalog.map((entry) => {
+              const integration = integrations.find((i) => i.slug === entry.slug);
+              const Logo = INTEGRATION_LOGOS[entry.slug];
+              const dialogRef = dialogRefs[entry.slug];
+              return (
+                <IntegrationCard
+                  key={entry.slug}
+                  name={entry.name}
+                  logo={Logo ? <Logo size={28} /> : null}
+                  connected={!!integration}
+                  connectHref={CONNECT_HREFS[entry.slug]}
+                  onConnectClick={dialogRef ? () => dialogRef.current?.showModal() : undefined}
+                  removable={integration ? { isRemoving: removingSlugs.has(entry.slug), onRemove: () => handleDisconnect(entry.slug) } : undefined}
+                />
+              );
+            })}
+          </div>
 
-      <div className="mt-6 flex justify-end">
-        <RequestCard title={t("integrations.requestCard.title")} buttonLabel={t("integrations.requestCard.button")} kind="integration" />
+          <div className="mt-6 flex justify-end">
+            <RequestCard title={t("integrations.requestCard.title")} buttonLabel={t("integrations.requestCard.button")} kind="integration" />
+          </div>
+        </div>
+
+        <input type="radio" name="integrationsTabs" className="tab" aria-label={t("integrations.embeds.tabEmbeds")} style={TAB_BG_STYLE} />
+        <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
+          <EmbedConfigurator boards={embedBoards} />
+        </div>
       </div>
 
       {/* Every non-Slack integration's connect surface is its own modal —

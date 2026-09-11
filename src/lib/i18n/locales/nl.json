@@ -200,6 +200,31 @@
     "requestCard": {
       "title": "Vind je jouw integratie niet?",
       "button": "Integratie aanvragen"
+    },
+    "embeds": {
+      "tabIntegrations": "Integraties",
+      "tabEmbeds": "Embeds",
+      "empty": "Embeds hebben eerst een bord met een openbare statuspagina nodig.",
+      "emptyCta": "Een statuspagina instellen",
+      "board": "Bord",
+      "variant": "Type",
+      "variantStatus": "Status",
+      "variantUptime": "Uptime",
+      "theme": "Thema",
+      "themeLight": "Licht",
+      "themeDark": "Donker",
+      "size": "Grootte",
+      "sizeSmall": "Klein",
+      "sizeMedium": "Middel",
+      "sizeLarge": "Groot",
+      "layout": "Layout",
+      "layoutFlat": "Plat",
+      "layoutCard": "Kaart",
+      "preview": "Voorbeeld",
+      "explanationTitle": "Wat is een embed?",
+      "explanationBody": "Een embed is een kleine live afbeelding die de openbare status van een van je borden toont. Plak het in een README, documentatiesite of intern dashboard, en het toont altijd de actuele status zonder dat iemand deze app hoeft te bezoeken.",
+      "codeSampleTitle": "Embedcode",
+      "altText": "Statusbadge"
     }
   },
   "statusPages": {

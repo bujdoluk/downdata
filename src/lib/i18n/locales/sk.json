@@ -204,6 +204,31 @@
     "requestCard": {
       "title": "Nenašli ste svoju integráciu?",
       "button": "Vyžiadať integráciu"
+    },
+    "embeds": {
+      "tabIntegrations": "Integrácie",
+      "tabEmbeds": "Embedy",
+      "empty": "Embedy potrebujú najprv nástenku s verejnou stránkou stavu.",
+      "emptyCta": "Nastaviť stránku stavu",
+      "board": "Nástenka",
+      "variant": "Typ",
+      "variantStatus": "Stav",
+      "variantUptime": "Dostupnosť",
+      "theme": "Motív",
+      "themeLight": "Svetlý",
+      "themeDark": "Tmavý",
+      "size": "Veľkosť",
+      "sizeSmall": "Malá",
+      "sizeMedium": "Stredná",
+      "sizeLarge": "Veľká",
+      "layout": "Rozloženie",
+      "layoutFlat": "Plochá",
+      "layoutCard": "Karta",
+      "preview": "Náhľad",
+      "explanationTitle": "Čo je embed?",
+      "explanationBody": "Embed je malý živý obrázok zobrazujúci verejný stav jednej z vašich nástenok. Vložte ho do README, dokumentácie alebo interného dashboardu a vždy bude zobrazovať aktuálny stav bez toho, aby niekto musel navštíviť túto aplikáciu.",
+      "codeSampleTitle": "Kód na vloženie",
+      "altText": "Stavový odznak"
     }
   },
   "statusPages": {

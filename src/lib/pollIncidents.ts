@@ -209,7 +209,16 @@ async function backfillIfFirstPoll(Slug: string, failed: number, getIntegrations
   // (across every account — this runs from the cron poller, no session, so
   // it needs the service-role cross-account read, same as the notifier),
   // so this initial backfill of pre-existing history never gets notified.
-  const { data: events } = await supabase.from("incident_events").select("id").eq("service_slug", Slug);
+  const { data: events, error: eventsError } = await supabase.from("incident_events").select("id").eq("service_slug", Slug);
+  if (eventsError) {
+    // Same reasoning as the deliveryError guard below — a failed read here
+    // must not fall through to "zero events" (rows.length would silently
+    // become 0), which would skip writing any suppression rows at all
+    // while still risking getting marked seeded. Retry backfill next poll
+    // cycle instead.
+    console.error(`backfillIfFirstPoll: failed to read incident_events for "${Slug}":`, eventsError);
+    return;
+  }
   const integrations = await getIntegrationsAcrossUsersOnce();
   const rows = (events ?? []).flatMap((event) =>
     integrations.map(({ integration }) => ({ event_id: event.id, integration_id: integration.id })),

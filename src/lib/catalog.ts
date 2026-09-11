@@ -45,7 +45,11 @@ export function buildTrackedServiceLookup(trackedSlugs: string[], catalog: Catal
 // different slug.
 export async function ensureCatalogEntry(input: { name: string; host: string }): Promise<Catalog> {
   const catalog = await getCatalog();
-  const existing = catalog.find((entry) => entry.host === input.host);
+  // Hostnames are case-insensitive (DNS/HTTP both treat them that way), so
+  // a plain === here missed an already-known host submitted with different
+  // casing and created a duplicate catalog row for it.
+  const inputHost = input.host.trim().toLowerCase();
+  const existing = catalog.find((entry) => entry.host.toLowerCase() === inputHost);
   if (existing) return existing;
 
   const baseSlug = slugify(input.name) || "service";

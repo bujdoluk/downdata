@@ -82,6 +82,30 @@ export async function countEnabledStatusPages(): Promise<number> {
   return count ?? 0;
 }
 
+// The caller's own enabled status pages, board name + slug only — the
+// embed configurator's board picker (features/status-pages/components/
+// EmbedConfigurator.tsx, surfaced on /integrations) needs exactly this:
+// an embed only makes sense for a board that already has a live public
+// page, and its badge URL is keyed by that page's own slug. RLS on
+// board_status_pages already scopes this to the caller's own rows (see
+// 0025_board_status_pages.sql — a flat user_id column, not a join), so no
+// separate ownership check is needed here.
+export async function getAllEnabledStatusPages(): Promise<{ boardId: string; boardName: string; slug: string }[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("board_status_pages").select("board_id, slug, boards(name)").eq("enabled", true);
+  if (error) throw error;
+
+  // board_id is unique on this table (0025_board_status_pages.sql), so
+  // this is really a one-to-one relationship — but Supabase's query
+  // builder types an embedded resource as an array regardless, same
+  // "as unknown as" cast getPublicStatusPageBySlug above already needs
+  // for the identical boards(...) embed.
+  return ((data ?? []) as { board_id: string; slug: string; boards: unknown }[])
+    .map((row) => ({ boardId: row.board_id, slug: row.slug, boards: row.boards as unknown as { name: string } | null }))
+    .filter((row): row is typeof row & { boards: { name: string } } => row.boards !== null)
+    .map((row) => ({ boardId: row.boardId, boardName: row.boards.name, slug: row.slug }));
+}
+
 export type PublicStatusPageRow = {
   slug: string;
   companyName: string | null;

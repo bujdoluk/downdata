@@ -69,35 +69,60 @@ export async function removeBoard(id: string): Promise<boolean> {
   return (data?.length ?? 0) > 0;
 }
 
-export async function addServiceToBoard(id: string, slug: string): Promise<Board | undefined> {
-  const board = await resolveBoardById(id);
-  if (!board) return undefined;
-  if (board.Slugs.includes(slug)) return board;
+// service_slugs is a plain array column (0002_create_services_boards_
+// integrations.sql), not a join table, so "add"/"remove" here means
+// read the whole array, compute a new one in JS, and write it back — with
+// no row lock held in between. Two concurrent calls for the same board
+// (a double-click, two open tabs) can both read the same array and each
+// write their own next version; whichever UPDATE commits last would
+// otherwise silently discard the other's change entirely.
+//
+// Guarded with compare-and-swap instead: the update's own .eq("service_
+// slugs", ...) filter only lets it land if the column still holds exactly
+// the array just read here — if another writer changed it first, this
+// update matches zero rows (data comes back null, not an error) and the
+// loop rereads the now-current row and retries against it. Losing that
+// race is expected under real concurrency, not a failure.
+const MAX_SERVICE_SLUGS_CAS_ATTEMPTS = 5;
 
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("boards")
-    .update({ service_slugs: [...board.Slugs, slug] })
-    .eq("id", id)
-    .select("id, name, service_slugs")
-    .single();
-  if (error) throw error;
-  return toBoard(data as BoardRow);
+// Postgres's own array literal syntax (each element double-quoted, `"`/`\`
+// escaped) — needed here because this filters for the column *equaling*
+// this exact array (the compare in compare-and-swap), which is a different
+// query shape from .in()'s "column is one of these values".
+function slugsArrayLiteral(slugs: string[]): string {
+  return `{${slugs.map((slug) => `"${slug.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`).join(",")}}`;
+}
+
+async function updateServiceSlugs(id: string, computeNext: (current: string[]) => string[]): Promise<Board | undefined> {
+  for (let attempt = 0; attempt < MAX_SERVICE_SLUGS_CAS_ATTEMPTS; attempt++) {
+    const board = await resolveBoardById(id);
+    if (!board) return undefined;
+
+    const next = computeNext(board.Slugs);
+    if (next === board.Slugs) return board;
+
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("boards")
+      .update({ service_slugs: next })
+      .eq("id", id)
+      .eq("service_slugs", slugsArrayLiteral(board.Slugs))
+      .select("id, name, service_slugs")
+      .maybeSingle();
+    if (error) throw error;
+    if (data) return toBoard(data as BoardRow);
+    // Lost the race — another write landed between the read above and
+    // this update. Reread the current row and try again.
+  }
+  throw new Error(`updateServiceSlugs: too many concurrent writers for board ${id}`);
+}
+
+export async function addServiceToBoard(id: string, slug: string): Promise<Board | undefined> {
+  return updateServiceSlugs(id, (current) => (current.includes(slug) ? current : [...current, slug]));
 }
 
 export async function removeServiceFromBoard(id: string, slug: string): Promise<Board | undefined> {
-  const board = await resolveBoardById(id);
-  if (!board) return undefined;
-
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("boards")
-    .update({ service_slugs: board.Slugs.filter((s) => s !== slug) })
-    .eq("id", id)
-    .select("id, name, service_slugs")
-    .single();
-  if (error) throw error;
-  return toBoard(data as BoardRow);
+  return updateServiceSlugs(id, (current) => (current.includes(slug) ? current.filter((s) => s !== slug) : current));
 }
 
 // Untracks a service everywhere at once — the /monitors aggregate view's

@@ -204,6 +204,31 @@
     "requestCard": {
       "title": "Nenašli jste svou integraci?",
       "button": "Vyžádat integraci"
+    },
+    "embeds": {
+      "tabIntegrations": "Integrace",
+      "tabEmbeds": "Embedy",
+      "empty": "Embedy potřebují nejprve nástěnku s veřejnou stránkou stavu.",
+      "emptyCta": "Nastavit stránku stavu",
+      "board": "Nástěnka",
+      "variant": "Typ",
+      "variantStatus": "Stav",
+      "variantUptime": "Dostupnost",
+      "theme": "Motiv",
+      "themeLight": "Světlý",
+      "themeDark": "Tmavý",
+      "size": "Velikost",
+      "sizeSmall": "Malá",
+      "sizeMedium": "Střední",
+      "sizeLarge": "Velká",
+      "layout": "Rozložení",
+      "layoutFlat": "Plochý",
+      "layoutCard": "Karta",
+      "preview": "Náhled",
+      "explanationTitle": "Co je embed?",
+      "explanationBody": "Embed je malý živý obrázek zobrazující veřejný stav jedné z vašich nástěnek. Vložte ho do README, dokumentace nebo interního dashboardu a vždy bude zobrazovat aktuální stav, aniž by někdo musel navštívit tuto aplikaci.",
+      "codeSampleTitle": "Kód pro vložení",
+      "altText": "Stavový odznak"
     }
   },
   "statusPages": {

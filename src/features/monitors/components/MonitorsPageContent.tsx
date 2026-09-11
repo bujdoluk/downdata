@@ -30,7 +30,11 @@ export default function MonitorsPageContent({
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
-  const [removingSlug, setRemovingSlug] = useState<string | null>(null);
+  // A Set, not a single slug — the grid renders many independently
+  // removable services; a single shared value got clobbered by a second
+  // remove click before the first request settled, dropping the first
+  // row's spinner and re-enabling the second row's button mid-request.
+  const [removingSlugs, setRemovingSlugs] = useState<Set<string>>(new Set());
 
   const boardId = searchParams.get("board") ?? "";
   const selectedBoard = boards.find((board) => board.id === boardId);
@@ -61,7 +65,15 @@ export default function MonitorsPageContent({
   // board's own page (BoardDetailContent), unaffected by this.
   const removeMutation = useMutation({
     mutationFn: (entry: Catalog) => fetch(`/api/monitors/${entry.slug}`, { method: "DELETE" }),
-    onSettled: () => setRemovingSlug(null),
+    // `variables` is this specific call's own entry — only clear that one
+    // slug's pending state, not whichever remove happened to be in flight
+    // when this one settled.
+    onSettled: (_data, _error, entry) =>
+      setRemovingSlugs((prev) => {
+        const next = new Set(prev);
+        next.delete(entry.slug);
+        return next;
+      }),
     onSuccess: (res) => {
       if (!res.ok) return;
       queryClient.invalidateQueries({ queryKey: queryKeys.catalogStatus() });
@@ -70,7 +82,7 @@ export default function MonitorsPageContent({
   });
 
   function handleRemove(entry: Catalog) {
-    setRemovingSlug(entry.slug);
+    setRemovingSlugs((prev) => new Set(prev).add(entry.slug));
     removeMutation.mutate(entry);
   }
 
@@ -95,7 +107,7 @@ export default function MonitorsPageContent({
             trackedHosts={[]}
             data={data}
             fetchFailed={fetchFailed}
-            removingSlug={removingSlug}
+            removingSlugs={removingSlugs}
             onRemove={handleRemove}
           />
         </div>

@@ -29,6 +29,12 @@ export default function ServiceCatalogPicker({
   const [boards, setBoards] = useState(initialBoards);
   const [boardId, setBoardId] = useState(initialBoardId ?? initialBoards[0]?.id);
   const [query, setQuery] = useState("");
+  // A Set, not a single host derived from addMutation.variables — the
+  // catalog grid can have several Add buttons clicked before the first
+  // request settles, and deriving "pending" from one shared mutation's
+  // variables meant the second click's host silently replaced the first's,
+  // clearing its spinner early.
+  const [pendingHosts, setPendingHosts] = useState<Set<string>>(new Set());
 
   function applyUpdatedBoard(updatedBoard: Board) {
     setBoards((prev) => prev.map((board) => (board.id === updatedBoard.id ? updatedBoard : board)));
@@ -56,9 +62,19 @@ export default function ServiceCatalogPicker({
       return { entry, board: data as Board };
     },
     onSuccess: ({ board: updatedBoard }) => applyUpdatedBoard(updatedBoard),
+    // `variables` is this specific call's own entry — only clear that
+    // one host's pending state, not whichever add happened to be in
+    // flight when this one settled.
+    onSettled: (_data, _error, entry) =>
+      setPendingHosts((prev) => {
+        const next = new Set(prev);
+        next.delete(entry.host);
+        return next;
+      }),
   });
 
   function handleAdd(entry: Catalog) {
+    setPendingHosts((prev) => new Set(prev).add(entry.host));
     addMutation.mutate(entry);
   }
 
@@ -126,7 +142,7 @@ export default function ServiceCatalogPicker({
               <CatalogBrowser
                 catalog={catalog}
                 trackedHosts={[]}
-                pendingHost={addMutation.isPending ? (addMutation.variables?.host ?? null) : null}
+                pendingHosts={pendingHosts}
                 addedHosts={addedHosts}
                 onAdd={handleAdd}
                 query={query}

@@ -15,8 +15,10 @@ function clampPercent(value: number): number {
 // is degraded performance, not downtime (matches statusStyles.ts's own
 // "Minor Issues" vs "Outage" labeling). Mirrored in the SQL trigger (see
 // supabase/migrations/0024_service_uptime_stats.sql) for the all-time
-// figure — keep both in sync if this list ever changes.
-const OUTAGE_IMPACTS = new Set(["major", "critical"]);
+// figure, and reused by statusBatch.ts's fetchOutagesLast24h so the
+// monitors grid's "outages in the last 24h" count agrees with this same
+// definition — keep all three in sync if this list ever changes.
+export const OUTAGE_IMPACTS = new Set(["major", "critical"]);
 
 // All-time uptime since this service's first successful poll
 // (polled_services.first_polled_at) — a single indexed read via

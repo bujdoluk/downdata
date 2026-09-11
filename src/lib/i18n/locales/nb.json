@@ -200,6 +200,31 @@
     "requestCard": {
       "title": "Finner du ikke integrasjonen din?",
       "button": "Be om integrasjon"
+    },
+    "embeds": {
+      "tabIntegrations": "Integrasjoner",
+      "tabEmbeds": "Embeds",
+      "empty": "Embeds trenger først en tavle med en offentlig statusside.",
+      "emptyCta": "Sett opp en statusside",
+      "board": "Tavle",
+      "variant": "Type",
+      "variantStatus": "Status",
+      "variantUptime": "Oppetid",
+      "theme": "Tema",
+      "themeLight": "Lyst",
+      "themeDark": "Mørkt",
+      "size": "Størrelse",
+      "sizeSmall": "Liten",
+      "sizeMedium": "Middels",
+      "sizeLarge": "Stor",
+      "layout": "Layout",
+      "layoutFlat": "Flat",
+      "layoutCard": "Kort",
+      "preview": "Forhåndsvisning",
+      "explanationTitle": "Hva er en embed?",
+      "explanationBody": "En embed er et lite sanntidsbilde som viser den offentlige statusen til en av tavlene dine. Lim det inn i en README, en dokumentasjonsside eller et internt dashbord, så viser det alltid gjeldende status uten at noen trenger å besøke denne appen.",
+      "codeSampleTitle": "Innbyggingskode",
+      "altText": "Statusmerke"
     }
   },
   "statusPages": {

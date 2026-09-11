@@ -200,6 +200,31 @@
     "requestCard": {
       "title": "Can't find your integration?",
       "button": "Request integration"
+    },
+    "embeds": {
+      "tabIntegrations": "Integrations",
+      "tabEmbeds": "Embeds",
+      "empty": "Embeds need a board with a public status page first.",
+      "emptyCta": "Set up a status page",
+      "board": "Board",
+      "variant": "Type",
+      "variantStatus": "Status",
+      "variantUptime": "Uptime",
+      "theme": "Theme",
+      "themeLight": "Light",
+      "themeDark": "Dark",
+      "size": "Size",
+      "sizeSmall": "Small",
+      "sizeMedium": "Medium",
+      "sizeLarge": "Large",
+      "layout": "Layout",
+      "layoutFlat": "Flat",
+      "layoutCard": "Card",
+      "preview": "Preview",
+      "explanationTitle": "What is an embed?",
+      "explanationBody": "An embed is a small live image showing one of your board's public status. Paste it into a README, docs site, or internal dashboard and it always reflects the current status, without anyone needing to visit this app.",
+      "codeSampleTitle": "Embed code",
+      "altText": "Status badge"
     }
   },
   "statusPages": {

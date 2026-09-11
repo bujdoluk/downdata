@@ -200,6 +200,31 @@
     "requestCard": {
       "title": "Não encontrou a sua integração?",
       "button": "Solicitar integração"
+    },
+    "embeds": {
+      "tabIntegrations": "Integrações",
+      "tabEmbeds": "Embeds",
+      "empty": "Os embeds precisam primeiro de um painel com uma página de estado pública.",
+      "emptyCta": "Configurar uma página de estado",
+      "board": "Painel",
+      "variant": "Tipo",
+      "variantStatus": "Estado",
+      "variantUptime": "Disponibilidade",
+      "theme": "Tema",
+      "themeLight": "Claro",
+      "themeDark": "Escuro",
+      "size": "Tamanho",
+      "sizeSmall": "Pequeno",
+      "sizeMedium": "Médio",
+      "sizeLarge": "Grande",
+      "layout": "Esquema",
+      "layoutFlat": "Simples",
+      "layoutCard": "Cartão",
+      "preview": "Pré-visualização",
+      "explanationTitle": "O que é um embed?",
+      "explanationBody": "Um embed é uma pequena imagem em direto que mostra o estado público de um dos seus painéis. Cole-o num README, num site de documentação ou num painel interno e mostrará sempre o estado atual, sem que ninguém precise de visitar esta aplicação.",
+      "codeSampleTitle": "Código do embed",
+      "altText": "Emblema de estado"
     }
   },
   "statusPages": {

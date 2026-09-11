@@ -16,7 +16,7 @@ export default function CatalogBrowser({
   trackedHosts,
   data = null,
   fetchFailed = false,
-  pendingHost,
+  pendingHosts,
   addedHosts,
   onAdd,
   query,
@@ -25,7 +25,7 @@ export default function CatalogBrowser({
   trackedHosts: string[];
   data?: ServiceStatusBatchResponse | null;
   fetchFailed?: boolean;
-  pendingHost?: string | null;
+  pendingHosts?: Set<string>;
   addedHosts?: Set<string>;
   onAdd?: (entry: Catalog) => void;
   query: string;
@@ -100,7 +100,7 @@ export default function CatalogBrowser({
               trackedHosts={trackedHosts}
               data={data}
               fetchFailed={fetchFailed}
-              pendingHost={pendingHost}
+              pendingHosts={pendingHosts}
               addedHosts={addedHosts}
               onAdd={onAdd}
               isFullWidth

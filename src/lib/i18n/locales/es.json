@@ -200,6 +200,31 @@
     "requestCard": {
       "title": "¿No encuentras tu integración?",
       "button": "Solicitar integración"
+    },
+    "embeds": {
+      "tabIntegrations": "Integraciones",
+      "tabEmbeds": "Embeds",
+      "empty": "Los embeds necesitan primero un tablero con una página de estado pública.",
+      "emptyCta": "Configurar una página de estado",
+      "board": "Tablero",
+      "variant": "Tipo",
+      "variantStatus": "Estado",
+      "variantUptime": "Disponibilidad",
+      "theme": "Tema",
+      "themeLight": "Claro",
+      "themeDark": "Oscuro",
+      "size": "Tamaño",
+      "sizeSmall": "Pequeño",
+      "sizeMedium": "Mediano",
+      "sizeLarge": "Grande",
+      "layout": "Diseño",
+      "layoutFlat": "Plano",
+      "layoutCard": "Tarjeta",
+      "preview": "Vista previa",
+      "explanationTitle": "¿Qué es un embed?",
+      "explanationBody": "Un embed es una pequeña imagen en vivo que muestra el estado público de uno de tus tableros. Pégalo en un README, un sitio de documentación o un panel interno, y siempre mostrará el estado actual sin que nadie tenga que visitar esta aplicación.",
+      "codeSampleTitle": "Código para insertar",
+      "altText": "Insignia de estado"
     }
   },
   "statusPages": {

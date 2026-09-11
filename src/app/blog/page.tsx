@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   twitter: { card: "summary", title, description },
 };
 
+// Without this, Next statically prerenders this page at *build time*
+// (no dynamic segment, nothing else forcing on-demand rendering) — so a
+// migration that hasn't reached the target database yet (see the
+// deployment-ordering note this fixed) hard-fails the entire build/deploy
+// instead of just erroring on the one request that hits it.
+export const dynamic = "force-dynamic";
+
 export default async function BlogPage() {
   const posts = await getPublishedPosts();
   return <BlogPageContent posts={posts} />;

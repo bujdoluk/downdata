@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -8,11 +9,15 @@ import "@/lib/i18n/i18n";
 import { formatDate, formatDateTime, formatDuration } from "@/lib/formatTime";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import Spinner from "@/components/Spinner";
+import ModalCloseButton from "@/components/ModalCloseButton";
 import type { StoredReport } from "@/features/reports/types";
 
 // The full per-board/per-service breakdown for one generated report — the
 // data the nudge email deliberately doesn't carry inline (see
-// ReportReady.tsx's own comment on why it's link-only).
+// ReportReady.tsx's own comment on why it's link-only). Its own dedicated
+// page (/reports/[id]) now, not a ListDetailShell second column — see the
+// grilling session that settled this move for why (a table + a real
+// permalink beat query-param selection once "link to detail" was the ask).
 export default function ReportDetail({ report }: { report: StoredReport }) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -34,16 +39,21 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
   });
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-start justify-between gap-2">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 self-start">
+      <Link href="/reports" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
+        {t("reports.back")}
+      </Link>
+
+      <div className="mt-2 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h2 className="text-base-content text-lg font-semibold">
-            {formatDate(report.periodStart)} – {formatDate(report.periodEnd)}
-          </h2>
+          <h1 className="text-base-content text-xl font-semibold">{t(`reports.name.${report.interval}`)}</h1>
           {/* periodStart/periodEnd are plain calendar dates (formatDate's own
               contract) — generatedAt is a full timestamptz instant, so it
               needs formatDateTime's timezone-aware conversion instead. */}
-          <p className="text-base-content/50 text-xs">{t("reports.generatedOn", { date: formatDateTime(report.generatedAt, timeZone) })}</p>
+          <p className="text-base-content/50 mt-1 text-xs">
+            {formatDate(report.periodStart)} – {formatDate(report.periodEnd)} ·{" "}
+            {t("reports.generatedOn", { date: formatDateTime(report.generatedAt, timeZone) })}
+          </p>
         </div>
         <button type="button" disabled={deleteMutation.isPending} onClick={() => confirmRef.current?.showModal()} className="btn btn-ghost btn-sm text-error shrink-0">
           {deleteMutation.isPending ? t("reports.deleting") : t("reports.delete")}
@@ -51,7 +61,8 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
       </div>
 
       <dialog ref={confirmRef} className="modal">
-        <div className="modal-box">
+        <div className="modal-box relative">
+          <ModalCloseButton />
           <h3 className="text-lg font-bold">{t("reports.deleteConfirmTitle")}</h3>
           <p className="text-base-content/70 mt-2 text-sm">
             {t("reports.deleteConfirmMessage", { period: `${formatDate(report.periodStart)} – ${formatDate(report.periodEnd)}` })}
@@ -79,15 +90,20 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
         </form>
       </dialog>
 
-      <div className="stats stats-vertical sm:stats-horizontal bg-base-100 shadow">
-        <div className="stat">
-          <div className="stat-title">{t("reports.overallUptime")}</div>
-          <div className="stat-value text-2xl">{payload.overallUptimePercent}%</div>
-        </div>
+      <div className="stats stats-vertical sm:stats-horizontal bg-base-200 shadow">
         <div className="stat">
           <div className="stat-title">{t("reports.incidents")}</div>
           <div className="stat-value text-2xl">{payload.newIncidentCount}</div>
           <div className="stat-desc">{t("reports.resolvedIncidents", { count: payload.resolvedIncidentCount })}</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title">{t("reports.maintenanceCompleted")}</div>
+          <div className="stat-value text-2xl">{payload.completedMaintenanceCount}</div>
+          <div className="stat-desc">{t("reports.upcomingMaintenance", { count: payload.upcomingMaintenanceCount })}</div>
+        </div>
+        <div className="stat">
+          <div className="stat-title">{t("reports.overallUptime")}</div>
+          <div className="stat-value text-2xl">{payload.overallUptimePercent}%</div>
         </div>
         <div className="stat">
           <div className="stat-title">{t("reports.downtime")}</div>
@@ -95,11 +111,6 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
           {payload.longestOutageMinutes > 0 && (
             <div className="stat-desc">{t("reports.longestOutage", { duration: formatDuration(payload.longestOutageMinutes, t) })}</div>
           )}
-        </div>
-        <div className="stat">
-          <div className="stat-title">{t("reports.maintenanceCompleted")}</div>
-          <div className="stat-value text-2xl">{payload.completedMaintenanceCount}</div>
-          <div className="stat-desc">{t("reports.upcomingMaintenance", { count: payload.upcomingMaintenanceCount })}</div>
         </div>
       </div>
 
@@ -122,7 +133,7 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
             {board.services.length === 0 ? (
               <p className="text-base-content/40 text-xs">{t("reports.noServicesOnBoard")}</p>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="card card-border bg-base-200 overflow-x-auto p-2">
                 <table className="table-sm table">
                   <thead>
                     <tr>

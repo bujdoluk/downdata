@@ -1,4 +1,7 @@
 {
+  "common": {
+    "close": "Sluiten"
+  },
   "status": {
     "operational": "Operationeel",
     "minorIssues": "Klein",
@@ -226,8 +229,13 @@
     "title": "Rapporten",
     "subtitle": "Een periodiek overzicht van uptime, incidenten en onderhoud voor al je borden.",
     "empty": "Nog geen rapporten. Kom terug zodra je eerste periode is afgelopen.",
-    "selectPrompt": "Selecteer links een rapport om de details te zien.",
+    "back": "← Terug",
     "generatedOn": "Gegenereerd op {{date}}",
+    "name": {
+      "daily": "Dagelijks rapport",
+      "weekly": "Wekelijks rapport",
+      "monthly": "Maandelijks rapport"
+    },
     "overallUptime": "Totale uptime",
     "incidents": "Nieuwe incidenten",
     "resolvedIncidents_one": "{{count}} opgelost",
@@ -246,11 +254,19 @@
     "keywordMatches_one": "{{count}} trefwoordtreffer",
     "keywordMatches_other": "{{count}} trefwoordtreffers",
     "table": {
+      "name": "Rapport",
+      "date": "Gegenereerd",
+      "view": "Rapport bekijken",
       "service": "Dienst",
       "incidents": "Incidenten",
       "maintenance": "Onderhoud",
       "uptime": "Uptime",
       "downtime": "Downtime"
+    },
+    "pagination": {
+      "label": "Paginering",
+      "previous": "Vorige pagina",
+      "next": "Volgende pagina"
     },
     "delete": "Verwijderen",
     "deleting": "Verwijderen…",

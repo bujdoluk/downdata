@@ -1,4 +1,7 @@
 {
+  "common": {
+    "close": "Stäng"
+  },
   "status": {
     "operational": "Fungerar",
     "minorIssues": "Mindre",
@@ -226,8 +229,13 @@
     "title": "Rapporter",
     "subtitle": "En regelbunden sammanfattning av drifttid, incidenter och underhåll för alla dina tavlor.",
     "empty": "Inga rapporter än. Kom tillbaka när din första period är klar.",
-    "selectPrompt": "Välj en rapport till vänster för att se detaljer.",
+    "back": "← Tillbaka",
     "generatedOn": "Skapad {{date}}",
+    "name": {
+      "daily": "Daglig rapport",
+      "weekly": "Veckorapport",
+      "monthly": "Månadsrapport"
+    },
     "overallUptime": "Total drifttid",
     "incidents": "Nya incidenter",
     "resolvedIncidents_one": "{{count}} löst",
@@ -246,11 +254,19 @@
     "keywordMatches_one": "{{count}} nyckelordsträff",
     "keywordMatches_other": "{{count}} nyckelordsträffar",
     "table": {
+      "name": "Rapport",
+      "date": "Skapad",
+      "view": "Visa rapport",
       "service": "Tjänst",
       "incidents": "Incidenter",
       "maintenance": "Underhåll",
       "uptime": "Drifttid",
       "downtime": "Driftstopp"
+    },
+    "pagination": {
+      "label": "Sidnumrering",
+      "previous": "Föregående sida",
+      "next": "Nästa sida"
     },
     "delete": "Ta bort",
     "deleting": "Tar bort…",

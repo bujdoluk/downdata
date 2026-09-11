@@ -12,6 +12,7 @@ import EmailLogo from "@/features/integrations/components/EmailLogo";
 import SmsLogo from "@/features/integrations/components/SmsLogo";
 import WebhookLogo from "@/features/integrations/components/WebhookLogo";
 import RequestCard from "@/components/RequestCard";
+import ModalCloseButton from "@/components/ModalCloseButton";
 import { postJson } from "@/lib/fetchJson";
 // Static, not dynamic() — each was its own lazy chunk, and the very first
 // time a given modal opened, showModal() (called synchronously in the
@@ -197,7 +198,8 @@ export default function IntegrationsPageContent({
           webhook all follow the same hand-rolled <dialog> convention
           BoardSelect's/RequestCard's own modals already use. */}
       <dialog ref={emailDialogRef} className="modal">
-        <div className="modal-box">
+        <div className="modal-box relative">
+          <ModalCloseButton />
           <h3 className="text-lg font-bold">{t("integrations.connectEmail")}</h3>
           <div className="mt-4">
             <EmailConnectForm
@@ -218,7 +220,8 @@ export default function IntegrationsPageContent({
       </dialog>
 
       <dialog ref={smsDialogRef} className="modal">
-        <div className="modal-box">
+        <div className="modal-box relative">
+          <ModalCloseButton />
           <h3 className="text-lg font-bold">{t("integrations.connectSms")}</h3>
           <div className="mt-4">
             <SmsConnectForm
@@ -243,7 +246,8 @@ export default function IntegrationsPageContent({
       </dialog>
 
       <dialog ref={webhookDialogRef} className="modal">
-        <div className="modal-box">
+        <div className="modal-box relative">
+          <ModalCloseButton />
           <h3 className="text-lg font-bold">{t("integrations.connectWebhook")}</h3>
           <div className="mt-4">
             <WebhookConnectForm

@@ -1,4 +1,7 @@
 {
+  "common": {
+    "close": "Lukk"
+  },
   "status": {
     "operational": "Fungerer",
     "minorIssues": "Mindre",
@@ -226,8 +229,13 @@
     "title": "Rapporter",
     "subtitle": "En periodisk oppsummering av oppetid, hendelser og vedlikehold for alle tavlene dine.",
     "empty": "Ingen rapporter ennå. Kom tilbake når din første periode er ferdig.",
-    "selectPrompt": "Velg en rapport til venstre for å se detaljer.",
+    "back": "← Tilbake",
     "generatedOn": "Opprettet {{date}}",
+    "name": {
+      "daily": "Daglig rapport",
+      "weekly": "Ukentlig rapport",
+      "monthly": "Månedlig rapport"
+    },
     "overallUptime": "Total oppetid",
     "incidents": "Nye hendelser",
     "resolvedIncidents_one": "{{count}} løst",
@@ -246,11 +254,19 @@
     "keywordMatches_one": "{{count}} nøkkelordtreff",
     "keywordMatches_other": "{{count}} nøkkelordtreff",
     "table": {
+      "name": "Rapport",
+      "date": "Opprettet",
+      "view": "Vis rapport",
       "service": "Tjeneste",
       "incidents": "Hendelser",
       "maintenance": "Vedlikehold",
       "uptime": "Oppetid",
       "downtime": "Nedetid"
+    },
+    "pagination": {
+      "label": "Sidenummerering",
+      "previous": "Forrige side",
+      "next": "Neste side"
     },
     "delete": "Slett",
     "deleting": "Sletter…",

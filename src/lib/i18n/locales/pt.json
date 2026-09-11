@@ -1,4 +1,7 @@
 {
+  "common": {
+    "close": "Fechar"
+  },
   "status": {
     "operational": "Operacional",
     "minorIssues": "Menor",
@@ -226,8 +229,13 @@
     "title": "Relatórios",
     "subtitle": "Um resumo periódico da disponibilidade, incidentes e manutenções em todos os seus quadros.",
     "empty": "Ainda não há relatórios. Volte a verificar após o fim do primeiro período.",
-    "selectPrompt": "Selecione um relatório à esquerda para ver os detalhes.",
+    "back": "← Voltar",
     "generatedOn": "Gerado em {{date}}",
+    "name": {
+      "daily": "Relatório diário",
+      "weekly": "Relatório semanal",
+      "monthly": "Relatório mensal"
+    },
     "overallUptime": "Disponibilidade geral",
     "incidents": "Novos incidentes",
     "resolvedIncidents_one": "{{count}} resolvido",
@@ -246,11 +254,19 @@
     "keywordMatches_one": "{{count}} correspondência de palavra-chave",
     "keywordMatches_other": "{{count}} correspondências de palavras-chave",
     "table": {
+      "name": "Relatório",
+      "date": "Gerado em",
+      "view": "Ver relatório",
       "service": "Serviço",
       "incidents": "Incidentes",
       "maintenance": "Manutenção",
       "uptime": "Disponibilidade",
       "downtime": "Indisponibilidade"
+    },
+    "pagination": {
+      "label": "Paginação",
+      "previous": "Página anterior",
+      "next": "Página seguinte"
     },
     "delete": "Eliminar",
     "deleting": "A eliminar…",

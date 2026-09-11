@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
 import CreateBoardForm from "@/features/boards/components/CreateBoardForm";
+import ModalCloseButton from "@/components/ModalCloseButton";
 
 // The one "create a board" modal, shared by BoardsPageContent's own
 // "+ Add board" button and the sidebar's BoardSelect (its dropdown's own
@@ -25,7 +26,8 @@ export default function CreateBoardModal({
 
   return (
     <dialog ref={dialogRef} className="modal">
-      <div className="modal-box">
+      <div className="modal-box relative">
+        <ModalCloseButton />
         <h3 className="text-lg font-bold">{t("boards.addBoard")}</h3>
         <div className="mt-4">
           <CreateBoardForm

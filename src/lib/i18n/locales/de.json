@@ -1,4 +1,7 @@
 {
+  "common": {
+    "close": "Schließen"
+  },
   "status": {
     "operational": "Funktionsfähig",
     "minorIssues": "Gering",
@@ -226,8 +229,13 @@
     "title": "Berichte",
     "subtitle": "Eine regelmäßige Zusammenfassung von Verfügbarkeit, Vorfällen und Wartungen über alle deine Boards.",
     "empty": "Noch keine Berichte. Schau nach Ablauf des ersten Zeitraums wieder vorbei.",
-    "selectPrompt": "Wähle links einen Bericht aus, um Details zu sehen.",
+    "back": "← Zurück",
     "generatedOn": "Erstellt am {{date}}",
+    "name": {
+      "daily": "Täglicher Bericht",
+      "weekly": "Wöchentlicher Bericht",
+      "monthly": "Monatlicher Bericht"
+    },
     "overallUptime": "Gesamtverfügbarkeit",
     "incidents": "Neue Vorfälle",
     "resolvedIncidents_one": "{{count}} gelöst",
@@ -246,11 +254,19 @@
     "keywordMatches_one": "{{count}} Schlüsselwort-Treffer",
     "keywordMatches_other": "{{count}} Schlüsselwort-Treffer",
     "table": {
+      "name": "Bericht",
+      "date": "Erstellt",
+      "view": "Bericht anzeigen",
       "service": "Dienst",
       "incidents": "Vorfälle",
       "maintenance": "Wartung",
       "uptime": "Verfügbarkeit",
       "downtime": "Ausfallzeit"
+    },
+    "pagination": {
+      "label": "Seitennavigation",
+      "previous": "Vorherige Seite",
+      "next": "Nächste Seite"
     },
     "delete": "Löschen",
     "deleting": "Wird gelöscht…",

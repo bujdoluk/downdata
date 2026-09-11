@@ -11,6 +11,7 @@ import TimeZonePicker from "@/features/account/components/TimeZonePicker";
 import ThemeToggle from "@/components/navbar/ThemeToggle";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import Spinner from "@/components/Spinner";
+import ModalCloseButton from "@/components/ModalCloseButton";
 import { UserIcon } from "@/components/icons/NavIcons";
 import { createClient } from "@/lib/supabase/client";
 import { AuthActionError, logOut, updatePassword } from "@/lib/supabase/auth";
@@ -250,7 +251,8 @@ function DangerZone({ supabase, email }: { supabase: ReturnType<typeof createCli
       </button>
 
       <dialog ref={confirmRef} className="modal">
-        <div className="modal-box">
+        <div className="modal-box relative">
+          <ModalCloseButton />
           <h3 className="text-lg font-bold">{t("account.deleteConfirmTitle")}</h3>
           <p className="text-base-content/70 mt-2 text-sm">{t("account.deleteConfirmMessage")}</p>
 

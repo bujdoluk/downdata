@@ -31,6 +31,22 @@ export async function getAllOwnReports(): Promise<StoredReport[]> {
   return ((data as ReportRow[] | null) ?? []).map(toStoredReport);
 }
 
+// Used by /reports/[id] — RLS (reports_select) already scopes this to the
+// caller's own rows, so a mismatched id (someone else's report, or one
+// that never existed) just comes back null rather than erroring, same
+// convention as deleteOwnReport below. The page itself turns that into a
+// 404 via notFound().
+export async function getOwnReportById(id: string): Promise<StoredReport | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("reports")
+    .select("id, report_interval, period_start, period_end, generated_at, payload")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? toStoredReport(data as ReportRow) : null;
+}
+
 // RLS (0034_report_deletion.sql's reports_delete) already scopes this to
 // the caller's own rows — a mismatched id (someone else's report, or one
 // that never existed) just matches zero rows rather than erroring, same

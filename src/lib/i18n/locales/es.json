@@ -1,4 +1,7 @@
 {
+  "common": {
+    "close": "Cerrar"
+  },
   "status": {
     "operational": "Operativo",
     "minorIssues": "Menor",
@@ -226,8 +229,13 @@
     "title": "Informes",
     "subtitle": "Un resumen periódico de la disponibilidad, los incidentes y el mantenimiento de todos tus tableros.",
     "empty": "Aún no hay informes. Vuelve a consultar cuando termine tu primer período.",
-    "selectPrompt": "Selecciona un informe a la izquierda para ver sus detalles.",
+    "back": "← Volver",
     "generatedOn": "Generado el {{date}}",
+    "name": {
+      "daily": "Informe diario",
+      "weekly": "Informe semanal",
+      "monthly": "Informe mensual"
+    },
     "overallUptime": "Disponibilidad general",
     "incidents": "Incidentes nuevos",
     "resolvedIncidents_one": "{{count}} resuelto",
@@ -246,11 +254,19 @@
     "keywordMatches_one": "{{count}} coincidencia de palabra clave",
     "keywordMatches_other": "{{count}} coincidencias de palabras clave",
     "table": {
+      "name": "Informe",
+      "date": "Generado",
+      "view": "Ver informe",
       "service": "Servicio",
       "incidents": "Incidentes",
       "maintenance": "Mantenimiento",
       "uptime": "Disponibilidad",
       "downtime": "Inactividad"
+    },
+    "pagination": {
+      "label": "Paginación",
+      "previous": "Página anterior",
+      "next": "Página siguiente"
     },
     "delete": "Eliminar",
     "deleting": "Eliminando…",

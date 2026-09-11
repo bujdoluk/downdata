@@ -1,4 +1,7 @@
 {
+  "common": {
+    "close": "Zamknij"
+  },
   "status": {
     "operational": "Sprawny",
     "minorIssues": "Drobne",
@@ -232,8 +235,13 @@
     "title": "Raporty",
     "subtitle": "Okresowe podsumowanie dostępności, incydentów i konserwacji dla wszystkich twoich tablic.",
     "empty": "Brak raportów. Sprawdź ponownie po zakończeniu pierwszego okresu.",
-    "selectPrompt": "Wybierz raport po lewej, aby zobaczyć szczegóły.",
+    "back": "← Wstecz",
     "generatedOn": "Wygenerowano {{date}}",
+    "name": {
+      "daily": "Raport dzienny",
+      "weekly": "Raport tygodniowy",
+      "monthly": "Raport miesięczny"
+    },
     "overallUptime": "Ogólna dostępność",
     "incidents": "Nowe incydenty",
     "resolvedIncidents_one": "{{count}} rozwiązany",
@@ -262,6 +270,9 @@
     "keywordMatches_many": "{{count}} dopasowań słów kluczowych",
     "keywordMatches_other": "{{count}} dopasowania słowa kluczowego",
     "table": {
+      "name": "Raport",
+      "date": "Wygenerowano",
+      "view": "Wyświetl raport",
       "service": "Usługa",
       "incidents": "Incydenty",
       "maintenance": "Konserwacja",

@@ -1,20 +1,22 @@
 "use client";
 
-import { useRef } from "react";
-import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { requestJson } from "@/lib/fetchJson";
-import { formatDate } from "@/lib/formatTime";
-import ListDetailShell from "@/components/ListDetailShell";
+import { formatDate, formatDateTime } from "@/lib/formatTime";
+import { useTimeZone } from "@/hooks/useTimeZone";
+import { usePagination } from "@/hooks/usePagination";
+import Pagination from "@/components/Pagination";
+import { ExternalLinkIcon } from "@/components/icons/NavIcons";
 import ReportSettingsForm from "@/features/reports/components/ReportSettingsForm";
-import ReportDetail from "@/features/reports/components/ReportDetail";
 import { useDebouncedSetting } from "@/features/reports/hooks/useDebouncedSetting";
-import { useSelectAndScrollOnMobile } from "@/hooks/useSelectAndScrollOnMobile";
-import { useAutoSelectFirstId } from "@/hooks/useAutoSelectFirstId";
 import type { Board } from "@/types/board";
 import type { ReportSettings, StoredReport } from "@/features/reports/types";
+
+const PAGE_SIZE = 10;
 
 export default function ReportsPageContent({
   boards,
@@ -26,15 +28,20 @@ export default function ReportsPageContent({
   initialReports: StoredReport[];
 }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const selectedId = searchParams.get("id");
+  const timeZone = useTimeZone();
 
   const reports = initialReports;
-  const selected = reports.find((report) => report.id === selectedId);
+  const page = Number(searchParams.get("page") ?? "1");
+  const { totalPages, currentPage, pageItems: pageReports } = usePagination(reports, page, PAGE_SIZE);
 
-  const detailRef = useRef<HTMLDivElement>(null);
-  const selectReport = useSelectAndScrollOnMobile("/reports", detailRef);
-  useAutoSelectFirstId("/reports", selectedId, reports);
+  function goToPage(next: number) {
+    const params = new URLSearchParams(searchParams);
+    if (next === 1) params.delete("page");
+    else params.set("page", String(next));
+    router.push(`/reports${params.size > 0 ? `?${params}` : ""}`);
+  }
 
   // Three independent, optimistic + debounced fields, not one shared
   // settings object with a disabled-while-saving flag — see
@@ -73,72 +80,84 @@ export default function ReportsPageContent({
     boardsSetting.set([...current]);
   }
 
-  const header = (
-    <ReportSettingsForm
-      boards={boards}
-      settings={settings}
-      intervalError={intervalSetting.error}
-      boardsError={boardsSetting.error}
-      emailNudgeError={emailNudgeSetting.error}
-      onChangeInterval={intervalSetting.set}
-      onToggleBoard={toggleBoard}
-      onToggleEmailNudge={emailNudgeSetting.set}
-      isSendingTest={testMutation.isPending}
-      testMessage={testMessage}
-      onSendTest={() => testMutation.mutate()}
-    />
-  );
-
-  const list = (
-    <ul className="flex flex-col gap-3">
-      {reports.map((report) => {
-        const isSelected = report.id === selectedId;
-        return (
-          <li key={report.id}>
-            <button
-              type="button"
-              onClick={() => selectReport(report.id)}
-              className={`card card-border bg-base-200 flex w-full flex-row items-center justify-between gap-2 p-4 text-left shadow-md transition-colors ${
-                isSelected ? "border-primary" : "hover:border-base-content/20"
-              }`}
-            >
-              <div>
-                <p className="text-base-content text-sm font-medium">
-                  {formatDate(report.periodStart)} – {formatDate(report.periodEnd)}
-                </p>
-                <p className="text-base-content/50 text-xs">{t(`reports.settings.${report.interval}`)}</p>
-              </div>
-              <div className="text-right">
-                <p className="text-base-content text-sm font-semibold">{report.payload.overallUptimePercent}%</p>
-                {report.payload.atRiskServiceSlugs.length > 0 && <span className="badge badge-xs badge-error">{report.payload.atRiskServiceSlugs.length}</span>}
-              </div>
-            </button>
-          </li>
-        );
-      })}
-    </ul>
-  );
-
-  const detail = selected ? <ReportDetail report={selected} /> : <p className="text-base-content/50 text-sm">{t("reports.selectPrompt")}</p>;
-
   return (
-    <div className="w-full self-start">
-      <ListDetailShell
-        title={t("reports.title")}
-        subtitle={t("reports.subtitle")}
-        header={header}
-        isLoading={false}
-        isError={false}
-        isEmpty={reports.length === 0}
-        loadingLabel=""
-        unreachableLabel=""
-        emptyLabel={t("reports.empty")}
-        filters={null}
-        list={list}
-        detailRef={detailRef}
-        detail={detail}
-        listColumnWidth="third"
+    <div className="mx-auto w-full max-w-6xl self-start">
+      <h1 className="text-xl font-semibold text-base-content">{t("reports.title")}</h1>
+      <p className="text-base-content/60 mt-1 text-sm">{t("reports.subtitle")}</p>
+
+      <ReportSettingsForm
+        boards={boards}
+        settings={settings}
+        intervalError={intervalSetting.error}
+        boardsError={boardsSetting.error}
+        emailNudgeError={emailNudgeSetting.error}
+        onChangeInterval={intervalSetting.set}
+        onToggleBoard={toggleBoard}
+        onToggleEmailNudge={emailNudgeSetting.set}
+        isSendingTest={testMutation.isPending}
+        testMessage={testMessage}
+        onSendTest={() => testMutation.mutate()}
       />
+
+      {reports.length === 0 ? (
+        <p className="text-base-content/50 mt-4 text-sm">{t("reports.empty")}</p>
+      ) : (
+        <>
+          <div className="card card-border bg-base-200 mt-4 overflow-x-auto p-2">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>{t("reports.table.name")}</th>
+                  <th>{t("reports.table.date")}</th>
+                  <th className="w-10" aria-hidden="true" />
+                </tr>
+              </thead>
+              <tbody>
+                {pageReports.map((report) => (
+                  <tr
+                    key={report.id}
+                    tabIndex={0}
+                    onClick={() => router.push(`/reports/${report.id}`)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") router.push(`/reports/${report.id}`);
+                    }}
+                    className="hover:bg-base-300 cursor-pointer"
+                  >
+                    <td>
+                      <p className="text-base-content text-sm font-medium">{t(`reports.name.${report.interval}`)}</p>
+                      <p className="text-base-content/50 text-xs">
+                        {formatDate(report.periodStart)} – {formatDate(report.periodEnd)}
+                      </p>
+                    </td>
+                    <td className="text-base-content/70 text-sm">{formatDateTime(report.generatedAt, timeZone)}</td>
+                    <td>
+                      <Link
+                        href={`/reports/${report.id}`}
+                        onClick={(event) => event.stopPropagation()}
+                        aria-label={t("reports.table.view")}
+                        className="btn btn-ghost btn-sm btn-circle"
+                      >
+                        <ExternalLinkIcon />
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-4 flex justify-center">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onChange={goToPage}
+              label={t("reports.pagination.label")}
+              prevLabel={t("reports.pagination.previous")}
+              nextLabel={t("reports.pagination.next")}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 }

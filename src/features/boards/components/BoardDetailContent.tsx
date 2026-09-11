@@ -21,6 +21,7 @@ import BoardTrackedServicesGrid from "@/features/boards/components/BoardTrackedS
 import BoardStatusPageSummary from "@/features/status-pages/components/BoardStatusPageSummary";
 import IncidentCountsChart from "@/features/history/components/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
+import ModalCloseButton from "@/components/ModalCloseButton";
 import { InfoIcon, PencilIcon } from "@/components/icons/NavIcons";
 
 const POLL_INTERVAL_MS = 60_000;
@@ -173,7 +174,8 @@ export default function BoardDetailContent({
       </div>
 
       <dialog ref={confirmRef} className="modal">
-        <div className="modal-box">
+        <div className="modal-box relative">
+          <ModalCloseButton />
           <h3 className="text-lg font-bold">{t("boards.deleteConfirmTitle")}</h3>
           <p className="text-base-content/70 mt-2 text-sm">{t("boards.deleteConfirmMessage", { name: board.name })}</p>
           <div className="modal-action">

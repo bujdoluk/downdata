@@ -12,6 +12,7 @@ import Link from "next/link";
 import { Trans, useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { useHasMounted } from "@/hooks/useHasMounted";
+import ModalCloseButton from "@/components/ModalCloseButton";
 
 export interface ConsentChoices {
   analytics: boolean;
@@ -145,7 +146,8 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
           className="modal"
           onClose={() => setPreferencesOpen(false)}
         >
-          <div className="modal-box">
+          <div className="modal-box relative">
+            <ModalCloseButton />
             <h3 className="text-lg font-bold">{t("cookieConsent.customize")}</h3>
 
             <div className="divide-base-300 mt-4 divide-y">

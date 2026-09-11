@@ -1,4 +1,7 @@
 {
+  "common": {
+    "close": "Chiudi"
+  },
   "status": {
     "operational": "Operativo",
     "minorIssues": "Minore",
@@ -226,8 +229,13 @@
     "title": "Report",
     "subtitle": "Un riepilogo periodico di uptime, incidenti e manutenzioni su tutte le tue bacheche.",
     "empty": "Ancora nessun report. Torna a controllare dopo la fine del primo periodo.",
-    "selectPrompt": "Seleziona un report a sinistra per vederne i dettagli.",
+    "back": "← Indietro",
     "generatedOn": "Generato il {{date}}",
+    "name": {
+      "daily": "Report giornaliero",
+      "weekly": "Report settimanale",
+      "monthly": "Report mensile"
+    },
     "overallUptime": "Uptime complessivo",
     "incidents": "Nuovi incidenti",
     "resolvedIncidents_one": "{{count}} risolto",
@@ -246,11 +254,19 @@
     "keywordMatches_one": "{{count}} corrispondenza di parola chiave",
     "keywordMatches_other": "{{count}} corrispondenze di parole chiave",
     "table": {
+      "name": "Report",
+      "date": "Generato",
+      "view": "Visualizza report",
       "service": "Servizio",
       "incidents": "Incidenti",
       "maintenance": "Manutenzione",
       "uptime": "Uptime",
       "downtime": "Downtime"
+    },
+    "pagination": {
+      "label": "Paginazione",
+      "previous": "Pagina precedente",
+      "next": "Pagina successiva"
     },
     "delete": "Elimina",
     "deleting": "Eliminazione…",

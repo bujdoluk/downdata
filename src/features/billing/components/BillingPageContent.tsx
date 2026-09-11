@@ -7,6 +7,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import Spinner from "@/components/Spinner";
+import ModalCloseButton from "@/components/ModalCloseButton";
 import { fetchJson, postJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { formatDateTime } from "@/lib/formatTime";
@@ -106,7 +107,8 @@ export default function BillingPageContent({
       )}
 
       <dialog ref={confirmRef} className="modal">
-        <div className="modal-box">
+        <div className="modal-box relative">
+          <ModalCloseButton />
           <h3 className="text-lg font-bold">{t("billing.confirmCancelTitle")}</h3>
           <p className="text-base-content/70 mt-2 text-sm">{t("billing.confirmCancelMessage")}</p>
           <div className="modal-action">

@@ -1,4 +1,7 @@
 {
+  "common": {
+    "close": "Fermer"
+  },
   "status": {
     "operational": "Opérationnel",
     "minorIssues": "Mineur",
@@ -226,8 +229,13 @@
     "title": "Rapports",
     "subtitle": "Un résumé périodique de la disponibilité, des incidents et de la maintenance sur tous vos tableaux.",
     "empty": "Aucun rapport pour le moment. Revenez une fois votre première période terminée.",
-    "selectPrompt": "Sélectionnez un rapport à gauche pour voir ses détails.",
+    "back": "← Retour",
     "generatedOn": "Généré le {{date}}",
+    "name": {
+      "daily": "Rapport quotidien",
+      "weekly": "Rapport hebdomadaire",
+      "monthly": "Rapport mensuel"
+    },
     "overallUptime": "Disponibilité globale",
     "incidents": "Nouveaux incidents",
     "resolvedIncidents_one": "{{count}} résolu",
@@ -246,11 +254,19 @@
     "keywordMatches_one": "{{count}} correspondance de mot-clé",
     "keywordMatches_other": "{{count}} correspondances de mots-clés",
     "table": {
+      "name": "Rapport",
+      "date": "Généré",
+      "view": "Voir le rapport",
       "service": "Service",
       "incidents": "Incidents",
       "maintenance": "Maintenance",
       "uptime": "Disponibilité",
       "downtime": "Indisponibilité"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Page précédente",
+      "next": "Page suivante"
     },
     "delete": "Supprimer",
     "deleting": "Suppression…",

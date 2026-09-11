@@ -1,4 +1,7 @@
 {
+  "common": {
+    "close": "Zavřít"
+  },
   "status": {
     "operational": "Funguje",
     "minorIssues": "Menší",
@@ -230,8 +233,13 @@
     "title": "Přehledy",
     "subtitle": "Pravidelný souhrn dostupnosti, incidentů a údržby napříč vašimi nástěnkami.",
     "empty": "Zatím žádné přehledy. Zkontrolujte to znovu po skončení prvního období.",
-    "selectPrompt": "Vyberte přehled vlevo a zobrazí se jeho podrobnosti.",
+    "back": "← Zpět",
     "generatedOn": "Vytvořeno {{date}}",
+    "name": {
+      "daily": "Denní přehled",
+      "weekly": "Týdenní přehled",
+      "monthly": "Měsíční přehled"
+    },
     "overallUptime": "Celková dostupnost",
     "incidents": "Nové incidenty",
     "resolvedIncidents_one": "{{count}} vyřešený",
@@ -255,11 +263,19 @@
     "keywordMatches_few": "{{count}} shody klíčových slov",
     "keywordMatches_other": "{{count}} shod klíčových slov",
     "table": {
+      "name": "Přehled",
+      "date": "Vytvořeno",
+      "view": "Zobrazit přehled",
       "service": "Služba",
       "incidents": "Incidenty",
       "maintenance": "Údržba",
       "uptime": "Dostupnost",
       "downtime": "Výpadek"
+    },
+    "pagination": {
+      "label": "Stránkování",
+      "previous": "Předchozí strana",
+      "next": "Další strana"
     },
     "delete": "Smazat",
     "deleting": "Mazání…",

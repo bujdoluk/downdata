@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import Spinner from "@/components/Spinner";
+import ModalCloseButton from "@/components/ModalCloseButton";
 import { MAX_MESSAGE_LENGTH } from "@/lib/constants";
 
 // A small "can't find what you're looking for?" prompt — used on the
@@ -56,7 +57,8 @@ export default function RequestCard({
       </button>
 
       <dialog ref={dialogRef} className="modal" onClose={reset}>
-        <div className="modal-box">
+        <div className="modal-box relative">
+          <ModalCloseButton />
           <h3 className="text-lg font-bold">{title}</h3>
           {mutation.isSuccess ? (
             <p className="text-success mt-4 text-sm">{t("requestModal.sent")}</p>

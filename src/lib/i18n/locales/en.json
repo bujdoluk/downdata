@@ -1,4 +1,7 @@
 {
+  "common": {
+    "close": "Close"
+  },
   "status": {
     "operational": "Operational",
     "minorIssues": "Minor",
@@ -226,8 +229,13 @@
     "title": "Reports",
     "subtitle": "A periodic summary of uptime, incidents, and maintenance across your boards.",
     "empty": "No reports yet. Check back after your first period completes.",
-    "selectPrompt": "Select a report on the left to see its details.",
+    "back": "← Back",
     "generatedOn": "Generated {{date}}",
+    "name": {
+      "daily": "Daily report",
+      "weekly": "Weekly report",
+      "monthly": "Monthly report"
+    },
     "overallUptime": "Overall uptime",
     "incidents": "New incidents",
     "resolvedIncidents_one": "{{count}} resolved",
@@ -246,11 +254,19 @@
     "keywordMatches_one": "{{count}} keyword match",
     "keywordMatches_other": "{{count}} keyword matches",
     "table": {
+      "name": "Report",
+      "date": "Generated",
+      "view": "View report",
       "service": "Service",
       "incidents": "Incidents",
       "maintenance": "Maintenance",
       "uptime": "Uptime",
       "downtime": "Downtime"
+    },
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "next": "Next page"
     },
     "delete": "Delete",
     "deleting": "Deleting…",

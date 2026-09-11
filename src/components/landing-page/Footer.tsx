@@ -59,6 +59,9 @@ export default function Footer() {
         <Link href="/pricing" className="link link-hover">
           {t("landing.pricing.heading")}
         </Link>
+        <Link href="/blog" className="link link-hover">
+          {t("footer.blog")}
+        </Link>
         <Link href="/about" className="link link-hover">
           {t("footer.about")}
         </Link>

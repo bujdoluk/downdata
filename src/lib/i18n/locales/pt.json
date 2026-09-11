@@ -469,7 +469,8 @@
       "signUp": "Criar conta",
       "startTrial": "Iniciar período de teste",
       "features": "Funcionalidades",
-      "menu": "Menu"
+      "menu": "Menu",
+      "blog": "Blog"
     },
     "hero": {
       "eyebrow": "Todos os serviços monitorizados estão operacionais",
@@ -671,7 +672,8 @@
     "support": "Suporte",
     "popularServicesTitle": "Serviços Populares",
     "companyTitle": "Empresa",
-    "legalTitle": "Legal"
+    "legalTitle": "Legal",
+    "blog": "Blog"
   },
   "about": {
     "title": "Sobre a <brand>down</brand>DATA",
@@ -720,5 +722,12 @@
     "description": "Ocorreu um erro inesperado. Tente novamente ou volte ao início.",
     "retryButton": "Tentar novamente",
     "homeButton": "Voltar ao downDATA"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Atualizações, análises de incidentes e novidades da equipa downDATA.",
+    "readTime": "{{count}} min de leitura",
+    "backToBlog": "← Voltar ao blog",
+    "empty": "Ainda não há publicações."
   }
 }

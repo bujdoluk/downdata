@@ -482,7 +482,8 @@
       "signUp": "Zaregistrovat se",
       "startTrial": "Vyzkoušet zdarma",
       "features": "Funkce",
-      "menu": "Menu"
+      "menu": "Menu",
+      "blog": "Blog"
     },
     "hero": {
       "eyebrow": "Všechny sledované služby fungují",
@@ -684,7 +685,8 @@
     "support": "Podpora",
     "popularServicesTitle": "Oblíbené služby",
     "companyTitle": "Společnost",
-    "legalTitle": "Právní"
+    "legalTitle": "Právní",
+    "blog": "Blog"
   },
   "about": {
     "title": "O <brand>down</brand>DATA",
@@ -733,5 +735,12 @@
     "description": "Došlo k neočekávané chybě. Zkuste to znovu, nebo se vraťte domů.",
     "retryButton": "Zkusit znovu",
     "homeButton": "Zpět na downDATA"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Novinky, rozbory incidentů a aktuality od týmu downDATA.",
+    "readTime": "{{count}} min čtení",
+    "backToBlog": "← Zpět na blog",
+    "empty": "Zatím nebyly publikovány žádné příspěvky."
   }
 }

@@ -14,6 +14,7 @@ const PUBLIC_EXACT = new Set([
   "/faq",
   "/support",
   "/pricing",
+  "/blog",
   // Clicked from an email client, not this app — the browser completing
   // it may have no session for the account that added the recipient at
   // all. The token itself is the authorization (see
@@ -45,6 +46,10 @@ const PUBLIC_PREFIXES = [
   "/api/cron/",
   "/features/",
   "/integrations/",
+  // The public blog post detail page (see app/blog/[slug]/page.tsx) — the
+  // /blog index above is a separate PUBLIC_EXACT entry since this prefix
+  // alone wouldn't match the bare path.
+  "/blog/",
   // A board's public status page and the endpoint it polls client-side —
   // both unauthenticated by design (see app/status/[slug]/page.tsx and
   // app/api/public/status/[slug]/route.ts). Two separate entries, not

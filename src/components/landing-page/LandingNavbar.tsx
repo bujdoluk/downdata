@@ -44,6 +44,9 @@ export default function LandingNavbar() {
           <Link href="/pricing" className="text-base-content/70 hover:text-base-content transition-colors">
             {t("landing.nav.pricing")}
           </Link>
+          <Link href="/blog" className="text-base-content/70 hover:text-base-content transition-colors">
+            {t("landing.nav.blog")}
+          </Link>
           <Link href="/login?mode=signup" className="text-base-content/70 hover:text-base-content transition-colors">
             {t("landing.nav.signUp")}
           </Link>

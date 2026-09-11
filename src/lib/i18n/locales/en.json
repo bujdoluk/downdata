@@ -469,7 +469,8 @@
       "signUp": "Sign up",
       "startTrial": "Start trial",
       "features": "Features",
-      "menu": "Menu"
+      "menu": "Menu",
+      "blog": "Blog"
     },
     "hero": {
       "eyebrow": "All monitored services operational",
@@ -674,7 +675,8 @@
     "support": "Support",
     "popularServicesTitle": "Popular Services",
     "companyTitle": "Company",
-    "legalTitle": "Legal"
+    "legalTitle": "Legal",
+    "blog": "Blog"
   },
   "about": {
     "title": "About <brand>down</brand>DATA",
@@ -735,5 +737,12 @@
     },
     "cta": "Try app",
     "ctaHint": "No account needed"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Updates, incident retrospectives, and news from the downDATA team.",
+    "readTime": "{{count}} min read",
+    "backToBlog": "← Back to blog",
+    "empty": "No posts published yet."
   }
 }

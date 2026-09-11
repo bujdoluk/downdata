@@ -469,7 +469,8 @@
       "signUp": "Registrieren",
       "startTrial": "Kostenlos testen",
       "features": "Funktionen",
-      "menu": "Menü"
+      "menu": "Menü",
+      "blog": "Blog"
     },
     "hero": {
       "eyebrow": "Alle überwachten Dienste funktionieren",
@@ -671,7 +672,8 @@
     "support": "Support",
     "popularServicesTitle": "Beliebte Dienste",
     "companyTitle": "Unternehmen",
-    "legalTitle": "Rechtliches"
+    "legalTitle": "Rechtliches",
+    "blog": "Blog"
   },
   "about": {
     "title": "Über <brand>down</brand>DATA",
@@ -720,5 +722,12 @@
     "description": "Ein unerwarteter Fehler ist aufgetreten. Versuche es erneut oder kehre zur Startseite zurück.",
     "retryButton": "Erneut versuchen",
     "homeButton": "Zurück zu downDATA"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Updates, Vorfallsanalysen und Neuigkeiten vom downDATA-Team.",
+    "readTime": "{{count}} Min. Lesezeit",
+    "backToBlog": "← Zurück zum Blog",
+    "empty": "Noch keine Beiträge veröffentlicht."
   }
 }

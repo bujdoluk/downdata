@@ -469,7 +469,8 @@
       "signUp": "Registrera dig",
       "startTrial": "Starta provperiod",
       "features": "Funktioner",
-      "menu": "Meny"
+      "menu": "Meny",
+      "blog": "Blogg"
     },
     "hero": {
       "eyebrow": "Alla övervakade tjänster fungerar",
@@ -671,7 +672,8 @@
     "support": "Support",
     "popularServicesTitle": "Populära tjänster",
     "companyTitle": "Företag",
-    "legalTitle": "Juridiskt"
+    "legalTitle": "Juridiskt",
+    "blog": "Blogg"
   },
   "about": {
     "title": "Om <brand>down</brand>DATA",
@@ -720,5 +722,12 @@
     "description": "Ett oväntat fel inträffade. Försök igen eller gå tillbaka till startsidan.",
     "retryButton": "Försök igen",
     "homeButton": "Tillbaka till downDATA"
+  },
+  "blog": {
+    "title": "Blogg",
+    "subtitle": "Nyheter, incidentanalyser och uppdateringar från downDATA-teamet.",
+    "readTime": "{{count}} min läsning",
+    "backToBlog": "← Tillbaka till bloggen",
+    "empty": "Inga inlägg publicerade än."
   }
 }

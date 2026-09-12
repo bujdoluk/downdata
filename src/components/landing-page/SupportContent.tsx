@@ -12,7 +12,7 @@ import { hasNavigatedClientSide } from "@/lib/clientNavigationTracker";
 import { openSupportChat } from "@/features/support/services/tawkChat";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 
-export default function SupportContent({ isAuthenticated }: { isAuthenticated: boolean }) {
+export default function SupportContent({ isAuthenticated, isAdmin }: { isAuthenticated: boolean; isAdmin: boolean }) {
   const { t } = useTranslation();
   const router = useRouter();
   const { consent, openPreferences } = useCookieConsent();
@@ -90,7 +90,7 @@ export default function SupportContent({ isAuthenticated }: { isAuthenticated: b
   if (isAuthenticated) {
     return (
       <div className="flex flex-1">
-        <Sidebar />
+        <Sidebar isAdmin={isAdmin} />
         <main className="flex flex-1 justify-center">{body}</main>
       </div>
     );

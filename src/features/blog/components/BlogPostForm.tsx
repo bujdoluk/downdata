@@ -307,9 +307,9 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
               <div className="flex items-center gap-3">
                 {avatarUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element -- Supabase Storage public URL, not a fixed set of domains next/image can allowlist
-                  <img src={avatarUrl} alt="" className="h-16 w-24 rounded object-cover" />
+                  <img src={avatarUrl} alt="" className="h-16 w-16 rounded-full object-cover" />
                 ) : (
-                  <div className="bg-base-200 h-16 w-24 rounded" aria-hidden="true" />
+                  <div className="bg-base-200 h-16 w-16 rounded-full" aria-hidden="true" />
                 )}
                 <label htmlFor={avatarFileInputId} className={`btn btn-sm ${avatarUploading ? "btn-disabled" : ""}`}>
                   {avatarUploading ? <Spinner size="xs" /> : "Choose image"}

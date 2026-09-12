@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,6 +11,8 @@ import type { Board } from "@/types/board";
 import CatalogBrowser from "@/features/monitors/components/CatalogBrowser";
 import RequestCard from "@/components/RequestCard";
 import SelectDropdown from "@/components/SelectDropdown";
+import { SERVICE_LOGOS } from "@/components/logos";
+import FallbackLogo from "@/components/logos/FallbackLogo";
 import { queryKeys } from "@/lib/queryKeys";
 import { TAB_BG_STYLE } from "@/lib/utils";
 
@@ -35,12 +37,45 @@ export default function ServiceCatalogPicker({
   const [boards, setBoards] = useState(initialBoards);
   const [boardId, setBoardId] = useState(initialBoardId ?? initialBoards[0]?.id);
   const [query, setQuery] = useState("");
-  // A Set, not a single host derived from addMutation.variables — the
-  // catalog grid can have several Add buttons clicked before the first
-  // request settles, and deriving "pending" from one shared mutation's
-  // variables meant the second click's host silently replaced the first's,
-  // clearing its spinner early.
+  const [dropdownDismissed, setDropdownDismissed] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const [pendingHosts, setPendingHosts] = useState<Set<string>>(new Set());
+  const trimmedQuery = query.trim();
+  const suggestions = trimmedQuery && !dropdownDismissed
+    ? catalog.filter((entry) => entry.name.toLowerCase().startsWith(trimmedQuery.toLowerCase()))
+    : [];
+
+  function handleQueryChange(value: string) {
+    setQuery(value);
+    setDropdownDismissed(false);
+    setHighlightedIndex(-1);
+  }
+
+  function selectSuggestion(entry: Catalog) {
+    setQuery(entry.name);
+    setDropdownDismissed(true);
+    setHighlightedIndex(-1);
+  }
+
+  function handleSearchKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (suggestions.length === 0) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setHighlightedIndex((i) => Math.min(i + 1, suggestions.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setHighlightedIndex((i) => Math.max(i - 1, 0));
+    } else if (e.key === "Enter") {
+      const entry = suggestions[highlightedIndex];
+      if (entry) {
+        e.preventDefault();
+        selectSuggestion(entry);
+      }
+    } else if (e.key === "Escape") {
+      setDropdownDismissed(true);
+      setHighlightedIndex(-1);
+    }
+  }
 
   function applyUpdatedBoard(updatedBoard: Board) {
     setBoards((prev) => prev.map((board) => (board.id === updatedBoard.id ? updatedBoard : board)));
@@ -49,10 +84,6 @@ export default function ServiceCatalogPicker({
   }
 
   const board = boards.find((b) => b.id === boardId);
-  // Doubles as both "already on this board" (isMonitored, unused while
-  // adding) and "just added" (the button's checkmark) — both are exactly
-  // the same set once board state updates on a successful add, so there's
-  // no separate optimistic-UI state to keep in sync.
   const addedHosts = new Set(catalog.filter((entry) => board?.Slugs.includes(entry.slug)).map((entry) => entry.host));
 
   const addMutation = useMutation({
@@ -131,19 +162,39 @@ export default function ServiceCatalogPicker({
             defaultChecked
           />
           <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={t("nav.searchPlaceholder", { count: catalog.length })}
-              className="input input-bordered input-sm w-full max-w-sm"
-              // .input's own background-color rule (globals.css) is
-              // unlayered, so it beats a plain Tailwind bg-[...] utility
-              // regardless of source order — inline style is what actually
-              // wins here.
-              style={{ backgroundColor: "var(--color-surface-2)" }}
-              autoFocus
-            />
+            <div className="relative w-full max-w-sm">
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => handleQueryChange(e.target.value)}
+                onKeyDown={handleSearchKeyDown}
+                placeholder={t("nav.searchPlaceholder", { count: catalog.length })}
+                className="input input-bordered input-sm w-full"
+                style={{ backgroundColor: "var(--color-surface-2)" }}
+                autoFocus
+              />
+
+              {suggestions.length > 0 && (
+                <ul className="menu menu-sm border-base-300 absolute top-full left-0 z-20 mt-2 w-full flex-nowrap border bg-[var(--color-surface-2)] p-1 shadow-xl">
+                  {suggestions.map((entry, index) => {
+                    const Logo = SERVICE_LOGOS[entry.slug] ?? FallbackLogo;
+                    return (
+                      <li key={entry.slug}>
+                        <button
+                          type="button"
+                          onMouseEnter={() => setHighlightedIndex(index)}
+                          onClick={() => selectSuggestion(entry)}
+                          className={`flex items-center gap-2.5 ${index === highlightedIndex ? "menu-focus" : ""}`}
+                        >
+                          <Logo size={18} name={entry.name} />
+                          {entry.name}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
 
             {addMutation.isError && (
               <div role="alert" className="alert alert-error alert-soft mt-3 py-2 text-xs">

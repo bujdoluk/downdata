@@ -146,8 +146,8 @@ export default function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
         <SidebarNavLink href="/integrations" icon={<PlugIcon className="shrink-0" />} label={t("nav.integrations")} collapsed={collapsed} />
         <SidebarNavLink href="/status-pages" icon={<GlobeIcon className="shrink-0" />} label={t("nav.statusPages")} collapsed={collapsed} />
         <SidebarNavLink href="/early-warnings" icon={<RadarIcon className="shrink-0" />} label={t("nav.earlyWarnings")} collapsed={collapsed} />
-        <SidebarNavLink href="/history" icon={<HistoryIcon className="shrink-0" />} label={t("nav.history")} collapsed={collapsed} />
         <SidebarNavLink href="/reports" icon={<ReportIcon className="shrink-0" />} label={t("nav.reports")} collapsed={collapsed} />
+        <SidebarNavLink href="/history" icon={<HistoryIcon className="shrink-0" />} label={t("nav.history")} collapsed={collapsed} />
       </div>
 
       <div className="mt-auto flex w-full flex-col">

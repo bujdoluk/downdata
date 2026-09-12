@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { createClient } from "@/lib/supabase/server";
+import { isAdminUser } from "@/features/blog/services/requireAdminUser";
 import SupportContent from "@/components/landing-page/SupportContent";
 
 const title = "Support | downDATA";
@@ -30,6 +31,10 @@ export default async function Page() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+  // Same check (dashboard)/layout.tsx does for its own Sidebar render —
+  // SupportContent renders that same Sidebar for a signed-in visitor, and
+  // needs this too or "Blog admin" can never show up there.
+  const isAdmin = await isAdminUser();
 
-  return <SupportContent isAuthenticated={Boolean(user)} />;
+  return <SupportContent isAuthenticated={Boolean(user)} isAdmin={isAdmin} />;
 }

@@ -25,9 +25,9 @@ export default function BlogPostMeta({
     <div className={`flex items-center gap-2 text-xs ${tone === "light" ? "text-white/90" : "text-base-content/60"}`}>
       {post.avatarUrl ? (
         // eslint-disable-next-line @next/next/no-img-element -- Supabase Storage public URL, not a fixed set of domains next/image can allowlist
-        <img src={post.avatarUrl} alt="" className="h-5 w-5 shrink-0 rounded object-cover" />
+        <img src={post.avatarUrl} alt="" className="h-10 w-10 shrink-0 rounded-full object-cover" />
       ) : (
-        <Logo className="h-5 w-5 shrink-0" />
+        <Logo className="h-10 w-10 shrink-0" />
       )}
       {post.publishedAt && <span>{formatDate(post.publishedAt.slice(0, 10))}</span>}
       <span aria-hidden="true">·</span>

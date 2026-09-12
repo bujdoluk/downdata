@@ -47,7 +47,7 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
 
   return (
     <div className="mx-auto w-full max-w-4xl">
-      <GoBackLink />
+      <GoBackLink href="/boards" />
 
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold">Manage blog</h1>

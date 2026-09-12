@@ -370,6 +370,7 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | isAuthenticated | boolean | Yes | — |  |
+| isAdmin | boolean | Yes | — |  |
 
 ### ListDetailShell
 
@@ -1230,6 +1231,18 @@ _No props._
 |---|---|---|---|---|
 | post | BlogPost | Yes | — |  |
 
+### BlogCardBody
+
+`src/features/blog/components/BlogCardBody.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| title | string | Yes | — |  |
+| imageUrl | string \| null | Yes | — |  |
+| publishedAt | string \| null | Yes | — |  |
+| bodyHtml | string | Yes | — |  |
+| avatarUrl | string \| null | Yes | — |  |
+
 ### BlogPageContent
 
 `src/features/blog/components/BlogPageContent.tsx`
@@ -1283,6 +1296,14 @@ _No props._
 |---|---|---|---|---|
 | ref | Ref<BlogPostPreviewModalHandle> \| undefined | No | — | Allows getting a ref to the component instance. Once the component unmounts, React will set `ref.current` to `null` (or call the ref with `null` if you passed a callback ref). @see {@link https://react.dev/learn/referencing-values-with-refs#refs-and-the-dom React Docs} |
 | key | Key \| null \| undefined | No | — |  |
+
+### GoBackLink
+
+`src/features/blog/components/GoBackLink.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| href | string | Yes | — |  |
 
 ### BoardActiveIncidentsPanel
 

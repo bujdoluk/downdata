@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getSupabaseClient } from "@/lib/supabase";
 import { nowIso } from "@/lib/formatTime";
 import type { BlogPost, BlogPostInput } from "@/features/blog/types";
@@ -54,7 +55,11 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 // want publicly-visible posts (the public detail page) must check
 // `publishedAt` themselves, same as resolveBoardById leaving authorization
 // to its own callers rather than baking one policy into every reader.
-export async function resolvePostBySlug(slug: string): Promise<BlogPost | undefined> {
+//
+// Wrapped in React's cache() — /blog/[slug] calls this once in
+// generateMetadata and once in the page component; cache() dedupes the two
+// into a single request within the same render.
+export const resolvePostBySlug = cache(async (slug: string): Promise<BlogPost | undefined> => {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from("blog_posts")
@@ -63,7 +68,7 @@ export async function resolvePostBySlug(slug: string): Promise<BlogPost | undefi
     .maybeSingle();
   if (error) throw error;
   return data ? toBlogPost(data as BlogPostRow) : undefined;
-}
+});
 
 export async function createPost(input: BlogPostInput): Promise<BlogPost> {
   const supabase = getSupabaseClient();

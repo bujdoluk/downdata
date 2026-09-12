@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseClient } from "@/lib/supabase";
 import type { Board } from "@/types/board";
@@ -15,12 +16,15 @@ export async function getAllBoards(): Promise<Board[]> {
   return (data as BoardRow[] | null)?.map(toBoard) ?? [];
 }
 
-export async function resolveBoardById(id: string): Promise<Board | undefined> {
+// Wrapped in React's cache() — /boards/[id] calls this once in
+// generateMetadata and once in the page component; cache() dedupes the two
+// into a single request within the same render.
+export const resolveBoardById = cache(async (id: string): Promise<Board | undefined> => {
   const supabase = await createClient();
   const { data, error } = await supabase.from("boards").select("id, name, service_slugs").eq("id", id).maybeSingle();
   if (error) throw error;
   return data ? toBoard(data as BoardRow) : undefined;
-}
+});
 
 export async function addBoard(name: string): Promise<Board> {
   const supabase = await createClient();

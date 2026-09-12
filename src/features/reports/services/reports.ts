@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import type { ReportPayload, StoredReport } from "@/features/reports/types";
 
@@ -36,7 +37,11 @@ export async function getAllOwnReports(): Promise<StoredReport[]> {
 // that never existed) just comes back null rather than erroring, same
 // convention as deleteOwnReport below. The page itself turns that into a
 // 404 via notFound().
-export async function getOwnReportById(id: string): Promise<StoredReport | null> {
+//
+// Wrapped in React's cache() — /reports/[id] calls this once in
+// generateMetadata and once in the page component; cache() dedupes the two
+// into a single request within the same render.
+export const getOwnReportById = cache(async (id: string): Promise<StoredReport | null> => {
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("reports")
@@ -45,7 +50,7 @@ export async function getOwnReportById(id: string): Promise<StoredReport | null>
     .maybeSingle();
   if (error) throw error;
   return data ? toStoredReport(data as ReportRow) : null;
-}
+});
 
 // RLS (0034_report_deletion.sql's reports_delete) already scopes this to
 // the caller's own rows — a mismatched id (someone else's report, or one

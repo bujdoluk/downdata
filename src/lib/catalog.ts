@@ -1,32 +1,44 @@
+import { cache } from "react";
 import { getSupabaseClient } from "@/lib/supabase";
 import { slugify } from "@/lib/slugify";
 import type { Catalog } from "@/types/service";
 
 type CatalogRow = { slug: string; name: string; host: string; category: string; component_name_prefix: string | null };
 
-export async function getCatalog(): Promise<Catalog[]> {
-  const supabase = getSupabaseClient();
-  const { data, error } = await supabase
-    .from("catalog")
-    .select("slug, name, host, category, component_name_prefix")
-    .order("name");
-  if (error) throw error;
-  return ((data ?? []) as CatalogRow[]).map((row) => ({
+const SELECT_COLUMNS = "slug, name, host, category, component_name_prefix";
+
+function toCatalog(row: CatalogRow): Catalog {
+  return {
     slug: row.slug,
     name: row.name,
     host: row.host,
     category: row.category as Catalog["category"],
     componentNamePrefix: row.component_name_prefix ?? undefined,
-  }));
+  };
+}
+
+export async function getCatalog(): Promise<Catalog[]> {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase.from("catalog").select(SELECT_COLUMNS).order("name");
+  if (error) throw error;
+  return ((data ?? []) as CatalogRow[]).map(toCatalog);
 }
 
 // Used only to confirm a slug is a real, known host (detail/history pages
 // 404 otherwise) — never for ownership. catalog is public reference data,
-// so this stays a plain lookup with no per-user scoping.
-export async function resolveCatalogEntryBySlug(slug: string): Promise<Catalog | undefined> {
-  const catalog = await getCatalog();
-  return catalog.find((entry) => entry.slug === slug);
-}
+// so this stays a plain lookup with no per-user scoping. A direct indexed
+// lookup, not getCatalog().find(...) — that fetched and scanned the whole
+// ~400-row table just to resolve one slug, on every call.
+//
+// Wrapped in React's cache() — /monitors/[slug] and /services/[slug] both
+// call this once in generateMetadata and once in the page component; cache()
+// dedupes the two into a single request within the same render.
+export const resolveCatalogEntryBySlug = cache(async (slug: string): Promise<Catalog | undefined> => {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase.from("catalog").select(SELECT_COLUMNS).eq("slug", slug).maybeSingle();
+  if (error) throw error;
+  return data ? toCatalog(data as CatalogRow) : undefined;
+});
 
 // Shared by /api/incidents and /api/maintenance to attach a full `service`
 // object to each stored row they return, scoped to just the caller's own

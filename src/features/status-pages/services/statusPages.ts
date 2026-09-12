@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseClient } from "@/lib/supabase";
 import { getCatalog } from "@/lib/catalog";
@@ -152,7 +153,13 @@ export async function getPublicStatusPageBySlug(slug: string): Promise<PublicSta
 // app/status/[slug]/page.tsx's initial server render and
 // GET /api/public/status/[slug] (that same page's client-side 60s poll),
 // so the assembly logic exists in exactly one place.
-export async function getPublicStatusPage(slug: string): Promise<PublicStatusPage | null> {
+//
+// Wrapped in React's cache() — app/status/[slug]/page.tsx calls this once
+// in generateMetadata and once in the page component; without dedup, that
+// doubled a DB read + a full catalog fetch + a live upstream status fetch
+// per tracked service + a per-service uptime computation, all on every
+// load of a public status page. cache() collapses the two into one.
+export const getPublicStatusPage = cache(async (slug: string): Promise<PublicStatusPage | null> => {
   const statusPage = await getPublicStatusPageBySlug(slug);
   if (!statusPage) return null;
 
@@ -191,4 +198,4 @@ export async function getPublicStatusPage(slug: string): Promise<PublicStatusPag
     hideBranding: statusPage.hideBranding,
     services,
   };
-}
+});

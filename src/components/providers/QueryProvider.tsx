@@ -19,7 +19,10 @@ export default function QueryProvider({ children }: { children: React.ReactNode 
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
+      {/* Dev-only — this component wraps the entire app (root layout), so
+          an unconditional render here would ship devtools' JS to every
+          real visitor on every page. */}
+      {process.env.NODE_ENV === "development" && <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />}
     </QueryClientProvider>
   );
 }

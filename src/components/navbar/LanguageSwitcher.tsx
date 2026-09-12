@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
+import { loadLocale } from "@/lib/i18n/loadLocale";
 import { languages, getLanguage } from "@/lib/i18n/languages";
 import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 
@@ -21,7 +22,9 @@ export default function LanguageSwitcher({
   useEffect(() => {
     try {
       const saved = localStorage.getItem("language");
-      if (saved && saved !== i18n.language) i18n.changeLanguage(saved);
+      // Loads the saved locale's resource bundle before switching to it —
+      // i18n.ts only bundles the default locale eagerly, see its comment.
+      if (saved && saved !== i18n.language) loadLocale(saved).then(() => i18n.changeLanguage(saved));
     } catch {
       // ignore
     }
@@ -29,7 +32,8 @@ export default function LanguageSwitcher({
 
   useCloseDetailsOnOutsideClick(detailsRef);
 
-  function handleChange(code: string) {
+  async function handleChange(code: string) {
+    await loadLocale(code);
     i18n.changeLanguage(code);
     try {
       localStorage.setItem("language", code);

@@ -22,12 +22,13 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ sl
   const title = typeof body?.title === "string" ? body.title.trim() : "";
   const bodyHtml = typeof body?.bodyHtml === "string" ? body.bodyHtml.trim() : "";
   const imageUrl = typeof body?.imageUrl === "string" && body.imageUrl.trim() ? body.imageUrl.trim() : null;
+  const avatarUrl = typeof body?.avatarUrl === "string" && body.avatarUrl.trim() ? body.avatarUrl.trim() : null;
 
   if (!title || !bodyHtml) {
     return NextResponse.json({ error: "Title and body are required." }, { status: 400 });
   }
 
-  const post = await updatePost(slug, { title, bodyHtml, imageUrl });
+  const post = await updatePost(slug, { title, bodyHtml, imageUrl, avatarUrl });
   if (!post) return NextResponse.json({ error: "Post not found." }, { status: 404 });
   return NextResponse.json(post);
 }

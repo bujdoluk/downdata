@@ -12,7 +12,7 @@ export default async function EditBlogPostPage({ params }: { params: Promise<{ s
 
   return (
     <main className="flex flex-1 justify-center p-6">
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-6xl lg:flex lg:flex-col">
         <h1 className="mb-6 text-lg font-semibold">Edit post</h1>
         <BlogPostForm post={post} />
       </div>

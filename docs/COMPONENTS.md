@@ -1136,6 +1136,14 @@ _No props._
 |---|---|---|---|---|
 | collapsed | boolean | Yes | — |  |
 
+### Sidebar
+
+`src/components/sidebar/Sidebar.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| isAdmin | boolean \| undefined | No | false |  |
+
 ### SidebarNavLink
 
 `src/components/sidebar/SidebarNavLink.tsx`
@@ -1230,6 +1238,18 @@ _No props._
 |---|---|---|---|---|
 | posts | BlogPost[] | Yes | — |  |
 
+### BlogPostBody
+
+`src/features/blog/components/BlogPostBody.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| title | string | Yes | — |  |
+| imageUrl | string \| null | Yes | — |  |
+| bodyHtml | string | Yes | — |  |
+| publishedAt | string \| null | Yes | — |  |
+| avatarUrl | string \| null | Yes | — |  |
+
 ### BlogPostContent
 
 `src/features/blog/components/BlogPostContent.tsx`
@@ -1252,8 +1272,17 @@ _No props._
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
-| post | BlogPost | Yes | — |  |
+| post | Pick<BlogPost, "publishedAt" \| "bodyHtml" \| "avatarUrl"> | Yes | — |  |
 | tone | "light" \| "dark" \| undefined | No | light |  |
+
+### BlogPostPreviewModal
+
+`src/features/blog/components/BlogPostPreviewModal.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| ref | Ref<BlogPostPreviewModalHandle> \| undefined | No | — | Allows getting a ref to the component instance. Once the component unmounts, React will set `ref.current` to `null` (or call the ref with `null` if you passed a callback ref). @see {@link https://react.dev/learn/referencing-values-with-refs#refs-and-the-dom React Docs} |
+| key | Key \| null \| undefined | No | — |  |
 
 ### BoardActiveIncidentsPanel
 

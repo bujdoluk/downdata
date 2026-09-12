@@ -9,6 +9,8 @@ import { formatDateTime } from "@/lib/formatTime";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import Spinner from "@/components/Spinner";
 import ModalCloseButton from "@/components/ModalCloseButton";
+import GoBackLink from "@/features/blog/components/GoBackLink";
+import BlogPostPreviewModal, { type BlogPostPreviewModalHandle } from "@/features/blog/components/BlogPostPreviewModal";
 import type { BlogPost } from "@/features/blog/types";
 
 // Internal admin tooling — see BlogPostForm.tsx's own comment on why this
@@ -18,6 +20,7 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
   const timeZone = useTimeZone();
   const deleteDialogRef = useRef<HTMLDialogElement>(null);
   const pendingDeleteSlug = useRef<string | null>(null);
+  const previewRef = useRef<BlogPostPreviewModalHandle>(null);
 
   const publishMutation = useMutation({
     mutationFn: ({ slug, published }: { slug: string; published: boolean }) =>
@@ -44,6 +47,8 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
 
   return (
     <div className="mx-auto w-full max-w-4xl">
+      <GoBackLink />
+
       <div className="flex items-center justify-between">
         <h1 className="text-lg font-semibold">Manage blog</h1>
         <Link href="/admin/blog/new" className="btn btn-info btn-sm">
@@ -79,6 +84,21 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
                     </td>
                     <td className="text-base-content/60 text-xs">{formatDateTime(post.createdAt, timeZone)}</td>
                     <td className="flex justify-end gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          previewRef.current?.open({
+                            title: post.title,
+                            imageUrl: post.imageUrl,
+                            bodyHtml: post.bodyHtml,
+                            publishedAt: post.publishedAt,
+                            avatarUrl: post.avatarUrl,
+                          })
+                        }
+                        className="btn btn-ghost btn-xs"
+                      >
+                        Preview
+                      </button>
                       <Link href={`/admin/blog/${post.slug}/edit`} className="btn btn-ghost btn-xs">
                         Edit
                       </Link>
@@ -127,6 +147,8 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
           <button>Cancel</button>
         </form>
       </dialog>
+
+      <BlogPostPreviewModal ref={previewRef} />
     </div>
   );
 }

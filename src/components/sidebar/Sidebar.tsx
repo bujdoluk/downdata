@@ -40,7 +40,7 @@ function ChevronIcon({ className, collapsed }: { className?: string; collapsed: 
 
 const STORAGE_KEY = "sidebarCollapsed:v2";
 
-export default function Sidebar() {
+export default function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   const { t } = useTranslation();
   const router = useRouter();
   const [collapsed, setCollapsed] = useState(false);
@@ -190,6 +190,16 @@ export default function Sidebar() {
                 {t("nav.support")}
               </Link>
             </li>
+            {isAdmin && (
+              <li>
+                {/* Plain English, not t() — this only ever renders for the
+                    site owner (see requireAdminUser.ts), same scoping as
+                    the rest of the admin-only surface it links to. */}
+                <Link href="/admin/blog" onClick={() => closeSettingsMenu()}>
+                  Blog admin
+                </Link>
+              </li>
+            )}
             <li>
               <button type="button" onClick={handleLogout}>
                 {t("nav.logout")}

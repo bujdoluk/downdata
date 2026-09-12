@@ -7,9 +7,9 @@ export type BlogPost = {
   title: string;
   bodyHtml: string;
   imageUrl: string | null;
-  // Unused for now — see the migration's own comment. Always null until a
-  // future per-post logo picker fills it in.
-  logoSlug: string | null;
+  // Uploaded the same way as imageUrl (see BlogPostForm's Avatar field) —
+  // shown in BlogPostMeta instead of the downDATA logo when set.
+  avatarUrl: string | null;
   // Null = draft. A real ISO instant = published, and is the date shown.
   publishedAt: string | null;
   createdAt: string;
@@ -20,4 +20,5 @@ export type BlogPostInput = {
   slug: string;
   bodyHtml: string;
   imageUrl: string | null;
+  avatarUrl: string | null;
 };

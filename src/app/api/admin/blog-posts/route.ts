@@ -13,6 +13,7 @@ export async function POST(request: Request) {
   const bodyHtml = typeof body?.bodyHtml === "string" ? body.bodyHtml.trim() : "";
   const rawSlug = typeof body?.slug === "string" ? body.slug.trim() : "";
   const imageUrl = typeof body?.imageUrl === "string" && body.imageUrl.trim() ? body.imageUrl.trim() : null;
+  const avatarUrl = typeof body?.avatarUrl === "string" && body.avatarUrl.trim() ? body.avatarUrl.trim() : null;
 
   if (!title || !bodyHtml) {
     return NextResponse.json({ error: "Title and body are required." }, { status: 400 });
@@ -24,7 +25,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const post = await createPost({ title, slug, bodyHtml, imageUrl });
+    const post = await createPost({ title, slug, bodyHtml, imageUrl, avatarUrl });
     return NextResponse.json(post, { status: 201 });
   } catch (error) {
     if ((error as { code?: string })?.code === "23505") {

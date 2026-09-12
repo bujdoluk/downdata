@@ -7,7 +7,7 @@ type BlogPostRow = {
   title: string;
   body_html: string;
   image_url: string | null;
-  logo_slug: string | null;
+  avatar_url: string | null;
   published_at: string | null;
   created_at: string;
 };
@@ -18,7 +18,7 @@ function toBlogPost(row: BlogPostRow): BlogPost {
     title: row.title,
     bodyHtml: row.body_html,
     imageUrl: row.image_url,
-    logoSlug: row.logo_slug,
+    avatarUrl: row.avatar_url,
     publishedAt: row.published_at,
     createdAt: row.created_at,
   };
@@ -32,7 +32,7 @@ export async function getPublishedPosts(): Promise<BlogPost[]> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from("blog_posts")
-    .select("slug, title, body_html, image_url, logo_slug, published_at, created_at")
+    .select("slug, title, body_html, image_url, avatar_url, published_at, created_at")
     .not("published_at", "is", null)
     .order("published_at", { ascending: false });
   if (error) throw error;
@@ -44,7 +44,7 @@ export async function getAllPosts(): Promise<BlogPost[]> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from("blog_posts")
-    .select("slug, title, body_html, image_url, logo_slug, published_at, created_at")
+    .select("slug, title, body_html, image_url, avatar_url, published_at, created_at")
     .order("created_at", { ascending: false });
   if (error) throw error;
   return (data as BlogPostRow[] | null)?.map(toBlogPost) ?? [];
@@ -58,7 +58,7 @@ export async function resolvePostBySlug(slug: string): Promise<BlogPost | undefi
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from("blog_posts")
-    .select("slug, title, body_html, image_url, logo_slug, published_at, created_at")
+    .select("slug, title, body_html, image_url, avatar_url, published_at, created_at")
     .eq("slug", slug)
     .maybeSingle();
   if (error) throw error;
@@ -69,8 +69,14 @@ export async function createPost(input: BlogPostInput): Promise<BlogPost> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from("blog_posts")
-    .insert({ slug: input.slug, title: input.title, body_html: input.bodyHtml, image_url: input.imageUrl })
-    .select("slug, title, body_html, image_url, logo_slug, published_at, created_at")
+    .insert({
+      slug: input.slug,
+      title: input.title,
+      body_html: input.bodyHtml,
+      image_url: input.imageUrl,
+      avatar_url: input.avatarUrl,
+    })
+    .select("slug, title, body_html, image_url, avatar_url, published_at, created_at")
     .single();
   if (error) throw error;
   return toBlogPost(data as BlogPostRow);
@@ -87,9 +93,9 @@ export async function updatePost(
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from("blog_posts")
-    .update({ title: input.title, body_html: input.bodyHtml, image_url: input.imageUrl })
+    .update({ title: input.title, body_html: input.bodyHtml, image_url: input.imageUrl, avatar_url: input.avatarUrl })
     .eq("slug", slug)
-    .select("slug, title, body_html, image_url, logo_slug, published_at, created_at")
+    .select("slug, title, body_html, image_url, avatar_url, published_at, created_at")
     .maybeSingle();
   if (error) throw error;
   return data ? toBlogPost(data as BlogPostRow) : undefined;
@@ -108,7 +114,7 @@ export async function setPostPublished(slug: string, published: boolean): Promis
     .from("blog_posts")
     .update({ published_at: published ? nowIso() : null })
     .eq("slug", slug)
-    .select("slug, title, body_html, image_url, logo_slug, published_at, created_at")
+    .select("slug, title, body_html, image_url, avatar_url, published_at, created_at")
     .maybeSingle();
   if (error) throw error;
   return data ? toBlogPost(data as BlogPostRow) : undefined;

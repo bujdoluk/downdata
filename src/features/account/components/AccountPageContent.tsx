@@ -12,6 +12,8 @@ import ThemeToggle from "@/components/navbar/ThemeToggle";
 import LanguageSwitcher from "@/components/navbar/LanguageSwitcher";
 import Spinner from "@/components/Spinner";
 import ModalCloseButton from "@/components/ModalCloseButton";
+import BackLink from "@/components/BackLink";
+import PageHeader from "@/components/PageHeader";
 import { UserIcon } from "@/components/icons/NavIcons";
 import { createClient } from "@/lib/supabase/client";
 import { AuthActionError, logOut, updatePassword } from "@/lib/supabase/auth";
@@ -67,7 +69,12 @@ export default function AccountPageContent({
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+    <div className="flex w-full flex-col gap-6">
+      <PageHeader back={<BackLink fallbackHref="/boards" label={t("common.back")} />}>
+        <h1 className="text-lg font-semibold">{t("nav.account")}</h1>
+      </PageHeader>
+
+      <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
       <div className="card card-border bg-base-200">
         <div className="card-body">
           <div className="flex items-center gap-4">
@@ -161,6 +168,7 @@ export default function AccountPageContent({
           <div className="stat-title text-xs">{t("account.statsIntegrations")}</div>
           <div className="stat-value text-3xl">{integrationCount}</div>
         </Link>
+      </div>
       </div>
     </div>
   );

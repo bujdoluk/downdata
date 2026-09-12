@@ -9,7 +9,8 @@ import { formatDateTime } from "@/lib/formatTime";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import Spinner from "@/components/Spinner";
 import ModalCloseButton from "@/components/ModalCloseButton";
-import GoBackLink from "@/features/blog/components/GoBackLink";
+import BackLink from "@/components/BackLink";
+import PageHeader from "@/components/PageHeader";
 import BlogPostPreviewModal, { type BlogPostPreviewModalHandle } from "@/features/blog/components/BlogPostPreviewModal";
 import type { BlogPost } from "@/features/blog/types";
 
@@ -46,16 +47,17 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-4xl">
-      <GoBackLink href="/boards" />
+    <div className="flex w-full flex-col">
+      <PageHeader back={<BackLink fallbackHref="/boards" label="← Back" />}>
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold">Manage blog</h1>
+          <Link href="/admin/blog/new" className="btn btn-info btn-sm">
+            + New post
+          </Link>
+        </div>
+      </PageHeader>
 
-      <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold">Manage blog</h1>
-        <Link href="/admin/blog/new" className="btn btn-info btn-sm">
-          + New post
-        </Link>
-      </div>
-
+      <div className="mx-auto w-full max-w-4xl">
       {posts.length === 0 ? (
         <p className="text-base-content/50 mt-8 text-sm">No posts yet.</p>
       ) : (
@@ -149,6 +151,7 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
       </dialog>
 
       <BlogPostPreviewModal ref={previewRef} />
+      </div>
     </div>
   );
 }

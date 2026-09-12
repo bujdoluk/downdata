@@ -10,6 +10,7 @@ import { formatDate, formatDateTime, formatDuration } from "@/lib/formatTime";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import Spinner from "@/components/Spinner";
 import ModalCloseButton from "@/components/ModalCloseButton";
+import PageHeader from "@/components/PageHeader";
 import type { StoredReport } from "@/features/reports/types";
 
 // The full per-board/per-service breakdown for one generated report — the
@@ -39,26 +40,30 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
   });
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 self-start">
-      <Link href="/reports" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
-        {t("reports.back")}
-      </Link>
-
-      <div className="mt-2 flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h1 className="text-base-content text-xl font-semibold">{t(`reports.name.${report.interval}`)}</h1>
-          {/* periodStart/periodEnd are plain calendar dates (formatDate's own
-              contract) — generatedAt is a full timestamptz instant, so it
-              needs formatDateTime's timezone-aware conversion instead. */}
-          <p className="text-base-content/50 mt-1 text-xs">
-            {formatDate(report.periodStart)} – {formatDate(report.periodEnd)} ·{" "}
-            {t("reports.generatedOn", { date: formatDateTime(report.generatedAt, timeZone) })}
-          </p>
+    <div className="flex w-full flex-col gap-4 self-start">
+      <PageHeader
+        back={
+          <Link href="/reports" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
+            {t("reports.back")}
+          </Link>
+        }
+      >
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-4">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <h1 className="text-base-content text-xl font-semibold">{t(`reports.name.${report.interval}`)}</h1>
+            {/* periodStart/periodEnd are plain calendar dates (formatDate's own
+                contract) — generatedAt is a full timestamptz instant, so it
+                needs formatDateTime's timezone-aware conversion instead. */}
+            <p className="text-base-content/50 mt-1 text-xs">
+              {formatDate(report.periodStart)} – {formatDate(report.periodEnd)} ·{" "}
+              {t("reports.generatedOn", { date: formatDateTime(report.generatedAt, timeZone) })}
+            </p>
+          </div>
+          <button type="button" disabled={deleteMutation.isPending} onClick={() => confirmRef.current?.showModal()} className="btn btn-ghost btn-sm text-error shrink-0">
+            {deleteMutation.isPending ? t("reports.deleting") : t("reports.delete")}
+          </button>
         </div>
-        <button type="button" disabled={deleteMutation.isPending} onClick={() => confirmRef.current?.showModal()} className="btn btn-ghost btn-sm text-error shrink-0">
-          {deleteMutation.isPending ? t("reports.deleting") : t("reports.delete")}
-        </button>
-      </div>
 
       <dialog ref={confirmRef} className="modal">
         <div className="modal-box relative">
@@ -170,6 +175,8 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
           </div>
         ))}
       </div>
+      </div>
+      </PageHeader>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 {
   "common": {
-    "close": "Chiudi"
+    "close": "Chiudi",
+    "back": "← Indietro"
   },
   "status": {
     "operational": "Operativo",

@@ -11,6 +11,7 @@ import type { Board } from "@/types/board";
 import CatalogBrowser from "@/features/monitors/components/CatalogBrowser";
 import RequestCard from "@/components/RequestCard";
 import SelectDropdown from "@/components/SelectDropdown";
+import PageHeader from "@/components/PageHeader";
 import { SERVICE_LOGOS } from "@/components/logos";
 import FallbackLogo from "@/components/logos/FallbackLogo";
 import { queryKeys } from "@/lib/queryKeys";
@@ -116,13 +117,17 @@ export default function ServiceCatalogPicker({
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col self-start">
-      <Link href={backHref} className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
-        {t("addService.back")}
-      </Link>
-
-      <h1 className="text-base-content mt-2 text-lg font-semibold">{t("addService.title")}</h1>
-      <p className="text-base-content/60 mt-1 text-sm">{t("addService.subtitle")}</p>
+    <div className="flex w-full flex-col self-start">
+      <PageHeader
+        back={
+          <Link href={backHref} className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
+            {t("addService.back")}
+          </Link>
+        }
+      >
+      <div className="mx-auto flex w-full max-w-6xl flex-col">
+        <h1 className="text-base-content text-lg font-semibold">{t("addService.title")}</h1>
+        <p className="text-base-content/60 mt-1 text-sm">{t("addService.subtitle")}</p>
 
       <div className="mt-4 flex max-w-xs flex-col gap-1">
         {/* Not htmlFor-linked to the dropdown below — <details>/<summary>
@@ -228,6 +233,8 @@ export default function ServiceCatalogPicker({
 
         <RequestCard title={t("addService.requestCard.title")} buttonLabel={t("addService.requestCard.button")} kind="service" />
       </div>
+      </div>
+      </PageHeader>
     </div>
   );
 }

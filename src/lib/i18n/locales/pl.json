@@ -1,6 +1,7 @@
 {
   "common": {
-    "close": "Zamknij"
+    "close": "Zamknij",
+    "back": "← Wstecz"
   },
   "status": {
     "operational": "Sprawny",

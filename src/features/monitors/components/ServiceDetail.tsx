@@ -9,6 +9,7 @@ import type { Slug, ServiceSummaryResponse, StatuspageComponent, Status } from "
 import type { IntegrationDefinition } from "@/types/integration";
 import { SERVICE_LOGOS } from "@/components/logos";
 import FallbackLogo from "@/components/logos/FallbackLogo";
+import PageHeader from "@/components/PageHeader";
 import OutageTracker from "@/features/monitors/components/OutageTracker";
 import SearchFilterInput from "@/components/SearchFilterInput";
 import { InfoIcon } from "@/components/icons/NavIcons";
@@ -203,44 +204,48 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
   const Logo = SERVICE_LOGOS[slug] ?? FallbackLogo;
 
   return (
-    <div className="mx-auto w-full max-w-6xl self-start">
-      <Link href="/monitors" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
-        {t("serviceDetail.back")}
-      </Link>
+    <div className="w-full self-start">
+      <PageHeader
+        back={
+          <Link href="/monitors" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
+            {t("serviceDetail.back")}
+          </Link>
+        }
+      >
+      <div className="mx-auto w-full max-w-6xl">
+        <div className="flex flex-wrap items-center justify-between gap-4 text-base-content">
+          <div className="flex items-center gap-3">
+            <Logo size={36} name={data?.service.name ?? slug} />
+            <div>
+              <h1 className="text-xl font-semibold">{data?.service.name ?? slug}</h1>
+              {data?.service.host && (
+                <a
+                  href={`https://${data.service.host}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="link link-hover text-base-content/50 hover:text-base-content text-xs"
+                >
+                  {data.service.host}
+                </a>
+              )}
+            </div>
+          </div>
 
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-4 text-base-content">
-        <div className="flex items-center gap-3">
-          <Logo size={36} name={data?.service.name ?? slug} />
-          <div>
-            <h1 className="text-xl font-semibold">{data?.service.name ?? slug}</h1>
-            {data?.service.host && (
-              <a
-                href={`https://${data.service.host}`}
-                target="_blank"
-                rel="noreferrer"
-                className="link link-hover text-base-content/50 hover:text-base-content text-xs"
-              >
-                {data.service.host}
-              </a>
+          <div className="flex items-center gap-2.5">
+            {isLoading ? (
+              <Spinner size="xs" className="text-base-content/40" />
+            ) : (
+              <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${error ? "bg-base-content/20" : overallStyle.dot}`} />
             )}
+            <p className={`text-sm font-medium whitespace-nowrap ${error || isLoading ? "text-base-content/50" : overallStyle.text}`}>
+              {isLoading
+                ? t("serviceDetail.checkingStatus")
+                : error
+                  ? t("serviceDetail.unreachable")
+                  : data?.status.description}
+            </p>
           </div>
         </div>
-
-        <div className="flex items-center gap-2.5">
-          {isLoading ? (
-            <Spinner size="xs" className="text-base-content/40" />
-          ) : (
-            <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${error ? "bg-base-content/20" : overallStyle.dot}`} />
-          )}
-          <p className={`text-sm font-medium whitespace-nowrap ${error || isLoading ? "text-base-content/50" : overallStyle.text}`}>
-            {isLoading
-              ? t("serviceDetail.checkingStatus")
-              : error
-                ? t("serviceDetail.unreachable")
-                : data?.status.description}
-          </p>
-        </div>
-      </div>
 
       {data && data.trackedSince && (
         <div className="text-base-content/50 mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-xs">
@@ -434,6 +439,8 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
           </p>
         </>
       )}
+      </div>
+      </PageHeader>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 {
   "common": {
-    "close": "Sluiten"
+    "close": "Sluiten",
+    "back": "← Terug"
   },
   "status": {
     "operational": "Operationeel",

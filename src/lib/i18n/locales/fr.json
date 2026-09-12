@@ -1,6 +1,7 @@
 {
   "common": {
-    "close": "Fermer"
+    "close": "Fermer",
+    "back": "← Retour"
   },
   "status": {
     "operational": "Opérationnel",

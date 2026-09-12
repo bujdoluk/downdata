@@ -1,34 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import Footer from "@/components/landing-page/Footer";
 import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import Sidebar from "@/components/sidebar/Sidebar";
+import BackLink from "@/components/BackLink";
+import PageHeader from "@/components/PageHeader";
 import { useCookieConsent } from "@/components/cookies/CookieConsent";
-import { hasNavigatedClientSide } from "@/lib/clientNavigationTracker";
 import { openSupportChat } from "@/features/support/services/tawkChat";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 
 export default function SupportContent({ isAuthenticated, isAdmin }: { isAuthenticated: boolean; isAdmin: boolean }) {
   const { t } = useTranslation();
-  const router = useRouter();
   const { consent, openPreferences } = useCookieConsent();
-
-  // Same "wherever you came from, with a direct-visit fallback" back button
-  // as AboutContent.tsx — /support is reachable from the footer on every
-  // marketing/legal page, not just one fixed parent. Only shown on the
-  // logged-out marketing chrome; the dashboard shell already has its own
-  // navigation (the Sidebar).
-  function handleBack() {
-    if (hasNavigatedClientSide()) {
-      router.back();
-    } else {
-      router.push("/landing-page");
-    }
-  }
 
   function handleChatClick() {
     if (!consent.supportChat) {
@@ -38,19 +24,18 @@ export default function SupportContent({ isAuthenticated, isAdmin }: { isAuthent
     openSupportChat();
   }
 
+  // Reachable from the footer on every marketing/legal page when logged
+  // out, or from the sidebar's own settings menu when logged in — either
+  // way, not one fixed parent, so BackLink goes back to wherever the
+  // visitor actually came from. The fallback (a direct/bookmarked visit
+  // with no history to return to) differs per branch: /landing-page for a
+  // logged-out visitor, /boards (the dashboard's own default) once signed
+  // in — /landing-page would be a dead end behind a login wall for them.
   const body = (
     <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
-      {!isAuthenticated && (
-        <button
-          type="button"
-          onClick={handleBack}
-          className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium"
-        >
-          {t("support.back")}
-        </button>
-      )}
-
-      <h1 className="mt-2 text-3xl font-bold">{t("support.title")}</h1>
+      <PageHeader back={<BackLink fallbackHref={isAuthenticated ? "/boards" : "/landing-page"} label={t("support.back")} />}>
+        <h1 className="text-3xl font-bold">{t("support.title")}</h1>
+      </PageHeader>
       <p className="text-base-content/70 mt-2">{t("support.subtitle")}</p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">

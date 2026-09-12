@@ -1,6 +1,7 @@
 {
   "common": {
-    "close": "Stäng"
+    "close": "Stäng",
+    "back": "← Tillbaka"
   },
   "status": {
     "operational": "Fungerar",

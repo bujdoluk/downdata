@@ -1,6 +1,7 @@
 {
   "common": {
-    "close": "Lukk"
+    "close": "Lukk",
+    "back": "← Tilbake"
   },
   "status": {
     "operational": "Fungerer",

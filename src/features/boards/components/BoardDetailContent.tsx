@@ -22,6 +22,7 @@ import BoardStatusPageSummary from "@/features/status-pages/components/BoardStat
 import IncidentCountsChart from "@/features/history/components/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
 import ModalCloseButton from "@/components/ModalCloseButton";
+import PageHeader from "@/components/PageHeader";
 import { InfoIcon, PencilIcon } from "@/components/icons/NavIcons";
 
 const POLL_INTERVAL_MS = 60_000;
@@ -106,11 +107,14 @@ export default function BoardDetailContent({
 
   return (
     <div className="w-full self-start">
-      <Link href="/boards" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
-        {t("serviceDetail.back")}
-      </Link>
-
-      <div className="mt-2 flex items-center justify-between gap-2">
+      <PageHeader
+        back={
+          <Link href="/boards" className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium">
+            {t("serviceDetail.back")}
+          </Link>
+        }
+      >
+      <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
           {rename.isEditing ? (
             <>
@@ -248,6 +252,7 @@ export default function BoardDetailContent({
           <BoardTrackedServicesGrid boardId={board.id} entries={onBoardEntries} data={data} fetchFailed={fetchFailed} />
         </div>
       )}
+      </PageHeader>
     </div>
   );
 }

@@ -8,6 +8,8 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import Spinner from "@/components/Spinner";
 import ModalCloseButton from "@/components/ModalCloseButton";
+import BackLink from "@/components/BackLink";
+import PageHeader from "@/components/PageHeader";
 import { fetchJson, postJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import { formatDateTime } from "@/lib/formatTime";
@@ -86,9 +88,12 @@ export default function BillingPageContent({
   });
 
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
-      <h1 className="text-base-content text-lg font-semibold">{t("billing.title")}</h1>
+    <div className="flex w-full flex-col gap-6">
+      <PageHeader back={<BackLink fallbackHref="/boards" label={t("common.back")} />}>
+        <h1 className="text-base-content text-lg font-semibold">{t("billing.title")}</h1>
+      </PageHeader>
 
+      <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
       {checkoutParam === "success" && <p className="alert alert-success alert-soft text-sm">{t("billing.checkoutSuccess")}</p>}
       {checkoutParam === "canceled" && <p className="alert alert-warning alert-soft text-sm">{t("billing.checkoutCanceled")}</p>}
       {checkoutMutation.error && <p className="alert alert-error alert-soft text-sm">{checkoutMutation.error.message}</p>}
@@ -126,6 +131,7 @@ export default function BillingPageContent({
           <button>{t("account.cancel")}</button>
         </form>
       </dialog>
+      </div>
     </div>
   );
 }

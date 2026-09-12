@@ -1,6 +1,7 @@
 {
   "common": {
-    "close": "Zavřít"
+    "close": "Zavřít",
+    "back": "← Zpět"
   },
   "status": {
     "operational": "Funguje",

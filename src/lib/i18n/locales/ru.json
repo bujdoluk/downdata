@@ -1,6 +1,7 @@
 {
   "common": {
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "back": "← Назад"
   },
   "status": {
     "operational": "Работает",

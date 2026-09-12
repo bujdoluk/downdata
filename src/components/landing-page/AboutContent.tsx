@@ -1,15 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { Trans, useTranslation } from "react-i18next";
 import { SK } from "country-flag-icons/react/1x1";
 import "@/lib/i18n/i18n";
 import Footer from "@/components/landing-page/Footer";
 import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import Logo from "@/components/navbar/Logo";
+import BackLink from "@/components/BackLink";
+import PageHeader from "@/components/PageHeader";
 import { useCookieConsent } from "@/components/cookies/CookieConsent";
-import { hasNavigatedClientSide } from "@/lib/clientNavigationTracker";
 import { openSupportChat } from "@/features/support/services/tawkChat";
 import lukasPhoto from "./lukas.webp";
 
@@ -30,7 +30,6 @@ function XIcon({ className }: { className?: string }) {
 
 export default function AboutContent() {
   const { t } = useTranslation();
-  const router = useRouter();
   const { consent, openPreferences } = useCookieConsent();
 
   // "downDATA" is a fixed literal passed as `name` below (not translated
@@ -38,35 +37,19 @@ export default function AboutContent() {
   // locale — same technique LandingPage.tsx uses for its hero copy.
   const [followBrandBefore, followBrandAfter] = t("about.followOnX", { name: "downDATA" }).split("downDATA");
 
-  function handleBack() {
-    // /about is reachable from several pages (landing, privacy, terms) via
-    // the shared footer, unlike serviceDetail.back's single fixed parent —
-    // so this actually goes back to wherever the visitor came from, with a
-    // fallback for a direct/bookmarked visit that has no history to return to.
-    // (window.history.length isn't a safe way to tell those apart — its
-    // baseline on a fresh tab isn't consistent — see clientNavigationTracker.ts.)
-    if (hasNavigatedClientSide()) {
-      router.back();
-    } else {
-      router.push("/landing-page");
-    }
-  }
-
   return (
     <div className="flex min-h-full flex-1 flex-col">
       <LandingNavbar />
       <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
-        <button
-          type="button"
-          onClick={handleBack}
-          className="link link-hover text-base-content/50 hover:text-base-content text-xs font-medium"
-        >
-          {t("about.back")}
-        </button>
-
-        <h1 className="mt-2 text-3xl font-bold">
-          <Trans i18nKey="about.title" components={{ brand }} />
-        </h1>
+        {/* /about is reachable from several pages (landing, privacy, terms)
+            via the shared footer, unlike serviceDetail.back's single fixed
+            parent — BackLink goes back to wherever the visitor came from,
+            falling back to /landing-page for a direct/bookmarked visit. */}
+        <PageHeader back={<BackLink fallbackHref="/landing-page" label={t("about.back")} />}>
+          <h1 className="text-3xl font-bold">
+            <Trans i18nKey="about.title" components={{ brand }} />
+          </h1>
+        </PageHeader>
 
         <h2 className="mt-8 mb-3 text-xl font-bold">{t("about.storyHeading")}</h2>
         <p>

@@ -1,6 +1,7 @@
 {
   "common": {
-    "close": "Fechar"
+    "close": "Fechar",
+    "back": "← Voltar"
   },
   "status": {
     "operational": "Operacional",

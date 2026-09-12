@@ -1,6 +1,7 @@
 {
   "common": {
-    "close": "Schließen"
+    "close": "Schließen",
+    "back": "← Zurück"
   },
   "status": {
     "operational": "Funktionsfähig",

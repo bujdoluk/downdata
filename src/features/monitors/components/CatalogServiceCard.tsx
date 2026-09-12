@@ -134,23 +134,7 @@ export default function CatalogServiceCard({
           {!addState && (
             <div className="mt-3 flex items-center gap-2.5">
               <span
-                className={`badge shrink-0 gap-1.5 ${
-                  isLoading
-                    ? FALLBACK_STYLE.badge
-                    : error
-                      ? FALLBACK_STYLE.badge
-                      : `${(style ?? FALLBACK_STYLE).badge} text-white`
-                }`}
-              >
-                {isLoading && <Spinner size="xs" />}
-                {isLoading
-                  ? t("serviceCard.checkingStatus")
-                  : error
-                    ? t("serviceCard.unreachable")
-                    : t((style ?? FALLBACK_STYLE).labelKey)}
-              </span>
-              <span
-                className={`ml-auto shrink-0 text-[11px] whitespace-nowrap ${
+                className={`shrink-0 text-[11px] whitespace-nowrap ${
                   isLoading ? "text-base-content/30 animate-pulse" : "text-base-content/50"
                 }`}
               >

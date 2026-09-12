@@ -21,7 +21,7 @@ export default function LiveDashboardPanel({ className = "" }: { className?: str
       <div className="card card-border bg-base-200 relative shadow-2xl">
         <div className="card-body gap-3 p-6">
           <div className="flex items-center justify-between px-1">
-            <span className={`text-base-content/50 text-[0.7rem] tracking-[0.1em] uppercase ${mono}`}>
+            <span className={`text-base-content/50 text-xs tracking-widest uppercase ${mono}`}>
               {t("landing.hero.liveDashboard")}
             </span>
             <span className="flex gap-1.5">
@@ -31,7 +31,7 @@ export default function LiveDashboardPanel({ className = "" }: { className?: str
             </span>
           </div>
           <div className="text-success flex items-center gap-2 px-1 pb-1 text-xs">
-            <span className="bg-success animate-signal-pulse h-[7px] w-[7px] rounded-full" />
+            <span className="bg-success animate-signal-pulse h-2 w-2 rounded-full" />
             {t("landing.hero.eyebrow")}
           </div>
           {demoRows.map((row) => (

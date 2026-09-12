@@ -48,9 +48,18 @@ export default function ComponentFilterDropdown({
           ))}
         </ul>
       </details>
-      <span className="tooltip" data-tip={t("history.filter.componentsMethodology")}>
+      {/* button, not a bare span — a span can never receive keyboard focus,
+          so a keyboard-only user had no way to trigger this tooltip at all;
+          aria-label gives it a real accessible name too, since data-tip's
+          CSS-only content isn't read by screen readers. */}
+      <button
+        type="button"
+        className="tooltip"
+        data-tip={t("history.filter.componentsMethodology")}
+        aria-label={t("history.filter.componentsMethodology")}
+      >
         <InfoIcon className="text-base-content/40" />
-      </span>
+      </button>
     </div>
   );
 }

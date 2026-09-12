@@ -50,8 +50,10 @@ export default function BoardCard({
           </div>
         </Link>
         <span
-          className={`w-3 shrink-0 self-stretch ${stripeColor} ${isLoading ? "animate-pulse" : ""}`}
+          role="img"
+          aria-label={t(style.labelKey)}
           title={t(style.labelKey)}
+          className={`w-3 shrink-0 self-stretch ${stripeColor} ${isLoading ? "animate-pulse" : ""}`}
         />
       </div>
       <button

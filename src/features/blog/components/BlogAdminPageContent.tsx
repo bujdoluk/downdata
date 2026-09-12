@@ -33,9 +33,11 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (slug: string) => fetch(`/api/admin/blog-posts/${slug}`, { method: "DELETE" }),
-    onSuccess: (res) => {
-      if (!res.ok) return;
+    mutationFn: async (slug: string) => {
+      const res = await fetch(`/api/admin/blog-posts/${slug}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Couldn't delete the post.");
+    },
+    onSuccess: () => {
       deleteDialogRef.current?.close();
       router.refresh();
     },
@@ -58,6 +60,11 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
       </PageHeader>
 
       <div className="mx-auto w-full max-w-4xl">
+      {(publishMutation.isError || deleteMutation.isError) && (
+        <p role="alert" className="text-error mt-4 text-sm">
+          {publishMutation.error?.message ?? deleteMutation.error?.message}
+        </p>
+      )}
       {posts.length === 0 ? (
         <p className="text-base-content/50 mt-8 text-sm">No posts yet.</p>
       ) : (
@@ -68,7 +75,7 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
                 <th>Title</th>
                 <th>Status</th>
                 <th>Created</th>
-                <th />
+                <th aria-hidden="true" />
               </tr>
             </thead>
             <tbody>

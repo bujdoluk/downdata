@@ -64,6 +64,8 @@ export default function TrustedServicesRow() {
               <RevealOnScroll key={slug} delayMs={(i % 12) * 30}>
                 <div
                   title={name}
+                  role="img"
+                  aria-label={name}
                   className="text-base-content relative transition-transform duration-300 hover:z-10 hover:scale-125 motion-reduce:transition-none motion-reduce:hover:scale-100"
                 >
                   <Logo size={28} name={name} />

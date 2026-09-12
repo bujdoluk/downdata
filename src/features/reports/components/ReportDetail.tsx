@@ -120,7 +120,7 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
       </div>
 
       {payload.atRiskServiceSlugs.length > 0 && (
-        <div className="alert alert-error alert-soft">
+        <div role="alert" className="alert alert-error alert-soft">
           <span className="text-sm font-medium">{t("reports.atRisk", { count: payload.atRiskServiceSlugs.length })}</span>
         </div>
       )}

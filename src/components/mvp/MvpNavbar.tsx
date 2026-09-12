@@ -26,10 +26,15 @@ export default function MvpNavbar() {
               <span className="text-primary">down</span>DATA
             </span>
           </Link>
-          {catalog && (
+          {catalog ? (
             <div className="hidden md:block">
               <ServiceSearch services={catalog} linkPrefix="/services" />
             </div>
+          ) : (
+            // Fixed-size placeholder matching ServiceSearch's own footprint
+            // (w-56, input-sm height) — avoids the search box popping into
+            // the layout once the shared catalog query resolves.
+            <div className="bg-base-200 hidden h-8 w-56 animate-pulse rounded-lg md:block" aria-hidden="true" />
           )}
         </div>
         <div className="flex items-center gap-3">

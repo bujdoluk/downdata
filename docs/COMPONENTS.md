@@ -1223,6 +1223,43 @@ _No props._
 | timeZone | string | Yes | — |  |
 | onChange | (timeZone: string) => void | Yes | — |  |
 
+### AuthCredentialsForm
+
+`src/features/auth/components/AuthCredentialsForm.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| mode | "login" \| "signup" | Yes | — |  |
+| email | string | Yes | — |  |
+| onEmailChange | (value: string) => void | Yes | — |  |
+| password | string | Yes | — |  |
+| onPasswordChange | (value: string) => void | Yes | — |  |
+| showPassword | boolean | Yes | — |  |
+| onToggleShowPassword | () => void | Yes | — |  |
+| rememberMe | boolean | Yes | — |  |
+| onRememberMeChange | (value: boolean) => void | Yes | — |  |
+| error | string \| null | Yes | — |  |
+| submitting | boolean | Yes | — |  |
+| googleSubmitting | boolean | Yes | — |  |
+| onSubmit | (event: FormEvent<Element>) => void | Yes | — |  |
+| onForgotPassword | () => void | Yes | — |  |
+| onGoogleClick | () => void | Yes | — |  |
+| emailLegendId | string | Yes | — |  |
+| passwordLegendId | string | Yes | — |  |
+
+### AuthResetRequestForm
+
+`src/features/auth/components/AuthResetRequestForm.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| email | string | Yes | — |  |
+| onEmailChange | (value: string) => void | Yes | — |  |
+| error | string \| null | Yes | — |  |
+| submitting | boolean | Yes | — |  |
+| onSubmit | (event: FormEvent<Element>) => void | Yes | — |  |
+| emailLegendId | string | Yes | — |  |
+
 ### BillingPageContent
 
 `src/features/billing/components/BillingPageContent.tsx`

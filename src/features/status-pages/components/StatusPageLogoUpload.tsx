@@ -122,7 +122,11 @@ export default function StatusPageLogoUpload({
       </div>
 
       <p className="label">{t("boards.statusPage.logoHint")}</p>
-      {error && <p className="text-error text-xs">{error}</p>}
+      {error && (
+        <p role="alert" className="text-error text-xs">
+          {error}
+        </p>
+      )}
     </fieldset>
   );
 }

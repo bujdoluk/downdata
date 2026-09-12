@@ -189,9 +189,21 @@ export default function IntegrationsPageContent({
       <h1 className="text-base-content text-lg font-semibold">{t("integrations.title")}</h1>
       <p className="text-base-content/60 mt-1 text-sm">{t("integrations.subtitle")}</p>
 
-      {hasError && <p className="alert alert-error alert-soft mt-4 text-sm">{t("integrations.somethingWrong")}</p>}
-      {verified === "1" && <p className="alert alert-success alert-soft mt-4 text-sm">{t("integrations.recipientVerified")}</p>}
-      {verified === "0" && <p className="alert alert-error alert-soft mt-4 text-sm">{t("integrations.verifyLinkInvalid")}</p>}
+      {hasError && (
+        <p role="alert" className="alert alert-error alert-soft mt-4 text-sm">
+          {t("integrations.somethingWrong")}
+        </p>
+      )}
+      {verified === "1" && (
+        <p role="status" className="alert alert-success alert-soft mt-4 text-sm">
+          {t("integrations.recipientVerified")}
+        </p>
+      )}
+      {verified === "0" && (
+        <p role="alert" className="alert alert-error alert-soft mt-4 text-sm">
+          {t("integrations.verifyLinkInvalid")}
+        </p>
+      )}
 
       {/* Radio-input tabs: selection is pure CSS (:checked + sibling
           selector), same idiom as add-service's own category tabs — both

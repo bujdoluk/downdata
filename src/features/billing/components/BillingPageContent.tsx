@@ -94,10 +94,26 @@ export default function BillingPageContent({
       </PageHeader>
 
       <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
-      {checkoutParam === "success" && <p className="alert alert-success alert-soft text-sm">{t("billing.checkoutSuccess")}</p>}
-      {checkoutParam === "canceled" && <p className="alert alert-warning alert-soft text-sm">{t("billing.checkoutCanceled")}</p>}
-      {checkoutMutation.error && <p className="alert alert-error alert-soft text-sm">{checkoutMutation.error.message}</p>}
-      {cancelMutation.error && <p className="alert alert-error alert-soft text-sm">{cancelMutation.error.message}</p>}
+      {checkoutParam === "success" && (
+        <p role="status" className="alert alert-success alert-soft text-sm">
+          {t("billing.checkoutSuccess")}
+        </p>
+      )}
+      {checkoutParam === "canceled" && (
+        <p role="alert" className="alert alert-warning alert-soft text-sm">
+          {t("billing.checkoutCanceled")}
+        </p>
+      )}
+      {checkoutMutation.error && (
+        <p role="alert" className="alert alert-error alert-soft text-sm">
+          {checkoutMutation.error.message}
+        </p>
+      )}
+      {cancelMutation.error && (
+        <p role="alert" className="alert alert-error alert-soft text-sm">
+          {cancelMutation.error.message}
+        </p>
+      )}
 
       {subscription ? (
         <CurrentPlanCard

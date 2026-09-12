@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { EyeIcon, EyeSlashIcon } from "@/components/icons/NavIcons";
@@ -19,6 +19,8 @@ export default function ResetPasswordForm() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const passwordLegendId = useId();
+  const confirmPasswordLegendId = useId();
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -56,7 +58,9 @@ export default function ResetPasswordForm() {
           ) : (
             <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3">
               <fieldset className="fieldset">
-                <legend className="fieldset-legend">{t("resetPassword.passwordLabel")}</legend>
+                <legend id={passwordLegendId} className="fieldset-legend">
+                  {t("resetPassword.passwordLabel")}
+                </legend>
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
@@ -65,6 +69,7 @@ export default function ResetPasswordForm() {
                     onChange={(event) => setPassword(event.target.value)}
                     autoComplete="new-password"
                     minLength={6}
+                    aria-labelledby={passwordLegendId}
                     required
                   />
                   <button
@@ -79,7 +84,9 @@ export default function ResetPasswordForm() {
               </fieldset>
 
               <fieldset className="fieldset">
-                <legend className="fieldset-legend">{t("resetPassword.confirmPasswordLabel")}</legend>
+                <legend id={confirmPasswordLegendId} className="fieldset-legend">
+                  {t("resetPassword.confirmPasswordLabel")}
+                </legend>
                 <input
                   type={showPassword ? "text" : "password"}
                   className="input input-bordered w-full"
@@ -87,11 +94,16 @@ export default function ResetPasswordForm() {
                   onChange={(event) => setConfirmPassword(event.target.value)}
                   autoComplete="new-password"
                   minLength={6}
+                  aria-labelledby={confirmPasswordLegendId}
                   required
                 />
               </fieldset>
 
-              {error && <p className="text-error text-sm">{error}</p>}
+              {error && (
+                <p role="alert" className="text-error text-sm">
+                  {error}
+                </p>
+              )}
 
               <button type="submit" className="btn btn-info mt-1" disabled={submitting}>
                 {submitting ? <Spinner size="xs" /> : t("resetPassword.submit")}

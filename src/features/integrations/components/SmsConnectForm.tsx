@@ -62,7 +62,11 @@ function PendingRecipientRow({
           {t("integrations.resendCode")}
         </button>
       </form>
-      {verifyError && <p className="text-error">{verifyError}</p>}
+      {verifyError && (
+        <p role="alert" className="text-error">
+          {verifyError}
+        </p>
+      )}
     </li>
   );
 }
@@ -156,7 +160,11 @@ export default function SmsConnectForm({
           // PendingRecipientRow's per-row code input above.
           autoFocus
         />
-        {error && <p className="text-error text-xs">{error}</p>}
+        {error && (
+          <p role="alert" className="text-error text-xs">
+            {error}
+          </p>
+        )}
         <ModalFormFooter
           onCancel={onCancel}
           cancelLabel={t("integrations.cancel")}

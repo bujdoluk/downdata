@@ -259,9 +259,19 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                 values={{ value: data.official30daysUptime, days: data.uptimeWindowDays }}
                 components={[<span key="0" className="text-base-content text-base font-bold" />]}
               />
-              <span className="tooltip" data-tip={t("serviceDetail.uptime30dMethodology")}>
+              {/* button, not a bare span — a span can never receive
+                  keyboard focus, so a keyboard-only user had no way to
+                  trigger this tooltip at all; aria-label gives it a real
+                  accessible name too, since data-tip's CSS-only content
+                  isn't read by screen readers. */}
+              <button
+                type="button"
+                className="tooltip"
+                data-tip={t("serviceDetail.uptime30dMethodology")}
+                aria-label={t("serviceDetail.uptime30dMethodology")}
+              >
                 <InfoIcon className="text-base-content/40" />
-              </span>
+              </button>
             </span>
             {data.officialAllTimeUptime !== null && (
               <span className="inline-flex items-center gap-1">
@@ -270,9 +280,14 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                   values={{ value: data.officialAllTimeUptime }}
                   components={[<span key="0" className="text-base-content text-base font-bold" />]}
                 />
-                <span className="tooltip" data-tip={t("serviceDetail.uptimeMethodology")}>
+                <button
+                  type="button"
+                  className="tooltip"
+                  data-tip={t("serviceDetail.uptimeMethodology")}
+                  aria-label={t("serviceDetail.uptimeMethodology")}
+                >
                   <InfoIcon className="text-base-content/40" />
-                </span>
+                </button>
               </span>
             )}
           </div>

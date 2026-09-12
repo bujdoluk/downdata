@@ -1,120 +1,40 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import { ArrowLeftIcon, EyeIcon, EyeSlashIcon, GoogleIcon } from "@/components/icons/NavIcons";
+import { ArrowLeftIcon } from "@/components/icons/NavIcons";
 import LandingNavbar from "@/components/landing-page/LandingNavbar";
-import { AuthActionError, continueWithGoogle, logIn, resetPassword, signUp } from "@/lib/supabase/auth";
-import { createClient } from "@/lib/supabase/client";
-import { forgetSessionOnBrowserClose } from "@/features/auth/services/rememberMe";
-import Spinner from "@/components/Spinner";
-
-type Mode = "login" | "signup" | "reset";
+import AuthCredentialsForm from "@/features/auth/components/AuthCredentialsForm";
+import AuthResetRequestForm from "@/features/auth/components/AuthResetRequestForm";
+import { useLoginForm } from "@/features/auth/hooks/useLoginForm";
 
 function LoginForm() {
   const { t } = useTranslation();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/boards";
-
-  const errorParam = searchParams.get("error");
-
-  const [supabase] = useState(() => createClient());
-  const [mode, setMode] = useState<Mode>(() => {
-    // An expired recovery link drops the user straight back into the reset
-    // form instead of the login form — the obvious next action after a
-    // failed reset, rather than making them click "Forgot password?" again.
-    if (errorParam === "expired") return "reset";
-    return searchParams.get("mode") === "signup" ? "signup" : "login";
-  });
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [googleSubmitting, setGoogleSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(
-    errorParam === "expired"
-      ? t("auth.errors.linkExpired")
-      : errorParam === "auth"
-        ? t("auth.errors.generic")
-        : null,
-  );
-  const [confirmEmailSent, setConfirmEmailSent] = useState(false);
-  const [resetLinkSent, setResetLinkSent] = useState(false);
-
-  function switchMode(nextMode: Mode) {
-    setMode(nextMode);
-    setError(null);
-    setConfirmEmailSent(false);
-    setResetLinkSent(false);
-  }
-
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    setError(null);
-    setSubmitting(true);
-    try {
-      if (mode === "login") {
-        await logIn(supabase, email, password);
-        if (!rememberMe) forgetSessionOnBrowserClose();
-        // refresh() before push(), not after — this page's own navbar
-        // (LandingNavbar) links to `next`-shaped destinations like /boards,
-        // which Next prefetches while still logged out. Without
-        // invalidating that cache first, push(next) can silently reuse the
-        // stale, pre-login prefetch (a "no session, redirect to /login"
-        // response) and bounce a just-authenticated user straight back to
-        // /login despite the sign-in actually succeeding.
-        router.refresh();
-        router.push(next);
-      } else {
-        const redirectTo = `${window.location.origin}/auth/confirm?next=${encodeURIComponent(next)}`;
-        const loggedIn = await signUp(supabase, email, password, redirectTo);
-        if (loggedIn) {
-          // Same stale-prefetch reasoning as the login branch above.
-          router.refresh();
-          router.push(next);
-        } else {
-          setConfirmEmailSent(true);
-        }
-      }
-    } catch (err) {
-      const code = err instanceof AuthActionError ? err.code : "generic";
-      setError(t(`auth.errors.${code}`));
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  async function handleResetSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    setError(null);
-    setSubmitting(true);
-    try {
-      const redirectTo = `${window.location.origin}/auth/confirm?next=${encodeURIComponent("/reset-password")}`;
-      await resetPassword(supabase, email, redirectTo);
-      setResetLinkSent(true);
-    } catch (err) {
-      const code = err instanceof AuthActionError ? err.code : "generic";
-      setError(t(`auth.errors.${code}`));
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  async function handleGoogle() {
-    setError(null);
-    setGoogleSubmitting(true);
-    try {
-      const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
-      await continueWithGoogle(supabase, redirectTo);
-    } catch {
-      setError(t("auth.errors.generic"));
-      setGoogleSubmitting(false);
-    }
-  }
+  const {
+    mode,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    showPassword,
+    setShowPassword,
+    rememberMe,
+    setRememberMe,
+    submitting,
+    googleSubmitting,
+    error,
+    confirmEmailSent,
+    resetLinkSent,
+    switchMode,
+    handleSubmit,
+    handleResetSubmit,
+    handleGoogle,
+    handleGoBack,
+    resetEmailLegendId,
+    emailLegendId,
+    passwordLegendId,
+  } = useLoginForm();
 
   return (
     <div className="flex min-h-full flex-1 flex-col">
@@ -139,113 +59,39 @@ function LoginForm() {
                   <span>{t("auth.resetLinkSent")}</span>
                 </div>
               ) : (
-                <form onSubmit={handleResetSubmit} className="mt-4 flex flex-col gap-3">
-                  <fieldset className="fieldset">
-                    <legend className="fieldset-legend">{t("auth.emailLabel")}</legend>
-                    <input
-                      type="email"
-                      className="input input-bordered w-full"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                      autoComplete="email"
-                      required
-                    />
-                  </fieldset>
-
-                  {error && <p className="text-error text-sm">{error}</p>}
-
-                  <button type="submit" className="btn btn-info mt-1" disabled={submitting}>
-                    {submitting ? <Spinner size="xs" /> : t("auth.resetSubmit")}
-                  </button>
-                </form>
+                <AuthResetRequestForm
+                  email={email}
+                  onEmailChange={setEmail}
+                  error={error}
+                  submitting={submitting}
+                  onSubmit={handleResetSubmit}
+                  emailLegendId={resetEmailLegendId}
+                />
               )
             ) : confirmEmailSent ? (
               <div role="alert" className="alert alert-success alert-soft mt-4 py-2 text-xs">
                 <span>{t("auth.confirmEmailSent")}</span>
               </div>
             ) : (
-              <>
-                <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3">
-                  <fieldset className="fieldset">
-                    <legend className="fieldset-legend">{t("auth.emailLabel")}</legend>
-                    <input
-                      type="email"
-                      className="input input-bordered w-full"
-                      value={email}
-                      onChange={(event) => setEmail(event.target.value)}
-                      autoComplete="email"
-                      required
-                    />
-                  </fieldset>
-                  <fieldset className="fieldset">
-                    <legend className="fieldset-legend">{t("auth.passwordLabel")}</legend>
-                    <div className="relative">
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        className="input input-bordered w-full pr-10"
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        autoComplete={mode === "login" ? "current-password" : "new-password"}
-                        minLength={mode === "signup" ? 6 : undefined}
-                        required
-                      />
-                      <button
-                        type="button"
-                        className="text-base-content/50 hover:text-base-content absolute inset-y-0 right-2 flex items-center"
-                        aria-label={showPassword ? t("auth.hidePassword") : t("auth.showPassword")}
-                        onClick={() => setShowPassword((value) => !value)}
-                      >
-                        {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
-                      </button>
-                    </div>
-                  </fieldset>
-
-                  {mode === "login" && (
-                    <div className="-mt-2 flex items-center justify-between">
-                      <label className="label cursor-pointer gap-2 p-0 text-xs">
-                        <input
-                          type="checkbox"
-                          className="checkbox checkbox-xs"
-                          checked={rememberMe}
-                          onChange={(event) => setRememberMe(event.target.checked)}
-                        />
-                        {t("auth.rememberMe")}
-                      </label>
-                      <button
-                        type="button"
-                        className="link link-hover text-base-content/60 text-xs"
-                        onClick={() => switchMode("reset")}
-                      >
-                        {t("auth.forgotPassword")}
-                      </button>
-                    </div>
-                  )}
-
-                  {error && <p className="text-error text-sm">{error}</p>}
-
-                  <button type="submit" className="btn btn-info mt-1" disabled={submitting || googleSubmitting}>
-                    {submitting ? (
-                      <Spinner size="xs" />
-                    ) : mode === "login" ? (
-                      t("auth.loginSubmit")
-                    ) : (
-                      t("auth.signupSubmit")
-                    )}
-                  </button>
-                </form>
-
-                <div className="divider text-base-content/50 text-xs">{t("auth.orDivider")}</div>
-
-                <button
-                  type="button"
-                  className="btn btn-outline gap-2"
-                  disabled={googleSubmitting || submitting}
-                  onClick={handleGoogle}
-                >
-                  {googleSubmitting ? <Spinner size="xs" /> : <GoogleIcon />}
-                  {t("auth.googleContinue")}
-                </button>
-              </>
+              <AuthCredentialsForm
+                mode={mode}
+                email={email}
+                onEmailChange={setEmail}
+                password={password}
+                onPasswordChange={setPassword}
+                showPassword={showPassword}
+                onToggleShowPassword={() => setShowPassword((value) => !value)}
+                rememberMe={rememberMe}
+                onRememberMeChange={setRememberMe}
+                error={error}
+                submitting={submitting}
+                googleSubmitting={googleSubmitting}
+                onSubmit={handleSubmit}
+                onForgotPassword={() => switchMode("reset")}
+                onGoogleClick={handleGoogle}
+                emailLegendId={emailLegendId}
+                passwordLegendId={passwordLegendId}
+              />
             )}
 
             <p className="mt-4 text-center text-sm">
@@ -271,7 +117,7 @@ function LoginForm() {
 
             <button
               type="button"
-              onClick={() => router.back()}
+              onClick={handleGoBack}
               className="link link-hover text-base-content/60 mt-2 flex items-center justify-center gap-1 text-center text-sm"
             >
               <ArrowLeftIcon />
@@ -284,9 +130,20 @@ function LoginForm() {
   );
 }
 
+// Skeleton, not a blank flash, while useSearchParams() (which requires this
+// Suspense boundary in the App Router) resolves — usually near-instant, but
+// a "missing loading state" either way.
+function LoginFormSkeleton() {
+  return (
+    <div className="flex min-h-full flex-1 items-center justify-center p-6" aria-busy="true" aria-label="Loading">
+      <div className="card card-border bg-base-200 h-80 w-full max-w-sm animate-pulse" />
+    </div>
+  );
+}
+
 export default function LoginPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<LoginFormSkeleton />}>
       <LoginForm />
     </Suspense>
   );

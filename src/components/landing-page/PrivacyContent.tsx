@@ -1,4 +1,5 @@
 import Footer from "@/components/landing-page/Footer";
+import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import { SUPPORT_EMAIL } from "@/lib/constants";
 
 const lastUpdated = "28 August 2026";
@@ -6,6 +7,7 @@ const lastUpdated = "28 August 2026";
 export default function PrivacyContent() {
   return (
     <div className="flex min-h-full flex-1 flex-col">
+      <LandingNavbar />
       <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
         <h1 className="text-3xl font-bold">Privacy Policy</h1>
         <p className="text-base-content/60 mt-2 text-sm">Last updated: {lastUpdated}</p>

@@ -66,7 +66,11 @@ export default function ReportSettingsForm({
             </button>
           ))}
         </div>
-        {intervalError && <p className="text-error text-xs">{intervalError}</p>}
+        {intervalError && (
+          <p role="alert" className="text-error text-xs">
+            {intervalError}
+          </p>
+        )}
       </div>
 
       {boards.length > 0 && (
@@ -85,7 +89,11 @@ export default function ReportSettingsForm({
               </label>
             ))}
           </div>
-          {boardsError && <p className="text-error text-xs">{boardsError}</p>}
+          {boardsError && (
+            <p role="alert" className="text-error text-xs">
+              {boardsError}
+            </p>
+          )}
         </div>
       )}
 
@@ -113,10 +121,18 @@ export default function ReportSettingsForm({
               )}
             </button>
             <p className="text-base-content/50 max-w-48 text-right text-xs">{t("reports.settings.testCaption")}</p>
-            {testMessage && <span className={`text-xs ${testMessage.isError ? "text-error" : "text-success"}`}>{testMessage.text}</span>}
+            {testMessage && (
+              <span role={testMessage.isError ? "alert" : "status"} className={`text-xs ${testMessage.isError ? "text-error" : "text-success"}`}>
+                {testMessage.text}
+              </span>
+            )}
           </div>
         </div>
-        {emailNudgeError && <p className="text-error text-xs">{emailNudgeError}</p>}
+        {emailNudgeError && (
+          <p role="alert" className="text-error text-xs">
+            {emailNudgeError}
+          </p>
+        )}
       </div>
     </div>
   );

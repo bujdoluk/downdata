@@ -29,9 +29,16 @@ export default function MonitorsBoardSection({
 }) {
   return (
     <section>
-      <Link href={`/boards/${board.id}`} className="link link-hover text-base-content text-base font-semibold">
-        {board.name}
-      </Link>
+      {/* h2, not a bare Link — every other repeated section label in this
+          batch (BoardTrackedServicesGrid, BoardActiveIncidentsPanel,
+          BoardActiveMaintenancePanel) is a heading; this was the one that
+          wasn't, so a screen reader user navigating by heading skipped
+          every board name on this specific page. */}
+      <h2 className="text-base font-semibold">
+        <Link href={`/boards/${board.id}`} className="link link-hover text-base-content">
+          {board.name}
+        </Link>
+      </h2>
 
       {entries.length === 0 ? (
         <div className="mt-3">

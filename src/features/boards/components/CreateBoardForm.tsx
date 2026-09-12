@@ -84,7 +84,9 @@ export default function CreateBoardForm({
         autoFocus
       />
       {createMutation.isError ? (
-        <p className="text-error mt-2 text-xs">{createMutation.error.message}</p>
+        <p role="alert" className="text-error mt-2 text-xs">
+          {createMutation.error.message}
+        </p>
       ) : (
         isDuplicate && (
           <p className="text-warning mt-2 text-xs">{t("boards.duplicateNameWarning", { name: trimmedName })}</p>

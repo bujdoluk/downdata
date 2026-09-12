@@ -58,7 +58,11 @@ export default function MvpPage() {
                 {submitting ? <Spinner size="xs" /> : t("mvp.cta")}
               </button>
               <span className="text-base-content/50 text-sm">{t("mvp.ctaHint")}</span>
-              {error && <p className="text-error text-sm">{error}</p>}
+              {error && (
+                <p role="alert" className="text-error text-sm">
+                  {error}
+                </p>
+              )}
             </div>
           </div>
 

@@ -75,6 +75,11 @@ export default function CatalogServiceCard({
   const style = indicator ? INDICATOR_STYLES[indicator] : undefined;
   const Logo = SERVICE_LOGOS[slug] ?? FallbackLogo;
   const stripeColor = isLoading || error ? "bg-base-content/10" : (style ?? FALLBACK_STYLE).dot;
+  // The stripe is the only remaining status indicator since the text badge
+  // was removed — color alone conveying state is exactly this skill's own
+  // named red flag, so it carries this as its accessible name instead of
+  // aria-hidden, even though nothing is visually labeled anymore.
+  const statusLabel = isLoading ? t("serviceCard.checkingStatus") : error ? t("serviceCard.unreachable") : t((style ?? FALLBACK_STYLE).labelKey);
 
   useCloseDetailsOnOutsideClick(menuRef);
 
@@ -123,7 +128,11 @@ export default function CatalogServiceCard({
         <Link href={`/monitors/${slug}`} className="card-body min-w-0 flex-1 gap-0 p-4">
           <div className="flex items-center gap-3 text-base-content">
             <Logo size={28} name={name} />
-            <h1 className="card-title min-w-0 truncate text-base">{name}</h1>
+            {/* h3, not h1 — this repeats once per card in a grid (a whole page
+                of these, on /monitors or the landing page's own demo panel),
+                so it can never be the page's own h1; h3 still lets a screen
+                reader user navigate card-to-card by heading. */}
+            <h3 className="card-title min-w-0 truncate text-base">{name}</h3>
             {!addState && isMonitored && (
               <span className="badge badge-soft badge-info ml-auto shrink-0 text-[10px]">
                 {t("services.monitoring")}
@@ -170,7 +179,11 @@ export default function CatalogServiceCard({
         )}
 
         {!addState && (
-          <div className={`ml-3 w-3 shrink-0 self-stretch ${stripeColor} ${isLoading ? "animate-pulse" : ""}`} aria-hidden="true" />
+          <div
+            role="img"
+            aria-label={statusLabel}
+            className={`ml-3 w-3 shrink-0 self-stretch ${stripeColor} ${isLoading ? "animate-pulse" : ""}`}
+          />
         )}
       </div>
     </div>

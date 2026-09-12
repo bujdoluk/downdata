@@ -87,7 +87,11 @@ export default function EmailConnectForm({
           // just shown/hidden — see the sibling comment in SmsConnectForm.
           autoFocus
         />
-        {error && <p className="text-error text-xs">{error}</p>}
+        {error && (
+          <p role="alert" className="text-error text-xs">
+            {error}
+          </p>
+        )}
         <ModalFormFooter
           onCancel={onCancel}
           cancelLabel={t("integrations.cancel")}

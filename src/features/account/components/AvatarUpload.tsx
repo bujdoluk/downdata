@@ -123,7 +123,11 @@ export default function AvatarUpload({
       </div>
 
       <p className="label">{t("nav.avatarMaxSize")}</p>
-      {error && <p className="text-error text-xs">{error}</p>}
+      {error && (
+        <p role="alert" className="text-error text-xs">
+          {error}
+        </p>
+      )}
     </fieldset>
   );
 }

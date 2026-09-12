@@ -50,6 +50,14 @@ export default function OutageTracker({
           (sum, incident) => sum + minutesBetween(incident.created_at, incident.resolved_at!),
           0,
         );
+        // Same aria-label composition as IncidentCalendar's own day cells
+        // (its own comment calls this component "a single-row sibling" of
+        // that one) — this row had none at all before, unlike its sibling.
+        const ariaLabel = !day.tracked
+          ? `${formatDate(day.date)}: ${t("serviceDetail.notTrackedYet")}`
+          : hasIncidents
+            ? t("history.dayAriaLabel", { date: formatDate(day.date), summary: day.incidents.map((incident) => incident.name).join(", ") })
+            : t("history.dayAriaLabelEmpty", { date: formatDate(day.date) });
 
         return (
           <div key={day.date} className="tooltip tooltip-bottom flex-1">
@@ -66,6 +74,8 @@ export default function OutageTracker({
               {!day.tracked && <div className="text-right">{t("serviceDetail.notTrackedYet")}</div>}
             </div>
             <div
+              role="img"
+              aria-label={ariaLabel}
               className={`mx-auto aspect-[1/5] w-1/3 rounded ${color} transition-transform hover:scale-125 hover:ring-2 hover:ring-base-content/40 hover:ring-offset-1 hover:ring-offset-base-100`}
             />
           </div>

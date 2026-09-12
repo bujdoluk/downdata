@@ -93,7 +93,9 @@ export default function AccountPageContent({
               </div>
             )}
             <div className="min-w-0">
-              <h1 className="truncate text-xl font-bold">{email}</h1>
+              {/* h2, not h1 — the page's h1 is the PageHeader title above;
+                  this is a data value inside a card, not a second title. */}
+              <h2 className="truncate text-xl font-bold">{email}</h2>
             </div>
           </div>
         </div>
@@ -218,7 +220,11 @@ function PasswordSection({ supabase }: { supabase: ReturnType<typeof createClien
           {submitting ? <Spinner size="xs" /> : t("account.passwordSubmit")}
         </button>
       </form>
-      {error && <p className="text-error mt-2 text-sm">{error}</p>}
+      {error && (
+        <p role="alert" className="text-error mt-2 text-sm">
+          {error}
+        </p>
+      )}
       {success && <p className="text-success mt-2 text-sm">{t("account.passwordSuccess")}</p>}
     </div>
   );
@@ -275,7 +281,11 @@ function DangerZone({ supabase, email }: { supabase: ReturnType<typeof createCli
             />
           </fieldset>
 
-          {error && <p className="text-error mt-2 text-sm">{error}</p>}
+          {error && (
+        <p role="alert" className="text-error mt-2 text-sm">
+          {error}
+        </p>
+      )}
 
           <div className="modal-action">
             <form method="dialog" className="flex gap-2">

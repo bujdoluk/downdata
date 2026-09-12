@@ -47,7 +47,7 @@ export default function BoardTrackedServicesGrid({
             const stripeColor = isLoading || entryFailed ? "bg-base-content/10" : (style ?? FALLBACK_STYLE).dot;
             const Logo = SERVICE_LOGOS[entry.slug] ?? FallbackLogo;
             return (
-              <Link key={entry.slug} href={`/monitors/${entry.slug}`} className="tooltip" data-tip={entry.name}>
+              <Link key={entry.slug} href={`/monitors/${entry.slug}`} className="tooltip" data-tip={entry.name} aria-label={entry.name}>
                 <div className="card card-border bg-[var(--color-surface-2)] hover:border-base-content/20 flex h-14 w-14 flex-row items-center overflow-hidden transition-colors">
                   <span className="flex flex-1 items-center justify-center">
                     <Logo size={24} name={entry.name} />

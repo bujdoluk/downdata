@@ -299,7 +299,11 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
                 )}
               </div>
               <span className="label text-xs">Optional. Falls back to a plain gradient when not set.</span>
-              {uploadError && <p className="text-error text-xs">{uploadError}</p>}
+              {uploadError && (
+                <p role="alert" className="text-error text-xs">
+                  {uploadError}
+                </p>
+              )}
             </div>
 
             <div className="fieldset">
@@ -334,7 +338,11 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
                 )}
               </div>
               <span className="label text-xs">Optional. Falls back to the downDATA logo when not set.</span>
-              {avatarUploadError && <p className="text-error text-xs">{avatarUploadError}</p>}
+              {avatarUploadError && (
+                <p role="alert" className="text-error text-xs">
+                  {avatarUploadError}
+                </p>
+              )}
             </div>
           </div>
 
@@ -364,14 +372,22 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
               className="textarea textarea-bordered w-full flex-1 font-mono text-sm lg:min-h-0"
               required
             />
-            {bodyToolError && <p className="text-error text-xs">{bodyToolError}</p>}
+            {bodyToolError && (
+            <p role="alert" className="text-error text-xs">
+              {bodyToolError}
+            </p>
+          )}
             <span className="label text-xs">
               Plain-text paragraphs (blank line between them) work fine. Real HTML tags are used as-is if you write them.
             </span>
           </label>
         </div>
 
-        {saveMutation.isError && <p className="text-error text-sm">{saveMutation.error.message}</p>}
+        {saveMutation.isError && (
+          <p role="alert" className="text-error text-sm">
+            {saveMutation.error.message}
+          </p>
+        )}
 
         <div className="flex items-center justify-between">
           <button

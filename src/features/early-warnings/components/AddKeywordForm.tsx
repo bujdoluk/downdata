@@ -39,7 +39,11 @@ export default function AddKeywordForm({
           {isSubmitting ? <Spinner size="xs" /> : t("earlyWarnings.addKeyword")}
         </button>
       </form>
-      {error && <p className="text-error text-xs">{error}</p>}
+      {error && (
+        <p role="alert" className="text-error text-xs">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

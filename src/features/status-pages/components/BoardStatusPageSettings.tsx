@@ -168,7 +168,11 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
             </label>
           )}
 
-          {error && <p className="text-error text-xs">{error}</p>}
+          {error && (
+            <p role="alert" className="text-error text-xs">
+              {error}
+            </p>
+          )}
 
           <div className="flex flex-wrap items-center gap-2">
             <button type="button" disabled={saving || !slug} onClick={() => saveMutation.mutate()} className="btn btn-info btn-xs">

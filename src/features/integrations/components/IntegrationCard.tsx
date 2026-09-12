@@ -73,7 +73,10 @@ export default function IntegrationCard({
 
       <div className={`card-body min-w-0 flex-row items-center gap-3 p-4 ${removable ? "pr-10" : ""}`}>
         {logo}
-        <h1 className="card-title min-w-0 flex-1 truncate text-base">{name}</h1>
+        {/* h3, not h1 — this card repeats once per catalog entry, and the
+            page already has its own <h1> (integrations.title); a repeating
+            card can't own the page's one-and-only h1. */}
+        <h3 className="card-title min-w-0 flex-1 truncate text-base">{name}</h3>
         {connected ? (
           onConnectClick ? (
             // A real <button>, not a span+role mimicking one — gets Enter/

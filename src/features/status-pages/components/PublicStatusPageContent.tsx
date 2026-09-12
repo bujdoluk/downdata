@@ -80,9 +80,19 @@ export default function PublicStatusPageContent({ slug, initialData }: { slug: s
                     values={{ value: service.official30daysUptime, days: service.uptimeWindowDays }}
                     components={[<span key="0" className="text-base-content text-sm font-bold" />]}
                   />
-                  <span className="tooltip tooltip-left" data-tip={t("serviceDetail.uptime30dMethodology")}>
+                  {/* button, not a bare span — a span can never receive
+                      keyboard focus, so a keyboard-only visitor had no way
+                      to trigger this tooltip at all; aria-label gives it a
+                      real accessible name too, since data-tip's CSS-only
+                      content isn't read by screen readers. */}
+                  <button
+                    type="button"
+                    className="tooltip tooltip-left"
+                    data-tip={t("serviceDetail.uptime30dMethodology")}
+                    aria-label={t("serviceDetail.uptime30dMethodology")}
+                  >
                     <InfoIcon className="text-base-content/40" />
-                  </span>
+                  </button>
                 </span>
               </div>
             </li>

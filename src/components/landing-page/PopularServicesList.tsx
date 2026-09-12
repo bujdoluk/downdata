@@ -50,7 +50,18 @@ export default function PopularServicesList() {
     queryFn: () => fetchJson<Catalog[]>("/api/catalog"),
   });
 
-  if (!catalog) return null;
+  // Skeleton, not a blank column, while the shared catalog query is still in
+  // flight (or failed) — aria-hidden since there's nothing meaningful to
+  // announce yet, same reasoning as any other loading placeholder.
+  if (!catalog) {
+    return (
+      <>
+        {Array.from({ length: 5 }).map((_, i) => (
+          <span key={i} aria-hidden="true" className="bg-neutral-content/20 mb-1 inline-block h-3.5 w-20 animate-pulse rounded" />
+        ))}
+      </>
+    );
+  }
 
   const bySlug = new Map(catalog.map((entry) => [entry.slug, entry]));
   const popular = POPULAR_SERVICE_SLUGS.map((slug) => bySlug.get(slug)).filter((entry): entry is Catalog => entry !== undefined);

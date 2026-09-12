@@ -30,7 +30,11 @@ export default function Footer() {
       </aside>
 
       <nav>
-        <h6 className="footer-title">{t("landing.nav.features")}</h6>
+        {/* h3, not h6 — footer-title is a pure CSS class (checked: not tag-
+            qualified in daisyUI's own stylesheet), so this changes nothing
+            visually. h6 here skipped straight past h3/h4/h5, since nothing
+            on this page ever uses those levels. */}
+        <h3 className="footer-title">{t("landing.nav.features")}</h3>
         {FEATURE_CATALOG.filter(({ slug }) => slug !== "integrations").map(({ slug, icon: Icon }) => (
           <Link key={slug} href={`/features/${slug}`} className="link link-hover inline-flex items-center gap-1.5">
             <Icon className="h-3.5 w-3.5 shrink-0" />
@@ -40,7 +44,7 @@ export default function Footer() {
       </nav>
 
       <nav>
-        <h6 className="footer-title">{t("nav.integrations")}</h6>
+        <h3 className="footer-title">{t("nav.integrations")}</h3>
         {INTEGRATION_CATALOG.map(({ slug, logo: Logo }) => (
           <Link key={slug} href={`/integrations/${slug}`} className="link link-hover inline-flex items-center gap-1.5">
             <Logo size={14} />
@@ -50,12 +54,12 @@ export default function Footer() {
       </nav>
 
       <nav>
-        <h6 className="footer-title">{t("footer.popularServicesTitle")}</h6>
+        <h3 className="footer-title">{t("footer.popularServicesTitle")}</h3>
         <PopularServicesList />
       </nav>
 
       <nav>
-        <h6 className="footer-title">{t("footer.companyTitle")}</h6>
+        <h3 className="footer-title">{t("footer.companyTitle")}</h3>
         <Link href="/pricing" className="link link-hover">
           {t("landing.pricing.heading")}
         </Link>
@@ -74,7 +78,7 @@ export default function Footer() {
       </nav>
 
       <nav>
-        <h6 className="footer-title">{t("footer.legalTitle")}</h6>
+        <h3 className="footer-title">{t("footer.legalTitle")}</h3>
         <Link href="/privacy" className="link link-hover">
           {t("footer.privacyPolicy")}
         </Link>

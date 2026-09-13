@@ -41,3 +41,19 @@ export const IMPACT_CHECKBOX_COLOR: Record<string, string> = {
   critical: "checkbox-error",
 };
 export const ALL_IMPACTS = Object.keys(IMPACT_CHECKBOX_COLOR);
+
+// Higher = more severe. One canonical ranking so anything comparing two
+// indicators reads off the same table instead of keeping its own copy —
+// this consolidates what used to be three separate ad-hoc versions
+// (CatalogServiceGrid's severity-first sort, StatusSummary's display
+// order, and now statusBatch's open-incident-vs-rollup check).
+export const INDICATOR_RANK: Record<string, number> = {
+  none: 0,
+  minor: 1,
+  major: 2,
+  critical: 3,
+};
+
+// Worst-first — the order StatusSummary's stat tiles and the public status
+// page's overview render in.
+export const SEVERITY_DISPLAY_ORDER = ["critical", "major", "minor", "none"] as const;

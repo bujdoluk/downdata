@@ -11,7 +11,8 @@
     "degradedPerformance": "Redusert ytelse",
     "partialOutage": "Delvis driftsstans",
     "underMaintenance": "Vedlikehold pågår",
-    "unknown": "Ukjent"
+    "unknown": "Ukjent",
+    "moreSevereIncidentTooltip": "Aktiv hendelse vurdert som {{impact}}: {{name}}"
   },
   "nav": {
     "boards": "Tavler",
@@ -122,11 +123,12 @@
       "postmortem": "Postmortem",
       "timeRange": "Tidsperiode",
       "searchService": "Søk etter tjeneste…",
+      "search": "Søk etter hendelser eller tjenester…",
       "allTime": "Hele perioden",
       "last24h": "Siste 24 timer",
       "last7d": "Siste 7 dager",
       "last30d": "Siste 30 dager",
-      "noMatches": "Ingen tjenester samsvarer med dette filteret.",
+      "noMatches": "Ingen hendelser samsvarer med dette filteret.",
       "allImpacts": "Alle alvorlighetsgrader",
       "noImpactsSelected": "Ingen valgt",
       "new": "Ny",

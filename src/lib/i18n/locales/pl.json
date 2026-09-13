@@ -11,7 +11,8 @@
     "degradedPerformance": "Obniżona wydajność",
     "partialOutage": "Częściowa awaria",
     "underMaintenance": "Trwa konserwacja",
-    "unknown": "Nieznany"
+    "unknown": "Nieznany",
+    "moreSevereIncidentTooltip": "Aktywny incydent oceniony jako {{impact}}: {{name}}"
   },
   "nav": {
     "boards": "Tablice",
@@ -128,11 +129,12 @@
       "postmortem": "Postmortem",
       "timeRange": "Zakres czasu",
       "searchService": "Szukaj usługi…",
+      "search": "Szukaj incydentów lub usług…",
       "allTime": "Cały okres",
       "last24h": "Ostatnie 24 godziny",
       "last7d": "Ostatnie 7 dni",
       "last30d": "Ostatnie 30 dni",
-      "noMatches": "Żadna usługa nie pasuje do tego filtra.",
+      "noMatches": "Żaden incydent nie pasuje do tego filtra.",
       "allImpacts": "Wszystkie wpływy",
       "noImpactsSelected": "Nic nie wybrano",
       "new": "Nowe",

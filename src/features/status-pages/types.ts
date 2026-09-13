@@ -1,4 +1,4 @@
-import type { Indicator, StatuspageIncidentSummary } from "@/types/service";
+import type { Indicator, OpenIncidentImpact, StatuspageIncidentSummary } from "@/types/service";
 
 // Owner-side settings, read/written from the board detail page's status
 // page panel — always scoped to the caller's own board via RLS.
@@ -33,6 +33,7 @@ export type PublicStatusPageService = {
   slug: string;
   name: string;
   indicator: Indicator | null; // null when the live fetch failed
+  openIncidentImpact?: OpenIncidentImpact;
   last30DaysIncidents: StatuspageIncidentSummary[];
   trackedSince: string | null;
   official30daysUptime: number;

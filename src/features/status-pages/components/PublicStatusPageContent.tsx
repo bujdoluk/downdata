@@ -14,6 +14,7 @@ import StatusSummary from "@/features/monitors/components/StatusSummary";
 import Logo from "@/components/navbar/Logo";
 import { InfoIcon } from "@/components/icons/NavIcons";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
+import MoreSevereIncidentBadge from "@/components/MoreSevereIncidentBadge";
 
 const POLL_INTERVAL_MS = 60_000;
 
@@ -67,6 +68,7 @@ export default function PublicStatusPageContent({ slug, initialData }: { slug: s
                 <p className="text-base-content min-w-0 flex-1 truncate text-sm font-medium">{service.name}</p>
                 <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${style.dot}`} />
                 <p className={`text-xs font-medium whitespace-nowrap ${style.text}`}>{t(style.labelKey)}</p>
+                {service.openIncidentImpact && <MoreSevereIncidentBadge incident={service.openIncidentImpact} />}
               </div>
 
               <div className="mt-3">

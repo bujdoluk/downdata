@@ -4,7 +4,8 @@ import { getStoredIncidentsForService, toIncidentApiShape } from "@/lib/getStore
 import { getAllStoredMaintenanceSummaries, toMaintenanceSummaryApiShape } from "@/features/maintenance/services/getStoredMaintenance";
 import { getServiceUptimeSummary } from "@/lib/uptime";
 import { matchesComponentPrefix, stripComponentPrefix } from "@/lib/componentNamePrefix";
-import type { Status, Indicator, StatuspageComponent } from "@/types/service";
+import { INDICATOR_RANK } from "@/components/statusStyles";
+import type { Status, Indicator, StatuspageComponent, OpenIncidentImpact } from "@/types/service";
 
 // Statuspage's own page-level indicator only ever takes these four values
 // — "under_maintenance" is a per-component status, never a page-level one
@@ -48,6 +49,28 @@ function scopeToOwnComponents(
   };
 }
 
+// This service's currently-open incidents already come back with this
+// request (getStoredIncidentsForService below), so unlike statusBatch.ts's
+// batched version this needs no extra query — just the same
+// worse-than-the-rollup comparison, only surfaced when it's actually worse
+// (see OpenIncidentImpact's own comment for why the rollup itself is never
+// overridden).
+function worstOpenIncidentImpact(
+  incidents: { resolved_at: string | null; impact: string; name: string; shortlink: string | null }[],
+  rollupIndicator: Indicator,
+): OpenIncidentImpact | undefined {
+  const rollupRank = INDICATOR_RANK[rollupIndicator] ?? 0;
+  let worst: OpenIncidentImpact | undefined;
+  for (const incident of incidents) {
+    if (incident.resolved_at !== null) continue;
+    const rank = INDICATOR_RANK[incident.impact] ?? 0;
+    if (rank > rollupRank && (!worst || rank > (INDICATOR_RANK[worst.impact] ?? 0))) {
+      worst = { impact: incident.impact, name: incident.name, shortlink: incident.shortlink ?? "" };
+    }
+  }
+  return worst;
+}
+
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const service = await resolveCatalogEntryBySlug(slug);
@@ -75,6 +98,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     ]);
     const incidents = incidentRows.map(toIncidentApiShape);
     const maintenances = maintenanceRows.map(toMaintenanceSummaryApiShape);
+    const openIncidentImpact = worstOpenIncidentImpact(incidentRows, data.status.indicator);
 
     return NextResponse.json({
       ...data,
@@ -82,6 +106,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
       maintenances,
       ...uptimeSummary,
       service,
+      ...(openIncidentImpact ? { openIncidentImpact } : {}),
     });
   } catch {
     return NextResponse.json(

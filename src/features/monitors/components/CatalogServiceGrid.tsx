@@ -2,19 +2,13 @@
 
 import type { Catalog, ServiceStatusBatchResponse } from "@/types/service";
 import CatalogServiceCard from "@/features/monitors/components/CatalogServiceCard";
+import { INDICATOR_RANK } from "@/components/statusStyles";
 import { usePinned } from "@/hooks/usePinned";
-
-const INDICATOR_SEVERITY: Record<string, number> = {
-  critical: 3,
-  major: 2,
-  minor: 1,
-  none: 0,
-};
 
 function severityOf(entry: Catalog, data: ServiceStatusBatchResponse | null): number {
   const status = data?.[entry.slug];
   if (!status || "error" in status) return -1;
-  return INDICATOR_SEVERITY[status.status.indicator] ?? 0;
+  return INDICATOR_RANK[status.status.indicator] ?? 0;
 }
 
 export default function CatalogServiceGrid({
@@ -65,6 +59,7 @@ export default function CatalogServiceGrid({
             error={entryFailed}
             indicator={status && "status" in status ? status.status.indicator : undefined}
             outages24h={status && "status" in status ? status.outages24h : undefined}
+            openIncidentImpact={status && "status" in status ? status.openIncidentImpact : undefined}
             isMonitored={monitoredHosts.has(entry.host)}
             addState={
               onAdd

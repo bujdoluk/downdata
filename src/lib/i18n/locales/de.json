@@ -11,7 +11,8 @@
     "degradedPerformance": "Eingeschränkte Leistung",
     "partialOutage": "Teilausfall",
     "underMaintenance": "Wartung läuft",
-    "unknown": "Unbekannt"
+    "unknown": "Unbekannt",
+    "moreSevereIncidentTooltip": "Aktiver Vorfall mit Bewertung {{impact}}: {{name}}"
   },
   "nav": {
     "boards": "Boards",
@@ -122,11 +123,12 @@
       "postmortem": "Postmortem",
       "timeRange": "Zeitraum",
       "searchService": "Dienst suchen…",
+      "search": "Vorfälle oder Dienste suchen…",
       "allTime": "Gesamter Zeitraum",
       "last24h": "Letzte 24 Stunden",
       "last7d": "Letzte 7 Tage",
       "last30d": "Letzte 30 Tage",
-      "noMatches": "Keine Dienste entsprechen diesem Filter.",
+      "noMatches": "Keine Vorfälle entsprechen diesem Filter.",
       "allImpacts": "Alle Auswirkungen",
       "noImpactsSelected": "Keine ausgewählt",
       "new": "Neu",

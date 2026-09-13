@@ -11,7 +11,8 @@
     "degradedPerformance": "Prestazioni ridotte",
     "partialOutage": "Interruzione parziale",
     "underMaintenance": "In manutenzione",
-    "unknown": "Sconosciuto"
+    "unknown": "Sconosciuto",
+    "moreSevereIncidentTooltip": "Incidente attivo classificato come {{impact}}: {{name}}"
   },
   "nav": {
     "boards": "Bacheche",
@@ -122,11 +123,12 @@
       "postmortem": "Postmortem",
       "timeRange": "Periodo",
       "searchService": "Cerca servizio…",
+      "search": "Cerca incidenti o servizi…",
       "allTime": "Tutto il periodo",
       "last24h": "Ultime 24 ore",
       "last7d": "Ultimi 7 giorni",
       "last30d": "Ultimi 30 giorni",
-      "noMatches": "Nessun servizio corrisponde a questo filtro.",
+      "noMatches": "Nessun incidente corrisponde a questo filtro.",
       "allImpacts": "Tutti gli impatti",
       "noImpactsSelected": "Nessuno selezionato",
       "new": "Nuovo",

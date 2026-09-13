@@ -184,6 +184,7 @@ export const getPublicStatusPage = cache(async (slug: string): Promise<PublicSta
       slug: entry.slug,
       name: entry.name,
       indicator: status && "status" in status ? status.status.indicator : null,
+      openIncidentImpact: status && "status" in status ? status.openIncidentImpact : undefined,
       last30DaysIncidents: uptime.last30DaysIncidents,
       trackedSince: uptime.trackedSince,
       official30daysUptime: uptime.official30daysUptime,

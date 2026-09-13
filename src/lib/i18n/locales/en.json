@@ -11,7 +11,8 @@
     "degradedPerformance": "Degraded performance",
     "partialOutage": "Partial outage",
     "underMaintenance": "Under maintenance",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "moreSevereIncidentTooltip": "Active incident rated {{impact}}: {{name}}"
   },
   "nav": {
     "boards": "Boards",
@@ -122,11 +123,12 @@
       "postmortem": "Postmortem",
       "timeRange": "Time range",
       "searchService": "Search by service…",
+      "search": "Search incidents or services…",
       "allTime": "All time",
       "last24h": "Last 24 hours",
       "last7d": "Last 7 days",
       "last30d": "Last 30 days",
-      "noMatches": "No services match this filter.",
+      "noMatches": "No incidents match this filter.",
       "allImpacts": "All impacts",
       "noImpactsSelected": "None selected",
       "new": "New",

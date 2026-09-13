@@ -14,6 +14,7 @@ import OutageTracker from "@/features/monitors/components/OutageTracker";
 import SearchFilterInput from "@/components/SearchFilterInput";
 import { InfoIcon } from "@/components/icons/NavIcons";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, ALL_COMPONENT_STATUSES, FALLBACK_STYLE } from "@/components/statusStyles";
+import MoreSevereIncidentBadge from "@/components/MoreSevereIncidentBadge";
 import { ALL_CONTINENTS, CONTINENT_LABEL_KEYS, inferComponentContinent, type Continent } from "@/features/monitors/services/componentRegion";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
@@ -244,6 +245,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                   ? t("serviceDetail.unreachable")
                   : data?.status.description}
             </p>
+            {data?.openIncidentImpact && <MoreSevereIncidentBadge incident={data.openIncidentImpact} />}
           </div>
         </div>
 
@@ -273,23 +275,6 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                 <InfoIcon className="text-base-content/40" />
               </button>
             </span>
-            {data.officialAllTimeUptime !== null && (
-              <span className="inline-flex items-center gap-1">
-                <Trans
-                  i18nKey="serviceDetail.uptimeAllTime"
-                  values={{ value: data.officialAllTimeUptime }}
-                  components={[<span key="0" className="text-base-content text-base font-bold" />]}
-                />
-                <button
-                  type="button"
-                  className="tooltip"
-                  data-tip={t("serviceDetail.uptimeMethodology")}
-                  aria-label={t("serviceDetail.uptimeMethodology")}
-                >
-                  <InfoIcon className="text-base-content/40" />
-                </button>
-              </span>
-            )}
           </div>
         </div>
       )}

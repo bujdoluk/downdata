@@ -11,7 +11,8 @@
     "degradedPerformance": "Desempenho degradado",
     "partialOutage": "Falha parcial",
     "underMaintenance": "Em manutenção",
-    "unknown": "Desconhecido"
+    "unknown": "Desconhecido",
+    "moreSevereIncidentTooltip": "Incidente ativo classificado como {{impact}}: {{name}}"
   },
   "nav": {
     "boards": "Painéis",
@@ -122,11 +123,12 @@
       "postmortem": "Postmortem",
       "timeRange": "Período",
       "searchService": "Pesquisar serviço…",
+      "search": "Pesquisar incidentes ou serviços…",
       "allTime": "Todo o período",
       "last24h": "Últimas 24 horas",
       "last7d": "Últimos 7 dias",
       "last30d": "Últimos 30 dias",
-      "noMatches": "Nenhum serviço corresponde a este filtro.",
+      "noMatches": "Nenhum incidente corresponde a este filtro.",
       "allImpacts": "Todos os impactos",
       "noImpactsSelected": "Nenhum selecionado",
       "new": "Novo",

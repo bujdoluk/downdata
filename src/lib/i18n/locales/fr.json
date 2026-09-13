@@ -11,7 +11,8 @@
     "degradedPerformance": "Performances dégradées",
     "partialOutage": "Panne partielle",
     "underMaintenance": "Maintenance en cours",
-    "unknown": "Inconnu"
+    "unknown": "Inconnu",
+    "moreSevereIncidentTooltip": "Incident actif classé {{impact}} : {{name}}"
   },
   "nav": {
     "boards": "Tableaux",
@@ -122,11 +123,12 @@
       "postmortem": "Post-mortem",
       "timeRange": "Période",
       "searchService": "Rechercher un service…",
+      "search": "Rechercher un incident ou un service…",
       "allTime": "Toute la période",
       "last24h": "Dernières 24 heures",
       "last7d": "7 derniers jours",
       "last30d": "30 derniers jours",
-      "noMatches": "Aucun service ne correspond à ce filtre.",
+      "noMatches": "Aucun incident ne correspond à ce filtre.",
       "allImpacts": "Tous les impacts",
       "noImpactsSelected": "Aucun sélectionné",
       "new": "Nouveau",

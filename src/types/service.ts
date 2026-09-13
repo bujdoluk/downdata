@@ -37,16 +37,16 @@ export type Catalog = {
   name: string;
   host: string;
   category: Category;
-  // Set only for a catalog entry whose host now redirects into a shared,
-  // multi-product status page (e.g. SendGrid's into Twilio's combined
-  // one) — components/incidents/maintenances are kept only if at least
-  // one affected component's name starts with this (case-insensitive).
-  // undefined/absent means "use everything," the existing behavior for
-  // every other service. See lib/componentNamePrefix.ts.
   componentNamePrefix?: string;
 };
 
 export type Indicator = "none" | "minor" | "major" | "critical" | string;
+
+export type OpenIncidentImpact = {
+  impact: Indicator;
+  name: string;
+  shortlink: string;
+};
 
 export type Status =
   | "operational"
@@ -107,6 +107,7 @@ export type ServiceSummaryResponse = {
     indicator: Indicator;
     description: string;
   };
+  openIncidentImpact?: OpenIncidentImpact;
   components: StatuspageComponent[];
   incidents: Incident[];
   maintenances: ScheduledMaintenanceSummary[];
@@ -137,7 +138,7 @@ export type ScheduledMaintenanceSummary = Omit<ScheduledMaintenance, "incident_u
 export type TrackedMaintenanceSummary = ScheduledMaintenanceSummary & { service: Service };
 
 export type ServiceStatusEntry =
-  | { status: { indicator: Indicator; description: string }; outages24h?: number }
+  | { status: { indicator: Indicator; description: string }; outages24h?: number; openIncidentImpact?: OpenIncidentImpact }
   | { error: string };
 
 export type ServiceStatusBatchResponse = Partial<Record<Slug, ServiceStatusEntry>>;

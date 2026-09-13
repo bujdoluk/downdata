@@ -11,7 +11,8 @@
     "degradedPerformance": "Försämrad prestanda",
     "partialOutage": "Delvis driftstopp",
     "underMaintenance": "Underhåll pågår",
-    "unknown": "Okänt"
+    "unknown": "Okänt",
+    "moreSevereIncidentTooltip": "Aktiv incident klassad som {{impact}}: {{name}}"
   },
   "nav": {
     "boards": "Tavlor",
@@ -122,11 +123,12 @@
       "postmortem": "Postmortem",
       "timeRange": "Tidsperiod",
       "searchService": "Sök tjänst…",
+      "search": "Sök incidenter eller tjänster…",
       "allTime": "Hela perioden",
       "last24h": "Senaste 24 timmarna",
       "last7d": "Senaste 7 dagarna",
       "last30d": "Senaste 30 dagarna",
-      "noMatches": "Ingen tjänst matchar detta filter.",
+      "noMatches": "Ingen incident matchar detta filter.",
       "allImpacts": "Alla påverkansnivåer",
       "noImpactsSelected": "Inga valda",
       "new": "Nytt",

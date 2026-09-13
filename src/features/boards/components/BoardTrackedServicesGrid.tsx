@@ -7,6 +7,7 @@ import type { Catalog, ServiceStatusBatchResponse } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/logos";
 import FallbackLogo from "@/components/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
+import MoreSevereIncidentBadge from "@/components/MoreSevereIncidentBadge";
 import { PlusIcon } from "@/components/icons/NavIcons";
 
 export default function BoardTrackedServicesGrid({
@@ -48,18 +49,30 @@ export default function BoardTrackedServicesGrid({
           const status = data?.[entry.slug];
           const entryFailed = fetchFailed || (status ? "error" in status : false);
           const indicator = status && "status" in status ? status.status.indicator : undefined;
+          const openIncidentImpact = status && "status" in status ? status.openIncidentImpact : undefined;
           const style = indicator ? INDICATOR_STYLES[indicator] : undefined;
           const stripeColor = isLoading || entryFailed ? "bg-base-content/10" : (style ?? FALLBACK_STYLE).dot;
           const Logo = SERVICE_LOGOS[entry.slug] ?? FallbackLogo;
           return (
-            <Link key={entry.slug} href={`/monitors/${entry.slug}`} className="tooltip" data-tip={entry.name} aria-label={entry.name}>
-              <div className="card card-border bg-[var(--color-surface-2)] hover:border-base-content/20 flex h-14 w-14 flex-row items-center overflow-hidden transition-colors">
-                <span className="flex flex-1 items-center justify-center">
-                  <Logo size={24} name={entry.name} />
-                </span>
-                <span className={`w-2 self-stretch shrink-0 ${stripeColor} ${isLoading ? "animate-pulse" : ""}`} aria-hidden="true" />
-              </div>
-            </Link>
+            <div key={entry.slug} className="relative">
+              <Link href={`/monitors/${entry.slug}`} className="tooltip" data-tip={entry.name} aria-label={entry.name}>
+                <div className="card card-border bg-[var(--color-surface-2)] hover:border-base-content/20 flex h-14 w-14 flex-row items-center overflow-hidden transition-colors">
+                  <span className="flex flex-1 items-center justify-center">
+                    <Logo size={24} name={entry.name} />
+                  </span>
+                  <span className={`w-2 self-stretch shrink-0 ${stripeColor} ${isLoading ? "animate-pulse" : ""}`} aria-hidden="true" />
+                </div>
+              </Link>
+              {/* Sibling to the Link, not nested inside it — an <a> inside
+                  an <a> is invalid HTML, so the badge sits absolutely
+                  positioned over the card's corner instead. */}
+              {openIncidentImpact && (
+                <MoreSevereIncidentBadge
+                  incident={openIncidentImpact}
+                  className="bg-base-100 absolute -top-1.5 -right-1.5 rounded-full p-0.5 shadow"
+                />
+              )}
+            </div>
           );
         })}
       </div>

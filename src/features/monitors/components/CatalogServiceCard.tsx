@@ -4,10 +4,11 @@ import { useRef } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
-import type { Indicator } from "@/types/service";
+import type { Indicator, OpenIncidentImpact } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/logos";
 import FallbackLogo from "@/components/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
+import MoreSevereIncidentBadge from "@/components/MoreSevereIncidentBadge";
 import { PinIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 import Spinner from "@/components/Spinner";
@@ -34,6 +35,7 @@ export default function CatalogServiceCard({
   slug,
   name,
   indicator,
+  openIncidentImpact,
   outages24h,
   isLoading,
   error,
@@ -48,6 +50,7 @@ export default function CatalogServiceCard({
   slug: string;
   name: string;
   indicator?: Indicator;
+  openIncidentImpact?: OpenIncidentImpact;
   outages24h?: number;
   isLoading: boolean;
   error: boolean;
@@ -133,6 +136,7 @@ export default function CatalogServiceCard({
                 so it can never be the page's own h1; h3 still lets a screen
                 reader user navigate card-to-card by heading. */}
             <h3 className="card-title min-w-0 truncate text-base">{name}</h3>
+            {!addState && openIncidentImpact && <MoreSevereIncidentBadge incident={openIncidentImpact} />}
             {!addState && isMonitored && (
               <span className="badge badge-soft badge-info ml-auto shrink-0 text-[10px]">
                 {t("services.monitoring")}

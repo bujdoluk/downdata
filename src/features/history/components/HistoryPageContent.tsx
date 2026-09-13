@@ -20,13 +20,14 @@ import ComponentFilterDropdown from "@/features/history/components/ComponentFilt
 import ServiceSearchPicker from "@/features/monitors/components/ServiceSearchPicker";
 import ImpactFilterDropdown from "@/components/ImpactFilterDropdown";
 import SearchFilterInput from "@/components/SearchFilterInput";
-import { formatDateTime, minutesBetween, formatDuration } from "@/lib/formatTime";
+import { formatDateTime, formatMonthYear, minutesBetween, formatDuration } from "@/lib/formatTime";
 import { stripHtml } from "@/lib/stripHtml";
 import { TAB_BG_STYLE } from "@/lib/utils";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import { useSelectedBoard } from "@/hooks/useSelectedBoard";
 import { useDebouncedUrlFilters } from "@/hooks/useDebouncedUrlFilters";
 import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/statusStyles";
+import { InfoIcon } from "@/components/icons/NavIcons";
 import LoadingOverlay from "@/components/LoadingOverlay";
 
 const POLL_INTERVAL_MS = 60_000;
@@ -127,7 +128,10 @@ export default function HistoryPageContent({
     isError: error,
   } = useQuery({
     queryKey: queryKeys.history.service(slug),
-    queryFn: () => fetchJson<{ incidents: Incident[] }>(`/api/history/${slug}`),
+    queryFn: () =>
+      fetchJson<{ incidents: Incident[]; trackedSince: string | null; officialAllTimeUptime: number | null }>(
+        `/api/history/${slug}`,
+      ),
     enabled: !!slug,
   });
 
@@ -280,13 +284,14 @@ export default function HistoryPageContent({
       <div className="mt-4">
         <div className="flex flex-wrap items-center gap-4">
           <ServiceSearchPicker services={services} value={slug} onChange={selectService} placeholder={t("history.selectService")} />
-          <ImpactFilterDropdown selected={selectedImpacts} onToggle={toggleImpact} />
-          <ComponentFilterDropdown options={allComponents} selected={filters.components} onToggle={toggleComponent} />
           <SearchFilterInput
             value={filters.q}
             onChange={(q) => setFilters((prev) => ({ ...prev, q }))}
             label={t("history.searchPlaceholder")}
+            className="w-56"
           />
+          <ImpactFilterDropdown selected={selectedImpacts} onToggle={toggleImpact} />
+          <ComponentFilterDropdown options={allComponents} selected={filters.components} onToggle={toggleComponent} />
         </div>
 
         {!slug ? null : isLoading ? null : error ? (
@@ -295,7 +300,7 @@ export default function HistoryPageContent({
           <p className="text-base-content/50 mt-4 text-sm">{t("history.empty")}</p>
         ) : incidents ? (
           <>
-            <div className="text-base-content/60 mt-4 flex flex-wrap gap-4 text-base">
+            <div className="text-base-content/60 mt-4 flex flex-wrap items-center gap-4 text-base">
               <span>
                 <Trans i18nKey="history.summary.incidents" count={summary.incidentCount} components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]} />
               </span>
@@ -307,6 +312,26 @@ export default function HistoryPageContent({
                     components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]}
                   />
                 </span>
+              )}
+              {historyData?.officialAllTimeUptime != null && (
+                <span className="inline-flex items-center gap-1">
+                  <Trans
+                    i18nKey="serviceDetail.uptimeAllTime"
+                    values={{ value: historyData.officialAllTimeUptime }}
+                    components={[<span key="0" className="text-base-content text-1xl font-extrabold" />]}
+                  />
+                  <button
+                    type="button"
+                    className="tooltip"
+                    data-tip={t("serviceDetail.uptimeMethodology")}
+                    aria-label={t("serviceDetail.uptimeMethodology")}
+                  >
+                    <InfoIcon className="text-base-content/40" />
+                  </button>
+                </span>
+              )}
+              {historyData?.trackedSince && (
+                <span className="ml-auto text-sm">{t("serviceDetail.trackedSince", { date: formatMonthYear(historyData.trackedSince, timeZone) })}</span>
               )}
             </div>
 

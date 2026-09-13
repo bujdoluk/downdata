@@ -145,7 +145,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
     enabled: !!selectedSlug && !!selectedId,
   });
 
-  const trimmedServiceQuery = pendingFilters.q.trim().toLowerCase();
+  const trimmedQuery = pendingFilters.q.trim().toLowerCase();
   const selectedBoard = boards.find((board) => board.id === pendingFilters.board);
   const boardSlugs = useMemo(() => (selectedBoard ? new Set(selectedBoard.Slugs) : null), [selectedBoard]);
   const filteredIncidents = useMemo(
@@ -155,7 +155,12 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
           (incident) =>
             matchesStatus(incident, pendingFilters.status) &&
             pendingFilters.impacts.has(incident.impact) &&
-            (!trimmedServiceQuery || incident.service.name.toLowerCase().includes(trimmedServiceQuery)) &&
+            // Matches either which service it's on or the incident's own
+            // name (e.g. "database outage") — one search box covering both,
+            // rather than a second input just for incident text.
+            (!trimmedQuery ||
+              incident.service.name.toLowerCase().includes(trimmedQuery) ||
+              incident.name.toLowerCase().includes(trimmedQuery)) &&
             (pendingFilters.range === "all" || msSince(incident.updated_at) <= RANGE_MS[pendingFilters.range]) &&
             (!boardSlugs || boardSlugs.has(incident.service.slug)),
         )
@@ -164,7 +169,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
           if (pinnedDiff !== 0) return pinnedDiff;
           return Number(epochMs(b.updated_at) > lastViewed) - Number(epochMs(a.updated_at) > lastViewed);
         }),
-    [incidents, pendingFilters, trimmedServiceQuery, pinned, boardSlugs, lastViewed],
+    [incidents, pendingFilters, trimmedQuery, pinned, boardSlugs, lastViewed],
   );
 
   useAutoSelectFirstId("/incidents", selectedId, persistedBoardApplies ? [] : filteredIncidents);
@@ -207,10 +212,11 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
       <SearchFilterInput
         value={pendingFilters.q}
         onChange={(q) => setPendingFilters((prev) => ({ ...prev, q }))}
-        label={t("incidents.filter.searchService")}
+        label={t("incidents.filter.search")}
+        className="w-56"
       />
       <SelectDropdown
-        className="w-40"
+        className="w-56"
         ariaLabel={t("incidents.filter.timeRange")}
         value={pendingFilters.range}
         onChange={(range) => setPendingFilters((prev) => ({ ...prev, range }))}
@@ -222,7 +228,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
         ]}
       />
       <SelectDropdown
-        className="w-40"
+        className="w-56"
         ariaLabel={t("incidents.filter.status")}
         value={pendingFilters.status}
         onChange={(status) => setPendingFilters((prev) => ({ ...prev, status }))}
@@ -253,6 +259,13 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
             const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
             const isNew = epochMs(incident.updated_at) > lastViewed;
             const isSelected = incident.id === selectedId;
+            // Same STATUS_LABEL_KEY lookup the filter dropdown already uses
+            // for these exact values — falls back to the raw string for a
+            // provider-reported status outside the known set (Incident.status
+            // is typed as a plain string precisely because not every
+            // Statuspage-alike sends one of these five).
+            const statusLabelKey = STATUS_LABEL_KEY[incident.status as StatusFilter];
+            const statusLabel = statusLabelKey ? t(`incidents.filter.${statusLabelKey}`) : incident.status;
             return (
               <li
                 key={incident.id}
@@ -277,7 +290,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
                     <p className="text-base-content/50 text-xs">{incident.service.name}</p>
                     <p className="text-base-content truncate text-sm font-medium">{incident.name}</p>
                     <div className="mt-1 flex items-center gap-2">
-                      <span className="text-base-content/50 text-xs">{incident.status}</span>
+                      <span className="text-base-content/50 text-xs">{statusLabel}</span>
                       <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
                       {isNew && (
                         <span className="badge badge-xs badge-info text-white uppercase">{t("incidents.new")}</span>

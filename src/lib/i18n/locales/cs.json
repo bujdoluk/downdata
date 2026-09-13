@@ -11,7 +11,8 @@
     "degradedPerformance": "Snížený výkon",
     "partialOutage": "Částečný výpadek",
     "underMaintenance": "Probíhá údržba",
-    "unknown": "Neznámé"
+    "unknown": "Neznámé",
+    "moreSevereIncidentTooltip": "Aktivní incident hodnocený jako {{impact}}: {{name}}"
   },
   "nav": {
     "boards": "Nástěnky",
@@ -126,11 +127,12 @@
       "postmortem": "Postmortem",
       "timeRange": "Časové období",
       "searchService": "Hledat službu…",
+      "search": "Hledat incidenty nebo služby…",
       "allTime": "Celé období",
       "last24h": "Posledních 24 hodin",
       "last7d": "Posledních 7 dní",
       "last30d": "Posledních 30 dní",
-      "noMatches": "Žádné služby neodpovídají tomuto filtru.",
+      "noMatches": "Žádné incidenty neodpovídají tomuto filtru.",
       "allImpacts": "Všechny dopady",
       "noImpactsSelected": "Nic nevybráno",
       "new": "Nové",

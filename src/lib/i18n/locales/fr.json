@@ -15,7 +15,6 @@
   },
   "nav": {
     "boards": "Tableaux",
-    "addService": "Ajouter un moniteur",
     "searchPlaceholder_one": "Rechercher {{count}} service…",
     "searchPlaceholder_other": "Rechercher {{count}} services…",
     "noServicesFound": "Aucun service trouvé.",
@@ -378,6 +377,10 @@
     "trackedServices": "Services suivis",
     "pickCategory": "Sélectionnez une catégorie pour parcourir les services.",
     "noServicesOnBoard": "Aucun service sur ce tableau pour le moment.",
+    "suggestedServices": "Services populaires pour commencer",
+    "addServiceModal": {
+      "title": "Ajouter un service au tableau {{name}}"
+    },
     "activity": {
       "incidentsTitle": "Incidents actifs",
       "maintenanceTitle": "Maintenances actives",
@@ -414,8 +417,6 @@
     }
   },
   "addService": {
-    "back": "← Retour",
-    "title": "Ajouter un moniteur",
     "add": "Ajouter",
     "adding": "Ajout en cours…",
     "somethingWrong": "Une erreur s'est produite.",
@@ -446,7 +447,6 @@
       "realEstate": "Immobilier",
       "other": "Autre"
     },
-    "subtitle": "Parcourez le catalogue et commencez à surveiller un nouveau service.",
     "board": "Tableau",
     "pickBoardFirst": "Choisissez d'abord un tableau.",
     "tabService": "Service tiers",

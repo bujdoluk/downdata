@@ -15,7 +15,6 @@
   },
   "nav": {
     "boards": "Tavler",
-    "addService": "Legg til overvåking",
     "searchPlaceholder_one": "Søk etter {{count}} tjeneste…",
     "searchPlaceholder_other": "Søk etter {{count}} tjenester…",
     "noServicesFound": "Ingen tjenester funnet.",
@@ -378,6 +377,10 @@
     "trackedServices": "Sporede tjenester",
     "pickCategory": "Velg en kategori for å bla gjennom tjenester.",
     "noServicesOnBoard": "Ingen tjenester på denne tavlen ennå.",
+    "suggestedServices": "Populære tjenester for å komme i gang",
+    "addServiceModal": {
+      "title": "Legg til tjeneste på tavlen {{name}}"
+    },
     "activity": {
       "incidentsTitle": "Aktive hendelser",
       "maintenanceTitle": "Aktivt vedlikehold",
@@ -414,8 +417,6 @@
     }
   },
   "addService": {
-    "back": "← Tilbake",
-    "title": "Legg til en overvåking",
     "board": "Tavle",
     "pickBoardFirst": "Velg en tavle først.",
     "add": "Legg til",
@@ -448,7 +449,6 @@
       "realEstate": "Eiendom",
       "other": "Annet"
     },
-    "subtitle": "Bla gjennom katalogen og begynn å overvåke en ny tjeneste.",
     "tabService": "Tredjepartstjeneste",
     "tabWebsite": "Nettside",
     "websiteComingSoon": "Overvåking av nettsider kommer snart.",

@@ -19,6 +19,7 @@ export default function MonitorsBoardSection({
   fetchFailed,
   removingSlugs,
   onRemove,
+  onAddService,
 }: {
   board: Board;
   entries: Catalog[];
@@ -26,6 +27,9 @@ export default function MonitorsBoardSection({
   fetchFailed: boolean;
   removingSlugs: Set<string>;
   onRemove: (entry: Catalog) => void;
+  // Opens MonitorsPageContent's shared add-service modal, pre-selected to
+  // this section's own board.
+  onAddService: () => void;
 }) {
   return (
     <section>
@@ -42,7 +46,7 @@ export default function MonitorsBoardSection({
 
       {entries.length === 0 ? (
         <div className="mt-3">
-          <NoServicesMessage board={board} />
+          <NoServicesMessage board={board} onAddClick={onAddService} />
         </div>
       ) : (
         <div className="mt-3 grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] gap-4">

@@ -15,7 +15,6 @@
   },
   "nav": {
     "boards": "Bacheche",
-    "addService": "Aggiungi monitor",
     "searchPlaceholder_one": "Cerca {{count}} servizio…",
     "searchPlaceholder_other": "Cerca {{count}} servizi…",
     "noServicesFound": "Nessun servizio trovato.",
@@ -378,6 +377,10 @@
     "trackedServices": "Servizi monitorati",
     "pickCategory": "Seleziona una categoria per sfogliare i servizi.",
     "noServicesOnBoard": "Nessun servizio in questa bacheca.",
+    "suggestedServices": "Servizi popolari per iniziare",
+    "addServiceModal": {
+      "title": "Aggiungi un servizio alla bacheca {{name}}"
+    },
     "activity": {
       "incidentsTitle": "Incidenti attivi",
       "maintenanceTitle": "Manutenzioni attive",
@@ -414,8 +417,6 @@
     }
   },
   "addService": {
-    "back": "← Indietro",
-    "title": "Aggiungi un monitor",
     "add": "Aggiungi",
     "adding": "Aggiunta in corso…",
     "somethingWrong": "Qualcosa è andato storto.",
@@ -446,7 +447,6 @@
       "realEstate": "Immobiliare",
       "other": "Altro"
     },
-    "subtitle": "Sfoglia il catalogo e inizia a monitorare un nuovo servizio.",
     "board": "Bacheca",
     "pickBoardFirst": "Scegli prima una bacheca.",
     "tabService": "Servizio di terze parti",

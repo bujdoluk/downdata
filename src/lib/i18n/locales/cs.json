@@ -15,7 +15,6 @@
   },
   "nav": {
     "boards": "Nástěnky",
-    "addService": "Přidat monitor",
     "searchPlaceholder_one": "Hledat {{count}} službu…",
     "searchPlaceholder_few": "Hledat {{count}} služby…",
     "searchPlaceholder_many": "Hledat {{count}} služby…",
@@ -391,6 +390,10 @@
     "trackedServices": "Sledované služby",
     "pickCategory": "Vyberte kategorii pro procházení služeb.",
     "noServicesOnBoard": "Na této nástěnce zatím nejsou žádné služby.",
+    "suggestedServices": "Oblíbené služby pro začátek",
+    "addServiceModal": {
+      "title": "Přidat službu do nástěnky {{name}}"
+    },
     "activity": {
       "incidentsTitle": "Aktivní incidenty",
       "maintenanceTitle": "Aktivní údržby",
@@ -427,8 +430,6 @@
     }
   },
   "addService": {
-    "back": "← Zpět",
-    "title": "Přidat monitor",
     "add": "Přidat",
     "adding": "Přidává se…",
     "somethingWrong": "Něco se pokazilo.",
@@ -459,7 +460,6 @@
       "realEstate": "Nemovitosti",
       "other": "Ostatní"
     },
-    "subtitle": "Prohlédněte si katalog a začněte sledovat novou službu.",
     "board": "Nástěnka",
     "pickBoardFirst": "Nejprve vyberte nástěnku.",
     "tabService": "Externí služba",

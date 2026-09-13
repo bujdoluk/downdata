@@ -10,15 +10,17 @@ import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
 import { PlusIcon } from "@/components/icons/NavIcons";
 
 export default function BoardTrackedServicesGrid({
-  boardId,
   entries,
   data,
   fetchFailed,
+  onAddService,
 }: {
-  boardId: string;
   entries: Catalog[];
   data: ServiceStatusBatchResponse | undefined;
   fetchFailed: boolean;
+  // Opens BoardDetailContent's inline add-service modal — a callback rather
+  // than a boardId + Link now that adding no longer navigates away.
+  onAddService: () => void;
 }) {
   const { t } = useTranslation();
   const isLoading = !data && !fetchFailed;
@@ -29,36 +31,38 @@ export default function BoardTrackedServicesGrid({
         <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">
           {t("boards.trackedServices")} ({entries.length})
         </h2>
-        <Link href={`/add-service?board=${boardId}`} className="btn btn-info btn-xs">
+        <button type="button" onClick={onAddService} className="btn btn-info btn-xs">
           <PlusIcon />
-          {t("nav.addService")}
-        </Link>
+          {t("monitors.addMonitor")}
+        </button>
       </div>
 
-      {entries.length === 0 ? (
-        <p className="text-base-content/50 mt-3 text-sm">{t("boards.noServicesOnBoard")}</p>
-      ) : (
-        <div className="mt-3 flex flex-wrap gap-2">
-          {entries.map((entry) => {
-            const status = data?.[entry.slug];
-            const entryFailed = fetchFailed || (status ? "error" in status : false);
-            const indicator = status && "status" in status ? status.status.indicator : undefined;
-            const style = indicator ? INDICATOR_STYLES[indicator] : undefined;
-            const stripeColor = isLoading || entryFailed ? "bg-base-content/10" : (style ?? FALLBACK_STYLE).dot;
-            const Logo = SERVICE_LOGOS[entry.slug] ?? FallbackLogo;
-            return (
-              <Link key={entry.slug} href={`/monitors/${entry.slug}`} className="tooltip" data-tip={entry.name} aria-label={entry.name}>
-                <div className="card card-border bg-[var(--color-surface-2)] hover:border-base-content/20 flex h-14 w-14 flex-row items-center overflow-hidden transition-colors">
-                  <span className="flex flex-1 items-center justify-center">
-                    <Logo size={24} name={entry.name} />
-                  </span>
-                  <span className={`w-2 self-stretch shrink-0 ${stripeColor} ${isLoading ? "animate-pulse" : ""}`} aria-hidden="true" />
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      )}
+      {/* No entries.length === 0 branch — BoardDetailContent (this
+          component's only caller) only ever renders this inside its own
+          non-empty branch; a zero-service board gets NoServicesMessage +
+          BoardSuggestedServices instead. .map over an empty array already
+          renders nothing on its own, so there's nothing left to special-case
+          here. */}
+      <div className="mt-3 flex flex-wrap gap-2">
+        {entries.map((entry) => {
+          const status = data?.[entry.slug];
+          const entryFailed = fetchFailed || (status ? "error" in status : false);
+          const indicator = status && "status" in status ? status.status.indicator : undefined;
+          const style = indicator ? INDICATOR_STYLES[indicator] : undefined;
+          const stripeColor = isLoading || entryFailed ? "bg-base-content/10" : (style ?? FALLBACK_STYLE).dot;
+          const Logo = SERVICE_LOGOS[entry.slug] ?? FallbackLogo;
+          return (
+            <Link key={entry.slug} href={`/monitors/${entry.slug}`} className="tooltip" data-tip={entry.name} aria-label={entry.name}>
+              <div className="card card-border bg-[var(--color-surface-2)] hover:border-base-content/20 flex h-14 w-14 flex-row items-center overflow-hidden transition-colors">
+                <span className="flex flex-1 items-center justify-center">
+                  <Logo size={24} name={entry.name} />
+                </span>
+                <span className={`w-2 self-stretch shrink-0 ${stripeColor} ${isLoading ? "animate-pulse" : ""}`} aria-hidden="true" />
+              </div>
+            </Link>
+          );
+        })}
+      </div>
     </>
   );
 }

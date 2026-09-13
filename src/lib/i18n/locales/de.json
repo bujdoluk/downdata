@@ -15,7 +15,6 @@
   },
   "nav": {
     "boards": "Boards",
-    "addService": "Monitor hinzufügen",
     "searchPlaceholder_one": "{{count}} Dienst suchen…",
     "searchPlaceholder_other": "{{count}} Dienste suchen…",
     "noServicesFound": "Keine Dienste gefunden.",
@@ -378,6 +377,10 @@
     "trackedServices": "Verfolgte Dienste",
     "pickCategory": "Wähle eine Kategorie, um Dienste zu durchsuchen.",
     "noServicesOnBoard": "Noch keine Dienste auf diesem Board.",
+    "suggestedServices": "Beliebte Dienste zum Einstieg",
+    "addServiceModal": {
+      "title": "Dienst zu {{name}} hinzufügen"
+    },
     "activity": {
       "incidentsTitle": "Aktive Vorfälle",
       "maintenanceTitle": "Aktive Wartungen",
@@ -414,8 +417,6 @@
     }
   },
   "addService": {
-    "back": "← Zurück",
-    "title": "Monitor hinzufügen",
     "add": "Hinzufügen",
     "adding": "Wird hinzugefügt…",
     "somethingWrong": "Etwas ist schiefgelaufen.",
@@ -446,7 +447,6 @@
       "realEstate": "Immobilien",
       "other": "Sonstiges"
     },
-    "subtitle": "Durchsuche den Katalog und beginne, einen neuen Dienst zu überwachen.",
     "board": "Board",
     "pickBoardFirst": "Wähle zuerst ein Board aus.",
     "tabService": "Drittanbieter-Dienst",

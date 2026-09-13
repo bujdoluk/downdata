@@ -1351,6 +1351,18 @@ _No props._
 | ref | Ref<BlogPostPreviewModalHandle> \| undefined | No | — | Allows getting a ref to the component instance. Once the component unmounts, React will set `ref.current` to `null` (or call the ref with `null` if you passed a callback ref). @see {@link https://react.dev/learn/referencing-values-with-refs#refs-and-the-dom React Docs} |
 | key | Key \| null \| undefined | No | — |  |
 
+### AddServiceModal
+
+`src/features/boards/components/AddServiceModal.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| dialogRef | RefObject<HTMLDialogElement \| null> | Yes | — |  |
+| boards | Board[] | Yes | — |  |
+| initialBoardId | string \| undefined | No | — |  |
+| catalog | Catalog[] | Yes | — |  |
+| onAdded | (board: Board) => void | Yes | — |  |
+
 ### BoardActiveIncidentsPanel
 
 `src/features/boards/components/BoardActiveIncidentsPanel.tsx`
@@ -1402,16 +1414,26 @@ _No props._
 |---|---|---|---|---|
 | boards | Board[] | Yes | — |  |
 
+### BoardSuggestedServices
+
+`src/features/boards/components/BoardSuggestedServices.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| board | Board | Yes | — |  |
+| catalog | Catalog[] | Yes | — |  |
+| onAdded | ((board: Board) => void) \| undefined | No | — |  |
+
 ### BoardTrackedServicesGrid
 
 `src/features/boards/components/BoardTrackedServicesGrid.tsx`
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
-| boardId | string | Yes | — |  |
 | entries | Catalog[] | Yes | — |  |
 | data | Partial<Record<string, ServiceStatusEntry>> \| undefined | Yes | — |  |
 | fetchFailed | boolean | Yes | — |  |
+| onAddService | () => void | Yes | — |  |
 
 ### CreateBoardForm
 
@@ -1676,13 +1698,15 @@ _No props._
 |---|---|---|---|---|
 | boards | Board[] | Yes | — |  |
 
-### AddServiceButton
+### AddServicePanel
 
-`src/features/monitors/components/AddServiceButton.tsx`
+`src/features/monitors/components/AddServicePanel.tsx`
 
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
-| boardId | string \| undefined | No | — |  |
+| catalog | Catalog[] | Yes | — |  |
+| board | Board | Yes | — |  |
+| onAdded | ((board: Board) => void) \| undefined | No | — |  |
 
 ### CatalogBrowser
 
@@ -1749,6 +1773,7 @@ _No props._
 | fetchFailed | boolean | Yes | — |  |
 | removingSlugs | Set<string> | Yes | — |  |
 | onRemove | (entry: Catalog) => void | Yes | — |  |
+| onAddService | () => void | Yes | — |  |
 
 ### MonitorsPageContent
 
@@ -1767,6 +1792,7 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | board | Board \| undefined | No | — |  |
+| onAddClick | () => void | Yes | — |  |
 
 ### OutageTracker
 
@@ -1805,17 +1831,6 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | currentSlug | string | Yes | — |  |
-
-### ServiceCatalogPicker
-
-`src/features/monitors/components/ServiceCatalogPicker.tsx`
-
-| Prop | Type | Required | Default | Description |
-|---|---|---|---|---|
-| catalog | Catalog[] | Yes | — |  |
-| boards | Board[] | Yes | — |  |
-| initialBoardId | string \| undefined | No | — |  |
-| backHref | string | Yes | — |  |
 
 ### ServiceDetail
 

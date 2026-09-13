@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -13,16 +13,22 @@ import { mergeParams } from "@/lib/mergeParams";
 import { useSelectedBoard } from "@/hooks/useSelectedBoard";
 import CatalogServiceGrid from "@/features/monitors/components/CatalogServiceGrid";
 import MonitorsBoardSection from "@/features/monitors/components/MonitorsBoardSection";
-import AddServiceButton from "@/features/monitors/components/AddServiceButton";
 import NoServicesMessage from "@/features/monitors/components/NoServicesMessage";
 import StatusSummary from "@/features/monitors/components/StatusSummary";
+import { PlusIcon } from "@/components/icons/NavIcons";
+// Direct path, not @/features/boards's own barrel — that barrel also
+// re-exports services/boards.ts (server-only, reads next/headers's
+// cookies()), which breaks a client component's build the same way
+// components/sidebar/BoardSelect.tsx's own comment already documents for
+// CreateBoardModal.
+import AddServiceModal from "@/features/boards/components/AddServiceModal";
 
 const POLL_INTERVAL_MS = 60_000;
 
 export default function MonitorsPageContent({
   catalog,
   trackedSlugs,
-  boards,
+  boards: initialBoards,
 }: {
   catalog: Catalog[];
   trackedSlugs: string[];
@@ -37,11 +43,45 @@ export default function MonitorsPageContent({
   // below), and a plain-slug key would show a spinner on a sibling
   // section's card for a removal that section had nothing to do with.
   const [removingSlugs, setRemovingSlugs] = useState<Set<string>>(new Set());
+  // Own state, not just the server-provided prop — adding a service via the
+  // modal below must update this page's own grids/counts immediately, not
+  // only once router.refresh()'s server round trip resolves. Same reasoning
+  // as BoardDetailContent's own board state.
+  const [boards, setBoards] = useState(initialBoards);
+  const [syncedBoards, setSyncedBoards] = useState(initialBoards);
+  if (initialBoards !== syncedBoards) {
+    setSyncedBoards(initialBoards);
+    setBoards(initialBoards);
+  }
+
+  const addServiceRef = useRef<HTMLDialogElement>(null);
+  // Which board the add-service modal opens pre-selected to — the currently
+  // filtered board when adding from the header, or a specific board's own
+  // section when adding from its empty state in the "all boards" view. The
+  // modal's own dropdown (see AddServiceModal) still lets you switch away
+  // from whichever this was.
+  const [modalBoardId, setModalBoardId] = useState<string | undefined>(undefined);
+
+  function openAddService(boardId?: string) {
+    setModalBoardId(boardId);
+    addServiceRef.current?.showModal();
+  }
+
+  function handleServiceAdded(updatedBoard: Board) {
+    setBoards((prev) => prev.map((b) => (b.id === updatedBoard.id ? updatedBoard : b)));
+    queryClient.invalidateQueries({ queryKey: queryKeys.catalogStatus() });
+    router.refresh();
+  }
 
   const boardId = searchParams.get("board") ?? "";
   const selectedBoard = boards.find((board) => board.id === boardId);
+  // Union with the server-provided trackedSlugs (rather than only deriving
+  // from `boards`) so a service tracked through some path other than this
+  // page's own optimistic state — there's none today, but nothing enforces
+  // that staying true — still counts.
+  const effectiveTrackedSlugs = new Set([...trackedSlugs, ...boards.flatMap((b) => b.Slugs)]);
   const myServices = catalog.filter(
-    (entry) => trackedSlugs.includes(entry.slug) && (!selectedBoard || selectedBoard.Slugs.includes(entry.slug)),
+    (entry) => effectiveTrackedSlugs.has(entry.slug) && (!selectedBoard || selectedBoard.Slugs.includes(entry.slug)),
   );
 
   const { selectedBoardId } = useSelectedBoard();
@@ -118,18 +158,21 @@ export default function MonitorsPageContent({
         <h1 className="text-base-content text-lg font-semibold">
           {t("monitors.myServices")} ({myServices.length})
         </h1>
-        <AddServiceButton boardId={selectedBoard?.id} />
+        <button type="button" onClick={() => openAddService(selectedBoard?.id)} className="btn btn-info btn-sm">
+          <PlusIcon />
+          {t("monitors.addMonitor")}
+        </button>
       </div>
       <p className="text-base-content/60 mt-1 text-sm">{t("services.subtitle")}</p>
 
       {boards.length === 0 ? (
         <div className="mt-4">
-          <NoServicesMessage />
+          <NoServicesMessage onAddClick={() => openAddService()} />
         </div>
       ) : selectedBoard ? (
         myServices.length === 0 ? (
           <div className="mt-4">
-            <NoServicesMessage board={selectedBoard} />
+            <NoServicesMessage board={selectedBoard} onAddClick={() => openAddService(selectedBoard.id)} />
           </div>
         ) : (
           <>
@@ -159,11 +202,20 @@ export default function MonitorsPageContent({
                 fetchFailed={fetchFailed}
                 removingSlugs={removingSlugsForBoard(board.id)}
                 onRemove={(entry) => handleRemove(entry, board.id)}
+                onAddService={() => openAddService(board.id)}
               />
             ))}
           </div>
         </>
       )}
+
+      <AddServiceModal
+        dialogRef={addServiceRef}
+        boards={boards}
+        initialBoardId={modalBoardId}
+        catalog={catalog}
+        onAdded={handleServiceAdded}
+      />
     </div>
   );
 }

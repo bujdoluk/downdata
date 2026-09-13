@@ -15,7 +15,6 @@
   },
   "nav": {
     "boards": "Nástenky",
-    "addService": "Pridať monitor",
     "searchPlaceholder_one": "Hľadať {{count}} službu…",
     "searchPlaceholder_few": "Hľadať {{count}} služby…",
     "searchPlaceholder_many": "Hľadať {{count}} služby…",
@@ -391,6 +390,10 @@
     "trackedServices": "Sledované služby",
     "pickCategory": "Vyberte kategóriu na prehliadanie služieb.",
     "noServicesOnBoard": "Na tejto nástenke zatiaľ nie sú žiadne služby.",
+    "suggestedServices": "Populárne služby na začiatok",
+    "addServiceModal": {
+      "title": "Pridať službu do nástenky {{name}}"
+    },
     "activity": {
       "incidentsTitle": "Aktívne incidenty",
       "maintenanceTitle": "Aktívne údržby",
@@ -427,8 +430,6 @@
     }
   },
   "addService": {
-    "back": "← Späť",
-    "title": "Pridať monitor",
     "board": "Nástenka",
     "pickBoardFirst": "Najprv vyberte nástenku.",
     "add": "Pridať",
@@ -461,7 +462,6 @@
       "realEstate": "Nehnuteľnosti",
       "other": "Ostatné"
     },
-    "subtitle": "Prezrite si katalóg a začnite sledovať novú službu.",
     "tabService": "Externá služba",
     "tabWebsite": "Webová stránka",
     "websiteComingSoon": "Monitorovanie webových stránok už čoskoro.",

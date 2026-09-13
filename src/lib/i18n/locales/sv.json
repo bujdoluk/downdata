@@ -15,7 +15,6 @@
   },
   "nav": {
     "boards": "Tavlor",
-    "addService": "Lägg till övervakning",
     "searchPlaceholder_one": "Sök {{count}} tjänst…",
     "searchPlaceholder_other": "Sök {{count}} tjänster…",
     "noServicesFound": "Inga tjänster hittades.",
@@ -378,6 +377,10 @@
     "trackedServices": "Spårade tjänster",
     "pickCategory": "Välj en kategori för att bläddra bland tjänster.",
     "noServicesOnBoard": "Inga tjänster på denna tavla än.",
+    "suggestedServices": "Populära tjänster för att komma igång",
+    "addServiceModal": {
+      "title": "Lägg till tjänst på tavlan {{name}}"
+    },
     "activity": {
       "incidentsTitle": "Aktiva incidenter",
       "maintenanceTitle": "Aktivt underhåll",
@@ -414,8 +417,6 @@
     }
   },
   "addService": {
-    "back": "← Tillbaka",
-    "title": "Lägg till en övervakning",
     "board": "Tavla",
     "pickBoardFirst": "Välj en tavla först.",
     "add": "Lägg till",
@@ -448,7 +449,6 @@
       "realEstate": "Fastigheter",
       "other": "Övrigt"
     },
-    "subtitle": "Bläddra i katalogen och börja övervaka en ny tjänst.",
     "tabService": "Tredjepartstjänst",
     "tabWebsite": "Webbplats",
     "websiteComingSoon": "Webbplatsövervakning kommer snart.",

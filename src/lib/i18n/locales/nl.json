@@ -15,7 +15,6 @@
   },
   "nav": {
     "boards": "Borden",
-    "addService": "Monitor toevoegen",
     "searchPlaceholder_one": "{{count}} dienst zoeken…",
     "searchPlaceholder_other": "{{count}} diensten zoeken…",
     "noServicesFound": "Geen diensten gevonden.",
@@ -378,6 +377,10 @@
     "trackedServices": "Gevolgde diensten",
     "pickCategory": "Selecteer een categorie om diensten te doorbladeren.",
     "noServicesOnBoard": "Nog geen diensten op dit bord.",
+    "suggestedServices": "Populaire diensten om mee te beginnen",
+    "addServiceModal": {
+      "title": "Dienst toevoegen aan bord {{name}}"
+    },
     "activity": {
       "incidentsTitle": "Actieve incidenten",
       "maintenanceTitle": "Actief onderhoud",
@@ -414,8 +417,6 @@
     }
   },
   "addService": {
-    "back": "← Terug",
-    "title": "Een monitor toevoegen",
     "board": "Bord",
     "pickBoardFirst": "Kies eerst een bord.",
     "add": "Toevoegen",
@@ -448,7 +449,6 @@
       "realEstate": "Vastgoed",
       "other": "Overig"
     },
-    "subtitle": "Blader door de catalogus en begin een nieuwe dienst te volgen.",
     "tabService": "Externe dienst",
     "tabWebsite": "Website",
     "websiteComingSoon": "Website-monitoring komt binnenkort.",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -15,9 +15,12 @@ import { useBoardRename } from "@/features/boards/hooks/useBoardRename";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import { isActiveIncident } from "@/features/boards/services/isActiveIncident";
 import StatusSummary from "@/features/monitors/components/StatusSummary";
+import NoServicesMessage from "@/features/monitors/components/NoServicesMessage";
 import BoardActiveIncidentsPanel from "@/features/boards/components/BoardActiveIncidentsPanel";
 import BoardActiveMaintenancePanel from "@/features/boards/components/BoardActiveMaintenancePanel";
 import BoardTrackedServicesGrid from "@/features/boards/components/BoardTrackedServicesGrid";
+import BoardSuggestedServices from "@/features/boards/components/BoardSuggestedServices";
+import AddServiceModal from "@/features/boards/components/AddServiceModal";
 import BoardStatusPageSummary from "@/features/status-pages/components/BoardStatusPageSummary";
 import IncidentCountsChart from "@/features/history/components/IncidentCountsChart";
 import Spinner from "@/components/Spinner";
@@ -28,7 +31,7 @@ import { InfoIcon, PencilIcon } from "@/components/icons/NavIcons";
 const POLL_INTERVAL_MS = 60_000;
 
 export default function BoardDetailContent({
-  board,
+  board: initialBoard,
   catalog,
   boardCount,
 }: {
@@ -39,6 +42,26 @@ export default function BoardDetailContent({
   const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
+  // Own state, not just the server-provided prop — adding a service via the
+  // modal/suggestions below must flip which layout renders (the empty state
+  // vs. the full stat panels, below) and update the stat panels themselves
+  // immediately, not only once router.refresh()'s server round trip
+  // resolves. Same "own the state that decides what renders" reasoning as
+  // ServiceCatalogPicker's `boards` array.
+  const [board, setBoard] = useState(initialBoard);
+  // Adjusting state during render (react.dev's recipe for "reset state when
+  // a prop changes"), not an effect — reconciles local state once the
+  // server round trip this same add/rename/etc. mutation already kicked off
+  // (router.refresh()) actually lands a fresh `initialBoard` prop, not just
+  // on mount. Without this, a rename would flip `isEditing` back via
+  // useBoardRename's own onSuccess but the header would keep showing the
+  // old name forever, since nothing else here ever re-derives `board` from
+  // a later prop.
+  const [syncedBoard, setSyncedBoard] = useState(initialBoard);
+  if (initialBoard !== syncedBoard) {
+    setSyncedBoard(initialBoard);
+    setBoard(initialBoard);
+  }
   const { data, isError: fetchFailed } = useQuery({
     queryKey: queryKeys.catalogStatus(),
     queryFn: () => fetchJson<ServiceStatusBatchResponse>("/api/status/catalog", { cache: "no-store" }),
@@ -47,6 +70,13 @@ export default function BoardDetailContent({
   const rename = useBoardRename(board);
   const timeZone = useTimeZone();
   const confirmRef = useRef<HTMLDialogElement>(null);
+  const addServiceRef = useRef<HTMLDialogElement>(null);
+
+  function handleServiceAdded(updatedBoard: Board) {
+    setBoard(updatedBoard);
+    queryClient.invalidateQueries({ queryKey: queryKeys.catalogStatus() });
+    router.refresh();
+  }
 
   const { data: incidentsData } = useQuery({
     queryKey: queryKeys.incidents.list(),
@@ -223,7 +253,12 @@ export default function BoardDetailContent({
           </div>
           <div className="mt-6 grid grid-cols-3 gap-4">
             <div className="card card-border bg-base-200 h-88 overflow-y-auto p-4">
-              <BoardTrackedServicesGrid boardId={board.id} entries={onBoardEntries} data={data} fetchFailed={fetchFailed} />
+              <BoardTrackedServicesGrid
+                entries={onBoardEntries}
+                data={data}
+                fetchFailed={fetchFailed}
+                onAddService={() => addServiceRef.current?.showModal()}
+              />
             </div>
             <div className="card card-border bg-base-200 h-88 overflow-y-auto p-4">
               <BoardActiveIncidentsPanel boardId={board.id} activeIncidents={activeIncidents} />
@@ -248,10 +283,13 @@ export default function BoardDetailContent({
           </div>
         </>
       ) : (
-        <div className="mt-6 card card-border bg-base-200 p-4">
-          <BoardTrackedServicesGrid boardId={board.id} entries={onBoardEntries} data={data} fetchFailed={fetchFailed} />
+        <div className="mt-6">
+          <NoServicesMessage board={board} onAddClick={() => addServiceRef.current?.showModal()} />
+          <BoardSuggestedServices board={board} catalog={catalog} onAdded={handleServiceAdded} />
         </div>
       )}
+
+      <AddServiceModal dialogRef={addServiceRef} boards={[board]} catalog={catalog} onAdded={handleServiceAdded} />
       </PageHeader>
     </div>
   );

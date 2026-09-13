@@ -15,7 +15,6 @@
   },
   "nav": {
     "boards": "Доски",
-    "addService": "Добавить монитор",
     "searchPlaceholder_one": "Поиск {{count}} сервиса…",
     "searchPlaceholder_few": "Поиск {{count}} сервисов…",
     "searchPlaceholder_many": "Поиск {{count}} сервисов…",
@@ -397,6 +396,10 @@
     "trackedServices": "Отслеживаемые сервисы",
     "pickCategory": "Выберите категорию, чтобы просмотреть сервисы.",
     "noServicesOnBoard": "На этой доске пока нет сервисов.",
+    "suggestedServices": "Популярные сервисы для начала",
+    "addServiceModal": {
+      "title": "Добавить сервис на доску «{{name}}»"
+    },
     "activity": {
       "incidentsTitle": "Активные инциденты",
       "maintenanceTitle": "Активные обслуживания",
@@ -433,8 +436,6 @@
     }
   },
   "addService": {
-    "back": "← Назад",
-    "title": "Добавить монитор",
     "add": "Добавить",
     "adding": "Добавление…",
     "somethingWrong": "Что-то пошло не так.",
@@ -467,7 +468,6 @@
       "realEstate": "Недвижимость",
       "other": "Другое"
     },
-    "subtitle": "Просмотрите каталог и начните отслеживать новый сервис.",
     "tabService": "Сторонний сервис",
     "tabWebsite": "Веб-сайт",
     "websiteComingSoon": "Мониторинг веб-сайтов появится позже.",

@@ -48,3 +48,7 @@ next-env.d.ts
 
 # scripts/render-email-preview.mjs's own build+output, not meant to be committed
 /scratch-email-preview/
+
+# spec-driven-development's own working plan/task files — scratch working
+# notes for a session, not meant to be committed alongside the code
+/tasks/

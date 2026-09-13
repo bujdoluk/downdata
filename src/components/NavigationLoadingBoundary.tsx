@@ -22,7 +22,6 @@ const ROUTE_NAV_KEYS: Record<string, string> = {
   reports: "nav.reports",
   account: "nav.account",
   billing: "nav.billing",
-  "add-service": "nav.addService",
 };
 
 function resolveNavKey(pathname: string): string | null {

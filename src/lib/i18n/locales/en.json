@@ -15,7 +15,6 @@
   },
   "nav": {
     "boards": "Boards",
-    "addService": "Add Monitor",
     "searchPlaceholder_one": "Search {{count}} service…",
     "searchPlaceholder_other": "Search {{count}} services…",
     "noServicesFound": "No services found.",
@@ -378,6 +377,10 @@
     "trackedServices": "Tracked services",
     "pickCategory": "Select a category to browse services.",
     "noServicesOnBoard": "No services on this board yet.",
+    "suggestedServices": "Popular services to get started",
+    "addServiceModal": {
+      "title": "Add a service to {{name}}"
+    },
     "activity": {
       "incidentsTitle": "Active Incidents",
       "maintenanceTitle": "Active Maintenance",
@@ -414,8 +417,6 @@
     }
   },
   "addService": {
-    "back": "← Back",
-    "title": "Add a monitor",
     "add": "Add",
     "adding": "Adding…",
     "somethingWrong": "Something went wrong.",
@@ -446,7 +447,6 @@
       "realEstate": "Real Estate",
       "other": "Other"
     },
-    "subtitle": "Browse the catalog and start tracking a new service.",
     "board": "Board",
     "pickBoardFirst": "Pick a board first.",
     "tabService": "3rd-party service",

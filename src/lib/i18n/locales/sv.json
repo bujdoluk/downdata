@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Kommer snart",
     "close": "Stäng",
     "back": "← Tillbaka"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Chrome-tillägg",
+      "body": "Kolla om en tjänst ligger nere direkt i din webbläsare. downDATAs Chrome-tillägg ger dig omedelbar tillgång till tjänsternas status i realtid utan att lämna din aktuella flik.",
+      "installButton": "Installera tillägget"
+    }
   },
   "status": {
     "operational": "Fungerar",
@@ -667,6 +675,7 @@
     "preferencesLink": "Cookieinställningar"
   },
   "footer": {
+    "freeToolsTitle": "Gratisverktyg",
     "copyright": "© {{year}} <brand>down</brand>DATA. Alla rättigheter förbehållna.",
     "privacyPolicy": "Integritetspolicy",
     "termsOfService": "Användarvillkor",

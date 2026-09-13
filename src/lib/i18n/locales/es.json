@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Próximamente",
     "close": "Cerrar",
     "back": "← Volver"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Extensión de Chrome",
+      "body": "Comprueba si algún servicio está caído directamente desde tu navegador. La extensión downDATA para Chrome te da acceso instantáneo al estado de los servicios en tiempo real sin salir de tu pestaña actual.",
+      "installButton": "Instalar extensión"
+    }
   },
   "status": {
     "operational": "Operativo",
@@ -667,6 +675,7 @@
     "preferencesLink": "Preferencias de cookies"
   },
   "footer": {
+    "freeToolsTitle": "Herramientas gratuitas",
     "copyright": "© {{year}} <brand>down</brand>DATA. Todos los derechos reservados.",
     "privacyPolicy": "Política de Privacidad",
     "termsOfService": "Términos de Servicio",

@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Prossimamente",
     "close": "Chiudi",
     "back": "← Indietro"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Estensione Chrome",
+      "body": "Controlla se un servizio non funziona direttamente dal tuo browser. L'estensione downDATA per Chrome ti dà accesso immediato allo stato dei servizi in tempo reale senza lasciare la scheda corrente.",
+      "installButton": "Installa estensione"
+    }
   },
   "status": {
     "operational": "Operativo",
@@ -667,6 +675,7 @@
     "preferencesLink": "Preferenze cookie"
   },
   "footer": {
+    "freeToolsTitle": "Strumenti gratuiti",
     "copyright": "© {{year}} <brand>down</brand>DATA. Tutti i diritti riservati.",
     "privacyPolicy": "Informativa sulla privacy",
     "termsOfService": "Termini di servizio",

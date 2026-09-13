@@ -566,3 +566,25 @@ export function UserGroupIcon({ className }: { className?: string }) {
     </svg>
   );
 }
+
+// Represents a browser extension (the universal "puzzle piece" glyph browsers
+// themselves use for their extensions toolbar button) — used by the Chrome
+// extension free-tool catalog entry (lib/freeToolsCatalog.ts).
+export function PuzzlePieceIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width={20}
+      height={20}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M4 4h16v5a2 2 0 1 1 0 4v7H4v-5a2 2 0 1 0 0-4V4Z" />
+    </svg>
+  );
+}

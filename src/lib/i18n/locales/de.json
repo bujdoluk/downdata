@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Demnächst verfügbar",
     "close": "Schließen",
     "back": "← Zurück"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Chrome-Erweiterung",
+      "body": "Prüfe direkt in deinem Browser, ob ein Dienst ausgefallen ist. Die downDATA Chrome-Erweiterung gibt dir sofortigen Zugriff auf den Echtzeitstatus von Diensten, ohne deinen aktuellen Tab zu verlassen.",
+      "installButton": "Erweiterung installieren"
+    }
   },
   "status": {
     "operational": "Funktionsfähig",
@@ -667,6 +675,7 @@
     "preferencesLink": "Cookie-Einstellungen"
   },
   "footer": {
+    "freeToolsTitle": "Kostenlose Tools",
     "copyright": "© {{year}} <brand>down</brand>DATA. Alle Rechte vorbehalten.",
     "privacyPolicy": "Datenschutzerklärung",
     "termsOfService": "Nutzungsbedingungen",

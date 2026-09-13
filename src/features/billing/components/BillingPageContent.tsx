@@ -88,12 +88,11 @@ export default function BillingPageContent({
   });
 
   return (
-    <div className="flex w-full flex-col gap-6">
+    <div className="w-full self-start">
       <PageHeader back={<BackLink fallbackHref="/boards" label={t("common.back")} />}>
-        <h1 className="text-base-content text-lg font-semibold">{t("billing.title")}</h1>
-      </PageHeader>
-
       <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+      <h1 className="text-base-content text-lg font-semibold">{t("billing.title")}</h1>
+
       {checkoutParam === "success" && (
         <p role="status" className="alert alert-success alert-soft text-sm">
           {t("billing.checkoutSuccess")}
@@ -148,6 +147,7 @@ export default function BillingPageContent({
         </form>
       </dialog>
       </div>
+      </PageHeader>
     </div>
   );
 }

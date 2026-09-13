@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Binnenkort beschikbaar",
     "close": "Sluiten",
     "back": "← Terug"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Chrome-extensie",
+      "body": "Controleer rechtstreeks vanuit je browser of een dienst plat ligt. De downDATA Chrome-extensie geeft je direct toegang tot de real-time status van diensten zonder je huidige tabblad te verlaten.",
+      "installButton": "Extensie installeren"
+    }
   },
   "status": {
     "operational": "Operationeel",
@@ -667,6 +675,7 @@
     "preferencesLink": "Cookievoorkeuren"
   },
   "footer": {
+    "freeToolsTitle": "Gratis tools",
     "copyright": "© {{year}} <brand>down</brand>DATA. Alle rechten voorbehouden.",
     "privacyPolicy": "Privacybeleid",
     "termsOfService": "Gebruiksvoorwaarden",

@@ -69,12 +69,11 @@ export default function AccountPageContent({
   }
 
   return (
-    <div className="flex w-full flex-col gap-6">
+    <div className="w-full self-start">
       <PageHeader back={<BackLink fallbackHref="/boards" label={t("common.back")} />}>
-        <h1 className="text-lg font-semibold">{t("nav.account")}</h1>
-      </PageHeader>
-
       <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+      <h1 className="text-lg font-semibold">{t("nav.account")}</h1>
+
       <div className="card card-border bg-base-200">
         <div className="card-body">
           <div className="flex items-center gap-4">
@@ -172,6 +171,7 @@ export default function AccountPageContent({
         </Link>
       </div>
       </div>
+      </PageHeader>
     </div>
   );
 }

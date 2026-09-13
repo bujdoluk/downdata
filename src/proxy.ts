@@ -46,6 +46,10 @@ const PUBLIC_PREFIXES = [
   "/api/cron/",
   "/features/",
   "/integrations/",
+  // The free-tools marketing catalog (see lib/freeToolsCatalog.ts) — same
+  // public-marketing-page class as /features/ and /integrations/ above,
+  // no account-specific data involved.
+  "/free-tools/",
   // The public blog post detail page (see app/blog/[slug]/page.tsx) — the
   // /blog index above is a separate PUBLIC_EXACT entry since this prefix
   // alone wouldn't match the bare path.

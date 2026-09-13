@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Kommer snart",
     "close": "Lukk",
     "back": "← Tilbake"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Chrome-utvidelse",
+      "body": "Sjekk om en tjeneste er nede direkte fra nettleseren din. downDATAs Chrome-utvidelse gir deg umiddelbar tilgang til sanntidsstatus for tjenester uten å forlate den gjeldende fanen.",
+      "installButton": "Installer utvidelsen"
+    }
   },
   "status": {
     "operational": "Fungerer",
@@ -667,6 +675,7 @@
     "preferencesLink": "Innstillinger for informasjonskapsler"
   },
   "footer": {
+    "freeToolsTitle": "Gratisverktøy",
     "copyright": "© {{year}} <brand>down</brand>DATA. Med enerett.",
     "privacyPolicy": "Personvernerklæring",
     "termsOfService": "Bruksvilkår",

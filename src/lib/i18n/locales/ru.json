@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Скоро",
     "close": "Закрыть",
     "back": "← Назад"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Расширение для Chrome",
+      "body": "Проверяйте, не упал ли какой-либо сервис, прямо из браузера. Расширение downDATA для Chrome дает вам мгновенный доступ к статусу сервисов в реальном времени, не покидая текущую вкладку.",
+      "installButton": "Установить расширение"
+    }
   },
   "status": {
     "operational": "Работает",
@@ -686,6 +694,7 @@
     "preferencesLink": "Настройки cookie"
   },
   "footer": {
+    "freeToolsTitle": "Бесплатные инструменты",
     "copyright": "© {{year}} <brand>down</brand>DATA. Все права защищены.",
     "privacyPolicy": "Политика конфиденциальности",
     "termsOfService": "Условия использования",

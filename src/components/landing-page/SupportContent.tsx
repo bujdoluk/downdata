@@ -32,10 +32,10 @@ export default function SupportContent({ isAuthenticated, isAdmin }: { isAuthent
   // logged-out visitor, /boards (the dashboard's own default) once signed
   // in — /landing-page would be a dead end behind a login wall for them.
   const body = (
-    <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
+    <div className="w-full flex-1 p-6">
       <PageHeader back={<BackLink fallbackHref={isAuthenticated ? "/boards" : "/landing-page"} label={t("support.back")} />}>
-        <h1 className="text-3xl font-bold">{t("support.title")}</h1>
-      </PageHeader>
+      <div className="mx-auto w-full max-w-3xl">
+      <h1 className="text-lg font-semibold">{t("support.title")}</h1>
       <p className="text-base-content/70 mt-2">{t("support.subtitle")}</p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -69,6 +69,8 @@ export default function SupportContent({ isAuthenticated, isAdmin }: { isAuthent
           {t("support.faqButton")}
         </Link>
       </p>
+      </div>
+      </PageHeader>
     </div>
   );
 

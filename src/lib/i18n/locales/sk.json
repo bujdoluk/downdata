@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Už čoskoro",
     "close": "Zavrieť",
     "back": "← Späť"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Rozšírenie pre Chrome",
+      "body": "Skontroluj, či niektorá služba nefunguje, priamo z prehliadača. Rozšírenie downDATA pre Chrome ti dáva okamžitý prístup k stavu služieb v reálnom čase bez opustenia aktuálnej karty.",
+      "installButton": "Nainštalovať rozšírenie"
+    }
   },
   "status": {
     "operational": "Funguje",
@@ -680,6 +688,7 @@
     "preferencesLink": "Predvoľby cookies"
   },
   "footer": {
+    "freeToolsTitle": "Bezplatné nástroje",
     "copyright": "© {{year}} <brand>down</brand>DATA. Všetky práva vyhradené.",
     "privacyPolicy": "Zásady ochrany osobných údajov",
     "termsOfService": "Podmienky používania",

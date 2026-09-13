@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Em breve",
     "close": "Fechar",
     "back": "← Voltar"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Extensão do Chrome",
+      "body": "Verifique se algum serviço está fora do ar direto do seu navegador. A extensão downDATA para Chrome oferece acesso instantâneo ao status dos serviços em tempo real sem sair da aba atual.",
+      "installButton": "Instalar extensão"
+    }
   },
   "status": {
     "operational": "Operacional",
@@ -667,6 +675,7 @@
     "preferencesLink": "Preferências de cookies"
   },
   "footer": {
+    "freeToolsTitle": "Ferramentas gratuitas",
     "copyright": "© {{year}} <brand>down</brand>DATA. Todos os direitos reservados.",
     "privacyPolicy": "Política de Privacidade",
     "termsOfService": "Termos de Serviço",

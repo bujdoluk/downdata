@@ -8,6 +8,7 @@ import Logo from "@/components/navbar/Logo";
 import { useCookieConsent } from "@/components/cookies/CookieConsent";
 import { FEATURE_CATALOG } from "@/lib/featureCatalog";
 import { INTEGRATION_CATALOG } from "@/lib/integrationCatalog";
+import { FREE_TOOLS_CATALOG } from "@/lib/freeToolsCatalog";
 import PopularServicesList from "@/components/landing-page/PopularServicesList";
 
 export default function Footer() {
@@ -49,6 +50,16 @@ export default function Footer() {
           <Link key={slug} href={`/integrations/${slug}`} className="link link-hover inline-flex items-center gap-1.5">
             <Logo size={14} />
             {t(`nav.${slug}`)}
+          </Link>
+        ))}
+      </nav>
+
+      <nav>
+        <h3 className="footer-title">{t("footer.freeToolsTitle")}</h3>
+        {FREE_TOOLS_CATALOG.map(({ slug, icon: Icon }) => (
+          <Link key={slug} href={`/free-tools/${slug}`} className="link link-hover inline-flex items-center gap-1.5">
+            <Icon className="h-3.5 w-3.5 shrink-0" />
+            {t(`freeTools.${slug}.title`)}
           </Link>
         ))}
       </nav>

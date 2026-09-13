@@ -49,17 +49,16 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
   }
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="w-full self-start">
       <PageHeader back={<BackLink fallbackHref="/boards" label="← Back" />}>
+      <div className="mx-auto w-full max-w-4xl">
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-semibold">Manage blog</h1>
           <Link href="/admin/blog/new" className="btn btn-info btn-sm">
             + New post
           </Link>
         </div>
-      </PageHeader>
 
-      <div className="mx-auto w-full max-w-4xl">
       {(publishMutation.isError || deleteMutation.isError) && (
         <p role="alert" className="text-error mt-4 text-sm">
           {publishMutation.error?.message ?? deleteMutation.error?.message}
@@ -159,6 +158,7 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
 
       <BlogPostPreviewModal ref={previewRef} />
       </div>
+      </PageHeader>
     </div>
   );
 }

@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Coming soon",
     "close": "Close",
     "back": "← Back"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Chrome Extension",
+      "body": "Check if any service is down directly from your browser. The downDATA Chrome extension gives you instant access to real-time service status without leaving your current tab.",
+      "installButton": "Install Extension"
+    }
   },
   "status": {
     "operational": "Operational",
@@ -670,6 +678,7 @@
     "preferencesLink": "Cookie Preferences"
   },
   "footer": {
+    "freeToolsTitle": "Free Tools",
     "copyright": "© {{year}} <brand>down</brand>DATA. All rights reserved.",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",

@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Bientôt disponible",
     "close": "Fermer",
     "back": "← Retour"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Extension Chrome",
+      "body": "Vérifiez si un service est en panne directement depuis votre navigateur. L'extension downDATA pour Chrome vous donne un accès instantané au statut des services en temps réel sans quitter votre onglet actuel.",
+      "installButton": "Installer l'extension"
+    }
   },
   "status": {
     "operational": "Opérationnel",
@@ -667,6 +675,7 @@
     "preferencesLink": "Préférences relatives aux cookies"
   },
   "footer": {
+    "freeToolsTitle": "Outils gratuits",
     "copyright": "© {{year}} <brand>down</brand>DATA. Tous droits réservés.",
     "privacyPolicy": "Politique de confidentialité",
     "termsOfService": "Conditions d'utilisation",

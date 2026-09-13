@@ -1,7 +1,15 @@
 {
   "common": {
+    "comingSoon": "Wkrótce",
     "close": "Zamknij",
     "back": "← Wstecz"
+  },
+  "freeTools": {
+    "chromeExtension": {
+      "title": "Rozszerzenie do Chrome",
+      "body": "Sprawdź, czy dana usługa nie działa, bezpośrednio z przeglądarki. Rozszerzenie downDATA do Chrome daje ci natychmiastowy dostęp do statusu usług w czasie rzeczywistym bez opuszczania bieżącej karty.",
+      "installButton": "Zainstaluj rozszerzenie"
+    }
   },
   "status": {
     "operational": "Sprawny",
@@ -686,6 +694,7 @@
     "preferencesLink": "Preferencje plików cookie"
   },
   "footer": {
+    "freeToolsTitle": "Darmowe narzędzia",
     "copyright": "© {{year}} <brand>down</brand>DATA. Wszelkie prawa zastrzeżone.",
     "privacyPolicy": "Polityka prywatności",
     "termsOfService": "Warunki korzystania z usługi",

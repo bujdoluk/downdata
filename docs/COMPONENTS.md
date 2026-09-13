@@ -267,6 +267,14 @@ _No props._
 |---|---|---|---|---|
 | className | string \| undefined | No | — |  |
 
+### PuzzlePieceIcon
+
+`src/components/icons/NavIcons.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| className | string \| undefined | No | — |  |
+
 ### RadarIcon
 
 `src/components/icons/NavIcons.tsx`
@@ -346,6 +354,23 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | slug | FeatureSlug | Yes | — |  |
+
+### FreeToolPageContent
+
+`src/components/landing-page/FreeToolPageContent.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| slug | "chromeExtension" | Yes | — |  |
+
+### ChromeLogo
+
+`src/components/landing-page/ChromeLogo.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| size | number \| undefined | No | 40 |  |
+| className | string \| undefined | No | — |  |
 
 ### IntegrationPageContent
 
@@ -1059,6 +1084,15 @@ _No props._
 | isSubmitting | boolean | Yes | — |  |
 | submitDisabled | boolean \| undefined | No | false |  |
 
+### MoreSevereIncidentBadge
+
+`src/components/MoreSevereIncidentBadge.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| incident | OpenIncidentImpact | Yes | — |  |
+| className | string \| undefined | No | — |  |
+
 ### LanguageSwitcher
 
 `src/components/navbar/LanguageSwitcher.tsx`
@@ -1131,6 +1165,7 @@ _No props._
 | value | string | Yes | — |  |
 | onChange | (value: string) => void | Yes | — |  |
 | label | string | Yes | — |  |
+| className | string \| undefined | No | — |  |
 
 ### SelectDropdown
 
@@ -1732,6 +1767,7 @@ _No props._
 | slug | string | Yes | — |  |
 | name | string | Yes | — |  |
 | indicator | string \| undefined | No | — |  |
+| openIncidentImpact | OpenIncidentImpact \| undefined | No | — |  |
 | outages24h | number \| undefined | No | — |  |
 | isLoading | boolean | Yes | — |  |
 | error | boolean | Yes | — |  |

@@ -66,7 +66,7 @@ export default function BillingPageContent({
     },
   });
 
-  // Arriving from a landing-page "Get started" click (/billing?plan=pro&
+  // Arriving from a landing-page "Get started" click (/billing?plan=growth&
   // interval=month) auto-starts checkout instead of making the visitor
   // pick the same plan again — still safe, since Stripe's own hosted page
   // requires explicit payment confirmation before anything is charged.

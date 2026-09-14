@@ -134,7 +134,7 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL("/landing-page", request.url));
     }
     const loginUrl = new URL("/login", request.url);
-    // Preserves the original query string too (e.g. /billing?plan=pro&
+    // Preserves the original query string too (e.g. /billing?plan=growth&
     // interval=month from a pricing-page CTA) — dropping it here would
     // silently lose which plan a logged-out visitor meant to check out.
     loginUrl.searchParams.set("next", pathname + request.nextUrl.search);

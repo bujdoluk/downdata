@@ -1,4 +1,4 @@
-export type PlanTier = "starter" | "pro" | "business";
+export type PlanTier = "free" | "starter" | "growth" | "team" | "business";
 export type BillingInterval = "month" | "year";
 
 // null (no row in `subscriptions`) means the free tier — mirrors how

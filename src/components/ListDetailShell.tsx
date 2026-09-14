@@ -60,10 +60,10 @@ export default function ListDetailShell({
       {header}
 
       {isLoading ? (
-        <p className="text-base-content/50 mt-4 flex items-center gap-2 text-sm">
-          <Spinner size="sm" />
-          {loadingLabel}
-        </p>
+        <div className="mt-4 flex min-h-64 flex-col items-center justify-center gap-3">
+          <Spinner size="xl" />
+          <p className="text-base-content/50 text-sm">{loadingLabel}</p>
+        </div>
       ) : isError ? (
         <p className="text-base-content/50 mt-4 text-sm">{unreachableLabel}</p>
       ) : isEmpty ? (

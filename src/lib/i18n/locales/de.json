@@ -24,6 +24,7 @@
   },
   "nav": {
     "boards": "Boards",
+    "loadingPage": "Lade {{page}}…",
     "searchPlaceholder_one": "{{count}} Dienst suchen…",
     "searchPlaceholder_other": "{{count}} Dienste suchen…",
     "noServicesFound": "Keine Dienste gefunden.",
@@ -400,6 +401,7 @@
     "statusPage": {
       "title": "Öffentliche Statusseite",
       "live": "Live",
+      "loading": "Statusseite wird geladen…",
       "notPublished": "Nicht veröffentlicht",
       "manage": "Verwalten →",
       "description": "Teilen Sie eine öffentliche, schreibgeschützte Statusseite für die verfolgten Dienste dieses Boards.",

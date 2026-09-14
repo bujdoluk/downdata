@@ -24,6 +24,7 @@
   },
   "nav": {
     "boards": "Bacheche",
+    "loadingPage": "Caricamento: {{page}}…",
     "searchPlaceholder_one": "Cerca {{count}} servizio…",
     "searchPlaceholder_other": "Cerca {{count}} servizi…",
     "noServicesFound": "Nessun servizio trovato.",
@@ -400,6 +401,7 @@
     "statusPage": {
       "title": "Pagina di stato pubblica",
       "live": "In diretta",
+      "loading": "Caricamento della pagina di stato…",
       "notPublished": "Non pubblicata",
       "manage": "Gestisci →",
       "description": "Condividi una pagina di stato pubblica, di sola lettura, per i servizi monitorati di questa bacheca.",

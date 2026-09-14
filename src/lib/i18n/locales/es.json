@@ -24,6 +24,7 @@
   },
   "nav": {
     "boards": "Tableros",
+    "loadingPage": "Cargando {{page}}…",
     "searchPlaceholder_one": "Buscar {{count}} servicio…",
     "searchPlaceholder_other": "Buscar {{count}} servicios…",
     "noServicesFound": "No se encontraron servicios.",
@@ -400,6 +401,7 @@
     "statusPage": {
       "title": "Página de estado pública",
       "live": "En vivo",
+      "loading": "Cargando página de estado…",
       "notPublished": "Sin publicar",
       "manage": "Gestionar →",
       "description": "Comparte una página de estado pública, de solo lectura, para los servicios rastreados de este tablero.",

@@ -8,7 +8,6 @@ import type { BoardStatusPage } from "@/features/status-pages/types";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import BoardStatusPageSettings from "@/features/status-pages/components/BoardStatusPageSettings";
-import Spinner from "@/components/Spinner";
 
 // One card per board, each wrapping the same BoardStatusPageSettings form
 // the board detail grid used to show directly — that component is already
@@ -43,31 +42,11 @@ export default function StatusPagesPageContent({ boards }: { boards: Board[] }) 
         // company / logo / privacy) to lay out side by side instead of
         // stacking tall.
         <div className="mt-4 flex flex-col gap-4">
-          {boards.map((board, index) => {
-            // Same query, read from the shared cache entry above — not a
-            // second fetch. While it's in flight, the card shows nothing
-            // but a centered spinner: no board name, no half-built form,
-            // since BoardStatusPageSettings isn't even mounted yet (its own
-            // identical-key useQuery would just resolve from this same
-            // cache instantly once it does mount).
-            const isLoading = statusPageQueries[index]?.isLoading ?? false;
-            return (
-              <div key={board.id} className="card card-border bg-base-200 p-4">
-                {isLoading ? (
-                  <div className="flex min-h-40 items-center justify-center">
-                    <Spinner size="xl" />
-                  </div>
-                ) : (
-                  <>
-                    <h2 className="text-base-content text-sm font-semibold">{board.name}</h2>
-                    <div className="mt-3">
-                      <BoardStatusPageSettings boardId={board.id} boardName={board.name} />
-                    </div>
-                  </>
-                )}
-              </div>
-            );
-          })}
+          {boards.map((board) => (
+            <div key={board.id} className="card card-border bg-base-200 p-4">
+              <BoardStatusPageSettings boardId={board.id} boardName={board.name} />
+            </div>
+          ))}
         </div>
       )}
     </div>

@@ -24,6 +24,7 @@
   },
   "nav": {
     "boards": "Borden",
+    "loadingPage": "{{page}} laden…",
     "searchPlaceholder_one": "{{count}} dienst zoeken…",
     "searchPlaceholder_other": "{{count}} diensten zoeken…",
     "noServicesFound": "Geen diensten gevonden.",
@@ -400,6 +401,7 @@
     "statusPage": {
       "title": "Openbare statuspagina",
       "live": "Live",
+      "loading": "Statuspagina laden…",
       "notPublished": "Niet gepubliceerd",
       "manage": "Beheren →",
       "description": "Deel een openbare, alleen-lezen statuspagina voor de gevolgde services van dit bord.",

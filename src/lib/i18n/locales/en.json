@@ -24,6 +24,7 @@
   },
   "nav": {
     "boards": "Boards",
+    "loadingPage": "Loading {{page}}…",
     "searchPlaceholder_one": "Search {{count}} service…",
     "searchPlaceholder_other": "Search {{count}} services…",
     "noServicesFound": "No services found.",
@@ -400,6 +401,7 @@
     "statusPage": {
       "title": "Public status page",
       "live": "Live",
+      "loading": "Loading status page…",
       "notPublished": "Not published",
       "manage": "Manage →",
       "description": "Share a public, read-only status page for this board's tracked services.",

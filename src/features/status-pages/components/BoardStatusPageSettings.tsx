@@ -116,15 +116,17 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
     }),
   );
 
+  // Shared by the mutation body and the Save button's disabled check below,
+  // so "is there anything to save" and "what gets sent" can't drift apart.
+  const parsedAllowedIps = allowedIpsInput
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+
   const allowedIpsMutation = useStatusPageMutation(() =>
     requestJson<BoardStatusPage>(`/api/boards/${boardId}/status-page/allowed-ips`, t("boards.statusPage.allowlistSaveFailed"), {
       method: "PUT",
-      body: {
-        allowedIps: allowedIpsInput
-          .split("\n")
-          .map((line) => line.trim())
-          .filter(Boolean),
-      },
+      body: { allowedIps: parsedAllowedIps },
     }),
   );
 
@@ -160,16 +162,48 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
   // (both 400 server-side on an empty slug/company anyway).
   const canSave = slug.trim().length > 0 && companyName.trim().length > 0;
 
+  // Loading and loaded states share nothing visually on purpose: while the
+  // query is in flight (or stuck retrying a failed fetch), the card shows
+  // only a centered spinner — no board name, no half-built form — so a
+  // slow/erroring load never flashes stale-looking content. This owns its
+  // own single useQuery rather than a parent gating on a second observer
+  // for the same key: mounting a second observer for an already-erroring
+  // query triggers TanStack Query's refetch-on-mount, and if a parent then
+  // conditionally mounts/unmounts this component based on *that* observer's
+  // isLoading, the two feed each other into an infinite mount → refetch →
+  // isLoading flips → unmount → isLoading settles → mount → refetch loop.
+  // Hit exactly this once already — see AGENTS.md's Failure log.
   return isLoading ? (
-    <Spinner size="sm" className="mt-3" />
+    <div className="flex min-h-64 flex-col items-center justify-center gap-3">
+      <Spinner size="xl" />
+      <p className="text-base-content/50 text-sm">{t("boards.statusPage.loading")}</p>
+    </div>
   ) : (
-    <div className="mt-3 flex flex-col gap-3">
-      {/* A 2-row grid on md+: row 1 is the two headings ("Public status
-          page" and "Privacy"), row 2 is url+company / logo / privacy
-          fields — placed by explicit row/col rather than DOM order, so
-          mobile (no md: placement at all) can stack in normal reading
-          order (heading directly above its own fields) while desktop still
-          lines both headings up on the same row. */}
+    <div className="flex min-h-64 flex-col gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-base-content text-sm font-semibold">{boardName}</h2>
+        <div className="flex flex-wrap items-center gap-2">
+          <button type="button" disabled={saving || !canSave} onClick={() => saveMutation.mutate()} className="btn btn-info btn-xs w-20">
+            {saving ? <Spinner size="xs" /> : t("boards.statusPage.save")}
+          </button>
+
+          <button
+            type="button"
+            disabled={publishing || saving || !canSave}
+            onClick={handleTogglePublish}
+            className={`btn btn-xs w-20 ${isPublished ? "btn-ghost" : "btn-success"}`}
+          >
+            {publishing ? <Spinner size="xs" /> : isPublished ? t("boards.statusPage.unpublish") : t("boards.statusPage.publish")}
+          </button>
+        </div>
+      </div>
+
+      {/* A 2-row grid on md+: row 1 is the "Public status page" heading, the
+          logo, and the "Privacy" heading; row 2 is the url+company fields
+          and the privacy fields (column 2 has nothing in row 2 — the logo
+          already occupies that column, up in row 1) — placed by explicit
+          row/col rather than DOM order, so mobile (no md: placement at all)
+          can still stack in a sensible reading order. */}
       <div className="grid grid-cols-1 gap-x-4 gap-y-2 md:grid-cols-3">
         <div className="flex items-center justify-between md:col-start-1 md:row-start-1">
           <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("boards.statusPage.title")}</h2>
@@ -204,9 +238,15 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
           </fieldset>
         </div>
 
-        {/* No heading of its own — centered in the extra width this column
-            has next to the shorter url/company and privacy field blocks. */}
-        <div className="flex flex-col items-center gap-2 text-center md:col-start-2 md:row-start-2">
+        {/* Spans both rows (row-start-1, row-span-2) rather than sitting in
+            row 1 alone — the logo's content is much taller than the bare
+            "Public status page"/"Privacy" headings next to it, so confining
+            it to row 1 forced that whole row to stretch to the logo's
+            height, leaving both headings stranded with a dead gap above
+            their actual fields in row 2. Top-aligned (not centered) so its
+            own "LOGO" legend lines up with those two headings at the same
+            level, instead of floating in the middle of the spanned area. */}
+        <div className="flex flex-col items-center justify-start gap-2 text-center md:col-start-2 md:row-start-1 md:row-span-2">
           <StatusPageLogoUpload
             supabase={supabase}
             boardId={boardId}
@@ -252,7 +292,7 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
                 type="button"
                 disabled={passwordMutation.isPending || passwordInput.length < 4}
                 onClick={() => passwordMutation.mutate()}
-                className="btn btn-info btn-xs shrink-0"
+                className="btn btn-info btn-xs w-20 shrink-0"
               >
                 {passwordMutation.isPending ? <Spinner size="xs" /> : t("boards.statusPage.passwordSave")}
               </button>
@@ -281,9 +321,9 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
               />
               <button
                 type="button"
-                disabled={allowedIpsMutation.isPending}
+                disabled={allowedIpsMutation.isPending || parsedAllowedIps.length === 0}
                 onClick={() => allowedIpsMutation.mutate()}
-                className="btn btn-info btn-xs shrink-0 self-end"
+                className="btn btn-info btn-xs w-20 shrink-0 self-end"
               >
                 {allowedIpsMutation.isPending ? <Spinner size="xs" /> : t("boards.statusPage.allowlistSave")}
               </button>
@@ -297,21 +337,6 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
           {error}
         </p>
       )}
-
-      <div className="flex flex-wrap items-center justify-end gap-2">
-        <button type="button" disabled={saving || !canSave} onClick={() => saveMutation.mutate()} className="btn btn-info btn-xs">
-          {saving ? <Spinner size="xs" /> : t("boards.statusPage.save")}
-        </button>
-
-        <button
-          type="button"
-          disabled={publishing || saving || !canSave}
-          onClick={handleTogglePublish}
-          className={`btn btn-xs ${isPublished ? "btn-ghost" : "btn-success"}`}
-        >
-          {publishing ? <Spinner size="xs" /> : isPublished ? t("boards.statusPage.unpublish") : t("boards.statusPage.publish")}
-        </button>
-      </div>
 
       {isPublished && publicPath && (
         <div className="bg-[var(--color-surface-2)] border-base-300 flex items-start gap-2 rounded-lg border p-2">

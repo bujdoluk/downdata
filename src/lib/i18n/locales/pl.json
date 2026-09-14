@@ -24,6 +24,7 @@
   },
   "nav": {
     "boards": "Tablice",
+    "loadingPage": "Ładowanie: {{page}}…",
     "searchPlaceholder_one": "Szukaj {{count}} usługi…",
     "searchPlaceholder_few": "Szukaj {{count}} usług…",
     "searchPlaceholder_many": "Szukaj {{count}} usług…",
@@ -419,6 +420,7 @@
     "statusPage": {
       "title": "Publiczna strona statusu",
       "live": "Na żywo",
+      "loading": "Ładowanie strony statusu…",
       "notPublished": "Niepublikowane",
       "manage": "Zarządzaj →",
       "description": "Udostępnij publiczną stronę statusu (tylko do odczytu) dla śledzonych usług tej tablicy.",

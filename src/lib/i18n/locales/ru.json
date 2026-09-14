@@ -24,6 +24,7 @@
   },
   "nav": {
     "boards": "Доски",
+    "loadingPage": "Загрузка: {{page}}…",
     "searchPlaceholder_one": "Поиск {{count}} сервиса…",
     "searchPlaceholder_few": "Поиск {{count}} сервисов…",
     "searchPlaceholder_many": "Поиск {{count}} сервисов…",
@@ -419,6 +420,7 @@
     "statusPage": {
       "title": "Публичная страница статуса",
       "live": "В прямом эфире",
+      "loading": "Загрузка страницы статуса…",
       "notPublished": "Не опубликовано",
       "manage": "Управлять →",
       "description": "Поделитесь публичной страницей статуса (только для чтения) для отслеживаемых сервисов этой доски.",

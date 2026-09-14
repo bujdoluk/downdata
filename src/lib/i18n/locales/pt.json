@@ -24,6 +24,7 @@
   },
   "nav": {
     "boards": "Painéis",
+    "loadingPage": "A carregar {{page}}…",
     "searchPlaceholder_one": "Pesquisar {{count}} serviço…",
     "searchPlaceholder_other": "Pesquisar {{count}} serviços…",
     "noServicesFound": "Nenhum serviço encontrado.",
@@ -400,6 +401,7 @@
     "statusPage": {
       "title": "Página de status pública",
       "live": "Ao vivo",
+      "loading": "A carregar página de status…",
       "notPublished": "Não publicada",
       "manage": "Gerenciar →",
       "description": "Compartilhe uma página de status pública e somente leitura para os serviços monitorados deste quadro.",

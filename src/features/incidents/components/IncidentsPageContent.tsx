@@ -250,7 +250,6 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
           {pageIncidents.map((incident) => {
             const Logo = SERVICE_LOGOS[incident.service.slug] ?? FallbackLogo;
             const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
-            const isNew = epochMs(incident.updated_at) > lastViewed;
             const isSelected = incident.id === selectedId;
             // Same STATUS_LABEL_KEY lookup the filter dropdown already uses
             // for these exact values — falls back to the raw string for a
@@ -263,7 +262,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
               <li
                 key={incident.id}
                 className={`card card-border bg-base-200 flex w-full flex-row items-stretch overflow-hidden shadow-md transition-colors ${
-                  isSelected ? "border-primary" : "hover:border-base-content/20"
+                  isSelected ? "border-base-content" : "hover:border-base-content/20"
                 }`}
               >
                 <button
@@ -277,10 +276,6 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
                     <p className="text-base-content truncate text-sm font-medium">{incident.name}</p>
                     <div className="mt-1 flex items-center gap-2">
                       <span className="text-base-content/50 text-xs">{statusLabel}</span>
-                      <span className={`badge badge-xs ${style.badge} text-white`}>{t(style.labelKey)}</span>
-                      {isNew && (
-                        <span className="badge badge-xs badge-info text-white uppercase">{t("incidents.new")}</span>
-                      )}
                     </div>
                   </div>
                   <div className="text-base-content/50 self-end text-right text-xs whitespace-nowrap">
@@ -319,10 +314,10 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   ) : detailError ? (
     <p className="text-base-content/50 text-sm">{t("incidents.unreachable")}</p>
   ) : selectedIncident ? (
-    <p className="text-base-content/50 flex h-full items-center justify-center gap-2 text-sm">
+    <div className="flex h-full flex-col items-center justify-center gap-3">
       <Spinner size="xl" />
-      {t("incidents.loading")}
-    </p>
+      <p className="text-base-content/50 text-sm">{t("incidents.loading")}</p>
+    </div>
   ) : (
     <p className="text-base-content/50 text-sm">{t("incidents.selectPrompt")}</p>
   );

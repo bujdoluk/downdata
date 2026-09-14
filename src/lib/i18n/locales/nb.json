@@ -24,6 +24,7 @@
   },
   "nav": {
     "boards": "Tavler",
+    "loadingPage": "Laster {{page}}…",
     "searchPlaceholder_one": "Søk etter {{count}} tjeneste…",
     "searchPlaceholder_other": "Søk etter {{count}} tjenester…",
     "noServicesFound": "Ingen tjenester funnet.",
@@ -400,6 +401,7 @@
     "statusPage": {
       "title": "Offentlig statusside",
       "live": "Direkte",
+      "loading": "Laster statusside…",
       "notPublished": "Ikke publisert",
       "manage": "Administrer →",
       "description": "Del en offentlig, skrivebeskyttet statusside for tavlens sporede tjenester.",

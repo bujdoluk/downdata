@@ -203,7 +203,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
                   type="button"
                   onClick={() => selectMaintenance(maintenance.id)}
                   className={`card card-border bg-base-200 flex w-full flex-row items-center gap-3 overflow-hidden p-4 text-left shadow-md transition-colors ${
-                    isSelected ? "border-primary" : isActive ? "border-info" : "hover:border-base-content/20"
+                    isSelected ? "border-base-content" : isActive ? "border-success" : "hover:border-base-content/20"
                   }`}
                 >
                   <Logo size={24} name={maintenance.service.name} />
@@ -212,7 +212,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
                     <p className="text-base-content truncate text-sm font-medium">{maintenance.name}</p>
                     <div className="mt-1 flex h-4 items-center">
                       {isActive ? (
-                        <span className="badge badge-info badge-xs">{t("maintenances.inProgress")}</span>
+                        <span className="badge badge-success badge-xs">{t("maintenances.inProgress")}</span>
                       ) : (
                         <p className="text-base-content/50 text-xs">{maintenance.status}</p>
                       )}
@@ -246,10 +246,10 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   ) : detailError ? (
     <p className="text-base-content/50 text-sm">{t("maintenances.unreachable")}</p>
   ) : selectedMaintenance ? (
-    <p className="text-base-content/50 flex h-full items-center justify-center gap-2 text-sm">
+    <div className="flex h-full flex-col items-center justify-center gap-3">
       <Spinner size="xl" />
-      {t("maintenances.loading")}
-    </p>
+      <p className="text-base-content/50 text-sm">{t("maintenances.loading")}</p>
+    </div>
   ) : (
     <p className="text-base-content/50 text-sm">{t("maintenances.selectPrompt")}</p>
   );

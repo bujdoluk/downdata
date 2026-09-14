@@ -24,6 +24,7 @@
   },
   "nav": {
     "boards": "Tableaux",
+    "loadingPage": "Chargement : {{page}}…",
     "searchPlaceholder_one": "Rechercher {{count}} service…",
     "searchPlaceholder_other": "Rechercher {{count}} services…",
     "noServicesFound": "Aucun service trouvé.",
@@ -400,6 +401,7 @@
     "statusPage": {
       "title": "Page de statut publique",
       "live": "En direct",
+      "loading": "Chargement de la page de statut…",
       "notPublished": "Non publiée",
       "manage": "Gérer →",
       "description": "Partagez une page de statut publique, en lecture seule, pour les services suivis de ce tableau.",

@@ -24,6 +24,7 @@
   },
   "nav": {
     "boards": "Nástěnky",
+    "loadingPage": "Načítá se: {{page}}…",
     "searchPlaceholder_one": "Hledat {{count}} službu…",
     "searchPlaceholder_few": "Hledat {{count}} služby…",
     "searchPlaceholder_many": "Hledat {{count}} služby…",
@@ -413,6 +414,7 @@
     "statusPage": {
       "title": "Veřejná stránka stavu",
       "live": "Naživo",
+      "loading": "Načítá se stránka stavu…",
       "notPublished": "Nezveřejněno",
       "manage": "Spravovat →",
       "description": "Sdílejte veřejnou stránku stavu (pouze pro čtení) pro sledované služby této nástěnky.",

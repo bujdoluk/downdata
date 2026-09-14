@@ -68,9 +68,7 @@
     "outages24h_other": "{{count}} falhas nas últimas 24 h",
     "remove": "Remover",
     "removing": "A remover…",
-    "options": "Mais opções",
-    "pin": "Fixar",
-    "unpin": "Desafixar"
+    "options": "Mais opções"
   },
   "serviceDetail": {
     "back": "← Voltar",
@@ -118,8 +116,6 @@
     "officialPage": "Ver página oficial do incidente",
     "dateLabel": "Data:",
     "officialPageLabel": "Página oficial:",
-    "pin": "Fixar",
-    "unpin": "Desafixar",
     "new": "Novo",
     "filter": {
       "investigating": "Investigação",
@@ -158,8 +154,6 @@
     "empty": "Sem manutenções futuras agendadas.",
     "inProgress": "Em curso",
     "noMatches": "Nenhum serviço corresponde a este filtro.",
-    "pin": "Fixar",
-    "unpin": "Desafixar",
     "selectPrompt": "Selecione uma manutenção à esquerda para ver os detalhes.",
     "scheduledLabel": "Agendada:",
     "filter": {
@@ -746,6 +740,10 @@
     "subtitle": "Atualizações, análises de incidentes e novidades da equipa downDATA.",
     "readTime": "{{count}} min de leitura",
     "backToBlog": "← Voltar ao blog",
-    "empty": "Ainda não há publicações."
+    "empty": "Ainda não há publicações.",
+    "cta": {
+      "heading": "Nunca perca tempo a olhar para o sítio errado.",
+      "button": "Começar a monitorizar"
+    }
   }
 }

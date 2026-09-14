@@ -68,9 +68,7 @@
     "outages24h_other": "{{count}} driftsstanser siste 24 t",
     "remove": "Fjern",
     "removing": "Fjerner…",
-    "options": "Flere valg",
-    "pin": "Fest",
-    "unpin": "Løsne"
+    "options": "Flere valg"
   },
   "serviceDetail": {
     "back": "← Tilbake",
@@ -118,8 +116,6 @@
     "officialPage": "Vis offisiell hendelsesside",
     "dateLabel": "Dato:",
     "officialPageLabel": "Offisiell side:",
-    "pin": "Fest",
-    "unpin": "Løsne",
     "new": "Ny",
     "filter": {
       "investigating": "Undersøkelse",
@@ -158,8 +154,6 @@
     "empty": "Ikke noe planlagt vedlikehold.",
     "inProgress": "Pågår",
     "noMatches": "Ingen tjenester samsvarer med dette filteret.",
-    "pin": "Fest",
-    "unpin": "Løsne",
     "selectPrompt": "Velg et vedlikehold til venstre for å se detaljene.",
     "scheduledLabel": "Planlagt:",
     "filter": {
@@ -746,6 +740,10 @@
     "subtitle": "Nyheter, hendelsesanalyser og oppdateringer fra downDATA-teamet.",
     "readTime": "{{count}} min lesetid",
     "backToBlog": "← Tilbake til bloggen",
-    "empty": "Ingen innlegg publisert ennå."
+    "empty": "Ingen innlegg publisert ennå.",
+    "cta": {
+      "heading": "Kast aldri bort tid på å se på feil sted.",
+      "button": "Start overvåking"
+    }
   }
 }

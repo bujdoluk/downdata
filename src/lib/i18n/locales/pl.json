@@ -72,9 +72,7 @@
     "outages24h_other": "{{count}} awarii w ciągu ostatnich 24 godz.",
     "remove": "Usuń",
     "removing": "Usuwanie…",
-    "options": "Więcej opcji",
-    "pin": "Przypnij",
-    "unpin": "Odepnij"
+    "options": "Więcej opcji"
   },
   "serviceDetail": {
     "back": "← Wstecz",
@@ -124,8 +122,6 @@
     "officialPage": "Zobacz oficjalną stronę incydentu",
     "dateLabel": "Data:",
     "officialPageLabel": "Oficjalna strona:",
-    "pin": "Przypnij",
-    "unpin": "Odepnij",
     "new": "Nowe",
     "filter": {
       "investigating": "Badanie",
@@ -164,8 +160,6 @@
     "empty": "Brak nadchodzących konserwacji.",
     "inProgress": "W trakcie",
     "noMatches": "Żadna usługa nie pasuje do tego filtra.",
-    "pin": "Przypnij",
-    "unpin": "Odepnij",
     "selectPrompt": "Wybierz konserwację po lewej, aby zobaczyć szczegóły.",
     "scheduledLabel": "Zaplanowano:",
     "filter": {
@@ -765,6 +759,10 @@
     "subtitle": "Aktualności, analizy incydentów i nowości od zespołu downDATA.",
     "readTime": "{{count}} min czytania",
     "backToBlog": "← Powrót do bloga",
-    "empty": "Nie opublikowano jeszcze żadnych wpisów."
+    "empty": "Nie opublikowano jeszcze żadnych wpisów.",
+    "cta": {
+      "heading": "Nigdy nie trać czasu, patrząc w złym miejscu.",
+      "button": "Zacznij monitorować"
+    }
   }
 }

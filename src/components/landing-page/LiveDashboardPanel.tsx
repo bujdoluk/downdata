@@ -45,7 +45,6 @@ export default function LiveDashboardPanel({ className = "" }: { className?: str
               error={false}
               isMonitored={false}
               removable={{ removing: false, onRemove: () => {} }}
-              onTogglePin={() => {}}
             />
           ))}
         </div>

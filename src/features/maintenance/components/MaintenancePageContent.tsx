@@ -10,10 +10,8 @@ import type { TrackedMaintenance, TrackedMaintenanceSummary } from "@/types/serv
 import { SERVICE_LOGOS } from "@/components/logos";
 import FallbackLogo from "@/components/logos/FallbackLogo";
 import Spinner from "@/components/Spinner";
-import PinButton from "@/features/monitors/components/PinButton";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
-import { usePinned } from "@/hooks/usePinned";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import { useDebouncedUrlFilters } from "@/hooks/useDebouncedUrlFilters";
 import { useSelectAndScrollOnMobile } from "@/hooks/useSelectAndScrollOnMobile";
@@ -74,7 +72,6 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
     queryFn: () => fetchJson<{ maintenances: TrackedMaintenanceSummary[] }>("/api/maintenance", { cache: "no-store" }),
     refetchInterval: POLL_INTERVAL_MS,
   });
-  const { pinned, togglePin } = usePinned("pinnedMaintenance");
   const timeZone = useTimeZone();
 
   const { pendingFilters, setPendingFilters, updateParams, searchParams, router } = useDebouncedUrlFilters({
@@ -131,12 +128,8 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
             (!trimmedServiceQuery || maintenance.service.name.toLowerCase().includes(trimmedServiceQuery)) &&
             (!boardSlugs || boardSlugs.has(maintenance.service.slug)),
         )
-        .sort((a, b) => {
-          const pinDiff = Number(pinned.has(b.id)) - Number(pinned.has(a.id));
-          if (pinDiff !== 0) return pinDiff;
-          return Number(isInProgressMaintenance(b)) - Number(isInProgressMaintenance(a));
-        }),
-    [maintenances, pendingFilters, trimmedServiceQuery, pinned, boardSlugs],
+        .sort((a, b) => Number(isInProgressMaintenance(b)) - Number(isInProgressMaintenance(a))),
+    [maintenances, pendingFilters, trimmedServiceQuery, boardSlugs],
   );
 
   useAutoSelectFirstId("/maintenance", selectedId, persistedBoardApplies ? [] : filteredMaintenances);
@@ -205,11 +198,11 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
             const isActive = isInProgressMaintenance(maintenance);
             const isSelected = maintenance.id === selectedId;
             return (
-              <li key={maintenance.id} className="relative">
+              <li key={maintenance.id}>
                 <button
                   type="button"
                   onClick={() => selectMaintenance(maintenance.id)}
-                  className={`card card-border bg-base-200 relative flex w-full flex-row items-center gap-3 overflow-hidden p-4 text-left shadow-md transition-colors ${
+                  className={`card card-border bg-base-200 flex w-full flex-row items-center gap-3 overflow-hidden p-4 text-left shadow-md transition-colors ${
                     isSelected ? "border-primary" : isActive ? "border-info" : "hover:border-base-content/20"
                   }`}
                 >
@@ -229,12 +222,6 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
                     {formatDateTime(maintenance.scheduled_for, timeZone)} – {formatDateTime(maintenance.scheduled_until, timeZone)}
                   </p>
                 </button>
-                <PinButton
-                  pinned={pinned.has(maintenance.id)}
-                  onToggle={() => togglePin(maintenance.id)}
-                  ariaLabel={t(pinned.has(maintenance.id) ? "maintenances.unpin" : "maintenances.pin")}
-                  className="absolute top-3 right-3 z-10"
-                />
               </li>
             );
           })}

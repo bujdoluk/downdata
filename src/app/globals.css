@@ -175,31 +175,6 @@ html {
   }
 }
 
-@keyframes pin-pop {
-  0% {
-    transform: scale(1) rotate(0deg);
-  }
-  40% {
-    transform: scale(1.35) rotate(-8deg);
-  }
-  70% {
-    transform: scale(0.95) rotate(4deg);
-  }
-  100% {
-    transform: scale(1) rotate(0deg);
-  }
-}
-
-.animate-pin-pop {
-  animation: pin-pop 0.35s ease-out;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-pin-pop {
-    animation: none;
-  }
-}
-
 @keyframes pulse-ring {
   0% {
     box-shadow: 0 0 0 0 color-mix(in oklab, currentColor 55%, transparent);

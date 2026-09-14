@@ -12,7 +12,6 @@ import CreateBoardModal from "@/features/boards/components/CreateBoardModal";
 import { PlusIcon } from "@/components/icons/NavIcons";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
-import { usePinned } from "@/hooks/usePinned";
 import { isActiveIncident } from "@/features/boards/services/isActiveIncident";
 
 const POLL_INTERVAL_MS = 60_000;
@@ -36,7 +35,6 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const createDialogRef = useRef<HTMLDialogElement>(null);
-  const { pinned, togglePin } = usePinned("pinnedBoards");
   const { data: incidentsData } = useQuery({
     queryKey: queryKeys.incidents.list(),
     queryFn: () => fetchJson<{ incidents: TrackedIncidentSummary[] }>("/api/incidents", { cache: "no-store" }),
@@ -53,8 +51,6 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
     refetchInterval: POLL_INTERVAL_MS,
   });
   const statusLoading = !statusData && !statusFailed;
-
-  const sortedBoards = [...boards].sort((a, b) => Number(pinned.has(b.id)) - Number(pinned.has(a.id)));
 
   function countsFor(board: Board) {
     const slugs = new Set(board.Slugs);
@@ -85,15 +81,13 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
         </div>
       ) : (
         <ul className="mt-4 flex flex-col gap-3">
-          {sortedBoards.map((board) => (
+          {boards.map((board) => (
             <BoardCard
               key={board.id}
               board={board}
               {...countsFor(board)}
               indicator={worstIndicator(board, statusData)}
               isLoading={statusLoading}
-              isPinned={pinned.has(board.id)}
-              onTogglePin={togglePin}
             />
           ))}
         </ul>

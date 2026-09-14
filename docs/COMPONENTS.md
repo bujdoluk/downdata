@@ -242,15 +242,6 @@ _No props._
 |---|---|---|---|---|
 | className | string \| undefined | No | — |  |
 
-### PinIcon
-
-`src/components/icons/NavIcons.tsx`
-
-| Prop | Type | Required | Default | Description |
-|---|---|---|---|---|
-| className | string \| undefined | No | — |  |
-| filled | boolean \| undefined | No | — |  |
-
 ### PlugIcon
 
 `src/components/icons/NavIcons.tsx`
@@ -346,6 +337,16 @@ _No props._
 | renderIcon | (entry: T) => ReactNode | Yes | — |  |
 | renderLabel | (entry: T) => ReactNode | Yes | — |  |
 | renderDescription | (entry: T) => ReactNode | Yes | — |  |
+
+### ClosingCta
+
+`src/components/landing-page/ClosingCta.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| heading | string | Yes | — |  |
+| ctaLabel | string | Yes | — |  |
+| href | string | Yes | — |  |
 
 ### FeaturePageContent
 
@@ -1428,8 +1429,6 @@ _No props._
 | maintenanceCount | number | Yes | — |  |
 | indicator | string \| undefined | Yes | — |  |
 | isLoading | boolean | Yes | — |  |
-| isPinned | boolean | Yes | — |  |
-| onTogglePin | (id: string) => void | Yes | — |  |
 
 ### BoardDetailContent
 
@@ -1774,8 +1773,6 @@ _No props._
 | isMonitored | boolean | Yes | — |  |
 | addState | { isPending: boolean; isAdded: boolean; onAdd: () => void; } \| undefined | No | — |  |
 | removable | { removing: boolean; onRemove: () => void; } \| undefined | No | — |  |
-| pinned | boolean \| undefined | No | — |  |
-| onTogglePin | (() => void) \| undefined | No | — |  |
 | isFullWidth | boolean \| undefined | No | false |  |
 | isElevatedBg | boolean \| undefined | No | false |  |
 
@@ -1839,18 +1836,6 @@ _No props._
 | incidents | StatuspageIncidentSummary[] | Yes | — |  |
 | timeZone | string | Yes | — |  |
 | trackedSince | string \| null | Yes | — |  |
-
-### PinButton
-
-`src/features/monitors/components/PinButton.tsx`
-
-| Prop | Type | Required | Default | Description |
-|---|---|---|---|---|
-| pinned | boolean | Yes | — |  |
-| onToggle | () => void | Yes | — |  |
-| ariaLabel | string | Yes | — |  |
-| className | string \| undefined | No |  |  |
-| iconClassName | string \| undefined | No | h-4 w-4 |  |
 
 ### PublicServiceDetail
 

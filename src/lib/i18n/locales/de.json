@@ -68,9 +68,7 @@
     "outages24h_other": "{{count}} Ausfälle in den letzten 24 Std.",
     "remove": "Entfernen",
     "removing": "Wird entfernt…",
-    "options": "Weitere Optionen",
-    "pin": "Anheften",
-    "unpin": "Lösen"
+    "options": "Weitere Optionen"
   },
   "serviceDetail": {
     "back": "← Zurück",
@@ -118,8 +116,6 @@
     "officialPage": "Offizielle Vorfallseite ansehen",
     "dateLabel": "Datum:",
     "officialPageLabel": "Offizielle Seite:",
-    "pin": "Anheften",
-    "unpin": "Lösen",
     "new": "Neu",
     "filter": {
       "investigating": "Untersuchung",
@@ -158,8 +154,6 @@
     "empty": "Keine bevorstehenden Wartungen.",
     "inProgress": "Läuft gerade",
     "noMatches": "Keine Dienste entsprechen diesem Filter.",
-    "pin": "Anheften",
-    "unpin": "Lösen",
     "selectPrompt": "Wähle links eine Wartung aus, um Details anzuzeigen.",
     "scheduledLabel": "Geplant:",
     "filter": {
@@ -746,6 +740,10 @@
     "subtitle": "Updates, Vorfallsanalysen und Neuigkeiten vom downDATA-Team.",
     "readTime": "{{count}} Min. Lesezeit",
     "backToBlog": "← Zurück zum Blog",
-    "empty": "Noch keine Beiträge veröffentlicht."
+    "empty": "Noch keine Beiträge veröffentlicht.",
+    "cta": {
+      "heading": "Verliere nie wieder Zeit an der falschen Stelle.",
+      "button": "Starte das Monitoring"
+    }
   }
 }

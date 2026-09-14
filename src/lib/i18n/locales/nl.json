@@ -68,9 +68,7 @@
     "outages24h_other": "{{count}} storingen in de afgelopen 24 uur",
     "remove": "Verwijderen",
     "removing": "Verwijderen…",
-    "options": "Meer opties",
-    "pin": "Vastzetten",
-    "unpin": "Losmaken"
+    "options": "Meer opties"
   },
   "serviceDetail": {
     "back": "← Terug",
@@ -118,8 +116,6 @@
     "officialPage": "Bekijk officiële incidentpagina",
     "dateLabel": "Datum:",
     "officialPageLabel": "Officiële pagina:",
-    "pin": "Vastzetten",
-    "unpin": "Losmaken",
     "new": "Nieuw",
     "filter": {
       "investigating": "Onderzoek",
@@ -158,8 +154,6 @@
     "empty": "Geen aankomend onderhoud.",
     "inProgress": "Bezig",
     "noMatches": "Geen diensten komen overeen met dit filter.",
-    "pin": "Vastzetten",
-    "unpin": "Losmaken",
     "selectPrompt": "Selecteer links een onderhoud om de details te bekijken.",
     "scheduledLabel": "Gepland:",
     "filter": {
@@ -746,6 +740,10 @@
     "subtitle": "Updates, incidentanalyses en nieuws van het downDATA-team.",
     "readTime": "{{count}} min leestijd",
     "backToBlog": "← Terug naar de blog",
-    "empty": "Nog geen berichten gepubliceerd."
+    "empty": "Nog geen berichten gepubliceerd.",
+    "cta": {
+      "heading": "Verspil nooit meer tijd door op de verkeerde plek te kijken.",
+      "button": "Start met monitoren"
+    }
   }
 }

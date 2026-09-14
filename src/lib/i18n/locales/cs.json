@@ -71,9 +71,7 @@
     "outages24h_other": "{{count}} výpadků za posledních 24 h",
     "remove": "Odebrat",
     "removing": "Odebírá se…",
-    "options": "Další možnosti",
-    "pin": "Připnout",
-    "unpin": "Odepnout"
+    "options": "Další možnosti"
   },
   "serviceDetail": {
     "back": "← Zpět",
@@ -122,8 +120,6 @@
     "officialPage": "Zobrazit oficiální stránku incidentu",
     "dateLabel": "Datum:",
     "officialPageLabel": "Oficiální stránka:",
-    "pin": "Připnout",
-    "unpin": "Odepnout",
     "new": "Nové",
     "filter": {
       "investigating": "Vyšetřování",
@@ -162,8 +158,6 @@
     "empty": "Žádné nadcházející údržby.",
     "inProgress": "Probíhá",
     "noMatches": "Žádné služby neodpovídají tomuto filtru.",
-    "pin": "Připnout",
-    "unpin": "Odepnout",
     "selectPrompt": "Vyberte údržbu vlevo pro zobrazení podrobností.",
     "scheduledLabel": "Naplánováno:",
     "filter": {
@@ -759,6 +753,10 @@
     "subtitle": "Novinky, rozbory incidentů a aktuality od týmu downDATA.",
     "readTime": "{{count}} min čtení",
     "backToBlog": "← Zpět na blog",
-    "empty": "Zatím nebyly publikovány žádné příspěvky."
+    "empty": "Zatím nebyly publikovány žádné příspěvky.",
+    "cta": {
+      "heading": "Nikdy neztrácejte čas hledáním na špatném místě.",
+      "button": "Začít sledovat"
+    }
   }
 }

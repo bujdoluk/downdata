@@ -13,10 +13,8 @@ import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/stat
 import Spinner from "@/components/Spinner";
 import ImpactFilterDropdown from "@/components/ImpactFilterDropdown";
 import SelectDropdown from "@/components/SelectDropdown";
-import PinButton from "@/features/monitors/components/PinButton";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
-import { usePinned } from "@/hooks/usePinned";
 import { useIncidentsLastViewed } from "@/features/incidents/hooks/useIncidentsLastViewed";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import { useDebouncedUrlFilters } from "@/hooks/useDebouncedUrlFilters";
@@ -97,7 +95,6 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
     queryFn: () => fetchJson<{ incidents: TrackedIncidentSummary[] }>("/api/incidents", { cache: "no-store" }),
     refetchInterval: POLL_INTERVAL_MS,
   });
-  const { pinned, togglePin } = usePinned("pinnedIncidents");
   const lastViewed = useIncidentsLastViewed(true);
   const timeZone = useTimeZone();
 
@@ -164,12 +161,8 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
             (pendingFilters.range === "all" || msSince(incident.updated_at) <= RANGE_MS[pendingFilters.range]) &&
             (!boardSlugs || boardSlugs.has(incident.service.slug)),
         )
-        .sort((a, b) => {
-          const pinnedDiff = Number(pinned.has(b.id)) - Number(pinned.has(a.id));
-          if (pinnedDiff !== 0) return pinnedDiff;
-          return Number(epochMs(b.updated_at) > lastViewed) - Number(epochMs(a.updated_at) > lastViewed);
-        }),
-    [incidents, pendingFilters, trimmedQuery, pinned, boardSlugs, lastViewed],
+        .sort((a, b) => Number(epochMs(b.updated_at) > lastViewed) - Number(epochMs(a.updated_at) > lastViewed)),
+    [incidents, pendingFilters, trimmedQuery, boardSlugs, lastViewed],
   );
 
   useAutoSelectFirstId("/incidents", selectedId, persistedBoardApplies ? [] : filteredIncidents);
@@ -269,17 +262,10 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
             return (
               <li
                 key={incident.id}
-                className={`card card-border bg-base-200 relative flex w-full flex-row items-stretch overflow-hidden shadow-md transition-colors ${
+                className={`card card-border bg-base-200 flex w-full flex-row items-stretch overflow-hidden shadow-md transition-colors ${
                   isSelected ? "border-primary" : "hover:border-base-content/20"
                 }`}
               >
-                <div className="absolute top-3 right-4 z-10 flex items-center gap-2">
-                  <PinButton
-                    pinned={pinned.has(incident.id)}
-                    onToggle={() => togglePin(incident.id)}
-                    ariaLabel={t(pinned.has(incident.id) ? "incidents.unpin" : "incidents.pin")}
-                  />
-                </div>
                 <button
                   type="button"
                   onClick={() => selectIncident(incident.id)}

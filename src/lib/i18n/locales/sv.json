@@ -68,9 +68,7 @@
     "outages24h_other": "{{count}} driftstopp de senaste 24 tim",
     "remove": "Ta bort",
     "removing": "Tar bort…",
-    "options": "Fler alternativ",
-    "pin": "Fäst",
-    "unpin": "Lossa"
+    "options": "Fler alternativ"
   },
   "serviceDetail": {
     "back": "← Tillbaka",
@@ -118,8 +116,6 @@
     "officialPage": "Visa officiell incidentsida",
     "dateLabel": "Datum:",
     "officialPageLabel": "Officiell sida:",
-    "pin": "Fäst",
-    "unpin": "Lossa",
     "new": "Nytt",
     "filter": {
       "investigating": "Undersökning",
@@ -158,8 +154,6 @@
     "empty": "Inget kommande underhåll.",
     "inProgress": "Pågår",
     "noMatches": "Ingen tjänst matchar detta filter.",
-    "pin": "Fäst",
-    "unpin": "Lossa",
     "selectPrompt": "Välj ett underhåll till vänster för att se detaljerna.",
     "scheduledLabel": "Schemalagt:",
     "filter": {
@@ -746,6 +740,10 @@
     "subtitle": "Nyheter, incidentanalyser och uppdateringar från downDATA-teamet.",
     "readTime": "{{count}} min läsning",
     "backToBlog": "← Tillbaka till bloggen",
-    "empty": "Inga inlägg publicerade än."
+    "empty": "Inga inlägg publicerade än.",
+    "cta": {
+      "heading": "Slösa aldrig tid på att leta på fel ställe.",
+      "button": "Starta övervakning"
+    }
   }
 }

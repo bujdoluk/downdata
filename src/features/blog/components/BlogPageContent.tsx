@@ -2,6 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
+import ClosingCta from "@/components/landing-page/ClosingCta";
 import Footer from "@/components/landing-page/Footer";
 import LandingNavbar from "@/components/landing-page/LandingNavbar";
 import BlogCard from "@/features/blog/components/BlogCard";
@@ -27,6 +28,9 @@ export default function BlogPageContent({ posts }: { posts: BlogPost[] }) {
           </div>
         )}
       </div>
+
+      <ClosingCta heading={t("blog.cta.heading")} ctaLabel={t("blog.cta.button")} href="/login" />
+
       <Footer />
     </div>
   );

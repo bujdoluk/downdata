@@ -29,10 +29,9 @@ export default function FaqSection() {
         <div className="mx-auto flex max-w-3xl flex-col gap-3">
           {faqs.map((faq, i) => (
             <RevealOnScroll key={faq.question} delayMs={Math.min(i, 4) * 60}>
-              <div className="collapse collapse-arrow border-base-300 bg-base-200 hover:border-base-content/20 border transition-colors">
-                <input type="radio" name="faq-accordion" defaultChecked={i === 0} />
-                <div className="collapse-title font-semibold">{faq.question}</div>
-                <div className="collapse-content text-base-content/70 text-sm leading-relaxed">{faq.answer}</div>
+              <div className="border-base-300 bg-base-200 hover:border-base-content/20 flex flex-col gap-2 border p-5 transition-colors">
+                <h3 className="font-semibold">{faq.question}</h3>
+                <p className="text-base-content/70 text-sm leading-relaxed">{faq.answer}</p>
               </div>
             </RevealOnScroll>
           ))}

@@ -9,7 +9,6 @@ export { default as MonitorsBoardSection } from "./components/MonitorsBoardSecti
 export { default as MonitorsPageContent } from "./components/MonitorsPageContent";
 export { default as NoServicesMessage } from "./components/NoServicesMessage";
 export { default as OutageTracker } from "./components/OutageTracker";
-export { default as PinButton } from "./components/PinButton";
 export { default as PublicServiceDetail } from "./components/PublicServiceDetail";
 export { default as RecommendedServices } from "./components/RecommendedServices";
 export { default as ServiceDetail } from "./components/ServiceDetail";

@@ -68,9 +68,7 @@
     "outages24h_other": "{{count}} outages in the last 24 h",
     "remove": "Remove",
     "removing": "Removing…",
-    "options": "More options",
-    "pin": "Pin",
-    "unpin": "Unpin"
+    "options": "More options"
   },
   "serviceDetail": {
     "back": "← Back",
@@ -118,8 +116,6 @@
     "officialPage": "View official incident page",
     "dateLabel": "Date:",
     "officialPageLabel": "Official page:",
-    "pin": "Pin",
-    "unpin": "Unpin",
     "new": "New",
     "filter": {
       "investigating": "Investigating",
@@ -158,8 +154,6 @@
     "empty": "No upcoming maintenances.",
     "inProgress": "In progress",
     "noMatches": "No services match this filter.",
-    "pin": "Pin",
-    "unpin": "Unpin",
     "selectPrompt": "Select a maintenance on the left to see its details.",
     "scheduledLabel": "Scheduled:",
     "filter": {
@@ -761,6 +755,10 @@
     "subtitle": "Updates, incident retrospectives, and news from the downDATA team.",
     "readTime": "{{count}} min read",
     "backToBlog": "← Back to blog",
-    "empty": "No posts published yet."
+    "empty": "No posts published yet.",
+    "cta": {
+      "heading": "Never lose time looking in the wrong place.",
+      "button": "Start monitoring"
+    }
   }
 }

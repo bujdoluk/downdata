@@ -68,9 +68,7 @@
     "outages24h_other": "{{count}} interruzioni nelle ultime 24 h",
     "remove": "Rimuovi",
     "removing": "Rimozione…",
-    "options": "Altre opzioni",
-    "pin": "Fissa",
-    "unpin": "Rimuovi fissaggio"
+    "options": "Altre opzioni"
   },
   "serviceDetail": {
     "back": "← Indietro",
@@ -118,8 +116,6 @@
     "officialPage": "Visualizza la pagina ufficiale dell'incidente",
     "dateLabel": "Data:",
     "officialPageLabel": "Pagina ufficiale:",
-    "pin": "Fissa",
-    "unpin": "Rimuovi fissaggio",
     "new": "Nuovo",
     "filter": {
       "investigating": "Indagine",
@@ -158,8 +154,6 @@
     "empty": "Non ci sono manutenzioni in programma.",
     "inProgress": "In corso",
     "noMatches": "Nessun servizio corrisponde a questo filtro.",
-    "pin": "Fissa",
-    "unpin": "Rimuovi fissaggio",
     "selectPrompt": "Seleziona una manutenzione a sinistra per vederne i dettagli.",
     "scheduledLabel": "Programmata:",
     "filter": {
@@ -746,6 +740,10 @@
     "subtitle": "Aggiornamenti, analisi degli incidenti e novità dal team downDATA.",
     "readTime": "{{count}} min di lettura",
     "backToBlog": "← Torna al blog",
-    "empty": "Nessun articolo pubblicato ancora."
+    "empty": "Nessun articolo pubblicato ancora.",
+    "cta": {
+      "heading": "Non perdere mai più tempo a cercare nel posto sbagliato.",
+      "button": "Inizia a monitorare"
+    }
   }
 }

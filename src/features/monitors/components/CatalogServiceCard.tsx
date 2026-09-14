@@ -9,7 +9,6 @@ import { SERVICE_LOGOS } from "@/components/logos";
 import FallbackLogo from "@/components/logos/FallbackLogo";
 import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
 import MoreSevereIncidentBadge from "@/components/MoreSevereIncidentBadge";
-import { PinIcon } from "@/components/icons/NavIcons";
 import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 import Spinner from "@/components/Spinner";
 
@@ -42,8 +41,6 @@ export default function CatalogServiceCard({
   isMonitored,
   addState,
   removable,
-  pinned,
-  onTogglePin,
   isFullWidth = false,
   isElevatedBg = false,
 }: {
@@ -57,8 +54,6 @@ export default function CatalogServiceCard({
   isMonitored: boolean;
   addState?: { isPending: boolean; isAdded: boolean; onAdd: () => void };
   removable?: { removing: boolean; onRemove: () => void };
-  pinned?: boolean;
-  onTogglePin?: () => void;
   // Lets a 2-up grid track (add-service's catalog browser) stretch the card
   // to fill it instead of capping at 370px — every other caller (the
   // /monitors auto-fill grid, the landing page's uncapped hero mockup list)
@@ -92,16 +87,6 @@ export default function CatalogServiceCard({
     >
       {removable && (
         <div className="absolute top-2 right-7 z-10 flex items-center gap-1">
-          {onTogglePin && (
-            <button
-              type="button"
-              onClick={onTogglePin}
-              aria-label={t(pinned ? "serviceCard.unpin" : "serviceCard.pin")}
-              className="btn btn-ghost btn-circle btn-xs text-base-content/60 hover:text-base-content transition-transform hover:scale-110 active:scale-90"
-            >
-              <PinIcon className="h-4 w-4" filled={pinned} />
-            </button>
-          )}
           <details ref={menuRef} className="dropdown dropdown-end">
             <summary
               className="btn btn-ghost btn-circle btn-xs list-none transition-transform hover:scale-110 active:scale-90"

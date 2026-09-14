@@ -77,7 +77,7 @@ export default function StatusPageLogoUpload({
         {t("boards.statusPage.logoLabel")}
       </legend>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center justify-center gap-3">
         {logoUrl ? (
           <div className="avatar">
             <div className="bg-base-100 w-12 rounded-full border">
@@ -101,7 +101,7 @@ export default function StatusPageLogoUpload({
           </div>
         )}
 
-        <div className="flex flex-1 items-center gap-2">
+        <div className="flex items-center gap-2">
           <label htmlFor={inputId} className={`btn btn-sm ${uploading ? "btn-disabled" : ""}`}>
             {uploading ? <Spinner size="xs" /> : t("boards.statusPage.logoChoose")}
           </label>
@@ -121,9 +121,9 @@ export default function StatusPageLogoUpload({
         </div>
       </div>
 
-      <p className="label">{t("boards.statusPage.logoHint")}</p>
+      <p className="label text-center">{t("boards.statusPage.logoHint")}</p>
       {error && (
-        <p role="alert" className="text-error text-xs">
+        <p role="alert" className="text-error text-center text-xs">
           {error}
         </p>
       )}

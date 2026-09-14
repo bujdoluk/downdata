@@ -67,6 +67,16 @@ function escapeXml(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
+// Rendered by app/api/badge/[boardSlug]/route.ts when isStatusPageUnlocked()
+// says no — an <img> tag can't show a password form, and the badge already
+// has no other way to authenticate its viewer beyond a cookie the same
+// browser may or may not hold (see the spec). Same neutral shape as that
+// route's own notFoundSvg(): never leak real status/uptime data through
+// this side channel just because the page itself would refuse it.
+export function renderLockedBadgeSvg({ theme, size, layout }: { theme: BadgeTheme; size: BadgeSize; layout: BadgeLayout }): string {
+  return renderBadgeSvg({ label: "status", value: "protected", indicator: null, theme, size, layout });
+}
+
 // A single self-contained SVG string — no external fonts/images, so it
 // renders identically wherever it's embedded (a README, a site with its
 // own CSS, an email client that allows img tags). Two layouts: "flat" is

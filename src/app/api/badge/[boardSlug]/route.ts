@@ -1,6 +1,16 @@
 import { NextResponse } from "next/server";
-import { getPublicStatusPage } from "@/features/status-pages/services/statusPages";
-import { averageUptime, renderBadgeSvg, worstIndicator, type BadgeLayout, type BadgeSize, type BadgeTheme, type BadgeVariant } from "@/features/status-pages/services/badge";
+import { getPublicStatusPage, resolveStatusPageAccess } from "@/features/status-pages/services/statusPages";
+import {
+  averageUptime,
+  renderBadgeSvg,
+  renderLockedBadgeSvg,
+  worstIndicator,
+  type BadgeLayout,
+  type BadgeSize,
+  type BadgeTheme,
+  type BadgeVariant,
+} from "@/features/status-pages/services/badge";
+import { isProtectionConfigured } from "@/features/status-pages/services/passwordProtection";
 
 // Public, unauthenticated (see proxy.ts's PUBLIC_PREFIXES) — same class as
 // /api/summary/[slug]/api/status/[slug]: a badge only ever exists for a
@@ -30,6 +40,21 @@ function notFoundSvg(): NextResponse {
   return new NextResponse(svg, { status: 404, headers: { "Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=60" } });
 }
 
+// Same non-JSON-error shape as notFoundSvg() above, for the same reason —
+// rendered when isStatusPageUnlocked() says no, in the caller's own
+// requested theme/size/layout rather than always the small/light default
+// notFoundSvg uses, so a locked badge still fits wherever it was embedded.
+// Always "private" (never a shared/CDN cache): this is only ever reached
+// for a status page that has protection configured at all — a plain
+// "public" 403 here could be cached by an intermediary and briefly served
+// back to a visitor who has since become authorized (allowlisted or
+// unlocked), which is stale but not itself a data leak, unlike the
+// same-URL leak "public" would cause on the real-data branch below.
+function lockedSvg(theme: BadgeTheme, size: BadgeSize, layout: BadgeLayout): NextResponse {
+  const svg = renderLockedBadgeSvg({ theme, size, layout });
+  return new NextResponse(svg, { status: 403, headers: { "Content-Type": "image/svg+xml", "Cache-Control": "private, max-age=60" } });
+}
+
 export async function GET(request: Request, { params }: { params: Promise<{ boardSlug: string }> }) {
   const { boardSlug } = await params;
   const url = new URL(request.url);
@@ -49,6 +74,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ boar
   // anything other than a renderable SVG (see the file's own header
   // comment on why this can't be this app's usual JSON error shape).
   try {
+    // The badge request carries the real visitor's own IP/cookies just
+    // like any other request — an allowlisted visitor's embedded badge
+    // renders normally with no special-casing; a password-only page can
+    // only unlock the badge if the same browser already unlocked the page
+    // itself (see docs/specs/SPEC-status-page-password.md).
+    const { protection, unlocked } = await resolveStatusPageAccess(boardSlug, request.headers);
+    if (!protection) return notFoundSvg();
+    if (!unlocked) return lockedSvg(theme, size, layout);
+
     const statusPage = await getPublicStatusPage(boardSlug);
     if (!statusPage) return notFoundSvg();
 
@@ -65,7 +99,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ boar
             layout,
           });
 
-    return new NextResponse(svg, { headers: { "Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=60" } });
+    // "public" (shareable by a CDN/corporate proxy) only for a status page
+    // with no protection configured at all — the moment either mechanism
+    // is on, this same URL's response can legitimately differ per visitor
+    // (allowlisted vs not, cookied vs not), and a shared cache has no way
+    // to key on that. Serving it "private" instead means only the
+    // requesting visitor's own browser may cache it, never a shared one.
+    const cacheControl = isProtectionConfigured(protection) ? "private, max-age=60" : "public, max-age=60";
+    return new NextResponse(svg, { headers: { "Content-Type": "image/svg+xml", "Cache-Control": cacheControl } });
   } catch (error) {
     console.error(`badge: failed for board ${boardSlug}:`, error);
     return notFoundSvg();

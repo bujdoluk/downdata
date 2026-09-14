@@ -8,6 +8,7 @@ import type { BoardStatusPage } from "@/features/status-pages/types";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
 import BoardStatusPageSettings from "@/features/status-pages/components/BoardStatusPageSettings";
+import Spinner from "@/components/Spinner";
 
 // One card per board, each wrapping the same BoardStatusPageSettings form
 // the board detail grid used to show directly — that component is already
@@ -28,7 +29,7 @@ export default function StatusPagesPageContent({ boards }: { boards: Board[] }) 
   const publishedCount = statusPageQueries.filter((query) => query.data?.enabled).length;
 
   return (
-    <div className="mx-auto w-full max-w-3xl self-start">
+    <div className="mx-auto w-full max-w-6xl self-start">
       <h1 className="text-base-content text-lg font-semibold">
         {t("statusPages.title")} ({publishedCount})
       </h1>
@@ -37,15 +38,36 @@ export default function StatusPagesPageContent({ boards }: { boards: Board[] }) 
       {boards.length === 0 ? (
         <p className="text-base-content/50 mt-6 text-sm">{t("statusPages.empty")}</p>
       ) : (
-        <div className="mt-4 grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] items-start gap-4">
-          {boards.map((board) => (
-            <div key={board.id} className="card card-border bg-base-200 p-4">
-              <h2 className="text-base-content text-sm font-semibold">{board.name}</h2>
-              <div className="mt-3">
-                <BoardStatusPageSettings boardId={board.id} boardName={board.name} />
+        // One board per row (not a grid of small cards) — each card is wide
+        // enough for BoardStatusPageSettings' own 3-column layout (url+
+        // company / logo / privacy) to lay out side by side instead of
+        // stacking tall.
+        <div className="mt-4 flex flex-col gap-4">
+          {boards.map((board, index) => {
+            // Same query, read from the shared cache entry above — not a
+            // second fetch. While it's in flight, the card shows nothing
+            // but a centered spinner: no board name, no half-built form,
+            // since BoardStatusPageSettings isn't even mounted yet (its own
+            // identical-key useQuery would just resolve from this same
+            // cache instantly once it does mount).
+            const isLoading = statusPageQueries[index]?.isLoading ?? false;
+            return (
+              <div key={board.id} className="card card-border bg-base-200 p-4">
+                {isLoading ? (
+                  <div className="flex min-h-40 items-center justify-center">
+                    <Spinner size="xl" />
+                  </div>
+                ) : (
+                  <>
+                    <h2 className="text-base-content text-sm font-semibold">{board.name}</h2>
+                    <div className="mt-3">
+                      <BoardStatusPageSettings boardId={board.id} boardName={board.name} />
+                    </div>
+                  </>
+                )}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

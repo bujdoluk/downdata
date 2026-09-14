@@ -417,7 +417,20 @@
       "publish": "Publish",
       "unpublish": "Unpublish",
       "enableFailed": "Couldn't update your status page. Try again.",
-      "copyLink": "Copy link"
+      "copyLink": "Copy link",
+      "privacyTitle": "Privacy",
+      "passwordLabel": "Password protection",
+      "passwordProtectedLabel": "Password protection (on)",
+      "passwordSetPlaceholder": "Set a password",
+      "passwordChangePlaceholder": "Change password",
+      "passwordSave": "Save",
+      "passwordSaveFailed": "Couldn't save that password. Try again.",
+      "passwordRemove": "Remove password",
+      "passwordRemoveFailed": "Couldn't remove the password. Try again.",
+      "allowlistLabel": "IP allowlist",
+      "allowlistPlaceholder": "One IP address per line",
+      "allowlistSave": "Save",
+      "allowlistSaveFailed": "Couldn't save the IP allowlist. Try again."
     }
   },
   "addService": {
@@ -760,5 +773,14 @@
       "heading": "Never lose time looking in the wrong place.",
       "button": "Start monitoring"
     }
+  },
+  "statusPageGate": {
+    "title": "This status page is protected",
+    "description": "Enter the password to view it.",
+    "passwordPlaceholder": "Password",
+    "submit": "Unlock",
+    "genericError": "Couldn't check that password. Try again.",
+    "restrictedTitle": "Access restricted",
+    "restrictedDescription": "This status page isn't available from your current network."
   }
 }

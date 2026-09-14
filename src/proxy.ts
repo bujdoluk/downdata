@@ -46,41 +46,13 @@ const PUBLIC_PREFIXES = [
   "/api/cron/",
   "/features/",
   "/integrations/",
-  // The free-tools marketing catalog (see lib/freeToolsCatalog.ts) — same
-  // public-marketing-page class as /features/ and /integrations/ above,
-  // no account-specific data involved.
   "/free-tools/",
-  // The public blog post detail page (see app/blog/[slug]/page.tsx) — the
-  // /blog index above is a separate PUBLIC_EXACT entry since this prefix
-  // alone wouldn't match the bare path.
   "/blog/",
-  // A board's public status page and the endpoint it polls client-side —
-  // both unauthenticated by design (see app/status/[slug]/page.tsx and
-  // app/api/public/status/[slug]/route.ts). Two separate entries, not
-  // one: the page route alone would still leave the polling endpoint
-  // session-gated, 401ing every logged-out viewer's refresh.
   "/status/",
   "/api/public/status/",
-  // A public per-service detail page (see app/services/[slug]/page.tsx)
-  // and the two live-data endpoints it and the landing footer's Popular
-  // Services list depend on. Neither endpoint reads any account-specific
-  // data — /api/summary/[slug] is the same summary the authenticated
-  // /monitors/:slug page already uses (verified it carries nothing
-  // per-account: trackedSince is this service's first-ever poll by the
-  // app, not "since I added it"), and /api/status/[slug] is just a live
-  // indicator/description lookup. This also makes the existing
-  // /api/status/catalog route public as a side effect of sharing the
-  // /api/status/ prefix — same public-catalog-data class as the rest.
   "/services/",
   "/api/summary/",
   "/api/status/",
-  // The embeddable status/uptime badge (see features/status-pages/
-  // services/badge.ts) — same public-data class as the rest of this
-  // list: it only ever renders a board that already has enabled = true
-  // on its public status page, the same authorization
-  // GET /api/public/status/[slug] already relies on. Must stay public —
-  // it's fetched by an <img> tag on someone else's README/site, which
-  // carries no session cookie for this app at all.
   "/api/badge/",
 ];
 

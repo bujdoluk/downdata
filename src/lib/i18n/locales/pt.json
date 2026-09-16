@@ -167,7 +167,49 @@
       "previous": "Página anterior",
       "next": "Página seguinte"
     },
-    "subtitle": "Janelas de manutenção agendadas e em curso em todos os seus serviços monitorizados."
+    "subtitle": "Janelas de manutenção agendadas e em curso em todos os seus serviços monitorizados.",
+    "reminder": {
+      "modalTitle": "Lembrete de manutenção",
+      "leadTimeLabel": "Avisar-me",
+      "leadTimeHint": "Verificado a cada minuto, pelo que a entrega pode chegar até um minuto após a hora exata indicada.",
+      "presets": {
+        "min15": "15 minutos antes",
+        "min30": "30 minutos antes",
+        "hour1": "1 hora antes",
+        "hour2": "2 horas antes",
+        "day1": "1 dia antes",
+        "day2": "2 dias antes",
+        "week1": "1 semana antes",
+        "week2": "2 semanas antes",
+        "custom": "Personalizado…"
+      },
+      "unit": {
+        "minutes": "Minutos",
+        "hours": "Horas",
+        "days": "Dias",
+        "weeks": "Semanas"
+      },
+      "unitLabel": "Unidade",
+      "scopeLabel": "Aplica-se a",
+      "scopeService": "Apenas {{name}}",
+      "scopeAll": "Todos os serviços monitorizados",
+      "scopeAllNotice": "Este lembrete aplica-se a todos os serviços que monitoriza, não apenas a este.",
+      "channelsLabel": "Avisar-me através de",
+      "channel": {
+        "slack": "Slack",
+        "email": "E-mail",
+        "sms": "SMS"
+      },
+      "channelUnavailable": "Não ligado",
+      "remove": "Remover lembrete",
+      "save": "Guardar",
+      "schedule": "Agendar lembrete",
+      "edit": "Editar lembrete",
+      "badge": "{{duration}} antes",
+      "startsIn": "Começa em",
+      "saveFailed": "Não foi possível guardar o seu lembrete. Tente novamente.",
+      "removeFailed": "Não foi possível remover o seu lembrete. Tente novamente."
+    }
   },
   "integrations": {
     "title": "Integrações",
@@ -415,7 +457,6 @@
       "slugLabel": "URL pública",
       "companyNameLabel": "Nome da empresa",
       "companyNamePlaceholder": "Empresa XY",
-      "logoLabel": "Logotipo",
       "logoChoose": "Escolher logotipo",
       "logoRemove": "Remover",
       "logoHint": "PNG, JPG, WEBP ou SVG. Máx. 4 MB.",

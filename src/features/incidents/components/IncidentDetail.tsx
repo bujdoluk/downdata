@@ -6,15 +6,8 @@ import { formatDateTime, formatDuration, minutesBetween, epochMs } from "@/lib/f
 import type { TrackedIncident, TrackedMaintenance } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/logos";
 import FallbackLogo from "@/components/logos/FallbackLogo";
-import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
 import { stripHtml } from "@/lib/stripHtml";
 
-// Shared by the Incidents and Maintenance pages' detail column —
-// TrackedMaintenance is a strict superset of TrackedIncident (see
-// types/service.ts), so one component renders both. lastViewed is
-// incident-specific "New" badge state owned by whichever page has it
-// (only the Incidents page does today); callers that don't pass one get
-// no "New" badges, matching the Maintenance page's existing behavior.
 export default function IncidentDetail({
   incident,
   timeZone,
@@ -26,7 +19,6 @@ export default function IncidentDetail({
 }) {
   const { t } = useTranslation();
 
-  const impactStyle = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
   const Logo = SERVICE_LOGOS[incident.service.slug] ?? FallbackLogo;
 
   return (
@@ -55,9 +47,6 @@ export default function IncidentDetail({
               )}
             </>
           )}
-          {/* incident.io-hosted pages (e.g. status.brevo.com) don't send a
-              shortlink at all, unlike Atlassian which always includes one —
-              an unconditional <a> here would render empty and unclickable. */}
           {incident.shortlink && (
             <p className="text-base-content/40 text-xs">
               <a href={incident.shortlink} target="_blank" rel="noreferrer" className="link link-hover">
@@ -66,9 +55,6 @@ export default function IncidentDetail({
             </p>
           )}
         </div>
-        <span className={`badge badge-xs ml-auto shrink-0 whitespace-nowrap ${impactStyle.badge} text-white`}>
-          {t(impactStyle.labelKey)}
-        </span>
       </div>
 
       {incident.incident_updates.length === 0 ? (
@@ -84,9 +70,6 @@ export default function IncidentDetail({
               <div className="timeline-middle">
                 <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
               </div>
-              {/* Was bg-base-200 — the same tone as ListDetailShell's detail-pane
-                  card it sits in, so it was invisible against it. See the matching
-                  fix/comment in HistoryPageContent.tsx. */}
               <div className="timeline-end timeline-box bg-[var(--color-surface-2)] min-w-0">
                 <p className="flex items-center gap-2 text-base-content text-sm font-medium wrap-anywhere">
                   {update.status}

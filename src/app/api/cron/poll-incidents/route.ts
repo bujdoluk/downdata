@@ -4,6 +4,7 @@ import { NextResponse, after } from "next/server";
 import { getSupabaseClient } from "@/lib/supabase";
 import { pollAllIncidents, LOCK_STALE_MS } from "@/lib/pollIncidents";
 import { notifyPendingEvents } from "@/lib/notifyIncidentEvents";
+import { checkMaintenanceReminders } from "@/lib/pollMaintenanceReminders";
 import { nowIso } from "@/lib/formatTime";
 
 // A full poll+notify cycle can take longer than free external cron
@@ -111,7 +112,36 @@ export async function GET(request: Request) {
       // undelivered). Each shard's own backfill markers are still written
       // synchronously within its own pollAllIncidents() call above, so
       // this stays correct regardless of which shard runs notify.
-      if (!shard || shard.index === 0) await notifyPendingEvents();
+      //
+      // checkMaintenanceReminders() deliberately does NOT ride this same
+      // gate — shard.index === 0 is only ever *this* shard, invoked once
+      // per real ~5-minute cycle (the 5 shard values are round-robined
+      // across ticks, same as every other service's data — see AGENTS.md's
+      // "any one service's history is refreshed roughly every 5 minutes,
+      // not every 1"), not once a minute as an earlier version of this
+      // comment assumed. checkMaintenanceReminders() is unsharded and cheap
+      // (see lib/pollMaintenanceReminders.ts's own comment), so it runs on
+      // every invocation of this route regardless of which shard value
+      // that tick carries — that's what actually gives the "checked every
+      // minute" precision the reminder feature's spec and UI copy promise.
+      //
+      // Own try/catch, deliberately: this is a newer, less-proven code path
+      // than notifyPendingEvents() (three more Supabase round-trips, plus
+      // Slack/Resend/Twilio-adjacent sends), and an uncaught throw here
+      // would otherwise propagate straight past notifyPendingEvents() below
+      // to the outer finally — silently skipping real incident notifications
+      // for this whole tick over a failure in an unrelated, newer feature.
+      // Same "one system's failure can't mark a different system unhealthy"
+      // reasoning as the pollAllIncidents/notifyPendingEvents split above.
+      try {
+        await checkMaintenanceReminders();
+      } catch (error) {
+        console.error("checkMaintenanceReminders failed:", error);
+      }
+
+      if (!shard || shard.index === 0) {
+        await notifyPendingEvents();
+      }
     } finally {
       await supabase.from("poll_run_lock").update({ running: false }).eq("shard_key", shardKey);
     }

@@ -8,6 +8,7 @@ import "@/lib/i18n/i18n";
 import { validateImageFile, uploadImageToBucket } from "@/lib/imageUpload";
 import Spinner from "@/components/Spinner";
 import Logo from "@/components/navbar/Logo";
+import { InfoIcon } from "@/components/icons/NavIcons";
 
 // Same validation/upload shape as components/account/AvatarUpload.tsx —
 // both now share lib/imageUpload.ts for that part. Unlike AvatarUpload,
@@ -73,10 +74,16 @@ export default function StatusPageLogoUpload({
 
   return (
     <fieldset className="fieldset p-0">
-      <legend className="fieldset-legend text-xs font-semibold tracking-wide text-base-content/60 uppercase">
-        {t("boards.statusPage.logoLabel")}
+      {/* invisible, not removed — reserves the same vertical space a real
+          fieldset-legend takes (see the slug/company-name fieldsets this
+          sits beside), so the avatar+button row lines up with the public
+          URL input instead of starting higher now that this fieldset has
+          no visible label of its own. visibility:hidden takes it out of
+          the accessibility tree too, so it's not a confusing blank legend
+          for screen reader users. */}
+      <legend className="fieldset-legend invisible" aria-hidden="true">
+        {" "}
       </legend>
-
       <div className="flex items-center justify-center gap-3">
         {logoUrl ? (
           <div className="avatar">
@@ -113,6 +120,14 @@ export default function StatusPageLogoUpload({
             disabled={uploading}
             className="hidden"
           />
+          {/* button, not a bare span — a span can never receive keyboard
+              focus, so a keyboard-only user had no way to trigger this
+              tooltip at all; aria-label gives it a real accessible name
+              too, since data-tip's CSS-only content isn't read by screen
+              readers (see ComponentFilterDropdown.tsx's identical pattern). */}
+          <button type="button" className="tooltip" data-tip={t("boards.statusPage.logoHint")} aria-label={t("boards.statusPage.logoHint")}>
+            <InfoIcon className="text-base-content/40" />
+          </button>
           {logoUrl && (
             <button type="button" className="btn btn-error btn-outline btn-sm" onClick={() => onChange(null)} disabled={uploading}>
               {t("boards.statusPage.logoRemove")}
@@ -121,7 +136,6 @@ export default function StatusPageLogoUpload({
         </div>
       </div>
 
-      <p className="label text-center">{t("boards.statusPage.logoHint")}</p>
       {error && (
         <p role="alert" className="text-error text-center text-xs break-words">
           {error}

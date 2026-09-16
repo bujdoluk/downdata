@@ -167,7 +167,49 @@
       "previous": "Vorige pagina",
       "next": "Volgende pagina"
     },
-    "subtitle": "Geplande en lopende onderhoudsvensters voor al je gevolgde diensten."
+    "subtitle": "Geplande en lopende onderhoudsvensters voor al je gevolgde diensten.",
+    "reminder": {
+      "modalTitle": "Onderhoudsherinnering",
+      "leadTimeLabel": "Herinner me",
+      "leadTimeHint": "Wordt elke minuut gecontroleerd, dus de melding kan tot een minuut na je exacte tijd aankomen.",
+      "presets": {
+        "min15": "15 minuten van tevoren",
+        "min30": "30 minuten van tevoren",
+        "hour1": "1 uur van tevoren",
+        "hour2": "2 uur van tevoren",
+        "day1": "1 dag van tevoren",
+        "day2": "2 dagen van tevoren",
+        "week1": "1 week van tevoren",
+        "week2": "2 weken van tevoren",
+        "custom": "Aangepast…"
+      },
+      "unit": {
+        "minutes": "Minuten",
+        "hours": "Uur",
+        "days": "Dagen",
+        "weeks": "Weken"
+      },
+      "unitLabel": "Eenheid",
+      "scopeLabel": "Van toepassing op",
+      "scopeService": "Alleen {{name}}",
+      "scopeAll": "Alle gevolgde diensten",
+      "scopeAllNotice": "Deze herinnering geldt voor al je gevolgde diensten, niet alleen deze.",
+      "channelsLabel": "Waarschuw me via",
+      "channel": {
+        "slack": "Slack",
+        "email": "E-mail",
+        "sms": "SMS"
+      },
+      "channelUnavailable": "Niet verbonden",
+      "remove": "Herinnering verwijderen",
+      "save": "Opslaan",
+      "schedule": "Herinnering plannen",
+      "edit": "Herinnering bewerken",
+      "badge": "{{duration}} van tevoren",
+      "startsIn": "Begint over",
+      "saveFailed": "Je herinnering kon niet worden opgeslagen. Probeer het opnieuw.",
+      "removeFailed": "Je herinnering kon niet worden verwijderd. Probeer het opnieuw."
+    }
   },
   "integrations": {
     "title": "Integraties",
@@ -415,7 +457,6 @@
       "slugLabel": "Openbare URL",
       "companyNameLabel": "Bedrijfsnaam",
       "companyNamePlaceholder": "Bedrijf XY",
-      "logoLabel": "Logo",
       "logoChoose": "Logo kiezen",
       "logoRemove": "Verwijderen",
       "logoHint": "PNG, JPG, WEBP of SVG. Max. 4 MB.",

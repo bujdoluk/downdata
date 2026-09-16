@@ -167,7 +167,49 @@
       "previous": "Page précédente",
       "next": "Page suivante"
     },
-    "subtitle": "Fenêtres de maintenance planifiées et en cours sur tous vos services surveillés."
+    "subtitle": "Fenêtres de maintenance planifiées et en cours sur tous vos services surveillés.",
+    "reminder": {
+      "modalTitle": "Rappel de maintenance",
+      "leadTimeLabel": "Me prévenir",
+      "leadTimeHint": "Vérifié chaque minute, l'envoi peut donc arriver jusqu'à une minute après l'heure exacte indiquée.",
+      "presets": {
+        "min15": "15 minutes avant",
+        "min30": "30 minutes avant",
+        "hour1": "1 heure avant",
+        "hour2": "2 heures avant",
+        "day1": "1 jour avant",
+        "day2": "2 jours avant",
+        "week1": "1 semaine avant",
+        "week2": "2 semaines avant",
+        "custom": "Personnalisé…"
+      },
+      "unit": {
+        "minutes": "Minutes",
+        "hours": "Heures",
+        "days": "Jours",
+        "weeks": "Semaines"
+      },
+      "unitLabel": "Unité",
+      "scopeLabel": "S'applique à",
+      "scopeService": "{{name}} uniquement",
+      "scopeAll": "Tous les services surveillés",
+      "scopeAllNotice": "Ce rappel s'applique à tous vos services surveillés, pas seulement à celui-ci.",
+      "channelsLabel": "Me prévenir via",
+      "channel": {
+        "slack": "Slack",
+        "email": "E-mail",
+        "sms": "SMS"
+      },
+      "channelUnavailable": "Non connecté",
+      "remove": "Supprimer le rappel",
+      "save": "Enregistrer",
+      "schedule": "Planifier un rappel",
+      "edit": "Modifier le rappel",
+      "badge": "{{duration}} avant",
+      "startsIn": "Commence dans",
+      "saveFailed": "Impossible d'enregistrer votre rappel. Réessayez.",
+      "removeFailed": "Impossible de supprimer votre rappel. Réessayez."
+    }
   },
   "integrations": {
     "title": "Intégrations",
@@ -415,7 +457,6 @@
       "slugLabel": "URL publique",
       "companyNameLabel": "Nom de l'entreprise",
       "companyNamePlaceholder": "Société XY",
-      "logoLabel": "Logo",
       "logoChoose": "Choisir un logo",
       "logoRemove": "Supprimer",
       "logoHint": "PNG, JPG, WEBP ou SVG. Max. 4 Mo.",

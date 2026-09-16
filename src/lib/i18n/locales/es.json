@@ -167,7 +167,49 @@
       "previous": "Página anterior",
       "next": "Página siguiente"
     },
-    "subtitle": "Ventanas de mantenimiento programadas y en curso en todos tus servicios monitorizados."
+    "subtitle": "Ventanas de mantenimiento programadas y en curso en todos tus servicios monitorizados.",
+    "reminder": {
+      "modalTitle": "Recordatorio de mantenimiento",
+      "leadTimeLabel": "Avisarme",
+      "leadTimeHint": "Se comprueba cada minuto, así que el aviso puede llegar hasta un minuto después de la hora exacta indicada.",
+      "presets": {
+        "min15": "15 minutos antes",
+        "min30": "30 minutos antes",
+        "hour1": "1 hora antes",
+        "hour2": "2 horas antes",
+        "day1": "1 día antes",
+        "day2": "2 días antes",
+        "week1": "1 semana antes",
+        "week2": "2 semanas antes",
+        "custom": "Personalizado…"
+      },
+      "unit": {
+        "minutes": "Minutos",
+        "hours": "Horas",
+        "days": "Días",
+        "weeks": "Semanas"
+      },
+      "unitLabel": "Unidad",
+      "scopeLabel": "Aplicar a",
+      "scopeService": "Solo {{name}}",
+      "scopeAll": "Todos los servicios monitorizados",
+      "scopeAllNotice": "Este recordatorio se aplica a todos tus servicios monitorizados, no solo a este.",
+      "channelsLabel": "Avisarme por",
+      "channel": {
+        "slack": "Slack",
+        "email": "Correo electrónico",
+        "sms": "SMS"
+      },
+      "channelUnavailable": "No conectado",
+      "remove": "Eliminar recordatorio",
+      "save": "Guardar",
+      "schedule": "Programar recordatorio",
+      "edit": "Editar recordatorio",
+      "badge": "{{duration}} antes",
+      "startsIn": "Empieza en",
+      "saveFailed": "No se pudo guardar tu recordatorio. Inténtalo de nuevo.",
+      "removeFailed": "No se pudo eliminar tu recordatorio. Inténtalo de nuevo."
+    }
   },
   "integrations": {
     "title": "Integraciones",
@@ -415,7 +457,6 @@
       "slugLabel": "URL pública",
       "companyNameLabel": "Nombre de la empresa",
       "companyNamePlaceholder": "Empresa XY",
-      "logoLabel": "Logotipo",
       "logoChoose": "Elegir logotipo",
       "logoRemove": "Quitar",
       "logoHint": "PNG, JPG, WEBP o SVG. Máx. 4 MB.",

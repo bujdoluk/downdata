@@ -167,7 +167,49 @@
       "previous": "Forrige side",
       "next": "Neste side"
     },
-    "subtitle": "Planlagt og pågående vedlikehold på tvers av alle overvåkede tjenester."
+    "subtitle": "Planlagt og pågående vedlikehold på tvers av alle overvåkede tjenester.",
+    "reminder": {
+      "modalTitle": "Vedlikeholdspåminnelse",
+      "leadTimeLabel": "Varsle meg",
+      "leadTimeHint": "Sjekkes hvert minutt, så varselet kan komme opptil ett minutt etter nøyaktig tidspunkt du angav.",
+      "presets": {
+        "min15": "15 minutter før",
+        "min30": "30 minutter før",
+        "hour1": "1 time før",
+        "hour2": "2 timer før",
+        "day1": "1 dag før",
+        "day2": "2 dager før",
+        "week1": "1 uke før",
+        "week2": "2 uker før",
+        "custom": "Egendefinert…"
+      },
+      "unit": {
+        "minutes": "Minutter",
+        "hours": "Timer",
+        "days": "Dager",
+        "weeks": "Uker"
+      },
+      "unitLabel": "Enhet",
+      "scopeLabel": "Gjelder for",
+      "scopeService": "Bare {{name}}",
+      "scopeAll": "Alle overvåkede tjenester",
+      "scopeAllNotice": "Denne påminnelsen gjelder alle tjenestene dine, ikke bare denne.",
+      "channelsLabel": "Varsle meg via",
+      "channel": {
+        "slack": "Slack",
+        "email": "E-post",
+        "sms": "SMS"
+      },
+      "channelUnavailable": "Ikke tilkoblet",
+      "remove": "Fjern påminnelse",
+      "save": "Lagre",
+      "schedule": "Planlegg påminnelse",
+      "edit": "Rediger påminnelse",
+      "badge": "{{duration}} før",
+      "startsIn": "Starter om",
+      "saveFailed": "Kunne ikke lagre påminnelsen din. Prøv igjen.",
+      "removeFailed": "Kunne ikke fjerne påminnelsen din. Prøv igjen."
+    }
   },
   "integrations": {
     "title": "Integrasjoner",
@@ -415,7 +457,6 @@
       "slugLabel": "Offentlig URL",
       "companyNameLabel": "Firmanavn",
       "companyNamePlaceholder": "Firma XY",
-      "logoLabel": "Logo",
       "logoChoose": "Velg logo",
       "logoRemove": "Fjern",
       "logoHint": "PNG, JPG, WEBP eller SVG. Maks 4 MB.",

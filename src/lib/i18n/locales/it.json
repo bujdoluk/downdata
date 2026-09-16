@@ -167,7 +167,49 @@
       "previous": "Pagina precedente",
       "next": "Pagina successiva"
     },
-    "subtitle": "Finestre di manutenzione pianificate e in corso in tutti i tuoi servizi monitorati."
+    "subtitle": "Finestre di manutenzione pianificate e in corso in tutti i tuoi servizi monitorati.",
+    "reminder": {
+      "modalTitle": "Promemoria di manutenzione",
+      "leadTimeLabel": "Avvisami",
+      "leadTimeHint": "Il controllo avviene ogni minuto, quindi la notifica può arrivare fino a un minuto dopo l'orario esatto indicato.",
+      "presets": {
+        "min15": "15 minuti prima",
+        "min30": "30 minuti prima",
+        "hour1": "1 ora prima",
+        "hour2": "2 ore prima",
+        "day1": "1 giorno prima",
+        "day2": "2 giorni prima",
+        "week1": "1 settimana prima",
+        "week2": "2 settimane prima",
+        "custom": "Personalizzato…"
+      },
+      "unit": {
+        "minutes": "Minuti",
+        "hours": "Ore",
+        "days": "Giorni",
+        "weeks": "Settimane"
+      },
+      "unitLabel": "Unità",
+      "scopeLabel": "Applica a",
+      "scopeService": "Solo {{name}}",
+      "scopeAll": "Tutti i servizi monitorati",
+      "scopeAllNotice": "Questo promemoria si applica a tutti i servizi monitorati, non solo a questo.",
+      "channelsLabel": "Avvisami tramite",
+      "channel": {
+        "slack": "Slack",
+        "email": "Email",
+        "sms": "SMS"
+      },
+      "channelUnavailable": "Non connesso",
+      "remove": "Rimuovi promemoria",
+      "save": "Salva",
+      "schedule": "Pianifica promemoria",
+      "edit": "Modifica promemoria",
+      "badge": "{{duration}} prima",
+      "startsIn": "Inizia tra",
+      "saveFailed": "Impossibile salvare il promemoria. Riprova.",
+      "removeFailed": "Impossibile rimuovere il promemoria. Riprova."
+    }
   },
   "integrations": {
     "title": "Integrazioni",
@@ -415,7 +457,6 @@
       "slugLabel": "URL pubblico",
       "companyNameLabel": "Nome azienda",
       "companyNamePlaceholder": "Azienda XY",
-      "logoLabel": "Logo",
       "logoChoose": "Scegli logo",
       "logoRemove": "Rimuovi",
       "logoHint": "PNG, JPG, WEBP o SVG. Max 4 MB.",

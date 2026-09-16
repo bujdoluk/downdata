@@ -26,7 +26,7 @@ import { TAB_BG_STYLE } from "@/lib/utils";
 import { useTimeZone } from "@/hooks/useTimeZone";
 import { useSelectedBoard } from "@/hooks/useSelectedBoard";
 import { useDebouncedUrlFilters } from "@/hooks/useDebouncedUrlFilters";
-import { INDICATOR_STYLES, FALLBACK_STYLE, ALL_IMPACTS } from "@/components/statusStyles";
+import { ALL_IMPACTS, INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
 import { InfoIcon } from "@/components/icons/NavIcons";
 import LoadingOverlay from "@/components/LoadingOverlay";
 
@@ -74,9 +74,6 @@ export default function HistoryPageContent({
     refetchInterval: POLL_INTERVAL_MS,
   });
   const timeZone = useTimeZone();
-  // "Today" in the account's chosen timezone, not baked in once at module
-  // load in the browser's own — matters right around New Year's, when the
-  // two can disagree on what year "now" is.
   const currentYear = useMemo(() => Temporal.Now.zonedDateTimeISO(timeZone).year, [timeZone]);
 
   const boardId = searchParams.get("board") ?? "";
@@ -136,8 +133,6 @@ export default function HistoryPageContent({
   });
 
   const isLoading = !!slug && isHistoryLoading;
-  // The brief window between landing and the auto-select effect above
-  // picking a default service — nothing meaningful shows yet either.
   const isPickingService = !slug && services.length > 0;
   const incidents = historyData?.incidents ?? null;
 
@@ -146,10 +141,6 @@ export default function HistoryPageContent({
   }
 
   function selectService(newSlug: string) {
-    // components/q reset alongside date — both are specific to whichever
-    // service was previously selected (component ids don't carry across
-    // services, and a stale search term filtering a new service's
-    // incidents would be confusing, not convenient).
     router.push(
       `/history?${mergeParams(searchParams, { service: newSlug, date: null, components: null, q: null }).toString()}`,
       { scroll: false },
@@ -379,8 +370,10 @@ export default function HistoryPageContent({
                         <li key={incident.id} className="border-base-content/10 border-t pt-3 first:border-t-0 first:pt-0">
                           <details open className="collapse collapse-arrow">
                             <summary className="collapse-title flex min-h-0 items-start gap-2 p-0 pr-6">
-                              <p className="text-base-content min-w-0 max-w-[80%] flex-1 text-base font-semibold break-words">{incident.name}</p>
-                              <span className={`badge badge-xs shrink-0 mt-1 ${style.badge} text-white`}>{t(style.labelKey)}</span>
+                              <span className="min-w-0 flex-1">
+                                <span className="text-base-content align-middle text-base font-semibold break-words">{incident.name}</span>
+                                <span className={`badge badge-xs align-middle ml-2 ${style.badge} text-white`}>{t(style.labelKey)}</span>
+                              </span>
                             </summary>
                             <div className="collapse-content p-0">
                               <p className="text-base-content/40 mt-1 text-xs">

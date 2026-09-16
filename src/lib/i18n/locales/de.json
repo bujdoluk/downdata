@@ -167,7 +167,49 @@
       "previous": "Vorherige Seite",
       "next": "Nächste Seite"
     },
-    "subtitle": "Geplante und laufende Wartungsfenster für alle überwachten Dienste."
+    "subtitle": "Geplante und laufende Wartungsfenster für alle überwachten Dienste.",
+    "reminder": {
+      "modalTitle": "Wartungserinnerung",
+      "leadTimeLabel": "Mich erinnern",
+      "leadTimeHint": "Wird jede Minute geprüft, die Zustellung kann daher bis zu einer Minute nach Ihrer genauen Zeit erfolgen.",
+      "presets": {
+        "min15": "15 Minuten vorher",
+        "min30": "30 Minuten vorher",
+        "hour1": "1 Stunde vorher",
+        "hour2": "2 Stunden vorher",
+        "day1": "1 Tag vorher",
+        "day2": "2 Tage vorher",
+        "week1": "1 Woche vorher",
+        "week2": "2 Wochen vorher",
+        "custom": "Benutzerdefiniert…"
+      },
+      "unit": {
+        "minutes": "Minuten",
+        "hours": "Stunden",
+        "days": "Tage",
+        "weeks": "Wochen"
+      },
+      "unitLabel": "Einheit",
+      "scopeLabel": "Gilt für",
+      "scopeService": "Nur {{name}}",
+      "scopeAll": "Alle überwachten Dienste",
+      "scopeAllNotice": "Diese Erinnerung gilt für alle Ihre überwachten Dienste, nicht nur für diesen.",
+      "channelsLabel": "Mich benachrichtigen über",
+      "channel": {
+        "slack": "Slack",
+        "email": "E-Mail",
+        "sms": "SMS"
+      },
+      "channelUnavailable": "Nicht verbunden",
+      "remove": "Erinnerung entfernen",
+      "save": "Speichern",
+      "schedule": "Erinnerung planen",
+      "edit": "Erinnerung bearbeiten",
+      "badge": "{{duration}} vorher",
+      "startsIn": "Beginnt in",
+      "saveFailed": "Ihre Erinnerung konnte nicht gespeichert werden. Versuchen Sie es erneut.",
+      "removeFailed": "Ihre Erinnerung konnte nicht entfernt werden. Versuchen Sie es erneut."
+    }
   },
   "integrations": {
     "title": "Integrationen",
@@ -415,7 +457,6 @@
       "slugLabel": "Öffentliche URL",
       "companyNameLabel": "Firmenname",
       "companyNamePlaceholder": "Firma XY",
-      "logoLabel": "Logo",
       "logoChoose": "Logo auswählen",
       "logoRemove": "Entfernen",
       "logoHint": "PNG, JPG, WEBP oder SVG. Max. 4 MB.",

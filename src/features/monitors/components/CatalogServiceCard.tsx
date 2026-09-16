@@ -83,7 +83,7 @@ export default function CatalogServiceCard({
 
   return (
     <div
-      className={`card card-border hover:border-base-content/20 relative flex w-full min-w-0 flex-col overflow-hidden shadow-md transition-colors ${isElevatedBg ? "bg-[var(--color-surface-2)]" : "bg-base-200"} ${isFullWidth ? "" : "lg:max-w-[370px]"}`}
+      className={`card card-border hover:border-base-content/20 relative flex w-full min-w-0 flex-col shadow-md transition-colors ${isElevatedBg ? "bg-[var(--color-surface-2)]" : "bg-base-200"} ${isFullWidth ? "" : "lg:max-w-[370px]"}`}
     >
       {removable && (
         <div className="absolute top-2 right-7 z-10 flex items-center gap-1">
@@ -112,7 +112,33 @@ export default function CatalogServiceCard({
         </div>
       )}
 
-      <div className="flex flex-1 flex-row items-center">
+      {/* Bottom right, under the "..." menu above — a sibling of the
+          overflow-hidden row below, not inside it. It used to sit inline
+          next to the title with overflow-hidden on this whole card; that
+          clipped its tooltip (daisyUI renders the tooltip bubble via a
+          ::before/::after on this same element, and an overflow-hidden
+          ancestor clips those regardless of z-index — raising the
+          tooltip's own z-index alone, tried first, did nothing). Moving
+          overflow-hidden down onto just the row that actually needs it
+          (the status stripe's corners) means this badge now has no
+          clipping ancestor to fight in the first place. */}
+      {!addState && openIncidentImpact && (
+        // right-5, not right-2 — the status stripe on the right is w-3
+        // (12px) flush against the card's edge; right-2 sat the icon's box
+        // right on top of it. right-5 clears the stripe with a bit of
+        // breathing room instead of touching it.
+        <div className="absolute right-5 bottom-2 z-20">
+          <MoreSevereIncidentBadge incident={openIncidentImpact} iconClassName="h-6 w-6" />
+        </div>
+      )}
+
+      {/* overflow-hidden + rounded-[inherit] scoped to just this row, not
+          the whole card above — the status stripe on the right needs its
+          square corners clipped to match the card's own rounded corners,
+          but the card itself can no longer carry overflow-hidden without
+          also clipping the "..." menu's dropdown and the incident badge's
+          tooltip above, both of which need to visually escape this box. */}
+      <div className="flex flex-1 flex-row items-center overflow-hidden rounded-[inherit]">
         <Link href={`/monitors/${slug}`} className="card-body min-w-0 flex-1 gap-0 p-4">
           <div className="flex items-center gap-3 text-base-content">
             <Logo size={28} name={name} />
@@ -121,7 +147,6 @@ export default function CatalogServiceCard({
                 so it can never be the page's own h1; h3 still lets a screen
                 reader user navigate card-to-card by heading. */}
             <h3 className="card-title min-w-0 truncate text-base">{name}</h3>
-            {!addState && openIncidentImpact && <MoreSevereIncidentBadge incident={openIncidentImpact} />}
             {!addState && isMonitored && (
               <span className="badge badge-soft badge-info ml-auto shrink-0 text-[10px]">
                 {t("services.monitoring")}

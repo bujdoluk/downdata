@@ -173,7 +173,49 @@
       "previous": "Poprzednia strona",
       "next": "Następna strona"
     },
-    "subtitle": "Zaplanowane i trwające okna konserwacji we wszystkich monitorowanych usługach."
+    "subtitle": "Zaplanowane i trwające okna konserwacji we wszystkich monitorowanych usługach.",
+    "reminder": {
+      "modalTitle": "Przypomnienie o konserwacji",
+      "leadTimeLabel": "Przypomnij mi",
+      "leadTimeHint": "Sprawdzamy co minutę, więc powiadomienie może dotrzeć do minuty po dokładnie ustawionym czasie.",
+      "presets": {
+        "min15": "15 minut wcześniej",
+        "min30": "30 minut wcześniej",
+        "hour1": "1 godzinę wcześniej",
+        "hour2": "2 godziny wcześniej",
+        "day1": "1 dzień wcześniej",
+        "day2": "2 dni wcześniej",
+        "week1": "1 tydzień wcześniej",
+        "week2": "2 tygodnie wcześniej",
+        "custom": "Niestandardowe…"
+      },
+      "unit": {
+        "minutes": "Minuty",
+        "hours": "Godziny",
+        "days": "Dni",
+        "weeks": "Tygodnie"
+      },
+      "unitLabel": "Jednostka",
+      "scopeLabel": "Dotyczy",
+      "scopeService": "Tylko {{name}}",
+      "scopeAll": "Wszystkie monitorowane usługi",
+      "scopeAllNotice": "To przypomnienie dotyczy wszystkich monitorowanych usług, nie tylko tej.",
+      "channelsLabel": "Powiadom mnie przez",
+      "channel": {
+        "slack": "Slack",
+        "email": "E-mail",
+        "sms": "SMS"
+      },
+      "channelUnavailable": "Niepołączone",
+      "remove": "Usuń przypomnienie",
+      "save": "Zapisz",
+      "schedule": "Zaplanuj przypomnienie",
+      "edit": "Edytuj przypomnienie",
+      "badge": "{{duration}} wcześniej",
+      "startsIn": "Zaczyna się za",
+      "saveFailed": "Nie udało się zapisać przypomnienia. Spróbuj ponownie.",
+      "removeFailed": "Nie udało się usunąć przypomnienia. Spróbuj ponownie."
+    }
   },
   "integrations": {
     "title": "Integracje",
@@ -434,7 +476,6 @@
       "slugLabel": "Publiczny adres URL",
       "companyNameLabel": "Nazwa firmy",
       "companyNamePlaceholder": "Firma XY",
-      "logoLabel": "Logo",
       "logoChoose": "Wybierz logo",
       "logoRemove": "Usuń",
       "logoHint": "PNG, JPG, WEBP lub SVG. Maks. 4 MB.",

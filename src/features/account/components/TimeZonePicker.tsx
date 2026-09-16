@@ -25,10 +25,16 @@ export default function TimeZonePicker({
 }) {
   const { t } = useTranslation();
   const detailsRef = useRef<HTMLDetailsElement>(null);
-  const [query, setQuery] = useState("");
+  // null = untouched, show the current timeZone prop; "" is a real,
+  // distinct state once the user has actually cleared the field by hand —
+  // `query || timeZone` below used to conflate the two (an empty string is
+  // falsy), so backspacing the field to nothing snapped it right back to
+  // showing the old timezone on every keystroke, making it look like you
+  // could never clear/replace it.
+  const [query, setQuery] = useState<string | null>(null);
   useCloseDetailsOnOutsideClick(detailsRef);
 
-  const trimmedQuery = query.trim().toLowerCase();
+  const trimmedQuery = (query ?? "").trim().toLowerCase();
   // UTC pinned first when not searching — the same quick-default shortcut
   // the old plain <select> gave for free; once there's a query it just
   // filters normally.
@@ -47,7 +53,7 @@ export default function TimeZonePicker({
 
   function handleSelect(tz: string) {
     mutation.mutate(tz);
-    setQuery("");
+    setQuery(null);
     if (detailsRef.current) detailsRef.current.open = false;
   }
 
@@ -57,7 +63,7 @@ export default function TimeZonePicker({
         <summary className="list-none">
           <input
             type="text"
-            value={query || timeZone}
+            value={query ?? timeZone}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={(e) => {
               // Clicking into an <input> nested inside <summary> doesn't

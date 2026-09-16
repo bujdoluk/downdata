@@ -171,7 +171,49 @@
       "previous": "Předchozí strana",
       "next": "Další strana"
     },
-    "subtitle": "Plánované a probíhající údržby napříč vašimi sledovanými službami."
+    "subtitle": "Plánované a probíhající údržby napříč vašimi sledovanými službami.",
+    "reminder": {
+      "modalTitle": "Připomínka údržby",
+      "leadTimeLabel": "Upozornit mě",
+      "leadTimeHint": "Kontrolujeme každou minutu, takže doručení může přijít až o minutu později, než jste zadali.",
+      "presets": {
+        "min15": "15 minut předem",
+        "min30": "30 minut předem",
+        "hour1": "1 hodinu předem",
+        "hour2": "2 hodiny předem",
+        "day1": "1 den předem",
+        "day2": "2 dny předem",
+        "week1": "1 týden předem",
+        "week2": "2 týdny předem",
+        "custom": "Vlastní…"
+      },
+      "unit": {
+        "minutes": "Minuty",
+        "hours": "Hodiny",
+        "days": "Dny",
+        "weeks": "Týdny"
+      },
+      "unitLabel": "Jednotka",
+      "scopeLabel": "Platí pro",
+      "scopeService": "Jen {{name}}",
+      "scopeAll": "Všechny sledované služby",
+      "scopeAllNotice": "Tato připomínka platí pro všechny vaše sledované služby, nejen tuto.",
+      "channelsLabel": "Upozornit mě přes",
+      "channel": {
+        "slack": "Slack",
+        "email": "E-mail",
+        "sms": "SMS"
+      },
+      "channelUnavailable": "Nepřipojeno",
+      "remove": "Odstranit připomínku",
+      "save": "Uložit",
+      "schedule": "Naplánovat připomínku",
+      "edit": "Upravit připomínku",
+      "badge": "{{duration}} předem",
+      "startsIn": "Začíná za",
+      "saveFailed": "Nepodařilo se uložit vaši připomínku. Zkuste to znovu.",
+      "removeFailed": "Nepodařilo se odstranit vaši připomínku. Zkuste to znovu."
+    }
   },
   "integrations": {
     "title": "Integrace",
@@ -428,7 +470,6 @@
       "slugLabel": "Veřejná URL adresa",
       "companyNameLabel": "Název společnosti",
       "companyNamePlaceholder": "Firma XY",
-      "logoLabel": "Logo",
       "logoChoose": "Vybrat logo",
       "logoRemove": "Odebrat",
       "logoHint": "PNG, JPG, WEBP nebo SVG. Max. 4 MB.",

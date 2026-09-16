@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -23,6 +23,11 @@ import {
 import StatusPageLogoUpload from "@/features/status-pages/components/StatusPageLogoUpload";
 import Spinner from "@/components/Spinner";
 import { CopyIcon, CheckIcon, EyeIcon, EyeSlashIcon } from "@/components/icons/NavIcons";
+
+// Distinct from any real query result (undefined while loading, null when
+// no status page row exists yet, or the row itself) — see the
+// syncedData/NOT_SYNCED comment below for what this is actually for.
+const NOT_SYNCED = Symbol("not-synced");
 
 // Create → configure → publish → share, all in one panel. Bare content
 // only, no outer margin/card/sizing — BoardDetailContent's grid owns that
@@ -51,15 +56,24 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
   const [allowedIpsInput, setAllowedIpsInput] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  // Resync the draft from the server whenever the query result's identity
-  // actually changes — the initial load, or right after a save/enable
-  // mutation's setQueryData echoes back what was just persisted. Doesn't
-  // fire on every keystroke, only when `data` itself changes.
-  useEffect(() => {
-    if (data === undefined) return;
-    // Intentional resync from the query result's identity, not per
-    // keystroke — see the comment above this effect.
-    /* eslint-disable react-hooks/set-state-in-effect */
+  // Adjusting state during render (react.dev's recipe for "reset state
+  // when a prop changes"; BoardDetailContent.tsx's own board/syncedBoard
+  // pair does the same thing), not an effect — an effect only runs after
+  // the first paint. This component remounts fresh per board
+  // (StatusPagesPageContent's key={board.id}), and its query result can
+  // already be warm in the cache the moment it mounts (shared
+  // queryKeys.boards.statusPage(boardId) with the list's own useQueries,
+  // which fetches every board's status page up front). An effect-only
+  // resync meant the very first render after clicking a different board's
+  // card painted the form with these fields still at their hardcoded empty
+  // defaults — failing slugSchema's minimum length and flashing a real
+  // validation error — before the effect caught up a tick later. The
+  // NOT_SYNCED sentinel forces this block to run on that first render too,
+  // not just on later changes (a save/enable mutation's setQueryData echo,
+  // or the true first-ever load resolving).
+  const [syncedData, setSyncedData] = useState<typeof data | typeof NOT_SYNCED>(NOT_SYNCED);
+  if (data !== undefined && data !== syncedData) {
+    setSyncedData(data);
     setSlug(data?.slug ?? slugify(boardName));
     // Defaults to the board's own name rather than an empty field — a
     // status page with no explicit branding still needs *some* company
@@ -74,8 +88,7 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
     // there's nothing to resync it from; it only ever reflects what the
     // owner is currently typing, cleared on a successful save instead.
     setAllowedIpsInput((data?.allowedIps ?? []).join("\n"));
-    /* eslint-enable react-hooks/set-state-in-effect */
-  }, [data, boardName]);
+  }
 
   // Every mutation on this panel shares the same onSuccess (clear the error,
   // echo the persisted row into the query cache) and onError (surface the
@@ -246,9 +259,13 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
           this is the actual "you're live, here's the link" signal now that
           the redundant "Live" badge next to the section heading is gone
           (see the grilling session in git history); it belongs next to the
-          buttons that put it there, not scrolled past every field below. */}
+          buttons that put it there, not scrolled past every field below.
+          Full width of the detail pane, same as the header row above and
+          the fields/logo block below (see that block's own comment on why
+          it's no longer capped) — min-w-0 + break-all on the link itself is
+          what actually prevents overflow, not a narrower box. */}
       {isPublished && publicPath && (
-        <div className="bg-[var(--color-surface-2)] border-base-300 flex items-start gap-2 rounded-lg border p-2">
+        <div className="bg-[var(--color-surface-2)] border-base-300 flex w-full items-start gap-2 rounded-lg border p-2">
           <a href={publicPath} target="_blank" rel="noreferrer" className="link link-hover min-w-0 flex-1 break-all text-xs">
             {origin}
             {publicPath}
@@ -264,31 +281,23 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
         </div>
       )}
 
-      {/* Centered, capped narrower than the surrounding detail pane (which
-          got noticeably wider once /status-pages moved to one form at a
-          time instead of 3 side by side — see the grilling session in git
-          history) — a full-bleed split across that width read no better
-          than the old 3-column squeeze it replaced. Two stacked blocks, not
-          3 side-by-side columns: "Public status page" fields + Logo split
-          evenly on top, "Privacy" fields split evenly below it, same capped
-          width both times so the whole thing reads as one column. Each
-          block's own heading spans both sub-columns, so the two fields
-          beneath it start at the same height with no row-span alignment
-          trick needed (the old layout's logo/heading alignment comment
-          doesn't apply anymore — Privacy no longer shares a row with
-          "Public status page" at all). Single column below md so nothing
-          gets cramped on a narrow viewport. */}
-      <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
-        <div className="grid grid-cols-1 gap-x-4 gap-y-2 md:grid-cols-2">
-          {/* No "Live" badge here — the Publish/Unpublish button in the
-              header row above (label + color) and the link box further
-              down (only rendered once published) already say this; a
-              third badge right next to the section label was a redundant
-              indicator, not a clearer one. */}
-          <h2 className="col-span-1 text-base-content/40 text-xs font-semibold tracking-wide uppercase md:col-span-2">
-            {t("boards.statusPage.title")}
-          </h2>
-
+      {/* Full width of the detail pane — same as the header row (board name
+          + Save/Publish) above and the link box above that, so the whole
+          panel reads as one consistent column width instead of the header
+          spanning edge-to-edge while the fields below it sat capped and
+          centered narrower (see git history for the max-w-2xl version this
+          replaced). No "Public status page" section title above the
+          slug/company-name fields — the header row above (board name +
+          Save/Publish) and the link box already establish what this panel
+          is, and "Privacy" below is the only section that genuinely needs
+          its own label (it's a second, distinct group of fields the reader
+          could otherwise mistake as continuing the first). No "Live" badge
+          either — the Publish/Unpublish button in the header row above
+          (label + color) and the link box further down (only rendered once
+          published) already say this; a third badge right next to a
+          section label was a redundant indicator, not a clearer one. */}
+      <div className="flex w-full flex-col gap-6">
+        <div className="grid grid-cols-1 gap-x-4 gap-y-3 md:grid-cols-[1fr_auto]">
           <div className="flex flex-col gap-3">
             <fieldset className="fieldset py-0">
               <legend className="fieldset-legend">{t("boards.statusPage.slugLabel")}</legend>
@@ -327,7 +336,7 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
             </fieldset>
           </div>
 
-          <div className="flex flex-col items-center justify-start gap-2 text-center">
+          <div className="flex flex-col items-center gap-2 text-center">
             <StatusPageLogoUpload
               supabase={supabase}
               boardId={boardId}

@@ -19,6 +19,7 @@ export const queryKeys = {
     list: () => ["maintenance", "list"] as const,
     count: () => ["maintenance", "count"] as const,
     detail: (slug: string, id: string) => ["maintenance", "detail", slug, id] as const,
+    reminderRules: () => ["maintenance", "reminderRules"] as const,
   },
   history: {
     counts: () => ["history", "counts"] as const,

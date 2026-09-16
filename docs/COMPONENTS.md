@@ -106,6 +106,14 @@ _No props._
 |---|---|---|---|---|
 | className | string \| undefined | No | — |  |
 
+### BellIcon
+
+`src/components/icons/NavIcons.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| className | string \| undefined | No | — |  |
+
 ### BoardIcon
 
 `src/components/icons/NavIcons.tsx`
@@ -1093,6 +1101,7 @@ _No props._
 |---|---|---|---|---|
 | incident | OpenIncidentImpact | Yes | — |  |
 | className | string \| undefined | No | — |  |
+| iconClassName | string \| undefined | No | h-3.5 w-3.5 |  |
 
 ### LanguageSwitcher
 
@@ -1731,6 +1740,27 @@ _No props._
 | Prop | Type | Required | Default | Description |
 |---|---|---|---|---|
 | boards | Board[] | Yes | — |  |
+
+### MaintenanceReminderHeader
+
+`src/features/maintenance/components/MaintenanceReminderHeader.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| maintenance | TrackedMaintenance | Yes | — |  |
+
+### ScheduleReminderModal
+
+`src/features/maintenance/components/ScheduleReminderModal.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| dialogRef | RefObject<HTMLDialogElement \| null> | Yes | — |  |
+| resetRef | RefObject<{ reset: () => void; } \| null> | Yes | — |  |
+| serviceSlug | string | Yes | — |  |
+| serviceName | string | Yes | — |  |
+| coveringRule | MaintenanceReminderRule \| null | Yes | — |  |
+| integrations | IntegrationDefinition[] | Yes | — |  |
 
 ### AddServicePanel
 

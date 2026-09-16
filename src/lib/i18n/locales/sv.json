@@ -167,7 +167,49 @@
       "previous": "Föregående sida",
       "next": "Nästa sida"
     },
-    "subtitle": "Planerade och pågående underhållsfönster för alla dina övervakade tjänster."
+    "subtitle": "Planerade och pågående underhållsfönster för alla dina övervakade tjänster.",
+    "reminder": {
+      "modalTitle": "Underhållspåminnelse",
+      "leadTimeLabel": "Påminn mig",
+      "leadTimeHint": "Kontrolleras varje minut, så leveransen kan komma upp till en minut efter din exakta tid.",
+      "presets": {
+        "min15": "15 minuter innan",
+        "min30": "30 minuter innan",
+        "hour1": "1 timme innan",
+        "hour2": "2 timmar innan",
+        "day1": "1 dag innan",
+        "day2": "2 dagar innan",
+        "week1": "1 vecka innan",
+        "week2": "2 veckor innan",
+        "custom": "Anpassad…"
+      },
+      "unit": {
+        "minutes": "Minuter",
+        "hours": "Timmar",
+        "days": "Dagar",
+        "weeks": "Veckor"
+      },
+      "unitLabel": "Enhet",
+      "scopeLabel": "Gäller för",
+      "scopeService": "Endast {{name}}",
+      "scopeAll": "Alla övervakade tjänster",
+      "scopeAllNotice": "Den här påminnelsen gäller alla dina övervakade tjänster, inte bara den här.",
+      "channelsLabel": "Meddela mig via",
+      "channel": {
+        "slack": "Slack",
+        "email": "E-post",
+        "sms": "SMS"
+      },
+      "channelUnavailable": "Inte ansluten",
+      "remove": "Ta bort påminnelse",
+      "save": "Spara",
+      "schedule": "Schemalägg påminnelse",
+      "edit": "Redigera påminnelse",
+      "badge": "{{duration}} innan",
+      "startsIn": "Startar om",
+      "saveFailed": "Det gick inte att spara din påminnelse. Försök igen.",
+      "removeFailed": "Det gick inte att ta bort din påminnelse. Försök igen."
+    }
   },
   "integrations": {
     "title": "Integrationer",
@@ -415,7 +457,6 @@
       "slugLabel": "Offentlig URL",
       "companyNameLabel": "Företagsnamn",
       "companyNamePlaceholder": "Företag XY",
-      "logoLabel": "Logotyp",
       "logoChoose": "Välj logotyp",
       "logoRemove": "Ta bort",
       "logoHint": "PNG, JPG, WEBP eller SVG. Max 4 MB.",

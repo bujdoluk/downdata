@@ -22,6 +22,7 @@ import { usePagination } from "@/hooks/usePagination";
 import Pagination from "@/components/Pagination";
 import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
 import IncidentDetail from "@/features/incidents/components/IncidentDetail";
+import MaintenanceReminderHeader from "@/features/maintenance/components/MaintenanceReminderHeader";
 import ListDetailShell from "@/components/ListDetailShell";
 import SearchFilterInput from "@/components/SearchFilterInput";
 import SelectDropdown from "@/components/SelectDropdown";
@@ -242,7 +243,15 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   );
 
   const detailContent = detail ? (
-    <IncidentDetail incident={detail} timeZone={timeZone} />
+    <>
+      {/* key={detail.service.slug + detail.id} forces a fresh mount per
+          selected maintenance — same "reconcile local state on switch"
+          reasoning BoardStatusPageSettings' own key needed (see AGENTS.md's
+          grilling-session history), so the reminder modal's form state
+          never bleeds from one maintenance's service into the next. */}
+      <MaintenanceReminderHeader key={`${detail.service.slug}:${detail.id}`} maintenance={detail} />
+      <IncidentDetail incident={detail} timeZone={timeZone} />
+    </>
   ) : detailError ? (
     <p className="text-base-content/50 text-sm">{t("maintenances.unreachable")}</p>
   ) : selectedMaintenance ? (

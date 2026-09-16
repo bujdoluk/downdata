@@ -88,7 +88,7 @@ export default function EmailConnectForm({
           autoFocus
         />
         {error && (
-          <p role="alert" className="text-error text-xs">
+          <p role="alert" className="text-error text-xs break-words">
             {error}
           </p>
         )}

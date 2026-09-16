@@ -195,7 +195,7 @@ export default function BoardDetailContent({
             type="button"
             disabled={deleteBoardMutation.isPending || boardCount <= 1}
             onClick={() => confirmRef.current?.showModal()}
-            className="btn btn-ghost btn-sm text-error"
+            className="btn btn-error btn-outline btn-sm"
           >
             {deleteBoardMutation.isPending ? t("boards.deleting") : t("boards.delete")}
           </button>

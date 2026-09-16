@@ -235,7 +235,14 @@
   "statusPages": {
     "title": "Statuspagina's",
     "subtitle": "Beheer de openbare statuspagina voor elk van je borden.",
-    "empty": "Nog geen borden. Maak er een om een statuspagina in te stellen."
+    "empty": "Nog geen borden. Maak er een om een statuspagina in te stellen.",
+    "notSetUp": "Niet ingesteld",
+    "selectPrompt": "Selecteer links een bord om de statuspagina ervan te beheren.",
+    "pagination": {
+      "label": "Paginering",
+      "previous": "Vorige pagina",
+      "next": "Volgende pagina"
+    }
   },
   "earlyWarnings": {
     "title": "Vroege Waarschuwingen",
@@ -419,7 +426,20 @@
       "publish": "Publiceren",
       "unpublish": "Publicatie ongedaan maken",
       "enableFailed": "De statuspagina kon niet worden bijgewerkt. Probeer het opnieuw.",
-      "copyLink": "Link kopiëren"
+      "copyLink": "Link kopiëren",
+      "privacyTitle": "Privacy",
+      "passwordLabel": "Wachtwoordbeveiliging",
+      "passwordProtectedLabel": "Wachtwoordbeveiliging (aan)",
+      "passwordSetPlaceholder": "Wachtwoord instellen (8-64 tekens)",
+      "passwordChangePlaceholder": "Wachtwoord wijzigen (8-64 tekens)",
+      "passwordSave": "Opslaan",
+      "passwordSaveFailed": "Het wachtwoord kon niet worden opgeslagen. Probeer het opnieuw.",
+      "passwordRemove": "Wachtwoord verwijderen",
+      "passwordRemoveFailed": "Het wachtwoord kon niet worden verwijderd. Probeer het opnieuw.",
+      "allowlistLabel": "Lijst met toegestane IP-adressen",
+      "allowlistPlaceholder": "Eén IP-adres per regel",
+      "allowlistSave": "Opslaan",
+      "allowlistSaveFailed": "De lijst met toegestane IP-adressen kon niet worden opgeslagen. Probeer het opnieuw."
     }
   },
   "addService": {

@@ -235,7 +235,14 @@
   "statusPages": {
     "title": "Statussidor",
     "subtitle": "Hantera den offentliga statussidan för var och en av dina tavlor.",
-    "empty": "Inga tavlor än. Skapa en för att ställa in en statussida."
+    "empty": "Inga tavlor än. Skapa en för att ställa in en statussida.",
+    "notSetUp": "Inte konfigurerad",
+    "selectPrompt": "Välj en tavla till vänster för att hantera dess statussida.",
+    "pagination": {
+      "label": "Sidnumrering",
+      "previous": "Föregående sida",
+      "next": "Nästa sida"
+    }
   },
   "earlyWarnings": {
     "title": "Tidiga Varningar",
@@ -419,7 +426,20 @@
       "publish": "Publicera",
       "unpublish": "Avpublicera",
       "enableFailed": "Det gick inte att uppdatera statussidan. Försök igen.",
-      "copyLink": "Kopiera länk"
+      "copyLink": "Kopiera länk",
+      "privacyTitle": "Sekretess",
+      "passwordLabel": "Lösenordsskydd",
+      "passwordProtectedLabel": "Lösenordsskydd (på)",
+      "passwordSetPlaceholder": "Ange ett lösenord (8–64 tecken)",
+      "passwordChangePlaceholder": "Ändra lösenord (8–64 tecken)",
+      "passwordSave": "Spara",
+      "passwordSaveFailed": "Det gick inte att spara lösenordet. Försök igen.",
+      "passwordRemove": "Ta bort lösenord",
+      "passwordRemoveFailed": "Det gick inte att ta bort lösenordet. Försök igen.",
+      "allowlistLabel": "Lista över tillåtna IP-adresser",
+      "allowlistPlaceholder": "En IP-adress per rad",
+      "allowlistSave": "Spara",
+      "allowlistSaveFailed": "Det gick inte att spara listan över tillåtna IP-adresser. Försök igen."
     }
   },
   "addService": {

@@ -63,7 +63,7 @@ function PendingRecipientRow({
         </button>
       </form>
       {verifyError && (
-        <p role="alert" className="text-error">
+        <p role="alert" className="text-error break-words">
           {verifyError}
         </p>
       )}
@@ -161,7 +161,7 @@ export default function SmsConnectForm({
           autoFocus
         />
         {error && (
-          <p role="alert" className="text-error text-xs">
+          <p role="alert" className="text-error text-xs break-words">
             {error}
           </p>
         )}

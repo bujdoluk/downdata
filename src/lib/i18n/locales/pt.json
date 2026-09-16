@@ -235,7 +235,14 @@
   "statusPages": {
     "title": "Páginas de status",
     "subtitle": "Gerencie a página de status pública de cada um dos seus quadros.",
-    "empty": "Ainda não há quadros. Crie um para configurar uma página de status."
+    "empty": "Ainda não há quadros. Crie um para configurar uma página de status.",
+    "notSetUp": "Não configurada",
+    "selectPrompt": "Selecione um quadro à esquerda para gerenciar a página de status dele.",
+    "pagination": {
+      "label": "Paginação",
+      "previous": "Página anterior",
+      "next": "Página seguinte"
+    }
   },
   "earlyWarnings": {
     "title": "Alertas Antecipados",
@@ -419,7 +426,20 @@
       "publish": "Publicar",
       "unpublish": "Despublicar",
       "enableFailed": "Não foi possível atualizar a página de status. Tente novamente.",
-      "copyLink": "Copiar link"
+      "copyLink": "Copiar link",
+      "privacyTitle": "Privacidade",
+      "passwordLabel": "Proteção por palavra-passe",
+      "passwordProtectedLabel": "Proteção por palavra-passe (ativada)",
+      "passwordSetPlaceholder": "Definir uma palavra-passe (8–64 carateres)",
+      "passwordChangePlaceholder": "Alterar palavra-passe (8–64 carateres)",
+      "passwordSave": "Salvar",
+      "passwordSaveFailed": "Não foi possível salvar a palavra-passe. Tente novamente.",
+      "passwordRemove": "Remover palavra-passe",
+      "passwordRemoveFailed": "Não foi possível remover a palavra-passe. Tente novamente.",
+      "allowlistLabel": "Lista de IPs permitidos",
+      "allowlistPlaceholder": "Um endereço IP por linha",
+      "allowlistSave": "Salvar",
+      "allowlistSaveFailed": "Não foi possível salvar a lista de IPs permitidos. Tente novamente."
     }
   },
   "addService": {

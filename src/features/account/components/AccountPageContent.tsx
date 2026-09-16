@@ -221,7 +221,7 @@ function PasswordSection({ supabase }: { supabase: ReturnType<typeof createClien
         </button>
       </form>
       {error && (
-        <p role="alert" className="text-error mt-2 text-sm">
+        <p role="alert" className="text-error mt-2 text-sm break-words">
           {error}
         </p>
       )}
@@ -282,7 +282,7 @@ function DangerZone({ supabase, email }: { supabase: ReturnType<typeof createCli
           </fieldset>
 
           {error && (
-        <p role="alert" className="text-error mt-2 text-sm">
+        <p role="alert" className="text-error mt-2 text-sm break-words">
           {error}
         </p>
       )}

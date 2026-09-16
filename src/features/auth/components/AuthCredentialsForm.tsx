@@ -116,7 +116,7 @@ export default function AuthCredentialsForm({
         {/* role="alert" — the success states elsewhere in this flow already
             get one; an error is at least as important to announce. */}
         {error && (
-          <p role="alert" className="text-error text-sm">
+          <p role="alert" className="text-error text-sm break-words">
             {error}
           </p>
         )}

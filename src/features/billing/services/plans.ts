@@ -57,7 +57,7 @@ export const PLAN_CATALOG: Record<PlanTier, PlanDefinition> = {
     // No Stripe price and no checkout round trip at all — the CTA links
     // straight to /login instead of /billing?plan=free.
     available: false,
-    features: { monitors: "3", checkInterval: "10m", boards: "1", statusPages: "0", adminUsers: "1", history: "1 mo", integrations: "Slack, Email" },
+    features: { monitors: "3", checkInterval: "10m", boards: "1", statusPages: "1", adminUsers: "1", history: "1 mo", integrations: "Slack, Email" },
   },
   starter: {
     tier: "starter",
@@ -114,7 +114,7 @@ export function isPlanTier(value: string | null): value is PlanTier {
 // for it (the "free" PLAN_CATALOG entry above is display-only, read by the
 // pricing page, not by this function). Kept in sync with
 // PLAN_CATALOG.free.features.statusPages by convention, not by code.
-export const FREE_TIER_STATUS_PAGES = 0;
+export const FREE_TIER_STATUS_PAGES = 1;
 
 // Resolves a tier's features.statusPages ("2", "5", "unlimited") to a
 // comparable number — the one place that string gets parsed, so the enable

@@ -60,7 +60,7 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
               {t("reports.generatedOn", { date: formatDateTime(report.generatedAt, timeZone) })}
             </p>
           </div>
-          <button type="button" disabled={deleteMutation.isPending} onClick={() => confirmRef.current?.showModal()} className="btn btn-ghost btn-sm text-error shrink-0">
+          <button type="button" disabled={deleteMutation.isPending} onClick={() => confirmRef.current?.showModal()} className="btn btn-error btn-outline btn-sm shrink-0">
             {deleteMutation.isPending ? t("reports.deleting") : t("reports.delete")}
           </button>
         </div>
@@ -121,7 +121,7 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
 
       {payload.atRiskServiceSlugs.length > 0 && (
         <div role="alert" className="alert alert-error alert-soft">
-          <span className="text-sm font-medium">{t("reports.atRisk", { count: payload.atRiskServiceSlugs.length })}</span>
+          <span className="text-sm font-medium break-words">{t("reports.atRisk", { count: payload.atRiskServiceSlugs.length })}</span>
         </div>
       )}
 

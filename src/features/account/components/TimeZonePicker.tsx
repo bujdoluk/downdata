@@ -87,7 +87,7 @@ export default function TimeZonePicker({
         </ul>
       </details>
       {mutation.isError && (
-        <p role="alert" className="text-error mt-2 text-xs">
+        <p role="alert" className="text-error mt-2 text-xs break-words">
           {t("account.timezoneUpdateFailed")}
         </p>
       )}

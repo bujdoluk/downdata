@@ -99,17 +99,17 @@ export default function BillingPageContent({
         </p>
       )}
       {checkoutParam === "canceled" && (
-        <p role="alert" className="alert alert-warning alert-soft text-sm">
+        <p role="alert" className="alert alert-warning alert-soft text-sm break-words">
           {t("billing.checkoutCanceled")}
         </p>
       )}
       {checkoutMutation.error && (
-        <p role="alert" className="alert alert-error alert-soft text-sm">
+        <p role="alert" className="alert alert-error alert-soft text-sm break-words">
           {checkoutMutation.error.message}
         </p>
       )}
       {cancelMutation.error && (
-        <p role="alert" className="alert alert-error alert-soft text-sm">
+        <p role="alert" className="alert alert-error alert-soft text-sm break-words">
           {cancelMutation.error.message}
         </p>
       )}

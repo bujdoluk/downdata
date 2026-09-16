@@ -239,7 +239,14 @@
   "statusPages": {
     "title": "Stránky stavu",
     "subtitle": "Spravujte verejnú stránku stavu pre každú zo svojich nástenok.",
-    "empty": "Zatiaľ žiadne nástenky. Vytvorte jednu a nastavte stránku stavu."
+    "empty": "Zatiaľ žiadne nástenky. Vytvorte jednu a nastavte stránku stavu.",
+    "notSetUp": "Nenastavené",
+    "selectPrompt": "Vyberte nástenku vľavo a spravujte jej stránku stavu.",
+    "pagination": {
+      "label": "Stránkovanie",
+      "previous": "Predchádzajúca strana",
+      "next": "Ďalšia strana"
+    }
   },
   "earlyWarnings": {
     "title": "Včasné varovania",
@@ -432,7 +439,20 @@
       "publish": "Zverejniť",
       "unpublish": "Zrušiť zverejnenie",
       "enableFailed": "Stránku stavu sa nepodarilo aktualizovať. Skúste to znova.",
-      "copyLink": "Kopírovať odkaz"
+      "copyLink": "Kopírovať odkaz",
+      "privacyTitle": "Súkromie",
+      "passwordLabel": "Ochrana heslom",
+      "passwordProtectedLabel": "Ochrana heslom (zapnutá)",
+      "passwordSetPlaceholder": "Nastavte heslo (8 – 64 znakov)",
+      "passwordChangePlaceholder": "Zmeniť heslo (8 – 64 znakov)",
+      "passwordSave": "Uložiť",
+      "passwordSaveFailed": "Heslo sa nepodarilo uložiť. Skúste to znova.",
+      "passwordRemove": "Odstrániť heslo",
+      "passwordRemoveFailed": "Heslo sa nepodarilo odstrániť. Skúste to znova.",
+      "allowlistLabel": "Zoznam povolených IP adries",
+      "allowlistPlaceholder": "Jedna IP adresa na riadok",
+      "allowlistSave": "Uložiť",
+      "allowlistSaveFailed": "Zoznam povolených IP adries sa nepodarilo uložiť. Skúste to znova."
     }
   },
   "addService": {

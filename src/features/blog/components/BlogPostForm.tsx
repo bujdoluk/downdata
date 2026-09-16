@@ -290,7 +290,7 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
                 {imageUrl && (
                   <button
                     type="button"
-                    className="btn btn-ghost btn-sm text-error"
+                    className="btn btn-error btn-outline btn-sm"
                     onClick={() => setImageUrl(null)}
                     disabled={uploading}
                   >
@@ -300,7 +300,7 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
               </div>
               <span className="label text-xs">Optional. Falls back to a plain gradient when not set.</span>
               {uploadError && (
-                <p role="alert" className="text-error text-xs">
+                <p role="alert" className="text-error text-xs break-words">
                   {uploadError}
                 </p>
               )}
@@ -329,7 +329,7 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
                 {avatarUrl && (
                   <button
                     type="button"
-                    className="btn btn-ghost btn-sm text-error"
+                    className="btn btn-error btn-outline btn-sm"
                     onClick={() => setAvatarUrl(null)}
                     disabled={avatarUploading}
                   >
@@ -339,7 +339,7 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
               </div>
               <span className="label text-xs">Optional. Falls back to the downDATA logo when not set.</span>
               {avatarUploadError && (
-                <p role="alert" className="text-error text-xs">
+                <p role="alert" className="text-error text-xs break-words">
                   {avatarUploadError}
                 </p>
               )}
@@ -373,7 +373,7 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
               required
             />
             {bodyToolError && (
-            <p role="alert" className="text-error text-xs">
+            <p role="alert" className="text-error text-xs break-words">
               {bodyToolError}
             </p>
           )}
@@ -384,7 +384,7 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
         </div>
 
         {saveMutation.isError && (
-          <p role="alert" className="text-error text-sm">
+          <p role="alert" className="text-error text-sm break-words">
             {saveMutation.error.message}
           </p>
         )}

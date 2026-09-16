@@ -235,7 +235,14 @@
   "statusPages": {
     "title": "Pages de statut",
     "subtitle": "Gérez la page de statut publique de chacun de vos tableaux.",
-    "empty": "Aucun tableau pour le moment. Créez-en un pour configurer une page de statut."
+    "empty": "Aucun tableau pour le moment. Créez-en un pour configurer une page de statut.",
+    "notSetUp": "Non configurée",
+    "selectPrompt": "Sélectionnez un tableau à gauche pour gérer sa page de statut.",
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Page précédente",
+      "next": "Page suivante"
+    }
   },
   "earlyWarnings": {
     "title": "Alertes Précoces",
@@ -419,7 +426,20 @@
       "publish": "Publier",
       "unpublish": "Dépublier",
       "enableFailed": "Impossible de mettre à jour la page de statut. Réessayez.",
-      "copyLink": "Copier le lien"
+      "copyLink": "Copier le lien",
+      "privacyTitle": "Confidentialité",
+      "passwordLabel": "Protection par mot de passe",
+      "passwordProtectedLabel": "Protection par mot de passe (activée)",
+      "passwordSetPlaceholder": "Définir un mot de passe (8-64 caractères)",
+      "passwordChangePlaceholder": "Changer le mot de passe (8-64 caractères)",
+      "passwordSave": "Enregistrer",
+      "passwordSaveFailed": "Impossible d'enregistrer le mot de passe. Réessayez.",
+      "passwordRemove": "Supprimer le mot de passe",
+      "passwordRemoveFailed": "Impossible de supprimer le mot de passe. Réessayez.",
+      "allowlistLabel": "Liste d'adresses IP autorisées",
+      "allowlistPlaceholder": "Une adresse IP par ligne",
+      "allowlistSave": "Enregistrer",
+      "allowlistSaveFailed": "Impossible d'enregistrer la liste d'adresses IP autorisées. Réessayez."
     }
   },
   "addService": {

@@ -235,7 +235,14 @@
   "statusPages": {
     "title": "Status Pages",
     "subtitle": "Manage the public status page for each of your boards.",
-    "empty": "No boards yet. Create one to set up a status page."
+    "empty": "No boards yet. Create one to set up a status page.",
+    "notSetUp": "Not set up",
+    "selectPrompt": "Select a board on the left to manage its status page.",
+    "pagination": {
+      "label": "Pagination",
+      "previous": "Previous page",
+      "next": "Next page"
+    }
   },
   "earlyWarnings": {
     "title": "Early Warnings",
@@ -423,8 +430,8 @@
       "privacyTitle": "Privacy",
       "passwordLabel": "Password protection",
       "passwordProtectedLabel": "Password protection (on)",
-      "passwordSetPlaceholder": "Set a password",
-      "passwordChangePlaceholder": "Change password",
+      "passwordSetPlaceholder": "Set a password (8-64 characters)",
+      "passwordChangePlaceholder": "Change password (8-64 characters)",
       "passwordSave": "Save",
       "passwordSaveFailed": "Couldn't save that password. Try again.",
       "passwordRemove": "Remove password",

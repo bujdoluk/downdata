@@ -133,7 +133,7 @@ export default function AddServicePanel({
 
           {error && (
             <div role="alert" className="alert alert-error alert-soft mt-3 py-2 text-xs">
-              <span>{error.message}</span>
+              <span className="break-words">{error.message}</span>
             </div>
           )}
 

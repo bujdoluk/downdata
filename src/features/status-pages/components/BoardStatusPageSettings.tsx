@@ -11,9 +11,18 @@ import { createClient } from "@/lib/supabase/client";
 import { useOrigin } from "@/features/status-pages/hooks/useOrigin";
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 import type { BoardStatusPage } from "@/features/status-pages/types";
+import {
+  allowedIpsSchema,
+  companyNameSchema,
+  firstAllowedIpsIssueMessage,
+  firstIssueMessage,
+  MAX_ALLOWED_IPS,
+  passwordSchema,
+  slugSchema,
+} from "@/features/status-pages/services/validation";
 import StatusPageLogoUpload from "@/features/status-pages/components/StatusPageLogoUpload";
 import Spinner from "@/components/Spinner";
-import { CopyIcon, CheckIcon } from "@/components/icons/NavIcons";
+import { CopyIcon, CheckIcon, EyeIcon, EyeSlashIcon } from "@/components/icons/NavIcons";
 
 // Create → configure → publish → share, all in one panel. Bare content
 // only, no outer margin/card/sizing — BoardDetailContent's grid owns that
@@ -38,6 +47,7 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [hideBranding, setHideBranding] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [allowedIpsInput, setAllowedIpsInput] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -123,12 +133,43 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
     .map((line) => line.trim())
     .filter(Boolean);
 
+  // Grows the allowlist textarea one row per line actually typed (not
+  // parsedAllowedIps.length — that drops blank/trimmed lines, which would
+  // make the field shrink back out from under someone mid-Enter on a new
+  // line), floored at the same 3-row starting height as before, capped at
+  // MAX_ALLOWED_IPS so it can never grow past what the server will accept
+  // anyway — a 21st line just scrolls inside the fixed-height box instead.
+  const allowlistRows = Math.min(Math.max(allowedIpsInput.split("\n").length, 3), MAX_ALLOWED_IPS);
+
   const allowedIpsMutation = useStatusPageMutation(() =>
     requestJson<BoardStatusPage>(`/api/boards/${boardId}/status-page/allowed-ips`, t("boards.statusPage.allowlistSaveFailed"), {
       method: "PUT",
       body: { allowedIps: parsedAllowedIps },
     }),
   );
+
+  // Same schemas the server enforces (src/features/status-pages/services/
+  // validation.ts) run here too, purely for feedback before a click — the
+  // server re-checks everything from scratch regardless, since a client
+  // that skipped this file entirely (a hand-edited request) can't be
+  // trusted to have run it at all. Password/allowlist errors only show
+  // once a field is non-empty (an untouched field isn't "invalid", it's
+  // just empty) — but slug always shows its error, empty or not, since it
+  // auto-defaults from the board's own name on load (see the resync effect
+  // above) and so can only ever go blank via someone actively clearing it,
+  // never an untouched initial state to protect against. Company name has
+  // no equivalent — slugSchema requires at least 3 characters, but
+  // companyNameSchema has no minimum at all (an empty company name is
+  // genuinely valid; the server normalizes it to null, see the PUT
+  // route), so companyNameError can only ever fire on the max-length rule.
+  const slugResult = slugSchema.safeParse(slug);
+  const slugError = firstIssueMessage(slugResult);
+  const companyNameResult = companyNameSchema.safeParse(companyName);
+  const companyNameError = firstIssueMessage(companyNameResult);
+  const passwordResult = passwordInput.length > 0 ? passwordSchema.safeParse(passwordInput) : null;
+  const passwordError = passwordResult ? firstIssueMessage(passwordResult) : null;
+  const allowedIpsResult = parsedAllowedIps.length > 0 ? allowedIpsSchema.safeParse(parsedAllowedIps) : null;
+  const allowedIpsError = allowedIpsResult ? firstAllowedIpsIssueMessage(allowedIpsResult, parsedAllowedIps) : null;
 
   const publicPath = data ? `/status/${data.slug}` : null;
   const saving = saveMutation.isPending;
@@ -155,12 +196,15 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
     enableMutation.mutate(!isPublished);
   }
 
-  // Save/Publish stay visible but disabled until both are actually filled
-  // in — both fields auto-default from the board's own name on load (see
-  // the resync effect above), so this only really bites if someone clears
-  // one by hand; it's there so that state can't reach either mutation
-  // (both 400 server-side on an empty slug/company anyway).
-  const canSave = slug.trim().length > 0 && companyName.trim().length > 0;
+  // Save/Publish stay visible but disabled until the slug is actually
+  // valid (non-empty, per slugSchema's own minimum) and company name is
+  // under its max length — company name has no emptiness requirement here
+  // to match, since companyNameSchema genuinely allows it (see the error
+  // comment above); requiring it client-side used to silently block Save
+  // on a perfectly acceptable empty company name. Slug still bites if
+  // someone clears it by hand; it's there so that state can't reach either
+  // mutation (both 400 server-side on the same condition anyway).
+  const canSave = slugResult.success && companyNameResult.success;
 
   // Loading and loaded states share nothing visually on purpose: while the
   // query is in flight (or stuck retrying a failed fetch), the card shows
@@ -191,153 +235,18 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
             type="button"
             disabled={publishing || saving || !canSave}
             onClick={handleTogglePublish}
-            className={`btn btn-xs w-20 ${isPublished ? "btn-ghost" : "btn-success"}`}
+            className={`btn btn-xs w-20 ${isPublished ? "btn-error btn-outline" : "btn-success"}`}
           >
             {publishing ? <Spinner size="xs" /> : isPublished ? t("boards.statusPage.unpublish") : t("boards.statusPage.publish")}
           </button>
         </div>
       </div>
 
-      {/* A 2-row grid on md+: row 1 is the "Public status page" heading, the
-          logo, and the "Privacy" heading; row 2 is the url+company fields
-          and the privacy fields (column 2 has nothing in row 2 — the logo
-          already occupies that column, up in row 1) — placed by explicit
-          row/col rather than DOM order, so mobile (no md: placement at all)
-          can still stack in a sensible reading order. */}
-      <div className="grid grid-cols-1 gap-x-4 gap-y-2 md:grid-cols-3">
-        <div className="flex items-center justify-between md:col-start-1 md:row-start-1">
-          <h2 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase">{t("boards.statusPage.title")}</h2>
-          {isPublished && <span className="badge badge-success badge-xs">{t("boards.statusPage.live")}</span>}
-        </div>
-
-        <div className="flex flex-col gap-3 md:col-start-1 md:row-start-2">
-          <fieldset className="fieldset py-0">
-            <legend className="fieldset-legend">{t("boards.statusPage.slugLabel")}</legend>
-            <label className="input input-bordered input-sm flex w-full items-center gap-1">
-              <span className="text-base-content/40 shrink-0 text-xs whitespace-nowrap">{origin || "…"}/status/</span>
-              <input
-                type="text"
-                value={slug}
-                onChange={(e) => setSlug(slugify(e.target.value))}
-                className="grow"
-                maxLength={63}
-              />
-            </label>
-          </fieldset>
-
-          <fieldset className="fieldset py-0">
-            <legend className="fieldset-legend">{t("boards.statusPage.companyNameLabel")}</legend>
-            <input
-              type="text"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              placeholder={t("boards.statusPage.companyNamePlaceholder")}
-              className="input input-bordered input-sm w-full"
-              maxLength={120}
-            />
-          </fieldset>
-        </div>
-
-        {/* Spans both rows (row-start-1, row-span-2) rather than sitting in
-            row 1 alone — the logo's content is much taller than the bare
-            "Public status page"/"Privacy" headings next to it, so confining
-            it to row 1 forced that whole row to stretch to the logo's
-            height, leaving both headings stranded with a dead gap above
-            their actual fields in row 2. Top-aligned (not centered) so its
-            own "LOGO" legend lines up with those two headings at the same
-            level, instead of floating in the middle of the spanned area. */}
-        <div className="flex flex-col items-center justify-start gap-2 text-center md:col-start-2 md:row-start-1 md:row-span-2">
-          <StatusPageLogoUpload
-            supabase={supabase}
-            boardId={boardId}
-            logoUrl={logoUrl}
-            hideBranding={hideBranding}
-            onChange={setLogoUrl}
-          />
-
-          {!logoUrl && (
-            <label className="label cursor-pointer justify-center gap-2 text-xs">
-              <input
-                type="checkbox"
-                checked={hideBranding}
-                onChange={(e) => setHideBranding(e.target.checked)}
-                className="checkbox checkbox-xs"
-              />
-              {t("boards.statusPage.hideBranding")}
-            </label>
-          )}
-        </div>
-
-        <h3 className="text-base-content/40 text-xs font-semibold tracking-wide uppercase md:col-start-3 md:row-start-1">
-          {t("boards.statusPage.privacyTitle")}
-        </h3>
-
-        <div className="flex flex-col gap-3 md:col-start-3 md:row-start-2">
-          <fieldset className="fieldset py-0">
-            <legend className="fieldset-legend">
-              {data?.passwordProtected ? t("boards.statusPage.passwordProtectedLabel") : t("boards.statusPage.passwordLabel")}
-            </legend>
-            <div className="flex gap-2">
-              <input
-                type="password"
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                placeholder={
-                  data?.passwordProtected ? t("boards.statusPage.passwordChangePlaceholder") : t("boards.statusPage.passwordSetPlaceholder")
-                }
-                className="input input-bordered input-sm w-full"
-                maxLength={200}
-              />
-              <button
-                type="button"
-                disabled={passwordMutation.isPending || passwordInput.length < 4}
-                onClick={() => passwordMutation.mutate()}
-                className="btn btn-info btn-xs w-20 shrink-0"
-              >
-                {passwordMutation.isPending ? <Spinner size="xs" /> : t("boards.statusPage.passwordSave")}
-              </button>
-            </div>
-            {data?.passwordProtected && (
-              <button
-                type="button"
-                disabled={removePasswordMutation.isPending}
-                onClick={() => removePasswordMutation.mutate()}
-                className="btn btn-ghost btn-xs mt-1 self-start"
-              >
-                {removePasswordMutation.isPending ? <Spinner size="xs" /> : t("boards.statusPage.passwordRemove")}
-              </button>
-            )}
-          </fieldset>
-
-          <fieldset className="fieldset py-0">
-            <legend className="fieldset-legend">{t("boards.statusPage.allowlistLabel")}</legend>
-            <div className="flex gap-2">
-              <textarea
-                value={allowedIpsInput}
-                onChange={(e) => setAllowedIpsInput(e.target.value)}
-                placeholder={t("boards.statusPage.allowlistPlaceholder")}
-                className="textarea textarea-bordered textarea-sm w-full font-mono text-xs"
-                rows={3}
-              />
-              <button
-                type="button"
-                disabled={allowedIpsMutation.isPending || parsedAllowedIps.length === 0}
-                onClick={() => allowedIpsMutation.mutate()}
-                className="btn btn-info btn-xs w-20 shrink-0 self-end"
-              >
-                {allowedIpsMutation.isPending ? <Spinner size="xs" /> : t("boards.statusPage.allowlistSave")}
-              </button>
-            </div>
-          </fieldset>
-        </div>
-      </div>
-
-      {error && (
-        <p role="alert" className="text-error text-xs">
-          {error}
-        </p>
-      )}
-
+      {/* Right under Save/Publish, not at the bottom of the whole form —
+          this is the actual "you're live, here's the link" signal now that
+          the redundant "Live" badge next to the section heading is gone
+          (see the grilling session in git history); it belongs next to the
+          buttons that put it there, not scrolled past every field below. */}
       {isPublished && publicPath && (
         <div className="bg-[var(--color-surface-2)] border-base-300 flex items-start gap-2 rounded-lg border p-2">
           <a href={publicPath} target="_blank" rel="noreferrer" className="link link-hover min-w-0 flex-1 break-all text-xs">
@@ -353,6 +262,206 @@ export default function BoardStatusPageSettings({ boardId, boardName }: { boardI
             {copied ? <CheckIcon className="text-success" /> : <CopyIcon />}
           </button>
         </div>
+      )}
+
+      {/* Centered, capped narrower than the surrounding detail pane (which
+          got noticeably wider once /status-pages moved to one form at a
+          time instead of 3 side by side — see the grilling session in git
+          history) — a full-bleed split across that width read no better
+          than the old 3-column squeeze it replaced. Two stacked blocks, not
+          3 side-by-side columns: "Public status page" fields + Logo split
+          evenly on top, "Privacy" fields split evenly below it, same capped
+          width both times so the whole thing reads as one column. Each
+          block's own heading spans both sub-columns, so the two fields
+          beneath it start at the same height with no row-span alignment
+          trick needed (the old layout's logo/heading alignment comment
+          doesn't apply anymore — Privacy no longer shares a row with
+          "Public status page" at all). Single column below md so nothing
+          gets cramped on a narrow viewport. */}
+      <div className="mx-auto flex w-full max-w-2xl flex-col gap-6">
+        <div className="grid grid-cols-1 gap-x-4 gap-y-2 md:grid-cols-2">
+          {/* No "Live" badge here — the Publish/Unpublish button in the
+              header row above (label + color) and the link box further
+              down (only rendered once published) already say this; a
+              third badge right next to the section label was a redundant
+              indicator, not a clearer one. */}
+          <h2 className="col-span-1 text-base-content/40 text-xs font-semibold tracking-wide uppercase md:col-span-2">
+            {t("boards.statusPage.title")}
+          </h2>
+
+          <div className="flex flex-col gap-3">
+            <fieldset className="fieldset py-0">
+              <legend className="fieldset-legend">{t("boards.statusPage.slugLabel")}</legend>
+              <label className="input input-bordered input-sm flex w-full items-center gap-1">
+                <span className="text-base-content/40 shrink-0 text-xs whitespace-nowrap">{origin || "…"}/status/</span>
+                <input
+                  type="text"
+                  value={slug}
+                  onChange={(e) => setSlug(slugify(e.target.value))}
+                  className="grow"
+                  maxLength={100}
+                />
+              </label>
+              {slugError && (
+                <p role="alert" className="text-error text-xs break-words">
+                  {slugError}
+                </p>
+              )}
+            </fieldset>
+
+            <fieldset className="fieldset py-0">
+              <legend className="fieldset-legend">{t("boards.statusPage.companyNameLabel")}</legend>
+              <input
+                type="text"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                placeholder={t("boards.statusPage.companyNamePlaceholder")}
+                className="input input-bordered input-sm w-full"
+                maxLength={120}
+              />
+              {companyNameError && (
+                <p role="alert" className="text-error text-xs break-words">
+                  {companyNameError}
+                </p>
+              )}
+            </fieldset>
+          </div>
+
+          <div className="flex flex-col items-center justify-start gap-2 text-center">
+            <StatusPageLogoUpload
+              supabase={supabase}
+              boardId={boardId}
+              logoUrl={logoUrl}
+              hideBranding={hideBranding}
+              onChange={setLogoUrl}
+            />
+
+            {!logoUrl && (
+              <label className="label cursor-pointer justify-center gap-2 text-xs">
+                <input
+                  type="checkbox"
+                  checked={hideBranding}
+                  onChange={(e) => setHideBranding(e.target.checked)}
+                  className="checkbox checkbox-xs"
+                />
+                {t("boards.statusPage.hideBranding")}
+              </label>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-x-4 gap-y-2 md:grid-cols-2">
+          <h3 className="col-span-1 text-base-content/40 text-xs font-semibold tracking-wide uppercase md:col-span-2">
+            {t("boards.statusPage.privacyTitle")}
+          </h3>
+
+          <fieldset className="fieldset py-0">
+            <legend className="fieldset-legend">
+              {data?.passwordProtected ? t("boards.statusPage.passwordProtectedLabel") : t("boards.statusPage.passwordLabel")}
+            </legend>
+            <div className="flex gap-2">
+              <div className="relative w-full">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  placeholder={
+                    data?.passwordProtected ? t("boards.statusPage.passwordChangePlaceholder") : t("boards.statusPage.passwordSetPlaceholder")
+                  }
+                  className="input input-bordered input-sm w-full pr-8"
+                  maxLength={64}
+                />
+                <button
+                  type="button"
+                  className="text-base-content/50 hover:text-base-content absolute inset-y-0 right-2 flex cursor-pointer items-center"
+                  aria-label={showPassword ? t("auth.hidePassword") : t("auth.showPassword")}
+                  onClick={() => setShowPassword((value) => !value)}
+                >
+                  {showPassword ? <EyeSlashIcon /> : <EyeIcon />}
+                </button>
+              </div>
+              <button
+                type="button"
+                disabled={passwordMutation.isPending || !passwordResult?.success}
+                onClick={() => passwordMutation.mutate()}
+                className="btn btn-info btn-xs w-20 shrink-0"
+              >
+                {passwordMutation.isPending ? <Spinner size="xs" /> : t("boards.statusPage.passwordSave")}
+              </button>
+            </div>
+            {passwordError && (
+              <p role="alert" className="text-error text-xs break-words">
+                {passwordError}
+              </p>
+            )}
+            {data?.passwordProtected && (
+              <button
+                type="button"
+                disabled={removePasswordMutation.isPending}
+                onClick={() => removePasswordMutation.mutate()}
+                className="btn btn-error btn-outline btn-xs mt-1 self-start"
+              >
+                {removePasswordMutation.isPending ? <Spinner size="xs" /> : t("boards.statusPage.passwordRemove")}
+              </button>
+            )}
+          </fieldset>
+
+          <fieldset className="fieldset py-0">
+            <legend className="fieldset-legend">{t("boards.statusPage.allowlistLabel")}</legend>
+            <div className="flex gap-2">
+              <textarea
+                value={allowedIpsInput}
+                onChange={(e) => setAllowedIpsInput(e.target.value)}
+                placeholder={t("boards.statusPage.allowlistPlaceholder")}
+                className="textarea textarea-bordered textarea-sm w-full min-w-0 max-w-full font-mono text-xs break-all"
+                rows={allowlistRows}
+                // Every other field here (slug/company name/password) already
+                // caps input length via maxLength — this one didn't, which is
+                // exactly how a pasted wall of nonsense with no line breaks
+                // got in at all. 45 is the longest a real IPv4/IPv6 literal
+                // ever gets (e.g. an IPv4-mapped IPv6 address); +1 per line
+                // for the newline, times the most lines the server will ever
+                // accept.
+                maxLength={(45 + 1) * MAX_ALLOWED_IPS}
+              />
+              <button
+                type="button"
+                disabled={allowedIpsMutation.isPending || parsedAllowedIps.length === 0 || !allowedIpsResult?.success}
+                onClick={() => allowedIpsMutation.mutate()}
+                className="btn btn-info btn-xs w-20 shrink-0 self-start"
+              >
+                {allowedIpsMutation.isPending ? <Spinner size="xs" /> : t("boards.statusPage.allowlistSave")}
+              </button>
+            </div>
+            {allowedIpsError && (
+              // break-words, not break-all — this is the one error message
+              // in this file that echoes the offending pasted value back
+              // (see firstAllowedIpsIssueMessage), so it needs *some*
+              // forced-break rule or one long paste overflows the whole
+              // card. break-all (word-break: break-all) was the original
+              // fix, but it applies to the entire string, including the
+              // ordinary English words in the explanatory sentence after
+              // the quoted value — it breaks *any* word wherever a line
+              // fills up, not just ones that actually need it, so normal
+              // words were splitting mid-letter for no reason. break-words
+              // (overflow-wrap: break-word) only breaks a word once it
+              // genuinely can't fit on its own line, preferring a normal
+              // space-based wrap everywhere else — still contains the
+              // truncated-at-80-characters echoed value (see
+              // firstAllowedIpsIssueMessage) from overflowing, since that's
+              // exactly the "can't fit, so break it" case it exists for.
+              <p role="alert" className="text-error text-xs break-words">
+                {allowedIpsError}
+              </p>
+            )}
+          </fieldset>
+        </div>
+      </div>
+
+      {error && (
+        <p role="alert" className="text-error text-xs break-words">
+          {error}
+        </p>
       )}
     </div>
   );

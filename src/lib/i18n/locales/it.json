@@ -235,7 +235,14 @@
   "statusPages": {
     "title": "Pagine di stato",
     "subtitle": "Gestisci la pagina di stato pubblica per ciascuna delle tue bacheche.",
-    "empty": "Nessuna bacheca ancora. Creane una per configurare una pagina di stato."
+    "empty": "Nessuna bacheca ancora. Creane una per configurare una pagina di stato.",
+    "notSetUp": "Non configurata",
+    "selectPrompt": "Seleziona una bacheca a sinistra per gestire la sua pagina di stato.",
+    "pagination": {
+      "label": "Paginazione",
+      "previous": "Pagina precedente",
+      "next": "Pagina successiva"
+    }
   },
   "earlyWarnings": {
     "title": "Avvisi Anticipati",
@@ -419,7 +426,20 @@
       "publish": "Pubblica",
       "unpublish": "Rimuovi pubblicazione",
       "enableFailed": "Impossibile aggiornare la pagina di stato. Riprova.",
-      "copyLink": "Copia link"
+      "copyLink": "Copia link",
+      "privacyTitle": "Privacy",
+      "passwordLabel": "Protezione con password",
+      "passwordProtectedLabel": "Protezione con password (attiva)",
+      "passwordSetPlaceholder": "Imposta una password (8-64 caratteri)",
+      "passwordChangePlaceholder": "Cambia password (8-64 caratteri)",
+      "passwordSave": "Salva",
+      "passwordSaveFailed": "Impossibile salvare la password. Riprova.",
+      "passwordRemove": "Rimuovi password",
+      "passwordRemoveFailed": "Impossibile rimuovere la password. Riprova.",
+      "allowlistLabel": "Elenco IP consentiti",
+      "allowlistPlaceholder": "Un indirizzo IP per riga",
+      "allowlistSave": "Salva",
+      "allowlistSaveFailed": "Impossibile salvare l'elenco IP consentiti. Riprova."
     }
   },
   "addService": {

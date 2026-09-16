@@ -153,6 +153,12 @@ html {
   scrollbar-gutter: stable;
 }
 
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+input[type="checkbox"]:not(:disabled) {
+  cursor: pointer;
+}
+
 @keyframes signal-pulse {
   0% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55);

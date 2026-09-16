@@ -235,7 +235,14 @@
   "statusPages": {
     "title": "Páginas de estado",
     "subtitle": "Gestiona la página de estado pública de cada uno de tus tableros.",
-    "empty": "Aún no tienes tableros. Crea uno para configurar una página de estado."
+    "empty": "Aún no tienes tableros. Crea uno para configurar una página de estado.",
+    "notSetUp": "Sin configurar",
+    "selectPrompt": "Selecciona un tablero a la izquierda para gestionar su página de estado.",
+    "pagination": {
+      "label": "Paginación",
+      "previous": "Página anterior",
+      "next": "Página siguiente"
+    }
   },
   "earlyWarnings": {
     "title": "Alertas Tempranas",
@@ -419,7 +426,20 @@
       "publish": "Publicar",
       "unpublish": "Anular publicación",
       "enableFailed": "No se pudo actualizar la página de estado. Inténtalo de nuevo.",
-      "copyLink": "Copiar enlace"
+      "copyLink": "Copiar enlace",
+      "privacyTitle": "Privacidad",
+      "passwordLabel": "Protección con contraseña",
+      "passwordProtectedLabel": "Protección con contraseña (activada)",
+      "passwordSetPlaceholder": "Establecer una contraseña (8-64 caracteres)",
+      "passwordChangePlaceholder": "Cambiar contraseña (8-64 caracteres)",
+      "passwordSave": "Guardar",
+      "passwordSaveFailed": "No se pudo guardar la contraseña. Inténtalo de nuevo.",
+      "passwordRemove": "Quitar contraseña",
+      "passwordRemoveFailed": "No se pudo quitar la contraseña. Inténtalo de nuevo.",
+      "allowlistLabel": "Lista de IPs permitidas",
+      "allowlistPlaceholder": "Una dirección IP por línea",
+      "allowlistSave": "Guardar",
+      "allowlistSaveFailed": "No se pudo guardar la lista de IPs permitidas. Inténtalo de nuevo."
     }
   },
   "addService": {

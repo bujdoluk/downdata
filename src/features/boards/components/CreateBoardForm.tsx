@@ -84,7 +84,7 @@ export default function CreateBoardForm({
         autoFocus
       />
       {createMutation.isError ? (
-        <p role="alert" className="text-error mt-2 text-xs">
+        <p role="alert" className="text-error mt-2 text-xs break-words">
           {createMutation.error.message}
         </p>
       ) : (

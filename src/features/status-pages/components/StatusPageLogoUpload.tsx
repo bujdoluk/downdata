@@ -114,7 +114,7 @@ export default function StatusPageLogoUpload({
             className="hidden"
           />
           {logoUrl && (
-            <button type="button" className="btn btn-ghost btn-sm text-error" onClick={() => onChange(null)} disabled={uploading}>
+            <button type="button" className="btn btn-error btn-outline btn-sm" onClick={() => onChange(null)} disabled={uploading}>
               {t("boards.statusPage.logoRemove")}
             </button>
           )}
@@ -123,7 +123,7 @@ export default function StatusPageLogoUpload({
 
       <p className="label text-center">{t("boards.statusPage.logoHint")}</p>
       {error && (
-        <p role="alert" className="text-error text-center text-xs">
+        <p role="alert" className="text-error text-center text-xs break-words">
           {error}
         </p>
       )}

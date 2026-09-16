@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { resolveBoardById } from "@/features/boards/services/boards";
 import { removePassword, setPassword } from "@/features/status-pages/services/statusPages";
-
-const MIN_PASSWORD_LENGTH = 4;
-const MAX_PASSWORD_LENGTH = 200;
+import { firstIssueMessage, passwordSchema } from "@/features/status-pages/services/validation";
 
 // Set or change the shared password — kept separate from PUT
 // .../status-page (branding) and .../status-page/enable (publishing), same
@@ -15,15 +13,12 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   }
 
   const body = await request.json().catch(() => null);
-  const password = typeof body?.password === "string" ? body.password : "";
-  if (password.length < MIN_PASSWORD_LENGTH || password.length > MAX_PASSWORD_LENGTH) {
-    return NextResponse.json(
-      { error: `Password must be between ${MIN_PASSWORD_LENGTH} and ${MAX_PASSWORD_LENGTH} characters.` },
-      { status: 400 },
-    );
+  const passwordResult = passwordSchema.safeParse(typeof body?.password === "string" ? body.password : "");
+  if (!passwordResult.success) {
+    return NextResponse.json({ error: firstIssueMessage(passwordResult) }, { status: 400 });
   }
 
-  const statusPage = await setPassword(id, password);
+  const statusPage = await setPassword(id, passwordResult.data);
   if (!statusPage) {
     return NextResponse.json({ error: "Set up a status page before protecting it." }, { status: 400 });
   }

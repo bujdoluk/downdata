@@ -1,9 +1,7 @@
-import { isIP } from "node:net";
 import { NextResponse } from "next/server";
 import { resolveBoardById } from "@/features/boards/services/boards";
 import { setAllowedIps } from "@/features/status-pages/services/statusPages";
-
-const MAX_ALLOWED_IPS = 20;
+import { allowedIpsSchema, firstAllowedIpsIssueMessage } from "@/features/status-pages/services/validation";
 
 // Replaces the whole allowlist — same "the client sends the full desired
 // list" shape as a plain array setting elsewhere in this app
@@ -15,21 +13,16 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   }
 
   const body = await request.json().catch(() => null);
-  const allowedIps: unknown = body?.allowedIps;
-  if (!Array.isArray(allowedIps) || !allowedIps.every((entry): entry is string => typeof entry === "string")) {
+  const rawEntries: unknown = body?.allowedIps;
+  if (!Array.isArray(rawEntries) || !rawEntries.every((entry): entry is string => typeof entry === "string")) {
     return NextResponse.json({ error: "allowedIps must be a list of IP addresses." }, { status: 400 });
   }
-  if (allowedIps.length > MAX_ALLOWED_IPS) {
-    return NextResponse.json({ error: `You can add at most ${MAX_ALLOWED_IPS} IP addresses.` }, { status: 400 });
-  }
-  // isIP() (node:net) accepts exact IPv4/IPv6 addresses only — no CIDR
-  // ranges in V1, see docs/specs/SPEC-status-page-password.md.
-  const invalid = allowedIps.find((entry) => isIP(entry) === 0);
-  if (invalid) {
-    return NextResponse.json({ error: `"${invalid}" isn't a valid IP address. CIDR ranges aren't supported yet.` }, { status: 400 });
+  const result = allowedIpsSchema.safeParse(rawEntries);
+  if (!result.success) {
+    return NextResponse.json({ error: firstAllowedIpsIssueMessage(result, rawEntries) }, { status: 400 });
   }
 
-  const statusPage = await setAllowedIps(id, allowedIps);
+  const statusPage = await setAllowedIps(id, result.data);
   if (!statusPage) {
     return NextResponse.json({ error: "Set up a status page before configuring an allowlist." }, { status: 400 });
   }

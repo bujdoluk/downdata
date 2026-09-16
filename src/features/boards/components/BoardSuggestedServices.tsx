@@ -49,7 +49,7 @@ export default function BoardSuggestedServices({
       </h2>
       {error && (
         <div role="alert" className="alert alert-error alert-soft mx-auto mt-3 max-w-sm py-2 text-xs">
-          <span>{error.message}</span>
+          <span className="break-words">{error.message}</span>
         </div>
       )}
       <div className="mt-3 grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] justify-center gap-4">

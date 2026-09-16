@@ -59,7 +59,7 @@ export default function MvpPage() {
               </button>
               <span className="text-base-content/50 text-sm">{t("mvp.ctaHint")}</span>
               {error && (
-                <p role="alert" className="text-error text-sm">
+                <p role="alert" className="text-error text-sm break-words">
                   {error}
                 </p>
               )}

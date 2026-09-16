@@ -1972,6 +1972,15 @@ _No props._
 | hideBranding | boolean | Yes | — |  |
 | onChange | (logoUrl: string \| null) => void | Yes | — |  |
 
+### StatusPagePasswordGate
+
+`src/features/status-pages/components/StatusPagePasswordGate.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| slug | string | Yes | — |  |
+| requiresPassword | boolean | Yes | — |  |
+
 ### StatusPagesPageContent
 
 `src/features/status-pages/components/StatusPagesPageContent.tsx`

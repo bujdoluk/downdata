@@ -45,12 +45,16 @@ export default function ListDetailShell({
   // inside `list` — so it stays centered regardless of how tall or narrow
   // the list column is.
   pagination?: ReactNode;
-  // "half" (the default, unchanged for /incidents, /maintenance, and
-  // /early-warnings) is an even 50/50 split; "third" narrows the list
-  // column to 1/3 and widens detail to 2/3 — /reports' own list items are
-  // short (one date range + a couple of numbers) next to a detail pane
-  // that's a full per-board/per-service breakdown, so the even split was
-  // wasting width the other 3 consumers don't have this problem with.
+  // "half" (the default — /incidents, /maintenance, /early-warnings) is an
+  // even 50/50 split; "third" narrows the list column to 1/3 and widens
+  // detail to 2/3, for a consumer whose list rows are short but whose
+  // detail pane needs real width (/status-pages' compact per-board rows
+  // next to BoardStatusPageSettings' own centered, capped-width form).
+  // /reports used to be this file's example of that but has since moved
+  // off this shell entirely, onto a dedicated /reports/[id] page with a
+  // real permalink — its report-ready email nudge needed a link that works
+  // cold, from outside the app, which query-param selection doesn't give
+  // you; see ReportDetail.tsx's header comment.
   listColumnWidth?: "half" | "third";
 }) {
   return (

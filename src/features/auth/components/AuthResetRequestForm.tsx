@@ -42,7 +42,7 @@ export default function AuthResetRequestForm({
       </fieldset>
 
       {error && (
-        <p role="alert" className="text-error text-sm">
+        <p role="alert" className="text-error text-sm break-words">
           {error}
         </p>
       )}

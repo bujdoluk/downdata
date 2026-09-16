@@ -241,7 +241,14 @@
   "statusPages": {
     "title": "Strony statusu",
     "subtitle": "Zarządzaj publiczną stroną statusu dla każdej ze swoich tablic.",
-    "empty": "Nie masz jeszcze żadnych tablic. Utwórz jedną, aby skonfigurować stronę statusu."
+    "empty": "Nie masz jeszcze żadnych tablic. Utwórz jedną, aby skonfigurować stronę statusu.",
+    "notSetUp": "Nieskonfigurowane",
+    "selectPrompt": "Wybierz tablicę po lewej, aby zarządzać jej stroną statusu.",
+    "pagination": {
+      "label": "Paginacja",
+      "previous": "Poprzednia strona",
+      "next": "Następna strona"
+    }
   },
   "earlyWarnings": {
     "title": "Wczesne ostrzeżenia",
@@ -438,7 +445,20 @@
       "publish": "Publikuj",
       "unpublish": "Cofnij publikację",
       "enableFailed": "Nie udało się zaktualizować strony statusu. Spróbuj ponownie.",
-      "copyLink": "Kopiuj link"
+      "copyLink": "Kopiuj link",
+      "privacyTitle": "Prywatność",
+      "passwordLabel": "Ochrona hasłem",
+      "passwordProtectedLabel": "Ochrona hasłem (włączona)",
+      "passwordSetPlaceholder": "Ustaw hasło (8–64 znaków)",
+      "passwordChangePlaceholder": "Zmień hasło (8–64 znaków)",
+      "passwordSave": "Zapisz",
+      "passwordSaveFailed": "Nie udało się zapisać hasła. Spróbuj ponownie.",
+      "passwordRemove": "Usuń hasło",
+      "passwordRemoveFailed": "Nie udało się usunąć hasła. Spróbuj ponownie.",
+      "allowlistLabel": "Lista dozwolonych adresów IP",
+      "allowlistPlaceholder": "Jeden adres IP w wierszu",
+      "allowlistSave": "Zapisz",
+      "allowlistSaveFailed": "Nie udało się zapisać listy dozwolonych adresów IP. Spróbuj ponownie."
     }
   },
   "addService": {

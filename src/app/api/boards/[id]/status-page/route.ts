@@ -1,14 +1,9 @@
 import { NextResponse } from "next/server";
 import { resolveBoardById } from "@/features/boards/services/boards";
 import { getStatusPage, upsertStatusPage } from "@/features/status-pages/services/statusPages";
+import { companyNameSchema, firstIssueMessage, slugSchema } from "@/features/status-pages/services/validation";
 
-// Public URL slugs: lowercase letters/digits/hyphens, no leading/trailing/
-// doubled hyphen, 3-63 chars — short enough to type, long enough to avoid
-// trivial collisions. Matches lib/slugify.ts's own output shape, but
-// validated independently since a user can edit the auto-suggested value.
-const SLUG_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const MAX_LOGO_URL_LENGTH = 2048;
-const MAX_COMPANY_NAME_LENGTH = 120;
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -29,26 +24,26 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   }
 
   const body = await request.json().catch(() => null);
-  const slug = typeof body?.slug === "string" ? body.slug.trim().toLowerCase() : "";
-  const companyNameRaw = typeof body?.companyName === "string" ? body.companyName.trim() : "";
   const logoUrl = typeof body?.logoUrl === "string" && body.logoUrl.trim() ? body.logoUrl.trim() : null;
   const hideBranding = body?.hideBranding === true;
 
-  if (!SLUG_PATTERN.test(slug) || slug.length < 3 || slug.length > 63) {
-    return NextResponse.json(
-      { error: "The URL must be 3-63 characters, lowercase letters, numbers, and hyphens only." },
-      { status: 400 },
-    );
+  const slugResult = slugSchema.safeParse(typeof body?.slug === "string" ? body.slug : "");
+  if (!slugResult.success) {
+    return NextResponse.json({ error: firstIssueMessage(slugResult) }, { status: 400 });
   }
-  if (companyNameRaw.length > MAX_COMPANY_NAME_LENGTH) {
-    return NextResponse.json({ error: "Company name is too long." }, { status: 400 });
+  const companyNameResult = companyNameSchema.safeParse(typeof body?.companyName === "string" ? body.companyName : "");
+  if (!companyNameResult.success) {
+    return NextResponse.json({ error: firstIssueMessage(companyNameResult) }, { status: 400 });
   }
   if (logoUrl && logoUrl.length > MAX_LOGO_URL_LENGTH) {
     return NextResponse.json({ error: "Logo URL is too long." }, { status: 400 });
   }
 
+  const slug = slugResult.data;
+  const companyName = companyNameResult.data;
+
   try {
-    const statusPage = await upsertStatusPage(id, { slug, companyName: companyNameRaw || null, logoUrl, hideBranding });
+    const statusPage = await upsertStatusPage(id, { slug, companyName: companyName || null, logoUrl, hideBranding });
     return NextResponse.json(statusPage);
   } catch (error) {
     // Postgres unique_violation on board_status_pages.slug — someone

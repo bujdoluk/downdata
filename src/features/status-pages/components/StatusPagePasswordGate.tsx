@@ -73,7 +73,7 @@ export default function StatusPagePasswordGate({ slug, requiresPassword }: { slu
 
           {error && (
             <div role="alert" className="alert alert-error alert-soft py-2 text-xs">
-              <span>{error}</span>
+              <span className="break-words">{error}</span>
             </div>
           )}
 

@@ -67,7 +67,7 @@ export default function ReportSettingsForm({
           ))}
         </div>
         {intervalError && (
-          <p role="alert" className="text-error text-xs">
+          <p role="alert" className="text-error text-xs break-words">
             {intervalError}
           </p>
         )}
@@ -90,7 +90,7 @@ export default function ReportSettingsForm({
             ))}
           </div>
           {boardsError && (
-            <p role="alert" className="text-error text-xs">
+            <p role="alert" className="text-error text-xs break-words">
               {boardsError}
             </p>
           )}
@@ -122,14 +122,14 @@ export default function ReportSettingsForm({
             </button>
             <p className="text-base-content/50 max-w-48 text-right text-xs">{t("reports.settings.testCaption")}</p>
             {testMessage && (
-              <span role={testMessage.isError ? "alert" : "status"} className={`text-xs ${testMessage.isError ? "text-error" : "text-success"}`}>
+              <span role={testMessage.isError ? "alert" : "status"} className={`text-xs break-words ${testMessage.isError ? "text-error" : "text-success"}`}>
                 {testMessage.text}
               </span>
             )}
           </div>
         </div>
         {emailNudgeError && (
-          <p role="alert" className="text-error text-xs">
+          <p role="alert" className="text-error text-xs break-words">
             {emailNudgeError}
           </p>
         )}

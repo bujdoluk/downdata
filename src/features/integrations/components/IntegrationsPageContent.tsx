@@ -190,17 +190,17 @@ export default function IntegrationsPageContent({
       <p className="text-base-content/60 mt-1 text-sm">{t("integrations.subtitle")}</p>
 
       {hasError && (
-        <p role="alert" className="alert alert-error alert-soft mt-4 text-sm">
+        <p role="alert" className="alert alert-error alert-soft mt-4 text-sm break-words">
           {t("integrations.somethingWrong")}
         </p>
       )}
       {verified === "1" && (
-        <p role="status" className="alert alert-success alert-soft mt-4 text-sm">
+        <p role="status" className="alert alert-success alert-soft mt-4 text-sm break-words">
           {t("integrations.recipientVerified")}
         </p>
       )}
       {verified === "0" && (
-        <p role="alert" className="alert alert-error alert-soft mt-4 text-sm">
+        <p role="alert" className="alert alert-error alert-soft mt-4 text-sm break-words">
           {t("integrations.verifyLinkInvalid")}
         </p>
       )}

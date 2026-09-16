@@ -60,7 +60,7 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
         </div>
 
       {(publishMutation.isError || deleteMutation.isError) && (
-        <p role="alert" className="text-error mt-4 text-sm">
+        <p role="alert" className="text-error mt-4 text-sm break-words">
           {publishMutation.error?.message ?? deleteMutation.error?.message}
         </p>
       )}
@@ -118,7 +118,7 @@ export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
                       >
                         {isBusy && publishMutation.isPending ? <Spinner size="xs" /> : post.publishedAt ? "Unpublish" : "Publish"}
                       </button>
-                      <button type="button" onClick={() => confirmDelete(post.slug)} className="btn btn-ghost btn-xs text-error">
+                      <button type="button" onClick={() => confirmDelete(post.slug)} className="btn btn-error btn-outline btn-xs">
                         Delete
                       </button>
                     </td>

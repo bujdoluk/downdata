@@ -235,7 +235,14 @@
   "statusPages": {
     "title": "Statussider",
     "subtitle": "Administrer den offentlige statussiden for hver av tavlene dine.",
-    "empty": "Ingen tavler ennå. Opprett en for å sette opp en statusside."
+    "empty": "Ingen tavler ennå. Opprett en for å sette opp en statusside.",
+    "notSetUp": "Ikke konfigurert",
+    "selectPrompt": "Velg en tavle til venstre for å administrere statussiden dens.",
+    "pagination": {
+      "label": "Sidenummerering",
+      "previous": "Forrige side",
+      "next": "Neste side"
+    }
   },
   "earlyWarnings": {
     "title": "Tidlige Varsler",
@@ -419,7 +426,20 @@
       "publish": "Publiser",
       "unpublish": "Avpubliser",
       "enableFailed": "Kunne ikke oppdatere statussiden. Prøv igjen.",
-      "copyLink": "Kopier lenke"
+      "copyLink": "Kopier lenke",
+      "privacyTitle": "Personvern",
+      "passwordLabel": "Passordbeskyttelse",
+      "passwordProtectedLabel": "Passordbeskyttelse (på)",
+      "passwordSetPlaceholder": "Angi et passord (8–64 tegn)",
+      "passwordChangePlaceholder": "Endre passord (8–64 tegn)",
+      "passwordSave": "Lagre",
+      "passwordSaveFailed": "Kunne ikke lagre passordet. Prøv igjen.",
+      "passwordRemove": "Fjern passord",
+      "passwordRemoveFailed": "Kunne ikke fjerne passordet. Prøv igjen.",
+      "allowlistLabel": "Liste over tillatte IP-adresser",
+      "allowlistPlaceholder": "Én IP-adresse per linje",
+      "allowlistSave": "Lagre",
+      "allowlistSaveFailed": "Kunne ikke lagre listen over tillatte IP-adresser. Prøv igjen."
     }
   },
   "addService": {

@@ -40,7 +40,7 @@ export default function AddKeywordForm({
         </button>
       </form>
       {error && (
-        <p role="alert" className="text-error text-xs">
+        <p role="alert" className="text-error text-xs break-words">
           {error}
         </p>
       )}

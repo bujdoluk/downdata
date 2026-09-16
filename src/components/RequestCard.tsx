@@ -76,7 +76,7 @@ export default function RequestCard({
                 {message.length}/{MAX_MESSAGE_LENGTH}
               </div>
               {mutation.error && (
-                <p role="alert" className="text-error mt-2 text-sm">
+                <p role="alert" className="text-error mt-2 text-sm break-words">
                   {mutation.error.message}
                 </p>
               )}

@@ -235,7 +235,14 @@
   "statusPages": {
     "title": "Statusseiten",
     "subtitle": "Verwalten Sie die öffentliche Statusseite für jedes Ihrer Boards.",
-    "empty": "Noch keine Boards. Erstellen Sie eines, um eine Statusseite einzurichten."
+    "empty": "Noch keine Boards. Erstellen Sie eines, um eine Statusseite einzurichten.",
+    "notSetUp": "Nicht eingerichtet",
+    "selectPrompt": "Wähle links ein Board aus, um dessen Statusseite zu verwalten.",
+    "pagination": {
+      "label": "Seitennavigation",
+      "previous": "Vorherige Seite",
+      "next": "Nächste Seite"
+    }
   },
   "earlyWarnings": {
     "title": "Frühwarnungen",
@@ -419,7 +426,20 @@
       "publish": "Veröffentlichen",
       "unpublish": "Veröffentlichung aufheben",
       "enableFailed": "Die Statusseite konnte nicht aktualisiert werden. Bitte erneut versuchen.",
-      "copyLink": "Link kopieren"
+      "copyLink": "Link kopieren",
+      "privacyTitle": "Datenschutz",
+      "passwordLabel": "Passwortschutz",
+      "passwordProtectedLabel": "Passwortschutz (aktiviert)",
+      "passwordSetPlaceholder": "Passwort festlegen (8–64 Zeichen)",
+      "passwordChangePlaceholder": "Passwort ändern (8–64 Zeichen)",
+      "passwordSave": "Speichern",
+      "passwordSaveFailed": "Das Passwort konnte nicht gespeichert werden. Bitte erneut versuchen.",
+      "passwordRemove": "Passwort entfernen",
+      "passwordRemoveFailed": "Das Passwort konnte nicht entfernt werden. Bitte erneut versuchen.",
+      "allowlistLabel": "IP-Zulassungsliste",
+      "allowlistPlaceholder": "Eine IP-Adresse pro Zeile",
+      "allowlistSave": "Speichern",
+      "allowlistSaveFailed": "Die IP-Zulassungsliste konnte nicht gespeichert werden. Bitte erneut versuchen."
     }
   },
   "addService": {

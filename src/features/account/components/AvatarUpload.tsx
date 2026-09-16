@@ -115,7 +115,7 @@ export default function AvatarUpload({
             className="hidden"
           />
           {avatarUrl && (
-            <button type="button" className="btn btn-ghost btn-sm text-error" onClick={handleRemove} disabled={uploading}>
+            <button type="button" className="btn btn-error btn-outline btn-sm" onClick={handleRemove} disabled={uploading}>
               {removeMutation.isPending ? <Spinner size="xs" /> : t("nav.avatarRemove")}
             </button>
           )}
@@ -124,7 +124,7 @@ export default function AvatarUpload({
 
       <p className="label">{t("nav.avatarMaxSize")}</p>
       {error && (
-        <p role="alert" className="text-error text-xs">
+        <p role="alert" className="text-error text-xs break-words">
           {error}
         </p>
       )}

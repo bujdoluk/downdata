@@ -1823,6 +1823,16 @@ _No props._
 | onRemove | ((entry: Catalog) => void) \| undefined | No | — |  |
 | isFullWidth | boolean \| undefined | No | false |  |
 | isElevatedBg | boolean \| undefined | No | false |  |
+| sortAlertsToTop | boolean \| undefined | No | false |  |
+
+### MonitorsActiveIncidentsTimeline
+
+`src/features/monitors/components/MonitorsActiveIncidentsTimeline.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| boards | Board[] | Yes | — |  |
+| data | Partial<Record<string, ServiceStatusEntry>> \| undefined | Yes | — |  |
 
 ### MonitorsBoardSection
 
@@ -1837,6 +1847,14 @@ _No props._
 | removingSlugs | Set<string> | Yes | — |  |
 | onRemove | (entry: Catalog) => void | Yes | — |  |
 | onAddService | () => void | Yes | — |  |
+
+### MonitorsMaintenanceTimeline
+
+`src/features/monitors/components/MonitorsMaintenanceTimeline.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| boards | Board[] | Yes | — |  |
 
 ### MonitorsPageContent
 

@@ -626,7 +626,18 @@
   "monitors": {
     "myServices": "Monitore",
     "noServices": "Es werden noch keine Dienste überwacht. Füge einen hinzu, um loszulegen.",
-    "addMonitor": "Monitor hinzufügen"
+    "addMonitor": "Monitor hinzufügen",
+    "activeIncidents": {
+      "title": "Aktive Vorfälle",
+      "noIncidents": "Keine aktiven Vorfälle",
+      "alertLabel": "Schwerwiegender als auf der öffentlichen Statusseite angezeigt"
+    },
+    "maintenanceFeed": {
+      "title": "Aktive Wartung",
+      "loading": "Aktive Wartung wird geladen…",
+      "noMaintenance": "Keine laufende Wartung",
+      "inProgressLabel": "Laufende Wartung"
+    }
   },
   "services": {
     "monitoring": "Überwacht",

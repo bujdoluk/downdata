@@ -49,7 +49,7 @@ export default function MonitorsBoardSection({
           <NoServicesMessage board={board} onAddClick={onAddService} />
         </div>
       ) : (
-        <div className="mt-3 grid grid-cols-[repeat(auto-fill,minmax(min(280px,100%),370px))] gap-4">
+        <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <CatalogServiceGrid
             catalog={entries}
             trackedHosts={[]}
@@ -57,6 +57,8 @@ export default function MonitorsBoardSection({
             fetchFailed={fetchFailed}
             removingSlugs={removingSlugs}
             onRemove={onRemove}
+            isFullWidth
+            sortAlertsToTop
           />
         </div>
       )}

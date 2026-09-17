@@ -33,7 +33,15 @@ export const FALLBACK_STYLE = {
 // severity filter — both let you check/uncheck which impacts to show.
 // Keyed off INDICATOR_STYLES's impact entries, but deliberately not
 // Object.keys(INDICATOR_STYLES) — that map also carries a "maintenance"
-// entry no incident/maintenance ever has as its own impact.
+// entry, which some real Statuspage-hosted providers do use as an
+// incident's own impact (confirmed live: catchpoint-systems-node-page's
+// per-node blips, e.g. "Last Mile node LM - Reading, UK - Virgin Media
+// offline", all carry impact === "maintenance"). Deliberately left out of
+// this filter's own checkbox list regardless — a severity filter isn't the
+// place to surface that provider-specific edge case, and
+// MonitorsActiveIncidentsTimeline filters those incidents out of the
+// Active Incidents feed entirely for the same reason (see that file's own
+// comment on buildTimelineEntries).
 export const IMPACT_CHECKBOX_COLOR: Record<string, string> = {
   none: "checkbox-success",
   minor: "checkbox-warning",

@@ -626,7 +626,18 @@
   "monitors": {
     "myServices": "Övervakning",
     "noServices": "Inga tjänster övervakas ännu. Lägg till en för att komma igång.",
-    "addMonitor": "Lägg till övervakning"
+    "addMonitor": "Lägg till övervakning",
+    "activeIncidents": {
+      "title": "Aktiva incidenter",
+      "noIncidents": "Inga aktiva incidenter",
+      "alertLabel": "Allvarligare än vad den offentliga statussidan visar"
+    },
+    "maintenanceFeed": {
+      "title": "Aktivt underhåll",
+      "loading": "Läser in aktivt underhåll…",
+      "noMaintenance": "Inget pågående underhåll",
+      "inProgressLabel": "Pågående underhåll"
+    }
   },
   "services": {
     "monitoring": "Övervakas",

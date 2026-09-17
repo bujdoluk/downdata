@@ -123,11 +123,11 @@ export default function CatalogServiceCard({
           (the status stripe's corners) means this badge now has no
           clipping ancestor to fight in the first place. */}
       {!addState && openIncidentImpact && (
-        // right-5, not right-2 — the status stripe on the right is w-3
+        // right-7, not right-2 — the status stripe on the right is w-3
         // (12px) flush against the card's edge; right-2 sat the icon's box
-        // right on top of it. right-5 clears the stripe with a bit of
-        // breathing room instead of touching it.
-        <div className="absolute right-5 bottom-2 z-20">
+        // right on top of it. right-7 clears the stripe with more visible
+        // breathing room than right-5 did.
+        <div className="absolute right-7 bottom-2 z-20">
           <MoreSevereIncidentBadge incident={openIncidentImpact} iconClassName="h-6 w-6" />
         </div>
       )}

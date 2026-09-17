@@ -626,7 +626,18 @@
   "monitors": {
     "myServices": "Monitoren",
     "noServices": "Er worden nog geen diensten gevolgd. Voeg er een toe om te beginnen.",
-    "addMonitor": "Monitor toevoegen"
+    "addMonitor": "Monitor toevoegen",
+    "activeIncidents": {
+      "title": "Actieve incidenten",
+      "noIncidents": "Geen actieve incidenten",
+      "alertLabel": "Ernstiger dan de openbare statuspagina aangeeft"
+    },
+    "maintenanceFeed": {
+      "title": "Actief onderhoud",
+      "loading": "Actief onderhoud laden…",
+      "noMaintenance": "Geen lopend onderhoud",
+      "inProgressLabel": "Lopend onderhoud"
+    }
   },
   "services": {
     "monitoring": "Gemonitord",

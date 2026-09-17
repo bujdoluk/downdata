@@ -626,7 +626,18 @@
   "monitors": {
     "myServices": "Monitor",
     "noServices": "Non stai ancora monitorando nessun servizio. Aggiungine uno per iniziare.",
-    "addMonitor": "Aggiungi monitor"
+    "addMonitor": "Aggiungi monitor",
+    "activeIncidents": {
+      "title": "Incidenti Attivi",
+      "noIncidents": "Nessun incidente attivo",
+      "alertLabel": "Più grave di quanto mostrato nella pagina di stato pubblica"
+    },
+    "maintenanceFeed": {
+      "title": "Manutenzioni attive",
+      "loading": "Caricamento delle manutenzioni attive…",
+      "noMaintenance": "Nessuna manutenzione in corso",
+      "inProgressLabel": "Manutenzione in corso"
+    }
   },
   "services": {
     "monitoring": "In monitoraggio",

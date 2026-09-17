@@ -639,7 +639,18 @@
   "monitors": {
     "myServices": "Monitory",
     "noServices": "Zatím nesledujete žádné služby. Přidejte první a začněte.",
-    "addMonitor": "Přidat monitor"
+    "addMonitor": "Přidat monitor",
+    "activeIncidents": {
+      "title": "Aktivní incidenty",
+      "noIncidents": "Žádné aktivní incidenty",
+      "alertLabel": "Závažnější, než ukazuje veřejná stránka stavu"
+    },
+    "maintenanceFeed": {
+      "title": "Aktivní údržba",
+      "loading": "Načítá se aktivní údržba…",
+      "noMaintenance": "Žádná probíhající údržba",
+      "inProgressLabel": "Probíhající údržba"
+    }
   },
   "services": {
     "monitoring": "Sledováno",

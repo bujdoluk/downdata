@@ -626,7 +626,18 @@
   "monitors": {
     "myServices": "Overvåking",
     "noServices": "Ingen tjenester overvåkes ennå. Legg til en for å komme i gang.",
-    "addMonitor": "Legg til overvåking"
+    "addMonitor": "Legg til overvåking",
+    "activeIncidents": {
+      "title": "Aktive hendelser",
+      "noIncidents": "Ingen aktive hendelser",
+      "alertLabel": "Mer alvorlig enn det den offentlige statussiden viser"
+    },
+    "maintenanceFeed": {
+      "title": "Aktivt vedlikehold",
+      "loading": "Laster aktivt vedlikehold…",
+      "noMaintenance": "Ikke noe pågående vedlikehold",
+      "inProgressLabel": "Pågående vedlikehold"
+    }
   },
   "services": {
     "monitoring": "Overvåkes",

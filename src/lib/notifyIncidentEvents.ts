@@ -12,6 +12,7 @@ import { nowIso } from "@/lib/formatTime";
 import { emailLogoUrl } from "@/lib/emailLogoUrl";
 import IncidentNotification from "@/components/emails/IncidentNotification";
 import type { IntegrationDefinition } from "@/types/integration";
+import type { IncidentComponent } from "@/types/service";
 import type { StoredIncident, StoredIncidentUpdate } from "@/lib/getStoredIncident";
 
 type IncidentEvent = {
@@ -30,7 +31,7 @@ const BODY_PREVIEW_LENGTH = 300;
 // null`) so the formatters below can read `resolved.update` in the
 // "update_added" branch without a non-null assertion — resolveEvent
 // itself is the one place that guarantees the update actually exists.
-type ResolvedEvent =
+export type ResolvedEvent =
   | { type: "incident_created"; incident: StoredIncident }
   | { type: "update_added"; incident: StoredIncident; update: StoredIncidentUpdate };
 
@@ -94,6 +95,73 @@ function resolveTimeZoneCached(userId: string, cache: Map<string, Promise<string
   return promise;
 }
 
+// The component ids an event actually implicates — the incident's own
+// top-level components for a brand-new incident, or that specific update's
+// own affected_components for an update_added event (see
+// docs/specs/SPEC-component-notification-filters.md's Assumption 6). The
+// two upstream shapes are genuinely different (IncidentComponent.id vs.
+// AffectedComponent.code) — confirmed against live data, not assumed —
+// so this reads the right field per event type rather than treating them
+// as interchangeable.
+export function eventComponentIds(resolved: ResolvedEvent): string[] {
+  if (resolved.type === "incident_created") {
+    return ((resolved.incident.components as IncidentComponent[] | null) ?? []).map((c) => c.id);
+  }
+  return (resolved.update.affected_components ?? []).map((c) => c.code);
+}
+
+async function fetchComponentFilter(userId: string, serviceSlug: string): Promise<Set<string> | null> {
+  try {
+    const { data } = await getSupabaseClient()
+      .from("service_component_filters")
+      .select("component_id")
+      .eq("user_id", userId)
+      .eq("service_slug", serviceSlug);
+    return data?.length ? new Set(data.map((row) => row.component_id as string)) : null;
+  } catch {
+    // Fail open, deliberately — a transient DB hiccup degrades this account/
+    // service pair to "All components" for this cycle rather than silently
+    // suppressing every notification. Never "fix" this into fail-closed
+    // (returning e.g. an empty Set to mean "block everything") — that
+    // inverts the intended safety property.
+    return null;
+  }
+}
+
+function resolveComponentFilterCached(
+  userId: string,
+  serviceSlug: string,
+  cache: Map<string, Promise<Set<string> | null>>,
+): Promise<Set<string> | null> {
+  const key = `${userId}:${serviceSlug}`;
+  const cached = cache.get(key);
+  if (cached) return cached;
+  const promise = fetchComponentFilter(userId, serviceSlug);
+  cache.set(key, promise);
+  return promise;
+}
+
+// An incident/update naming no components at all is never filtered —
+// matches HistoryPageContent.tsx's own existing rule for the identical
+// ambiguity ("broad/unclear, stays visible no matter which components are
+// checked"). Only suppresses when components ARE named and none of them
+// are checked under the account's active "Custom" selection for this
+// service.
+export async function passesComponentFilter(
+  userId: string,
+  serviceSlug: string,
+  resolved: ResolvedEvent,
+  cache: Map<string, Promise<Set<string> | null>>,
+): Promise<boolean> {
+  const componentIds = eventComponentIds(resolved);
+  if (componentIds.length === 0) return true;
+
+  const allowlist = await resolveComponentFilterCached(userId, serviceSlug, cache);
+  if (!allowlist) return true; // "All components"
+
+  return componentIds.some((id) => allowlist.has(id));
+}
+
 function buildSlackText(serviceSlug: string, resolved: ResolvedEvent): string {
   if (resolved.type === "incident_created") {
     return `🆕 New incident on ${serviceSlug}: *${resolved.incident.name}* (${resolved.incident.impact})`;
@@ -151,10 +219,6 @@ function buildSmsBody(serviceSlug: string, resolved: ResolvedEvent): string {
   return `downDATA: Update on ${resolved.incident.name} (${resolved.incident.impact}). Status: ${resolved.update.status}. ${resolved.update.body}`;
 }
 
-// schemaVersion is explicit and separate from event/type so a receiver can
-// branch on it before even looking at the rest of the shape — this can
-// evolve later (new fields, a renamed one) without silently breaking an
-// existing integration that only knows how to read version 1.
 function buildWebhookPayload(serviceSlug: string, resolved: ResolvedEvent) {
   return {
     schemaVersion: 1,
@@ -192,9 +256,6 @@ async function sendEmail(
   timeZone: string,
 ): Promise<boolean> {
   const from = process.env.RESEND_FROM_EMAIL;
-  // getAllIntegrationsAcrossUsers() only ever returns verified recipients
-  // — an integration with none yet (freshly connected, nothing confirmed)
-  // has nothing to send to.
   if (!from || integration.recipients.length === 0) return false;
 
   const { subject, element } = buildEmailContent(serviceSlug, resolved, timeZone);
@@ -343,14 +404,22 @@ export async function notifyPendingEvents(): Promise<void> {
   // Same idea again, for each account's real time zone — see
   // resolveTimeZoneCached's own comment.
   const timeZoneCache = new Map<string, Promise<string>>();
+  // Same idea again, for each (account, service)'s shared component
+  // allowlist — see resolveComponentFilterCached's own comment.
+  const componentFilterCache = new Map<string, Promise<Set<string> | null>>();
   await runInBatches(pairs, SEND_CONCURRENCY, async ({ integration, event, userId }) => {
     const resolved = await resolveEventCached(event, resolvedCache);
     if (!resolved) return;
 
     // Excluded by the integration's own policy filter (sms's
-    // notifyImpacts) — not a delivery outcome, so it's marked handled the
-    // same as an actual send would be, or it would retry forever.
+    // notifyImpacts) or this account's shared component allowlist for the
+    // service — neither is a delivery outcome, so both are marked handled
+    // the same as an actual send would be, or they'd retry forever.
     if (!shouldNotify(integration, resolved)) {
+      sent.push({ event_id: event.id, integration_id: integration.id });
+      return;
+    }
+    if (!(await passesComponentFilter(userId, event.service_slug, resolved, componentFilterCache))) {
       sent.push({ event_id: event.id, integration_id: integration.id });
       return;
     }

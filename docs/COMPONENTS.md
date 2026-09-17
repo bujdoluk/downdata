@@ -58,6 +58,8 @@ _No props._
 | body | string \| null | Yes | — |  |
 | shortlink | string \| null | Yes | — |  |
 | isNew | boolean | Yes | — |  |
+| occurredAt | string | Yes | — |  |
+| timeZone | string | Yes | — |  |
 
 ### ReportReady
 
@@ -81,6 +83,19 @@ _No props._
 |---|---|---|---|---|
 | error | Error & { digest?: string \| undefined; } | Yes | — |  |
 | retry | () => void | Yes | — |  |
+
+### CheckboxFilterDropdown
+
+`src/components/CheckboxFilterDropdown.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| options | { value: string; label: string; dotClassName?: string \| undefined; }[] | Yes | — |  |
+| selected | Set<string> | Yes | — |  |
+| onToggle | (value: string) => void | Yes | — |  |
+| onClear | () => void | Yes | — |  |
+| allLabel | string | Yes | — |  |
+| className | string \| undefined | No | — |  |
 
 ### ActivityIcon
 
@@ -1824,6 +1839,18 @@ _No props._
 | isFullWidth | boolean \| undefined | No | false |  |
 | isElevatedBg | boolean \| undefined | No | false |  |
 | sortAlertsToTop | boolean \| undefined | No | false |  |
+
+### ComponentFilterModeToggle
+
+`src/features/monitors/components/ComponentFilterModeToggle.tsx`
+
+| Prop | Type | Required | Default | Description |
+|---|---|---|---|---|
+| mode | "all" \| "custom" | Yes | — |  |
+| onChooseAll | () => void | Yes | — |  |
+| onChooseCustom | () => void | Yes | — |  |
+| mustKeepOneWarning | boolean | Yes | — |  |
+| saveError | string \| null | Yes | — |  |
 
 ### MonitorsActiveIncidentsTimeline
 

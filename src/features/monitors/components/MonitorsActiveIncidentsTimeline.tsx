@@ -152,7 +152,7 @@ export default function MonitorsActiveIncidentsTimeline({
                 <div className="timeline-middle">
                   <Logo size={28} name={incident.service.name} />
                 </div>
-                <Link href={`/incidents?board=${boardId}&id=${incident.id}`} className="timeline-end timeline-box line-clamp-2">
+                <Link href={`/incidents?board=${boardId}&id=${incident.id}`} className="timeline-end timeline-box ml-3 line-clamp-2">
                   {incident.name}
                 </Link>
                 <hr />

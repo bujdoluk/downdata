@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Trans, useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
@@ -12,9 +13,12 @@ import FallbackLogo from "@/components/logos/FallbackLogo";
 import PageHeader from "@/components/PageHeader";
 import OutageTracker from "@/features/monitors/components/OutageTracker";
 import SearchFilterInput from "@/components/SearchFilterInput";
+import CheckboxFilterDropdown from "@/components/CheckboxFilterDropdown";
 import { InfoIcon } from "@/components/icons/NavIcons";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, ALL_COMPONENT_STATUSES, FALLBACK_STYLE } from "@/components/statusStyles";
 import MoreSevereIncidentBadge from "@/components/MoreSevereIncidentBadge";
+import ComponentFilterModeToggle from "@/features/monitors/components/ComponentFilterModeToggle";
+import { useServiceComponentFilter } from "@/features/monitors/hooks/useServiceComponentFilter";
 import { ALL_CONTINENTS, CONTINENT_LABEL_KEYS, inferComponentContinent, type Continent } from "@/features/monitors/services/componentRegion";
 import { fetchJson } from "@/lib/fetchJson";
 import { queryKeys } from "@/lib/queryKeys";
@@ -25,12 +29,6 @@ import Spinner from "@/components/Spinner";
 
 const POLL_INTERVAL_MS = 60_000;
 
-// Debounced-and-URL-synced state for the component list's continent/status
-// filters — same pattern as IncidentsPageContent/MaintenancePageContent
-// (see hooks/useDebouncedUrlFilters), so a filtered view here is a
-// shareable/bookmarkable link instead of vanishing on refresh. parse/
-// serialize/toPatch must be stable module-level references, not redefined
-// per render (see that hook's own comment).
 type ComponentFilters = { continents: Set<Continent>; statuses: Set<Status>; q: string };
 
 function parseComponentFilters(searchParams: URLSearchParams): ComponentFilters {
@@ -60,9 +58,6 @@ const INTEGRATION_LABEL_KEYS: Record<IntegrationDefinition["slug"], string> = {
   webhook: "nav.webhook",
 };
 
-// Reads/writes this one service's membership in each of the current
-// account's own connected integrations' target filters — see
-// app/api/integrations/[slug]/services/[serviceSlug].
 function NotificationsCard({ slug }: { slug: Slug }) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
@@ -93,9 +88,6 @@ function NotificationsCard({ slug }: { slug: Slug }) {
   return (
     <ul className="list bg-[var(--color-surface-2)] border-base-300 border">
       {integrations.map((integration) => {
-        // excludedServiceSlugs is an exclusion list — enabled unless this
-        // service is explicitly in it, so an integration with nothing
-        // excluded (the default) correctly shows every service as on.
         const enabled = !integration.excludedServiceSlugs?.includes(slug);
         return (
           <li key={integration.id} className="list-row items-center py-2.5">
@@ -129,6 +121,20 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
   const isLoading = !data && !error;
   const overallStyle = INDICATOR_STYLES[data?.status.indicator ?? "unknown"] ?? FALLBACK_STYLE;
   const allComponents = data?.components ?? [];
+  // Memoized, keyed on the underlying data.components (stable across a
+  // same-content refetch — TanStack Query v5's structuralSharing default),
+  // not recomputed inline as a fresh array every render.
+  // useServiceComponentFilter's debounced-save effect depends on
+  // allComponentIds by reference; an unmemoized .map() here would give it a
+  // new reference on every unrelated re-render (the 60s poll tick, typing
+  // in the component search box, toggling a continent/status filter),
+  // re-firing — and re-saving — mid-edit.
+  const componentOptions = useMemo(
+    () => (data?.components ?? []).filter((c) => !c.group).map((c) => ({ id: c.id, name: c.name })),
+    [data?.components],
+  );
+  const allComponentIds = useMemo(() => componentOptions.map((c) => c.id), [componentOptions]);
+  const filter = useServiceComponentFilter(slug, allComponentIds);
   // !c.group_id, not === null: Atlassian always sends group_id (null when
   // top-level), but incident.io-hosted pages (e.g. status.brevo.com) omit
   // the field entirely instead of sending it as null — a strict-equality
@@ -140,17 +146,12 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
   const childrenOf = (groupId: string) =>
     allComponents.filter((c) => c.group_id === groupId).sort((a, b) => a.position - b.position);
 
-  // Best-effort continent inference from component names — see
-  // lib/componentRegion.ts. Only offer a continent as a filter if this
-  // service actually has a component in it.
   const componentsById = new Map(allComponents.map((c) => [c.id, c]));
   const continentOf = (c: StatuspageComponent) => inferComponentContinent(c, componentsById);
   const presentContinents = ALL_CONTINENTS.filter((continent) =>
     allComponents.some((c) => !c.group && continentOf(c) === continent),
   );
 
-  // Real field, not a guess like continent — only offer a status as a
-  // filter if some component is actually reporting it right now.
   const presentStatuses = ALL_COMPONENT_STATUSES.filter((status) => allComponents.some((c) => !c.group && c.status === status));
 
   const { pendingFilters, setPendingFilters } = useDebouncedUrlFilters({
@@ -190,12 +191,29 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
     });
   }
 
+  function clearContinents() {
+    setPendingFilters((prev) => ({ ...prev, continents: new Set() }));
+  }
+
+  function clearStatuses() {
+    setPendingFilters((prev) => ({ ...prev, statuses: new Set() }));
+  }
+
   const visibleComponentCount = allComponents.filter((c) => !c.group && isVisible(c)).length;
 
   function componentRow(c: StatuspageComponent, indent = false) {
     const s = COMPONENT_STATUS_STYLES[c.status] ?? FALLBACK_STYLE;
     return (
-      <li key={c.id} className={`list-row items-center py-2.5 ${indent ? "pl-6" : ""}`}>
+      <li key={c.id} className={`list-row items-center gap-2 py-2.5 ${indent ? "pl-6" : ""}`}>
+        {filter.mode === "custom" && (
+          <input
+            type="checkbox"
+            className="checkbox checkbox-xs"
+            checked={filter.checked.has(c.id)}
+            onChange={() => filter.toggleComponent(c.id)}
+            aria-label={t("serviceDetail.componentFilterNotifyFor", { name: c.name })}
+          />
+        )}
         <span className="list-col-grow text-base-content text-sm">{c.name}</span>
         <span className={`badge badge-soft ${s.badge}`}>{t(s.labelKey)}</span>
       </li>
@@ -261,11 +279,6 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                 values={{ value: data.official30daysUptime, days: data.uptimeWindowDays }}
                 components={[<span key="0" className="text-base-content text-base font-bold" />]}
               />
-              {/* button, not a bare span — a span can never receive
-                  keyboard focus, so a keyboard-only user had no way to
-                  trigger this tooltip at all; aria-label gives it a real
-                  accessible name too, since data-tip's CSS-only content
-                  isn't read by screen readers. */}
               <button
                 type="button"
                 className="tooltip"
@@ -305,47 +318,63 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
               defaultChecked
             />
             <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
-              <div className="mb-3">
+              {/* One inline row — continent/status used to each render as
+                  their own full checkbox row, which made this tab feel
+                  crowded the moment a third row (the notification
+                  component-filter toggle, below) was added alongside them.
+                  Both are now compact dropdowns (CheckboxFilterDropdown),
+                  same collapsed-by-default idiom ImpactFilterDropdown
+                  already uses on /incidents and /history. */}
+              <div className="mb-3 flex flex-wrap items-center gap-2">
                 <SearchFilterInput
                   value={componentQuery}
                   onChange={(q) => setPendingFilters((prev) => ({ ...prev, q }))}
                   label={t("serviceDetail.searchComponents")}
+                  className="w-64"
+                />
+                {/* presentContinents can legitimately be empty (continent is
+                    a best-effort name inference, not a real field — see
+                    componentRegion.ts) — the dropdown itself renders
+                    nothing for zero options, so without this fallback the
+                    row just silently lost the explanation for why no
+                    region filter is offered (PublicServiceDetail.tsx still
+                    shows it for the same case). */}
+                {presentContinents.length === 0 ? (
+                  <p className="text-base-content/50 text-xs">{t("serviceDetail.noLocationsToFilter")}</p>
+                ) : (
+                  <CheckboxFilterDropdown
+                    options={presentContinents.map((continent) => ({ value: continent, label: t(CONTINENT_LABEL_KEYS[continent]) }))}
+                    selected={selectedContinents}
+                    onToggle={(value) => toggleContinent(value as Continent)}
+                    onClear={clearContinents}
+                    allLabel={t("serviceDetail.allRegions")}
+                  />
+                )}
+                <CheckboxFilterDropdown
+                  options={presentStatuses.map((status) => ({
+                    value: status,
+                    label: t((COMPONENT_STATUS_STYLES[status] ?? FALLBACK_STYLE).labelKey),
+                    dotClassName: (COMPONENT_STATUS_STYLES[status] ?? FALLBACK_STYLE).dot,
+                  }))}
+                  selected={selectedStatuses}
+                  onClear={clearStatuses}
+                  onToggle={(value) => toggleStatus(value as Status)}
+                  allLabel={t("serviceDetail.allComponentStatuses")}
                 />
               </div>
-              {presentContinents.length === 0 ? (
-                <p className="text-base-content/50 mb-3 text-sm">{t("serviceDetail.noLocationsToFilter")}</p>
-              ) : (
-                <div className="mb-3 flex flex-wrap gap-3">
-                  {presentContinents.map((continent) => (
-                    <label key={continent} className="label cursor-pointer gap-1.5 text-xs">
-                      <input
-                        type="checkbox"
-                        className="checkbox checkbox-xs"
-                        checked={selectedContinents.has(continent)}
-                        onChange={() => toggleContinent(continent)}
-                      />
-                      {t(CONTINENT_LABEL_KEYS[continent])}
-                    </label>
-                  ))}
-                </div>
-              )}
-              {presentStatuses.length > 0 && (
-                <div className="mb-3 flex flex-wrap gap-3">
-                  {presentStatuses.map((status) => {
-                    const style = COMPONENT_STATUS_STYLES[status] ?? FALLBACK_STYLE;
-                    return (
-                      <label key={status} className="label cursor-pointer gap-1.5 text-xs">
-                        <input
-                          type="checkbox"
-                          className="checkbox checkbox-xs"
-                          checked={selectedStatuses.has(status)}
-                          onChange={() => toggleStatus(status)}
-                        />
-                        <span className={`h-2 w-2 shrink-0 rounded-full ${style.dot}`} />
-                        {t(style.labelKey)}
-                      </label>
-                    );
-                  })}
+              {/* Visually separated from the view filters above — this is a
+                  notification setting, not a way to change what's shown in
+                  this list, and the border/spacing signals that distinction
+                  rather than reading as a third filter row. */}
+              {componentOptions.length > 0 && (
+                <div className="border-base-300 mb-3 border-t pt-3">
+                  <ComponentFilterModeToggle
+                    mode={filter.mode}
+                    onChooseAll={filter.chooseAll}
+                    onChooseCustom={filter.chooseCustom}
+                    mustKeepOneWarning={filter.mustKeepOneWarning}
+                    saveError={filter.saveError}
+                  />
                 </div>
               )}
               {visibleComponentCount === 0 ? (

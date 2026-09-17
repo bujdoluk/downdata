@@ -164,39 +164,28 @@ export default function MonitorsPageContent({
   const showTimeline = boards.length > 0 && myServices.length > 0;
 
   return (
-    // Responsive max-width, not a fixed one — below 2xl this collapses to
-    // plain max-w-6xl (identical to how the whole page worked before the
-    // timeline existed, zero extra reserved space), only widening to fit
-    // max-w-6xl + gap-6 + w-80 (= 93.5rem) once the outside-gutter timeline
-    // sidebar actually renders. Both the header below and the content row's
-    // own max-w-6xl column are deliberately NOT independently mx-auto'd —
-    // they're flush against this outer wrapper's own left edge instead, so
-    // they align with each other consistently whether or not the sidebar
-    // is currently showing (an independently self-centered header would
-    // drift right of the content column the moment this wrapper widens).
-    <div className="mx-auto w-full max-w-6xl 2xl:max-w-[93.5rem]">
-      <div className="w-full max-w-6xl">
-        <div className="flex items-start justify-between gap-4">
-          <h1 className="text-base-content text-lg font-semibold">
-            {t("monitors.myServices")} ({myServices.length})
-          </h1>
+    <div className="mx-auto w-full max-w-6xl 2xl:ml-auto 2xl:mr-0 2xl:max-w-[97.5rem]">
+      <div className="flex w-full items-start gap-6">
+        <div className="w-full max-w-6xl">
+          <div className="flex items-start justify-between gap-4">
+            <h1 className="text-base-content text-lg font-semibold">
+              {t("monitors.myServices")} ({myServices.length})
+            </h1>
+            <button type="button" onClick={() => openAddService(selectedBoard?.id)} className="btn btn-info btn-sm 2xl:hidden">
+              <PlusIcon />
+              {t("monitors.addMonitor")}
+            </button>
+          </div>
+          <p className="text-base-content/60 mt-1 text-sm">{t("services.subtitle")}</p>
+        </div>
+        <div className="hidden min-w-80 max-w-sm flex-1 justify-end 2xl:flex">
           <button type="button" onClick={() => openAddService(selectedBoard?.id)} className="btn btn-info btn-sm">
             <PlusIcon />
             {t("monitors.addMonitor")}
           </button>
         </div>
-        <p className="text-base-content/60 mt-1 text-sm">{t("services.subtitle")}</p>
       </div>
 
-      {/* The row itself carries no top margin — StatusSummary already
-          brings its own mt-4 (see its own component), and NoServicesMessage
-          keeps its existing mt-4 wrapper below, so spacing from the
-          subtitle above is unchanged from before this row existed. Both
-          columns share items-start, so the outside-gutter timeline's own
-          top edge lands exactly where StatusSummary begins — "horizontally
-          align with Overview," per your correction — not the row's own
-          structural top (which would be ~16px higher, before
-          StatusSummary's internal margin pushes it down). */}
       <div className="flex w-full items-start gap-6">
         <div className="w-full max-w-6xl">
           {boards.length === 0 ? (
@@ -211,12 +200,6 @@ export default function MonitorsPageContent({
             ) : (
               <>
                 <StatusSummary counts={overviewCounts} isLoading={!data && !fetchFailed} />
-                {/* Below 2xl there's no room outside max-w-6xl for the sidebar
-                    version further down, so this mobile/tablet/narrow-desktop
-                    fallback renders in-flow instead, same spot it's always
-                    had (right under Overview) — 2xl:hidden once the sidebar
-                    version takes over. Maintenance feed stacks directly
-                    under it, own card, same reasoning. */}
                 <div className="card card-border bg-base-200 mt-4 p-4 2xl:hidden">
                   <MonitorsActiveIncidentsTimeline boards={timelineBoards} data={data} />
                 </div>
@@ -268,18 +251,8 @@ export default function MonitorsPageContent({
           )}
         </div>
 
-        {/* Outside max-w-6xl entirely — a sibling of the column above, not
-            nested inside it, so it's genuinely outside that width
-            constraint rather than just visually squeezed into a narrower
-            inner column of it. Only shown at 2xl+ (the mobile-fallback
-            instances above cover every narrower case). mt-4 matches
-            StatusSummary's own internal top margin exactly, so the first
-            card's top border lines up with StatusSummary's rendered box,
-            not just the row's own (slightly higher) structural top. The
-            maintenance feed stacks directly under the incidents one, in
-            its own card, per "under active incidents in monitors page". */}
         {showTimeline && (
-          <div className="mt-4 hidden w-80 shrink-0 2xl:block">
+          <div className="mt-4 hidden min-w-80 max-w-sm flex-1 2xl:block">
             <div className="card card-border bg-base-200 p-4">
               <MonitorsActiveIncidentsTimeline boards={timelineBoards} data={data} />
             </div>

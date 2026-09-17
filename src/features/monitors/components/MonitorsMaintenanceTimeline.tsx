@@ -111,7 +111,7 @@ export default function MonitorsMaintenanceTimeline({ boards }: { boards: Board[
                 <div className="timeline-middle">
                   <Logo size={28} name={maintenance.service.name} />
                 </div>
-                <Link href={`/maintenance?board=${boardId}&id=${maintenance.id}`} className="timeline-end timeline-box line-clamp-2">
+                <Link href={`/maintenance?board=${boardId}&id=${maintenance.id}`} className="timeline-end timeline-box ml-3 line-clamp-2">
                   {maintenance.name}
                 </Link>
                 <hr />

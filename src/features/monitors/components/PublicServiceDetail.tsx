@@ -13,6 +13,7 @@ import PageHeader from "@/components/PageHeader";
 import OutageTracker from "@/features/monitors/components/OutageTracker";
 import RecommendedServices from "@/features/monitors/components/RecommendedServices";
 import SearchFilterInput from "@/components/SearchFilterInput";
+import CheckboxFilterDropdown from "@/components/CheckboxFilterDropdown";
 import { InfoIcon } from "@/components/icons/NavIcons";
 import { INDICATOR_STYLES, COMPONENT_STATUS_STYLES, ALL_COMPONENT_STATUSES, FALLBACK_STYLE } from "@/components/statusStyles";
 import MoreSevereIncidentBadge from "@/components/MoreSevereIncidentBadge";
@@ -138,6 +139,14 @@ export default function PublicServiceDetail({ slug }: { slug: Slug }) {
     });
   }
 
+  function clearContinents() {
+    setPendingFilters((prev) => ({ ...prev, continents: new Set() }));
+  }
+
+  function clearStatuses() {
+    setPendingFilters((prev) => ({ ...prev, statuses: new Set() }));
+  }
+
   const visibleComponentCount = allComponents.filter((c) => !c.group && isVisible(c)).length;
 
   function componentRow(c: StatuspageComponent, indent = false) {
@@ -244,49 +253,43 @@ export default function PublicServiceDetail({ slug }: { slug: Slug }) {
               defaultChecked
             />
             <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
-              <div className="mb-3">
+              {/* Mirrors ServiceDetail.tsx's own filter row exactly (compact
+                  CheckboxFilterDropdown instead of always-expanded checkbox
+                  rows) — this page has no Notifications tab/component-filter
+                  toggle to make room for, but keeping the view-filter UI
+                  identical to its authenticated counterpart avoids the two
+                  silently drifting apart, the same class of thing AGENTS.md's
+                  own Failure log already flags happening more than once. */}
+              <div className="mb-3 flex flex-wrap items-center gap-2">
                 <SearchFilterInput
                   value={componentQuery}
                   onChange={(q) => setPendingFilters((prev) => ({ ...prev, q }))}
                   label={t("serviceDetail.searchComponents")}
+                  className="w-64"
+                />
+                {presentContinents.length === 0 ? (
+                  <p className="text-base-content/50 text-xs">{t("serviceDetail.noLocationsToFilter")}</p>
+                ) : (
+                  <CheckboxFilterDropdown
+                    options={presentContinents.map((continent) => ({ value: continent, label: t(CONTINENT_LABEL_KEYS[continent]) }))}
+                    selected={selectedContinents}
+                    onToggle={(value) => toggleContinent(value as Continent)}
+                    onClear={clearContinents}
+                    allLabel={t("serviceDetail.allRegions")}
+                  />
+                )}
+                <CheckboxFilterDropdown
+                  options={presentStatuses.map((status) => ({
+                    value: status,
+                    label: t((COMPONENT_STATUS_STYLES[status] ?? FALLBACK_STYLE).labelKey),
+                    dotClassName: (COMPONENT_STATUS_STYLES[status] ?? FALLBACK_STYLE).dot,
+                  }))}
+                  selected={selectedStatuses}
+                  onClear={clearStatuses}
+                  onToggle={(value) => toggleStatus(value as Status)}
+                  allLabel={t("serviceDetail.allComponentStatuses")}
                 />
               </div>
-              {presentContinents.length === 0 ? (
-                <p className="text-base-content/50 mb-3 text-sm">{t("serviceDetail.noLocationsToFilter")}</p>
-              ) : (
-                <div className="mb-3 flex flex-wrap gap-3">
-                  {presentContinents.map((continent) => (
-                    <label key={continent} className="label cursor-pointer gap-1.5 text-xs">
-                      <input
-                        type="checkbox"
-                        className="checkbox checkbox-xs"
-                        checked={selectedContinents.has(continent)}
-                        onChange={() => toggleContinent(continent)}
-                      />
-                      {t(CONTINENT_LABEL_KEYS[continent])}
-                    </label>
-                  ))}
-                </div>
-              )}
-              {presentStatuses.length > 0 && (
-                <div className="mb-3 flex flex-wrap gap-3">
-                  {presentStatuses.map((status) => {
-                    const style = COMPONENT_STATUS_STYLES[status] ?? FALLBACK_STYLE;
-                    return (
-                      <label key={status} className="label cursor-pointer gap-1.5 text-xs">
-                        <input
-                          type="checkbox"
-                          className="checkbox checkbox-xs"
-                          checked={selectedStatuses.has(status)}
-                          onChange={() => toggleStatus(status)}
-                        />
-                        <span className={`h-2 w-2 shrink-0 rounded-full ${style.dot}`} />
-                        {t(style.labelKey)}
-                      </label>
-                    );
-                  })}
-                </div>
-              )}
               {visibleComponentCount === 0 ? (
                 <p className="text-base-content/50 text-sm">{t("serviceDetail.noComponentsMatchFilter")}</p>
               ) : (

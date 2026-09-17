@@ -2,13 +2,15 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { getSupabaseClient } from "@/lib/supabase";
 import type { Incident, IncidentComponent, StatuspageIncidentSummary } from "@/types/service";
 
+export type AffectedComponent = { code: string; name: string; new_status: string; old_status: string };
+
 export type StoredIncidentUpdate = {
   service_slug: string;
   incident_id: string;
   id: string;
   status: string;
   body: string;
-  affected_components: unknown;
+  affected_components: AffectedComponent[] | null;
   created_at: string;
   updated_at: string;
   display_at: string | null;
@@ -32,20 +34,17 @@ export type StoredIncident = {
   incident_updates: StoredIncidentUpdate[];
 };
 
-// The columns toIncidentApiShape/toIncidentSummaryApiShape actually read,
-// plus service_slug (needed for the grouping join below, even though it
-// never appears in the mapped API response). monitoring_at/components are
-// real StoredIncident fields — general-purpose readers below still select
-// "*" — but nothing on this list-and-map path uses them, and these queries
-// are polled every 60s, so selecting them was pure wasted egress.
 const INCIDENT_SUMMARY_COLUMNS = "id, service_slug, name, status, impact, created_at, resolved_at, updated_at, shortlink";
 const INCIDENT_UPDATE_COLUMNS = "id, incident_id, service_slug, status, body, created_at";
+// The columns INCIDENT_UPDATE_COLUMNS above actually selects — every other
+// StoredIncidentUpdate field is genuinely absent (undefined) on a row
+// fetchUpdatesForIncidentIds returns, not just loosely typed. Partial<>
+// makes that honest: a row from this narrower path can no longer silently
+// claim (via a blanket `as StoredIncidentUpdate[]` cast) that fields like
+// affected_components are always present when they were never fetched.
+type IncidentUpdateListRow = Pick<StoredIncidentUpdate, "id" | "incident_id" | "service_slug" | "status" | "body" | "created_at"> &
+  Partial<Omit<StoredIncidentUpdate, "id" | "incident_id" | "service_slug" | "status" | "body" | "created_at">>;
 
-// The one place anything (the Slack notifier today, anything else later)
-// reads a stored incident back out of Supabase with its updates attached.
-// Deliberately "*", not the trimmed column lists above — this is a
-// general-purpose accessor, not paired with one known shape-mapper, and
-// it's not polled, so there's no meaningful egress payoff to narrowing it.
 export async function getStoredIncidentWithUpdates(Slug: string, incidentId: string): Promise<StoredIncident | null> {
   const supabase = getSupabaseClient();
 
@@ -67,12 +66,8 @@ export async function getStoredIncidentWithUpdates(Slug: string, incidentId: str
   return { ...(incident as Omit<StoredIncident, "incident_updates">), incident_updates: (updates as StoredIncidentUpdate[]) ?? [] };
 }
 
-// incident_updates.incident_id alone isn't guaranteed unique across
-// services (each service has its own Statuspage-assigned id namespace), so
-// grouping across all services has to key on the (service_slug, incident_id)
-// pair, not incident_id alone.
-function groupUpdatesByIncident(updates: StoredIncidentUpdate[]): Map<string, StoredIncidentUpdate[]> {
-  const map = new Map<string, StoredIncidentUpdate[]>();
+function groupUpdatesByIncident(updates: IncidentUpdateListRow[]): Map<string, IncidentUpdateListRow[]> {
+  const map = new Map<string, IncidentUpdateListRow[]>();
   for (const update of updates) {
     const key = `${update.service_slug}:${update.incident_id}`;
     const list = map.get(key);
@@ -82,17 +77,6 @@ function groupUpdatesByIncident(updates: StoredIncidentUpdate[]): Map<string, St
   return map;
 }
 
-// PostgREST silently caps any unbounded select() at its configured
-// max-rows (1000 here) — catalog-wide polling grew incident_updates well
-// past that, so a plain `.select("*")` was quietly dropping updates for
-// whichever incidents didn't make it into that first page. Fetch only the
-// updates belonging to the incidents actually in play, in explicit
-// PAGE_SIZE pages, so growth in unrelated incidents' history never starves
-// this response again. incident_id is chunked through .in() (not the
-// service_slug/incident_id pair) for the same accepted reason
-// groupUpdatesByIncident groups on the composite key below: a short id
-// colliding across services just pulls in a few harmless extra rows that
-// get discarded when nothing maps to their key.
 const CHUNK_SIZE = 200;
 const PAGE_SIZE = 1000;
 
@@ -100,8 +84,8 @@ async function fetchUpdatesForIncidentIds(
   supabase: SupabaseClient,
   incidentIds: string[],
   Slug?: string,
-): Promise<StoredIncidentUpdate[]> {
-  const results: StoredIncidentUpdate[] = [];
+): Promise<IncidentUpdateListRow[]> {
+  const results: IncidentUpdateListRow[] = [];
   for (let i = 0; i < incidentIds.length; i += CHUNK_SIZE) {
     const chunk = incidentIds.slice(i, i + CHUNK_SIZE);
     let from = 0;
@@ -109,7 +93,7 @@ async function fetchUpdatesForIncidentIds(
       let query = supabase.from("incident_updates").select(INCIDENT_UPDATE_COLUMNS).in("incident_id", chunk);
       if (Slug) query = query.eq("service_slug", Slug);
       const { data } = await query.range(from, from + PAGE_SIZE - 1);
-      results.push(...((data as StoredIncidentUpdate[]) ?? []));
+      results.push(...((data as IncidentUpdateListRow[]) ?? []));
       if (!data || data.length < PAGE_SIZE) break;
       from += PAGE_SIZE;
     }
@@ -129,10 +113,16 @@ export async function getAllStoredIncidentSummaries(trackedSlugs: string[]): Pro
   return (data as Omit<StoredIncident, "incident_updates">[]) ?? [];
 }
 
+// What getStoredIncidentsForService actually returns — incident fields are
+// the real, full set (INCIDENT_SUMMARY_COLUMNS, plus components when
+// asked for), but incident_updates are IncidentUpdateListRow, not full
+// StoredIncidentUpdate — see that type's own comment for why.
+export type StoredIncidentSummaryWithUpdates = Omit<StoredIncident, "incident_updates"> & { incident_updates: IncidentUpdateListRow[] };
+
 export async function getStoredIncidentsForService(
   Slug: string,
   options?: { limit?: number; includeComponents?: boolean },
-): Promise<StoredIncident[]> {
+): Promise<StoredIncidentSummaryWithUpdates[]> {
   const supabase = getSupabaseClient();
 
   let query = options?.includeComponents
@@ -195,7 +185,13 @@ export function toIncidentSummaryApiShape(incident: Omit<StoredIncident, "incide
   };
 }
 
-export function toIncidentApiShape(incident: StoredIncident): Incident {
+// Accepts either the full StoredIncident (from getStoredIncidentWithUpdates,
+// used by /api/incidents/[slug]/[id]) or the narrower
+// StoredIncidentSummaryWithUpdates (from getStoredIncidentsForService, used
+// by /api/history/[slug] and /api/summary/[slug]) — this only ever reads
+// {id, status, body, created_at} off each update below, so both shapes
+// satisfy it structurally without needing two separate functions.
+export function toIncidentApiShape(incident: StoredIncident | StoredIncidentSummaryWithUpdates): Incident {
   return {
     id: incident.id,
     name: incident.name,

@@ -32,6 +32,9 @@ export const queryKeys = {
   integrations: {
     list: () => ["integrations", "list"] as const,
   },
+  monitors: {
+    componentFilter: (serviceSlug: string) => ["monitors", "componentFilter", serviceSlug] as const,
+  },
   earlyWarnings: {
     keywords: () => ["earlyWarnings", "keywords"] as const,
     sources: () => ["earlyWarnings", "sources"] as const,

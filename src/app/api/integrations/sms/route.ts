@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { addIntegration, addRecipient, generateVerification, resolveIntegrationBySlug, integrationExists, updateNotifyImpacts } from "@/features/integrations/services/integrations";
+import { addIntegration, addRecipient, generateVerification, resolveIntegrationBySlug, integrationExists, removeIntegration, updateNotifyImpacts } from "@/features/integrations/services/integrations";
 import { backfillNewIntegration } from "@/features/integrations/services/backfillNewIntegration";
 import { sendSms } from "@/features/integrations/services/twilio";
 import { ALL_IMPACTS } from "@/components/statusStyles";
@@ -106,4 +106,15 @@ export async function PATCH(request: Request) {
 
   await updateNotifyImpacts(sms.id, notifyImpacts);
   return NextResponse.json({ notifyImpacts });
+}
+
+// A static "sms" segment shadows the dynamic app/api/integrations/[slug]
+// route for this exact path, so its own DELETE handler never gets a chance
+// to run here — this file needs its own, identical in shape.
+export async function DELETE() {
+  const removed = await removeIntegration("sms");
+  if (!removed) {
+    return NextResponse.json({ error: "Unknown integration" }, { status: 404 });
+  }
+  return new NextResponse(null, { status: 204 });
 }

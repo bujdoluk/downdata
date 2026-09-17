@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { render } from "@react-email/render";
-import { addIntegration, addRecipient, generateVerification, integrationExists, resolveIntegrationBySlug, updateNotifyImpacts } from "@/features/integrations/services/integrations";
+import { addIntegration, addRecipient, generateVerification, integrationExists, removeIntegration, resolveIntegrationBySlug, updateNotifyImpacts } from "@/features/integrations/services/integrations";
 import { backfillNewIntegration } from "@/features/integrations/services/backfillNewIntegration";
 import { getResendClient } from "@/features/integrations/services/resend";
 import { emailLogoUrl } from "@/lib/emailLogoUrl";
@@ -126,4 +126,15 @@ export async function PATCH(request: Request) {
 
   await updateNotifyImpacts(email.id, notifyImpacts);
   return NextResponse.json({ notifyImpacts });
+}
+
+// A static "email" segment shadows the dynamic app/api/integrations/[slug]
+// route for this exact path, so its own DELETE handler never gets a chance
+// to run here — this file needs its own, identical in shape.
+export async function DELETE() {
+  const removed = await removeIntegration("email");
+  if (!removed) {
+    return NextResponse.json({ error: "Unknown integration" }, { status: 404 });
+  }
+  return new NextResponse(null, { status: 204 });
 }

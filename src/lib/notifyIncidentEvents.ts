@@ -2,6 +2,7 @@ import { render } from "@react-email/render";
 import { getAllIntegrationsAcrossUsers } from "@/features/integrations/services/integrations";
 import { getAllTrackedSlugsAcrossUsers } from "@/features/boards/services/boards";
 import { getSupabaseClient } from "@/lib/supabase";
+import { resolveTimeZone } from "@/lib/account";
 import { getResendClient } from "@/features/integrations/services/resend";
 import { sendSms as sendSmsMessage } from "@/features/integrations/services/twilio";
 import { sendWebhook as sendWebhookRequest } from "@/features/integrations/services/webhook";
@@ -14,8 +15,6 @@ import type { IntegrationDefinition } from "@/types/integration";
 import type { StoredIncident, StoredIncidentUpdate } from "@/lib/getStoredIncident";
 
 type IncidentEvent = {
-  // bigint columns can come back from PostgREST as strings rather than
-  // numbers — don't assume `number` here.
   id: string | number;
   service_slug: string;
   incident_id: string;
@@ -63,6 +62,38 @@ function resolveEventCached(event: IncidentEvent, cache: Map<IncidentEvent["id"]
   return promise;
 }
 
+// The timestamp an incident notification email should actually show —
+// when the thing it's describing happened, not when this cron cycle
+// happened to send it: the incident's own creation for a brand-new
+// incident, or that specific update's own creation for an update_added
+// event (matches IncidentDetail.tsx's in-app choice of update.created_at
+// over incident.updated_at for the exact same reason).
+export function eventTimestamp(resolved: ResolvedEvent): string {
+  return resolved.type === "incident_created" ? resolved.incident.created_at : resolved.update.created_at;
+}
+
+// Unlike lib/pollMaintenanceReminders.ts's formatStartTime (which
+// deliberately stays UTC-only — see that file's own comment — this file
+// resolves each account's real saved time zone instead. Same
+// in-flight-promise caching shape as resolveEventCached above, keyed by
+// userId rather than event id, so concurrent (integration, event) pairs
+// for the same account never trigger more than one Admin API call per
+// cron cycle. Only ever called for the email channel (see
+// sendNotification below) — Slack/SMS/webhook don't need it, so an
+// account with no pending email this cycle never pays for this lookup at
+// all. Falls back to UTC on any failure (a bad/missing time zone, or the
+// Admin API itself erroring) rather than dropping the notification.
+function resolveTimeZoneCached(userId: string, cache: Map<string, Promise<string>>): Promise<string> {
+  const cached = cache.get(userId);
+  if (cached) return cached;
+  const promise = getSupabaseClient()
+    .auth.admin.getUserById(userId)
+    .then(({ data }) => resolveTimeZone(data.user?.user_metadata.time_zone))
+    .catch(() => "UTC");
+  cache.set(userId, promise);
+  return promise;
+}
+
 function buildSlackText(serviceSlug: string, resolved: ResolvedEvent): string {
   if (resolved.type === "incident_created") {
     return `🆕 New incident on ${serviceSlug}: *${resolved.incident.name}* (${resolved.incident.impact})`;
@@ -72,8 +103,13 @@ function buildSlackText(serviceSlug: string, resolved: ResolvedEvent): string {
   return `*${resolved.incident.name}* on ${serviceSlug} (${status}): ${preview}`;
 }
 
-function buildEmailContent(serviceSlug: string, resolved: ResolvedEvent): { subject: string; element: ReturnType<typeof IncidentNotification> } {
+function buildEmailContent(
+  serviceSlug: string,
+  resolved: ResolvedEvent,
+  timeZone: string,
+): { subject: string; element: ReturnType<typeof IncidentNotification> } {
   const logoUrl = emailLogoUrl();
+  const occurredAt = eventTimestamp(resolved);
   if (resolved.type === "incident_created") {
     return {
       subject: `New incident: ${resolved.incident.name}`,
@@ -86,6 +122,8 @@ function buildEmailContent(serviceSlug: string, resolved: ResolvedEvent): { subj
         body: null,
         shortlink: resolved.incident.shortlink,
         isNew: true,
+        occurredAt,
+        timeZone,
       }),
     };
   }
@@ -100,6 +138,8 @@ function buildEmailContent(serviceSlug: string, resolved: ResolvedEvent): { subj
       body: resolved.update.body,
       shortlink: resolved.incident.shortlink,
       isNew: false,
+      occurredAt,
+      timeZone,
     }),
   };
 }
@@ -145,14 +185,19 @@ async function sendSlack(integration: Extract<IntegrationDefinition, { slug: "sl
   }
 }
 
-async function sendEmail(integration: Extract<IntegrationDefinition, { slug: "email" }>, serviceSlug: string, resolved: ResolvedEvent): Promise<boolean> {
+async function sendEmail(
+  integration: Extract<IntegrationDefinition, { slug: "email" }>,
+  serviceSlug: string,
+  resolved: ResolvedEvent,
+  timeZone: string,
+): Promise<boolean> {
   const from = process.env.RESEND_FROM_EMAIL;
   // getAllIntegrationsAcrossUsers() only ever returns verified recipients
   // — an integration with none yet (freshly connected, nothing confirmed)
   // has nothing to send to.
   if (!from || integration.recipients.length === 0) return false;
 
-  const { subject, element } = buildEmailContent(serviceSlug, resolved);
+  const { subject, element } = buildEmailContent(serviceSlug, resolved, timeZone);
   try {
     const [html, text] = await Promise.all([render(element), render(element, { plainText: true })]);
     const { error } = await getResendClient().emails.send({
@@ -226,9 +271,14 @@ async function sendNotification(
   serviceSlug: string,
   resolved: ResolvedEvent,
   webhookValidationCache: Map<string, boolean>,
+  userId: string,
+  timeZoneCache: Map<string, Promise<string>>,
 ): Promise<boolean> {
   if (integration.slug === "slack") return sendSlack(integration, serviceSlug, resolved);
-  if (integration.slug === "email") return sendEmail(integration, serviceSlug, resolved);
+  // Only the email channel resolves a real time zone — see
+  // resolveTimeZoneCached's own comment for why this stays scoped to
+  // email rather than every channel paying for the lookup.
+  if (integration.slug === "email") return sendEmail(integration, serviceSlug, resolved, await resolveTimeZoneCached(userId, timeZoneCache));
   if (integration.slug === "webhook") return sendWebhook(integration, serviceSlug, resolved, webhookValidationCache);
   return sendSms(integration, serviceSlug, resolved);
 }
@@ -264,7 +314,7 @@ export async function notifyPendingEvents(): Promise<void> {
   // here is exactly the shape of load that already saturated this
   // project's Postgres compute once before the poller was sharded (see
   // AGENTS.md's Failure log).
-  const pairs: { integration: IntegrationDefinition; event: IncidentEvent }[] = [];
+  const pairs: { integration: IntegrationDefinition; event: IncidentEvent; userId: string }[] = [];
   await runInBatches(integrationsByUser, SEND_CONCURRENCY, async ({ integration, userId }) => {
     const ownTracked = trackedSlugsByUser.get(userId);
     if (!ownTracked?.size) return;
@@ -281,7 +331,7 @@ export async function notifyPendingEvents(): Promise<void> {
       .is("incident_event_deliveries.event_id", null)
       .order("occurred_at", { ascending: true })
       .limit(1000);
-    for (const event of (events as IncidentEvent[] | null) ?? []) pairs.push({ integration, event });
+    for (const event of (events as IncidentEvent[] | null) ?? []) pairs.push({ integration, event, userId });
   });
   if (pairs.length === 0) return;
 
@@ -290,7 +340,10 @@ export async function notifyPendingEvents(): Promise<void> {
   // Same "resolve once per cycle" idea as resolvedCache above, for webhook
   // URL validation — see sendWebhook's own comment (webhook.ts) for why.
   const webhookValidationCache = new Map<string, boolean>();
-  await runInBatches(pairs, SEND_CONCURRENCY, async ({ integration, event }) => {
+  // Same idea again, for each account's real time zone — see
+  // resolveTimeZoneCached's own comment.
+  const timeZoneCache = new Map<string, Promise<string>>();
+  await runInBatches(pairs, SEND_CONCURRENCY, async ({ integration, event, userId }) => {
     const resolved = await resolveEventCached(event, resolvedCache);
     if (!resolved) return;
 
@@ -304,7 +357,7 @@ export async function notifyPendingEvents(): Promise<void> {
 
     // Only recorded as delivered on actual success — a failed send is
     // therefore automatically retried next cycle, for free, with no queue.
-    if (await sendNotification(integration, event.service_slug, resolved, webhookValidationCache)) {
+    if (await sendNotification(integration, event.service_slug, resolved, webhookValidationCache, userId, timeZoneCache)) {
       sent.push({ event_id: event.id, integration_id: integration.id });
     }
   });

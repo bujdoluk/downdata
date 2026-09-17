@@ -1,11 +1,7 @@
 import { Link, Text } from "react-email";
 import EmailLayout from "@/components/emails/EmailLayout";
+import { formatDateTime } from "@/lib/formatTime";
 
-// Same 4 colors as the app's own status bars (Logo.tsx/icon.svg) and
-// INDICATOR_STYLES — kept as a small local map rather than importing
-// statusStyles.ts directly, since that file's classNames are daisyUI/
-// Tailwind utility classes no email client applies; this needs literal
-// hex values inlined instead.
 const IMPACT_COLORS: Record<string, string> = {
   none: "#10b981",
   minor: "#eab308",
@@ -22,6 +18,8 @@ export default function IncidentNotification({
   body,
   shortlink,
   isNew,
+  occurredAt,
+  timeZone,
 }: {
   logoUrl: string;
   serviceSlug: string;
@@ -31,6 +29,8 @@ export default function IncidentNotification({
   body: string | null;
   shortlink: string | null;
   isNew: boolean;
+  occurredAt: string;
+  timeZone: string;
 }) {
   const impactColor = IMPACT_COLORS[impact] ?? "#6b7280";
   const previewText = isNew ? `New incident on ${serviceSlug}: ${incidentName}` : `Update on ${incidentName} (${serviceSlug})`;
@@ -54,10 +54,11 @@ export default function IncidentNotification({
         <tr>
           <td style={{ padding: "16px 18px" }}>
             <Text style={{ fontSize: 16, fontWeight: 700, color: "#1c222b", margin: "0 0 6px" }}>{incidentName}</Text>
-            <Text style={{ fontSize: 13, margin: "0 0 10px" }}>
+            <Text style={{ fontSize: 13, margin: "0 0 4px" }}>
               <span style={{ color: impactColor, fontWeight: 700, textTransform: "capitalize" }}>{impact}</span>
               <span style={{ color: "#9ca3af" }}> · {status}</span>
             </Text>
+            <Text style={{ fontSize: 12, color: "#9ca3af", margin: "0 0 10px" }}>{formatDateTime(occurredAt, timeZone)}</Text>
             {body && <Text style={{ fontSize: 14, color: "#374151", lineHeight: 1.6, margin: 0 }}>{body}</Text>}
           </td>
         </tr>

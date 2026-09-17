@@ -21,7 +21,8 @@
     "poll:incidents": "node --env-file=.env scripts/poll-incidents.mjs",
     "poll:keyword-sources": "node --env-file=.env scripts/poll-keyword-sources.mjs",
     "generate:reports": "node --env-file=.env scripts/generate-reports.mjs",
-    "import:catalog": "node --env-file=.env scripts/import-catalog.mjs"
+    "import:catalog": "node --env-file=.env scripts/import-catalog.mjs",
+    "db:types": "npx supabase gen types typescript --project-id bvfsuibchotjtuzexwzq --schema public > src/lib/supabase/database.types.ts"
   },
   "lint-staged": {
     "*.{js,jsx,mjs,ts,tsx}": "eslint --fix"

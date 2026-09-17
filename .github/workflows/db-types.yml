@@ -1,0 +1,40 @@
+name: DB Types
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "supabase/migrations/**"
+      - "src/lib/supabase/database.types.ts"
+  pull_request:
+    branches: [master]
+    paths:
+      - "supabase/migrations/**"
+      - "src/lib/supabase/database.types.ts"
+  schedule:
+    - cron: "0 6 * * 1"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+
+      - name: Generate current DB types
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+        run: npx supabase gen types typescript --project-id bvfsuibchotjtuzexwzq --schema public > /tmp/database.types.ts
+
+      - name: Fail if the committed types have drifted from the live schema
+        run: |
+          if ! diff -u src/lib/supabase/database.types.ts /tmp/database.types.ts; then
+            echo "::error::src/lib/supabase/database.types.ts is out of date. Run 'npm run db:types' locally (needs 'npx supabase login' once per machine) and commit the result."
+            exit 1
+          fi

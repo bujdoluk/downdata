@@ -788,6 +788,24 @@ export type Database = {
         }
         Relationships: []
       }
+      service_component_filters: {
+        Row: {
+          component_id: string
+          service_slug: string
+          user_id: string
+        }
+        Insert: {
+          component_id: string
+          service_slug: string
+          user_id?: string
+        }
+        Update: {
+          component_id?: string
+          service_slug?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       status_page_password_attempts: {
         Row: {
           failed_count: number
@@ -881,6 +899,10 @@ export type Database = {
           count: number
           service_slug: string
         }[]
+      }
+      set_component_filter: {
+        Args: { p_component_ids: string[]; p_service_slug: string }
+        Returns: undefined
       }
       upsert_incident: {
         Args: {

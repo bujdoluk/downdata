@@ -110,35 +110,32 @@ export function eventComponentIds(resolved: ResolvedEvent): string[] {
   return (resolved.update.affected_components ?? []).map((c) => c.code);
 }
 
-async function fetchComponentFilter(userId: string, serviceSlug: string): Promise<Set<string> | null> {
+// One query for the whole cycle instead of one per (user, service) pair —
+// the pairs loop in notifyPendingEvents() below already runs up to
+// SEND_CONCURRENCY (200) at once, and a per-pair DB call there reintroduces
+// exactly the unbounded-concurrent-Supabase-queries shape that already
+// saturated this project's Postgres compute once before (see AGENTS.md's
+// Failure log). The table is only ever populated for accounts that turned
+// on "Custom" for at least one service, so fetching it whole is cheap
+// regardless of how many pending events/integrations this cycle has.
+// Fails open (an empty map, meaning "All components" everywhere this
+// cycle) on a transient DB hiccup, deliberately — never fail closed here,
+// that would silently suppress every notification instead of just this
+// one filter.
+async function fetchAllComponentFilters(): Promise<Map<string, Set<string>>> {
+  const filters = new Map<string, Set<string>>();
   try {
-    const { data } = await getSupabaseClient()
-      .from("service_component_filters")
-      .select("component_id")
-      .eq("user_id", userId)
-      .eq("service_slug", serviceSlug);
-    return data?.length ? new Set(data.map((row) => row.component_id as string)) : null;
+    const { data } = await getSupabaseClient().from("service_component_filters").select("user_id, service_slug, component_id");
+    for (const row of data ?? []) {
+      const key = `${row.user_id as string}:${row.service_slug as string}`;
+      const set = filters.get(key);
+      if (set) set.add(row.component_id as string);
+      else filters.set(key, new Set([row.component_id as string]));
+    }
   } catch {
-    // Fail open, deliberately — a transient DB hiccup degrades this account/
-    // service pair to "All components" for this cycle rather than silently
-    // suppressing every notification. Never "fix" this into fail-closed
-    // (returning e.g. an empty Set to mean "block everything") — that
-    // inverts the intended safety property.
-    return null;
+    // Empty map already means "All components" everywhere — nothing more to do.
   }
-}
-
-function resolveComponentFilterCached(
-  userId: string,
-  serviceSlug: string,
-  cache: Map<string, Promise<Set<string> | null>>,
-): Promise<Set<string> | null> {
-  const key = `${userId}:${serviceSlug}`;
-  const cached = cache.get(key);
-  if (cached) return cached;
-  const promise = fetchComponentFilter(userId, serviceSlug);
-  cache.set(key, promise);
-  return promise;
+  return filters;
 }
 
 // An incident/update naming no components at all is never filtered —
@@ -147,16 +144,11 @@ function resolveComponentFilterCached(
 // checked"). Only suppresses when components ARE named and none of them
 // are checked under the account's active "Custom" selection for this
 // service.
-export async function passesComponentFilter(
-  userId: string,
-  serviceSlug: string,
-  resolved: ResolvedEvent,
-  cache: Map<string, Promise<Set<string> | null>>,
-): Promise<boolean> {
+export function passesComponentFilter(userId: string, serviceSlug: string, resolved: ResolvedEvent, filters: Map<string, Set<string>>): boolean {
   const componentIds = eventComponentIds(resolved);
   if (componentIds.length === 0) return true;
 
-  const allowlist = await resolveComponentFilterCached(userId, serviceSlug, cache);
+  const allowlist = filters.get(`${userId}:${serviceSlug}`);
   if (!allowlist) return true; // "All components"
 
   return componentIds.some((id) => allowlist.has(id));
@@ -404,9 +396,9 @@ export async function notifyPendingEvents(): Promise<void> {
   // Same idea again, for each account's real time zone — see
   // resolveTimeZoneCached's own comment.
   const timeZoneCache = new Map<string, Promise<string>>();
-  // Same idea again, for each (account, service)'s shared component
-  // allowlist — see resolveComponentFilterCached's own comment.
-  const componentFilterCache = new Map<string, Promise<Set<string> | null>>();
+  // One query for the whole cycle, not per pair — see
+  // fetchAllComponentFilters's own comment.
+  const componentFilters = await fetchAllComponentFilters();
   await runInBatches(pairs, SEND_CONCURRENCY, async ({ integration, event, userId }) => {
     const resolved = await resolveEventCached(event, resolvedCache);
     if (!resolved) return;
@@ -419,7 +411,7 @@ export async function notifyPendingEvents(): Promise<void> {
       sent.push({ event_id: event.id, integration_id: integration.id });
       return;
     }
-    if (!(await passesComponentFilter(userId, event.service_slug, resolved, componentFilterCache))) {
+    if (!passesComponentFilter(userId, event.service_slug, resolved, componentFilters)) {
       sent.push({ event_id: event.id, integration_id: integration.id });
       return;
     }

@@ -35,8 +35,8 @@ const BASE_UPDATE: StoredIncidentUpdate = {
 
 const USER_ID = "user-1";
 
-function cacheWith(key: string, allowlist: Set<string> | null): Map<string, Promise<Set<string> | null>> {
-  return new Map([[key, Promise.resolve(allowlist)]]);
+function filtersWith(key: string, allowlist: Set<string> | null): Map<string, Set<string>> {
+  return allowlist ? new Map([[key, allowlist]]) : new Map();
 }
 
 describe("eventComponentIds", () => {
@@ -63,40 +63,40 @@ describe("eventComponentIds", () => {
 });
 
 describe("passesComponentFilter", () => {
-  it("always passes when the event names no components, even with an active allowlist", async () => {
+  it("always passes when the event names no components, even with an active allowlist", () => {
     const resolved: ResolvedEvent = { type: "incident_created", incident: BASE_INCIDENT };
-    const cache = cacheWith("user-1:cloudflare", new Set(["api"]));
-    expect(await passesComponentFilter(USER_ID, "cloudflare", resolved, cache)).toBe(true);
+    const filters = filtersWith("user-1:cloudflare", new Set(["api"]));
+    expect(passesComponentFilter(USER_ID, "cloudflare", resolved, filters)).toBe(true);
   });
 
-  it("passes when there's no filter row at all (\"All components\")", async () => {
+  it("passes when there's no filter row at all (\"All components\")", () => {
     const resolved: ResolvedEvent = {
       type: "incident_created",
       incident: { ...BASE_INCIDENT, components: [{ id: "dns", name: "DNS", status: "major_outage" }] },
     };
-    const cache = cacheWith("user-1:cloudflare", null);
-    expect(await passesComponentFilter(USER_ID, "cloudflare", resolved, cache)).toBe(true);
+    const filters = filtersWith("user-1:cloudflare", null);
+    expect(passesComponentFilter(USER_ID, "cloudflare", resolved, filters)).toBe(true);
   });
 
-  it("passes when the event's components intersect the allowlist", async () => {
+  it("passes when the event's components intersect the allowlist", () => {
     const resolved: ResolvedEvent = {
       type: "incident_created",
       incident: { ...BASE_INCIDENT, components: [{ id: "dns", name: "DNS", status: "operational" }, { id: "api", name: "API", status: "major_outage" }] },
     };
-    const cache = cacheWith("user-1:cloudflare", new Set(["api"]));
-    expect(await passesComponentFilter(USER_ID, "cloudflare", resolved, cache)).toBe(true);
+    const filters = filtersWith("user-1:cloudflare", new Set(["api"]));
+    expect(passesComponentFilter(USER_ID, "cloudflare", resolved, filters)).toBe(true);
   });
 
-  it("fails when the event's components don't intersect the allowlist", async () => {
+  it("fails when the event's components don't intersect the allowlist", () => {
     const resolved: ResolvedEvent = {
       type: "incident_created",
       incident: { ...BASE_INCIDENT, components: [{ id: "dns", name: "DNS", status: "major_outage" }] },
     };
-    const cache = cacheWith("user-1:cloudflare", new Set(["api"]));
-    expect(await passesComponentFilter(USER_ID, "cloudflare", resolved, cache)).toBe(false);
+    const filters = filtersWith("user-1:cloudflare", new Set(["api"]));
+    expect(passesComponentFilter(USER_ID, "cloudflare", resolved, filters)).toBe(false);
   });
 
-  it("uses the update's own affected_components, not the incident's top-level components, for update_added", async () => {
+  it("uses the update's own affected_components, not the incident's top-level components, for update_added", () => {
     const resolved: ResolvedEvent = {
       type: "update_added",
       // Incident's own components deliberately differ from the update's —
@@ -105,7 +105,7 @@ describe("passesComponentFilter", () => {
       incident: { ...BASE_INCIDENT, components: [{ id: "dns", name: "DNS", status: "operational" }] },
       update: { ...BASE_UPDATE, affected_components: [{ code: "api", name: "API", new_status: "major_outage", old_status: "operational" }] },
     };
-    const cache = cacheWith("user-1:cloudflare", new Set(["dns"]));
-    expect(await passesComponentFilter(USER_ID, "cloudflare", resolved, cache)).toBe(false);
+    const filters = filtersWith("user-1:cloudflare", new Set(["dns"]));
+    expect(passesComponentFilter(USER_ID, "cloudflare", resolved, filters)).toBe(false);
   });
 });

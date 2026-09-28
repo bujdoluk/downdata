@@ -1,16 +1,12 @@
-// Post content (title/body) is deliberately English-only — see
-// features/blog/services/blogPosts.ts's own header comment for why this
-// doesn't go through the 13-locale i18n system the rest of the app's
-// user-facing strings do.
+// Post content is deliberately English-only (admin-authored, not i18n'd).
 export type BlogPost = {
   slug: string;
   title: string;
   bodyHtml: string;
   imageUrl: string | null;
-  // Uploaded the same way as imageUrl (see BlogPostForm's Avatar field) —
-  // shown in BlogPostMeta instead of the downDATA logo when set.
+  // Shown in BlogPostMeta instead of the downDATA logo when set.
   avatarUrl: string | null;
-  // Null = draft. A real ISO instant = published, and is the date shown.
+  // Null = draft; an ISO instant = published and the date shown.
   publishedAt: string | null;
   createdAt: string;
 };

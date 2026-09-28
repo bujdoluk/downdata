@@ -1,5 +1,4 @@
-// Checkfront — booking/reservation platform; an original calendar-with-check
-// mark in the prior monogram's blue (no official hex was findable).
+// No official brand color found; an original mark, not a trademark reproduction.
 export default function CheckfrontLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="#2C97DE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

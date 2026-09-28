@@ -9,11 +9,7 @@ import RevealOnScroll from "@/components/landing-page/RevealOnScroll";
 
 const mono = "font-mono";
 
-// A feature that doesn't exist yet, regardless of which tier claims it (see
-// docs/specs/CAPABILITY-MAP-plan-tiers.md's admin-sso/authenticated-status-
-// pages/api-access rows) — same "Coming soon" badge the free-tools Chrome
-// extension card already established this session, reused here instead of
-// a second copy of that markup.
+// A feature not built yet on any tier (see docs/specs/CAPABILITY-MAP-plan-tiers.md).
 function ComingSoonRow({ label }: { label: string }) {
   const { t } = useTranslation();
   return (
@@ -47,11 +43,7 @@ export default function PricingSection() {
   const teamEntry = PLAN_CATALOG.team;
   const businessEntry = PLAN_CATALOG.business;
 
-  // Shared by Team/Business's price display below — both are real numbers
-  // now (see plans.ts's own note on why `monthlyPrice` dropped `| null`),
-  // shown through the same annual-toggle math the purchasable tiers use so
-  // the whole row responds to the toggle consistently, even though neither
-  // is actually purchasable yet.
+  // Same annual-toggle math as purchasable tiers so the whole row responds consistently.
   function priceDisplay(monthlyPrice: number) {
     return (annual ? discountedMonthlyPrice(monthlyPrice) : monthlyPrice).toFixed(2);
   }
@@ -82,7 +74,6 @@ export default function PricingSection() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {/* Free — no Stripe price, no /billing round trip; CTA goes straight to signup. */}
           <RevealOnScroll delayMs={0}>
             <div className="card card-border bg-base-200">
               <div className="card-body gap-6 p-8">
@@ -172,7 +163,7 @@ export default function PricingSection() {
             );
           })}
 
-          {/* Team — the recommended/highlighted card (moved here from Growth on request), same prominent treatment a purchasable featured tier gets. Still not actually purchasable (no Stripe price) — the disabled "Get notified" CTA is the one remaining signal of that, not a muted/dashed card shell. */}
+          {/* Highlighted but not purchasable yet (no Stripe price); the disabled CTA signals that. */}
           <RevealOnScroll delayMs={3 * 80}>
           <div className="card card-border bg-base-200 border-info/40 shadow-2xl transition-transform duration-300 hover:-translate-y-1">
             <div className="card-body gap-6 p-8">
@@ -223,7 +214,6 @@ export default function PricingSection() {
           </div>
           </RevealOnScroll>
 
-          {/* Business — in the making; real price now known, still not sellable (no Stripe price). */}
           <RevealOnScroll delayMs={4 * 80}>
           <div className="card card-border card-dash bg-base-200/60">
             <div className="card-body gap-6 p-8">

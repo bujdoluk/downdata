@@ -25,7 +25,6 @@ describe("resolveRuleForService", () => {
     const allRule = rule({ id: "all-rule", serviceSlug: null, minutesBefore: 240 });
     const githubRule = rule({ id: "github-rule", serviceSlug: "github", minutesBefore: 60 });
     expect(resolveRuleForService([allRule, githubRule], "github")).toBe(githubRule);
-    // Order in the array shouldn't matter.
     expect(resolveRuleForService([githubRule, allRule], "github")).toBe(githubRule);
   });
 

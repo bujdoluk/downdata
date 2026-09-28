@@ -34,17 +34,12 @@ export type StoredMaintenance = {
   maintenance_updates: StoredMaintenanceUpdate[];
 };
 
-// Columns toMaintenanceApiShape/toMaintenanceSummaryApiShape actually read,
-// plus service_slug (needed for the grouping join, never in the mapped
-// response) — same reasoning as getStoredIncident.ts's trimmed columns.
-// getStoredMaintenanceWithUpdates below stays "*": general-purpose, not
-// polled, no single shape-mapper to trim against.
+// Only the columns the shape-mappers read, plus service_slug for grouping.
 const MAINTENANCE_SUMMARY_COLUMNS =
   "id, service_slug, name, status, impact, created_at, resolved_at, updated_at, shortlink, scheduled_for, scheduled_until";
 const MAINTENANCE_UPDATE_COLUMNS = "id, maintenance_id, service_slug, status, body, created_at";
 
-// maintenance_updates.maintenance_id alone isn't guaranteed unique across
-// services, same reasoning as getStoredIncident.ts's grouping helper.
+// maintenance_id alone isn't unique across services.
 function groupUpdatesByMaintenance(updates: StoredMaintenanceUpdate[]): Map<string, StoredMaintenanceUpdate[]> {
   const map = new Map<string, StoredMaintenanceUpdate[]>();
   for (const update of updates) {
@@ -56,20 +51,9 @@ function groupUpdatesByMaintenance(updates: StoredMaintenanceUpdate[]): Map<stri
   return map;
 }
 
-// Tracked services' still-relevant maintenances, soonest-scheduled first —
-// powers /api/maintenance. Scoped to trackedSlugs *in the query* (not
-// filtered afterward) so this stays cheap and correct as the catalog grows
-// well beyond what any one user tracks.
-//
-// "Still relevant" = not explicitly completed, and either its window
-// hasn't passed yet or it's actively in progress (covers a maintenance
-// that overran its original scheduled_until without disappearing early).
-// This can't fully catch a maintenance cancelled well before its window —
-// nothing tells the poller something vanished from the upstream feed,
-// only what's still in it — so a maintenance cancelled far in advance
-// stays visible until its original scheduled_until passes. Accepted,
-// not solved: closing that gap needs a last-seen-at freshness column,
-// not built without evidence it's actually needed.
+// Scoped to trackedSlugs in the query so it stays cheap as the catalog grows.
+// Known gap: a maintenance cancelled far in advance stays visible until its
+// scheduled_until passes, since the poller can't see removals.
 export async function getAllStoredMaintenances(trackedSlugs: string[]): Promise<StoredMaintenance[]> {
   if (trackedSlugs.length === 0) return [];
   const supabase = getSupabaseClient();
@@ -93,10 +77,7 @@ export async function getAllStoredMaintenances(trackedSlugs: string[]): Promise<
   }));
 }
 
-// Same "still relevant" filter as getAllStoredMaintenances, no
-// maintenance_updates query — powers /api/maintenance's list response,
-// polled every 60s by pages that only ever render one maintenance's full
-// timeline at a time. See getAllStoredIncidentSummaries's reasoning.
+// No maintenance_updates query: list pages only render one full timeline at a time.
 export async function getAllStoredMaintenanceSummaries(trackedSlugs: string[]): Promise<Omit<StoredMaintenance, "maintenance_updates">[]> {
   if (trackedSlugs.length === 0) return [];
   const supabase = getSupabaseClient();
@@ -113,9 +94,6 @@ export async function getAllStoredMaintenanceSummaries(trackedSlugs: string[]): 
   return (data as Omit<StoredMaintenance, "maintenance_updates">[]) ?? [];
 }
 
-// One maintenance with its full update timeline — mirrors
-// getStoredIncident.ts's getStoredIncidentWithUpdates, backing the
-// per-item detail route (app/api/maintenance/[slug]/[id]).
 export async function getStoredMaintenanceWithUpdates(Slug: string, maintenanceId: string): Promise<StoredMaintenance | null> {
   const supabase = getSupabaseClient();
 
@@ -137,8 +115,6 @@ export async function getStoredMaintenanceWithUpdates(Slug: string, maintenanceI
   return { ...(maintenance as Omit<StoredMaintenance, "maintenance_updates">), maintenance_updates: (updates as StoredMaintenanceUpdate[]) ?? [] };
 }
 
-// Same mapping as toMaintenanceApiShape, minus the update timeline — for
-// the summary rows getAllStoredMaintenanceSummaries() returns.
 export function toMaintenanceSummaryApiShape(maintenance: Omit<StoredMaintenance, "maintenance_updates">): ScheduledMaintenanceSummary {
   return {
     id: maintenance.id,
@@ -154,9 +130,6 @@ export function toMaintenanceSummaryApiShape(maintenance: Omit<StoredMaintenance
   };
 }
 
-// Maps the DB's stored shape down to the ScheduledMaintenance shape the UI
-// already expects — same reasoning as getStoredIncident.ts's
-// toIncidentApiShape, plus the two scheduling fields it doesn't have.
 export function toMaintenanceApiShape(maintenance: StoredMaintenance): ScheduledMaintenance {
   return {
     id: maintenance.id,

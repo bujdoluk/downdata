@@ -36,12 +36,7 @@ export type StoredIncident = {
 
 const INCIDENT_SUMMARY_COLUMNS = "id, service_slug, name, status, impact, created_at, resolved_at, updated_at, shortlink";
 const INCIDENT_UPDATE_COLUMNS = "id, incident_id, service_slug, status, body, created_at";
-// The columns INCIDENT_UPDATE_COLUMNS above actually selects — every other
-// StoredIncidentUpdate field is genuinely absent (undefined) on a row
-// fetchUpdatesForIncidentIds returns, not just loosely typed. Partial<>
-// makes that honest: a row from this narrower path can no longer silently
-// claim (via a blanket `as StoredIncidentUpdate[]` cast) that fields like
-// affected_components are always present when they were never fetched.
+// Partial<> so unfetched fields are honestly typed as absent.
 type IncidentUpdateListRow = Pick<StoredIncidentUpdate, "id" | "incident_id" | "service_slug" | "status" | "body" | "created_at"> &
   Partial<Omit<StoredIncidentUpdate, "id" | "incident_id" | "service_slug" | "status" | "body" | "created_at">>;
 
@@ -78,6 +73,7 @@ function groupUpdatesByIncident(updates: IncidentUpdateListRow[]): Map<string, I
 }
 
 const CHUNK_SIZE = 200;
+// Paged: PostgREST silently truncates unpaginated selects at max_rows (1000).
 const PAGE_SIZE = 1000;
 
 async function fetchUpdatesForIncidentIds(
@@ -113,10 +109,6 @@ export async function getAllStoredIncidentSummaries(trackedSlugs: string[]): Pro
   return (data as Omit<StoredIncident, "incident_updates">[]) ?? [];
 }
 
-// What getStoredIncidentsForService actually returns — incident fields are
-// the real, full set (INCIDENT_SUMMARY_COLUMNS, plus components when
-// asked for), but incident_updates are IncidentUpdateListRow, not full
-// StoredIncidentUpdate — see that type's own comment for why.
 export type StoredIncidentSummaryWithUpdates = Omit<StoredIncident, "incident_updates"> & { incident_updates: IncidentUpdateListRow[] };
 
 export async function getStoredIncidentsForService(
@@ -185,12 +177,7 @@ export function toIncidentSummaryApiShape(incident: Omit<StoredIncident, "incide
   };
 }
 
-// Accepts either the full StoredIncident (from getStoredIncidentWithUpdates,
-// used by /api/incidents/[slug]/[id]) or the narrower
-// StoredIncidentSummaryWithUpdates (from getStoredIncidentsForService, used
-// by /api/history/[slug] and /api/summary/[slug]) — this only ever reads
-// {id, status, body, created_at} off each update below, so both shapes
-// satisfy it structurally without needing two separate functions.
+// Only reads {id, status, body, created_at} per update, so both shapes fit structurally.
 export function toIncidentApiShape(incident: StoredIncident | StoredIncidentSummaryWithUpdates): Incident {
   return {
     id: incident.id,

@@ -2,12 +2,8 @@ import { NextResponse } from "next/server";
 import { resolveIntegrationBySlug, addServiceToIntegrationTarget, removeServiceFromIntegrationTarget } from "@/features/integrations/services/integrations";
 import { getAllTrackedSlugs } from "@/features/boards/services/boards";
 
-// Turns this service on as a trigger for the caller's own integration —
-// mirrors app/api/boards/[id]/services/[slug]'s add/remove shape exactly.
 export async function POST(_request: Request, { params }: { params: Promise<{ slug: string; serviceSlug: string }> }) {
   const { slug, serviceSlug } = await params;
-  // Independent of each other (different tables, neither depends on the
-  // other's result) — resolve both at once instead of sequentially.
   const [integration, trackedSlugs] = await Promise.all([resolveIntegrationBySlug(slug), getAllTrackedSlugs()]);
   if (!integration) {
     return NextResponse.json({ error: "Unknown integration" }, { status: 404 });

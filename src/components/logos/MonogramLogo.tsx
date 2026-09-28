@@ -1,7 +1,4 @@
-// Badge mark for services with no hand-crafted brand logo available (see
-// components/service/logos/index.tsx) — an original two-letter badge,
-// distinguished per service by color and initials, not an attempt to
-// reproduce any company's actual trademarked logo artwork.
+// An original badge, not a reproduction of any trademarked logo.
 export default function MonogramLogo({ size = 28, initials, color }: { size?: number; initials: string; color: string }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">

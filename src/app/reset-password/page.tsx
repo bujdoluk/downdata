@@ -13,10 +13,7 @@ export default async function ResetPasswordPage({
 }) {
   const { recovered } = await searchParams;
 
-  // Reaching this page at all already implies a session (proxy.ts gates
-  // everything else behind login) — the ?recovered=1 marker is what tells a
-  // just-verified recovery link apart from a signed-in user who navigated
-  // here directly, who should land on /account's password section instead.
+  // ?recovered=1 marks a recovery link; a signed-in user arriving directly belongs on /account instead.
   if (recovered !== "1") {
     redirect("/account");
   }

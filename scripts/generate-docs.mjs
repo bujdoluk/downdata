@@ -1,12 +1,4 @@
 #!/usr/bin/env node
-// Generates docs/COMPONENTS.md — a props reference for every React
-// component under src/components/ (shared) and src/features/*/components/
-// (feature-owned), extracted straight from their TypeScript types via
-// react-docgen-typescript (drives the real TS compiler, so it resolves the
-// @/* alias and cross-file imported prop types correctly).
-//
-// Run with: npm run docs:components
-
 import { readdirSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { withCustomConfig } from "react-docgen-typescript";

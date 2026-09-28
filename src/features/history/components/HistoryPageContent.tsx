@@ -32,12 +32,8 @@ import LoadingOverlay from "@/components/LoadingOverlay";
 
 const POLL_INTERVAL_MS = 60_000;
 
-// Debounced-and-URL-synced component/text filters — same pattern as
-// ServiceDetail.tsx's ComponentFilters (see hooks/useDebouncedUrlFilters).
-// An empty `components` Set means "no filter" (unlike ImpactFilterDropdown,
-// where the full set is the default) — the component id list itself isn't
-// known until this service's incidents have loaded, so there's no fixed
-// "everything" set to default to up front.
+// Empty `components` Set means "no filter": the component list isn't known
+// until incidents load, so there's no fixed "everything" set to default to.
 type HistoryFilters = { components: Set<string>; q: string };
 
 function parseHistoryFilters(searchParams: URLSearchParams): HistoryFilters {
@@ -83,14 +79,8 @@ export default function HistoryPageContent({
     .sort((a, b) => a.name.localeCompare(b.name));
 
   const { selectedBoardId } = useSelectedBoard();
-  // True on a render where the persisted cross-page board pick (see
-  // hooks/useSelectedBoard) is about to be applied because this URL has no
-  // ?board= of its own yet. The service-default effect below deliberately
-  // sits this render out when true — `services` above is still the
-  // unfiltered list (computed from the still-absent boardId), so picking a
-  // "first service" now could pick one outside the board that's about to be
-  // applied; it settles safely once the board default lands and `services`
-  // is re-filtered on the next render.
+  // While the persisted board pick is about to apply, `services` is still
+  // unfiltered, so the service-default effect below waits a render.
   const persistedBoardApplies = !searchParams.has("board") && !!selectedBoardId && boards.some((b) => b.id === selectedBoardId);
 
   useEffect(() => {
@@ -101,12 +91,8 @@ export default function HistoryPageContent({
 
   const slug = searchParams.get("service") ?? "";
 
-  // Lands on an empty calendar otherwise — default to the first service in
-  // the (already alphabetized) list so a first-time visitor sees data
-  // right away instead of having to search manually. replace, not push,
-  // so this doesn't add a spurious back-button entry; also re-fires (and
-  // picks a new default) whenever selectBoard clears an out-of-board
-  // service back to empty.
+  // Default to the first service so the calendar isn't empty. replace, not
+  // push, to avoid a spurious back-button entry.
   useEffect(() => {
     if (!persistedBoardApplies && !slug && services.length > 0) {
       // services.length > 0 was just checked above
@@ -163,11 +149,7 @@ export default function HistoryPageContent({
     });
   }
 
-  // Years with any incident, oldest first, always including the current
-  // year even with zero incidents so there's always at least one to pick.
-  // Bucketed by the same timeZone the calendar grid itself uses below —
-  // otherwise an incident near a year boundary could land in a different
-  // year here than in the grid.
+  // Bucketed in the calendar's timeZone so year-boundary incidents match the grid.
   const years = useMemo(() => {
     const set = new Set(
       (incidents ?? []).map((incident) => Temporal.Instant.from(incident.created_at).toZonedDateTimeISO(timeZone).year),
@@ -175,8 +157,6 @@ export default function HistoryPageContent({
     set.add(currentYear);
     return [...set].sort((a, b) => a - b);
   }, [incidents, timeZone, currentYear]);
-  // Falls back to the current year if the selected one doesn't apply to
-  // whatever service is now loaded, or came from a malformed URL.
   const year = years.includes(selectedYear) ? selectedYear : currentYear;
 
   function selectYear(y: number) {
@@ -190,10 +170,6 @@ export default function HistoryPageContent({
     updateParams({ tab: tab === "detail" ? null : tab });
   }
 
-  // Every {id, name} this service's currently-loaded incidents mention,
-  // deduped and alphabetized — feeds ComponentFilterDropdown. Most services'
-  // incidents carry no per-component data, in which case this stays empty
-  // and the dropdown renders nothing.
   const allComponents = useMemo(() => {
     const byId = new Map<string, string>();
     for (const incident of incidents ?? []) {
@@ -208,10 +184,7 @@ export default function HistoryPageContent({
     const q = filters.q.trim().toLowerCase();
     return (incidents ?? []).filter((incident) => {
       if (!selectedImpacts.has(incident.impact)) return false;
-      // An incident with no components listed is treated as broad/unclear —
-      // it stays visible no matter which components are checked. Only
-      // incidents that *do* list components get excluded when none of
-      // theirs are selected.
+      // Incidents listing no components stay visible whatever is checked.
       if (filters.components.size > 0 && incident.components && incident.components.length > 0) {
         if (!incident.components.some((component) => filters.components.has(component.id))) return false;
       }
@@ -235,11 +208,6 @@ export default function HistoryPageContent({
     () => buildIncidentCalendar(relevantIncidents, year, i18n.language, timeZone),
     [relevantIncidents, year, i18n.language, timeZone],
   );
-  // No explicit ?date= yet and today already has an incident in the current
-  // (filtered, current-year) calendar — show it without requiring a click.
-  // Naturally falls through to null for a past year or when the impact
-  // checkboxes filter today's incident(s) out, since calendar.days won't
-  // contain a matching day.incidents.length > 0 entry either way.
   const todayWithIncident = calendar.days.find((day) => day.date === calendar.today && day.incidents.length > 0);
   const effectiveSelectedDate = selectedDate ?? todayWithIncident?.date ?? null;
   const selectedDay = effectiveSelectedDate ? calendar.days.find((day) => day.date === effectiveSelectedDate) : null;
@@ -248,7 +216,6 @@ export default function HistoryPageContent({
     updateParams({ date: date === selectedDate ? null : date });
   }
 
-  // Derived purely from the already-fetched incidents — no extra requests.
   const summary = useMemo(() => {
     const uniqueIncidents = new Map<string, Incident>();
     for (const day of calendar.days) {
@@ -258,7 +225,7 @@ export default function HistoryPageContent({
     const avgResolutionMinutes =
       resolved.length > 0
         ? Math.round(
-            // resolved_at is guaranteed here — resolved was filtered on its truthiness above
+            // resolved_at is guaranteed: resolved was filtered on it above
             resolved.reduce((sum, incident) => sum + minutesBetween(incident.created_at, incident.resolved_at!), 0) / resolved.length,
           )
         : null;
@@ -399,11 +366,6 @@ export default function HistoryPageContent({
                                     <div className="timeline-middle">
                                       <span className="bg-base-content/30 block h-2 w-2 rounded-full" />
                                     </div>
-                                    {/* Was bg-base-200 — the same tone as the tab-content
-                                        panel it sits in, so it was already invisible
-                                        against it before this file's panel even moved to
-                                        --color-surface-1; promoted to the card tier so it
-                                        actually stands out. */}
                                     <div className="timeline-end timeline-box bg-[var(--color-surface-2)] min-w-0">
                                       <p className="text-base-content text-sm font-medium wrap-anywhere">{update.status}</p>
                                       <p className="text-base-content/70 mt-1 text-sm whitespace-pre-line wrap-anywhere">{stripHtml(update.body)}</p>

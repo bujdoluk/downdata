@@ -14,8 +14,7 @@ import PageHeader from "@/components/PageHeader";
 import BlogPostPreviewModal, { type BlogPostPreviewModalHandle } from "@/features/blog/components/BlogPostPreviewModal";
 import type { BlogPost } from "@/features/blog/types";
 
-// Internal admin tooling — see BlogPostForm.tsx's own comment on why this
-// is plain English, not run through i18n.
+// Admin-only tooling, deliberately plain English, not i18n'd.
 export default function BlogAdminPageContent({ posts }: { posts: BlogPost[] }) {
   const router = useRouter();
   const timeZone = useTimeZone();

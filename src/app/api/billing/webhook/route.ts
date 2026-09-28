@@ -4,16 +4,8 @@ import { getStripeClient, resolvePlanFromPriceId } from "@/features/billing/serv
 import { upsertFromStripeEvent } from "@/features/billing/services/subscriptions";
 import { isoFromUnixSeconds } from "@/lib/formatTime";
 
-// Public route (see proxy.ts's PUBLIC_EXACT) — Stripe carries no session
-// cookie, so the webhook signature itself is the authorization, the same
-// pattern as /api/integrations/email/verify's token. Never call this from
-// a user-facing code path.
-//
-// Subscribed to customer.subscription.* only, not checkout.session.completed
-// — subscription_data.metadata.supabase_user_id (set at Checkout Session
-// creation, see app/api/billing/checkout/route.ts) propagates onto the
-// Subscription object itself, so every subscription event self-identifies
-// its owner without needing to correlate back to a checkout session.
+// Public: Stripe sends no session, so the signature is the authorization.
+// Only customer.subscription.* is needed: supabase_user_id metadata (set at checkout) rides on the Subscription.
 const HANDLED_EVENTS = new Set(["customer.subscription.created", "customer.subscription.updated", "customer.subscription.deleted"]);
 
 export async function POST(request: Request) {
@@ -35,16 +27,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ received: true });
   }
 
-  // Safe — HANDLED_EVENTS above narrows event.type to the three
-  // customer.subscription.* events, whose data.object is always a
-  // Stripe.Subscription.
+  // Safe: HANDLED_EVENTS narrows to customer.subscription.* events, whose data.object is a Subscription.
   const subscription = event.data.object as Stripe.Subscription;
   const userId = subscription.metadata.supabase_user_id;
   const item = subscription.items.data[0];
   if (!userId || !item) {
-    // A subscription created outside this app's own checkout flow (e.g.
-    // directly in the Dashboard) carries no supabase_user_id — nothing to
-    // attach it to.
+    // Subscriptions created outside our checkout (e.g. the Stripe Dashboard) have no owner to attach to.
     return NextResponse.json({ received: true });
   }
 

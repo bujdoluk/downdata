@@ -1,10 +1,5 @@
-// The report-generation cron's actual work (app/api/cron/generate-reports
-// calls generateDueReports() below). Boards have no history log to diff
-// against — service_slugs is just current state — so "board activity" in
-// a report is limited to newlyTrackedServiceSlugs (derived from each
-// service's own trackedSince, uptime.ts's existing concept), not a real
-// added/removed diff. Flagged here rather than silently shipped as if it
-// were the full thing.
+// Boards keep no history, so "board activity" is only newlyTrackedServiceSlugs
+// (from trackedSince), not a real added/removed diff.
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { render } from "@react-email/render";
 import { Temporal } from "temporal-polyfill";
@@ -26,18 +21,10 @@ import type { Board } from "@/types/board";
 import type { Catalog } from "@/types/service";
 import type { BoardReportSection, ReportInterval, ReportPayload, ServiceReportEntry } from "@/features/reports/types";
 
-// Same "two nines" baseline used across the industry (Pingdom's own SLA
-// copy, e.g.) — low enough that an ordinary blip doesn't flag every week,
-// high enough that a genuinely bad one doesn't slip through quiet. Fixed
-// for every account, no settings UI — see the grilling session that
-// settled this feature's scope for why.
+// Industry "two nines" baseline: ordinary blips don't flag, bad weeks do.
 const AT_RISK_UPTIME_THRESHOLD = 99;
 
-// Local hour (in the account's own timezone) a report sends at once its
-// period has just completed. Requires app/api/cron/generate-reports to
-// actually be invoked roughly hourly by the external scheduler — a daily
-// invocation would only ever catch the accounts whose local send hour
-// happens to line up with whenever that one daily tick lands.
+// Local send hour. Requires the generate-reports cron to run roughly hourly.
 const REPORT_SEND_HOUR = 8;
 
 const ACCOUNT_CONCURRENCY = 10;
@@ -45,14 +32,11 @@ const SERVICE_CONCURRENCY = 20;
 
 function isBoundaryDay(interval: ReportInterval, today: Temporal.PlainDate): boolean {
   if (interval === "daily") return true;
-  if (interval === "weekly") return today.dayOfWeek === 1; // Monday
+  if (interval === "weekly") return today.dayOfWeek === 1;
   return today.day === 1;
 }
 
-// The period that just completed as of `today` — ending yesterday, so a
-// report never covers a day still in progress. Calendar-aligned throughout
-// (Mon-Sun weeks, 1st-to-1st months) — no per-account custom start day,
-// per this feature's settled scope.
+// Ends yesterday so a report never covers a day still in progress.
 function completedPeriodEnding(interval: ReportInterval, today: Temporal.PlainDate): { start: Temporal.PlainDate; end: Temporal.PlainDate } {
   const end = today.subtract({ days: 1 });
   if (interval === "daily") return { start: end, end };
@@ -60,10 +44,8 @@ function completedPeriodEnding(interval: ReportInterval, today: Temporal.PlainDa
   return { start: end.with({ day: 1 }), end };
 }
 
-// Merges overlapping major/critical intervals within the window — same
-// idea as uptime.ts's computeOfficial30DaysUptime, kept as its own small
-// helper here (not added to that shared file) since only this feature
-// needs downtime-in-minutes and the single longest outage, not a percent.
+// Kept separate from uptime.ts: only this feature needs downtime minutes and
+// the longest outage, not a percent.
 function computePeriodDowntime(
   incidents: { impact: string; created_at: string; resolved_at: string | null }[],
   windowStartMs: number,
@@ -91,13 +73,8 @@ function computePeriodDowntime(
   return { downtimeMinutes: Math.round(downtimeMs / 60_000), longestOutageMinutes: Math.round(longestMs / 60_000) };
 }
 
-// The account's own watched keywords with any match captured in the
-// window, across whichever sources it currently has enabled — a
-// service-role, period-bounded, single-account variant of
-// earlyWarnings.ts's getMatchesForOwnKeywords (which is session-scoped and
-// unbounded by time), since the report-generation cron has no session.
-// Defaults to 0 on any failure — this is a secondary metric, not worth
-// failing a whole account's report over.
+// Service-role, time-bounded variant of earlyWarnings.ts's
+// getMatchesForOwnKeywords, since the cron has no session. Secondary metric, so 0 on failure.
 async function countKeywordMatchesForUser(supabase: SupabaseClient, userId: string, windowStartIso: string, windowEndIso: string): Promise<number> {
   try {
     const { data: watchRows } = await supabase.from("keyword_watches").select("keyword").eq("user_id", userId);
@@ -135,11 +112,7 @@ async function countKeywordMatchesForUser(supabase: SupabaseClient, userId: stri
   }
 }
 
-// The full computed report for one account's included boards over one
-// period. allSlugs is deduped across boards first so a service tracked on
-// two of the account's own boards is never double-counted in the
-// account-level totals — each board section below just reads its own
-// slugs back out of the same per-slug map.
+// allSlugs is deduped so a service on two boards isn't double-counted in the totals.
 async function computeReportPayload(
   userId: string,
   boards: Board[],
@@ -148,11 +121,8 @@ async function computeReportPayload(
   catalogBySlug: Map<string, Catalog>,
   timeZone: string,
 ): Promise<ReportPayload> {
-  // periodStart/periodEnd are calendar dates already computed in the
-  // account's own timeZone (see completedPeriodEnding's callers) — the
-  // window boundaries have to stay in that same timeZone too, or a
-  // non-UTC account's period silently shifts by its UTC offset (an
-  // incident near local midnight lands in the wrong period).
+  // Window bounds must stay in the account's timeZone, or non-UTC periods
+  // shift by the UTC offset.
   const windowStart = periodStart.toZonedDateTime({ timeZone, plainTime: "00:00:00" });
   const windowEndExclusive = periodEnd.add({ days: 1 }).toZonedDateTime({ timeZone, plainTime: "00:00:00" });
   const windowStartIso = windowStart.toInstant().toString();
@@ -184,17 +154,11 @@ async function computeReportPayload(
   let longestOutageMinutesOverall = 0;
 
   await runInBatches(allSlugs, SERVICE_CONCURRENCY, async (slug) => {
-    // getStoredIncidentSummariesForService's "since" filter has no upper
-    // bound of its own — acceptable here because a report is always
-    // generated right as its period ends (see generateDueReports), so
-    // nothing has happened after windowEndIso yet at generation time.
+    // "since" has no upper bound; fine because reports generate right as the period ends.
     const [incidents, uptimeStats] = await Promise.all([getStoredIncidentSummariesForService(slug, windowStartIso), getAllTimeUptimeStats(slug)]);
 
-    // Clipped to trackedSince when tracking started mid-period — same
-    // reasoning as uptime.ts's getServiceUptimeSummary: without this, a
-    // service added on day 3 of a 7-day week would score against 4 days
-    // it was never actually observed for, reading as a perfect uptime
-    // rather than an unmeasured one.
+    // Clip to trackedSince so a service added mid-period isn't scored as
+    // perfect for days it was never observed.
     const trackedSinceMs = uptimeStats?.trackedSince ? epochMs(uptimeStats.trackedSince) : null;
     const effectiveWindowStartMs = trackedSinceMs !== null ? Math.max(windowStartMs, trackedSinceMs) : windowStartMs;
     const effectiveWindowStartIso = isoFromEpochMs(effectiveWindowStartMs);
@@ -215,9 +179,7 @@ async function computeReportPayload(
       name: catalogBySlug.get(slug)?.name ?? slug,
       uptimePercent,
       incidentCount: incidents.length,
-      // Filled in below once the maintenance queries (scoped to every
-      // slug at once, not one at a time inside this per-slug batch) come
-      // back — 0 here is a placeholder, not a real "no maintenance" claim.
+      // Placeholder until the batched maintenance queries below fill it in.
       maintenanceCount: 0,
       downtimeMinutes,
       atRisk: uptimePercent < AT_RISK_UPTIME_THRESHOLD || hasOpenOutage,
@@ -252,12 +214,6 @@ async function computeReportPayload(
     countKeywordMatchesForUser(supabase, userId, windowStartIso, windowEndIso),
   ]);
 
-  // Per-service breakdown of the two totals above — completed-in-period
-  // and still-upcoming/in-progress, summed into one number per service
-  // (see ServiceReportEntry.maintenanceCount). Always a real number at
-  // this point (every entry started at 0 moments ago, in this same
-  // function) — the `?? 0` here is just to satisfy the field's type,
-  // which also has to allow undefined for reports read back from storage.
   for (const maintenance of upcomingMaintenances) {
     const entry = entryBySlug.get(maintenance.service_slug);
     if (entry) entry.maintenanceCount = (entry.maintenanceCount ?? 0) + 1;
@@ -319,13 +275,8 @@ async function sendReportNudge(
   }
 }
 
-// A fabricated report, shown only when the "send test email" button
-// (sendTestReportEmail below) is used by an account that tracks nothing
-// yet — there's no real data to preview, but showing an empty/all-zero
-// report wouldn't actually demonstrate what a real one looks like. Every
-// fabricated label is prefixed "Test " so nothing in it can be mistaken
-// for a real service, board, or number — reinforced by ReportReady's own
-// isPlaceholder banner.
+// Only for test sends from accounts tracking nothing yet. Every label is
+// prefixed "Test " so it can't be mistaken for real data.
 function buildPlaceholderTestPayload(): ReportPayload {
   const placeholderService: ServiceReportEntry = {
     slug: "test-service",
@@ -354,15 +305,8 @@ function buildPlaceholderTestPayload(): ReportPayload {
 const TEST_SEND_LIMIT = 5;
 const TEST_SEND_WINDOW_MS = 60 * 60 * 1000;
 
-// The /reports "send test email" button's own service-role-free, purely
-// session-scoped path — deliberately separate from generateDueReports:
-// it never writes to `reports` (not a real generation event, see this
-// feature's settled scope), always recomputes live off whatever
-// interval/boards are currently selected (never a stale stored report),
-// and always sends to the caller's own login email, never an arbitrary or
-// integration-sourced address. Rate-limited server-side (not just a
-// disabled button, which a direct API call would bypass) via a fixed
-// window on the caller's own report_settings row.
+// Never writes to `reports`, always sends to the caller's own email, and is
+// rate-limited server-side since a disabled button alone is bypassable.
 export async function sendTestReportEmail(): Promise<{ sent: boolean; retryAfterSeconds?: number }> {
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();
@@ -379,13 +323,12 @@ export async function sendTestReportEmail(): Promise<{ sent: boolean; retryAfter
   const countInWindow = windowExpired ? 0 : (settingsRow?.test_send_count ?? 0);
 
   if (countInWindow >= TEST_SEND_LIMIT) {
+    // A non-zero countInWindow implies the window is unexpired, so windowStartIso is set.
     const retryAfterSeconds = Math.ceil((epochMs(windowStartIso!) + TEST_SEND_WINDOW_MS - epochMs(now)) / 1000);
     return { sent: false, retryAfterSeconds };
   }
 
-  // Reserved before the send actually happens (not after) — an account
-  // spamming the button while a slow send is still in flight can't rack
-  // up more attempts than the limit allows in the meantime.
+  // Reserve before sending so spam clicks during a slow send can't exceed the limit.
   const { error: reserveError } = await supabase.from("report_settings").upsert(
     { user_id: userData.user.id, test_send_count: countInWindow + 1, test_send_window_start: windowExpired ? now : windowStartIso },
     { onConflict: "user_id" },
@@ -423,21 +366,13 @@ type SettingsRow = {
   excluded_board_ids: string[] | null;
   email_nudge_enabled: boolean;
   time_zone: string;
-  // Intervals that have ever had a report generated for this account,
-  // independent of whether that report row still exists (a user can now
-  // delete their own reports — reports_delete, 0034_report_deletion.sql).
-  // Tracked here instead of derived from counting `reports` rows so
-  // deleting history can never resurrect the "first report" path below.
+  // Tracked separately from `reports` rows: users can delete reports (0034), and a
+  // row count would then resurrect the "first report" path.
   reported_intervals: string[];
 };
 
-// Generates and persists every account's due report for this cron tick,
-// then sends the opt-out nudge email for each one generated. "Due" means
-// either: this is the very first report ever generated for that account's
-// currently-selected interval (generated immediately, regardless of
-// send hour — see this feature's settled scope), or today is that
-// interval's calendar boundary day in the account's own timezone and it's
-// currently that account's local REPORT_SEND_HOUR.
+// "Due" = first report ever for the selected interval (sent immediately), or
+// the interval's boundary day at the account's local REPORT_SEND_HOUR.
 export async function generateDueReports(): Promise<{ generated: number; emailsSent: number; failed: number }> {
   const supabase = getSupabaseClient();
 
@@ -449,19 +384,11 @@ export async function generateDueReports(): Promise<{ generated: number; emailsS
     getAllIntegrationsAcrossUsers(),
     supabase.from("report_settings").select("user_id, report_interval, excluded_board_ids, email_nudge_enabled, time_zone, reported_intervals"),
   ]);
-  // A failed read must not fall every account back to the hardcoded
-  // defaults below (weekly/UTC/nudges-on) — that would silently override a
-  // real per-account choice for this whole cron tick. Throw so the caller's
-  // catch logs it and skips marking last_success_at, instead of masking it
-  // as "no rows".
+  // Throw rather than silently fall every account back to defaults for this tick.
   if (settingsRowsResult.error) throw settingsRowsResult.error;
   const catalogBySlug = new Map(catalog.map((entry) => [entry.slug, entry]));
   const settingsByUser = new Map((settingsRowsResult.data as SettingsRow[]).map((row) => [row.user_id, row]));
 
-  // Verified email recipients per account, reused from the one
-  // cross-account integrations fetch above — same "one fetch for the whole
-  // cycle, group in memory" shape notifyIncidentEvents.ts already relies
-  // on, not a second query per account.
   const emailRecipientsByUser = new Map<string, string[]>();
   for (const { integration, userId } of integrationsByUser) {
     if (integration.slug !== "email") continue;
@@ -491,10 +418,7 @@ export async function generateDueReports(): Promise<{ generated: number; emailsS
       if (!isFirstReport && !(isBoundaryDay(interval, today) && local.hour === REPORT_SEND_HOUR)) return;
       const period = completedPeriodEnding(interval, today);
 
-      // Guards against a duplicate insert within the same send hour (e.g.
-      // an overlapping cron run) — the table's own unique constraint would
-      // reject it anyway, but checked first so that reads as a no-op, not
-      // a logged failure.
+      // Makes an overlapping cron run a no-op instead of a unique-constraint failure.
       const { data: existingPeriod } = await supabase
         .from("reports")
         .select("id")
@@ -511,9 +435,6 @@ export async function generateDueReports(): Promise<{ generated: number; emailsS
       if (insertError) throw insertError;
       generated++;
 
-      // Only written the first time this interval is ever reported for
-      // this account — every later run already finds it in
-      // reported_intervals and skips the write.
       if (isFirstReport) {
         const nextIntervals = [...new Set([...(settings?.reported_intervals ?? []), interval])];
         const { error: markError } = await supabase.from("report_settings").upsert({ user_id: userId, reported_intervals: nextIntervals }, { onConflict: "user_id" });

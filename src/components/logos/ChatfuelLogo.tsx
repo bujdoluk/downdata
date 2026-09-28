@@ -1,5 +1,4 @@
-// Chatfuel — chatbot builder; an original chat-bubble-with-spark mark in the
-// prior monogram's purple (no official hex was findable).
+// No official brand color found; an original mark, not a trademark reproduction.
 export default function ChatfuelLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} fill="#6C5CE7" aria-hidden="true">

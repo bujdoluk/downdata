@@ -14,9 +14,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   return NextResponse.json(await getStatusPage(id));
 }
 
-// Create-or-update the branding/slug settings. Never touches `enabled` —
-// see POST/DELETE .../status-page/enable for publishing, kept separate so
-// the quota check only runs at actual publish time.
+// Never touches `enabled`; publishing lives in .../enable so the quota check runs only there.
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!(await resolveBoardById(id))) {
@@ -46,8 +44,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const statusPage = await upsertStatusPage(id, { slug, companyName: companyName || null, logoUrl, hideBranding });
     return NextResponse.json(statusPage);
   } catch (error) {
-    // Postgres unique_violation on board_status_pages.slug — someone
-    // else's status page (or this account's other one) already has it.
+    // unique_violation on board_status_pages.slug
     if ((error as { code?: string })?.code === "23505") {
       return NextResponse.json({ error: "That URL is already taken. Try a different one." }, { status: 409 });
     }

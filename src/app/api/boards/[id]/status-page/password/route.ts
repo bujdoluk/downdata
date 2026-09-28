@@ -3,9 +3,6 @@ import { resolveBoardById } from "@/features/boards/services/boards";
 import { removePassword, setPassword } from "@/features/status-pages/services/statusPages";
 import { firstIssueMessage, passwordSchema } from "@/features/status-pages/services/validation";
 
-// Set or change the shared password — kept separate from PUT
-// .../status-page (branding) and .../status-page/enable (publishing), same
-// "one endpoint per distinct concern" split this feature already follows.
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!(await resolveBoardById(id))) {
@@ -25,8 +22,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   return NextResponse.json(statusPage);
 }
 
-// Turns password protection off entirely (the IP allowlist, if any, is
-// untouched — the two mechanisms are independent, see the spec).
+// Leaves the IP allowlist untouched: the two mechanisms are independent.
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!(await resolveBoardById(id))) {

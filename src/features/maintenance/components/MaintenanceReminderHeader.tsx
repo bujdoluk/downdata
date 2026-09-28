@@ -15,11 +15,7 @@ import type { MaintenanceReminderRule } from "@/features/maintenance/types";
 import type { IntegrationDefinition } from "@/types/integration";
 import type { TrackedMaintenance } from "@/types/service";
 
-// Re-ticks the countdown every 30s, not every second — a "starts in Xd Yh
-// Zm" display doesn't need second-level precision, and this app's own
-// reminder-scan cadence is 1 minute anyway (see pollMaintenanceReminders.ts),
-// so anything tighter than that would be a precision the rest of the
-// feature can't back up.
+// 30s is enough: the reminder scan itself only runs every minute.
 const COUNTDOWN_TICK_MS = 30_000;
 
 function useCountdownParts(scheduledForIso: string) {
@@ -33,10 +29,8 @@ function useCountdownParts(scheduledForIso: string) {
   return { days: Math.floor(totalMinutes / 1440), hours: Math.floor((totalMinutes % 1440) / 60), minutes: totalMinutes % 60 };
 }
 
-// Maintenance-only chrome layered above the shared IncidentDetail, never
-// inside it — IncidentDetail.tsx is also rendered by /incidents, which has
-// no reminder concept at all. See the grilling session in git history for
-// why this stays a separate wrapper instead of a prop on that component.
+// A wrapper, not an IncidentDetail prop: /incidents also renders IncidentDetail
+// and has no reminders.
 export default function MaintenanceReminderHeader({ maintenance }: { maintenance: TrackedMaintenance }) {
   const { t } = useTranslation();
   const dialogRef = useRef<HTMLDialogElement>(null);

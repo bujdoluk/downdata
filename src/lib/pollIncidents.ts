@@ -4,18 +4,8 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { runInBatches } from "@/lib/runInBatches";
 import { hasMatchingComponent } from "@/lib/componentNamePrefix";
 
-// The full upstream Statuspage payload — deliberately not types/service.ts's
-// Incident, which only ever modeled what the current UI reads and
-// is read structurally across service/, history/, incidents/ (see AGENTS.md).
-// This type is local to the poller on purpose.
-//
-// Several fields below are optional even though Atlassian's own feeds
-// always send them (as a real value or explicit null) — incident.io-hosted
-// pages (e.g. status.brevo.com) omit them from the JSON entirely instead.
-// Marked optional here, honestly, rather than left required-but-sometimes-
-// undefined-at-runtime: upsert_incident_update/upsert_maintenance_update's
-// deliver_notifications bug (see migration 0028) was exactly this kind of
-// gap between what the type promised and what a real feed actually sent.
+// Full upstream payload, local to the poller on purpose (types/service.ts only models what the UI reads).
+// Optional fields: incident.io-hosted pages omit them entirely (see migration 0028).
 type RawComponent = { id: string; name: string; status: string };
 
 type RawIncidentUpdate = {
@@ -46,9 +36,7 @@ type RawIncident = {
   incident_updates: RawIncidentUpdate[];
 };
 
-// Statuspage models a scheduled maintenance as an incident-shaped object
-// plus a scheduling window — its own API reuses the `incident_updates`
-// field name even here, not `maintenance_updates`.
+// Statuspage reuses the `incident_updates` field name for maintenances.
 type RawMaintenance = RawIncident & {
   scheduled_for: string;
   scheduled_until: string;
@@ -56,21 +44,10 @@ type RawMaintenance = RawIncident & {
 
 const FETCH_CONCURRENCY = 200;
 
-// Shared with app/api/cron/health/route.ts so the lock's own self-heal
-// window and the health check's staleness threshold can't drift apart.
-// Each shard now only succeeds once per ~5min cycle (staggered 1-shard
-// cron ticks — see AGENTS.md), so this has to clear that cadence with
-// margin or a merely-slightly-late tick reads as "stale"/unhealthy.
+// Shared with the health route. 10min must clear the ~5min sharded cycle or a late tick reads as stale.
 export const LOCK_STALE_MS = 10 * 60 * 1000;
 
-// Returns how many of this service's incidents (rows + their updates)
-// failed to upsert — used to decide whether this service's first poll is
-// clean enough to mark seeded. One bulk RPC call per data type instead of
-// one per row: re-sending the full feed every 60s cycle (even when nothing
-// changed, thanks to the diff guard already inside upsert_incident/
-// upsert_incident_update) was thousands of round-trips per cycle, which is
-// what was actually exceeding the poll route's 60s budget — not
-// serialization, volume. See supabase/migrations/0007_bulk_upsert_functions.sql.
+// Bulk RPC per data type: per-row calls blew the route's 60s budget (see migration 0007).
 async function pollOneServiceIncidents(service: {
   slug: string;
   host: string;
@@ -80,11 +57,7 @@ async function pollOneServiceIncidents(service: {
   if (!res.ok) throw new Error(`Upstream returned ${res.status}`);
 
   const data = await res.json();
-  // A componentNamePrefix means this host's feed covers more than one
-  // product (see lib/componentNamePrefix.ts) — drop anything that doesn't
-  // touch at least one of this service's own components before it's ever
-  // stored, so incidents belonging to some other product on the same
-  // shared page never end up under this slug at all.
+  // Shared multi-product host: drop incidents not touching this service's components.
   const rawIncidents = (data.incidents ?? []) as RawIncident[];
   const prefix = service.componentNamePrefix;
   const incidents = prefix ? rawIncidents.filter((incident) => hasMatchingComponent(incident.components, prefix)) : rawIncidents;
@@ -110,9 +83,7 @@ async function pollOneServiceIncidents(service: {
   });
   if (incidentError) throw incidentError;
 
-  // incident_id set explicitly from the parent, not trusted off the
-  // update's own (redundant) incident_id field — matches the original
-  // per-row loop's behavior.
+  // incident_id taken from the parent, not trusted off the update itself.
   const updateRows = incidents.flatMap((incident) =>
     incident.incident_updates.map((update) => ({ ...update, incident_id: incident.id })),
   );
@@ -129,19 +100,8 @@ async function pollOneServiceIncidents(service: {
   return { incidentCount: incidents.length, failed: (incidentFailed ?? 0) + updateFailed };
 }
 
-// Sibling to pollOneServiceIncidents, not a branch inside it — kept as a
-// fully independent function so a maintenance-fetch failure can never take
-// that service's incident poll down with it (see how the two are run via
-// Promise.allSettled in pollAllIncidents below). No backfill/notification
-// concerns here unlike incidents — nothing notifies about maintenances.
-//
-// Deliberately the plain (unfiltered) endpoint, not /upcoming.json: a
-// maintenance stops being "upcoming" the instant it goes in_progress, so
-// polling that endpoint would silently stop seeing a maintenance right as
-// it starts — its status and updates would freeze at whatever they were
-// pre-start forever. This endpoint returns the last ~50 regardless of
-// status (scheduled/in_progress/completed); getAllStoredMaintenances
-// already filters completed/stale ones back out at read time.
+// Independent of the incident poll so one failing can't take down the other.
+// Not /upcoming.json: it drops a maintenance once in_progress, freezing its status.
 async function pollOneServiceMaintenances(service: {
   slug: string;
   host: string;
@@ -153,7 +113,6 @@ async function pollOneServiceMaintenances(service: {
   if (!res.ok) throw new Error(`Upstream returned ${res.status}`);
 
   const data = await res.json();
-  // See the matching comment in pollOneServiceIncidents — same reasoning.
   const rawMaintenances = (data.scheduled_maintenances ?? []) as RawMaintenance[];
   const prefix = service.componentNamePrefix;
   const maintenances = prefix
@@ -204,18 +163,10 @@ async function backfillIfFirstPoll(Slug: string, failed: number, getIntegrations
   const { data: seen } = await supabase.from("polled_services").select("service_slug").eq("service_slug", Slug).maybeSingle();
   if (seen) return;
 
-  // First time this service has ever been polled: mark everything it just
-  // produced as already-delivered to every currently connected integration
-  // (across every account — this runs from the cron poller, no session, so
-  // it needs the service-role cross-account read, same as the notifier),
-  // so this initial backfill of pre-existing history never gets notified.
+  // First poll: mark pre-existing history delivered to every account's integrations (cross-account, cron has no session).
   const { data: events, error: eventsError } = await supabase.from("incident_events").select("id").eq("service_slug", Slug);
   if (eventsError) {
-    // Same reasoning as the deliveryError guard below — a failed read here
-    // must not fall through to "zero events" (rows.length would silently
-    // become 0), which would skip writing any suppression rows at all
-    // while still risking getting marked seeded. Retry backfill next poll
-    // cycle instead.
+    // Must not fall through as "zero events" and get marked seeded. Retry next cycle.
     console.error(`backfillIfFirstPoll: failed to read incident_events for "${Slug}":`, eventsError);
     return;
   }
@@ -228,27 +179,19 @@ async function backfillIfFirstPoll(Slug: string, failed: number, getIntegrations
       .from("incident_event_deliveries")
       .upsert(rows, { onConflict: "event_id,integration_id", ignoreDuplicates: true });
     if (deliveryError) {
-      // Don't mark seeded below if the suppression rows didn't actually
-      // land — a silent failure here followed by a "seeded" marker would
-      // let this service's whole backlog flood every integration on the
-      // next notify cycle instead. Retry backfill next poll cycle instead.
+      // Marking seeded without suppression rows would flood every integration. Retry next cycle.
       console.error(`backfillIfFirstPoll: failed to backfill deliveries for "${Slug}":`, deliveryError);
       return;
     }
   }
 
-  // Only mark it seeded once a pass had zero per-incident failures — a
-  // failure that succeeds on a later retry is still backfilled history,
-  // not a new event, so it still deserves suppression rather than
-  // slipping through as "new" just because it failed once first.
+  // Seed only on a clean pass, so a row that succeeds on retry is still suppressed as history.
   if (failed === 0) {
     await supabase.from("polled_services").insert({ service_slug: Slug });
   }
 }
 
-// djb2 — deterministic per slug, independent of catalog table order or
-// size, unlike an array-index modulo which reshuffles shard membership
-// every time a row is inserted before an existing one alphabetically.
+// djb2 hash, so shard membership doesn't reshuffle when catalog rows are inserted.
 function hashSlug(slug: string): number {
   let hash = 5381;
   for (let i = 0; i < slug.length; i++) hash = (hash * 33) ^ slug.charCodeAt(i);
@@ -271,11 +214,7 @@ export async function pollAllIncidents(
   let maintenancesUpserted = 0;
   let maintenancesFailedTotal = 0;
 
-  // Lazy and memoized across this whole call: most poll cycles touch zero
-  // brand-new services, so this should cost nothing most of the time — but
-  // when a cycle does see several new services at once (e.g. right after
-  // npm run import:catalog seeds a batch of hosts), they all share one
-  // fetch instead of each paying for their own cross-account read.
+  // Lazy and memoized: usually unused, but many new services in one cycle share one fetch.
   let integrationsAcrossUsersPromise: ReturnType<typeof getAllIntegrationsAcrossUsers> | null = null;
   function getIntegrationsAcrossUsersOnce() {
     integrationsAcrossUsersPromise ??= getAllIntegrationsAcrossUsers();
@@ -283,12 +222,7 @@ export async function pollAllIncidents(
   }
 
   await runInBatches(services, FETCH_CONCURRENCY, async (service) => {
-    // allSettled, not all: incidents and maintenances are fetched from
-    // different upstream endpoints and written to different tables, so one
-    // failing (a host that 404s scheduled-maintenances, say) must never
-    // prevent the other from completing or being counted — and running
-    // both concurrently instead of one-after-the-other roughly halves this
-    // service's share of the poll cycle's wall-clock time.
+    // allSettled so one endpoint failing never blocks the other.
     const [incidentResult, maintenanceResult] = await Promise.allSettled([
       pollOneServiceIncidents(service),
       pollOneServiceMaintenances(service),
@@ -296,17 +230,13 @@ export async function pollAllIncidents(
 
     if (incidentResult.status === "fulfilled") {
       const { incidentCount, failed } = incidentResult.value;
-      // failed now also counts update-row failures, not just incident-row
-      // ones (see pollOneServiceIncidents) — clamp so a service with more
-      // failed updates than incidents can't push this display stat negative.
+      // Clamped: failed includes update rows and can exceed incidentCount.
       incidentsUpserted += Math.max(0, incidentCount - failed);
       failedTotal += failed;
       await backfillIfFirstPoll(service.slug, failed, getIntegrationsAcrossUsersOnce);
     } else {
       failedTotal++;
-      // Otherwise a whole service's incident poll failing (bad host
-      // response, timeout) is completely invisible — pollAllIncidents's
-      // return value is never logged or inspected by its caller.
+      // Logged here because the caller never inspects the return value.
       console.error(`pollOneServiceIncidents failed for "${service.slug}":`, incidentResult.reason);
     }
 

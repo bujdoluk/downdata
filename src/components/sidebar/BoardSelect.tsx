@@ -12,11 +12,7 @@ import { queryKeys } from "@/lib/queryKeys";
 import { BoardIcon } from "@/components/icons/NavIcons";
 import { useSelectedBoard } from "@/hooks/useSelectedBoard";
 import SelectDropdown from "@/components/SelectDropdown";
-// Direct path, not the features/boards barrel — that barrel also re-exports
-// services/boards.ts (server-only, reads next/headers's cookies()), and
-// Next's client/server boundary check fails on importing anything from a
-// barrel that transitively touches server-only code, even an unrelated
-// named export.
+// Not the features/boards barrel: it re-exports server-only code, which breaks a client import.
 import CreateBoardModal from "@/features/boards/components/CreateBoardModal";
 
 const ADD_BOARD = "__add__";
@@ -28,11 +24,8 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
   const pathname = usePathname();
   const queryClient = useQueryClient();
 
-  // One-shot fetch, no refetchInterval: this mounts on every dashboard
-  // page, and boards only change on explicit create/rename/delete, so a
-  // standing 60s poll here would just add egress for data that's already
-  // kept in sync locally (see CreateBoardModal's onCreated below) or
-  // refreshed by navigation.
+  // No refetchInterval: mounts on every page and boards only change on explicit
+  // create/rename/delete, which are synced locally.
   const { data: boards = [] } = useQuery({
     queryKey: queryKeys.boards.list(),
     queryFn: () => fetchJson<Board[]>("/api/boards").catch(() => []),
@@ -41,37 +34,21 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
   const { selectedBoardId, setSelectedBoardId } = useSelectedBoard();
   const createBoardRef = useRef<HTMLDialogElement>(null);
 
-  // Distinct from selectValue below: this only reflects an actual board
-  // detail page, for the icon's active-state color.
   const matchedBoardId = pathname?.match(/^\/boards\/([^/]+)/)?.[1] ?? "";
-  // The literal "all boards" list page always means VIEW_ALL, regardless of
-  // whatever board was last picked elsewhere — it's not just another
-  // board-aware page falling back to the persisted pick.
+  // /boards always means VIEW_ALL, never the persisted pick.
   const isBoardsIndex = pathname === "/boards";
-  // Falls back to the persisted cross-page pick (see hooks/useSelectedBoard),
-  // then "All boards" (VIEW_ALL).
   const selectValue = isBoardsIndex ? VIEW_ALL : matchedBoardId || selectedBoardId || VIEW_ALL;
 
-  // Arriving at a board page any way — a BoardCard click on /boards,
-  // browser back/forward, not just this dropdown — keeps the persisted
-  // default in sync too, so every other board-aware page picks it up next.
+  // Sync the persisted pick however a board page was reached, not just via this dropdown.
   useEffect(() => {
     if (matchedBoardId && matchedBoardId !== selectedBoardId) setSelectedBoardId(matchedBoardId);
   }, [matchedBoardId, selectedBoardId, setSelectedBoardId]);
 
-  // Same idea in the other direction: landing on /boards by ANY route (not
-  // just this component's own Link below, which already clears it
-  // optimistically on click) should stop other board-aware pages from
-  // still defaulting to whatever board was picked before — a browser-back
-  // or BoardDetailContent's own "← Back" link both bypass that onClick.
+  // Browser back or other "Back" links bypass the Link's onClick clear below.
   useEffect(() => {
     if (isBoardsIndex && selectedBoardId) setSelectedBoardId("");
   }, [isBoardsIndex, selectedBoardId, setSelectedBoardId]);
 
-  // SelectDropdown closes its own dropdown after calling this — no need to
-  // manage that here (it used to be this function's own first line, back
-  // when this was a hand-rolled details/summary/ul instead of that shared
-  // component).
   function handleSelect(value: string) {
     if (value === VIEW_ALL) {
       setSelectedBoardId("");
@@ -108,9 +85,7 @@ export default function BoardSelect({ collapsed }: { collapsed: boolean }) {
           options={[
             { value: VIEW_ALL, label: t("boards.allBoards") },
             ...boards.map((board) => ({ value: board.id, label: board.name })),
-            // A colored span on the label, not a className on the option
-            // itself — SelectDropdown doesn't expose per-option styling,
-            // and this is the only option that needs to stand out anyway.
+            // SelectDropdown has no per-option styling, so color the label itself.
             { value: ADD_BOARD, label: <span className="text-info font-medium">{`+ ${t("boards.addBoard")}`}</span> },
           ]}
         />

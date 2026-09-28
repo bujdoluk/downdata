@@ -7,9 +7,7 @@ import { ChevronDownIcon } from "@/components/icons/NavIcons";
 
 const HOVER_CLOSE_DELAY_MS = 150;
 
-// Features and Integrations are two independent <details> instances with no
-// shared parent state — broadcasting the opened id here is how one opening
-// closes the other, so only one mega menu is ever open at once.
+// The menus share no parent state; this broadcast keeps only one open at once.
 const MEGA_MENU_OPENED_EVENT = "downdata:mega-menu-opened";
 
 export default function CatalogMegaMenu<T extends { slug: string }>({
@@ -61,9 +59,7 @@ export default function CatalogMegaMenu<T extends { slug: string }>({
     }
   }
 
-  // Hover opens/closes the menu alongside the native click toggle below;
-  // guarded by (hover: hover) so a tap on a touch device isn't read as a
-  // hover-open immediately followed by the tap's own toggle closing it again.
+  // (hover: hover) guard: otherwise a touch tap hover-opens, then its toggle closes it.
   function handleMouseEnter() {
     if (!window.matchMedia("(hover: hover)").matches) return;
     clearPendingClose();
@@ -73,8 +69,7 @@ export default function CatalogMegaMenu<T extends { slug: string }>({
   function handleMouseLeave() {
     if (!window.matchMedia("(hover: hover)").matches) return;
     clearPendingClose();
-    // Debounced: the dropdown sits a few pixels below the label (mt-3), so an
-    // instant close would fire while the mouse is still crossing that gap.
+    // Debounced so crossing the mt-3 gap to the dropdown doesn't close it.
     closeTimeoutRef.current = setTimeout(() => setOpen(false), HOVER_CLOSE_DELAY_MS);
   }
 

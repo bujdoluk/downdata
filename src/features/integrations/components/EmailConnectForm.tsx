@@ -9,10 +9,6 @@ import VerifiedRecipientRow from "@/features/integrations/components/VerifiedRec
 import ModalFormFooter from "@/components/ModalFormFooter";
 import { useImpactToggle } from "@/features/integrations/hooks/useImpactToggle";
 
-// Recipient verification means "connect" is no longer a single bulk
-// submit — each address is added one at a time, starts pending, and
-// becomes active once its confirmation link is clicked (outside this
-// form entirely, from the recipient's own inbox).
 export default function EmailConnectForm({
   recipients,
   notifyImpacts,
@@ -25,8 +21,7 @@ export default function EmailConnectForm({
 }: {
   recipients: Recipient[];
   notifyImpacts: string[];
-  // Takes the currently-checked severities too, not just the address —
-  // see the comment on this same parameter in SmsConnectForm for why.
+  // Carries severities: before first connect there's no row for the toggle PATCH to update.
   onAdd: (value: string, notifyImpacts: string[]) => void;
   onRemove: (value: string) => void;
   onUpdateImpacts: (impacts: string[]) => void;
@@ -81,10 +76,7 @@ export default function EmailConnectForm({
           onChange={(event) => setValue(event.target.value)}
           placeholder={t("integrations.emailPlaceholder")}
           className="input input-sm input-bordered w-full"
-          // <dialog>'s showModal() re-runs its own focusing steps on every
-          // call (not just once on mount like plain HTML autofocus), so
-          // this keeps working even though the dialog stays mounted and is
-          // just shown/hidden — see the sibling comment in SmsConnectForm.
+          // Works in a mounted dialog: showModal() re-runs focusing on every open.
           autoFocus
         />
         {error && (

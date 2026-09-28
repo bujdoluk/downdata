@@ -4,15 +4,10 @@ import EmailLayout from "@/components/emails/EmailLayout";
 import { formatDuration } from "@/lib/formatTime";
 import type { ReportInterval, ReportPayload } from "@/features/reports/types";
 
-// Deliberately not localized, matching every other transactional email in
-// this app today (ConfirmEmailAddress/IncidentNotification) — emails
-// aren't wired into the i18n pipeline anywhere yet, this doesn't extend
-// that on its own.
+// Not localized: no email is wired into i18n yet.
 const INTERVAL_LABEL: Record<ReportInterval, string> = { daily: "daily", weekly: "weekly", monthly: "monthly" };
 
-// Local English-only shim over the shared formatDuration (its h/m math
-// lives there once, not duplicated here) — this file has no i18next `t`
-// to hand it, same reasoning as INTERVAL_LABEL above.
+// English-only shim: this file has no i18next `t` to pass to formatDuration.
 function formatMinutes(totalMinutes: number): string {
   return formatDuration(totalMinutes, (key, { h, m }) => {
     if (key === "history.duration.minutes") return `${m}m`;
@@ -24,12 +19,8 @@ function formatMinutes(totalMinutes: number): string {
 const thStyle: CSSProperties = { padding: "0 4px 6px", fontSize: 11, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.03em", borderBottom: "1px solid #e5e7eb", textAlign: "left" };
 const tdStyle: CSSProperties = { padding: "6px 4px", fontSize: 13, borderBottom: "1px solid #f3f4f6" };
 
-// Was a link-only nudge (uptime %, incident count, a "View full report"
-// link, nothing per-service) by an earlier deliberate scope call — see
-// AGENTS.md's Failure log for why that got reversed back to the full
-// per-board/per-service breakdown mirrored from ReportDetail.tsx (the
-// page's equivalent table), just inline-styled for email clients instead
-// of Tailwind/daisyUI.
+// Carries the full per-service table from ReportDetail.tsx, not a link-only nudge
+// (reversed on user request, see AGENTS.md Failure log). Inline styles for email clients.
 export default function ReportReady({
   logoUrl,
   interval,
@@ -44,11 +35,7 @@ export default function ReportReady({
   periodStart: string;
   periodEnd: string;
   payload: ReportPayload;
-  // Set by sendTestReportEmail() (reportGeneration.ts) for the /reports
-  // "send test email" button — never by the real cron. isPlaceholder is
-  // narrower: only true when isTest is *also* true and the account tracks
-  // nothing real to show (see buildPlaceholderTestPayload), so the numbers
-  // below are fabricated, not just an early preview of real ones.
+  // isPlaceholder implies isTest with nothing tracked, so the numbers are fabricated.
   isTest?: boolean;
   isPlaceholder?: boolean;
 }) {
@@ -56,9 +43,6 @@ export default function ReportReady({
   const reportUrl = new URL("/reports", process.env.APP_URL ?? "https://www.downdata.online").toString();
   const atRiskCount = payload.atRiskServiceSlugs.length;
 
-  // Maintenance moved into its own line in the stat box below (mirroring
-  // ReportDetail.tsx's dedicated stat tile) — keywordMatchCount has no
-  // tile of its own, so it stays here.
   const secondaryNotes = [payload.keywordMatchCount > 0 && `${payload.keywordMatchCount} keyword match${payload.keywordMatchCount === 1 ? "" : "es"}`].filter((note): note is string =>
     Boolean(note),
   );
@@ -139,9 +123,7 @@ export default function ReportReady({
                     )}
                   </td>
                   <td style={{ ...tdStyle, color, textAlign: "right" }}>{service.incidentCount}</td>
-                  {/* See ServiceReportEntry.maintenanceCount's own comment —
-                      undefined means "not recorded", shown as a dash rather
-                      than a fabricated 0. */}
+                  {/* undefined means "not recorded", not a verified 0. */}
                   <td style={{ ...tdStyle, color, textAlign: "right" }}>{service.maintenanceCount ?? "–"}</td>
                   <td style={{ ...tdStyle, color, textAlign: "right" }}>{service.uptimePercent}%</td>
                   <td style={{ ...tdStyle, color, textAlign: "right" }}>{formatMinutes(service.downtimeMinutes)}</td>

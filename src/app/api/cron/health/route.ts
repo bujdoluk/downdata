@@ -3,13 +3,10 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { LOCK_STALE_MS } from "@/lib/pollIncidents";
 import { msSince } from "@/lib/formatTime";
 
-// A shard_key that hasn't even attempted a run in 24h is retired config
-// (e.g. from a resharding change), not an active shard that's failing —
-// stop requiring it to be healthy.
+// A shard_key with no run attempt in 24h is retired config (e.g. after resharding), not a failure.
 const IGNORE_INACTIVE_AFTER_MS = 24 * 60 * 60 * 1000;
 
-// Unauthenticated on purpose — meant to be pinged by an external uptime
-// monitor, and reveals nothing beyond shard keys and a status string.
+// Unauthenticated for an external uptime monitor; exposes only shard keys and a status.
 export async function GET() {
   try {
     const supabase = getSupabaseClient();

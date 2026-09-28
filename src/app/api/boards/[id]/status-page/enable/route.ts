@@ -4,9 +4,7 @@ import { getStatusPage, setEnabled, countEnabledStatusPages } from "@/features/s
 import { getSubscription } from "@/features/billing/services/subscriptions";
 import { statusPageQuota } from "@/features/billing/services/plans";
 
-// Publishes the board's status page — kept separate from PUT
-// .../status-page so the quota check only ever runs here, at the moment a
-// page actually goes live, not on every branding save.
+// Separate from PUT .../status-page so the quota check runs only at publish time.
 export async function POST(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!(await resolveBoardById(id))) {
@@ -17,7 +15,7 @@ export async function POST(_request: Request, { params }: { params: Promise<{ id
   if (!existing) {
     return NextResponse.json({ error: "Set up a status page before making it public." }, { status: 400 });
   }
-  // Already live: idempotent, not a second unit against the quota.
+  // Idempotent: an already-live page doesn't count against the quota twice.
   if (existing.enabled) {
     return NextResponse.json(existing);
   }
@@ -35,8 +33,7 @@ export async function POST(_request: Request, { params }: { params: Promise<{ id
   return NextResponse.json(await setEnabled(id, true));
 }
 
-// Unpublishes without deleting the row — branding/slug survive so
-// re-publishing later doesn't mean reconfiguring from scratch.
+// Keeps the row so re-publishing doesn't mean reconfiguring from scratch.
 export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!(await resolveBoardById(id))) {

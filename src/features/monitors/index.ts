@@ -1,6 +1,3 @@
-// Public API of the monitors feature (catalog browsing, tracked services,
-// per-service detail). Other features/app routes should prefer importing
-// from here over reaching into components/services directly.
 export { default as AddServicePanel } from "./components/AddServicePanel";
 export { default as CatalogBrowser } from "./components/CatalogBrowser";
 export { default as CatalogServiceCard } from "./components/CatalogServiceCard";

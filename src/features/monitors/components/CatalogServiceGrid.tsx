@@ -10,18 +10,13 @@ function severityOf(entry: Catalog, data: ServiceStatusBatchResponse | null): nu
   return INDICATOR_RANK[status.status.indicator] ?? 0;
 }
 
-// A service whose open incident outranks its own public rollup (see
-// MoreSevereIncidentBadge's own comment on why that can happen) — used as a
-// secondary sort key, never a primary one, so a card with a genuinely worse
-// rollup indicator still always sorts first regardless of this.
+// Secondary sort key only; a worse rollup indicator always sorts first.
 export function hasAlertIcon(entry: Catalog, data: ServiceStatusBatchResponse | null): boolean {
   const status = data?.[entry.slug];
   return !!(status && "openIncidentImpact" in status && status.openIncidentImpact);
 }
 
-// Extracted so it's unit-testable without mounting the component (this repo
-// has no component-rendering test setup — see resolveReminderRule.ts for
-// the same reasoning applied to a different pure function).
+// Exported for unit tests; there's no component-rendering test setup.
 export function sortCatalog(catalog: Catalog[], data: ServiceStatusBatchResponse | null, sortAlertsToTop: boolean): Catalog[] {
   return [...catalog].sort((a, b) => {
     const severityDiff = severityOf(b, data) - severityOf(a, data);
@@ -55,11 +50,7 @@ export default function CatalogServiceGrid({
   onRemove?: (entry: Catalog) => void;
   isFullWidth?: boolean;
   isElevatedBg?: boolean;
-  // Opt-in, /monitors-only tie-break: a card whose alert icon is showing
-  // (hasAlertIcon) sorts ahead of one without it, but only within equal
-  // severityOf rank — never overriding a real severity difference. Off by
-  // default so the add-service picker (CatalogBrowser.tsx) and
-  // BoardSuggestedServices.tsx keep today's plain severity-only order.
+  // Tie-break within equal severity only; off so other callers keep severity-only order.
   sortAlertsToTop?: boolean;
 }) {
   const isAddMode = Boolean(onAdd);

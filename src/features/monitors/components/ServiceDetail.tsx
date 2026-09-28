@@ -121,25 +121,15 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
   const isLoading = !data && !error;
   const overallStyle = INDICATOR_STYLES[data?.status.indicator ?? "unknown"] ?? FALLBACK_STYLE;
   const allComponents = data?.components ?? [];
-  // Memoized, keyed on the underlying data.components (stable across a
-  // same-content refetch — TanStack Query v5's structuralSharing default),
-  // not recomputed inline as a fresh array every render.
-  // useServiceComponentFilter's debounced-save effect depends on
-  // allComponentIds by reference; an unmemoized .map() here would give it a
-  // new reference on every unrelated re-render (the 60s poll tick, typing
-  // in the component search box, toggling a continent/status filter),
-  // re-firing — and re-saving — mid-edit.
+  // Memoized: useServiceComponentFilter's save effect depends on allComponentIds
+  // by reference, and a fresh array each render would re-save mid-edit.
   const componentOptions = useMemo(
     () => (data?.components ?? []).filter((c) => !c.group).map((c) => ({ id: c.id, name: c.name })),
     [data?.components],
   );
   const allComponentIds = useMemo(() => componentOptions.map((c) => c.id), [componentOptions]);
   const filter = useServiceComponentFilter(slug, allComponentIds);
-  // !c.group_id, not === null: Atlassian always sends group_id (null when
-  // top-level), but incident.io-hosted pages (e.g. status.brevo.com) omit
-  // the field entirely instead of sending it as null — a strict-equality
-  // check against null left every component un-top-level there, so the
-  // whole grid rendered empty despite the feed having real components.
+  // !c.group_id, not === null: incident.io-hosted pages omit group_id entirely.
   const topLevelItems = allComponents
     .filter((c) => !c.group_id)
     .sort((a, b) => a.position - b.position);
@@ -318,13 +308,6 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
               defaultChecked
             />
             <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
-              {/* One inline row — continent/status used to each render as
-                  their own full checkbox row, which made this tab feel
-                  crowded the moment a third row (the notification
-                  component-filter toggle, below) was added alongside them.
-                  Both are now compact dropdowns (CheckboxFilterDropdown),
-                  same collapsed-by-default idiom ImpactFilterDropdown
-                  already uses on /incidents and /history. */}
               <div className="mb-3 flex flex-wrap items-center gap-2">
                 <SearchFilterInput
                   value={componentQuery}
@@ -332,13 +315,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                   label={t("serviceDetail.searchComponents")}
                   className="w-64"
                 />
-                {/* presentContinents can legitimately be empty (continent is
-                    a best-effort name inference, not a real field — see
-                    componentRegion.ts) — the dropdown itself renders
-                    nothing for zero options, so without this fallback the
-                    row just silently lost the explanation for why no
-                    region filter is offered (PublicServiceDetail.tsx still
-                    shows it for the same case). */}
+                {/* The dropdown renders nothing with zero options, so explain the missing filter. */}
                 {presentContinents.length === 0 ? (
                   <p className="text-base-content/50 text-xs">{t("serviceDetail.noLocationsToFilter")}</p>
                 ) : (
@@ -362,10 +339,7 @@ export default function ServiceDetail({ slug }: { slug: Slug }) {
                   allLabel={t("serviceDetail.allComponentStatuses")}
                 />
               </div>
-              {/* Visually separated from the view filters above — this is a
-                  notification setting, not a way to change what's shown in
-                  this list, and the border/spacing signals that distinction
-                  rather than reading as a third filter row. */}
+              {/* Separated: a notification setting, not a view filter. */}
               {componentOptions.length > 0 && (
                 <div className="border-base-300 mb-3 border-t pt-3">
                   <ComponentFilterModeToggle

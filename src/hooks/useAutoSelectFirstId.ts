@@ -4,11 +4,7 @@ import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { mergeParams } from "@/lib/mergeParams";
 
-// Auto-selects the first *visible* item, and only ever touches `id` —
-// merged into the existing query string so a filter set from a shared link
-// survives landing on the page with nothing selected yet. Was duplicated
-// identically between Incidents and Maintenance page content, save for
-// `path` and which filtered list they're selecting out of.
+// Only touches `id`, so filters from a shared link survive auto-selection.
 export function useAutoSelectFirstId(path: string, selectedId: string | null, items: { id: string }[]) {
   const router = useRouter();
   const searchParams = useSearchParams();

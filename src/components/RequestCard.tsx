@@ -8,11 +8,6 @@ import Spinner from "@/components/Spinner";
 import ModalCloseButton from "@/components/ModalCloseButton";
 import { MAX_MESSAGE_LENGTH } from "@/lib/constants";
 
-// A small "can't find what you're looking for?" prompt — used on the
-// integrations page, the add-service catalog browser, and the landing
-// page. Owns its own modal: clicking buttonLabel opens a dialog with a
-// free-text box, POSTed to /api/requests (public — see proxy.ts). Copy
-// (title/buttonLabel) stays caller-owned; only kind decides the payload.
 export default function RequestCard({
   title,
   buttonLabel,

@@ -4,17 +4,8 @@ import { useEffect, useRef, useState } from "react";
 
 const DEFAULT_DELAY_MS = 500;
 
-// One field of /reports' settings panel: optimistic + debounced, not
-// disabled-while-saving. `value` updates immediately on every set() call
-// (no gap where a click looks like it didn't register), while the actual
-// `save` call is delayed until `delayMs` after the *last* set() — a rapid
-// run of clicks (Daily → Weekly → Monthly) collapses into one request for
-// Monthly instead of three overlapping ones that could resolve out of
-// order. A failed save rolls `value` back to the last confirmed
-// (successfully saved) one and surfaces `error`; this component decides
-// what "field" means to the caller (a single value, or a whole derived
-// array like excludedBoardIds), so `save` always receives the full next
-// value, not a diff.
+// Optimistic + debounced so rapid clicks collapse into one request instead
+// of several that could resolve out of order. Failures roll back.
 export function useDebouncedSetting<T>(initialValue: T, save: (value: T) => Promise<T>, delayMs: number = DEFAULT_DELAY_MS) {
   const [value, setValue] = useState(initialValue);
   const [error, setError] = useState<string | null>(null);

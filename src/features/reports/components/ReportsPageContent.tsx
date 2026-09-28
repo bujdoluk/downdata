@@ -43,12 +43,6 @@ export default function ReportsPageContent({
     router.push(`/reports${params.size > 0 ? `?${params}` : ""}`);
   }
 
-  // Three independent, optimistic + debounced fields, not one shared
-  // settings object with a disabled-while-saving flag — see
-  // useDebouncedSetting's own comment for why. Each control updates
-  // instantly on click and only actually persists ~500ms after the last
-  // change to that same field, so rapid clicking doesn't disable
-  // anything and doesn't fire one overlapping request per click either.
   const intervalSetting = useDebouncedSetting(initialSettings.interval, (nextInterval) =>
     requestJson<ReportSettings>("/api/reports/settings", t("reports.settings.somethingWrong"), { method: "PATCH", body: { interval: nextInterval } }).then((updated) => updated.interval),
   );

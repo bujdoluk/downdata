@@ -22,7 +22,7 @@ function isChannelAvailable(channel: ReminderChannel, integrations: IntegrationD
   const integration = integrations.find((candidate) => candidate.slug === channel);
   if (!integration) return false;
   if (integration.slug === "slack") return true;
-  if (integration.slug === "webhook") return false; // not a reminder channel — ReminderChannel never includes it
+  if (integration.slug === "webhook") return false;
   return integration.recipients.some((recipient) => recipient.verified);
 }
 
@@ -35,13 +35,8 @@ function computeInitialState(coveringRule: MaintenanceReminderRule | null, integ
     preset: minutes === undefined ? "1440" : isKnownPreset ? String(minutes) : "custom",
     customValue: String(bestFit.value),
     customUnit: bestFit.unit,
-    // Defaults to whichever channels are actually deliverable right now,
-    // not a hardcoded "slack" — an account with zero connected
-    // integrations would otherwise get a rule pre-selected on a channel
-    // that's visibly disabled (and can never fire) while canSave (which
-    // only checks channels.size > 0) stayed none the wiser. An empty
-    // default here correctly leaves canSave blocked until the user
-    // connects something real.
+    // Only deliverable channels, so an account with no integrations can't save
+    // a rule on a disabled channel.
     channels: new Set<ReminderChannel>(coveringRule?.channels ?? CHANNELS.filter((channel) => isChannelAvailable(channel, integrations))),
   };
 }
@@ -106,15 +101,8 @@ export default function ScheduleReminderModal({
         method: "PUT",
         body: { serviceSlug: scope === "all" ? null : serviceSlug, minutesBefore, channels: [...channels] },
       });
-      // Switching scope to "all" from a rule that was genuinely this
-      // service's own (not an inherited "all" rule shown here because it
-      // covers this service too) leaves the old per-service row behind —
-      // it's now shadowed by the new "all" rule under
-      // resolveRuleForService's most-specific-wins, but never deleted, so
-      // it'd keep counting as "this service has its own rule" forever.
-      // Only ever deletes a rule scoped to *this* service — never the
-      // inherited "all" rule itself, or this would wipe every other
-      // service's reminder too.
+      // Delete this service's own rule, now shadowed by "all", so it stops
+      // counting as a per-service rule. Never delete the inherited "all" rule.
       if (scope === "all" && coveringRule && coveringRule.serviceSlug === serviceSlug) {
         await requestJson(`/api/maintenance-reminders?id=${coveringRule.id}`, t("maintenances.reminder.saveFailed"), { method: "DELETE" });
       }

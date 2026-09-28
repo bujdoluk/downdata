@@ -2,9 +2,7 @@ import dynamic from "next/dynamic";
 import type { LogoComponent } from "@/types/logo";
 import MonogramLogo from "@/components/logos/MonogramLogo";
 
-// Each hand-crafted logo is its own file; loading it via next/dynamic means
-// a page importing this map only ships the SVGs for the services it actually
-// renders, not the whole catalog's — see AGENTS.md's code-splitting note.
+// next/dynamic so a page only ships the SVGs it actually renders.
 const lazyLogo = (loader: () => Promise<{ default: LogoComponent }>) => dynamic(loader);
 
 export const SERVICE_LOGOS: Record<string, LogoComponent> = {
@@ -85,8 +83,7 @@ export const SERVICE_LOGOS: Record<string, LogoComponent> = {
   checkfront: lazyLogo(() => import("@/components/logos/CheckfrontLogo")),
   "cognito-forms": lazyLogo(() => import("@/components/logos/CognitoFormsLogo")),
   contentful: lazyLogo(() => import("@/components/logos/ContentfulLogo")),
-  // No hand-crafted brand logo available for these — original two-letter
-  // badges instead (see MonogramLogo's own comment for why).
+  // No brand logo available for these (see MonogramLogo).
   launchdarkly: ({ size }) => <MonogramLogo size={size} initials="LD" color="#4F46E5" />,
   confluent: ({ size }) => <MonogramLogo size={size} initials="CF" color="#2563EB" />,
   pinecone: ({ size }) => <MonogramLogo size={size} initials="PN" color="#0D9488" />,

@@ -19,19 +19,8 @@ const POLL_INTERVAL_MS = 60_000;
 
 export type MaintenanceTimelineEntry = { maintenance: TrackedMaintenanceSummary; boardId: string };
 
-// GET /api/maintenance (getAllStoredMaintenanceSummaries) already filters to
-// not-completed, not-yet-ended maintenances server-side (status != completed
-// AND (scheduled_until >= now OR status = in_progress)), so the response can
-// still contain merely-scheduled (not yet started) rows alongside in-progress
-// ones. This feed is deliberately narrower than that: it only ever shows
-// maintenance happening right now, not what's upcoming — the /maintenance
-// page is still the place to see scheduled-but-not-started maintenance, this
-// filter doesn't touch that page or the endpoint itself.
-//
-// Per-board scoping is used for dedup only (same reasoning as
-// MonitorsActiveIncidentsTimeline's own buildTimelineEntries) — a service
-// tracked on more than one currently-visible board would otherwise put the
-// same maintenance in the feed more than once.
+// Narrower than /api/maintenance, which also returns upcoming rows: this feed
+// shows in-progress only. Boards are used for dedup only.
 export function buildMaintenanceEntries(boards: Board[], maintenances: TrackedMaintenanceSummary[]): MaintenanceTimelineEntry[] {
   const inProgress = maintenances.filter(isInProgressMaintenance);
   const seen = new Set<string>();
@@ -44,18 +33,9 @@ export function buildMaintenanceEntries(boards: Board[], maintenances: TrackedMa
       entries.push({ maintenance, boardId: board.id });
     }
   }
-  // Every entry here is already in-progress, so the only ordering left is
-  // which one started earliest — one global ordering across every board's
-  // deduped entries together, not per-board-then-concatenated.
   return entries.sort((a, b) => epochMs(a.maintenance.scheduled_for) - epochMs(b.maintenance.scheduled_for));
 }
 
-// Self-contained data-fetching unit, same shape as
-// MonitorsActiveIncidentsTimeline.tsx (own useQuery, `boards` from the
-// parent for per-board dedup) — deliberately mirrors that component's
-// markup too (vertical timeline, both sides populated, icon in the
-// middle-column slot) rather than inventing a different layout for what is,
-// visually, the same kind of feed.
 export default function MonitorsMaintenanceTimeline({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
 
@@ -73,19 +53,13 @@ export default function MonitorsMaintenanceTimeline({ boards }: { boards: Board[
         {t("monitors.maintenanceFeed.title")} ({entries.length})
       </h2>
 
-      {/* Same isLoading reasoning as MonitorsActiveIncidentsTimeline's own
-          branch — true only on the very first fetch, never on a 60s
-          background poll refetch. */}
       {isLoading ? (
         <div className="flex flex-col items-center justify-center gap-2 py-10">
           <Spinner size="lg" />
           <p className="text-base-content/50 text-sm">{t("monitors.maintenanceFeed.loading")}</p>
         </div>
       ) : isError ? (
-        // A failed fetch must not read as "nothing in progress" — same
-        // reasoning as MonitorsActiveIncidentsTimeline's own isError branch.
-        // Reuses maintenances.unreachable, the same string /maintenance
-        // itself shows on a load failure.
+        // A failed fetch must not read as "nothing in progress".
         <p role="alert" className="text-error mt-3 text-sm">
           {t("maintenances.unreachable")}
         </p>
@@ -95,10 +69,6 @@ export default function MonitorsMaintenanceTimeline({ boards }: { boards: Board[
         <ul className="timeline timeline-vertical mt-3 max-h-[296px] overflow-y-auto [--timeline-col-start:auto]">
           {entries.map(({ maintenance, boardId }) => {
             const Logo = SERVICE_LOGOS[maintenance.service.slug] ?? FallbackLogo;
-            // Every entry here is already in-progress (buildMaintenanceEntries
-            // filters out merely-scheduled rows), so there's no muted/full
-            // distinction to make anymore — one wrench style for the whole
-            // feed.
             const iconLabel = t("monitors.maintenanceFeed.inProgressLabel");
             return (
               <li key={maintenance.id} className="min-h-16">

@@ -13,9 +13,7 @@ import { useCookieConsent } from "@/components/cookies/CookieConsent";
 import { openSupportChat } from "@/features/support/services/tawkChat";
 import lukasPhoto from "./lukas.webp";
 
-// TODO: replace with downDATA's real X/Twitter handle once one exists —
-// left as an invalid, obviously-placeholder href rather than a guessed
-// handle that could resolve to someone else's real account.
+// TODO: real X handle; placeholder avoids a guess that could be someone else's account.
 const DOWNDATA_X_URL = "[Insert downDATA's X handle here]";
 
 const brand = <span className="text-primary" />;
@@ -32,19 +30,13 @@ export default function AboutContent() {
   const { t } = useTranslation();
   const { consent, openPreferences } = useCookieConsent();
 
-  // "downDATA" is a fixed literal passed as `name` below (not translated
-  // content), so splitting the interpolated result on it is safe in every
-  // locale — same technique LandingPage.tsx uses for its hero copy.
+  // Safe in every locale: "downDATA" is a fixed literal, not translated.
   const [followBrandBefore, followBrandAfter] = t("about.followOnX", { name: "downDATA" }).split("downDATA");
 
   return (
     <div className="flex min-h-full flex-1 flex-col">
       <LandingNavbar />
       <div className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
-        {/* /about is reachable from several pages (landing, privacy, terms)
-            via the shared footer, unlike serviceDetail.back's single fixed
-            parent — BackLink goes back to wherever the visitor came from,
-            falling back to /landing-page for a direct/bookmarked visit. */}
         <PageHeader back={<BackLink fallbackHref="/landing-page" label={t("about.back")} />}>
           <h1 className="text-3xl font-bold">
             <Trans i18nKey="about.title" components={{ brand }} />

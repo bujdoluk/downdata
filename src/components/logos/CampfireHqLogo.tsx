@@ -1,6 +1,4 @@
-// No official brand color/mark found for Campfire HQ (status.campfirehq.net) —
-// an original flame-over-logs mark in the same orange as the prior monogram,
-// distinguished from CallFire's plain flame by the log base.
+// No official brand color found; an original mark, not a trademark reproduction.
 export default function CampfireHqLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} fill="#F4511E" aria-hidden="true">

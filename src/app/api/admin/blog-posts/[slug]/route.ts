@@ -10,9 +10,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ sl
   const { slug } = await params;
   const body = await request.json().catch(() => null);
 
-  // Publish/unpublish is its own branch, not merged with the content
-  // fields below — a publish-toggle click sends only `{ published }`, with
-  // no title/body/image to (accidentally) overwrite.
+  // Separate branch so a publish toggle, which sends only `{ published }`, never overwrites content.
   if (typeof body?.published === "boolean") {
     const post = await setPostPublished(slug, body.published);
     if (!post) return NextResponse.json({ error: "Post not found." }, { status: 404 });

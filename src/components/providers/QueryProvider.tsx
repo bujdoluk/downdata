@@ -5,13 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export default function QueryProvider({ children }: { children: React.ReactNode }) {
-  // Per-mount instance, not module scope — a module-level QueryClient would
-  // be shared across requests/users on the server otherwise.
+  // Per mount, not module scope, or the server would share it across users.
   const [queryClient] = useState(
     () =>
       new QueryClient({
-        // retry: 1, not the default 3 — closer to the single-attempt
-        // behavior every hand-rolled fetch effect here used to have.
         defaultOptions: { queries: { retry: 1 } },
       }),
   );
@@ -19,9 +16,7 @@ export default function QueryProvider({ children }: { children: React.ReactNode 
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      {/* Dev-only — this component wraps the entire app (root layout), so
-          an unconditional render here would ship devtools' JS to every
-          real visitor on every page. */}
+      {/* Dev-only, or devtools JS ships to every visitor. */}
       {process.env.NODE_ENV === "development" && <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />}
     </QueryClientProvider>
   );

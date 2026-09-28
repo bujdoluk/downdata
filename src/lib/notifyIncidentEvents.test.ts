@@ -99,9 +99,7 @@ describe("passesComponentFilter", () => {
   it("uses the update's own affected_components, not the incident's top-level components, for update_added", () => {
     const resolved: ResolvedEvent = {
       type: "update_added",
-      // Incident's own components deliberately differ from the update's —
-      // if this read the wrong field, it would pass on "dns" instead of
-      // failing on "api" (the allowlist has neither).
+      // Incident and update components differ, so reading the wrong field would wrongly pass.
       incident: { ...BASE_INCIDENT, components: [{ id: "dns", name: "DNS", status: "operational" }] },
       update: { ...BASE_UPDATE, affected_components: [{ code: "api", name: "API", new_status: "major_outage", old_status: "operational" }] },
     };

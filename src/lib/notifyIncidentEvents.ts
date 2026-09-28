@@ -27,10 +27,7 @@ type IncidentEvent = {
 const SEND_CONCURRENCY = 200;
 const BODY_PREVIEW_LENGTH = 300;
 
-// Discriminated on event type (not a bare `update: StoredIncidentUpdate |
-// null`) so the formatters below can read `resolved.update` in the
-// "update_added" branch without a non-null assertion — resolveEvent
-// itself is the one place that guarantees the update actually exists.
+// Discriminated union so "update_added" branches can read `update` without a non-null assertion.
 export type ResolvedEvent =
   | { type: "incident_created"; incident: StoredIncident }
   | { type: "update_added"; incident: StoredIncident; update: StoredIncidentUpdate };
@@ -48,13 +45,7 @@ async function resolveEvent(event: IncidentEvent): Promise<ResolvedEvent | null>
   return { type: "update_added", incident, update };
 }
 
-// The same event can now be pending for several (integration, account)
-// pairs at once — cache by event id so its incident/updates only get
-// fetched once per cycle. Storing the in-flight promise (not just the
-// resolved value) is what makes this race-free across concurrent pairs
-// for the same event: resolveEventCached runs synchronously up to its
-// first await, so a second pair for the same event always finds the
-// first pair's promise already cached, never starts a duplicate fetch.
+// Caches the in-flight promise, not the value, so concurrent pairs for the same event never fetch twice.
 function resolveEventCached(event: IncidentEvent, cache: Map<IncidentEvent["id"], Promise<ResolvedEvent | null>>): Promise<ResolvedEvent | null> {
   const cached = cache.get(event.id);
   if (cached) return cached;
@@ -63,27 +54,12 @@ function resolveEventCached(event: IncidentEvent, cache: Map<IncidentEvent["id"]
   return promise;
 }
 
-// The timestamp an incident notification email should actually show —
-// when the thing it's describing happened, not when this cron cycle
-// happened to send it: the incident's own creation for a brand-new
-// incident, or that specific update's own creation for an update_added
-// event (matches IncidentDetail.tsx's in-app choice of update.created_at
-// over incident.updated_at for the exact same reason).
+// When the event happened, not when this cron cycle sent it (matches IncidentDetail.tsx).
 export function eventTimestamp(resolved: ResolvedEvent): string {
   return resolved.type === "incident_created" ? resolved.incident.created_at : resolved.update.created_at;
 }
 
-// Unlike lib/pollMaintenanceReminders.ts's formatStartTime (which
-// deliberately stays UTC-only — see that file's own comment — this file
-// resolves each account's real saved time zone instead. Same
-// in-flight-promise caching shape as resolveEventCached above, keyed by
-// userId rather than event id, so concurrent (integration, event) pairs
-// for the same account never trigger more than one Admin API call per
-// cron cycle. Only ever called for the email channel (see
-// sendNotification below) — Slack/SMS/webhook don't need it, so an
-// account with no pending email this cycle never pays for this lookup at
-// all. Falls back to UTC on any failure (a bad/missing time zone, or the
-// Admin API itself erroring) rather than dropping the notification.
+// One Admin API call per account per cycle, email only. Falls back to UTC rather than dropping the notification.
 function resolveTimeZoneCached(userId: string, cache: Map<string, Promise<string>>): Promise<string> {
   const cached = cache.get(userId);
   if (cached) return cached;
@@ -95,14 +71,8 @@ function resolveTimeZoneCached(userId: string, cache: Map<string, Promise<string
   return promise;
 }
 
-// The component ids an event actually implicates — the incident's own
-// top-level components for a brand-new incident, or that specific update's
-// own affected_components for an update_added event (see
-// docs/specs/SPEC-component-notification-filters.md's Assumption 6). The
-// two upstream shapes are genuinely different (IncidentComponent.id vs.
-// AffectedComponent.code) — confirmed against live data, not assumed —
-// so this reads the right field per event type rather than treating them
-// as interchangeable.
+// Upstream shapes differ per event type (IncidentComponent.id vs AffectedComponent.code).
+// See docs/specs/SPEC-component-notification-filters.md, Assumption 6.
 export function eventComponentIds(resolved: ResolvedEvent): string[] {
   if (resolved.type === "incident_created") {
     return ((resolved.incident.components as IncidentComponent[] | null) ?? []).map((c) => c.id);
@@ -110,18 +80,8 @@ export function eventComponentIds(resolved: ResolvedEvent): string[] {
   return (resolved.update.affected_components ?? []).map((c) => c.code);
 }
 
-// One query for the whole cycle instead of one per (user, service) pair —
-// the pairs loop in notifyPendingEvents() below already runs up to
-// SEND_CONCURRENCY (200) at once, and a per-pair DB call there reintroduces
-// exactly the unbounded-concurrent-Supabase-queries shape that already
-// saturated this project's Postgres compute once before (see AGENTS.md's
-// Failure log). The table is only ever populated for accounts that turned
-// on "Custom" for at least one service, so fetching it whole is cheap
-// regardless of how many pending events/integrations this cycle has.
-// Fails open (an empty map, meaning "All components" everywhere this
-// cycle) on a transient DB hiccup, deliberately — never fail closed here,
-// that would silently suppress every notification instead of just this
-// one filter.
+// Fetched once up front, not per pair: per-pair queries at SEND_CONCURRENCY saturated Postgres before (AGENTS.md Failure log).
+// Fails open on error, since failing closed would suppress every notification.
 async function fetchAllComponentFilters(): Promise<Map<string, Set<string>>> {
   const filters = new Map<string, Set<string>>();
   try {
@@ -133,23 +93,18 @@ async function fetchAllComponentFilters(): Promise<Map<string, Set<string>>> {
       else filters.set(key, new Set([row.component_id as string]));
     }
   } catch {
-    // Empty map already means "All components" everywhere — nothing more to do.
+    // Empty map means "All components", so failing open needs no recovery.
   }
   return filters;
 }
 
-// An incident/update naming no components at all is never filtered —
-// matches HistoryPageContent.tsx's own existing rule for the identical
-// ambiguity ("broad/unclear, stays visible no matter which components are
-// checked"). Only suppresses when components ARE named and none of them
-// are checked under the account's active "Custom" selection for this
-// service.
+// Events naming no components are never filtered, same rule as HistoryPageContent.tsx.
 export function passesComponentFilter(userId: string, serviceSlug: string, resolved: ResolvedEvent, filters: Map<string, Set<string>>): boolean {
   const componentIds = eventComponentIds(resolved);
   if (componentIds.length === 0) return true;
 
   const allowlist = filters.get(`${userId}:${serviceSlug}`);
-  if (!allowlist) return true; // "All components"
+  if (!allowlist) return true;
 
   return componentIds.some((id) => allowlist.has(id));
 }
@@ -278,15 +233,8 @@ async function sendSms(integration: Extract<IntegrationDefinition, { slug: "sms"
   }
 }
 
-// A partial failure across targets retries the whole integration next
-// cycle — same "retry by omission" trade-off already accepted for Slack/
-// email/sms (see sendSms's comment) — a receiver that already got this
-// event may get a harmless duplicate on retry, never a silently dropped one.
-// Targets run through runInBatches (same SEND_CONCURRENCY cap as the
-// pairs loop below), not a raw Promise.all — an account isn't limited in
-// how many targets one webhook integration can have, so an unbounded
-// Promise.all here could fan out well past the concurrency the outer loop
-// was actually designed to cap.
+// Partial failure retries the whole integration: a duplicate is acceptable, a dropped event is not.
+// Batched because target count per integration is unbounded.
 async function sendWebhook(
   integration: Extract<IntegrationDefinition, { slug: "webhook" }>,
   serviceSlug: string,
@@ -302,18 +250,8 @@ async function sendWebhook(
   return results.every(Boolean);
 }
 
-// Per-integration policy filter — kept separate from the sendXxx
-// functions above so their booleans keep meaning exactly one thing (did
-// the send succeed), not "succeeded, or was never applicable." Per-service
-// targeting (integration.excludedServiceSlugs) is handled further up, in
-// the query that decides which events are even pending for an integration
-// in the first place — narrower query, not a post-hoc filter — so the only
-// thing left here is sms's severity filter.
-// A generic "does this integration have its own severity filter" check
-// (rather than an explicit slug !== "sms" && slug !== "webhook" allowlist)
-// so a future integration type that adds notifyImpacts gets this for free —
-// no edit needed here, and no silent "notifies on everything" gap if that
-// edit gets missed.
+// Kept apart from sendXxx so their booleans only mean "send succeeded".
+// Checks for notifyImpacts generically so new integration types get the filter for free.
 function shouldNotify(integration: IntegrationDefinition, resolved: ResolvedEvent): boolean {
   if (!("notifyImpacts" in integration)) return true;
   return integration.notifyImpacts.includes(resolved.incident.impact);
@@ -328,9 +266,6 @@ async function sendNotification(
   timeZoneCache: Map<string, Promise<string>>,
 ): Promise<boolean> {
   if (integration.slug === "slack") return sendSlack(integration, serviceSlug, resolved);
-  // Only the email channel resolves a real time zone — see
-  // resolveTimeZoneCached's own comment for why this stays scoped to
-  // email rather than every channel paying for the lookup.
   if (integration.slug === "email") return sendEmail(integration, serviceSlug, resolved, await resolveTimeZoneCached(userId, timeZoneCache));
   if (integration.slug === "webhook") return sendWebhook(integration, serviceSlug, resolved, webhookValidationCache);
   return sendSms(integration, serviceSlug, resolved);
@@ -339,34 +274,15 @@ async function sendNotification(
 export async function notifyPendingEvents(): Promise<void> {
   const supabase = getSupabaseClient();
 
-  // Both service-role-backed, cross-account reads — this runs from a
-  // cron tick (CRON_SECRET-gated), not a login, so there's no session for
-  // the per-user, RLS-scoped helpers (lib/boards.ts's getAllTrackedSlugs,
-  // lib/integrations.ts's getAllIntegrations) to scope against. Never
-  // reuse these two outside this cron path — see the "never call this
-  // from a user-facing code path" note on each.
+  // Cross-account service-role reads: cron has no session for the RLS helpers. Never reuse outside cron.
   const integrationsByUser = await getAllIntegrationsAcrossUsers();
   if (integrationsByUser.length === 0) return;
 
   const trackedSlugsByUser = await getAllTrackedSlugsAcrossUsers();
   if (trackedSlugsByUser.size === 0) return;
 
-  // One query per (integration, account) pair, each scoped to exactly
-  // that account's own tracked services — minus whichever ones the
-  // integration's own excluded_service_slugs list turns off, if any —
-  // and to events that specific integration hasn't been delivered yet (the
-  // `!left` + `.is(..., null)` anti-join pair). Narrowing the target set
-  // in the query itself, rather than fetching broadly and filtering in
-  // JS, is what keeps this from re-reading the same already-delivered
-  // rows forever as the tracked/integration set grows.
-  //
-  // Batched through runInBatches (same SEND_CONCURRENCY cap as the send
-  // loop below), not a raw Promise.all — this fan-out now scales with
-  // accounts × integrations per account instead of a fixed ≤3 global
-  // integrations, and an unbounded burst of concurrent Supabase queries
-  // here is exactly the shape of load that already saturated this
-  // project's Postgres compute once before the poller was sharded (see
-  // AGENTS.md's Failure log).
+  // Narrowed in the query (anti-join on deliveries) so delivered rows are never re-read.
+  // Batched: an unbounded burst of concurrent Supabase queries here saturated Postgres before (AGENTS.md Failure log).
   const pairs: { integration: IntegrationDefinition; event: IncidentEvent; userId: string }[] = [];
   await runInBatches(integrationsByUser, SEND_CONCURRENCY, async ({ integration, userId }) => {
     const ownTracked = trackedSlugsByUser.get(userId);
@@ -390,23 +306,14 @@ export async function notifyPendingEvents(): Promise<void> {
 
   const sent: { event_id: string | number; integration_id: string }[] = [];
   const resolvedCache = new Map<IncidentEvent["id"], Promise<ResolvedEvent | null>>();
-  // Same "resolve once per cycle" idea as resolvedCache above, for webhook
-  // URL validation — see sendWebhook's own comment (webhook.ts) for why.
   const webhookValidationCache = new Map<string, boolean>();
-  // Same idea again, for each account's real time zone — see
-  // resolveTimeZoneCached's own comment.
   const timeZoneCache = new Map<string, Promise<string>>();
-  // One query for the whole cycle, not per pair — see
-  // fetchAllComponentFilters's own comment.
   const componentFilters = await fetchAllComponentFilters();
   await runInBatches(pairs, SEND_CONCURRENCY, async ({ integration, event, userId }) => {
     const resolved = await resolveEventCached(event, resolvedCache);
     if (!resolved) return;
 
-    // Excluded by the integration's own policy filter (sms's
-    // notifyImpacts) or this account's shared component allowlist for the
-    // service — neither is a delivery outcome, so both are marked handled
-    // the same as an actual send would be, or they'd retry forever.
+    // Filtered events are marked handled, or they'd retry forever.
     if (!shouldNotify(integration, resolved)) {
       sent.push({ event_id: event.id, integration_id: integration.id });
       return;
@@ -416,8 +323,7 @@ export async function notifyPendingEvents(): Promise<void> {
       return;
     }
 
-    // Only recorded as delivered on actual success — a failed send is
-    // therefore automatically retried next cycle, for free, with no queue.
+    // Recorded only on success, so failed sends retry next cycle.
     if (await sendNotification(integration, event.service_slug, resolved, webhookValidationCache, userId, timeZoneCache)) {
       sent.push({ event_id: event.id, integration_id: integration.id });
     }

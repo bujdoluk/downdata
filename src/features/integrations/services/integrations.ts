@@ -47,10 +47,6 @@ function toIntegration(row: IntegrationRow, recipients: Recipient[], webhookTarg
       slug: "webhook",
       name: row.name,
       targets: webhookTargets,
-      // Every notifyImpacts-capable integration defaults to major/critical
-      // only — a low-severity "operational"/"minor" blip isn't worth
-      // interrupting anyone about on any channel, email and webhook
-      // included, not just sms's texting-cost-driven opt-in.
       notifyImpacts: row.notify_impacts ?? ["major", "critical"],
       excludedServiceSlugs: row.excluded_service_slugs,
     };
@@ -58,14 +54,8 @@ function toIntegration(row: IntegrationRow, recipients: Recipient[], webhookTarg
   return null;
 }
 
-// One query covering email/sms recipients and webhook targets alike — they
-// used to be two separate queries against the same table (Promise.all'd,
-// but still double the round trips), which is exactly the kind of
-// per-cycle query multiplication that has already saturated this project's
-// Postgres compute once before (see AGENTS.md's Failure log on the
-// incident poller). onlyVerified only matters for email/sms — a webhook
-// row is always inserted with verified: true (see addWebhookTarget), so
-// filtering by it never excludes one.
+// One query for recipients and webhook targets alike, to avoid per-cycle query
+// multiplication (see AGENTS.md Failure log). Webhook rows are always verified.
 async function integrationTargetsByIntegration(
   supabase: Awaited<ReturnType<typeof createClient>> | ReturnType<typeof getSupabaseClient>,
   integrationIds: string[],
@@ -83,12 +73,7 @@ async function integrationTargetsByIntegration(
   for (const row of (data as IntegrationRecipientRow[] | null) ?? []) {
     if (row.channel === "webhook") {
       if (!row.webhook_secret) {
-        // Shouldn't happen — every insert sets it (see addWebhookTarget) —
-        // but a silent `continue` here would otherwise make a webhook
-        // target vanish from the account's own integration with no error,
-        // no log line, nothing pointing at why it stopped firing. Logged,
-        // not thrown: one bad row shouldn't take down every other
-        // integration's read.
+        // Logged, not thrown: one bad row shouldn't break every other integration's read.
         console.error(`integrationTargetsByIntegration: webhook target "${row.value}" (integration ${row.integration_id}) has no webhook_secret — skipping it.`);
         continue;
       }
@@ -119,13 +104,8 @@ export async function getAllIntegrations(): Promise<IntegrationDefinition[]> {
   });
 }
 
-// Every account's integrations, tagged with their owner — service-role
-// client, for exactly one caller: the cron notifier
-// (lib/notifyIncidentEvents.ts), which runs with no user session. Only
-// ever includes verified recipients, since the notifier should never see
-// (and so can never accidentally send to) an unconfirmed one. Never call
-// this from a user-facing code path — it bypasses RLS entirely and would
-// leak every account's connections.
+// Service-role, cross-account, verified recipients only. Cron notifier only:
+// it bypasses RLS, so never call it from a user-facing path.
 export async function getAllIntegrationsAcrossUsers(): Promise<{ integration: IntegrationDefinition; userId: string }[]> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
@@ -143,9 +123,6 @@ export async function getAllIntegrationsAcrossUsers(): Promise<{ integration: In
   });
 }
 
-// A targeted point query rather than getAllIntegrations().find(...) — this
-// only needs one row's id/slug, not every recipient of every integration
-// the account has (getAllIntegrations() joins the whole recipients table).
 export async function resolveIntegrationBySlug(slug: string): Promise<{ id: string; slug: string } | undefined> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("integrations").select("id, slug").eq("slug", slug).maybeSingle();
@@ -156,28 +133,13 @@ export async function resolveIntegrationBySlug(slug: string): Promise<{ id: stri
 export async function addIntegration(
   input:
     | { slug: "slack"; name: string; webhookUrl: string }
-    // notifyImpacts is optional here on purpose — see the row-building
-    // comment below for why passing it on every call was a real bug.
     | { slug: "email"; name: string; notifyImpacts?: string[] }
     | { slug: "sms"; name: string; notifyImpacts?: string[] }
     | { slug: "webhook"; name: string; notifyImpacts?: string[] },
 ): Promise<{ id: string; slug: string }> {
   const supabase = await createClient();
-  // Built as one concrete row type (not left as the union `input` itself
-  // is) — upsert()'s overloads reject a row typed as a union of two
-  // shapes even when each member is individually valid.
-  //
-  // notify_impacts is only included when the caller actually passes it
-  // (first connect, to seed the shared major/critical default — the
-  // column's own DB default already matches it, but every other slug here
-  // seeds explicitly rather than relying on that silently). PostgREST's
-  // upsert only touches columns present in the row on conflict, so
-  // omitting it here on every later call (a second recipient/target,
-  // resending a code, rotating a webhook secret) leaves an
-  // already-customized severity filter alone instead of silently
-  // resetting it back to this call's hardcoded default — confirmed as a
-  // real bug: adding a second webhook target after narrowing to
-  // critical-only via PATCH was reverting it to the default again.
+  // One concrete row type: upsert() rejects a union-typed row. notify_impacts is
+  // omitted unless passed, so a later upsert doesn't reset a customized filter.
   const row: { slug: string; name: string; webhook_url?: string; notify_impacts?: string[] } =
     input.slug === "slack"
       ? { slug: input.slug, name: input.name, webhook_url: input.webhookUrl }
@@ -187,9 +149,6 @@ export async function addIntegration(
   return data as { id: string; slug: string };
 }
 
-// A targeted point query rather than getAllIntegrations().some(...) — this
-// only needs to know whether a slug is connected, not read/parse every
-// column of every row.
 export async function integrationExists(slug: string): Promise<boolean> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("integrations").select("id").eq("slug", slug).maybeSingle();
@@ -197,9 +156,6 @@ export async function integrationExists(slug: string): Promise<boolean> {
   return data !== null;
 }
 
-// Not sms-specific despite the column's origin (0016 added notify_impacts
-// for sms first) — webhook reuses the exact same column/semantics, so this
-// is shared rather than a byte-for-byte updateWebhookNotifyImpacts copy.
 export async function updateNotifyImpacts(id: string, notifyImpacts: string[]): Promise<void> {
   const supabase = await createClient();
   const { error } = await supabase.from("integrations").update({ notify_impacts: notifyImpacts }).eq("id", id);
@@ -220,11 +176,7 @@ async function currentExcludedSlugs(id: string): Promise<string[]> {
   return (data as { excluded_service_slugs: string[] | null }).excluded_service_slugs ?? [];
 }
 
-// Turns this service's notifications ON — un-excludes it. Because
-// excluded_service_slugs is an exclusion list (see the migration comment
-// on the column), this never needs to know what else the account tracks:
-// removing one slug from the exclusion list can't disturb any other
-// service, present or future.
+// An exclusion list, so toggling one slug never disturbs other services, present or future.
 export async function addServiceToIntegrationTarget(id: string, slug: string): Promise<void> {
   const excluded = await currentExcludedSlugs(id);
   if (!excluded.includes(slug)) return;
@@ -237,8 +189,6 @@ export async function addServiceToIntegrationTarget(id: string, slug: string): P
   if (error) throw error;
 }
 
-// Turns this service's notifications OFF — excludes it. A plain append;
-// same "never needs to know what else is tracked" property as above.
 export async function removeServiceFromIntegrationTarget(id: string, slug: string): Promise<void> {
   const excluded = await currentExcludedSlugs(id);
   if (excluded.includes(slug)) return;
@@ -251,25 +201,17 @@ export async function removeServiceFromIntegrationTarget(id: string, slug: strin
   if (error) throw error;
 }
 
-// --- Recipient verification -------------------------------------------
-//
-// Adding a recipient never makes it live immediately — it starts
-// unverified, with a code/token the connect flow's second step (SMS) or
-// an emailed link (email) has to confirm before the notifier will ever
-// send to it. See supabase/migrations/0019_integration_recipients.sql.
-
+// Recipients start unverified; the notifier only sends to verified ones (0019).
 export function generateVerification(channel: "email" | "sms"): { code: string; expiresAt: string } {
   const code =
     channel === "sms"
-      ? String(Math.floor(100_000 + Math.random() * 900_000)) // 6-digit OTP, texted directly
-      : crypto.randomUUID(); // opaque token, embedded in the confirmation link
+      ? String(Math.floor(100_000 + Math.random() * 900_000))
+      : crypto.randomUUID();
   const ttlMs = channel === "sms" ? SMS_CODE_TTL_MS : EMAIL_TOKEN_TTL_MS;
   return { code, expiresAt: nowPlusIso(ttlMs) };
 }
 
-// Upserts on (integration_id, value): re-adding an existing recipient
-// (e.g. after removing it) starts its verification over rather than
-// erroring on a duplicate.
+// Upsert so re-adding a recipient restarts verification instead of erroring.
 export async function addRecipient(integrationId: string, channel: "email" | "sms", value: string, code: string, expiresAt: string): Promise<void> {
   const supabase = await createClient();
   const { error } = await supabase.from("integration_recipients").upsert(
@@ -286,11 +228,8 @@ export async function removeRecipient(integrationId: string, value: string): Pro
   return (data?.length ?? 0) > 0;
 }
 
-// Public confirmation-link flow — clicked from an email client, so the
-// browser completing it may have no session for the account that added
-// the recipient at all. The token itself is the authorization, same as
-// this app's existing Supabase email-confirmation links, so this runs
-// through the service-role client rather than the session-scoped one.
+// Service-role: clicked from an email client with possibly no session, so the
+// token itself is the authorization.
 export async function verifyEmailRecipient(token: string): Promise<boolean> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
@@ -304,9 +243,6 @@ export async function verifyEmailRecipient(token: string): Promise<boolean> {
   return (data?.length ?? 0) > 0;
 }
 
-// Submitted from inside the (authenticated) connect form's second step —
-// stays on the session-scoped client, RLS-restricted to the caller's own
-// integration the same as everything else in this file.
 export async function verifySmsRecipient(integrationId: string, value: string, code: string): Promise<boolean> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -321,14 +257,7 @@ export async function verifySmsRecipient(integrationId: string, value: string, c
   return (data?.length ?? 0) > 0;
 }
 
-// --- Webhook targets -----------------------------------------------------
-//
-// No verification_code/expires_at — the API route's caller (POST
-// /api/integrations/webhook) already confirmed the URL responds via
-// sendWebhookPing() *before* calling this, so the row is inserted
-// already-live (verified: true) rather than starting pending. Upserts on
-// (integration_id, value), same as addRecipient — re-adding an existing
-// target rotates its secret rather than erroring on a duplicate.
+// Inserted already verified: the route pinged the URL first. Re-adding rotates the secret.
 export async function addWebhookTarget(integrationId: string, url: string, secret: string): Promise<void> {
   const supabase = await createClient();
   const { error } = await supabase

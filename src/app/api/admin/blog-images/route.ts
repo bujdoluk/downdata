@@ -4,14 +4,8 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { validateImageFile, uploadImageToBucket } from "@/lib/imageUpload";
 import { nowMs } from "@/lib/formatTime";
 
-// Unlike avatars/status-page-logos, this doesn't upload directly from the
-// browser to Storage — the blog-images bucket has no insert policy for
-// `authenticated` at all (see the 0035 migration's own comment), since
-// there's no per-user auth.uid() ownership to check for a bucket with
-// exactly one writer. This route is that writer: it authorizes via
-// ADMIN_EMAIL, then uploads with the service-role client, which bypasses
-// Storage RLS the same way it bypasses table RLS everywhere else in this
-// app.
+// The blog-images bucket has no insert policy for `authenticated`, so this route is its only writer:
+// it checks ADMIN_EMAIL, then uploads with the service-role client.
 export async function POST(request: Request) {
   if (!(await isAdminUser())) {
     return NextResponse.json({ error: "Not authorized." }, { status: 403 });
@@ -28,11 +22,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "That file isn't a supported image or is too large." }, { status: 400 });
   }
 
-  // A fresh path per upload, not a fixed per-post one — a post's slug may
-  // not exist yet (uploading before the create form is ever submitted),
-  // so there's no stable key to upsert onto the way avatars/status-page-
-  // logos do. The old object is simply left orphaned in Storage on a
-  // re-upload, an acceptable tradeoff for a single-admin, low-volume bucket.
+  // Fresh path per upload since the post may not exist yet; orphaned objects are acceptable here.
   const path = `posts/${nowMs()}-${file.name}`;
   const imageUrl = await uploadImageToBucket(getSupabaseClient(), "blog-images", path, file);
   return NextResponse.json({ imageUrl });

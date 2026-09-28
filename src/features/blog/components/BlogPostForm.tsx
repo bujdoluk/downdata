@@ -10,9 +10,6 @@ import BlogPostPreviewModal, { type BlogPostPreviewModalHandle } from "@/feature
 import { buildVideoEmbedHtml } from "@/features/blog/services/videoEmbed";
 import type { BlogPost } from "@/features/blog/types";
 
-// Shared by the cover-image upload, the Avatar upload, and the body's
-// "Insert image" button — same endpoint/validation either way, they just do
-// different things with the resulting URL.
 async function uploadBlogImage(file: File): Promise<string> {
   const formData = new FormData();
   formData.append("file", file);
@@ -22,11 +19,8 @@ async function uploadBlogImage(file: File): Promise<string> {
   return data.imageUrl as string;
 }
 
-// New-post-only (see the isEditing guards around every use of this below) —
-// an existing post already has a persisted, authoritative version in the
-// database, so restoring a possibly-stale local draft over freshly-loaded
-// server data would be a real conflict, not a convenience. A brand-new,
-// never-saved post has nothing else to lose it to.
+// New posts only: restoring a stale local draft over an existing post's DB
+// data would be a conflict.
 const NEW_POST_DRAFT_KEY = "blogDraft:new:v1";
 
 type NewPostDraft = {
@@ -41,21 +35,16 @@ function clearNewPostDraft() {
   try {
     localStorage.removeItem(NEW_POST_DRAFT_KEY);
   } catch {
-    // ignore — Safari private mode can throw here
+    // ignore: Safari private mode can throw here
   }
 }
 
-// Internal admin tooling (ADMIN_EMAIL-gated, see requireAdminUser.ts) —
-// deliberately plain English throughout, not run through the 13-locale
-// i18n system the rest of this app's user-facing strings go through. The
-// only person who will ever see this is the site owner.
+// Admin-only tooling, deliberately plain English, not i18n'd.
 export default function BlogPostForm({ post }: { post?: BlogPost }) {
   const router = useRouter();
   const isEditing = Boolean(post);
   const [title, setTitle] = useState(post?.title ?? "");
-  // Once a post exists, its slug is the primary key and isn't editable
-  // here (see updatePost's own comment) — only a create-mode draft slug
-  // auto-follows the title as it's typed.
+  // Slug is the primary key once a post exists, so only a create-mode slug follows the title.
   const [slug, setSlug] = useState(post?.slug ?? "");
   const [slugTouched, setSlugTouched] = useState(isEditing);
   const [bodyHtml, setBodyHtml] = useState(post?.bodyHtml ?? "");
@@ -75,10 +64,6 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
     if (!isEditing && !slugTouched) setSlug(slugify(value));
   }
 
-  // Restores an in-progress new-post draft after a refresh — read once on
-  // mount, same try/catch-and-ignore convention as Sidebar.tsx's own
-  // localStorage use (Safari private mode can throw on access, not just on
-  // a missing key).
   useEffect(() => {
     if (isEditing) return;
     try {
@@ -95,13 +80,10 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
     } catch {
       // ignore
     }
-    // Only ever runs once, right after mount — isEditing/setters are stable
-    // for the lifetime of this component.
+    // Runs once on mount; isEditing and setters are stable.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ...and saves it back on every change thereafter, so a refresh mid-draft
-  // has something to restore.
   useEffect(() => {
     if (isEditing) return;
     try {
@@ -112,10 +94,7 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
     }
   }, [isEditing, title, slug, bodyHtml, imageUrl, avatarUrl]);
 
-  // Inserts at the textarea's current cursor position (falling back to the
-  // end if it's not focused) rather than always appending — both the
-  // "Insert image" and "Insert video" buttons are meant to drop their
-  // snippet wherever you're actually writing.
+  // Inserts at the cursor, not always at the end.
   function insertAtCursor(snippet: string) {
     const textarea = bodyTextareaRef.current;
     if (!textarea) {
@@ -174,9 +153,6 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
     insertImageMutation.mutate(file, { onError: (error) => setBodyToolError(error.message) });
   }
 
-  // Plain window.prompt, not a styled input — matches this form's own
-  // "deliberately minimal, single-user tooling" philosophy for a one-off
-  // action rather than something worth its own UI chrome.
   function handleInsertVideo() {
     const url = window.prompt("Paste a YouTube or Vimeo link");
     if (!url) return;
@@ -190,8 +166,7 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
   }
 
   const saveMutation = useMutation({
-    // Branching on `post` itself, not the derived `isEditing` boolean, so
-    // TypeScript narrows it directly instead of needing a `post!` assertion.
+    // Branch on `post` so TypeScript narrows without a `post!`.
     mutationFn: () =>
       post
         ? requestJson<BlogPost>(`/api/admin/blog-posts/${post.slug}`, "Couldn't save the post.", {
@@ -203,9 +178,8 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
             body: { title, slug, bodyHtml, imageUrl, avatarUrl },
           }),
     onSuccess: () => {
-      // Only the create path has a draft to clear — clearing unconditionally
-      // here would also wipe an unrelated, still-in-progress new-post draft
-      // whenever an *edit* save happens to succeed afterward.
+      // Only the create path clears the draft, so an edit save can't wipe an
+      // unrelated in-progress new-post draft.
       if (!isEditing) clearNewPostDraft();
       router.push("/admin/blog");
       router.refresh();
@@ -221,19 +195,11 @@ export default function BlogPostForm({ post }: { post?: BlogPost }) {
   const avatarUploading = avatarUploadMutation.isPending;
 
   return (
-    // Fragment, not just the <form> itself: BlogPostPreviewModal renders its
-    // own <dialog>/<form method="dialog">s, and HTML doesn't allow a <form>
-    // nested inside another <form> — it has to be a sibling, not a child.
+    // Fragment: BlogPostPreviewModal has its own <form>s, which can't nest in this one.
     <>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 lg:min-h-0 lg:flex-1">
-        {/* lg:flex-row, not grid-cols-2 — the Body column needs to be a
-            flex-col itself so its textarea can flex-1 into whatever height
-            this row ends up with; CSS grid's own row tracks size to content
-            (grid-auto-rows: max-content, including on daisyUI's own
-            .fieldset) regardless of the grid container's height, which
-            would silently defeat the "fill remaining viewport" chain below
-            if this stayed a grid. Unscoped on mobile — same stacked, plain-
-            scrolling layout as before there. */}
+        {/* Flex, not grid: grid rows size to content, which would break the
+            textarea's fill-remaining-height chain. */}
         <div className="flex flex-col gap-4 lg:min-h-0 lg:flex-1 lg:flex-row">
           <div className="flex flex-col gap-4 lg:w-1/2">
             <label className="fieldset">

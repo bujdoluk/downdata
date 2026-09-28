@@ -6,12 +6,8 @@ export type BadgeTheme = "light" | "dark";
 export type BadgeSize = "small" | "medium" | "large";
 export type BadgeLayout = "flat" | "card";
 
-// Hex values, not Tailwind classes — an SVG string built server-side has
-// no CSS custom properties in scope, so this duplicates globals.css's
-// --color-success/warning/error/base-* values rather than reusing
-// statusStyles.ts (which only ever returns class names). success/warning/
-// error are identical across both themes in globals.css, so only the
-// chrome (background/text) needs a light/dark split.
+// Hex, not Tailwind: a server-built SVG has no CSS variables in scope, so this mirrors globals.css.
+// Status colors match across themes, only the chrome needs a light/dark split.
 const INDICATOR_HEX: Record<string, string> = {
   none: "#10b981",
   minor: "#eab308",
@@ -25,19 +21,9 @@ const CHROME_HEX: Record<BadgeTheme, { bg: string; border: string; text: string;
   dark: { bg: "#171821", border: "#191b24", text: "#edeef4", muted: "#9ca3af" },
 };
 
-// none < minor < major < critical — same ordering this app's incident
-// severity already implies everywhere else (INDICATOR_STYLES's own
-// listing order, impact filters, etc.), just made explicit here since a
-// board-level badge needs one indicator out of several services' worth.
 const SEVERITY_ORDER: Indicator[] = ["none", "minor", "major", "critical"];
 
-// The worst indicator across a board's own services — the same "one
-// overall state for several things" idea a real status page's own banner
-// shows, which this app doesn't otherwise compute anywhere yet (the
-// public status page shows per-service rows + counts, no single combined
-// value). A service with indicator null (live fetch failed) is excluded
-// rather than treated as critical — an unknown is not the same claim as
-// a known outage.
+// A null indicator (live fetch failed) is skipped, not treated as critical: unknown isn't an outage.
 export function worstIndicator(services: PublicStatusPageService[]): Indicator {
   let worst: Indicator = "none";
   for (const service of services) {
@@ -48,9 +34,7 @@ export function worstIndicator(services: PublicStatusPageService[]): Indicator {
   return worst;
 }
 
-// Plain average across the board's services — the same aggregation
-// reports' overallUptimePercent already uses (reportGeneration.ts), so
-// this isn't a second, inconsistent definition of "board uptime."
+// Plain average, matching reportGeneration.ts's overallUptimePercent.
 export function averageUptime(services: PublicStatusPageService[]): number {
   if (services.length === 0) return 100;
   const sum = services.reduce((total, service) => total + service.official30daysUptime, 0);
@@ -67,22 +51,12 @@ function escapeXml(value: string): string {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
-// Rendered by app/api/badge/[boardSlug]/route.ts when isStatusPageUnlocked()
-// says no — an <img> tag can't show a password form, and the badge already
-// has no other way to authenticate its viewer beyond a cookie the same
-// browser may or may not hold (see the spec). Same neutral shape as that
-// route's own notFoundSvg(): never leak real status/uptime data through
-// this side channel just because the page itself would refuse it.
+// Neutral badge for a locked page, so the badge never leaks status the page itself would refuse.
 export function renderLockedBadgeSvg({ theme, size, layout }: { theme: BadgeTheme; size: BadgeSize; layout: BadgeLayout }): string {
   return renderBadgeSvg({ label: "status", value: "protected", indicator: null, theme, size, layout });
 }
 
-// A single self-contained SVG string — no external fonts/images, so it
-// renders identically wherever it's embedded (a README, a site with its
-// own CSS, an email client that allows img tags). Two layouts: "flat" is
-// a single-color pill (label + value, shields.io-style); "card" is a
-// bordered box with the label stacked above the value, closer to a mini
-// status widget than a badge.
+// Self-contained (no external fonts/images) so it renders the same wherever it's embedded.
 export function renderBadgeSvg({
   label,
   value,
@@ -93,10 +67,7 @@ export function renderBadgeSvg({
 }: {
   label: string;
   value: string;
-  // Only the status variant carries a real indicator — the uptime variant
-  // always renders in the chrome's neutral text color, not a status color
-  // (a "99.98%" figure isn't itself good or bad without a threshold, and
-  // this app doesn't ask the viewer to configure one for a public badge).
+  // null for uptime: a percentage isn't good or bad without a threshold.
   indicator: Indicator | null;
   theme: BadgeTheme;
   size: BadgeSize;
@@ -111,10 +82,7 @@ export function renderBadgeSvg({
   const font = "font-family=\"system-ui,-apple-system,Segoe UI,Roboto,sans-serif\"";
 
   if (layout === "flat") {
-    // Two adjoining rects sized by rough character-width estimate — good
-    // enough for the short label/value pairs a badge ever carries (no
-    // client-side font metrics are available to measure exactly, same
-    // constraint every shields.io-style badge generator works under).
+    // Widths are estimated per character: no font metrics are available server-side.
     const charWidth = dims.fontSize * 0.6;
     const labelWidth = Math.round(label.length * charWidth) + dims.padX * 2;
     const valueWidth = Math.round(value.length * charWidth) + dims.padX * 2;
@@ -129,10 +97,6 @@ export function renderBadgeSvg({
 </svg>`;
   }
 
-  // "card": a bordered box, label on top (muted, smaller), value below
-  // (bold, colored when it's the status variant) — a small dot next to
-  // the value for the status variant, matching statusStyles.ts's own
-  // dot+label convention used throughout the rest of the app.
   const charWidth = dims.fontSize * 0.62;
   const contentWidth = Math.max(label.length, value.length) * charWidth + (indicatorHex ? dims.logoSize : 0);
   const width = Math.round(contentWidth) + dims.padX * 2;

@@ -4,9 +4,6 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import Spinner from "@/components/Spinner";
 
-// The "forgot password" request form (email only) — split out alongside
-// AuthCredentialsForm so LoginForm itself stays under this skill's 200-line
-// threshold, having previously handled all three modes inline.
 export default function AuthResetRequestForm({
   email,
   onEmailChange,

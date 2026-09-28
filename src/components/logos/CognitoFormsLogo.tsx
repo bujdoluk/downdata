@@ -1,6 +1,3 @@
-// Cognito Forms' real mark is a simplified cog; brand palette confirmed via
-// their media kit (cognitoforms.com/newsroom/media-kit) — Jaywalk #D85427
-// orange on Matins #234652 dark blue-gray.
 export default function CognitoFormsLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">

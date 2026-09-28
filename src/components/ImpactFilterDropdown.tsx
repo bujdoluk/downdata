@@ -6,17 +6,7 @@ import "@/lib/i18n/i18n";
 import { ALL_IMPACTS, IMPACT_CHECKBOX_COLOR, INDICATOR_STYLES } from "@/components/statusStyles";
 import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 
-// Select-look dropdown that opens a checkbox list — a native <select> can't
-// hold checkboxes as options, so this is the details/summary dropdown idiom
-// already used throughout this repo (ServiceSearchPicker, LanguageSwitcher,
-// BoardsPageContent, IntegrationCard), not a new pattern. Shared by
-// Incidents and History page content, which filter the same Incident.impact
-// values through the same ALL_IMPACTS/IMPACT_CHECKBOX_COLOR maps.
-//
-// Sibling of ImpactFilterCheckboxes.tsx, not a replacement for it —
-// SmsConnectForm.tsx still uses the plain checkbox row for its settings
-// form (a "choose which severities notify" toggle group reads better fully
-// visible than collapsed behind a dropdown there).
+// A native <select> can't hold checkboxes. Settings forms still use the always-visible ImpactFilterCheckboxes.
 export default function ImpactFilterDropdown({
   selected,
   onToggle,
@@ -50,7 +40,7 @@ export default function ImpactFilterDropdown({
                 checked={selected.has(impact)}
                 onChange={() => onToggle(impact)}
               />
-              {/* impact comes from ALL_IMPACTS, a subset of INDICATOR_STYLES's keys, so the lookup always hits */}
+              {/* ALL_IMPACTS is a subset of INDICATOR_STYLES's keys. */}
               {t(INDICATOR_STYLES[impact]!.labelKey)}
             </label>
           </li>

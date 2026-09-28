@@ -4,9 +4,7 @@ import type { ReportInterval, ReportSettings } from "@/features/reports/types";
 
 type SettingsRow = { report_interval: ReportInterval; excluded_board_ids: string[] | null; email_nudge_enabled: boolean };
 
-// No row yet = every default still applies — same "absence = default"
-// convention subscriptions/integrations already use, not a row this app
-// pre-seeds for every account.
+// No row = defaults apply; rows aren't pre-seeded.
 const DEFAULT_SETTINGS: ReportSettings = { interval: "weekly", excludedBoardIds: [], emailNudgeEnabled: true };
 
 function toSettings(row: SettingsRow): ReportSettings {
@@ -20,16 +18,8 @@ export async function getReportSettings(): Promise<ReportSettings> {
   return data ? toSettings(data as SettingsRow) : DEFAULT_SETTINGS;
 }
 
-// Keeps report_settings.time_zone in sync with the account's real profile
-// timezone (auth.users.user_metadata — lib/account.ts) whenever a real
-// session is available (called from GET /api/reports/settings, hit every
-// time the /reports page loads). The report-generation cron runs with no
-// session at all and no other way to read a per-account IANA timezone
-// without the Admin API, so this column is the one place it's cached for
-// that cross-account read — see 0032_reports.sql's comment. Only ever
-// touches this one column (PostgREST's upsert only includes columns
-// present in the payload on conflict), so it never clobbers an explicit
-// settings save.
+// Caches the profile timezone for the session-less cron. Upsert only writes
+// this column, so it never clobbers a settings save.
 export async function syncOwnTimeZone(): Promise<void> {
   const supabase = await createClient();
   const { data: userData } = await supabase.auth.getUser();

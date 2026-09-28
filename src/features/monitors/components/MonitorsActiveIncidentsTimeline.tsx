@@ -17,10 +17,8 @@ import Spinner from "@/components/Spinner";
 
 const POLL_INTERVAL_MS = 60_000;
 
-// Missing/errored rollup data means "unknown," not "none" — defaulting the
-// comparison to rank 0 would make almost every real incident (minor and up)
-// look alert-tier during the loading window or a status-fetch failure. No
-// rollup to compare against means this incident is never flagged alert.
+// Missing rollup means "unknown", not "none": never flag alert without one,
+// or nearly every incident would look alert-tier while loading.
 export function isAlertIncident(incident: TrackedIncidentSummary, data: ServiceStatusBatchResponse | undefined): boolean {
   const status = data?.[incident.service.slug];
   if (!status || !("status" in status)) return false;
@@ -32,11 +30,7 @@ function severityRank(impact: string): number {
   return INDICATOR_RANK[impact] ?? 0;
 }
 
-// Shared by sortIncidentsBySeverity and buildTimelineEntries below so the
-// two can't silently drift apart — previously each had its own copy of
-// this exact comparator, one of them (buildTimelineEntries's) unreachable
-// from sortIncidentsBySeverity's own unit tests, so a future edit to one
-// copy without the other would pass tests while changing live behavior.
+// Shared so the tested sort and buildTimelineEntries can't drift apart.
 function compareBySeverity(
   a: TrackedIncidentSummary,
   b: TrackedIncidentSummary,
@@ -47,12 +41,7 @@ function compareBySeverity(
   return Number(isAlertIncident(b, data)) - Number(isAlertIncident(a, data));
 }
 
-// Exported for unit testing (this repo has no component-rendering test
-// setup — see resolveReminderRule.ts for the same reasoning applied to a
-// different pure function). Standalone/board-agnostic so it's directly
-// testable — buildTimelineEntries below applies this same rule to the
-// deduped {incident, boardId} pairs, not to each board's own subset in
-// isolation (see that function's own comment for why).
+// Exported for unit tests; there's no component-rendering test setup.
 export function sortIncidentsBySeverity(
   incidents: TrackedIncidentSummary[],
   data: ServiceStatusBatchResponse | undefined,
@@ -62,22 +51,8 @@ export function sortIncidentsBySeverity(
 
 export type TimelineEntry = { incident: TrackedIncidentSummary; boardId: string };
 
-// One global severity sort across every board's incidents together — most
-// severe first overall, not "board A's own incidents, then board B's own
-// incidents" (that was this component's original design; reversed per an
-// explicit correction: a board with only a minor incident was sorting
-// ahead of a different board's critical one just because it came first in
-// `boards` order, which read as "backwards" once real data crossed board
-// boundaries). Per-board scoping is now used only for dedup (below), not
-// for ordering.
-//
-// A service tracked on more than one of the currently-visible boards
-// (MonitorsBoardSection's own grid already allows this — a service renders
-// once per board section there) would otherwise put the same incident in
-// the timeline more than once: `seen` assigns it to the first board it
-// matches, in `boards` order, and skips it for every subsequent board.
-// This also keeps every entry's incident id genuinely unique, since
-// <li key={...}> below needs it.
+// One global severity sort, not grouped per board. Boards only dedup: a service
+// on several boards shows its incident once, under the first board.
 export function buildTimelineEntries(
   boards: Board[],
   incidents: TrackedIncidentSummary[],
@@ -142,9 +117,6 @@ export default function MonitorsActiveIncidentsTimeline({
               <li key={incident.id} className="min-h-16">
                 <hr />
                 <div className="timeline-start pr-3">
-                  {/* role="img" + aria-label, same pattern CatalogServiceCard's
-                      own status stripe already uses — a bare icon swap
-                      communicates nothing to a screen reader on its own. */}
                   <span role="img" aria-label={iconLabel}>
                     <AlertIcon className={`h-6 w-6 ${style.text}`} />
                   </span>

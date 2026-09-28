@@ -9,10 +9,6 @@ import type { Service } from "@/types/service";
 import { SERVICE_LOGOS } from "@/components/logos";
 import FallbackLogo from "@/components/logos/FallbackLogo";
 
-// linkPrefix defaults to the authenticated monitors detail page; the
-// public landing navbar passes "/services" instead (see
-// app/services/[slug]/page.tsx) — same component, same UI, different
-// destination depending on whether the caller has a session.
 export default function ServiceSearch({ services, linkPrefix = "/monitors" }: { services: Service[]; linkPrefix?: string }) {
   const { t } = useTranslation();
   const router = useRouter();

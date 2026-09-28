@@ -19,8 +19,6 @@ export default function BoardTrackedServicesGrid({
   entries: Catalog[];
   data: ServiceStatusBatchResponse | undefined;
   fetchFailed: boolean;
-  // Opens BoardDetailContent's inline add-service modal — a callback rather
-  // than a boardId + Link now that adding no longer navigates away.
   onAddService: () => void;
 }) {
   const { t } = useTranslation();
@@ -38,12 +36,6 @@ export default function BoardTrackedServicesGrid({
         </button>
       </div>
 
-      {/* No entries.length === 0 branch — BoardDetailContent (this
-          component's only caller) only ever renders this inside its own
-          non-empty branch; a zero-service board gets NoServicesMessage +
-          BoardSuggestedServices instead. .map over an empty array already
-          renders nothing on its own, so there's nothing left to special-case
-          here. */}
       <div className="mt-3 flex flex-wrap gap-2">
         {entries.map((entry) => {
           const status = data?.[entry.slug];
@@ -63,9 +55,7 @@ export default function BoardTrackedServicesGrid({
                   <span className={`w-2 self-stretch shrink-0 ${stripeColor} ${isLoading ? "animate-pulse" : ""}`} aria-hidden="true" />
                 </div>
               </Link>
-              {/* Sibling to the Link, not nested inside it — an <a> inside
-                  an <a> is invalid HTML, so the badge sits absolutely
-                  positioned over the card's corner instead. */}
+              {/* Sibling of the Link: the badge is a link too, and nested <a> is invalid. */}
               {openIncidentImpact && (
                 <MoreSevereIncidentBadge
                   incident={openIncidentImpact}

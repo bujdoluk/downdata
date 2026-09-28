@@ -1,4 +1,3 @@
-// Coursera's mark: a stylized open "C" ring, in Coursera blue.
 export default function CourseraLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">

@@ -5,14 +5,9 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { generateDueReports } from "@/features/reports/services/reportGeneration";
 import { nowIso } from "@/lib/formatTime";
 
-// Report generation itself is bounded (one pass over accounts with
-// boards), but well within poll-incidents's own timeout margin reasoning.
 export const maxDuration = 60;
 
-// Must actually be invoked roughly hourly by the external scheduler — see
-// reportGeneration.ts's REPORT_SEND_HOUR comment. A daily invocation would
-// only ever catch whichever accounts' local send hour happens to line up
-// with that one daily tick.
+// Must be invoked hourly: each account sends at its own local hour (REPORT_SEND_HOUR).
 const SHARD_KEY = "reports";
 const LOCK_STALE_MS = 70 * 60 * 1000;
 

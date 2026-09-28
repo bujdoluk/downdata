@@ -1,21 +1,9 @@
 import * as React from "react";
 import { cx, focusRing } from "@/lib/utils";
 
-// Vendored + adapted from Tremor Raw's BarList (https://tremor.so/docs/visualizations/bar-list)
-// — Tremor Raw ships as copy-paste source, not an installed package, so this
-// file *is* the "installation." Adapted from Tremor's original:
-//   - recolored from Tremor's hardcoded blue/gray + `dark:` classes to
-//     daisyUI tokens — this app's theme toggle is daisyUI's `data-theme`
-//     attribute, not Tailwind's `dark:` variant (unconfigured here), so the
-//     stock classes would never track the actual active theme
-//   - dropped `href` support — unused by every caller in this app, and
-//     Tremor's own version renders it as `<a>` inside the row's `<button>`
-//     when `onValueChange` is set, which is invalid nested-interactive HTML
-//   - added `color`, a per-bar fill hook — stock BarList paints every bar
-//     identically, but this app needs to highlight the selected service
-//   - added list semantics (`role="list"`/`"listitem"`, a combined
-//     `aria-label` per row) — stock BarList's rows carry no group/list
-//     relationship for assistive tech at all
+// Vendored from Tremor Raw's BarList (https://tremor.so/docs/visualizations/bar-list), which ships as copy-paste source.
+// Changes: daisyUI tokens instead of `dark:` classes (theme is `data-theme`), no `href` (invalid <a> in <button>),
+// per-bar `barColor` to highlight a selection, and list semantics for assistive tech.
 type Bar<T> = T & {
   key?: string;
   value: number;
@@ -28,9 +16,7 @@ interface BarListProps<T = unknown> extends React.HTMLAttributes<HTMLDivElement>
   showAnimation?: boolean;
   onValueChange?: (payload: Bar<T>) => void;
   sortOrder?: "ascending" | "descending" | "none";
-  // Named barColor, not color — HTMLAttributes<HTMLDivElement> already has a
-  // (legacy, string-typed) `color` attribute and the two would collide.
-  /** Fill class (a daisyUI `bg-*`) for one bar. Defaults to a flat `bg-primary/50`. */
+  /** Fill class (a daisyUI `bg-*`) for one bar. Not `color`, which collides with the legacy HTML attribute. */
   barColor?: (item: Bar<T>) => string;
 }
 
@@ -56,10 +42,7 @@ function BarListInner<T>(
     return [...data].sort((a, b) => (sortOrder === "ascending" ? a.value - b.value : b.value - a.value));
   }, [data, sortOrder]);
 
-  // Width computed alongside its item in one pass, rather than a same-length
-  // parallel array indexed by position — noUncheckedIndexedAccess would type
-  // that index lookup as possibly-undefined even though the two arrays can
-  // never actually drift apart.
+  // Paired with its item so noUncheckedIndexedAccess needs no parallel-array lookup.
   const rows = React.useMemo(() => {
     const maxValue = Math.max(...sortedData.map((item) => item.value), 0);
     return sortedData.map((item) => ({
@@ -76,9 +59,7 @@ function BarListInner<T>(
             key={item.key ?? item.name}
             onClick={() => onValueChange?.(item)}
             aria-label={`${item.name}: ${valueFormatter(item.value)}`}
-            // A <button> keeps its native button semantics — role="listitem"
-            // would override those. The read-only <div> fallback gets the
-            // role instead, so it still reads as one item of the list above.
+            // role="listitem" would override a <button>'s native semantics.
             role={Component === "div" ? "listitem" : undefined}
             className={cx("group w-full rounded-sm", focusRing, onValueChange ? "-m-0! cursor-pointer hover:bg-base-content/5" : "")}
           >
@@ -99,8 +80,7 @@ function BarListInner<T>(
           </Component>
         ))}
       </div>
-      {/* Redundant with each row's aria-label above once combined — hidden
-          from assistive tech rather than announced twice. */}
+      {/* Already in each row's aria-label; hidden to avoid announcing twice. */}
       <div className="space-y-1.5" aria-hidden="true">
         {rows.map(({ item }) => (
           <div key={item.key ?? item.name} className={cx("flex items-center justify-end", ROW_HEIGHT)}>
@@ -114,9 +94,7 @@ function BarListInner<T>(
 
 BarListInner.displayName = "BarList";
 
-// Cast needed because React.forwardRef can't express a generic component on
-// its own — without it TS erases <T> and types BarList as only accepting
-// Bar<unknown>. Standard pattern for a generic forwardRef component.
+// Cast: forwardRef can't express a generic component and would erase <T>.
 const BarList = React.forwardRef(BarListInner) as <T>(
   props: BarListProps<T> & { ref?: React.ForwardedRef<HTMLDivElement> },
 ) => ReturnType<typeof BarListInner>;

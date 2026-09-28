@@ -1,11 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyEmailRecipient } from "@/features/integrations/services/integrations";
 
-// Public — see proxy.ts's PUBLIC_EXACT entry for why: this is clicked
-// from an email client, not this app, so the browser completing it may
-// have no session at all. Redirects into the (session-gated) /integrations
-// page either way — a logged-out click just bounces through /login first,
-// same as any other protected link.
+// Public: clicked from an email client that may have no session. The token is the authorization.
 export async function GET(request: Request) {
   const token = new URL(request.url).searchParams.get("token");
   const verified = token ? await verifyEmailRecipient(token) : false;

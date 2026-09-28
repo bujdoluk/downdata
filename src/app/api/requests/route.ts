@@ -4,8 +4,7 @@ import { submitFeatureRequest } from "@/lib/featureRequests";
 import { getResendClient } from "@/features/integrations/services/resend";
 import { SUPPORT_EMAIL, MAX_MESSAGE_LENGTH } from "@/lib/constants";
 
-// Public (see proxy.ts's PUBLIC_EXACT) — the landing page's RequestCard
-// calls this with no session at all.
+// Public: the landing page's RequestCard calls this with no session.
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -24,8 +23,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: `Please enter a message up to ${MAX_MESSAGE_LENGTH} characters.` }, { status: 400 });
   }
 
-  // Optional — anonymous landing-page visitors have no session, which is
-  // fine here; getUser() just returns null rather than erroring.
   const supabase = await createClient();
   const {
     data: { user },
@@ -33,15 +30,12 @@ export async function POST(request: Request) {
 
   await submitFeatureRequest({ kind, message, userId: user?.id ?? null });
 
-  // Best-effort — the request is already saved above, so a notification
-  // hiccup (or SUPPORT_EMAIL/RESEND_FROM_EMAIL not being configured yet)
-  // shouldn't fail the submission itself.
   const from = process.env.RESEND_FROM_EMAIL;
   if (from) {
     try {
       await getResendClient().emails.send({ from, to: SUPPORT_EMAIL, subject: `New ${kind} request`, text: message });
     } catch {
-      // ignore
+      // ignore: the request is already saved, a failed notification shouldn't fail it
     }
   }
 

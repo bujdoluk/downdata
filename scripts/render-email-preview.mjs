@@ -1,8 +1,4 @@
-// One-off local preview helper — bundles the TSX email templates with
-// esbuild (already a transitive dep via react-email) so they can be
-// rendered outside Next's own build pipeline, then writes static .html
-// files for visual review. Not part of the app itself; not wired into
-// package.json scripts.
+// Local-only preview helper, not in package.json. esbuild renders the TSX outside Next's build.
 import { build } from "esbuild";
 import { render } from "@react-email/render";
 import { writeFileSync, mkdirSync, readFileSync } from "node:fs";
@@ -29,9 +25,7 @@ await build({
 
 const { ConfirmEmailAddress, IncidentNotification } = await import("../scratch-email-preview/bundle.mjs");
 
-// Data URI, preview-only — the real send uses the real hosted URL
-// (emailLogoUrl()), which isn't live until this branch is deployed, so a
-// preview rendered against it would just show a broken image.
+// Data URI because the hosted emailLogoUrl() isn't live until deployed.
 const logoUrl = `data:image/png;base64,${readFileSync("public/email-logo.png").toString("base64")}`;
 
 const confirmHtml = await render(ConfirmEmailAddress({ verifyUrl: "https://www.downdata.online/api/integrations/email/verify?token=8279a800-bc6b-4fcb-a7bd-d4dc9df955e9", logoUrl }));

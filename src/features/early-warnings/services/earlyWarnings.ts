@@ -19,10 +19,7 @@ type MatchRow = {
 };
 type LinkRow = { source: string; external_id: string; keyword: string };
 
-// keyword_watches.id is a uuid column — a malformed id (bad client, stale
-// link) would otherwise make Postgres itself error on `.eq("id", id)",
-// which removeKeywordWatch would then throw unhandled instead of the
-// clean "not found" every other resolve/remove helper returns.
+// id is a uuid, so a malformed one would make Postgres error instead of "not found".
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function toMatch(row: MatchRow, keywords: string[]): KeywordMatch {
@@ -68,9 +65,7 @@ export async function removeKeywordWatch(id: string): Promise<boolean> {
   return (data?.length ?? 0) > 0;
 }
 
-// Every registered source, joined with whether the current account has it
-// enabled — a source with no settings row yet reads as disabled, matching
-// the column's own default rather than needing a row seeded per account.
+// No settings row reads as disabled, matching the column default.
 export async function getAllSourceSettings(): Promise<SourceSetting[]> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("keyword_source_settings").select("source, enabled");
@@ -85,12 +80,8 @@ export async function setSourceEnabled(source: string, enabled: boolean): Promis
   if (error) throw error;
 }
 
-// Matches for the caller's own watched keywords, scoped to sources the
-// caller currently has enabled — grouped in application code, not a join,
-// because keyword_matches/keyword_match_keywords are the global
-// service-role-only cache (no RLS policies of their own, see
-// 0021_keyword_match_keywords.sql's comment) while
-// keyword_watches/keyword_source_settings are RLS-scoped to the caller.
+// Grouped in app code: keyword_matches tables are a global service-role cache
+// (no RLS), while watches/settings are RLS-scoped to the caller.
 export async function getMatchesForOwnKeywords(): Promise<KeywordMatch[]> {
   const [watches, settings] = await Promise.all([getAllKeywordWatches(), getAllSourceSettings()]);
   const keywords = [...new Set(watches.map((w) => w.keyword))];
@@ -99,15 +90,8 @@ export async function getMatchesForOwnKeywords(): Promise<KeywordMatch[]> {
 
   const supabase = getSupabaseClient();
 
-  // The session-scoped reads above are what actually authorize which
-  // keywords/sources this call is allowed to see — this query only ever
-  // selects join rows whose `keyword` is already in that authorized set,
-  // so another account's own keywords for the same post can never leak
-  // into what's shown here, even though this table has no owner column.
-  // Filtering by enabled source too matches what "turn a source off"
-  // should mean — a disabled source's matches disappear from the feed
-  // even if another account's own opt-in caused the same keyword to be
-  // polled there.
+  // Only keywords from the RLS-authorized reads above are queried, so other
+  // accounts' keywords can't leak despite no owner column.
   const { data: linkData, error: linkError } = await supabase
     .from("keyword_match_keywords")
     .select("source, external_id, keyword")
@@ -129,9 +113,7 @@ export async function getMatchesForOwnKeywords(): Promise<KeywordMatch[]> {
   }
   if (keywordsByPost.size === 0) return [];
 
-  // One query per distinct source (PostgREST has no composite-key `.in()`
-  // for (source, external_id) pairs) — in practice one query today, since
-  // only Reddit is registered.
+  // PostgREST has no composite-key .in(), so one query per source.
   const matchRows: MatchRow[] = [];
   for (const [source, externalIds] of idsBySource) {
     const { data, error } = await supabase

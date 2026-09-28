@@ -11,10 +11,7 @@ export async function GET(request: Request) {
 
   const authorizeUrl = new URL("https://slack.com/oauth/v2/authorize");
   authorizeUrl.searchParams.set("client_id", clientId);
-  // chat:write creates a real bot user (visible in the picked channel and
-  // in Slack's app list) alongside the incoming-webhook we already post
-  // through — we still deliver messages via the webhook URL, not this bot
-  // token, so nothing downstream needs to change.
+  // chat:write adds a visible bot user; messages still go through the incoming webhook, not the bot token.
   authorizeUrl.searchParams.set("scope", "incoming-webhook,chat:write");
   authorizeUrl.searchParams.set("redirect_uri", redirectUri);
   authorizeUrl.searchParams.set("state", state);

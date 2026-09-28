@@ -1,5 +1,4 @@
-// Structural, not ScheduledMaintenance — status is the only field this
-// reads, so both full maintenances and the trimmed Summary variant satisfy it.
+// Structural so both full and Summary maintenance shapes fit.
 export function isInProgressMaintenance(maintenance: { status: string }): boolean {
   return maintenance.status === "in_progress";
 }

@@ -1,6 +1,3 @@
-// Contentful's real palette (confirmed via their brand assets) is a signature
-// three-color triad — light blue #3AB2E6, gold #FFD75E, coral #F05A65 — used
-// across their mascot/mark, not a single flat color.
 export default function ContentfulLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">

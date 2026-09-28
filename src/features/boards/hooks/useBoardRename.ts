@@ -6,9 +6,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Board } from "@/types/board";
 import { queryKeys } from "@/lib/queryKeys";
 
-// Shared by BoardDetailContent's header and BoardCard's inline rename —
-// same toggle-to-edit, PATCH, empty/unchanged-name-is-a-no-op behavior in
-// both places, extracted so a future fix only has to happen once.
 export function useBoardRename(board: Board) {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -25,9 +22,7 @@ export function useBoardRename(board: Board) {
     onSuccess: (res) => {
       if (!res.ok) return;
       setIsEditing(false);
-      // Server Components re-fetch the board's own name via router.refresh();
-      // Sidebar's BoardSelect dropdown keeps its own client-cached list, so
-      // that needs an explicit invalidation to pick up the new name too.
+      // refresh() covers Server Components; BoardSelect's client-cached list needs invalidating.
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.list() });
       router.refresh();
     },

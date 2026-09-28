@@ -16,24 +16,11 @@ const THEMES: BadgeTheme[] = ["light", "dark"];
 const SIZES: BadgeSize[] = ["small", "medium", "large"];
 const LAYOUTS: BadgeLayout[] = ["flat", "card"];
 
-// Same two constants, same reasoning, as NavigationLoadingBoundary's own
-// delayed-loading overlay — reused deliberately rather than picked fresh,
-// so this preview's loading feel matches the one other place in the app
-// that already solved "don't flash a spinner for a load that finishes
-// almost instantly" (this endpoint is revalidate: 60, so most switches
-// resolve well under this). A load faster than SHOW_DELAY_MS never shows
-// anything; one that does show stays up at least MIN_VISIBLE_MS so it
-// never flickers on the way out either.
+// Same values as NavigationLoadingBoundary: no spinner for fast loads, and no flicker once shown.
 const SHOW_DELAY_MS = 300;
 const MIN_VISIBLE_MS = 200;
 
-// A stateless configurator, not a saved-integration form — no Save/
-// Delete, nothing persisted. Every choice below is already fully encoded
-// in the generated URL's query string (see api/badge/[boardSlug]/
-// route.ts), so there's nothing this component needs to remember between
-// visits; the code sample the user copies out *is* the saved state, same
-// way a shields.io badge URL works. See the grilling session that
-// settled this over a proposed board_embeds table + migration.
+// Stateless on purpose: every choice is encoded in the badge URL, so nothing needs persisting.
 export default function EmbedConfigurator({ boards }: { boards: { boardId: string; boardName: string; slug: string }[] }) {
   const { t } = useTranslation();
   const origin = useOrigin();
@@ -45,10 +32,7 @@ export default function EmbedConfigurator({ boards }: { boards: { boardId: strin
   const [size, setSize] = useState<BadgeSize>("medium");
   const [layout, setLayout] = useState<BadgeLayout>("flat");
 
-  // badgePath is computed here (not below, past the empty-boards return)
-  // so the loading-delay effect right after it can depend on it — hooks
-  // can't follow a conditional return, and boards.length === 0 never
-  // renders this value anyway.
+  // Computed before the empty-boards return because the effect below depends on it.
   const query = new URLSearchParams({ type: variant, theme, size, layout }).toString();
   const badgePath = `/api/badge/${boardSlug}?${query}`;
 
@@ -56,10 +40,7 @@ export default function EmbedConfigurator({ boards }: { boards: { boardId: strin
   const showTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const shownAtRef = useRef<number | null>(null);
-  // Which src the spinner logic is currently waiting on — guards against a
-  // stale onLoad/onError from a since-superseded src (the user clicked
-  // another control before the previous image finished) marking the
-  // *current* one settled.
+  // Ignores a stale onLoad/onError from a superseded src.
   const pendingSrcRef = useRef(badgePath);
 
   useEffect(() => {
@@ -75,9 +56,6 @@ export default function EmbedConfigurator({ boards }: { boards: { boardId: strin
     };
   }, [badgePath]);
 
-  // Runs once on unmount only — the effect above already clears the show
-  // timer on every badgePath change, this only needs to catch a hide timer
-  // still pending when the component itself goes away.
   useEffect(() => {
     return () => {
       if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
@@ -90,7 +68,7 @@ export default function EmbedConfigurator({ boards }: { boards: { boardId: strin
       clearTimeout(showTimerRef.current);
       showTimerRef.current = null;
     }
-    if (shownAtRef.current === null) return; // never made it past the show delay — nothing to hide
+    if (shownAtRef.current === null) return;
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
     const remaining = Math.max(0, MIN_VISIBLE_MS - (Date.now() - shownAtRef.current));
     hideTimerRef.current = setTimeout(() => {
@@ -160,24 +138,8 @@ export default function EmbedConfigurator({ boards }: { boards: { boardId: strin
 
         <div className="flex flex-col gap-2">
           <span className="text-base-content/50 text-xs font-semibold tracking-wide uppercase">{t("integrations.embeds.codeSampleTitle")}</span>
-          {/* Plain <pre><code>, not a syntax-highlighting library — a
-              one-line <img> tag has nothing worth highlighting, and this
-              repo's own dependency ladder (AGENTS.md) means reaching for
-              one just to get a copy button isn't justified. The button is
-              a real sibling of <pre> inside this relative wrapper,
-              absolutely positioned over its corner — visually "inside"
-              the code block without the illegal nesting a <textarea>
-              would have forced (a <button> can't be a DOM child of one). */}
           <div className="relative">
-            {/* whitespace-pre-wrap + break-all, not overflow-x-auto — a
-                long badge URL made the copy button (absolute, top-right)
-                overlap the tail of the still-unscrolled text: pr-12 only
-                reserves blank space at the very *end* of a scrollable
-                line, not against wherever the button actually sits before
-                the user scrolls. Wrapping means pr-12 is respected on
-                every line, so the button's corner is never covered.
-                Verified against a real render of this exact markup (see
-                the session's own screenshot check), not assumed. */}
+            {/* Wrapping, not overflow-x-auto: pr-12 then clears the copy button on every line. */}
             <pre className="bg-[var(--color-surface-2)] border-base-300 rounded-box border p-3 pr-12 text-xs whitespace-pre-wrap break-all">
               <code>{code}</code>
             </pre>
@@ -193,34 +155,17 @@ export default function EmbedConfigurator({ boards }: { boards: { boardId: strin
         </div>
       </div>
 
-      {/* min-w/max-w, not just w-1/3: flex items default to
-          min-width: auto, meaning a column won't shrink below its own
-          content's intrinsic width — since the badge image's natural
-          width varies with label/value text length, w-1/3 alone let the
-          column itself get pushed wider (or snap back) as that content
-          changed, moving the whole layout. Clamping both ends pins it to
-          exactly 1/3 regardless of what the image inside happens to
-          render at. No built-in Tailwind min-w-/max-w- utility covers a
-          fraction like this (only named sizes), hence the arbitrary
-          values. */}
+      {/* min-w/max-w, not w-1/3: min-width:auto let the badge's varying width resize the column. */}
       <div className="w-full lg:min-w-[33.333%] lg:max-w-[33.333%]">
-        {/* No sticky here (deliberately removed) — sticky lets an element
-            detach from its normal position and float against the
-            viewport while the page scrolls, which pulled this card
-            outside the Embeds tab panel's own bordered box. Plain normal
-            flow + h-full keeps it exactly where its stretched flex-row
-            sibling places it. */}
+        {/* No sticky: it pulled the card outside the Embeds tab panel's box. */}
         <div className="card card-border bg-base-100 flex h-full flex-col items-center justify-center p-6">
           {showSpinner ? (
             <Spinner size="sm" />
           ) : (
             <span className="text-base-content/50 mb-3 text-xs font-semibold tracking-wide uppercase">{t("integrations.embeds.preview")}</span>
           )}
-          {/* Hidden via class while loading, not unmounted — an unmounted
-              <img> stops loading/never fires onLoad, which is exactly the
-              event this whole spinner depends on to know when to hide
-              itself again. */}
-          {/* eslint-disable-next-line @next/next/no-img-element -- the point is to render exactly what the badge endpoint returns, not a Next-optimized copy of it */}
+          {/* Hidden, not unmounted: an unmounted <img> never fires the onLoad the spinner waits for. */}
+          {/* eslint-disable-next-line @next/next/no-img-element -- must show exactly what the badge endpoint returns */}
           <img
             src={badgePath}
             alt={t("integrations.embeds.altText")}

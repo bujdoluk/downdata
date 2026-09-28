@@ -3,9 +3,6 @@ import { resolveBoardById } from "@/features/boards/services/boards";
 import { setAllowedIps } from "@/features/status-pages/services/statusPages";
 import { allowedIpsSchema, firstAllowedIpsIssueMessage } from "@/features/status-pages/services/validation";
 
-// Replaces the whole allowlist — same "the client sends the full desired
-// list" shape as a plain array setting elsewhere in this app
-// (boards.service_slugs), not an incremental add/remove endpoint.
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!(await resolveBoardById(id))) {

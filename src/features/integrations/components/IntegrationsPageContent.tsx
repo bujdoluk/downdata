@@ -13,20 +13,11 @@ import SmsLogo from "@/features/integrations/components/SmsLogo";
 import WebhookLogo from "@/features/integrations/components/WebhookLogo";
 import RequestCard from "@/components/RequestCard";
 import ModalCloseButton from "@/components/ModalCloseButton";
-// Imported directly, not via features/status-pages' barrel — that barrel
-// also re-exports its server-only services/statusPages.ts (next/headers,
-// createClient), and this file is a Client Component, so pulling it in
-// through the barrel drags server-only code into the client bundle.
+// Not via the status-pages barrel: it re-exports server-only code.
 import EmbedConfigurator from "@/features/status-pages/components/EmbedConfigurator";
 import { postJson } from "@/lib/fetchJson";
 import { TAB_BG_STYLE } from "@/lib/utils";
-// Static, not dynamic() — each was its own lazy chunk, and the very first
-// time a given modal opened, showModal() (called synchronously in the
-// click handler) ran its native focusing steps before that chunk had
-// finished loading, so the autoFocus input didn't exist in the DOM yet and
-// focus fell back to the dialog itself. These forms are tiny (no heavy
-// deps), so there was no real bundle-size case for splitting them out —
-// static import removes the race instead of racing it with a ref/effect.
+// Static, not dynamic(): a lazy chunk loaded after showModal() and broke autoFocus.
 import EmailConnectForm from "@/features/integrations/components/EmailConnectForm";
 import SmsConnectForm from "@/features/integrations/components/SmsConnectForm";
 import WebhookConnectForm from "@/features/integrations/components/WebhookConnectForm";
@@ -38,10 +29,6 @@ const INTEGRATION_LOGOS: Record<string, React.ComponentType<{ size?: number }>> 
   webhook: WebhookLogo,
 };
 
-// Each catalog entry owns its own OAuth-style connect route today (only
-// Slack exists); this maps slug -> that entry point. A slug with no entry
-// here instead gets its own modal (see the three <dialog>s below) — email,
-// sms, and webhook, none of which has an OAuth flow to redirect through.
 const CONNECT_HREFS: Record<string, string> = {
   slack: "/api/integrations/slack/start",
 };
@@ -53,19 +40,12 @@ export default function IntegrationsPageContent({
 }: {
   catalog: { slug: string; name: string }[];
   integrations: IntegrationDefinition[];
-  // Boards with an enabled public status page — the "Embeds" tab's board
-  // picker. Fetched here (features/status-pages' own getAllEnabledStatusPages)
-  // rather than inside EmbedConfigurator itself, same reasoning every other
-  // Server Component page in this app fetches its own data: no client
-  // round trip needed for something that's already known at request time.
   embedBoards: { boardId: string; boardName: string; slug: string }[];
 }) {
   const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
-  // A Set, not a single slug — several integration cards can each have
-  // their own disconnect in flight; a single shared value got clobbered by
-  // a second disconnect click before the first request settled.
+  // A Set: several disconnects can be in flight at once.
   const [removingSlugs, setRemovingSlugs] = useState<Set<string>>(new Set());
   const hasError = searchParams.get("error") !== null;
   const verified = searchParams.get("verified");
@@ -79,9 +59,6 @@ export default function IntegrationsPageContent({
 
   const disconnectMutation = useMutation({
     mutationFn: (slug: string) => fetch(`/api/integrations/${slug}`, { method: "DELETE" }),
-    // `slug` here is this specific call's own variable — only clear that
-    // one integration's pending state, not whichever disconnect happened
-    // to be in flight when this one settled.
     onSettled: (_data, _error, slug) =>
       setRemovingSlugs((prev) => {
         const next = new Set(prev);
@@ -176,8 +153,6 @@ export default function IntegrationsPageContent({
   const currentSms = integrations.find((entry): entry is Extract<IntegrationDefinition, { slug: "sms" }> => entry.slug === "sms");
   const currentWebhook = integrations.find((entry): entry is Extract<IntegrationDefinition, { slug: "webhook" }> => entry.slug === "webhook");
 
-  // slug -> the ref of the <dialog> IntegrationCard's onConnectClick should
-  // open — every non-Slack integration works this same way now.
   const dialogRefs: Record<string, React.RefObject<HTMLDialogElement | null>> = {
     email: emailDialogRef,
     sms: smsDialogRef,
@@ -205,10 +180,6 @@ export default function IntegrationsPageContent({
         </p>
       )}
 
-      {/* Radio-input tabs: selection is pure CSS (:checked + sibling
-          selector), same idiom as add-service's own category tabs — both
-          panels stay mounted, no React state needed to switch between
-          them. */}
       <div role="tablist" className="tabs tabs-lift mt-4">
         <input type="radio" name="integrationsTabs" className="tab" aria-label={t("integrations.embeds.tabIntegrations")} style={TAB_BG_STYLE} defaultChecked />
         <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
@@ -242,11 +213,6 @@ export default function IntegrationsPageContent({
         </div>
       </div>
 
-      {/* Every non-Slack integration's connect surface is its own modal —
-          Slack has no popover/form at all (a plain OAuth redirect), so a
-          modal is the only placement that works uniformly; email/sms/
-          webhook all follow the same hand-rolled <dialog> convention
-          BoardSelect's/RequestCard's own modals already use. */}
       <dialog ref={emailDialogRef} className="modal">
         <div className="modal-box relative">
           <ModalCloseButton />
@@ -312,9 +278,6 @@ export default function IntegrationsPageContent({
             />
           </div>
         </div>
-        {/* Native <dialog> already closes on Escape via showModal() — this
-            backdrop form is only for a click outside the box, same pattern
-            as BoardSelect's/RequestCard's own modals. */}
         <form method="dialog" className="modal-backdrop">
           <button>{t("integrations.cancel")}</button>
         </form>

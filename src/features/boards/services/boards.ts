@@ -16,9 +16,7 @@ export async function getAllBoards(): Promise<Board[]> {
   return (data as BoardRow[] | null)?.map(toBoard) ?? [];
 }
 
-// Wrapped in React's cache() — /boards/[id] calls this once in
-// generateMetadata and once in the page component; cache() dedupes the two
-// into a single request within the same render.
+// cache() dedupes the generateMetadata and page calls on /boards/[id].
 export const resolveBoardById = cache(async (id: string): Promise<Board | undefined> => {
   const supabase = await createClient();
   const { data, error } = await supabase.from("boards").select("id, name, service_slugs").eq("id", id).maybeSingle();
@@ -45,13 +43,8 @@ export async function renameBoard(id: string, name: string): Promise<Board | und
   return data ? toBoard(data as BoardRow) : undefined;
 }
 
-// One insert copying the source board's service_slugs directly, rather than
-// looping addServiceToBoard once per slug — a single round trip, and no
-// half-cloned board if something fails partway through. Deliberately
-// doesn't touch board_status_pages (0025_board_status_pages.sql) — that
-// table is keyed off boards.id separately, so a clone correctly starts with
-// no public status page of its own instead of inheriting the source
-// board's public URL.
+// One insert so a failure never leaves a half-cloned board. The clone deliberately
+// gets no board_status_pages row, so it doesn't inherit the source's public URL.
 export async function cloneBoard(id: string, name: string): Promise<Board | undefined> {
   const board = await resolveBoardById(id);
   if (!board) return undefined;
@@ -73,26 +66,11 @@ export async function removeBoard(id: string): Promise<boolean> {
   return (data?.length ?? 0) > 0;
 }
 
-// service_slugs is a plain array column (0002_create_services_boards_
-// integrations.sql), not a join table, so "add"/"remove" here means
-// read the whole array, compute a new one in JS, and write it back — with
-// no row lock held in between. Two concurrent calls for the same board
-// (a double-click, two open tabs) can both read the same array and each
-// write their own next version; whichever UPDATE commits last would
-// otherwise silently discard the other's change entirely.
-//
-// Guarded with compare-and-swap instead: the update's own .eq("service_
-// slugs", ...) filter only lets it land if the column still holds exactly
-// the array just read here — if another writer changed it first, this
-// update matches zero rows (data comes back null, not an error) and the
-// loop rereads the now-current row and retries against it. Losing that
-// race is expected under real concurrency, not a failure.
+// service_slugs is read-modify-written with no lock, so concurrent writes would
+// clobber each other. Compare-and-swap on the old array and retry on a lost race.
 const MAX_SERVICE_SLUGS_CAS_ATTEMPTS = 5;
 
-// Postgres's own array literal syntax (each element double-quoted, `"`/`\`
-// escaped) — needed here because this filters for the column *equaling*
-// this exact array (the compare in compare-and-swap), which is a different
-// query shape from .in()'s "column is one of these values".
+// Postgres array literal, for an exact-equality filter (.in() means "one of").
 function slugsArrayLiteral(slugs: string[]): string {
   return `{${slugs.map((slug) => `"${slug.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`).join(",")}}`;
 }
@@ -115,8 +93,6 @@ async function updateServiceSlugs(id: string, computeNext: (current: string[]) =
       .maybeSingle();
     if (error) throw error;
     if (data) return toBoard(data as BoardRow);
-    // Lost the race — another write landed between the read above and
-    // this update. Reread the current row and try again.
   }
   throw new Error(`updateServiceSlugs: too many concurrent writers for board ${id}`);
 }
@@ -129,21 +105,13 @@ export async function removeServiceFromBoard(id: string, slug: string): Promise<
   return updateServiceSlugs(id, (current) => (current.includes(slug) ? current.filter((s) => s !== slug) : current));
 }
 
-// Every service on any of the current user's own boards, deduped — the
-// "am I tracking this" signal for /monitors, /api/incidents,
-// /api/maintenance, /api/history/*. Session-scoped client: getAllBoards()
-// is already limited to the caller's own boards by RLS, so this needs no
-// filtering of its own.
 export async function getAllTrackedSlugs(): Promise<string[]> {
   const boards = await getAllBoards();
   return [...new Set(boards.flatMap((board) => board.Slugs))];
 }
 
-// Every account's tracked slugs, grouped by owner — service-role client,
-// for exactly one caller: the cron notifier (lib/notifyIncidentEvents.ts),
-// which runs with no user session and needs to know, per account, what
-// that account tracks. Never call this from a user-facing code path — it
-// bypasses RLS entirely and would leak every account's boards.
+// Service-role, cross-account. Cron notifier only: it bypasses RLS, so never
+// call it from a user-facing path.
 export async function getAllTrackedSlugsAcrossUsers(): Promise<Map<string, Set<string>>> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase.from("boards").select("user_id, service_slugs");
@@ -159,14 +127,8 @@ export async function getAllTrackedSlugsAcrossUsers(): Promise<Map<string, Set<s
   return byUser;
 }
 
-// Same cross-account, service-role read as getAllTrackedSlugsAcrossUsers,
-// but keeping each board's own identity (id/name/slugs) rather than
-// flattening to one set per account — the one extra caller that actually
-// needs per-board grouping: the report-generation cron
-// (features/reports/services/reportGeneration.ts), whose per-account
-// report has a per-board breakdown section. Never call this from a
-// user-facing code path — it bypasses RLS entirely and would leak every
-// account's boards.
+// Service-role, cross-account, per board. Report-generation cron only: it
+// bypasses RLS, so never call it from a user-facing path.
 export async function getAllBoardsAcrossUsers(): Promise<Map<string, Board[]>> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase.from("boards").select("id, user_id, name, service_slugs").order("name");

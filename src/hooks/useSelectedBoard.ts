@@ -4,13 +4,7 @@ import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "selectedBoard:v1";
 
-// The one persisted "which board am I looking at" default, shared by the
-// sidebar's BoardSelect and every board-aware page (Monitors/Incidents/
-// Maintenance/History) — each page's own ?board= URL param stays its real,
-// live source of truth; this is only the fallback applied once when that
-// param is absent, and the value written back to when it changes. See
-// components/sidebar/BoardSelect.tsx for how the sidebar keeps this in sync
-// with the current pathname too.
+// Fallback only: each page's ?board= URL param stays the source of truth.
 export function useSelectedBoard() {
   const [selectedBoardId, setSelectedBoardIdState] = useState("");
 

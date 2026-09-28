@@ -20,27 +20,14 @@ import BoardStatusPageSettings from "@/features/status-pages/components/BoardSta
 
 const PAGE_SIZE = 10;
 
-// Master-detail, not one full card per board — a compact list (name +
-// live/not-published/not-set-up state) on the left, the one selected
-// board's full BoardStatusPageSettings form on the right. Replaced the old
-// "every board's whole form open and stacked at once" layout, which turned
-// into a long wall of repeated inputs/buttons once an account had more than
-// a couple of boards — see the grilling session in git history for why this
-// shape (ListDetailShell, same as incidents/maintenance/early-warnings)
-// rather than an accordion or a modal. Publish/unpublish, and the copy-link
-// button, only ever live inside the open form now — earlier versions also
-// offered a quick publish toggle and a copy-link icon right on the list
-// row, but both are gone; the list is look-and-navigate only, its badge is
-// the one live-state signal, not a second place to act on it.
+// Master-detail so many boards don't become a wall of stacked forms. The list is
+// navigate-only; all actions live in the open form.
 export default function StatusPagesPageContent({ boards }: { boards: Board[] }) {
   const { t } = useTranslation();
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // Same query key each board's own BoardStatusPageSettings (mounted for
-  // whichever one is selected below) uses, so this shares cache entries
-  // instead of double-fetching — read here for the page title's published
-  // count and to drive every row's own badge/quick actions.
+  // Same key as BoardStatusPageSettings, so the cache is shared rather than double-fetched.
   const statusPageQueries = useQueries({
     queries: boards.map((board) => ({
       queryKey: queryKeys.boards.statusPage(board.id),

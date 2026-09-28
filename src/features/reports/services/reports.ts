@@ -15,10 +15,7 @@ function toStoredReport(row: ReportRow): StoredReport {
   return { id: row.id, interval: row.report_interval, periodStart: row.period_start, periodEnd: row.period_end, generatedAt: row.generated_at, payload: row.payload };
 }
 
-// Newest first, capped at 200 — comfortably more than even a daily
-// cadence produces in a year, and each row's payload is a small JSON blob
-// (a handful of aggregate numbers per board/service), not worth paginating
-// for v1.
+// Capped at 200: more than a daily cadence makes in a year, rows are small.
 const LIST_LIMIT = 200;
 
 export async function getAllOwnReports(): Promise<StoredReport[]> {
@@ -32,15 +29,8 @@ export async function getAllOwnReports(): Promise<StoredReport[]> {
   return ((data as ReportRow[] | null) ?? []).map(toStoredReport);
 }
 
-// Used by /reports/[id] — RLS (reports_select) already scopes this to the
-// caller's own rows, so a mismatched id (someone else's report, or one
-// that never existed) just comes back null rather than erroring, same
-// convention as deleteOwnReport below. The page itself turns that into a
-// 404 via notFound().
-//
-// Wrapped in React's cache() — /reports/[id] calls this once in
-// generateMetadata and once in the page component; cache() dedupes the two
-// into a single request within the same render.
+// RLS scopes to the caller, so another account's id returns null (404).
+// cache() dedupes generateMetadata's and the page's calls.
 export const getOwnReportById = cache(async (id: string): Promise<StoredReport | null> => {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -52,10 +42,7 @@ export const getOwnReportById = cache(async (id: string): Promise<StoredReport |
   return data ? toStoredReport(data as ReportRow) : null;
 });
 
-// RLS (0034_report_deletion.sql's reports_delete) already scopes this to
-// the caller's own rows — a mismatched id (someone else's report, or one
-// that never existed) just matches zero rows rather than erroring, same
-// convention as features/boards/services/boards.ts's removeBoard.
+// RLS scopes to the caller, so another account's id matches zero rows.
 export async function deleteOwnReport(id: string): Promise<boolean> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("reports").delete().eq("id", id).select();

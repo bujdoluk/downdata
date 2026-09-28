@@ -1,10 +1,7 @@
 import { Link, Text } from "react-email";
 import EmailLayout from "@/components/emails/EmailLayout";
 
-// A real, standard <a> hyperlink as the call to action, not a button —
-// deliberately: it reads unambiguously as "click me" the way a plain
-// underlined blue link always has, whereas a button-styled block risks
-// looking like decoration in an inbox that strips background colors.
+// A plain link, not a button: inboxes that strip backgrounds make buttons look like decoration.
 export default function ConfirmEmailAddress({ verifyUrl, logoUrl }: { verifyUrl: string; logoUrl: string }) {
   return (
     <EmailLayout previewText="Confirm your email to start receiving downDATA notifications" logoUrl={logoUrl}>

@@ -5,30 +5,26 @@ export type CalendarDay = {
   date: string;
   impact: string | null;
   incidents: Incident[];
-  week: number; // 0-based column index across the whole grid
-  dow: number; // 0 (Sunday) .. 6 (Saturday) — row index
+  week: number;
+  dow: number;
 };
 
 export type CalendarMonthLabel = {
   label: string;
-  week: number; // column index of that month's first day
+  week: number;
 };
 
 export type IncidentCalendarData = {
   weeks: number;
   days: CalendarDay[];
   monthLabels: CalendarMonthLabel[];
-  // "Today" in the timezone this calendar was built for — exposed so
-  // IncidentCalendar.tsx can highlight the right cell without computing
-  // its own, possibly browser-local, notion of "today" a second time.
+  // Exposed so the UI doesn't recompute a possibly browser-local "today".
   today: string;
 };
 
 const IMPACT_RANK = ["critical", "major", "minor", "none"];
 
-// Structural, not Incident — only .impact is read, so this also satisfies
-// StatuspageIncidentSummary (buildOutageTrackerDays below), same reasoning
-// as lib/isActiveIncident.ts's structural param.
+// Structural so StatuspageIncidentSummary also satisfies it.
 export function worstImpact(incidents: { impact: string }[]): string | null {
   if (incidents.length === 0) return null;
   let best = incidents[0]!.impact;
@@ -49,7 +45,7 @@ export function buildIncidentCalendar(incidents: Incident[], year: number, local
   const today = Temporal.Now.zonedDateTimeISO(timeZone).toPlainDate();
   const yearStart = Temporal.PlainDate.from({ year, month: 1, day: 1 });
   const yearEnd = Temporal.PlainDate.from({ year, month: 12, day: 31 });
-  // ISO dayOfWeek is Monday=1..Sunday=7; %7 turns that into Sunday=0..Saturday=6.
+  // ISO Monday=1..Sunday=7 -> Sunday=0..Saturday=6.
   const gridStart = yearStart.subtract({ days: yearStart.dayOfWeek % 7 });
 
   const ranges = incidents.map((incident) => ({
@@ -92,15 +88,7 @@ export function buildIncidentCalendar(incidents: Incident[], year: number, local
 
 export type TrackerDay = { date: string; impact: string | null; incidents: StatuspageIncidentSummary[]; tracked: boolean };
 
-// Flat last-N-days list, not a year grid — no week/month-label bookkeeping,
-// just the same "worst impact wins" per-day rule buildIncidentCalendar uses
-// above. Powers ServiceDetail's outage tracker.
-//
-// trackedSinceIso is the service's first_polled_at (null if it has no
-// polled_services row yet) — each day's `tracked` flag says whether this
-// app was actually watching by then. impact/incidents are still computed
-// unconditionally regardless of `tracked`; it's the rendering layer
-// (OutageTracker) that decides what to do with a day that isn't tracked.
+// `tracked` only flags days before first_polled_at; OutageTracker decides how to render them.
 export function buildOutageTrackerDays(
   incidents: StatuspageIncidentSummary[],
   days: number,

@@ -1,5 +1,3 @@
-// Cypress's mark: a hexagon outline containing a cypress-tree flame shape,
-// in the brand's green.
 export default function CypressLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} fill="none" aria-hidden="true">

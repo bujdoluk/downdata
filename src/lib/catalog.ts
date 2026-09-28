@@ -24,15 +24,7 @@ export async function getCatalog(): Promise<Catalog[]> {
   return ((data ?? []) as CatalogRow[]).map(toCatalog);
 }
 
-// Used only to confirm a slug is a real, known host (detail/history pages
-// 404 otherwise) — never for ownership. catalog is public reference data,
-// so this stays a plain lookup with no per-user scoping. A direct indexed
-// lookup, not getCatalog().find(...) — that fetched and scanned the whole
-// ~400-row table just to resolve one slug, on every call.
-//
-// Wrapped in React's cache() — /monitors/[slug] and /services/[slug] both
-// call this once in generateMetadata and once in the page component; cache()
-// dedupes the two into a single request within the same render.
+// cache() dedupes the generateMetadata + page calls within one render.
 export const resolveCatalogEntryBySlug = cache(async (slug: string): Promise<Catalog | undefined> => {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase.from("catalog").select(SELECT_COLUMNS).eq("slug", slug).maybeSingle();
@@ -40,26 +32,15 @@ export const resolveCatalogEntryBySlug = cache(async (slug: string): Promise<Cat
   return data ? toCatalog(data as CatalogRow) : undefined;
 });
 
-// Shared by /api/incidents and /api/maintenance to attach a full `service`
-// object to each stored row they return, scoped to just the caller's own
-// tracked slugs (not the whole catalog) — a Set lookup, not a repeated
-// catalog.filter(...).includes(...) scan per entry.
 export function buildTrackedServiceLookup(trackedSlugs: string[], catalog: Catalog[]): Map<string, Catalog> {
   const tracked = new Set(trackedSlugs);
   return new Map(catalog.filter((entry) => tracked.has(entry.slug)).map((entry) => [entry.slug, entry]));
 }
 
-// Ensures a host has a catalog entry, creating one if it's brand new —
-// the "add a new website, not from the catalog" path of adding a service
-// to a board (formerly lib/services.ts's addService, before tracking
-// became board membership). Returns the existing entry if this host is
-// already known, so the caller doesn't create a duplicate under a
-// different slug.
+// Returns the existing entry for a known host so it isn't duplicated under another slug.
 export async function ensureCatalogEntry(input: { name: string; host: string }): Promise<Catalog> {
   const catalog = await getCatalog();
-  // Hostnames are case-insensitive (DNS/HTTP both treat them that way), so
-  // a plain === here missed an already-known host submitted with different
-  // casing and created a duplicate catalog row for it.
+  // Hostnames are case-insensitive; === created duplicate rows.
   const inputHost = input.host.trim().toLowerCase();
   const existing = catalog.find((entry) => entry.host.toLowerCase() === inputHost);
   if (existing) return existing;

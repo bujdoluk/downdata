@@ -2,9 +2,7 @@ import { NextResponse } from "next/server";
 import { resolveCatalogEntryBySlug } from "@/lib/catalog";
 import { getStoredMaintenanceWithUpdates, toMaintenanceApiShape } from "@/features/maintenance/services/getStoredMaintenance";
 
-// One maintenance's full timeline, fetched on demand for whichever item the
-// Maintenance/Boards pages currently have selected — the list endpoint
-// (/api/maintenance) deliberately doesn't include the update timeline.
+// Fetched on demand: the list endpoint deliberately omits the update timeline.
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string; id: string }> }) {
   const { slug, id } = await params;
   const service = await resolveCatalogEntryBySlug(slug);

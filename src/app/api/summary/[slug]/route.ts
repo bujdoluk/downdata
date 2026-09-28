@@ -7,10 +7,7 @@ import { matchesComponentPrefix, stripComponentPrefix } from "@/lib/componentNam
 import { INDICATOR_RANK } from "@/components/statusStyles";
 import type { Status, Indicator, StatuspageComponent, OpenIncidentImpact } from "@/types/service";
 
-// Statuspage's own page-level indicator only ever takes these four values
-// — "under_maintenance" is a per-component status, never a page-level one
-// (matches real Statuspage behavior: a page reads fully "none" overall
-// even while one component is flagged under maintenance).
+// under_maintenance counts as operational: Statuspage never raises the page indicator for it.
 const STATUS_SEVERITY: Record<string, number> = {
   operational: 0,
   under_maintenance: 0,
@@ -19,18 +16,11 @@ const STATUS_SEVERITY: Record<string, number> = {
   major_outage: 3,
 };
 const SEVERITY_TO_INDICATOR: Indicator[] = ["none", "minor", "major", "critical"];
-// Plain English, matching the wording Statuspage itself uses for these same
-// four indicator levels on every other tracked service's own page — not
-// new UI copy, just this app synthesizing what upstream would have said
-// had this host's whole page actually been just this service's own.
+// Statuspage's own wording for these levels, not new UI copy, so it isn't translated.
 const SEVERITY_TO_DESCRIPTION = ["All Systems Operational", "Minor Service Outage", "Partial System Outage", "Major Service Outage"];
 
-// A componentNamePrefix means this host's feed covers more than one
-// product (see lib/componentNamePrefix.ts) — narrow the live component
-// list to just this service's own, strip the now-redundant prefix for
-// display, and recompute the overall status from only those components.
-// Without this, both would still reflect the whole shared page (e.g. a
-// Twilio Voice outage would show as a "SendGrid" outage).
+// A shared multi-product feed (lib/componentNamePrefix.ts): without scoping, e.g. a Twilio Voice
+// outage would show as a SendGrid outage.
 function scopeToOwnComponents(
   data: { components?: StatuspageComponent[]; status: { indicator: Indicator; description: string } },
   prefix: string,
@@ -49,12 +39,7 @@ function scopeToOwnComponents(
   };
 }
 
-// This service's currently-open incidents already come back with this
-// request (getStoredIncidentsForService below), so unlike statusBatch.ts's
-// batched version this needs no extra query — just the same
-// worse-than-the-rollup comparison, only surfaced when it's actually worse
-// (see OpenIncidentImpact's own comment for why the rollup itself is never
-// overridden).
+// Only surfaced when worse than the rollup; the rollup itself is never overridden (see OpenIncidentImpact).
 function worstOpenIncidentImpact(
   incidents: { resolved_at: string | null; impact: string; name: string; shortlink: string | null }[],
   rollupIndicator: Indicator,

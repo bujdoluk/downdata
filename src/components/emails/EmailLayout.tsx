@@ -1,19 +1,7 @@
 import { Body, Container, Head, Hr, Html, Img, Preview, Section, Text } from "react-email";
 import type { ReactNode } from "react";
 
-// Shared branded wrapper for every transactional email this app sends
-// (confirmation + incident notifications) — header (logo + wordmark),
-// content slot, footer. Kept in shared components/, not owned by one
-// feature: the confirmation email belongs to features/integrations, but
-// the incident notification email is sent from lib/notifyIncidentEvents.ts
-// (system-level, no single feature owner), so both need this from a
-// shared location.
-//
-// Rendered server-side to a static HTML string via @react-email/render
-// (see the two call sites) and never mounted in this app's own React
-// tree — it targets third-party email clients, not a browser, hence the
-// table-friendly react-email primitives and fully inline styles instead
-// of Tailwind/daisyUI classes, which no email client applies.
+// Rendered to static HTML for email clients, hence inline styles instead of Tailwind/daisyUI.
 export default function EmailLayout({ previewText, logoUrl, children }: { previewText: string; logoUrl: string; children: ReactNode }) {
   return (
     <Html>

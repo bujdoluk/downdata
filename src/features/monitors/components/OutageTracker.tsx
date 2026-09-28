@@ -10,13 +10,9 @@ import type { StatuspageIncidentSummary } from "@/types/service";
 
 const TRACKER_DAYS = 30;
 const EMPTY_DAY_COLOR = "bg-base-content/10";
-// `none` is one of INDICATOR_STYLES' fixed literal keys, always present —
-// safe past noUncheckedIndexedAccess.
+// `none` is a fixed literal key of INDICATOR_STYLES, always present.
 const OPERATIONAL_DAY_COLOR = INDICATOR_STYLES.none!.dot;
 
-// Single-row sibling of history/IncidentCalendar.tsx's day-cell grid (same
-// coloring/tooltip pattern, no week/month layout) — see AGENTS.md's note on
-// why this isn't a vendored Tremor Tracker.
 export default function OutageTracker({
   incidents,
   timeZone,
@@ -35,10 +31,7 @@ export default function OutageTracker({
   return (
     <div className="flex gap-1">
       {days.map((day) => {
-        // A day before trackedSince is out of scope entirely, regardless of
-        // any incident data on record for it — see ServiceDetail's uptime
-        // percentage (lib/uptime.ts), which excludes the same days from its
-        // own calculation; keeping both consistent so they can't disagree.
+        // Days before trackedSince are out of scope, matching lib/uptime.ts's calculation.
         const color = !day.tracked
           ? EMPTY_DAY_COLOR
           : day.impact
@@ -50,9 +43,6 @@ export default function OutageTracker({
           (sum, incident) => sum + minutesBetween(incident.created_at, incident.resolved_at!),
           0,
         );
-        // Same aria-label composition as IncidentCalendar's own day cells
-        // (its own comment calls this component "a single-row sibling" of
-        // that one) — this row had none at all before, unlike its sibling.
         const ariaLabel = !day.tracked
           ? `${formatDate(day.date)}: ${t("serviceDetail.notTrackedYet")}`
           : hasIncidents

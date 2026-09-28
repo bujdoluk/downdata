@@ -130,9 +130,6 @@ function LoginForm() {
   );
 }
 
-// Skeleton, not a blank flash, while useSearchParams() (which requires this
-// Suspense boundary in the App Router) resolves — usually near-instant, but
-// a "missing loading state" either way.
 function LoginFormSkeleton() {
   return (
     <div className="flex min-h-full flex-1 items-center justify-center p-6" aria-busy="true" aria-label="Loading">

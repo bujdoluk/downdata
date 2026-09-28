@@ -13,12 +13,8 @@ import ModalCloseButton from "@/components/ModalCloseButton";
 import PageHeader from "@/components/PageHeader";
 import type { StoredReport } from "@/features/reports/types";
 
-// The full per-board/per-service breakdown for one generated report — the
-// data the nudge email deliberately doesn't carry inline (see
-// ReportReady.tsx's own comment on why it's link-only). Its own dedicated
-// page (/reports/[id]) now, not a ListDetailShell second column — see the
-// grilling session that settled this move for why (a table + a real
-// permalink beat query-param selection once "link to detail" was the ask).
+// Its own page (/reports/[id]), not a ListDetailShell column: the email nudge
+// needs a permalink that works cold.
 export default function ReportDetail({ report }: { report: StoredReport }) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -31,10 +27,8 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
     onSuccess: (res) => {
       if (!res.ok) return;
       router.push("/reports");
-      // initialReports is a Server Component prop (ReportsPageContent),
-      // not a TanStack Query cache — nothing to invalidate, but the
-      // destination /reports can otherwise serve a router-cached render
-      // from before this delete, still showing the deleted report.
+      // Server Component prop, not a query cache: refresh so /reports doesn't
+      // serve a router-cached render still showing the deleted report.
       router.refresh();
     },
   });
@@ -52,9 +46,7 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h1 className="text-base-content text-xl font-semibold">{t(`reports.name.${report.interval}`)}</h1>
-            {/* periodStart/periodEnd are plain calendar dates (formatDate's own
-                contract) — generatedAt is a full timestamptz instant, so it
-                needs formatDateTime's timezone-aware conversion instead. */}
+            {/* Period bounds are plain dates; generatedAt is an instant, so it needs the timezone. */}
             <p className="text-base-content/50 mt-1 text-xs">
               {formatDate(report.periodStart)} – {formatDate(report.periodEnd)} ·{" "}
               {t("reports.generatedOn", { date: formatDateTime(report.generatedAt, timeZone) })}
@@ -159,10 +151,7 @@ export default function ReportDetail({ report }: { report: StoredReport }) {
                           )}
                         </td>
                         <td>{service.incidentCount}</td>
-                        {/* See ServiceReportEntry.maintenanceCount's own
-                            comment — undefined means "not recorded" (a
-                            report from before this field existed), shown
-                            as a dash rather than a fabricated 0. */}
+                        {/* undefined = not recorded (older report), shown as a dash, not a fake 0. */}
                         <td>{service.maintenanceCount ?? "–"}</td>
                         <td>{service.uptimePercent}%</td>
                         <td>{formatDuration(service.downtimeMinutes, t)}</td>

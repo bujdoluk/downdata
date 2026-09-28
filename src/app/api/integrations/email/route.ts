@@ -7,19 +7,11 @@ import { emailLogoUrl } from "@/lib/emailLogoUrl";
 import ConfirmEmailAddress from "@/components/emails/ConfirmEmailAddress";
 import { ALL_IMPACTS } from "@/components/statusStyles";
 
-// The WHATWG HTML Living Standard's own email regex — the same one
-// browsers use to validate <input type="email">. Full RFC 5322 permits
-// far more (quoted local parts, comments, folding whitespace) than any
-// real mail provider actually issues addresses under; this is the
-// pragmatic, spec-backed middle ground rather than a hand-rolled pattern.
+// WHATWG's <input type="email"> regex: a pragmatic, spec-backed subset of RFC 5322.
 const EMAIL_PATTERN =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-// A caller-supplied notifyImpacts on POST is optional and best-effort — an
-// invalid/missing one just falls back to the hardcoded default below
-// rather than blocking the actual connect, unlike PATCH's strict
-// validation (choosing severities is secondary to successfully connecting
-// the address itself).
+// Lenient unlike PATCH: a bad value falls back to the default rather than blocking the connect.
 function parseNotifyImpacts(body: unknown): string[] | undefined {
   const notifyImpacts = (body as { notifyImpacts?: unknown })?.notifyImpacts;
   if (!Array.isArray(notifyImpacts) || notifyImpacts.length === 0) return undefined;
@@ -27,11 +19,7 @@ function parseNotifyImpacts(body: unknown): string[] | undefined {
   return notifyImpacts;
 }
 
-// Adds one recipient (connecting the email integration on first use) and
-// emails it a confirmation link — nothing is sent to it by the notifier
-// until that link is clicked. Re-submitting an already-added address is
-// how "resend the confirmation" works: it's the same upsert, with a
-// fresh code and expiry.
+// Re-submitting an existing address is how "resend confirmation" works (same upsert, fresh code).
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -50,13 +38,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Email notifications aren't configured yet." }, { status: 500 });
   }
 
-  // notifyImpacts is likewise only seeded on first connect — passing it on
-  // every call would silently reset a since-customized severity filter
-  // back to this default (see addIntegration's own comment). Preferring
-  // whatever the connect form actually had checked over the hardcoded
-  // default: before first connect, there's no integration row yet for a
-  // checkbox-toggle PATCH to update, so that's the only way choosing
-  // severities before ever connecting actually takes effect.
+  // Seed notifyImpacts only on first connect, or a later call would reset a customized filter.
   const isFirstConnect = !(await integrationExists("email"));
   const { id } = await addIntegration({
     slug: "email",
@@ -67,9 +49,6 @@ export async function POST(request: Request) {
   const { code, expiresAt } = generateVerification("email");
   await addRecipient(id, "email", value, code, expiresAt);
 
-  // Best-effort — the recipient is already saved as pending at this
-  // point, so an email-sending hiccup shouldn't fail the whole request;
-  // the user can just hit "resend" (a re-submit of the same address).
   const verifyUrl = new URL("/api/integrations/email/verify", request.url);
   verifyUrl.searchParams.set("token", code);
   try {
@@ -83,26 +62,21 @@ export async function POST(request: Request) {
       text,
     });
   } catch {
-    // ignore — the recipient stays pending and "resend" (re-submitting
-    // the same address) tries again
+    // ignore: the recipient stays pending and "resend" retries
   }
 
-  // Only runs once, on first connect — re-submitting to add another
-  // recipient (or resend) shouldn't re-touch delivery history.
+  // First connect only, so adding a recipient or resending never re-touches delivery history.
   if (isFirstConnect) {
     try {
       await backfillNewIntegration(id);
     } catch {
-      // ignore — Supabase incident storage is optional; email connects either way
+      // ignore: email connects even if the backfill fails
     }
   }
 
   return NextResponse.json({ value, verified: false });
 }
 
-// Edits the severity filter on an already-connected email integration —
-// identical shape to SMS/webhook's PATCH handler (see
-// app/api/integrations/sms/route.ts).
 export async function PATCH(request: Request) {
   let body: unknown;
   try {
@@ -128,9 +102,7 @@ export async function PATCH(request: Request) {
   return NextResponse.json({ notifyImpacts });
 }
 
-// A static "email" segment shadows the dynamic app/api/integrations/[slug]
-// route for this exact path, so its own DELETE handler never gets a chance
-// to run here — this file needs its own, identical in shape.
+// This static segment shadows app/api/integrations/[slug], so it needs its own DELETE.
 export async function DELETE() {
   const removed = await removeIntegration("email");
   if (!removed) {

@@ -9,9 +9,6 @@ import FallbackLogo from "@/components/logos/FallbackLogo";
 import { formatDateTime } from "@/lib/formatTime";
 import { isInProgressMaintenance } from "@/lib/isInProgressMaintenance";
 
-// Bare content only, no outer margin/card/sizing — see
-// BoardActiveIncidentsPanel's comment; this is its maintenance-side sibling,
-// both split out of the old BoardActivityPanel.
 export default function BoardActiveMaintenancePanel({
   boardId,
   maintenances,

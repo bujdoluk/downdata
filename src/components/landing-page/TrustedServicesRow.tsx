@@ -5,11 +5,7 @@ import "@/lib/i18n/i18n";
 import { SERVICE_LOGOS } from "@/components/logos";
 import RevealOnScroll from "@/components/landing-page/RevealOnScroll";
 
-// Every hand-drawn brand logo in the catalog (see components/service/logos/index.tsx) —
-// deliberately not the MonogramLogo-fallback entries, since this row's whole point is
-// showing real marks. This is NOT a "trusted by / customers" claim (downDATA has no
-// customers to name — see AboutContent.tsx) — it's "here's what you can track," so the
-// i18n label below is worded accordingly.
+// Real marks only, no MonogramLogo fallbacks. Not a "trusted by" claim; it's "what you can track".
 const TRACKABLE_SERVICES = [
   { slug: "github", name: "GitHub" },
   { slug: "cloudflare", name: "Cloudflare" },

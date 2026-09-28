@@ -1,4 +1,3 @@
-// Public API of the integrations feature (Slack/Email/SMS connect + manage).
 export { default as EmailConnectForm } from "./components/EmailConnectForm";
 export { default as EmailLogo } from "./components/EmailLogo";
 export { default as ImpactFilterCheckboxes } from "./components/ImpactFilterCheckboxes";

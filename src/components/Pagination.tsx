@@ -4,15 +4,8 @@ import { useId } from "react";
 
 type PageItem = number | "ellipsis";
 
-// Pages between the fixed first(1)/last(totalPages) anchors: a 4-page
-// window slid to stay centered on currentPage but clamped so it never
-// overlaps either anchor. The two inner slots are always plain numbers;
-// each outer slot independently renders as a number when it's adjacent
-// to its anchor, or an ellipsis when there's a real gap — either way the
-// slot is always filled, never omitted. That keeps the window at exactly
-// 4 items (so the bar's total width is exactly constant) for any
-// currentPage, including right at the edges, where the old version used
-// to drop a slot entirely and visibly narrow the bar.
+// Always exactly 4 slots (outer ones become ellipses on a gap) so the bar's
+// width stays constant for any currentPage.
 function getMiddleItems(currentPage: number, totalPages: number): PageItem[] {
   if (totalPages <= 5) {
     return Array.from({ length: totalPages - 2 }, (_, i) => i + 2);
@@ -42,16 +35,11 @@ export default function Pagination({
   prevLabel: string;
   nextLabel: string;
 }) {
-  // Unique per mounted instance — same-named native radios would
-  // otherwise cross-talk (selecting a page in one instance visually
-  // deselects another) if this component were ever rendered twice on one
-  // page at once.
+  // Unique per instance so two paginations' native radios don't cross-talk.
   const name = useId();
 
   if (totalPages <= 1) return null;
 
-  // 1 and totalPages double as one-click jump-to-first/jump-to-last —
-  // they're always rendered anyway, so no separate «« »» buttons needed.
   const items: PageItem[] = [1, ...getMiddleItems(currentPage, totalPages), totalPages];
 
   return (

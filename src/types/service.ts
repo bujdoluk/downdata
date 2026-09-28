@@ -61,12 +61,7 @@ export type StatuspageComponent = {
   name: string;
   status: Status;
   position: number;
-  // Atlassian always sends both (group_id null, group false, for a
-  // top-level component) — incident.io (e.g. status.brevo.com) omits them
-  // entirely instead. Optional here so a `c.group_id === null` check reads
-  // as suspiciously narrow at the call site instead of silently passing
-  // type-check while failing at runtime — see ServiceDetail.tsx's
-  // !c.group_id fix for exactly that bug.
+  // Optional: incident.io omits it entirely, so check `!c.group_id`, not `=== null`.
   group_id?: string | null;
   showcase: boolean;
   group?: boolean;
@@ -120,10 +115,7 @@ export type ServiceSummaryResponse = {
 
 export type TrackedIncident = Incident & { service: Service };
 
-// Same as Incident/TrackedIncident but without incident_updates —
-// what the polled list endpoints (/api/incidents, /api/maintenance) return,
-// since only whichever one item is currently selected ever needs its full
-// timeline (fetched separately, see app/api/incidents/[slug]/[id]).
+// Polled list endpoints skip updates; only the selected item fetches its timeline.
 export type StatuspageIncidentSummary = Omit<Incident, "incident_updates">;
 export type TrackedIncidentSummary = StatuspageIncidentSummary & { service: Service };
 

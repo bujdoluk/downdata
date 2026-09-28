@@ -3,11 +3,6 @@
 import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 
-// The one row shape EmailConnectForm and SmsConnectForm's recipient lists
-// share exactly — a confirmed recipient has nothing left to do but remove
-// it. Their *pending* rows differ too much to share (email is just a
-// resend link; sms needs a whole code-entry form), so only this one gets
-// pulled out.
 export default function VerifiedRecipientRow({ value, onRemove }: { value: string; onRemove: () => void }) {
   const { t } = useTranslation();
 

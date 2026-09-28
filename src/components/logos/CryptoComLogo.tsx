@@ -1,5 +1,3 @@
-// Crypto.com's mark: a nested hexagon/shield, in the brand's dark blue with
-// a lighter blue accent.
 export default function CryptoComLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">

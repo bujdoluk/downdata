@@ -12,9 +12,7 @@ export default function FaqContent() {
   return (
     <div className="flex min-h-full flex-1 flex-col">
       <LandingNavbar />
-      {/* Visually hidden — FaqSection's own heading is the visible one;
-          this just gives the page a real h1 (reusing the existing footer
-          label rather than inventing new copy for text no one sees). */}
+      {/* Page h1 for a11y; FaqSection's heading is the visible one. */}
       <h1 className="sr-only">{t("footer.faq")}</h1>
       <FaqSection />
       <Footer />

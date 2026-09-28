@@ -1,10 +1,7 @@
 import type { StatuspageComponent } from "@/types/service";
 
-// Best-effort geography for a Statuspage component. Statuspage has no
-// geography field at all (see StatuspageComponent) — this infers one from
-// free-text names, so it's a heuristic, not a guarantee: most components
-// (most services, even) name a feature, not a place, and correctly resolve
-// to `null` rather than being force-fit into a continent.
+// Heuristic: Statuspage has no geography field, so this infers one from names.
+// Most components name a feature, not a place, and correctly resolve to null.
 export type Continent =
   | "africa"
   | "asia"
@@ -29,35 +26,21 @@ export const ALL_CONTINENTS: Continent[] = [
 export const CONTINENT_LABEL_KEYS: Record<Continent, string> = {
   africa: "serviceDetail.continentAfrica",
   asia: "serviceDetail.continentAsia",
-  // Covers all of Oceania (NZ, Fiji, PNG, ...), not just the country —
-  // there's no separate "Oceania" bucket, matches how this was asked for.
+  // Covers all of Oceania; there's no separate bucket.
   australia: "serviceDetail.continentAustralia",
   europe: "serviceDetail.continentEurope",
-  // Twilio's status page (which SendGrid's now redirects into) names a
-  // component's region "Voice, Latin America" / "SMS, Latin America" as a
-  // leaf with no child country components — unlike Cloudflare's "Latin
-  // America & the Caribbean" group, there's nothing to fall back on, so
-  // this can't reuse the "let the children resolve individually" escape
-  // hatch. A dedicated bucket, not folded into North or South America:
-  // Latin America spans both, and force-fitting it into either would make
-  // "filter by North America" silently include (or exclude) it.
+  // Own bucket: Twilio's "Voice, Latin America" leaves span North and South
+  // America and have no child countries to resolve instead.
   latinAmerica: "serviceDetail.continentLatinAmerica",
-  // Same reasoning as latinAmerica: Twilio's "Voice, Middle East & Africa"
-  // spans two of the existing buckets (Middle East reads as Asia
-  // elsewhere in this file; Africa is its own continent) — a dedicated
-  // bucket instead of silently picking one.
+  // Own bucket for the same reason: Twilio's "Middle East & Africa" spans two.
   middleEastAfrica: "serviceDetail.continentMiddleEastAfrica",
   northAmerica: "serviceDetail.continentNorthAmerica",
   southAmerica: "serviceDetail.continentSouthAmerica",
 };
 
-// Common country names (plus frequent aliases/abbreviations actually seen
-// on real status pages) mapped to the continent they're in, lowercased.
-// A handful of transcontinental countries (Russia, Turkey, Kazakhstan,
-// Azerbaijan, Georgia, Cyprus, Egypt) get one deliberate pick each rather
-// than being silently guessed — a judgment call, not a geographic claim.
+// Transcontinental countries (Russia, Turkey, Georgia, Egypt, ...) get one
+// deliberate pick each: a judgment call, not a geographic claim.
 const COUNTRY_TO_CONTINENT: Record<string, Continent> = {
-  // Africa
   algeria: "africa", angola: "africa", benin: "africa", botswana: "africa",
   "burkina faso": "africa", burundi: "africa", cameroon: "africa", "cabo verde": "africa", "cape verde": "africa",
   "central african republic": "africa", chad: "africa", comoros: "africa",
@@ -71,7 +54,6 @@ const COUNTRY_TO_CONTINENT: Record<string, Continent> = {
   somalia: "africa", "south africa": "africa", "south sudan": "africa", sudan: "africa", tanzania: "africa", togo: "africa",
   tunisia: "africa", uganda: "africa", zambia: "africa", zimbabwe: "africa",
 
-  // Asia (including the Middle East)
   afghanistan: "asia", armenia: "asia", azerbaijan: "asia", bahrain: "asia", bangladesh: "asia", bhutan: "asia",
   brunei: "asia", cambodia: "asia", china: "asia", cyprus: "asia", georgia: "asia", "hong kong": "asia",
   india: "asia", indonesia: "asia", iran: "asia", iraq: "asia", israel: "asia", japan: "asia", jordan: "asia",
@@ -82,13 +64,11 @@ const COUNTRY_TO_CONTINENT: Record<string, Continent> = {
   tajikistan: "asia", thailand: "asia", "timor-leste": "asia", turkey: "asia", turkmenistan: "asia",
   "united arab emirates": "asia", uae: "asia", uzbekistan: "asia", vietnam: "asia", yemen: "asia",
 
-  // Australia / Oceania
   australia: "australia", "new zealand": "australia", fiji: "australia", "papua new guinea": "australia",
   "solomon islands": "australia", vanuatu: "australia", samoa: "australia", tonga: "australia", kiribati: "australia",
   micronesia: "australia", palau: "australia", "marshall islands": "australia", nauru: "australia", tuvalu: "australia",
   "new caledonia": "australia", guam: "australia",
 
-  // Europe
   albania: "europe", andorra: "europe", austria: "europe", belarus: "europe", belgium: "europe",
   "bosnia and herzegovina": "europe", bulgaria: "europe", croatia: "europe", "czech republic": "europe", czechia: "europe",
   denmark: "europe", estonia: "europe", finland: "europe", france: "europe", germany: "europe", greece: "europe",
@@ -100,7 +80,6 @@ const COUNTRY_TO_CONTINENT: Record<string, Continent> = {
   switzerland: "europe", ukraine: "europe", "united kingdom": "europe", uk: "europe", "great britain": "europe",
   england: "europe", scotland: "europe", wales: "europe", "northern ireland": "europe", "vatican city": "europe",
 
-  // North America
   canada: "northAmerica", "united states": "northAmerica", "united states of america": "northAmerica",
   usa: "northAmerica", us: "northAmerica", mexico: "northAmerica", guatemala: "northAmerica", belize: "northAmerica",
   honduras: "northAmerica", "el salvador": "northAmerica", nicaragua: "northAmerica", "costa rica": "northAmerica",
@@ -108,7 +87,6 @@ const COUNTRY_TO_CONTINENT: Record<string, Continent> = {
   "dominican republic": "northAmerica", bahamas: "northAmerica", barbados: "northAmerica",
   "trinidad and tobago": "northAmerica", "puerto rico": "northAmerica", greenland: "northAmerica",
 
-  // South America
   argentina: "southAmerica", bolivia: "southAmerica", brazil: "southAmerica", chile: "southAmerica",
   colombia: "southAmerica", ecuador: "southAmerica", guyana: "southAmerica", paraguay: "southAmerica",
   peru: "southAmerica", suriname: "southAmerica", uruguay: "southAmerica", venezuela: "southAmerica",
@@ -116,22 +94,10 @@ const COUNTRY_TO_CONTINENT: Record<string, Continent> = {
   grenada: "northAmerica",
 };
 
-// Covers a component/group whose name already *is* the continent (Cloudflare
-// groups its regions this way) or a well-known synonym for one. "Latin
-// America & the Caribbean" is deliberately not here — it spans North and
-// South America, but its children (real country names) each resolve
-// correctly on their own via COUNTRY_TO_CONTINENT, so the group's own
-// ambiguity never actually matters.
+// Cloudflare's "Latin America & the Caribbean" group isn't matched on purpose:
+// its children are real countries and resolve on their own.
 const CONTINENT_NAME_PATTERNS: [RegExp, Continent][] = [
-  // Combined-region names must be checked first — matchContinentLiteral
-  // returns on the first hit, so if the plain "africa" pattern below ran
-  // first it would swallow "Middle East & Africa" as just "africa" before
-  // this more specific pattern ever got a chance. Order-independent on
-  // which word comes first (lookahead, not a fixed "middle east ... africa"
-  // sequence), but still requires *both* words — a component named plainly
-  // "Middle East" (no "Africa") is untouched and keeps resolving to asia
-  // via the existing pattern further down, since that's the only shape
-  // actually verified so far.
+  // Must precede the plain "africa" pattern, which would otherwise match first.
   [/(?=.*\bmiddle east\b)(?=.*\bafrica\b)/i, "middleEastAfrica"],
   [/\blatin america\b/i, "latinAmerica"],
   [/\bafrica\b/i, "africa"],
@@ -142,10 +108,8 @@ const CONTINENT_NAME_PATTERNS: [RegExp, Continent][] = [
   [/\bsouth america\b/i, "southAmerica"],
 ];
 
-// Exact AWS-style region codes actually seen on status pages. Deliberately
-// an exact table, not a "us-"/"eu-"/"ap-" prefix regex — AWS's ap- prefix
-// alone spans both Asia and Australia (ap-southeast-2/4 are Sydney/
-// Melbourne), so a prefix match would mislabel those two.
+// Exact codes, not a prefix regex: "ap-" spans Asia and Australia
+// (ap-southeast-2/4 are Sydney/Melbourne).
 const CLOUD_REGION_CODES: Record<string, Continent> = {
   "us-east-1": "northAmerica", "us-east-2": "northAmerica", "us-west-1": "northAmerica", "us-west-2": "northAmerica",
   "us-gov-east-1": "northAmerica", "us-gov-west-1": "northAmerica",
@@ -160,13 +124,8 @@ const CLOUD_REGION_CODES: Record<string, Continent> = {
   "af-south-1": "africa",
 };
 
-// Linode's own short-code convention — "US-East (Newark)", "AP-Southeast
-// (Sydney)" — distinct from AWS's (no numeric suffix, different codes for
-// the same places). Exact table, not a "us-"/"ap-" prefix regex, for the
-// same reason CLOUD_REGION_CODES is one: Linode's own "AP-" spans Asia and
-// Australia too (AP-Southeast is Sydney, not generic Asia-Pacific). Seen
-// live on status.linode.com as of 2026-08-31 — verified against the actual
-// feed, not guessed, the same way CLOUD_REGION_CODES was built.
+// Linode's "US-East (Newark)" convention. Exact table for the same reason as
+// CLOUD_REGION_CODES: Linode's AP-Southeast is Sydney.
 const LEADING_REGION_CODES: Record<string, Continent> = {
   "us-east": "northAmerica", "us-central": "northAmerica", "us-west": "northAmerica", "us-southeast": "northAmerica",
   "us-iad": "northAmerica", "us-iad-2": "northAmerica", "us-ord": "northAmerica", "us-sea": "northAmerica",
@@ -182,22 +141,11 @@ const LEADING_REGION_CODES: Record<string, Continent> = {
   "za-jnb": "africa",
 };
 
-// A leading code always precedes " (<city>)" in Linode's naming — matches
-// "us-east" out of "US-East (Newark) Block Storage", "ap-northeast-2" out of
-// "AP-Northeast-2 (Tokyo 2)", etc. Anchored at the start so it can't fire on
-// an unrelated name that merely contains a code-shaped substring somewhere.
+// Anchored so a code-shaped substring elsewhere in a name can't match.
 const LEADING_REGION_CODE_PATTERN = /^([a-z]{2}(?:-[a-z0-9]+){1,2})\s+\(/;
 
-// A bare two-letter region word leading the name with nothing but a space
-// after it — e.g. Sentry's "US Errors Alerting" / "EU Ingestion"
-// (status.sentry.io, verified 2026-09-06). Distinct from LEADING_REGION_CODES
-// (which requires a hyphenated code plus a parenthesized city) and from
-// COUNTRY_TO_CONTINENT (reusing its full alias list here would also treat a
-// component starting with a plain country name — "chad", "togo", "peru" are
-// all keys there too — as a region signal, for services that were never
-// checked). Keyed to this naming shape, not to Sentry specifically: any
-// other service using the same bare-leading-word convention picks up free
-// support the moment its abbreviation is added here.
+// Bare leading word like Sentry's "US Errors Alerting". Not reusing
+// COUNTRY_TO_CONTINENT, which would misfire on names starting "Chad", "Peru", ...
 const LEADING_ABBREVIATION_WORDS: Record<string, Continent> = {
   us: "northAmerica",
   eu: "europe",
@@ -213,9 +161,6 @@ function matchContinentLiteral(name: string): Continent | null {
   return null;
 }
 
-// Tries to resolve one raw component/group name to a continent, without
-// looking at any parent — used for both a component's own name and (as a
-// fallback) its parent group's name.
 function matchName(name: string): Continent | null {
   const withoutCode = name.replace(CODE_SUFFIX, "");
   const segments = withoutCode.split(",");
@@ -250,25 +195,15 @@ function matchName(name: string): Continent | null {
   return null;
 }
 
-// componentsById lets a child component (e.g. Cloudflare's "Amsterdam,
-// Netherlands - (AMS)") inherit its continent from its parent group's name
-// ("Europe") when its own name has no recognizable location in it. Only one
-// level up — Statuspage groups aren't nested deeper than that in practice
-// (a top-level group's own group_id is always null).
+// Only checks one level up: Statuspage groups never nest deeper.
 export function inferComponentContinent(
   component: StatuspageComponent,
   componentsById: Map<string, StatuspageComponent>,
 ): Continent | null {
   const parent = component.group_id ? componentsById.get(component.group_id) : undefined;
 
-  // A parent group whose own name literally *is* a continent (how
-  // Cloudflare organizes its regions) is a stronger signal than guessing
-  // from the child's own city/country text — it's the provider's own
-  // classification, not our heuristic. Matters most for transcontinental
-  // countries: e.g. "Tbilisi, Georgia" resolves to Europe because
-  // Cloudflare files it under their "Europe" group, even though
-  // COUNTRY_TO_CONTINENT's own (necessarily arbitrary) pick for "Georgia"
-  // alone is Asia.
+  // A continent-named parent group is the provider's own classification and
+  // beats our country guess (Cloudflare files "Tbilisi, Georgia" under Europe).
   if (parent) {
     const parentLiteral = matchContinentLiteral(parent.name);
     if (parentLiteral) return parentLiteral;

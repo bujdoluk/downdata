@@ -1,5 +1,3 @@
-// Used for any service without a hand-crafted logo (i.e. anything added
-// at runtime from the catalog on the home page) — a monogram of its first letter.
 export default function FallbackLogo({ size = 28, name }: { size?: number; name: string }) {
   const initial = name.trim().charAt(0).toUpperCase() || "?";
 

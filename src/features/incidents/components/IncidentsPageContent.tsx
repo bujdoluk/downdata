@@ -67,16 +67,11 @@ function parseGroupFromSearchParams(searchParams: URLSearchParams): DebouncedGro
   };
 }
 
-// Content fingerprint of the debounced group, used to tell "we just wrote
-// this ourselves" apart from "the URL genuinely changed" (back/forward, a
-// pasted link) — see the two sync effects below.
+// Fingerprint to tell our own URL writes apart from real URL changes (back/forward).
 function serializeGroup(g: DebouncedGroup): string {
   return JSON.stringify([g.status, g.q, g.range, [...g.impacts].sort().join(","), g.board]);
 }
 
-// Every field omits itself from the URL at its default value, for a clean
-// URL when nothing's actually filtered — impacts already worked this way;
-// status/range now match it instead of always being written explicitly.
 function debouncedGroupPatch(g: DebouncedGroup): Record<string, string | null> {
   return {
     status: g.status === "all" ? null : g.status,
@@ -110,12 +105,8 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   const selectIncident = useSelectAndScrollOnMobile("/incidents", detailRef);
 
   const { selectedBoardId } = useSelectedBoard();
-  // True on a render where the persisted cross-page board pick (see
-  // hooks/useSelectedBoard) is about to be applied because this URL has no
-  // ?board= of its own yet — filteredIncidents below is still unfiltered on
-  // that render, so useAutoSelectFirstId is told to sit it out (see its call
-  // below) rather than risk auto-selecting an incident outside the board
-  // that's about to be applied.
+  // The persisted board is about to be applied, so the list is still unfiltered:
+  // skip auto-select this render to avoid picking an incident outside that board.
   const persistedBoardApplies = !searchParams.has("board") && !!selectedBoardId && boards.some((b) => b.id === selectedBoardId);
 
   useEffect(() => {
@@ -131,11 +122,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
   const selectedIncident = incidents.find((incident) => incident.id === selectedId);
   const selectedSlug = selectedIncident?.service.slug;
 
-  // Full timeline for whichever incident is selected, fetched separately —
-  // the list response deliberately omits incident_updates (see
-  // app/api/incidents/route.ts). One-shot per selection, not polled: an
-  // already-open incident's timeline won't live-update, only refreshes on
-  // reselection. The list itself keeps polling every 60s regardless.
+  // Fetched separately: the list response omits incident_updates. Not polled.
   const { data: detail, isError: detailError } = useQuery({
     queryKey: queryKeys.incidents.detail(selectedSlug ?? "", selectedId ?? ""),
     queryFn: () => fetchJson<TrackedIncident>(`/api/incidents/${selectedSlug}/${selectedId}`),
@@ -152,9 +139,6 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
           (incident) =>
             matchesStatus(incident, pendingFilters.status) &&
             pendingFilters.impacts.has(incident.impact) &&
-            // Matches either which service it's on or the incident's own
-            // name (e.g. "database outage") — one search box covering both,
-            // rather than a second input just for incident text.
             (!trimmedQuery ||
               incident.service.name.toLowerCase().includes(trimmedQuery) ||
               incident.name.toLowerCase().includes(trimmedQuery)) &&
@@ -183,8 +167,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
     pendingFilters.impacts.size !== ALL_IMPACTS.length;
 
   function clearFilters() {
-    // board isn't reset here — it's no longer a filter this page can set
-    // (see BoardSelect.tsx), just whatever the sidebar has selected.
+    // board isn't reset: the sidebar's BoardSelect owns it.
     setPendingFilters((prev) => ({ ...prev, status: "all", q: "", range: "30d", impacts: new Set(ALL_IMPACTS) }));
     updateParams({ page: null });
   }
@@ -251,11 +234,7 @@ export default function IncidentsPageContent({ boards }: { boards: Board[] }) {
             const Logo = SERVICE_LOGOS[incident.service.slug] ?? FallbackLogo;
             const style = INDICATOR_STYLES[incident.impact] ?? FALLBACK_STYLE;
             const isSelected = incident.id === selectedId;
-            // Same STATUS_LABEL_KEY lookup the filter dropdown already uses
-            // for these exact values — falls back to the raw string for a
-            // provider-reported status outside the known set (Incident.status
-            // is typed as a plain string precisely because not every
-            // Statuspage-alike sends one of these five).
+            // Cast is safe: an unknown provider status misses the lookup and falls back to raw text.
             const statusLabelKey = STATUS_LABEL_KEY[incident.status as StatusFilter];
             const statusLabel = statusLabelKey ? t(`incidents.filter.${statusLabelKey}`) : incident.status;
             return (

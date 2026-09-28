@@ -1,14 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { computeNextAttemptState, isRateLimitedGivenState, RATE_LIMIT_MAX_FAILURES, RATE_LIMIT_WINDOW_MS } from "@/features/status-pages/services/rateLimit";
 
-// Exercises the pure window/count decision logic directly — the DB read/
-// write wrapped around it needs a live Supabase instance, not available in
-// every session (see docs/specs/SPEC-status-page-password.md), so it's left
-// to manual/integration verification instead.
 describe("isRateLimitedGivenState", () => {
   const now = Date.parse("2026-01-01T00:00:30.000Z");
-  const recentWindowStart = new Date(now - 10_000).toISOString(); // 10s ago, well within the window
-  const expiredWindowStart = new Date(now - RATE_LIMIT_WINDOW_MS - 1).toISOString(); // just past the window
+  const recentWindowStart = new Date(now - 10_000).toISOString();
+  const expiredWindowStart = new Date(now - RATE_LIMIT_WINDOW_MS - 1).toISOString();
 
   it("allows when there's no prior attempt", () => {
     expect(isRateLimitedGivenState(null, now)).toBe(false);

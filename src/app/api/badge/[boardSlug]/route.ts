@@ -12,17 +12,8 @@ import {
 } from "@/features/status-pages/services/badge";
 import { isProtectionConfigured } from "@/features/status-pages/services/passwordProtection";
 
-// Public, unauthenticated (see proxy.ts's PUBLIC_PREFIXES) — same class as
-// /api/summary/[slug]/api/status/[slug]: a badge only ever exists for a
-// board that already has a public status page (getPublicStatusPage's own
-// `enabled` check is the entire authorization), so there's nothing here
-// beyond what that page already shows to anyone with the link. Stateless
-// by design — every parameter (type/theme/size/layout) lives in the query
-// string, not a saved row, so the exact same URL always renders the same
-// way for both the /integrations "Embeds" tab's live preview and whatever
-// README/site a user has already pasted the code sample into (see the
-// grilling session that settled this — persisting embed configs would
-// have added a migration/table for zero actual rendering benefit).
+// Public: getPublicStatusPage's `enabled` check is the whole authorization. Stateless by design,
+// all options live in the query string so a pasted embed URL always renders the same.
 const VALID_VARIANTS: BadgeVariant[] = ["status", "uptime"];
 const VALID_THEMES: BadgeTheme[] = ["light", "dark"];
 const VALID_SIZES: BadgeSize[] = ["small", "medium", "large"];
@@ -30,26 +21,13 @@ const VALID_LAYOUTS: BadgeLayout[] = ["flat", "card"];
 
 const STATUS_LABEL: Record<string, string> = { none: "Operational", minor: "Minor", major: "Major", critical: "Critical" };
 
-// A tiny fallback badge, not a JSON error body — the consumer here is
-// always an <img> tag (a README, a site), which can't render JSON at all;
-// this at least tells a viewer *something* instead of a browser's generic
-// broken-image icon. Deliberately not this app's usual
-// NextResponse.json({error}, {status}) error shape for that reason.
+// An SVG, not the usual JSON error: the consumer is always an <img> tag, which can't render JSON.
 function notFoundSvg(): NextResponse {
   const svg = renderBadgeSvg({ label: "status", value: "not found", indicator: null, theme: "light", size: "small", layout: "flat" });
   return new NextResponse(svg, { status: 404, headers: { "Content-Type": "image/svg+xml", "Cache-Control": "public, max-age=60" } });
 }
 
-// Same non-JSON-error shape as notFoundSvg() above, for the same reason —
-// rendered when isStatusPageUnlocked() says no, in the caller's own
-// requested theme/size/layout rather than always the small/light default
-// notFoundSvg uses, so a locked badge still fits wherever it was embedded.
-// Always "private" (never a shared/CDN cache): this is only ever reached
-// for a status page that has protection configured at all — a plain
-// "public" 403 here could be cached by an intermediary and briefly served
-// back to a visitor who has since become authorized (allowlisted or
-// unlocked), which is stale but not itself a data leak, unlike the
-// same-URL leak "public" would cause on the real-data branch below.
+// Always "private": a shared cache could keep serving this 403 to a visitor who has since been unlocked.
 function lockedSvg(theme: BadgeTheme, size: BadgeSize, layout: BadgeLayout): NextResponse {
   const svg = renderLockedBadgeSvg({ theme, size, layout });
   return new NextResponse(svg, { status: 403, headers: { "Content-Type": "image/svg+xml", "Cache-Control": "private, max-age=60" } });
@@ -68,17 +46,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ boar
   const size = VALID_SIZES.includes(sizeParam as BadgeSize) ? (sizeParam as BadgeSize) : "medium";
   const layout = VALID_LAYOUTS.includes(layoutParam as BadgeLayout) ? (layoutParam as BadgeLayout) : "flat";
 
-  // The consumer here is always an <img> tag, which can't render a thrown
-  // error at all — notFoundSvg() below is deliberately reused for any
-  // failure, not just "board not found", so this route never returns
-  // anything other than a renderable SVG (see the file's own header
-  // comment on why this can't be this app's usual JSON error shape).
+  // Any failure renders notFoundSvg() so this route always returns a renderable SVG.
   try {
-    // The badge request carries the real visitor's own IP/cookies just
-    // like any other request — an allowlisted visitor's embedded badge
-    // renders normally with no special-casing; a password-only page can
-    // only unlock the badge if the same browser already unlocked the page
-    // itself (see docs/specs/SPEC-status-page-password.md).
+    // Uses the visitor's own IP/cookies, so a badge unlocks only if that browser unlocked the page
+    // (docs/specs/SPEC-status-page-password.md).
     const { protection, unlocked } = await resolveStatusPageAccess(boardSlug, request.headers);
     if (!protection) return notFoundSvg();
     if (!unlocked) return lockedSvg(theme, size, layout);
@@ -99,12 +70,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ boar
             layout,
           });
 
-    // "public" (shareable by a CDN/corporate proxy) only for a status page
-    // with no protection configured at all — the moment either mechanism
-    // is on, this same URL's response can legitimately differ per visitor
-    // (allowlisted vs not, cookied vs not), and a shared cache has no way
-    // to key on that. Serving it "private" instead means only the
-    // requesting visitor's own browser may cache it, never a shared one.
+    // With protection on, the same URL differs per visitor, so a shared cache must not store it.
     const cacheControl = isProtectionConfigured(protection) ? "private, max-age=60" : "public, max-age=60";
     return new NextResponse(svg, { headers: { "Content-Type": "image/svg+xml", "Cache-Control": cacheControl } });
   } catch (error) {

@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 import { getAllTrackedSlugs } from "@/features/boards/services/boards";
 import { getSupabaseClient } from "@/lib/supabase";
 
-// Head-only count for the sidebar badge — see app/api/incidents/count's
-// comment for why this exists instead of reusing getAllStoredMaintenances().
+// Head-only count for the sidebar badge, much cheaper than getAllStoredMaintenances().
 export async function GET() {
   const trackedSlugs = await getAllTrackedSlugs();
   if (trackedSlugs.length === 0) return NextResponse.json({ count: 0 });

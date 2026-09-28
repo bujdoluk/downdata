@@ -5,9 +5,7 @@ import { getStripeClient, resolvePriceId } from "@/features/billing/services/str
 import { getStripeCustomerId } from "@/features/billing/services/subscriptions";
 import { isBillingInterval, isPlanTier, PLAN_CATALOG } from "@/features/billing/services/plans";
 
-// Starts a subscription Checkout Session for the caller's chosen plan.
-// Never includes payment_method_types — Stripe determines eligible
-// payment methods dynamically from Dashboard settings.
+// No payment_method_types: Stripe picks eligible methods from Dashboard settings.
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -39,23 +37,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Authentication required." }, { status: 401 });
   }
 
-  // Reuses the account's existing Stripe customer if it has one (e.g.
-  // resubscribing after a cancellation), rather than letting Stripe
-  // create a second customer record for the same account.
+  // Reuse the existing customer so resubscribing doesn't create a duplicate.
   const existingCustomerId = await getStripeCustomerId();
-  // Only Starter carries a trial right now (PLAN_CATALOG.starter.trialDays).
-  // payment_method_collection: "if_required" is what actually makes it
-  // card-free — Stripe's default still collects a card during a trial and
-  // auto-charges when it ends, which would contradict the landing page's
-  // "no credit card required" copy.
+  // "if_required" makes the trial card-free, matching the landing page's "no credit card required".
   const trialDays = PLAN_CATALOG[plan].trialDays;
   const params: Stripe.Checkout.SessionCreateParams = {
     mode: "subscription",
     line_items: [{ price: priceId, quantity: 1 }],
     client_reference_id: user.id,
-    // Propagates onto the created Subscription object itself, so the
-    // webhook can identify the owner from customer.subscription.* events
-    // alone — see lib/subscriptions.ts's upsertFromStripeEvent().
+    // Propagates onto the Subscription, so customer.subscription.* webhooks self-identify the owner.
     subscription_data: {
       metadata: { supabase_user_id: user.id },
       ...(trialDays ? { trial_period_days: trialDays } : {}),

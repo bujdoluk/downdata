@@ -1,7 +1,4 @@
-// Chili Piper's own mark is a stylized chili pepper (their name and mascot) —
-// hand-drawn as a simple original curved-pod shape, not a trademark reproduction.
-// Brand palette confirmed via chilipiper.com/company-utilities/logo-pack:
-// orange #FF5722 + electric violet #533DFF (not green).
+// Original pod shape, not a trademark reproduction. Palette per Chili Piper's logo pack (not green).
 export default function ChiliPiperLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">

@@ -1,16 +1,11 @@
-// A recipient of the email/sms integrations — verified = false until the
-// confirmation link (email) or texted code (sms) is confirmed; the
-// notifier never sends to an unverified recipient.
+// The notifier never sends to an unverified recipient.
 export type Recipient = { value: string; verified: boolean };
 
 export type Integration = {
   id: string;
   slug: string;
   name: string;
-  // Which of this account's own tracked services should NOT trigger this
-  // integration; null/empty = notify about all of them, including any
-  // tracked later. An exclusion list, not an inclusion one — see the
-  // migration comment on the backing column for why.
+  // Exclusion list so services tracked later notify by default; null/empty = all.
   excludedServiceSlugs: string[] | null;
 };
 
@@ -18,9 +13,7 @@ export type SlackIntegration = Integration & { slug: "slack"; webhookUrl: string
 export type EmailIntegration = Integration & { slug: "email"; recipients: Recipient[]; notifyImpacts: string[] };
 export type SmsIntegration = Integration & { slug: "sms"; recipients: Recipient[]; notifyImpacts: string[] };
 
-// Not a Recipient — a webhook target has no verification state (see
-// integration_recipients.webhook_secret's comment for why), but does carry
-// its own HMAC secret, which email/sms recipients have no equivalent of.
+// No verification state, but carries its own HMAC secret.
 export type WebhookTarget = { value: string; secret: string };
 export type WebhookIntegration = Integration & { slug: "webhook"; targets: WebhookTarget[]; notifyImpacts: string[] };
 

@@ -1,13 +1,3 @@
--- Scheduled maintenance windows, stored the same way incidents are
--- (0001_create_incidents.sql) — polled catalog-wide by the same cron cycle,
--- read back tracked-only for /api/maintenance. No events/notification
--- tables here (unlike incidents) — nothing notifies about maintenances.
--- Run this once, same as 0001-0004.
-
--- Current state of one scheduled maintenance window, upserted in place.
--- Statuspage models a maintenance as an incident-shaped object plus a
--- scheduling window, hence the same column set as `incidents` plus
--- scheduled_for/scheduled_until.
 create table maintenances (
   service_slug text not null,
   id text not null,
@@ -27,8 +17,6 @@ create table maintenances (
 comment on table maintenances is 'Current state of each scheduled maintenance window (upserted, one row per maintenance) — not a history of polls.';
 alter table maintenances enable row level security;
 
--- Current state of one update within a maintenance's timeline. Statuspage's
--- own API calls this array `incident_updates` even for maintenance objects.
 create table maintenance_updates (
   service_slug text not null,
   maintenance_id text not null,
@@ -50,8 +38,6 @@ alter table maintenance_updates enable row level security;
 
 create index maintenances_scheduled_for_idx on maintenances (scheduled_for);
 
--- Insert/update one maintenance's current state — same no-op-when-unchanged
--- shape as upsert_incident.
 create or replace function upsert_maintenance(
   p_service_slug text, p_id text, p_name text, p_status text, p_impact text,
   p_created_at timestamptz, p_updated_at timestamptz, p_monitoring_at timestamptz,
@@ -71,8 +57,6 @@ create or replace function upsert_maintenance(
 $$ language sql;
 comment on function upsert_maintenance is 'Insert/update one maintenance''s current state; a true no-op write when nothing actually changed.';
 
--- Same idea, one level down: insert or update one update within a
--- maintenance's timeline, only writing when it changed.
 create or replace function upsert_maintenance_update(
   p_service_slug text, p_maintenance_id text, p_id text, p_status text, p_body text,
   p_affected_components jsonb, p_created_at timestamptz, p_updated_at timestamptz,

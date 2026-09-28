@@ -1,10 +1,7 @@
 import { redditSource } from "@/features/early-warnings/services/keywordSources/reddit";
 import type { KeywordSource } from "@/features/early-warnings/services/keywordSources/types";
 
-// The registry a future platform gets added to — one new file implementing
-// KeywordSource, one new entry here, and both the poller and the UI's
-// source-toggle row pick it up automatically. Nothing else in the app
-// should import an individual source module directly.
+// Import sources only through this registry; the poller and UI read it.
 export const KEYWORD_SOURCES: KeywordSource[] = [redditSource];
 
 export function resolveKeywordSource(id: string): KeywordSource | undefined {

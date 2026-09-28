@@ -10,23 +10,11 @@ import RequestCard from "@/components/RequestCard";
 import { SERVICE_LOGOS } from "@/components/logos";
 import FallbackLogo from "@/components/logos/FallbackLogo";
 import { TAB_BG_STYLE } from "@/lib/utils";
-// Direct path, not @/features/boards's own barrel — see this hook's own
-// file header for why.
+// Direct path: the boards barrel re-exports server-only services/boards.ts.
 import { useAddServiceToBoard } from "@/features/boards/hooks/useAddServiceToBoard";
 
-// The reusable "search + browse + add" body shared by ServiceCatalogPicker
-// (the full /add-service page, which wraps this with its own PageHeader,
-// back link, and board-switcher dropdown) and AddServiceModal (the
-// board-detail inline dialog, which fixes the board instead). Everything
-// here assumes a single, already-decided board — board switching is the
-// caller's job, not this component's.
-//
-// `board` is read straight from the prop, with no local mirror — both
-// callers already own real state of their own (ServiceCatalogPicker's
-// `boards` array, BoardDetailContent's own board state) and re-render this
-// with a fresh `board` on every successful add, so "Added" state and
-// addedHosts stay correct without a second, separate copy here that could
-// drift out of sync with the caller's.
+// `board` is read from the prop with no local mirror: callers own the live
+// board state and re-render this after each add.
 export default function AddServicePanel({
   catalog,
   board,
@@ -83,10 +71,7 @@ export default function AddServicePanel({
 
   return (
     <div className="mt-4 flex flex-col items-start gap-6 lg:flex-row">
-      {/* Radio-input tabs: selection is pure CSS (:checked + sibling
-          selector), which only works with each tab-content as the
-          immediate next sibling of its own radio — so both panels stay
-          mounted, no React state needed to switch between them. */}
+      {/* CSS radio tabs: each tab-content must directly follow its radio. */}
       <div role="tablist" className="tabs tabs-lift min-w-0 flex-1">
         <input
           type="radio"

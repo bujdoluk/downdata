@@ -1,8 +1,7 @@
 import { useId } from "react";
 
 export default function SupabaseLogo({ size = 28 }: { size?: number }) {
-  // Scoped per-instance so multiple logos on one page (grid + search
-  // results + navbar) don't collide on the same gradient id.
+  // Per-instance ids so multiple logos on one page don't collide.
   const gradientTop = useId();
   const gradientBottom = useId();
 

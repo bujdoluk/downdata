@@ -13,9 +13,6 @@ export async function generateMetadata({
   return { title: `${service?.name ?? "Service"} · downDATA` };
 }
 
-// Public, unauthenticated (see proxy.ts's PUBLIC_PREFIXES) — reachable for
-// any catalog slug via the landing navbar's search or the footer's
-// Popular Services list, not just the 10 curated ones.
 export default async function PublicServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
 

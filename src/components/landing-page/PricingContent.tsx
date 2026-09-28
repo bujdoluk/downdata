@@ -14,9 +14,7 @@ export default function PricingContent() {
     <div className="bg-base-100 text-base-content">
       <LandingNavbar />
 
-      {/* Visually hidden — PricingSection's own heading is the visible one;
-          this just gives the page a real h1 (reusing the existing nav
-          label rather than inventing new copy for text no one sees). */}
+      {/* Page h1 for a11y; PricingSection's heading is the visible one. */}
       <h1 className="sr-only">{t("landing.nav.pricing")}</h1>
 
       <PricingSection />

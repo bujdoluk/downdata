@@ -8,11 +8,6 @@ import type { ReportInterval, ReportSettings } from "@/features/reports/types";
 
 const INTERVALS: ReportInterval[] = ["daily", "weekly", "monthly"];
 
-// The settings panel for /reports — interval choice, which boards feed
-// into the report (an exclusion list under the hood, see
-// ReportSettings.excludedBoardIds), and the opt-out nudge-email toggle.
-// Kept as one panel rather than three, since all three are "how this
-// feature behaves for me", not separate concerns.
 export default function ReportSettingsForm({
   boards,
   settings,
@@ -28,10 +23,7 @@ export default function ReportSettingsForm({
 }: {
   boards: Board[];
   settings: ReportSettings;
-  // Three independent error slots, not a disabled-while-saving flag —
-  // each section is optimistic + debounced (see useDebouncedSetting), so
-  // there's nothing to disable; a failed save rolls its own value back
-  // and surfaces its own message here, without touching the other two.
+  // Separate error slots: each section saves optimistically and rolls back on its own.
   intervalError: string | null;
   boardsError: string | null;
   emailNudgeError: string | null;
@@ -39,9 +31,6 @@ export default function ReportSettingsForm({
   onToggleBoard: (boardId: string, included: boolean) => void;
   onToggleEmailNudge: (enabled: boolean) => void;
   isSendingTest: boolean;
-  // null once the last result has been superseded by a new send or never
-  // shown yet — kept as { text, isError } rather than two separate props
-  // since exactly one of the two is ever shown at a time.
   testMessage: { text: string; isError: boolean } | null;
   onSendTest: () => void;
 }) {

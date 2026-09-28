@@ -1,9 +1,7 @@
 export type PlanTier = "free" | "starter" | "growth" | "team" | "business";
 export type BillingInterval = "month" | "year";
 
-// null (no row in `subscriptions`) means the free tier — mirrors how
-// "not connected" is represented for integrations, rather than a
-// plan: "free" row of its own.
+// null (no row) = free tier; there's no "free" row.
 export type Subscription = {
   plan: PlanTier;
   billingInterval: BillingInterval;

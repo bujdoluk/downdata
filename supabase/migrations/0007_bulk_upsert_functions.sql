@@ -1,14 +1,3 @@
--- Thin bulk dispatchers around the existing single-row upsert_* functions.
--- The poller used to call those once per row over HTTP — fine for a small
--- catalog, but 647 incidents + 2518 updates re-sent every 60s cycle (even
--- when nothing changed, thanks to the diff guard already inside each
--- single-row function) meant thousands of round-trips per cycle, which
--- started exceeding the poll route's 60s budget. These collapse that to
--- one call per service per data type: same per-row diff-guard, same
--- per-row isolation (one bad row can't take its siblings down — each
--- iteration gets its own implicit savepoint via the exception block), just
--- looped inside Postgres instead of over the network.
-
 create or replace function upsert_incidents_bulk(p_service_slug text, p_incidents jsonb)
 returns integer as $$
 declare

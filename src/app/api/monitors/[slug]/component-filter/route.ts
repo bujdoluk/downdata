@@ -9,9 +9,7 @@ async function fetchValidComponentIds(serviceSlug: string): Promise<Set<string> 
   if (!service) return null;
 
   try {
-    // 8s timeout, matching pollIncidents.ts's own host-fetch pattern — this
-    // is a live, interactive PUT request (not a background poll), so a
-    // slow/hanging host must fail fast rather than stall it indefinitely.
+    // Interactive request, so a hanging host must fail fast.
     const res = await fetch(`https://${service.host}/api/v2/components.json`, {
       next: { revalidate: 60 },
       signal: AbortSignal.timeout(8_000),
@@ -24,9 +22,7 @@ async function fetchValidComponentIds(serviceSlug: string): Promise<Set<string> 
     );
     return new Set(components.map((c) => c.id));
   } catch {
-    // A network error/timeout previously threw out of this function
-    // uncaught (the PUT handler below has no try/catch of its own) — now
-    // it's treated the same as any other "couldn't verify" outcome.
+    // The PUT handler has no try/catch of its own, so network errors must not throw from here.
     return null;
   }
 }
@@ -51,14 +47,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ slug
   if (!Array.isArray(rawComponentIds) || rawComponentIds.length === 0 || !rawComponentIds.every((id): id is string => typeof id === "string")) {
     return NextResponse.json({ error: "Choose at least one component to notify on." }, { status: 400 });
   }
-  // Deduped before it ever reaches the DB — the client (a Set-backed
-  // checklist) can't produce a duplicate today, but this route has no way
-  // to know that about every possible caller. A duplicate here would
-  // otherwise hit service_component_filters' own primary key
-  // (user_id, service_slug, component_id) inside the insert half of
-  // set_component_filter()'s delete+reinsert, and setComponentFilter's
-  // resulting throw needs to become this app's usual {error} envelope, not
-  // an unhandled exception — see the try/catch below.
+  // Dedupe: a duplicate id would violate service_component_filters' primary key on reinsert.
   const componentIds = [...new Set(rawComponentIds)];
 
   const validIds = await fetchValidComponentIds(slug);

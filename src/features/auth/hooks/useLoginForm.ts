@@ -10,10 +10,6 @@ import { forgetSessionOnBrowserClose } from "@/features/auth/services/rememberMe
 
 export type AuthMode = "login" | "signup" | "reset";
 
-// All of LoginForm's state and handlers, pulled out of the render — the
-// component itself was pushing 250+ lines handling all three modes
-// (login/signup/reset) inline, this skill's own File Structure guidance
-// ("use-task-list.ts — custom hook, if complex state") applied.
 export function useLoginForm() {
   const { t } = useTranslation();
   const router = useRouter();
@@ -23,9 +19,6 @@ export function useLoginForm() {
 
   const [supabase] = useState(() => createClient());
   const [mode, setMode] = useState<AuthMode>(() => {
-    // An expired recovery link drops the user straight back into the reset
-    // form instead of the login form — the obvious next action after a
-    // failed reset, rather than making them click "Forgot password?" again.
     if (errorParam === "expired") return "reset";
     return searchParams.get("mode") === "signup" ? "signup" : "login";
   });
@@ -63,20 +56,13 @@ export function useLoginForm() {
       if (mode === "login") {
         await logIn(supabase, email, password);
         if (!rememberMe) forgetSessionOnBrowserClose();
-        // refresh() before push(), not after — this page's own navbar
-        // (LandingNavbar) links to `next`-shaped destinations like /boards,
-        // which Next prefetches while still logged out. Without
-        // invalidating that cache first, push(next) can silently reuse the
-        // stale, pre-login prefetch (a "no session, redirect to /login"
-        // response) and bounce a just-authenticated user straight back to
-        // /login despite the sign-in actually succeeding.
+        // refresh() first: push() could reuse a stale logged-out prefetch and bounce back to /login.
         router.refresh();
         router.push(next);
       } else {
         const redirectTo = `${window.location.origin}/auth/confirm?next=${encodeURIComponent(next)}`;
         const loggedIn = await signUp(supabase, email, password, redirectTo);
         if (loggedIn) {
-          // Same stale-prefetch reasoning as the login branch above.
           router.refresh();
           router.push(next);
         } else {
@@ -119,12 +105,7 @@ export function useLoginForm() {
     }
   }
 
-  // "Wherever you came from, with a direct-visit fallback" — the same
-  // reasoning AboutContent.tsx/SupportContent.tsx/BackLink use elsewhere.
-  // /login is most commonly reached via proxy.ts redirecting a signed-out
-  // visitor away from a protected page, not by clicking a link on this
-  // site — a plain router.back() there can send them right back to that
-  // same protected page, which immediately redirects to /login again.
+  // A plain back() after a proxy redirect would loop to the protected page and back to /login.
   function handleGoBack() {
     if (hasNavigatedClientSide()) {
       router.back();

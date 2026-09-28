@@ -25,7 +25,6 @@ export default function LandingPage() {
     <div className="bg-base-100 text-base-content">
       <LandingNavbar />
 
-      {/* Hero */}
       <header>
         <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-16 px-8 py-16 lg:grid-cols-[1.05fr_1fr] lg:py-24">
           <div className="flex flex-col items-center gap-7 text-center lg:items-start lg:text-left">
@@ -50,16 +49,12 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Demo panel — the hero visual */}
           <LiveDashboardPanel className="mx-auto w-full max-w-md lg:mx-0" />
         </div>
       </header>
 
       <TrustedServicesRow />
 
-      {/* Features — asymmetric bento, not four identical cards: the speed and
-          monitoring cells carry a real visual (a live tick, a status-dot
-          strip), the other two stay plain for contrast/rhythm. */}
       <section className="border-base-300 bg-base-200/40 border-t py-24">
         <div className="mx-auto max-w-6xl px-8">
           <div className="mx-auto mb-14 flex max-w-xl flex-col items-center gap-3 text-center">

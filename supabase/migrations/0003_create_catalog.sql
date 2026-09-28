@@ -1,8 +1,3 @@
--- The full universe of known Statuspage-based hosts, polled continuously
--- regardless of whether any user tracks them — this is what makes the
--- incident-history dataset independent of personal tracking. `services`
--- (the tracked subset) is expected to always be a subset of this table.
--- Run this once, same as 0001/0002.
 create table catalog (
   slug text primary key,
   name text not null,
@@ -13,8 +8,6 @@ comment on table catalog is 'Full universe of known Statuspage hosts polled for 
 
 alter table catalog enable row level security;
 
--- Seed with today's hardcoded SERVICE_CATALOG (lib/serviceCatalog.ts) so
--- nothing already visible in the add-service picker disappears.
 insert into catalog (slug, name, host, category) values
   ('github', 'GitHub', 'www.githubstatus.com', 'devtools'),
   ('supabase', 'Supabase', 'status.supabase.com', 'database'),

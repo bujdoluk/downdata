@@ -54,18 +54,9 @@ export default function CatalogServiceCard({
   isMonitored: boolean;
   addState?: { isPending: boolean; isAdded: boolean; onAdd: () => void };
   removable?: { removing: boolean; onRemove: () => void };
-  // Lets a 2-up grid track (add-service's catalog browser) stretch the card
-  // to fill it instead of capping at 370px — every other caller (the
-  // /monitors auto-fill grid, the landing page's uncapped hero mockup list)
-  // still wants the fixed cap, so this defaults off rather than changing
-  // their layout as a side effect.
+  // Drops the 370px cap so the card fills a 2-up grid track.
   isFullWidth?: boolean;
-  // Renders on globals.css's --color-surface-2 (the elevation ladder's card
-  // tier) instead of bg-base-200 — for a card sitting inside a
-  // --color-surface-1 tab panel, where plain base-200 would collide with
-  // it (add-service's original bug). Off by default for the same reason as
-  // isFullWidth: every other caller's card sits directly on the page
-  // background and already contrasts fine as-is.
+  // Uses surface-2 for cards inside a surface-1 panel, where base-200 would blend in.
   isElevatedBg?: boolean;
 }) {
   const { t } = useTranslation();
@@ -73,10 +64,7 @@ export default function CatalogServiceCard({
   const style = indicator ? INDICATOR_STYLES[indicator] : undefined;
   const Logo = SERVICE_LOGOS[slug] ?? FallbackLogo;
   const stripeColor = isLoading || error ? "bg-base-content/10" : (style ?? FALLBACK_STYLE).dot;
-  // The stripe is the only remaining status indicator since the text badge
-  // was removed — color alone conveying state is exactly this skill's own
-  // named red flag, so it carries this as its accessible name instead of
-  // aria-hidden, even though nothing is visually labeled anymore.
+  // The color stripe is the only status indicator, so it needs an accessible name.
   const statusLabel = isLoading ? t("serviceCard.checkingStatus") : error ? t("serviceCard.unreachable") : t((style ?? FALLBACK_STYLE).labelKey);
 
   useCloseDetailsOnOutsideClick(menuRef);
@@ -112,40 +100,19 @@ export default function CatalogServiceCard({
         </div>
       )}
 
-      {/* Bottom right, under the "..." menu above — a sibling of the
-          overflow-hidden row below, not inside it. It used to sit inline
-          next to the title with overflow-hidden on this whole card; that
-          clipped its tooltip (daisyUI renders the tooltip bubble via a
-          ::before/::after on this same element, and an overflow-hidden
-          ancestor clips those regardless of z-index — raising the
-          tooltip's own z-index alone, tried first, did nothing). Moving
-          overflow-hidden down onto just the row that actually needs it
-          (the status stripe's corners) means this badge now has no
-          clipping ancestor to fight in the first place. */}
+      {/* Outside the overflow-hidden row: an overflow-hidden ancestor clips daisyUI tooltips regardless of z-index. */}
       {!addState && openIncidentImpact && (
-        // right-7, not right-2 — the status stripe on the right is w-3
-        // (12px) flush against the card's edge; right-2 sat the icon's box
-        // right on top of it. right-7 clears the stripe with more visible
-        // breathing room than right-5 did.
+        // right-7 clears the 12px status stripe.
         <div className="absolute right-7 bottom-2 z-20">
           <MoreSevereIncidentBadge incident={openIncidentImpact} iconClassName="h-6 w-6" />
         </div>
       )}
 
-      {/* overflow-hidden + rounded-[inherit] scoped to just this row, not
-          the whole card above — the status stripe on the right needs its
-          square corners clipped to match the card's own rounded corners,
-          but the card itself can no longer carry overflow-hidden without
-          also clipping the "..." menu's dropdown and the incident badge's
-          tooltip above, both of which need to visually escape this box. */}
+      {/* Clips only this row (the stripe's corners); on the card it would clip the menu and tooltip. */}
       <div className="flex flex-1 flex-row items-center overflow-hidden rounded-[inherit]">
         <Link href={`/monitors/${slug}`} className="card-body min-w-0 flex-1 gap-0 p-4">
           <div className="flex items-center gap-3 text-base-content">
             <Logo size={28} name={name} />
-            {/* h3, not h1 — this repeats once per card in a grid (a whole page
-                of these, on /monitors or the landing page's own demo panel),
-                so it can never be the page's own h1; h3 still lets a screen
-                reader user navigate card-to-card by heading. */}
             <h3 className="card-title min-w-0 truncate text-base">{name}</h3>
             {!addState && isMonitored && (
               <span className="badge badge-soft badge-info ml-auto shrink-0 text-[10px]">

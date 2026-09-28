@@ -2,9 +2,7 @@ import { NextResponse } from "next/server";
 import { resolveCatalogEntryBySlug } from "@/lib/catalog";
 import { getStoredIncidentWithUpdates, toIncidentApiShape } from "@/lib/getStoredIncident";
 
-// One incident's full timeline, fetched on demand for whichever item the
-// Incidents/Boards pages currently have selected — the list endpoint
-// (/api/incidents) deliberately doesn't include incident_updates.
+// Fetched on demand: the list endpoint deliberately omits incident_updates.
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string; id: string }> }) {
   const { slug, id } = await params;
   const service = await resolveCatalogEntryBySlug(slug);

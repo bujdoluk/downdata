@@ -3,9 +3,7 @@
 import type { ReactNode } from "react";
 import { useRevealOnScroll } from "@/hooks/useRevealOnScroll";
 
-// Thin wrapper so each grid/list item can call useRevealOnScroll from its
-// own component instance — the hook can't be called directly inside a
-// .map() on the parent (rules of hooks).
+// Lets .map() items use the hook (rules of hooks).
 export default function RevealOnScroll({
   children,
   delayMs = 0,

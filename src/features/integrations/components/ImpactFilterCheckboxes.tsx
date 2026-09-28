@@ -4,9 +4,6 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { ALL_IMPACTS, IMPACT_CHECKBOX_COLOR, INDICATOR_STYLES } from "@/components/statusStyles";
 
-// Identical impact-checkbox row was copy-pasted between Incidents and
-// History page content — both filter the same Incident.impact
-// values through the same ALL_IMPACTS/IMPACT_CHECKBOX_COLOR maps.
 export default function ImpactFilterCheckboxes({
   selected,
   onToggle,
@@ -26,7 +23,7 @@ export default function ImpactFilterCheckboxes({
             checked={selected.has(impact)}
             onChange={() => onToggle(impact)}
           />
-          {/* impact comes from ALL_IMPACTS, a subset of INDICATOR_STYLES's keys, so the lookup always hits */}
+          {/* ALL_IMPACTS is a subset of INDICATOR_STYLES's keys, so the lookup always hits */}
           {t(INDICATOR_STYLES[impact]!.labelKey)}
         </label>
       ))}

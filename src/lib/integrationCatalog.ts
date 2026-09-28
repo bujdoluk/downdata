@@ -4,11 +4,6 @@ import EmailLogo from "@/features/integrations/components/EmailLogo";
 import SmsLogo from "@/features/integrations/components/SmsLogo";
 import WebhookLogo from "@/features/integrations/components/WebhookLogo";
 
-// Distinct from types/integration.ts's Integration/IntegrationDefinition on
-// purpose — those describe a connected integration's data (dashboard
-// connect/manage flow); this describes the public marketing catalog of
-// providers, same relationship FEATURE_CATALOG (lib/featureCatalog.ts) has
-// to the app's actual dashboard features.
 export type IntegrationProviderSlug = "slack" | "email" | "sms" | "webhook";
 
 export type IntegrationCatalogEntry = {

@@ -9,9 +9,7 @@ function getAuthCookiePrefix(): string | null {
   }
 }
 
-// Rewrites the Supabase session cookie(s) without Max-Age/Expires so the
-// browser treats them as session cookies — gone once the browser fully
-// closes, instead of surviving until the JWT's own expiry.
+// Drops Max-Age/Expires so the auth cookies die with the browser, not at JWT expiry.
 export function forgetSessionOnBrowserClose() {
   if (typeof document === "undefined") return;
   const prefix = getAuthCookiePrefix();

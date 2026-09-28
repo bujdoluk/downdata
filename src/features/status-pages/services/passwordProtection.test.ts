@@ -68,10 +68,6 @@ describe("signUnlockCookie / verifyUnlockCookie", () => {
     expect(verifyUnlockCookie("", "status-page-1", "irrelevant-hash")).toBe(false);
   });
 
-  // The core invalidation guarantee this design relies on instead of a
-  // separate password_version counter: once the stored hash changes (a
-  // password change/removal), every cookie signed against the old hash
-  // must stop verifying.
   it("rejects a cookie once the password hash it was signed against changes", async () => {
     const oldHash = await hashPassword("old password");
     const newHash = await hashPassword("new password");
@@ -137,12 +133,6 @@ describe("getClientIp", () => {
     expect(getClientIp(new Headers({ "x-forwarded-for": "1.2.3.4" }))).toBe("1.2.3.4");
   });
 
-  // The rightmost entry is the one the trusted edge itself appended (the
-  // real connecting IP) — everything before it, including the first entry,
-  // is exactly what a client can set on its own request, so trusting the
-  // first entry (a common mistake) would let a visitor spoof their way
-  // past the IP allowlist and the unlock route's rate limit just by
-  // sending a fabricated X-Forwarded-For header.
   it("returns only the last (closest-to-this-app) address in a comma-separated chain", () => {
     expect(getClientIp(new Headers({ "x-forwarded-for": "1.2.3.4, 5.6.7.8, 9.9.9.9" }))).toBe("9.9.9.9");
   });

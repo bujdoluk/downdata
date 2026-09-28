@@ -24,13 +24,7 @@ export default function SupportContent({ isAuthenticated, isAdmin }: { isAuthent
     openSupportChat();
   }
 
-  // Reachable from the footer on every marketing/legal page when logged
-  // out, or from the sidebar's own settings menu when logged in — either
-  // way, not one fixed parent, so BackLink goes back to wherever the
-  // visitor actually came from. The fallback (a direct/bookmarked visit
-  // with no history to return to) differs per branch: /landing-page for a
-  // logged-out visitor, /boards (the dashboard's own default) once signed
-  // in — /landing-page would be a dead end behind a login wall for them.
+  // Signed-in fallback is /boards; /landing-page would be a dead end for them.
   const body = (
     <div className="w-full flex-1 p-6">
       <PageHeader back={<BackLink fallbackHref={isAuthenticated ? "/boards" : "/landing-page"} label={t("support.back")} />}>

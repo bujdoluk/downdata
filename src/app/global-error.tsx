@@ -1,16 +1,12 @@
-"use client"; // Error boundaries must be Client Components
+"use client";
 
 import Link from "next/link";
 import Logo from "@/components/navbar/Logo";
 import { AlertIcon } from "@/components/icons/NavIcons";
 import "./globals.css";
 
-// This replaces the entire root layout when it fires, so it can't lean on
-// anything that layout normally provides — no i18n (the crash could be in
-// that provider itself), no next/font variables, no theme toggle beyond a
-// copy of the pre-hydration script below. Deliberately hardcoded English
-// rather than t() (see AGENTS.md's i18n rule) — this is the one page meant
-// to still render if the app's own providers are what broke.
+// Replaces the root layout, so it can't rely on its providers. Hardcoded English on purpose:
+// it must render even if i18n itself is what broke.
 export default function GlobalError({ error, retry }: { error: Error & { digest?: string }; retry: () => void }) {
   return (
     <html lang="en" data-theme="dark" suppressHydrationWarning>

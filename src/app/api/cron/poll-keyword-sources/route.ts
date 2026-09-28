@@ -5,20 +5,12 @@ import { getSupabaseClient } from "@/lib/supabase";
 import { pollAllKeywordSources } from "@/features/early-warnings/services/pollKeywordSources";
 import { nowIso } from "@/lib/formatTime";
 
-// A full cycle can run long given how deliberately paced the Reddit
-// polling is (see lib/pollKeywordSources.ts) — same "keep going past a
-// free cron pinger's own timeout" reasoning as poll-incidents.
+// Reddit polling is deliberately paced, so a cycle can outlast the cron caller's timeout.
 export const maxDuration = 60;
 
-// Own lock row, own shard_key, in the same poll_run_lock table
-// poll-incidents already uses — a separate table would just duplicate the
-// same "claim/release via one atomic UPDATE" machinery for no reason; the
-// table's shard_key is already a free-form string, not incidents-specific.
 const SHARD_KEY = "early-warnings";
 
-// 10 minutes of margin over this route's own external cron interval
-// (~5-10 min) — same reasoning as LOCK_STALE_MS in lib/pollIncidents.ts:
-// wide enough that ordinary tick jitter never reads as "stuck".
+// Wide enough over the ~5-10 min cron interval that tick jitter never reads as stuck.
 const LOCK_STALE_MS = 10 * 60 * 1000;
 
 function isAuthorized(request: Request): boolean {

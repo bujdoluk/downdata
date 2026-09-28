@@ -23,16 +23,9 @@ import { mergeParams } from "@/lib/mergeParams";
 
 type MatchWithId = KeywordMatch & { id: string };
 
-// Fewer than the Incidents/Maintenance sibling pages' PAGE_SIZE=7 — this
-// page's header panel (source toggles + keyword form + keyword badges)
-// has no equivalent there and eats real vertical space above the list,
-// and each card's keyword-badge row runs taller/more variable than their
-// compact status badge.
+// Smaller than Incidents/Maintenance's 7: the header panel and badge rows take more height.
 const PAGE_SIZE = 5;
 
-// (source, external_id) is keyword_matches's own primary key — one row per
-// real post regardless of how many watched keywords matched it (see
-// match.keywords).
 function matchId(match: KeywordMatch): string {
   return `${match.source}:${match.externalId}`;
 }
@@ -63,10 +56,7 @@ export default function EarlyWarningsPageContent({
   const matches: MatchWithId[] = useMemo(() => initialMatches.map((match) => ({ ...match, id: matchId(match) })), [initialMatches]);
   const selectedId = searchParams.get("id");
   const page = Number(searchParams.get("page") ?? "1");
-  // Deliberately looked up against the full list, not filteredMatches below
-  // — narrowing the keyword filter shouldn't blank out an already-open
-  // detail pane just because its post fell outside the current filter,
-  // same behavior IncidentsPageContent already has for its own filters.
+  // Full list, not filtered, so narrowing the filter doesn't blank the open detail.
   const selected = matches.find((match) => match.id === selectedId);
 
   const [selectedKeyword, setSelectedKeyword] = useState("");
@@ -101,11 +91,7 @@ export default function EarlyWarningsPageContent({
     updateParams({ page: next === 1 ? null : String(next) });
   }
 
-  // Narrowing the keyword filter can leave the current page past the end
-  // of the now-shorter list — usePagination already clamps that
-  // defensively, but resetting the URL param explicitly (matching
-  // Incidents/Maintenance's debouncedGroupPatch) avoids a stale ?page=3
-  // resurfacing if the filter is broadened back later.
+  // Reset ?page explicitly so a stale page doesn't resurface when the filter widens again.
   function selectKeyword(keyword: string) {
     setSelectedKeyword(keyword);
     updateParams({ page: null });

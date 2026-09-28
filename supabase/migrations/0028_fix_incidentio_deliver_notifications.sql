@@ -1,29 +1,3 @@
--- incident.io-hosted status pages (e.g. status.brevo.com) never send a
--- deliver_notifications field on an incident/maintenance update — Atlassian
--- always does. jsonb_to_recordset (see 0007_bulk_upsert_functions.sql)
--- reads a missing key as SQL NULL, and incident_updates/maintenance_updates
--- both declare deliver_notifications boolean not null default false — so
--- inserting that NULL throws a not-null violation, caught per-row by the
--- bulk function's exception block and counted as a failure.
---
--- That failure count is what silently broke everything downstream for
--- Brevo: pollIncidents.ts's backfillIfFirstPoll() only inserts a
--- polled_services row when a poll completes with zero failures, so it
--- never ran; with no polled_services row, trackedSince stays null
--- everywhere it's read; and OutageTracker's buildOutageTrackerDays()
--- marks every single day "not tracked" when trackedSince is null — hiding
--- every incident from the 30-day tracker strip, even ones correctly
--- stored and visible in the Incidents tab.
---
--- Fix: default the missing field to false instead of passing NULL
--- through. Self-healing, not a data migration — the incident_updates rows
--- that have been failing to insert simply don't exist yet (no conflict to
--- resolve), so the very next poll cycle after this ships will insert them
--- for real, bring a poll's failure count to zero, and let
--- backfillIfFirstPoll finally seed polled_services for Brevo (and any
--- other incident.io-hosted service in the catalog — this isn't
--- Brevo-specific, it's a property of the incident.io shape).
-
 create or replace function upsert_incident_update(
   p_service_slug text, p_incident_id text, p_id text, p_status text, p_body text,
   p_affected_components jsonb, p_created_at timestamptz, p_updated_at timestamptz,

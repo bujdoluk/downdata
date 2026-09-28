@@ -3,11 +3,8 @@ import { getStatusPageProtectionBySlug } from "@/features/status-pages/services/
 import { getClientIp, signUnlockCookie, unlockCookieName, verifyPassword } from "@/features/status-pages/services/passwordProtection";
 import { checkRateLimit, recordFailedAttempt } from "@/features/status-pages/services/rateLimit";
 
-const UNLOCK_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365; // ~1 year — "until cleared or the password changes," not a short session
+const UNLOCK_COOKIE_MAX_AGE_SECONDS = 60 * 60 * 24 * 365; // lasts until cleared or the password changes
 
-// Public, unauthenticated by design — covered by proxy.ts's existing
-// "/api/public/status/" PUBLIC_PREFIXES entry (see the comment there),
-// same as the page it unlocks and the JSON endpoint it polls.
 export async function POST(request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const protection = await getStatusPageProtectionBySlug(slug);
@@ -19,10 +16,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
   }
 
   const clientIp = getClientIp(request.headers);
-  // No IP resolved (e.g. a header this deployment target doesn't set) is
-  // treated the same as any other visitor for rate-limiting purposes —
-  // grouped under the empty string rather than skipping the check, so a
-  // client this app can't identify still isn't exempt from it.
+  // An unresolved IP is grouped under "" rather than skipped, so unidentified clients are still rate-limited.
   const rateLimitKey = clientIp ?? "";
   const { limited, existing } = await checkRateLimit(protection.id, rateLimitKey);
   if (limited) {
@@ -34,8 +28,6 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
 
   const correct = await verifyPassword(password, protection.passwordHash);
   if (!correct) {
-    // Reuses the row checkRateLimit() already read above instead of
-    // reading it a second time.
     await recordFailedAttempt(protection.id, rateLimitKey, existing);
     return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
   }

@@ -15,11 +15,7 @@ import { INDICATOR_STYLES, FALLBACK_STYLE } from "@/components/statusStyles";
 const VISIBLE_COUNT = 6;
 
 function RecommendedServiceCard({ service }: { service: Catalog }) {
-  // Fetched once, not polled — this is a discovery sidebar for *other*
-  // services, not the page's own subject; a visitor who clicks through
-  // gets fresh data on that service's own page anyway, so a recurring
-  // 60s poll per card here would just be extra request volume for
-  // secondary content.
+  // Not polled: secondary discovery content, not worth a request per card per minute.
   const { data } = useQuery({
     queryKey: queryKeys.quickStatus(service.slug),
     queryFn: () => fetchJson<ServiceStatusEntry>(`/api/status/${service.slug}`),
@@ -43,21 +39,6 @@ function RecommendedServiceCard({ service }: { service: Catalog }) {
   );
 }
 
-// The public service detail page's "you may also want to track" sidebar —
-// a single column of small cards, one per other catalog entry in the same
-// category as the current service, capped at VISIBLE_COUNT with a "see
-// more" expansion for the rest. Sized to md:w-1/2 of its own reserved
-// slot in PublicServiceDetail.tsx (itself 25% of the screen) so the card
-// stays the same width it was as a 2-column grid cell, rather than
-// stretching to fill the whole slot and leaving the rest of this sidebar
-// area looking like unfinished layout.
-//
-// Resolves the current entry's own category itself (rather than the
-// caller threading it through from /api/summary/[slug]'s data) so this
-// stays self-contained: just needs which service it's next to. Shares
-// its catalog fetch (and query cache entry) with the landing navbar's
-// search and the footer's Popular Services list — all three just need
-// "every known service".
 export default function RecommendedServices({ currentSlug }: { currentSlug: string }) {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
@@ -69,9 +50,7 @@ export default function RecommendedServices({ currentSlug }: { currentSlug: stri
   if (!catalog) return null;
 
   const current = catalog.find((entry) => entry.slug === currentSlug);
-  // "other" is a catch-all, not a real shared category — grouping by it
-  // would produce an arbitrary, meaningless list under a "you may also
-  // want to track" heading, so treat it the same as "no matches" below.
+  // "other" is a catch-all, not a real category, so it recommends nothing.
   if (!current || current.category === "other") return null;
 
   const related = catalog.filter((entry) => entry.category === current.category && entry.slug !== currentSlug);

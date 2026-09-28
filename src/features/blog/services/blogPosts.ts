@@ -25,10 +25,7 @@ function toBlogPost(row: BlogPostRow): BlogPost {
   };
 }
 
-// Public listing — the /blog grid. Service-role client throughout this
-// file: blog_posts has no per-row ownership to scope a session-scoped
-// client against (see the migration's own comment), same reasoning as
-// lib/catalog.ts.
+// Service-role throughout: blog_posts has no per-row ownership.
 export async function getPublishedPosts(): Promise<BlogPost[]> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
@@ -40,7 +37,6 @@ export async function getPublishedPosts(): Promise<BlogPost[]> {
   return (data as BlogPostRow[] | null)?.map(toBlogPost) ?? [];
 }
 
-// Every post regardless of draft/published state — the admin list.
 export async function getAllPosts(): Promise<BlogPost[]> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
@@ -51,14 +47,8 @@ export async function getAllPosts(): Promise<BlogPost[]> {
   return (data as BlogPostRow[] | null)?.map(toBlogPost) ?? [];
 }
 
-// Returns a post regardless of draft/published state — callers that only
-// want publicly-visible posts (the public detail page) must check
-// `publishedAt` themselves, same as resolveBoardById leaving authorization
-// to its own callers rather than baking one policy into every reader.
-//
-// Wrapped in React's cache() — /blog/[slug] calls this once in
-// generateMetadata and once in the page component; cache() dedupes the two
-// into a single request within the same render.
+// Ignores draft state: public callers must check `publishedAt` themselves.
+// cache() dedupes generateMetadata's and the page's calls.
 export const resolvePostBySlug = cache(async (slug: string): Promise<BlogPost | undefined> => {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
@@ -87,10 +77,8 @@ export async function createPost(input: BlogPostInput): Promise<BlogPost> {
   return toBlogPost(data as BlogPostRow);
 }
 
-// slug is this post's primary key and isn't editable here — renaming a
-// published post's URL is rare enough, and consequential enough for
-// anything already linking to it, that it isn't exposed as a plain field
-// edit; delete-and-recreate is the deliberate path for that.
+// slug (primary key) isn't editable, to avoid breaking existing links;
+// delete-and-recreate is the deliberate path.
 export async function updatePost(
   slug: string,
   input: Omit<BlogPostInput, "slug">,

@@ -4,7 +4,6 @@ import type { MaintenanceReminderRule } from "@/features/maintenance/types";
 
 const HOUR_MS = 60 * 60 * 1000;
 
-// Takes hours for test readability, converts to the stored minutes field.
 function rule(hoursBefore: number): MaintenanceReminderRule {
   return { id: "rule-1", serviceSlug: "github", minutesBefore: hoursBefore * 60, channels: ["slack"] };
 }
@@ -62,7 +61,7 @@ describe("isDue", () => {
 describe("isSendingEarly", () => {
   it("is false right when the full window opens on schedule", () => {
     const now = 0;
-    const m = maintenance(4 * HOUR_MS); // starts in 4h — a 4h-before window opens exactly now
+    const m = maintenance(4 * HOUR_MS); // starts in 4h, so a 4h-before window opens exactly now
     expect(isSendingEarly(rule(4), m, now)).toBe(false);
   });
 

@@ -7,8 +7,7 @@ export const RATE_LIMIT_MAX_FAILURES = 5;
 
 type AttemptState = { failedCount: number; windowStart: string };
 
-// Not the raw IP — this table has no other reason to retain a visitor's
-// address, so only a one-way hash of it is stored.
+// Only a one-way hash is stored: there's no reason to retain a visitor's raw IP.
 function hashIp(ip: string): string {
   return createHash("sha256").update(ip).digest("hex");
 }
@@ -17,9 +16,7 @@ function isWindowExpired(windowStart: string, nowMsValue: number): boolean {
   return nowMsValue - epochMs(windowStart) >= RATE_LIMIT_WINDOW_MS;
 }
 
-// Pure decision logic, exercised directly by rateLimit.test.ts — the actual
-// row read/write around it needs a live Supabase instance to test for real,
-// which isn't available in every session (see docs/specs/SPEC-status-page-password.md).
+// Kept pure so it's unit-testable without a live Supabase instance.
 export function isRateLimitedGivenState(existing: AttemptState | null, nowMsValue: number): boolean {
   if (!existing) return false;
   if (isWindowExpired(existing.windowStart, nowMsValue)) return false;
@@ -34,9 +31,7 @@ export function computeNextAttemptState(existing: AttemptState | null, nowIsoVal
   };
 }
 
-// status_page_password_attempts has no ownership column and no
-// client-facing read/write path — service-role client, same class as
-// catalog/incidents (see AGENTS.md's client-selection rule).
+// Service-role: this table has no ownership column and no client-facing path.
 async function readAttemptState(statusPageId: string, ipHash: string): Promise<AttemptState | null> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
@@ -51,23 +46,13 @@ async function readAttemptState(statusPageId: string, ipHash: string): Promise<A
 
 export type RateLimitCheck = { limited: boolean; existing: AttemptState | null };
 
-// Checked before a password is even verified — a caller at the limit never
-// reaches verifyPassword() at all, per the unlock route's own flow. Returns
-// the row it read alongside the decision so a subsequent recordFailedAttempt
-// call in the same request can reuse it instead of reading it twice.
+// Returns the row it read so recordFailedAttempt can reuse it instead of reading twice.
 export async function checkRateLimit(statusPageId: string, ip: string): Promise<RateLimitCheck> {
   const existing = await readAttemptState(statusPageId, hashIp(ip));
   return { limited: isRateLimitedGivenState(existing, epochMs(nowIso())), existing };
 }
 
-// Called only on a wrong password. `existing` should be whatever
-// checkRateLimit() already read earlier in the same request — passing it
-// skips a second, identical row read; omit it only when no prior read
-// happened. Read(-or-reuse)-then-upsert, not atomic — the same non-atomic
-// "reserve" shape reportGeneration.ts's sendTestReportEmail already uses
-// for its own fixed-window counter, acceptable here for the same reason:
-// this is a low-throughput path (one visitor guessing one page's
-// password), not a hot path needing a database function.
+// Read-then-upsert, not atomic. Acceptable on this low-throughput path.
 export async function recordFailedAttempt(statusPageId: string, ip: string, existing?: AttemptState | null): Promise<void> {
   const ipHash = hashIp(ip);
   const priorState = existing !== undefined ? existing : await readAttemptState(statusPageId, ipHash);

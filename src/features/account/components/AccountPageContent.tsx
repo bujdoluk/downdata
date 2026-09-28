@@ -55,16 +55,13 @@ export default function AccountPageContent({
 
   function handleAvatarChange(nextAvatarUrl: string | null) {
     setAvatarUrl(nextAvatarUrl);
-    // Keeps the Sidebar's own avatar trigger (a separate mounted instance
-    // reading the same query key) in sync without it having to refetch.
+    // Syncs the Sidebar's avatar (same query key) without a refetch.
     queryClient.setQueryData<Account | null>(queryKeys.account(), (prev) => (prev ? { ...prev, avatarUrl: nextAvatarUrl } : prev));
   }
 
   function handleTimeZoneChange(nextTimeZone: string) {
     setTimeZone(nextTimeZone);
-    // Same sync as handleAvatarChange — every useTimeZone() consumer
-    // reads this same cache entry, so this updates every open page's
-    // formatted times immediately, no refetch.
+    // Every useTimeZone() consumer reads this cache entry, so times update without a refetch.
     queryClient.setQueryData<Account | null>(queryKeys.account(), (prev) => (prev ? { ...prev, timeZone: nextTimeZone } : prev));
   }
 
@@ -80,7 +77,7 @@ export default function AccountPageContent({
             {avatarUrl ? (
               <div className="avatar">
                 <div className="w-16 rounded-full">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- Supabase Storage/OAuth avatar URL, not a fixed set of domains next/image can allowlist */}
+                  {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary avatar domains */}
                   <img src={avatarUrl} alt="" />
                 </div>
               </div>
@@ -92,18 +89,13 @@ export default function AccountPageContent({
               </div>
             )}
             <div className="min-w-0">
-              {/* h2, not h1 — the page's h1 is the PageHeader title above;
-                  this is a data value inside a card, not a second title. */}
               <h2 className="truncate text-xl font-bold">{email}</h2>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Radio-input tabs: selection is pure CSS (:checked + sibling
-          selector), which only works with each tab-content as the
-          immediate next sibling of its own radio — so both panels stay
-          mounted, no React state needed to switch between them. */}
+      {/* CSS-only tabs: each tab-content must be the immediate sibling of its radio. */}
       <div role="tablist" className="tabs tabs-lift">
         <input type="radio" name="accountTabs" className="tab" aria-label={t("account.detailsTitle")} style={TAB_BG_STYLE} defaultChecked />
         <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">

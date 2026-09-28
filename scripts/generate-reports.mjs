@@ -1,13 +1,5 @@
-// One-shot generate trigger for account reports, mirroring
-// scripts/poll-incidents.mjs exactly (see its own comment for why this
-// calls the running app's own cron endpoint over HTTP rather than
-// importing lib/reportGeneration.ts directly). Run via
-// `npm run generate:reports`.
-//
-// This one needs to actually be scheduled roughly hourly by whatever
-// external scheduler calls it (cron-job.org, etc.) — see
-// features/reports/services/reportGeneration.ts's REPORT_SEND_HOUR
-// comment for why a daily trigger isn't enough.
+// Calls the cron endpoint over HTTP for the same reason as poll-incidents.mjs.
+// Must be scheduled hourly, not daily (see REPORT_SEND_HOUR in reportGeneration.ts).
 
 const baseUrl = process.env.APP_URL ?? "http://localhost:3000";
 const secret = process.env.CRON_SECRET;

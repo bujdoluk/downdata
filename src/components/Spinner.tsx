@@ -1,7 +1,4 @@
-// One bar per app-logo color (components/navbar/Logo.tsx: green, yellow,
-// orange, red), same order and staggered animation as LoadingOverlay —
-// this is the one shared "logo bars" implementation, sized down per key
-// so the bars stay legible instead of muddy at the smallest sizes.
+// Matches the app logo's colors (navbar/Logo.tsx).
 const BAR_COLORS = ["bg-success", "bg-warning", "bg-accent", "bg-primary"];
 
 const SPINNER_SIZES: Record<"xs" | "sm" | "md" | "lg" | "xl" | "2xl", { heightPx: number; barWidthPx: number; gapPx: number }> = {
@@ -10,8 +7,6 @@ const SPINNER_SIZES: Record<"xs" | "sm" | "md" | "lg" | "xl" | "2xl", { heightPx
   md: { heightPx: 22, barWidthPx: 3, gapPx: 2 },
   lg: { heightPx: 30, barWidthPx: 4, gapPx: 3 },
   xl: { heightPx: 38, barWidthPx: 5, gapPx: 3.5 },
-  // Only used by LoadingOverlay today — matches its previous hand-rolled
-  // h-10/w-2.5/gap-1.5 dimensions exactly.
   "2xl": { heightPx: 40, barWidthPx: 10, gapPx: 6 },
 };
 

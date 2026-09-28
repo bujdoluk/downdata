@@ -31,10 +31,7 @@ export default function Footer() {
       </aside>
 
       <nav>
-        {/* h3, not h6 — footer-title is a pure CSS class (checked: not tag-
-            qualified in daisyUI's own stylesheet), so this changes nothing
-            visually. h6 here skipped straight past h3/h4/h5, since nothing
-            on this page ever uses those levels. */}
+        {/* h3, not h6, to avoid skipping heading levels; footer-title isn't tag-qualified. */}
         <h3 className="footer-title">{t("landing.nav.features")}</h3>
         {FEATURE_CATALOG.filter(({ slug }) => slug !== "integrations").map(({ slug, icon: Icon }) => (
           <Link key={slug} href={`/features/${slug}`} className="link link-hover inline-flex items-center gap-1.5">

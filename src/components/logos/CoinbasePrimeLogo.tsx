@@ -1,4 +1,3 @@
-// Coinbase Prime uses Coinbase's own mark (blue circle, white square cutout).
 export default function CoinbasePrimeLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">

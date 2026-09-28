@@ -2,15 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-// True only after the first client-side render — guards markup (portals,
-// localStorage-derived state) that would otherwise mismatch server HTML.
+// Guards client-only markup that would otherwise mismatch server HTML.
 export function useHasMounted(): boolean {
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
-    // Intentional: this is the one legitimate use of the client-only-render
-    // effect pattern (see CookieConsent.tsx's hydration-mismatch guard too).
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the one legitimate client-only-render effect
     setHasMounted(true);
   }, []);
 

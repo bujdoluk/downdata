@@ -1,15 +1,3 @@
-// One-shot bulk loader for the catalog table — reads a JSON file of
-// [{ name, host, category? }, ...], validates each host actually serves a
-// Statuspage-shaped /api/v2/status.json (the same check
-// POST /api/boards/[id]/services runs for a single manually-added host —
-// see src/app/api/boards/[id]/services/route.ts), skips any entry whose
-// host is already in the catalog (not just a matching slug — mirrors
-// src/lib/catalog.ts's ensureCatalogEntry()), and upserts the rest.
-// Run via `npm run import:catalog -- path/to/hosts.json`.
-//
-// ponytail: JSON only, no CSV — add a CSV parser (quoting/escaping is real
-// work) when there's an actual CSV source to import, not speculatively.
-
 import { readFile } from "node:fs/promises";
 import { createClient } from "@supabase/supabase-js";
 
@@ -34,9 +22,7 @@ function slugify(name) {
     .replace(/(^-|-$)/g, "");
 }
 
-// Matches types/service.ts's Category union — kept as a literal list here
-// rather than imported, since this is a plain Node script outside the
-// TypeScript/bundler graph.
+// Mirrors types/service.ts's Category union; plain Node can't import it.
 const VALID_CATEGORIES = new Set([
   "infrastructure",
   "devtools",
@@ -64,11 +50,7 @@ const VALID_CATEGORIES = new Set([
   "other",
 ]);
 
-// Same check POST /api/boards/[id]/services runs before tracking a single
-// manually-added host — confirms this actually looks like an Atlassian
-// Statuspage-based status page before it ever lands in the catalog, so a
-// typo'd or dead host doesn't sit there quietly failing every poll cycle
-// instead of being caught once, here, up front.
+// Catch dead or typo'd hosts once here instead of failing every poll cycle.
 async function checkStatuspageHost(host) {
   try {
     const res = await fetch(`https://${host}/api/v2/status.json`, { signal: AbortSignal.timeout(8_000) });
@@ -139,9 +121,7 @@ for (const entry of entries) {
     continue;
   }
 
-  // Track what this run just added so a later duplicate host *within the
-  // same file* is caught too, not just ones already in the DB before this
-  // run started.
+  // Also catches duplicates within the same input file.
   existingHosts.add(hostKey);
   existingSlugs.add(slug);
   imported++;

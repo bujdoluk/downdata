@@ -46,11 +46,7 @@ export default function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   const [collapsed, setCollapsed] = useState(false);
   const [supabase] = useState(() => createClient());
   const settingsRef = useRef<HTMLDetailsElement>(null);
-  // Head-only count endpoints, not the full /api/incidents /
-  // /api/maintenance payloads: the sidebar is mounted on every dashboard
-  // page and polls every 60s, so pulling full incident/maintenance history
-  // (with all update bodies) just to show a badge number drove most of
-  // this app's Supabase egress.
+  // Count-only endpoints: full payloads polled on every page drove most Supabase egress.
   const { data: incidentsData } = useQuery({
     queryKey: queryKeys.incidents.count(),
     queryFn: () => fetchJson<{ count: number }>("/api/incidents/count", { cache: "no-store" }),
@@ -66,8 +62,6 @@ export default function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
 
   useCloseDetailsOnOutsideClick(settingsRef);
 
-  // One-shot, not polled — the account menu only needs to reflect who's
-  // signed in right now, not stay live-synced.
   const { data: account } = useQuery({
     queryKey: queryKeys.account(),
     queryFn: () => fetchAccount(supabase),
@@ -161,7 +155,7 @@ export default function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
             {account?.avatarUrl ? (
               <div className="avatar shrink-0">
                 <div className="w-8 rounded-full">
-                  {/* eslint-disable-next-line @next/next/no-img-element -- external, unpredictable-host avatar URL; next/image's domain allowlist doesn't fit an arbitrary OAuth provider */}
+                  {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary OAuth avatar host doesn't fit next/image's allowlist */}
                   <img src={account.avatarUrl} alt="" />
                 </div>
               </div>
@@ -192,9 +186,7 @@ export default function Sidebar({ isAdmin = false }: { isAdmin?: boolean }) {
             </li>
             {isAdmin && (
               <li>
-                {/* Plain English, not t() — this only ever renders for the
-                    site owner (see requireAdminUser.ts), same scoping as
-                    the rest of the admin-only surface it links to. */}
+                {/* Plain English, not t(): admin-only surface. */}
                 <Link href="/admin/blog" onClick={() => closeSettingsMenu()}>
                   Blog admin
                 </Link>

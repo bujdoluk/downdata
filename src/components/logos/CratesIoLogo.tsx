@@ -1,5 +1,3 @@
-// crates.io's mark: a simplified wooden crate/package, in the registry's
-// signature orange (#ff7c00).
 export default function CratesIoLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">

@@ -7,18 +7,7 @@ import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
 import type { Catalog } from "@/types/service";
 
-// The one "add this catalog entry to that board" mutation — shared by
-// AddServicePanel (features/monitors, used by both /add-service and the
-// board-detail modal) and BoardSuggestedServices, so there's exactly one
-// place that knows POST /api/boards/[id]/services's request shape.
-//
-// Lives in features/boards (not monitors) since "add a service to a board"
-// is a boards-domain action even though its biggest caller today sits in
-// monitors — import it by this direct path, never through @/features/boards's
-// own barrel. That barrel also re-exports services/boards.ts (server-only,
-// reads next/headers's cookies()), and a client component pulling it in
-// transitively breaks Next's client/server boundary check — the exact trap
-// components/sidebar/BoardSelect.tsx's own comment already documents.
+// Import by direct path, never via the boards barrel: it re-exports server-only boards.ts.
 export function useAddServiceToBoard(boardId: string | undefined, onAdded: (board: Board) => void) {
   const { t } = useTranslation();
   const [pendingHosts, setPendingHosts] = useState<Set<string>>(new Set());
@@ -36,10 +25,6 @@ export function useAddServiceToBoard(boardId: string | undefined, onAdded: (boar
       return data as Board;
     },
     onSuccess: onAdded,
-    // `entry` is this specific call's own variables — only clear that one
-    // host's pending state, not whichever add happened to be in flight when
-    // this one settled (same reasoning as ServiceCatalogPicker's original
-    // inline version of this).
     onSettled: (_data, _error, entry) =>
       setPendingHosts((prev) => {
         const next = new Set(prev);

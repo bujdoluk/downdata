@@ -17,17 +17,7 @@ import type { IntegrationDefinition } from "@/types/integration";
 
 const CHECK_CONCURRENCY = 50;
 
-// Its own row in the same poll_run_lock table pollIncidents.ts's route
-// already uses, same atomic UPDATE...RETURNING claim pattern (see that
-// route's own comment on why: PostgREST/supabase-js gives no guarantee a
-// later "unlock" call lands on the same session as an earlier "lock" one,
-// which session-scoped advisory locks would need). Needed because
-// checkMaintenanceReminders() is now called from *every* shard's own
-// after() callback, not gated to shard 0 like it used to be (see
-// AGENTS.md's Failure log on why that gate gave the wrong cadence) — each
-// shard has its own independent poll_run_lock row, so nothing before this
-// stopped two shard ticks whose wall-clock work genuinely overlapped from
-// both claiming "this reminder is due" and sending it twice.
+// Runs on every shard's tick (not behind the shard-0 gate), so overlapping ticks need this lock to avoid double sends.
 const REMINDER_LOCK_KEY = "maintenance-reminders";
 
 async function claimReminderLock(supabase: ReturnType<typeof getSupabaseClient>): Promise<boolean> {
@@ -42,17 +32,7 @@ async function claimReminderLock(supabase: ReturnType<typeof getSupabaseClient>)
   return !!claimed?.length;
 }
 
-// This app has no i18n story for server-sent notification bodies
-// (Slack/email/SMS content is never rendered through react-i18next), same
-// as lib/notifyIncidentEvents.ts's own message builders — formatDateTime
-// itself is locale-agnostic (Temporal's toLocaleString with no explicit
-// locale), so the "English-only" part is really just the surrounding
-// sentence structure below. Formats the time in UTC rather than the
-// account's own time zone: resolving a *different* account's saved time
-// zone from a cron context needs the Supabase admin API
-// (auth.admin.getUserById) per account with a due reminder, which is a
-// real added cost for a "nicer clock label" — not built without evidence
-// it's worth that.
+// Deliberately UTC-only: a per-account time zone would cost an Admin API call per due reminder.
 function formatStartTime(scheduledFor: string): string {
   return `${formatDateTime(scheduledFor, "UTC")} UTC`;
 }
@@ -128,11 +108,7 @@ async function sendReminder(
   return false;
 }
 
-// notifyIncidentEvents.ts already narrows *which events are even pending*
-// for an integration by this same list before it ever gets here (see that
-// file's own query) — this is the reminder scan's equivalent, applied per
-// maintenance since one integration can be eligible for one service's
-// reminder and excluded from another's.
+// Reminder-side equivalent of notifyIncidentEvents.ts's excludedServiceSlugs query filter.
 function integrationsEligibleForService(integrationsForUser: IntegrationDefinition[], serviceSlug: string): IntegrationDefinition[] {
   return integrationsForUser.filter((integration) => !integration.excludedServiceSlugs?.includes(serviceSlug));
 }
@@ -141,10 +117,6 @@ type DeliveryRow = { rule_id: string; service_slug: string; maintenance_id: stri
 
 export async function checkMaintenanceReminders(): Promise<void> {
   const supabase = getSupabaseClient();
-  // Skips this tick entirely (not an error) if another invocation — from
-  // this same shard's previous run, or a different shard whose tick
-  // genuinely overlapped in wall-clock time — is still in flight or holds
-  // a not-yet-stale claim. See REMINDER_LOCK_KEY's own comment.
   if (!(await claimReminderLock(supabase))) return;
 
   try {
@@ -158,12 +130,7 @@ async function checkMaintenanceRemindersUnlocked(supabase: ReturnType<typeof get
   const rulesByUser = await getAllReminderRulesAcrossUsers();
   if (rulesByUser.size === 0) return;
 
-  // Display names for the notification bodies — StoredMaintenance only
-  // carries service_slug (e.g. "github"), never a human-readable name.
-  // Falls back to the raw slug for the (should-be-impossible) case of a
-  // service that's tracked/reminded-about but has since dropped out of
-  // the catalog, rather than throwing and losing every other account's
-  // reminders in the same batch over one stale slug.
+  // Falls back to the slug so one stale catalog entry can't fail the whole batch.
   const catalog = await getCatalog();
   const serviceNameBySlug = new Map(catalog.map((entry) => [entry.slug, entry.name]));
 
@@ -183,10 +150,7 @@ async function checkMaintenanceRemindersUnlocked(supabase: ReturnType<typeof get
     const tracked = trackedSlugsByUser.get(userId);
     if (!tracked?.size) return;
 
-    // Only the slugs some rule actually covers — resolveRuleForService is
-    // most-specific-wins, so a per-service rule silently shadows the
-    // account's own "all" rule for that same service here too, never
-    // firing both.
+    // Most-specific rule wins, so a per-service rule shadows "all" and never fires both.
     const coveredSlugs = [...tracked].filter((slug) => resolveRuleForService(rules, slug) !== null);
     if (coveredSlugs.length === 0) return;
 
@@ -207,7 +171,7 @@ async function checkMaintenanceRemindersUnlocked(supabase: ReturnType<typeof get
 
     for (const maintenance of maintenances) {
       const rule = resolveRuleForService(rules, maintenance.service_slug);
-      if (!rule) continue; // shouldn't happen — maintenance came from coveredSlugs — but guards the ! below honestly
+      if (!rule) continue;
 
       const prior = priorByKey.get(`${rule.id}:${maintenance.service_slug}:${maintenance.id}`) ?? null;
       if (!isDue(rule, maintenance, prior, nowMsValue)) continue;
@@ -216,19 +180,9 @@ async function checkMaintenanceRemindersUnlocked(supabase: ReturnType<typeof get
       const serviceName = serviceNameBySlug.get(maintenance.service_slug) ?? maintenance.service_slug;
       const content = buildReminderContent(serviceName, maintenance, rule, sendingEarly);
 
-      // Same per-service exclusion list notifyIncidentEvents.ts already
-      // respects (excludedServiceSlugs) — an integration that's muted for
-      // this service shouldn't fire a maintenance reminder for it either,
-      // even though the reminder rule itself covers the service.
       const eligibleIntegrations = integrationsEligibleForService(integrationsForUser, maintenance.service_slug);
       const results = await Promise.all(rule.channels.map((channel) => sendReminder(channel, eligibleIntegrations, content)));
-      // At least one channel getting through is enough to mark this
-      // delivered — the alternative (require every selected channel to
-      // succeed) would retry an already-delivered Slack message forever
-      // just because, say, the account's email integration has no
-      // verified recipient yet. A fully-failed attempt (every channel
-      // false) retries next tick instead, same "retry by omission"
-      // policy notifyIncidentEvents.ts already uses.
+      // One channel succeeding counts as delivered, or a working channel would resend forever. All failing retries next tick.
       if (results.some(Boolean)) {
         upserts.push({
           rule_id: rule.id,

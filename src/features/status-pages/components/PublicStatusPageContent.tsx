@@ -18,10 +18,6 @@ import MoreSevereIncidentBadge from "@/components/MoreSevereIncidentBadge";
 
 const POLL_INTERVAL_MS = 60_000;
 
-// The public, unauthenticated view of a board's status page — mirrors
-// BoardDetailContent's status summary and ServiceDetail's per-service
-// tracker/uptime block, but built from GET /api/public/status/[slug]
-// instead of the caller's own boards.
 export default function PublicStatusPageContent({ slug, initialData }: { slug: string; initialData: PublicStatusPage }) {
   const { t } = useTranslation();
   const timeZone = useTimeZone();
@@ -45,7 +41,7 @@ export default function PublicStatusPageContent({ slug, initialData }: { slug: s
     <div className="w-full max-w-3xl self-start">
       <div className="flex items-center gap-3">
         {data.logoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element -- Supabase Storage public URL, not a fixed set of domains next/image can allowlist
+          // eslint-disable-next-line @next/next/no-img-element -- Supabase Storage URL, not an allowlistable domain
           <img src={data.logoUrl} alt="" className="h-8 w-8 shrink-0 rounded object-contain" />
         ) : (
           !data.hideBranding && <Logo className="h-8 w-8 shrink-0" />
@@ -82,11 +78,7 @@ export default function PublicStatusPageContent({ slug, initialData }: { slug: s
                     values={{ value: service.official30daysUptime, days: service.uptimeWindowDays }}
                     components={[<span key="0" className="text-base-content text-sm font-bold" />]}
                   />
-                  {/* button, not a bare span — a span can never receive
-                      keyboard focus, so a keyboard-only visitor had no way
-                      to trigger this tooltip at all; aria-label gives it a
-                      real accessible name too, since data-tip's CSS-only
-                      content isn't read by screen readers. */}
+                  {/* A button so the tooltip is keyboard-focusable; aria-label since data-tip isn't read aloud. */}
                   <button
                     type="button"
                     className="tooltip tooltip-left"

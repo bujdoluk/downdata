@@ -4,15 +4,10 @@ import { backfillNewIntegration } from "@/features/integrations/services/backfil
 import { sendSms } from "@/features/integrations/services/twilio";
 import { ALL_IMPACTS } from "@/components/statusStyles";
 
-// E.164 — the format Twilio (and phone numbers generally) require: a
-// leading "+", country code, 8-15 digits total, no spaces/punctuation.
+// E.164, the format Twilio requires.
 const PHONE_PATTERN = /^\+[1-9]\d{7,14}$/;
 
-// A caller-supplied notifyImpacts on POST is optional and best-effort — an
-// invalid/missing one just falls back to the hardcoded default below
-// rather than blocking the actual connect, unlike PATCH's strict
-// validation (choosing severities is secondary to successfully connecting
-// the number itself).
+// Lenient unlike PATCH: a bad value falls back to the default rather than blocking the connect.
 function parseNotifyImpacts(body: unknown): string[] | undefined {
   const notifyImpacts = (body as { notifyImpacts?: unknown })?.notifyImpacts;
   if (!Array.isArray(notifyImpacts) || notifyImpacts.length === 0) return undefined;
@@ -20,12 +15,7 @@ function parseNotifyImpacts(body: unknown): string[] | undefined {
   return notifyImpacts;
 }
 
-// Adds one recipient (connecting the sms integration, at the default
-// major/critical severity, on first use) and immediately texts it a
-// one-time code — nothing is sent to it by the notifier until that code
-// is confirmed via POST /api/integrations/sms/verify. Re-submitting an
-// already-added number is how "resend the code" works: it's the same
-// upsert, with a fresh code and expiry.
+// Re-submitting an existing number is how "resend the code" works (same upsert, fresh code).
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -39,15 +29,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Phone numbers must be in international format, e.g. +14155550123." }, { status: 400 });
   }
 
-  // Backfill (below) only runs on first connect — re-submitting to add
-  // another recipient (or resend) shouldn't re-touch delivery history.
-  // notifyImpacts is likewise only seeded on first connect — passing it on
-  // every call would silently reset a since-customized severity filter
-  // back to this default (see addIntegration's own comment). Preferring
-  // whatever the connect form actually had checked over the hardcoded
-  // default: before first connect, there's no integration row yet for a
-  // checkbox-toggle PATCH to update, so that's the only way choosing
-  // severities before ever connecting actually takes effect.
+  // Backfill and notifyImpacts seeding happen on first connect only, so resends and extra
+  // recipients never re-touch delivery history or reset a customized filter.
   const isFirstConnect = !(await integrationExists("sms"));
   const { id } = await addIntegration({
     slug: "sms",
@@ -58,31 +41,24 @@ export async function POST(request: Request) {
   const { code, expiresAt } = generateVerification("sms");
   await addRecipient(id, "sms", value, code, expiresAt);
 
-  // Best-effort — the recipient is already saved as pending at this
-  // point, so a Twilio hiccup shouldn't fail the whole request; the user
-  // can just hit "resend" (a re-submit of the same number).
   try {
     await sendSms({ to: [value], body: `Your downDATA verification code is ${code}` });
   } catch {
-    // ignore
+    // ignore: the recipient stays pending and "resend" retries
   }
 
   if (isFirstConnect) {
-    // Excludes still-open incidents (see lib/backfillNewIntegration.ts) —
-    // connecting SMS while something is actively broken should still text
-    // about it on the next cron cycle, not silently swallow it.
+    // Excludes open incidents so connecting mid-outage still texts about what's broken now.
     try {
       await backfillNewIntegration(id, { excludeOpenIncidents: true });
     } catch {
-      // ignore — Supabase incident storage is optional; SMS connects either way
+      // ignore: SMS connects even if the backfill fails
     }
   }
 
   return NextResponse.json({ value, verified: false });
 }
 
-// Edits the severity filter on an already-connected SMS integration —
-// separate from POST above, since this never touches recipients.
 export async function PATCH(request: Request) {
   let body: unknown;
   try {
@@ -108,9 +84,7 @@ export async function PATCH(request: Request) {
   return NextResponse.json({ notifyImpacts });
 }
 
-// A static "sms" segment shadows the dynamic app/api/integrations/[slug]
-// route for this exact path, so its own DELETE handler never gets a chance
-// to run here — this file needs its own, identical in shape.
+// This static segment shadows app/api/integrations/[slug], so it needs its own DELETE.
 export async function DELETE() {
   const removed = await removeIntegration("sms");
   if (!removed) {

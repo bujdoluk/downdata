@@ -30,17 +30,12 @@ export default function TawkChat() {
     else window.Tawk_API?.hideWidget?.();
   });
 
-  // Keeps the ref in sync without touching it during render (refs are for
-  // effects/handlers, not render output) — runs after every commit.
   useEffect(() => {
     wantsVisibleRef.current = consent.supportChat;
   });
 
   useEffect(() => {
-    // Intentional: "has consent ever been granted this session" is a one-way
-    // ratchet driven entirely by an external signal (localStorage-backed
-    // consent), not derivable from props/state alone — see CookieConsent.tsx's
-    // own hydration-guard effect for the same pattern.
+    // One-way ratchet driven by external (localStorage) consent, not derivable from state.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (consent.supportChat) setHasLoadedOnce(true);
   }, [consent.supportChat]);
@@ -52,9 +47,7 @@ export default function TawkChat() {
     };
   }, []);
 
-  // Applies immediately for any toggle that happens after the widget has
-  // already finished loading. A toggle that happens *while* it's still loading
-  // is instead caught by Tawk_API.onLoad below, once hideWidget/showWidget exist.
+  // Toggles during widget load are applied by Tawk_API.onLoad instead.
   useEffect(() => {
     if (hasLoadedOnce) applyVisibilityRef.current();
   }, [consent.supportChat, hasLoadedOnce]);

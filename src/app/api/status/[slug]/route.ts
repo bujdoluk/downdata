@@ -2,10 +2,7 @@ import { NextResponse } from "next/server";
 import { resolveCatalogEntryBySlug } from "@/lib/catalog";
 import { fetchStatusBatch } from "@/lib/statusBatch";
 
-// Public, unauthenticated — one service's live status only (no incidents/
-// maintenances/uptime), for the landing footer's Popular Services row
-// badges. fetchStatusBatch already handles arrays of any size, so a
-// single-service array works as-is rather than duplicating its logic.
+// Public: live status only, no account data.
 export async function GET(_request: Request, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const service = await resolveCatalogEntryBySlug(slug);

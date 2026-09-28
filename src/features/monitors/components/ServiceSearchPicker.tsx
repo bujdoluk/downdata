@@ -4,13 +4,6 @@ import { useRef, useState, type KeyboardEvent } from "react";
 import type { Service } from "@/types/service";
 import { useCloseDetailsOnOutsideClick } from "@/hooks/useCloseDetailsOnOutsideClick";
 
-// A <select>'s "pick exactly one from a list" can't come from a bare text
-// input, so this is the one service-picker spot that needs an actual small
-// combobox instead of just swapping in a search field (see the filter
-// inputs in IncidentsPageContent/MaintenancePageContent for that simpler
-// case). Built on the same details/summary dropdown idiom already used
-// throughout this repo (LanguageSwitcher, BoardsPageContent), not a new
-// dependency.
 export default function ServiceSearchPicker({
   services,
   value,
@@ -71,9 +64,7 @@ export default function ServiceSearchPicker({
             setHighlightedIndex(-1);
           }}
           onFocus={(e) => {
-            // Clicking into an <input> nested inside <summary> doesn't
-            // reliably trigger <details>'s native click-to-toggle in
-            // Chromium — open it explicitly instead of relying on that.
+            // Chromium doesn't reliably toggle <details> from an input inside <summary>.
             if (detailsRef.current) detailsRef.current.open = true;
             e.target.select();
           }}

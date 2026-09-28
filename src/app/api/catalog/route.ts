@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCatalog } from "@/lib/catalog";
 
-// Public, unauthenticated — the catalog is public reference data (see
-// lib/catalog.ts). Powers the public navbar's service search and the
-// landing footer's Popular Services list, both logged-out surfaces.
+// Public: the catalog is public reference data.
 export async function GET() {
   const catalog = await getCatalog();
   return NextResponse.json(catalog);

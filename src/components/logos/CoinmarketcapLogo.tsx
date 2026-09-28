@@ -1,4 +1,3 @@
-// CoinMarketCap's app icon: a white zigzag "M" mark on a solid blue background.
 export default function CoinmarketcapLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">

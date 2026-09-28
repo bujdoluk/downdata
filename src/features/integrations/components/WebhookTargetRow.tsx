@@ -4,11 +4,6 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 
-// No verified/pending badge like VerifiedRecipientRow/PendingRecipientRow —
-// a webhook target has no such state (see WebhookConnectForm's header
-// comment for why). Shows the target's own signing secret instead, since
-// that's the thing this row's owner actually needs to come back and copy
-// again later when configuring their receiver.
 export default function WebhookTargetRow({ value, secret, onRemove }: { value: string; secret: string; onRemove: () => void }) {
   const { t } = useTranslation();
   const { copied, copy } = useCopyToClipboard();

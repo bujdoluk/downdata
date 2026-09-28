@@ -1,4 +1,4 @@
-// Render's mark is monochrome black, same as GitHub's — currentColor so it isn't invisible in dark mode
+// Monochrome mark: currentColor so it stays visible in dark mode.
 export default function RenderLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true">

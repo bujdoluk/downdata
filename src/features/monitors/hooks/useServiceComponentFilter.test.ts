@@ -42,10 +42,7 @@ describe("sameServerValue", () => {
     expect(sameServerValue(["a", "b"], ["a", "c"])).toBe(false);
   });
 
-  // The actual bug this function exists to fix: a background refetch (e.g.
-  // window refocus) hands back a *new array instance* with identical
-  // content — must not read as "the server value changed" just because
-  // the reference differs.
+  // Regression: a refetch returns a new array instance with identical content.
   it("is true for two different array instances with the same content", () => {
     const a = ["x", "y"];
     const b = ["x", "y"];

@@ -11,20 +11,9 @@ function clampPercent(value: number): number {
   return Math.round(Math.max(0, Math.min(100, value)) * 100) / 100;
 }
 
-// Only major/critical count as an "official" outage toward uptime — minor
-// is degraded performance, not downtime (matches statusStyles.ts's own
-// "Minor Issues" vs "Outage" labeling). Mirrored in the SQL trigger (see
-// supabase/migrations/0024_service_uptime_stats.sql) for the all-time
-// figure, and reused by statusBatch.ts's fetchOutagesLast24h so the
-// monitors grid's "outages in the last 24h" count agrees with this same
-// definition — keep all three in sync if this list ever changes.
+// Minor is degradation, not downtime. Keep in sync with the SQL trigger (migration 0024).
 export const OUTAGE_IMPACTS = new Set(["major", "critical"]);
 
-// All-time uptime since this service's first successful poll
-// (polled_services.first_polled_at) — a single indexed read via
-// get_uptime_stats() (see supabase/migrations/0024_service_uptime_stats.sql),
-// not an aggregate over the service's whole incident history. null when the
-// service has no polled_services row yet (still on its very first poll).
 export async function getAllTimeUptimeStats(slug: Slug): Promise<UptimeStats | null> {
   const supabase = getSupabaseClient();
   const { data } = await supabase.rpc("get_uptime_stats", { p_service_slug: slug });
@@ -41,12 +30,7 @@ export async function getAllTimeUptimeStats(slug: Slug): Promise<UptimeStats | n
   };
 }
 
-// Exact (unlike the trigger's overlap-approximate all-time total) 30-day
-// uptime, computed from the same last30DaysIncidents rows already fetched
-// for OutageTracker — no new query. Merges overlapping incident intervals
-// before summing so two concurrent incidents don't double-count their
-// shared downtime; cheap at 30-day scale, unlike doing this per poll cycle
-// over a service's full history (see the migration's own trade-off note).
+// Merges overlapping intervals so concurrent incidents don't double-count (the all-time trigger only approximates this).
 export function computeOfficial30DaysUptime(
   incidents: StatuspageIncidentSummary[],
   windowStartIso: string,
@@ -87,14 +71,8 @@ export type ServiceUptimeSummary = {
   officialAllTimeUptime: number | null;
 };
 
-// The one-service uptime/incident bundle — originally inline in
-// app/api/summary/[slug]/route.ts, factored out here so the public status
-// page route (one board's worth of services, not just one) can compute the
-// same figures per service without duplicating the trackedSince-clipping
-// logic in (B) below.
 export async function getServiceUptimeSummary(slug: Slug): Promise<ServiceUptimeSummary> {
-  // Fixed 30-day window — always used for fetching stored incidents, so
-  // the tracker chart gets the full grid regardless of trackedSince.
+  // Always the full 30 days so the tracker chart grid is complete regardless of trackedSince.
   const windowStart = isoDaysAgo(OUTAGE_TRACKER_DAYS);
   const [last30DaysRows, uptimeStats] = await Promise.all([
     getStoredIncidentSummariesForService(slug, windowStart),
@@ -102,13 +80,8 @@ export async function getServiceUptimeSummary(slug: Slug): Promise<ServiceUptime
   ]);
   const last30DaysIncidents = last30DaysRows.map(toIncidentSummaryApiShape);
 
-  // (B) the uptime percentage's own window is clipped to trackedSince when
-  // tracking started less than 30 days ago — otherwise a newly-tracked
-  // service would divide by 30 days it was never actually observed for.
-  // Compared via epochMs(), not raw string comparison: windowStart/nowIso()
-  // are this app's own fixed-format Temporal output, but trackedSince comes
-  // back from Postgres/PostgREST in whatever timestamptz string shape that
-  // layer returns, which isn't guaranteed byte-comparable to the other two.
+  // Clipped to trackedSince so new services aren't divided by unobserved days.
+  // epochMs, not string compare: Postgres timestamptz strings aren't byte-comparable to Temporal output.
   const now = nowIso();
   const effectiveWindowStart =
     uptimeStats?.trackedSince && epochMs(uptimeStats.trackedSince) > epochMs(windowStart) ? uptimeStats.trackedSince : windowStart;

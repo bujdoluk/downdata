@@ -4,9 +4,7 @@ import { getReportSettings, syncOwnTimeZone, updateReportSettings } from "@/feat
 const VALID_INTERVALS = new Set(["daily", "weekly", "monthly"]);
 
 export async function GET() {
-  // Passive sync, not a side effect the caller has to trigger separately —
-  // see syncOwnTimeZone's own comment for why this is the one place a
-  // session-having caller keeps report_settings.time_zone current.
+  // The one place report_settings.time_zone is kept current (see syncOwnTimeZone).
   await syncOwnTimeZone();
   return NextResponse.json(await getReportSettings());
 }

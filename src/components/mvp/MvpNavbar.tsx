@@ -31,9 +31,7 @@ export default function MvpNavbar() {
               <ServiceSearch services={catalog} linkPrefix="/services" />
             </div>
           ) : (
-            // Fixed-size placeholder matching ServiceSearch's own footprint
-            // (w-56, input-sm height) — avoids the search box popping into
-            // the layout once the shared catalog query resolves.
+            // Same footprint as ServiceSearch to avoid layout shift.
             <div className="bg-base-200 hidden h-8 w-56 animate-pulse rounded-lg md:block" aria-hidden="true" />
           )}
         </div>

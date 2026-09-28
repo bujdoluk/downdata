@@ -1,5 +1,3 @@
-// Close's mark: three interlocking ellipses (close.com/brand) — green, blue,
-// and yellow, not a single monochrome color.
 export default function CloseLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">

@@ -4,10 +4,7 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import ChromeLogo from "@/components/landing-page/ChromeLogo";
 
-// Not built yet (see AGENTS.md/docs/specs/SPEC-free-tools.md's "Never" list:
-// no working install link before the extension exists) — the Coming soon
-// badge plus a disabled button say so honestly instead of a dead Chrome Web
-// Store link or a button that quietly does nothing.
+// Extension not built yet: no install link until it exists (docs/specs/SPEC-free-tools.md).
 export default function ChromeExtensionCard() {
   const { t } = useTranslation();
 

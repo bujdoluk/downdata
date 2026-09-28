@@ -24,9 +24,7 @@ export default function AvatarUpload({
   const inputId = useId();
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  // Fixed path per user, no extension (contentType is set explicitly on
-  // upload, so the URL doesn't need one) — re-uploading is then a plain
-  // upsert onto the same key instead of piling up old files to clean up.
+  // Fixed path so re-uploads overwrite instead of piling up old files.
   const path = `${userId}/avatar`;
 
   const uploadMutation = useMutation({
@@ -86,7 +84,7 @@ export default function AvatarUpload({
         {avatarUrl ? (
           <div className="avatar">
             <div className="w-12 rounded-full">
-              {/* eslint-disable-next-line @next/next/no-img-element -- Supabase Storage public URL, not a fixed set of domains next/image can allowlist */}
+              {/* eslint-disable-next-line @next/next/no-img-element -- arbitrary Supabase Storage domain */}
               <img src={avatarUrl} alt="" />
             </div>
           </div>
@@ -99,10 +97,7 @@ export default function AvatarUpload({
         )}
 
         <div className="flex flex-1 items-center gap-2">
-          {/* Native file input text ("Choose File"/"No file chosen") comes
-              from the browser's own locale, not the app's — can't be
-              translated via CSS, so it's hidden behind a label carrying
-              our own translated text instead. */}
+          {/* Native file input text follows the browser locale, so a translated label replaces it. */}
           <label htmlFor={inputId} className={`btn btn-sm ${uploading ? "btn-disabled" : ""}`}>
             {t("nav.avatarChoose")}
           </label>

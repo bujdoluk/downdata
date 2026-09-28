@@ -26,10 +26,7 @@ import Spinner from "@/components/Spinner";
 
 const POLL_INTERVAL_MS = 60_000;
 
-// Debounced-and-URL-synced state for the component list's continent/status
-// filters — mirrors ServiceDetail.tsx's own copy of this exactly (see its
-// comment on why parse/serialize/toPatch must be stable module-level
-// references), just pointed at this page's own /services/:slug path.
+// Mirrors ServiceDetail.tsx's copy; module-level so the callbacks stay stable.
 type ComponentFilters = { continents: Set<Continent>; statuses: Set<Status>; q: string };
 
 function parseComponentFilters(searchParams: URLSearchParams): ComponentFilters {
@@ -52,22 +49,8 @@ function componentFiltersPatch(f: ComponentFilters): Record<string, string | nul
   };
 }
 
-// The public, unauthenticated view of one service — same data source
-// (queryKeys.serviceStatus/api/summary/[slug]) and header/uptime/outage
-// blocks as features/monitors/components/ServiceDetail.tsx, but only the
-// fields that make sense with no session: no per-account Notifications
-// tab, no links into behind-login pages (/monitors, /history). A separate
-// component rather than an `isPublic` flag on ServiceDetail — same split
-// this repo already uses for status pages (BoardStatusPageSettings vs.
-// the separate PublicStatusPageContent).
-//
-// Two independently-centered sections: the header/uptime/outage-graph
-// block and the tabs block both stay a focused 50%-of-screen column
-// (mx-auto md:w-1/2), matching each other exactly. RecommendedServices is
-// absolutely positioned off the tabs column's own right edge (md:left-full)
-// rather than sharing a wider flex row with it — that was the first cut,
-// but it pulled the tabs off-center relative to the header above them.
-// This way the tabs column never moves; the sidebar just floats beside it.
+// Public counterpart of ServiceDetail: no Notifications tab, no behind-login links.
+// RecommendedServices is absolutely positioned so it can't pull the tabs off-center.
 export default function PublicServiceDetail({ slug }: { slug: Slug }) {
   const { t } = useTranslation();
   const timeZone = useTimeZone();
@@ -82,24 +65,19 @@ export default function PublicServiceDetail({ slug }: { slug: Slug }) {
   const Logo = SERVICE_LOGOS[slug] ?? FallbackLogo;
 
   const allComponents = data?.components ?? [];
-  // !c.group_id, not === null — see the matching comment in ServiceDetail.tsx.
+  // !c.group_id, not === null: incident.io-hosted pages omit group_id entirely.
   const topLevelItems = allComponents
     .filter((c) => !c.group_id)
     .sort((a, b) => a.position - b.position);
   const childrenOf = (groupId: string) =>
     allComponents.filter((c) => c.group_id === groupId).sort((a, b) => a.position - b.position);
 
-  // Best-effort continent inference from component names — see
-  // features/monitors/services/componentRegion.ts. Only offer a continent
-  // as a filter if this service actually has a component in it.
   const componentsById = new Map(allComponents.map((c) => [c.id, c]));
   const continentOf = (c: StatuspageComponent) => inferComponentContinent(c, componentsById);
   const presentContinents = ALL_CONTINENTS.filter((continent) =>
     allComponents.some((c) => !c.group && continentOf(c) === continent),
   );
 
-  // Real field, not a guess like continent — only offer a status as a
-  // filter if some component is actually reporting it right now.
   const presentStatuses = ALL_COMPONENT_STATUSES.filter((status) => allComponents.some((c) => !c.group && c.status === status));
 
   const { pendingFilters, setPendingFilters } = useDebouncedUrlFilters({
@@ -216,11 +194,7 @@ export default function PublicServiceDetail({ slug }: { slug: Slug }) {
                   values={{ value: data.official30daysUptime, days: data.uptimeWindowDays }}
                   components={[<span key="0" className="text-base-content text-base font-bold" />]}
                 />
-                {/* button, not a bare span — a span can never receive
-                    keyboard focus, so a keyboard-only visitor had no way
-                    to trigger this tooltip at all; aria-label gives it a
-                    real accessible name too, since data-tip's CSS-only
-                    content isn't read by screen readers. */}
+                {/* A button so it's keyboard-focusable; screen readers don't read data-tip. */}
                 <button
                   type="button"
                   className="tooltip"
@@ -253,13 +227,7 @@ export default function PublicServiceDetail({ slug }: { slug: Slug }) {
               defaultChecked
             />
             <div className="tab-content bg-[var(--color-surface-1)] border-base-300 p-6">
-              {/* Mirrors ServiceDetail.tsx's own filter row exactly (compact
-                  CheckboxFilterDropdown instead of always-expanded checkbox
-                  rows) — this page has no Notifications tab/component-filter
-                  toggle to make room for, but keeping the view-filter UI
-                  identical to its authenticated counterpart avoids the two
-                  silently drifting apart, the same class of thing AGENTS.md's
-                  own Failure log already flags happening more than once. */}
+              {/* Kept identical to ServiceDetail.tsx's filter row so the two don't drift. */}
               <div className="mb-3 flex flex-wrap items-center gap-2">
                 <SearchFilterInput
                   value={componentQuery}

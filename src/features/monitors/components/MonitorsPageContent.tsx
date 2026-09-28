@@ -18,11 +18,7 @@ import MonitorsBoardSection from "@/features/monitors/components/MonitorsBoardSe
 import NoServicesMessage from "@/features/monitors/components/NoServicesMessage";
 import StatusSummary from "@/features/monitors/components/StatusSummary";
 import { PlusIcon } from "@/components/icons/NavIcons";
-// Direct path, not @/features/boards's own barrel — that barrel also
-// re-exports services/boards.ts (server-only, reads next/headers's
-// cookies()), which breaks a client component's build the same way
-// components/sidebar/BoardSelect.tsx's own comment already documents for
-// CreateBoardModal.
+// Direct path: the boards barrel re-exports server-only services/boards.ts.
 import AddServiceModal from "@/features/boards/components/AddServiceModal";
 
 const POLL_INTERVAL_MS = 60_000;
@@ -40,15 +36,9 @@ export default function MonitorsPageContent({
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
-  // Keyed "<boardId>:<slug>", not plain slug — the same service can render
-  // in two different boards' sections at once (see the remove comment
-  // below), and a plain-slug key would show a spinner on a sibling
-  // section's card for a removal that section had nothing to do with.
+  // Keyed "<boardId>:<slug>": one service can appear in several board sections.
   const [removingSlugs, setRemovingSlugs] = useState<Set<string>>(new Set());
-  // Own state, not just the server-provided prop — adding a service via the
-  // modal below must update this page's own grids/counts immediately, not
-  // only once router.refresh()'s server round trip resolves. Same reasoning
-  // as BoardDetailContent's own board state.
+  // Own state so an add updates the grids immediately, before router.refresh() lands.
   const [boards, setBoards] = useState(initialBoards);
   const [syncedBoards, setSyncedBoards] = useState(initialBoards);
   if (initialBoards !== syncedBoards) {
@@ -57,11 +47,6 @@ export default function MonitorsPageContent({
   }
 
   const addServiceRef = useRef<HTMLDialogElement>(null);
-  // Which board the add-service modal opens pre-selected to — the currently
-  // filtered board when adding from the header, or a specific board's own
-  // section when adding from its empty state in the "all boards" view. The
-  // modal's own dropdown (see AddServiceModal) still lets you switch away
-  // from whichever this was.
   const [modalBoardId, setModalBoardId] = useState<string | undefined>(undefined);
 
   function openAddService(boardId?: string) {
@@ -77,19 +62,13 @@ export default function MonitorsPageContent({
 
   const boardId = searchParams.get("board") ?? "";
   const selectedBoard = boards.find((board) => board.id === boardId);
-  // Union with the server-provided trackedSlugs (rather than only deriving
-  // from `boards`) so a service tracked through some path other than this
-  // page's own optimistic state — there's none today, but nothing enforces
-  // that staying true — still counts.
+  // Union with server trackedSlugs so services tracked outside this page's state still count.
   const effectiveTrackedSlugs = new Set([...trackedSlugs, ...boards.flatMap((b) => b.Slugs)]);
   const myServices = catalog.filter(
     (entry) => effectiveTrackedSlugs.has(entry.slug) && (!selectedBoard || selectedBoard.Slugs.includes(entry.slug)),
   );
 
   const { selectedBoardId } = useSelectedBoard();
-  // No ?board= yet and the persisted cross-page pick (see
-  // hooks/useSelectedBoard) still refers to a real board — apply it once,
-  // same one-shot idiom used by the other board-aware pages.
   useEffect(() => {
     if (!searchParams.has("board") && selectedBoardId && boards.some((b) => b.id === selectedBoardId)) {
       router.replace(`/monitors?${mergeParams(searchParams, { board: selectedBoardId }).toString()}`, { scroll: false });
@@ -102,13 +81,7 @@ export default function MonitorsPageContent({
     refetchInterval: POLL_INTERVAL_MS,
   });
 
-  // Always per-board now, whether removed from inside a section (the "all
-  // boards" view) or from the flat single-board list (a ?board= filter) —
-  // one meaning for Remove everywhere on this page. This is
-  // DELETE /api/boards/[id]/services/[slug] (removeServiceFromBoard), not
-  // the old account-wide /api/monitors/[slug] (removeServiceFromAllBoards,
-  // now deleted) — untracking from every board at once is no longer
-  // reachable from any UI.
+  // Remove is always per-board; untracking from every board at once isn't offered.
   const removeMutation = useMutation({
     mutationFn: ({ entry, boardId: targetBoardId }: { entry: Catalog; boardId: string }) =>
       fetch(`/api/boards/${targetBoardId}/services/${entry.slug}`, { method: "DELETE" }),
@@ -130,9 +103,6 @@ export default function MonitorsPageContent({
     removeMutation.mutate({ entry, boardId: targetBoardId });
   }
 
-  // A section only needs to know its own board's pending removals, not the
-  // whole page's — strips the composite key back down to a plain slug so
-  // CatalogServiceGrid's existing removingSlugs contract stays unchanged.
   function removingSlugsForBoard(targetBoardId: string): Set<string> {
     const prefix = `${targetBoardId}:`;
     const result = new Set<string>();
@@ -154,13 +124,7 @@ export default function MonitorsPageContent({
     }
   }
 
-  // Same scope the two branches below already resolve individually —
-  // computed once here since both the mobile-fallback and the outside-gutter
-  // instances (below) need it, not just one branch.
   const timelineBoards = selectedBoard ? [selectedBoard] : boards;
-  // Same "all three empty cases" gate the branches below already apply
-  // per-render — zero boards, a selected board with zero services, or an
-  // all-boards view where every board individually has zero services.
   const showTimeline = boards.length > 0 && myServices.length > 0;
 
   return (

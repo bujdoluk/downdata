@@ -29,19 +29,8 @@ export const FALLBACK_STYLE = {
   labelKey: "status.unknown",
 };
 
-// Shared by the History page's calendar filter and the Incidents page's
-// severity filter — both let you check/uncheck which impacts to show.
-// Keyed off INDICATOR_STYLES's impact entries, but deliberately not
-// Object.keys(INDICATOR_STYLES) — that map also carries a "maintenance"
-// entry, which some real Statuspage-hosted providers do use as an
-// incident's own impact (confirmed live: catchpoint-systems-node-page's
-// per-node blips, e.g. "Last Mile node LM - Reading, UK - Virgin Media
-// offline", all carry impact === "maintenance"). Deliberately left out of
-// this filter's own checkbox list regardless — a severity filter isn't the
-// place to surface that provider-specific edge case, and
-// MonitorsActiveIncidentsTimeline filters those incidents out of the
-// Active Incidents feed entirely for the same reason (see that file's own
-// comment on buildTimelineEntries).
+// Not Object.keys(INDICATOR_STYLES): its "maintenance" entry is a real incident impact
+// for some providers (e.g. Catchpoint), but doesn't belong in a severity filter.
 export const IMPACT_CHECKBOX_COLOR: Record<string, string> = {
   none: "checkbox-success",
   minor: "checkbox-warning",
@@ -50,11 +39,7 @@ export const IMPACT_CHECKBOX_COLOR: Record<string, string> = {
 };
 export const ALL_IMPACTS = Object.keys(IMPACT_CHECKBOX_COLOR);
 
-// Higher = more severe. One canonical ranking so anything comparing two
-// indicators reads off the same table instead of keeping its own copy —
-// this consolidates what used to be three separate ad-hoc versions
-// (CatalogServiceGrid's severity-first sort, StatusSummary's display
-// order, and now statusBatch's open-incident-vs-rollup check).
+// The one canonical ranking; don't keep a separate copy elsewhere.
 export const INDICATOR_RANK: Record<string, number> = {
   none: 0,
   minor: 1,
@@ -62,6 +47,4 @@ export const INDICATOR_RANK: Record<string, number> = {
   critical: 3,
 };
 
-// Worst-first — the order StatusSummary's stat tiles and the public status
-// page's overview render in.
 export const SEVERITY_DISPLAY_ORDER = ["critical", "major", "minor", "none"] as const;

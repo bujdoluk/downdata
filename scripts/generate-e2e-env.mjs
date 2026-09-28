@@ -1,10 +1,5 @@
-// Generates .env.test.local for the Playwright webhook E2E suite — starts
-// from the real .env (so unrelated env vars the app reads at module scope
-// don't go missing and crash an unrelated route) and overrides only the
-// three Supabase vars with the local `supabase start` instance's real
-// credentials, so the E2E test hits a real local Postgres/Auth/PostgREST
-// stack, not production. Run via `npm run test:e2e:setup` after
-// `npx supabase start`.
+// Starts from the real .env so module-scope env reads don't crash unrelated routes;
+// only the Supabase vars point at the local instance.
 import { readFileSync, writeFileSync } from "node:fs";
 import { execSync } from "node:child_process";
 
@@ -31,7 +26,6 @@ const lines = realEnv.split("\n").map((line) => {
   const key = line.match(/^([A-Z0-9_]+)=/)?.[1];
   return key && key in OVERRIDES ? `${key}=${OVERRIDES[key]}` : line;
 });
-// In case a key from OVERRIDES wasn't present in .env at all yet.
 for (const [key, value] of Object.entries(OVERRIDES)) {
   if (!lines.some((line) => line.startsWith(`${key}=`))) lines.push(`${key}=${value}`);
 }

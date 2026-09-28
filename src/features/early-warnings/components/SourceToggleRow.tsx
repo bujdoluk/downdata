@@ -5,11 +5,6 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import type { SourceSetting } from "@/features/early-warnings/types";
 
-// One row per lib/keywordSources entry — built from that array (via the
-// `sources` prop, sourced server-side from lib/earlyWarnings.ts's
-// getAllSourceSettings(), which itself iterates KEYWORD_SOURCES) so a
-// future source's toggle is a one-line addition there, not a new
-// component here.
 export default function SourceToggleRow({
   sources,
   isPending,
@@ -19,9 +14,6 @@ export default function SourceToggleRow({
   sources: SourceSetting[];
   isPending: boolean;
   onToggle: (source: string, enabled: boolean) => void;
-  // AddKeywordForm — rendered at the end of the same row as the toggles,
-  // not a separate section, since turning on a source and adding a
-  // keyword are the two things you actually need to do here.
   trailing?: ReactNode;
 }) {
   const { t } = useTranslation();

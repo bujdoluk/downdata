@@ -52,8 +52,6 @@ export default function BillingPageContent({
   const planParam = searchParams.get("plan");
   const intervalParam = searchParams.get("interval");
 
-  // Clears ?checkout=success|canceled after showing its banner — same
-  // query-param-driven feedback pattern as IntegrationsPageContent.
   useEffect(() => {
     if (checkoutParam) router.replace("/billing");
   }, [checkoutParam, router]);
@@ -66,17 +64,14 @@ export default function BillingPageContent({
     },
   });
 
-  // Arriving from a landing-page "Get started" click (/billing?plan=growth&
-  // interval=month) auto-starts checkout instead of making the visitor
-  // pick the same plan again — still safe, since Stripe's own hosted page
-  // requires explicit payment confirmation before anything is charged.
+  // Auto-start checkout from a pricing-page link; Stripe still requires explicit confirmation.
   useEffect(() => {
     if (autoCheckoutTriggered.current || subscription) return;
     if (planParam && isPlanTier(planParam) && intervalParam && isBillingInterval(intervalParam) && PLAN_CATALOG[planParam].available) {
       autoCheckoutTriggered.current = true;
       checkoutMutation.mutate({ plan: planParam, interval: intervalParam });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- checkoutMutation.mutate is stable; including the mutation object itself would re-run this on every mutation state change
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mutate is stable; the mutation object would re-run this on every state change
   }, [subscription, planParam, intervalParam, checkoutMutation.mutate]);
 
   const cancelMutation = useMutation({
@@ -206,10 +201,6 @@ function CurrentPlanCard({
   );
 }
 
-// No plan-picking UI here — that only lives on the public pricing page
-// (components/landing-page/PricingSection.tsx). This page is purely for
-// managing an existing subscription; a free-tier account just gets
-// pointed at /pricing to choose one.
 function FreeTierCard() {
   const { t } = useTranslation();
 

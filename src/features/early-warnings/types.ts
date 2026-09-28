@@ -11,8 +11,6 @@ export type SourceSetting = {
 
 export type KeywordMatch = {
   source: string;
-  // Every one of the account's own watched keywords that matched this
-  // post — a post can legitimately match more than one.
   keywords: string[];
   externalId: string;
   kind: "post" | "comment";

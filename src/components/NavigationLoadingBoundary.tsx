@@ -6,10 +6,8 @@ import { useTranslation } from "react-i18next";
 import "@/lib/i18n/i18n";
 import LoadingOverlay from "@/components/LoadingOverlay";
 
-// One nav.* key per dashboard route's first path segment. A nested route
-// (/boards/[id], /monitors/[slug]) has no name of its own, so it falls back
-// to its parent section's name — naming it precisely would mean fetching
-// the very data this overlay exists to cover the wait for.
+// Nested routes fall back to their parent section's name; naming them precisely
+// would mean fetching the very data this overlay covers the wait for.
 const ROUTE_NAV_KEYS: Record<string, string> = {
   boards: "nav.boards",
   monitors: "nav.monitors",
@@ -29,21 +27,12 @@ function resolveNavKey(pathname: string): string | null {
   return segment ? (ROUTE_NAV_KEYS[segment] ?? null) : null;
 }
 
-// A navigation shorter than this never shows anything — most dashboard
-// navigations resolve well under this, and flashing an overlay for a
-// handful of milliseconds reads as a glitch, not a loading state.
+// Delay and minimum visible time both avoid a flash that reads as a glitch.
 const SHOW_DELAY_MS = 300;
-// Once shown, stays up at least this long even if the page finishes
-// loading right after — the same flicker problem from the other end.
 const MIN_VISIBLE_MS = 200;
 
-// Shows one full-content-area loading overlay, named for the destination
-// page, for the span of any dashboard-internal navigation — sidebar links
-// and in-page links alike (e.g. a board card into /boards/[id]) — clicked
-// anywhere inside this boundary, plus browser back/forward. A single
-// click-capture listener here covers every entry point at once; the
-// alternative (Next's per-link useLinkStatus) would need wiring into every
-// individual <Link> in the app for the same result.
+// One click-capture listener covers every link at once; per-link useLinkStatus
+// would need wiring into every <Link> in the app.
 export default function NavigationLoadingBoundary({ sidebar, children }: { sidebar: ReactNode; children: ReactNode }) {
   const { t } = useTranslation();
   const pathname = usePathname();
@@ -51,18 +40,14 @@ export default function NavigationLoadingBoundary({ sidebar, children }: { sideb
   const [navKey, setNavKey] = useState<string | null>(null);
   const showTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // Non-null while the overlay is visible, holding the timestamp it became
-  // visible — the source of truth for "is it currently showing" instead of
-  // the `visible` state itself, so the arrival effect below never has to
-  // depend on (and re-fire from) `visible` changing.
+  // Source of truth for "is showing" instead of `visible`, so the arrival
+  // effect never depends on (and re-fires from) `visible` changing.
   const shownAtRef = useRef<number | null>(null);
 
   const beginNavigation = useCallback((targetPath: string) => {
     const key = resolveNavKey(targetPath);
     if (!key) return;
     if (shownAtRef.current !== null) {
-      // Already showing for an earlier still-unresolved navigation — point
-      // it at the new destination instead of re-running the delay.
       setNavKey(key);
       return;
     }
@@ -75,10 +60,6 @@ export default function NavigationLoadingBoundary({ sidebar, children }: { sideb
     }, SHOW_DELAY_MS);
   }, []);
 
-  // Arrived — whatever navigation was pending is resolved. A show that
-  // hadn't fired yet finished within the delay, so it never should have
-  // flashed at all; a show that's already visible respects the minimum
-  // visible time instead of snapping away early.
   useEffect(() => {
     if (showTimerRef.current) {
       clearTimeout(showTimerRef.current);
@@ -94,9 +75,7 @@ export default function NavigationLoadingBoundary({ sidebar, children }: { sideb
     }, remaining);
   }, [pathname]);
 
-  // Back/forward doesn't fire a click on anything, and the browser has
-  // already changed the URL by the time this fires — read it straight from
-  // the location instead of waiting on the click handler below.
+  // Back/forward fires no click, and the URL has already changed by now.
   useEffect(() => {
     function handlePopState() {
       beginNavigation(window.location.pathname);
@@ -105,8 +84,6 @@ export default function NavigationLoadingBoundary({ sidebar, children }: { sideb
     return () => window.removeEventListener("popstate", handlePopState);
   }, [beginNavigation]);
 
-  // Unmounts practically never (this wraps the whole dashboard shell), but
-  // don't leave timers firing into a gone component regardless.
   useEffect(() => {
     return () => {
       if (showTimerRef.current) clearTimeout(showTimerRef.current);
@@ -115,18 +92,14 @@ export default function NavigationLoadingBoundary({ sidebar, children }: { sideb
   }, []);
 
   function handleClickCapture(event: MouseEvent<HTMLDivElement>) {
-    // Same checks a browser itself uses to decide "open in a new tab" vs.
-    // a normal same-tab navigation — don't show a loading state for a
-    // click that isn't actually navigating this tab.
+    // Skip clicks that open a new tab instead of navigating this one.
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const anchor = (event.target as HTMLElement).closest("a");
     if (!anchor || anchor.target === "_blank" || anchor.hasAttribute("download")) return;
     const href = anchor.getAttribute("href");
     if (!href || !href.startsWith("/")) return;
     const url = new URL(href, window.location.origin);
-    // Only the path changing counts as "a different page" — a link that
-    // just rewrites the query string (History's service picker, board
-    // filters, etc.) isn't a navigation this overlay should cover.
+    // Query-string-only changes (filters, pickers) aren't a page navigation.
     if (url.pathname === pathname) return;
     beginNavigation(url.pathname);
   }

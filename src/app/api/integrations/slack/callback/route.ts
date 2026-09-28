@@ -47,18 +47,14 @@ export async function GET(request: Request) {
 
     const { id } = await addIntegration({ slug: "slack", name: "Slack", webhookUrl });
 
-    // Mark any pre-existing incident history as already-delivered to this
-    // integration, so connecting Slack doesn't flood the channel with the
-    // entire backlog the moment it's added. Best-effort: if Supabase isn't
-    // configured yet, this just no-ops rather than blocking the connection.
+    // Mark existing history as delivered so connecting doesn't flood the channel with the backlog.
     try {
       await backfillNewIntegration(id);
     } catch {
-      // ignore — Supabase incident storage is optional; Slack connects either way
+      // ignore: Slack connects even if the backfill fails
     }
 
-    // Best-effort — Slack's own OAuth response already proves the connection
-    // works, so a failed test message shouldn't block saving it.
+    // Best-effort: the OAuth response already proves the connection works.
     fetch(webhookUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

@@ -1,8 +1,4 @@
-// One-shot poll trigger for Early Warnings, mirroring
-// scripts/poll-incidents.mjs exactly (see its own comment for why this
-// calls the running app's own cron endpoint over HTTP rather than
-// importing lib/pollKeywordSources.ts directly). Run via
-// `npm run poll:keyword-sources`.
+// Calls the cron endpoint over HTTP for the same reason as poll-incidents.mjs.
 
 const baseUrl = process.env.APP_URL ?? "http://localhost:3000";
 const secret = process.env.CRON_SECRET;

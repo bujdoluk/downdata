@@ -7,9 +7,7 @@ import { notifyPendingEvents } from "@/lib/notifyIncidentEvents";
 import { checkMaintenanceReminders } from "@/lib/pollMaintenanceReminders";
 import { nowIso } from "@/lib/formatTime";
 
-// A full poll+notify cycle can take longer than free external cron
-// services' request timeout (e.g. cron-job.org's free plan cuts off at
-// 30s). This lets the run keep going past that via after() below.
+// A full cycle can outlast the external cron's 30s request timeout; after() below keeps it running.
 export const maxDuration = 60;
 
 function isAuthorized(request: Request): boolean {
@@ -22,9 +20,7 @@ function isAuthorized(request: Request): boolean {
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
-// Both present = sharded, both absent = poll everything in one run (today's
-// behavior for a small catalog). Returns null for absent params and throws
-// only on a malformed present one, so the route can 400 with a clear reason.
+// Throws only on malformed params so the route can 400 with a clear reason.
 function parseShard(url: URL): { index: number; count: number } | null {
   const rawIndex = url.searchParams.get("shard");
   const rawCount = url.searchParams.get("shards");
@@ -53,17 +49,10 @@ export async function GET(request: Request) {
 
   const supabase = getSupabaseClient();
 
-  // Lazily ensure this shard's lock row exists — any shard/count combo
-  // works with no pre-seeding, since a new combination just gets a fresh row.
   await supabase.from("poll_run_lock").upsert({ shard_key: shardKey }, { onConflict: "shard_key", ignoreDuplicates: true });
 
-  // Row-based lock, not a Postgres advisory lock — supabase-js's .rpc()
-  // goes through PostgREST, a stateless layer with no guarantee that a
-  // later "unlock" call lands on the same session as the earlier "lock"
-  // call, which is exactly what session-scoped advisory locks require.
-  // A single atomic UPDATE...RETURNING is self-contained instead. Scoped
-  // per shard_key so concurrent shards (?shard=0&shards=4, ?shard=1&...)
-  // don't block each other — only two requests for the *same* shard do.
+  // Row lock, not an advisory lock: PostgREST is stateless, so lock and unlock may hit different
+  // sessions. Scoped per shard_key so different shards never block each other.
   const staleBefore = Temporal.Now.instant()
     .subtract({ milliseconds: LOCK_STALE_MS })
     .toString({ smallestUnit: "millisecond" });
@@ -78,26 +67,14 @@ export async function GET(request: Request) {
     return NextResponse.json({ skipped: "already running" });
   }
 
-  // Respond immediately instead of waiting for the run to finish — the
-  // caller (an external cron pinger) only needs to know the run started,
-  // and after() keeps this function alive past the response to actually
-  // do the work, so a slow cycle can't get killed by the caller's own
-  // request timeout.
+  // Respond immediately so a slow cycle can't be killed by the cron caller's request timeout.
   after(async () => {
     try {
-      // Sequential, not Promise.all'd: the backfill markers written during
-      // polling must exist before the notifier's query runs, or the
-      // flood-prevention design silently breaks.
+      // Sequential: backfill markers written while polling must exist before notify runs, or old events flood out.
       const result = await pollAllIncidents(shard ?? undefined);
 
-      // Written before notifyPendingEvents runs and independent of its
-      // outcome — notification delivery already self-heals (an undelivered
-      // event just gets retried next cycle), so a Slack-side failure must
-      // never mark actual data capture as unhealthy. Gated on the failure
-      // rate across both incidents and maintenances, not just "did this
-      // throw" — pollAllIncidents already swallows and counts per-service
-      // failures instead of throwing, so even a near-total outage (a broken
-      // upsert RPC, say) would otherwise still look like a clean run.
+      // Independent of notify's outcome, since delivery self-heals. Gated on failure rate because
+      // pollAllIncidents swallows per-service errors, so a near-total outage would otherwise look clean.
       const totalFailed = result.failed + result.maintenancesFailed;
       const totalAttempted = result.incidentsUpserted + result.failed + result.maintenancesUpserted + result.maintenancesFailed;
       const acceptable = totalFailed === 0 || totalFailed / totalAttempted < 0.5;
@@ -105,40 +82,16 @@ export async function GET(request: Request) {
         await supabase.from("poll_run_lock").update({ last_success_at: nowIso() }).eq("shard_key", shardKey);
       }
 
-      // Only the first shard of whatever split is configured triggers
-      // notifications — every shard writes to the same incident_events
-      // table, so notifying from all of them would be both redundant and
-      // racy (concurrent runs could both see the same event as
-      // undelivered). Each shard's own backfill markers are still written
-      // synchronously within its own pollAllIncidents() call above, so
-      // this stays correct regardless of which shard runs notify.
-      //
-      // checkMaintenanceReminders() deliberately does NOT ride this same
-      // gate — shard.index === 0 is only ever *this* shard, invoked once
-      // per real ~5-minute cycle (the 5 shard values are round-robined
-      // across ticks, same as every other service's data — see AGENTS.md's
-      // "any one service's history is refreshed roughly every 5 minutes,
-      // not every 1"), not once a minute as an earlier version of this
-      // comment assumed. checkMaintenanceReminders() is unsharded and cheap
-      // (see lib/pollMaintenanceReminders.ts's own comment), so it runs on
-      // every invocation of this route regardless of which shard value
-      // that tick carries — that's what actually gives the "checked every
-      // minute" precision the reminder feature's spec and UI copy promise.
-      //
-      // Own try/catch, deliberately: this is a newer, less-proven code path
-      // than notifyPendingEvents() (three more Supabase round-trips, plus
-      // Slack/Resend/Twilio-adjacent sends), and an uncaught throw here
-      // would otherwise propagate straight past notifyPendingEvents() below
-      // to the outer finally — silently skipping real incident notifications
-      // for this whole tick over a failure in an unrelated, newer feature.
-      // Same "one system's failure can't mark a different system unhealthy"
-      // reasoning as the pollAllIncidents/notifyPendingEvents split above.
+      // Reminders run on every tick, NOT behind the shard-0 gate: shard 0 only fires every ~5 min
+      // (shards are round-robined), which would break the "checked every minute" promise.
+      // Own try/catch so a reminder failure can't skip incident notifications below.
       try {
         await checkMaintenanceReminders();
       } catch (error) {
         console.error("checkMaintenanceReminders failed:", error);
       }
 
+      // Only one shard notifies: all shards share incident_events, so notifying from each is redundant and racy.
       if (!shard || shard.index === 0) {
         await notifyPendingEvents();
       }

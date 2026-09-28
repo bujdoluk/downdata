@@ -37,22 +37,13 @@ function PopularServiceRow({ service }: { service: Catalog }) {
   );
 }
 
-// The landing footer's curated "Popular Services" column — see
-// lib/popularServices.ts for why this is a fixed list rather than
-// computed from real tracking data. Shares its catalog fetch (and query
-// cache entry) with LandingNavbar's service search, since both just need
-// "every known service" — this component filters that down to the
-// curated 10. Each row polls its own live status independently, so one
-// unreachable host only degrades its own row.
+// Each row polls independently so one unreachable host only degrades its own row.
 export default function PopularServicesList() {
   const { data: catalog } = useQuery({
     queryKey: queryKeys.catalogAll(),
     queryFn: () => fetchJson<Catalog[]>("/api/catalog"),
   });
 
-  // Skeleton, not a blank column, while the shared catalog query is still in
-  // flight (or failed) — aria-hidden since there's nothing meaningful to
-  // announce yet, same reasoning as any other loading placeholder.
   if (!catalog) {
     return (
       <>

@@ -1,4 +1,3 @@
-// Public API of the early-warnings feature (keyword-source monitoring).
 export { default as AddKeywordForm } from "./components/AddKeywordForm";
 export { default as EarlyWarningsPageContent } from "./components/EarlyWarningsPageContent";
 export { default as KeywordBadgeList } from "./components/KeywordBadgeList";

@@ -4,11 +4,7 @@ import { getStripeClient } from "@/features/billing/services/stripe";
 import { applyCancelState, getOwnStripeSubscriptionId } from "@/features/billing/services/subscriptions";
 import { isoFromUnixSeconds } from "@/lib/formatTime";
 
-// Custom in-app cancel/resume (not Stripe's hosted Customer Portal) —
-// toggles cancel_at_period_end on the caller's own subscription. Also
-// writes the fresh state to our own row (see applyCancelState) so the UI
-// updates immediately; the webhook still fires afterward and reconciles
-// the same row from Stripe's own event.
+// Also writes our own row so the UI updates immediately; the webhook reconciles it afterward.
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -30,8 +26,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Authentication required." }, { status: 401 });
   }
 
-  // Session-scoped, RLS-restricted to the caller's own row — this can
-  // never resolve to another account's subscription id.
+  // Session-scoped, so RLS guarantees this is the caller's own subscription.
   const subscriptionId = await getOwnStripeSubscriptionId();
   if (!subscriptionId) {
     return NextResponse.json({ error: "You don't have an active subscription." }, { status: 404 });

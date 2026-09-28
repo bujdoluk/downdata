@@ -6,11 +6,6 @@ import "@/lib/i18n/i18n";
 import type { Category, Catalog, ServiceStatusBatchResponse } from "@/types/service";
 import CatalogServiceGrid from "@/features/monitors/components/CatalogServiceGrid";
 
-// Categories column + services-in-category column — the shared "browse the
-// catalog and add a service" UI, used both by the add-service page and by a
-// board's "add a service to this board" flow. A caller-specific third column
-// (e.g. BoardDetailContent's "On board" list) stays with the caller, since
-// it's independent of whatever's selected/searched here.
 export default function CatalogBrowser({
   catalog,
   trackedHosts,
@@ -32,15 +27,8 @@ export default function CatalogBrowser({
 }) {
   const { t, i18n } = useTranslation();
 
-  // Fixed per-category catalog totals — deliberately not "how many are
-  // still addable", so the count doesn't shrink/jump around as services get
-  // added, matching entries themselves never disappearing from column 2.
-  // Categories present are derived from the catalog itself rather than a
-  // separately-maintained list (the Category union in types/service.ts is
-  // the one source of truth for which values are valid) and sorted by each
-  // viewer's own translated label — alphabetical order genuinely differs
-  // per language, so a single fixed order could never be "A-Z" for more
-  // than one locale at a time.
+  // Totals, not "still addable", so counts don't jump as services are added.
+  // Sorted by translated label since A-Z order differs per locale.
   const categoryCounts = Array.from(new Set(catalog.map((entry) => entry.category)))
     .map((category) => ({
       category,
@@ -48,14 +36,11 @@ export default function CatalogBrowser({
     }))
     .sort((a, b) => t(`addService.category.${a.category}`).localeCompare(t(`addService.category.${b.category}`), i18n.language));
 
-  // Defaults to the first non-empty category so column 2 shows something
-  // useful the moment you land on the page, instead of an empty prompt.
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     () => categoryCounts[0]?.category ?? null,
   );
 
   const trimmedQuery = query.trim().toLowerCase();
-  // A non-empty search overrides category browsing entirely.
   const visibleEntries = trimmedQuery
     ? catalog.filter((entry) => entry.name.toLowerCase().startsWith(trimmedQuery))
     : selectedCategory
@@ -77,13 +62,7 @@ export default function CatalogBrowser({
               }`}
             >
               <span>{t(`addService.category.${category}`)}</span>
-              {/* badge has no badge-color modifier, so daisyUI's own default
-                  badge border falls back to base-200 — nearly identical to
-                  surface-2 in light theme (near-white colors compress
-                  contrast no matter how the fill is tuned). An explicit
-                  border-base-300 is what actually makes it legible there,
-                  the same bg+border-base-300 pairing used throughout the
-                  app for exactly this reason. */}
+              {/* Explicit border-base-300: the default badge border blends into surface-2 in light theme. */}
               <span className="badge badge-sm border border-base-300 bg-[var(--color-surface-2)]">{count}</span>
             </button>
           );

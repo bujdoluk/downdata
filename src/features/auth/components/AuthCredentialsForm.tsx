@@ -5,11 +5,6 @@ import "@/lib/i18n/i18n";
 import { EyeIcon, EyeSlashIcon, GoogleIcon } from "@/components/icons/NavIcons";
 import Spinner from "@/components/Spinner";
 
-// The login/signup half of LoginForm's card, split out so that file stays
-// under this skill's own 200-line threshold — it was handling three modes
-// (login/signup/reset) inline. Takes email/password's legend ids as props
-// (not useId() here) so LoginForm, which owns the actual <legend> elements
-// for the reset-mode form too, is the one place generating them.
 export default function AuthCredentialsForm({
   mode,
   email,
@@ -53,10 +48,7 @@ export default function AuthCredentialsForm({
     <>
       <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-3">
         <fieldset className="fieldset">
-          {/* legend labels the fieldset as a group, not the input inside it
-              — aria-labelledby is what actually gives the input a real
-              accessible name (a bare <legend> isn't guaranteed to be read
-              as the input's label by every screen reader). */}
+          {/* A <legend> isn't reliably read as the input's label; aria-labelledby is. */}
           <legend id={emailLegendId} className="fieldset-legend">
             {t("auth.emailLabel")}
           </legend>
@@ -113,8 +105,6 @@ export default function AuthCredentialsForm({
           </div>
         )}
 
-        {/* role="alert" — the success states elsewhere in this flow already
-            get one; an error is at least as important to announce. */}
         {error && (
           <p role="alert" className="text-error text-sm break-words">
             {error}

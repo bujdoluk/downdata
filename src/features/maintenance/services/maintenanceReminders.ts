@@ -2,17 +2,11 @@ import { createClient } from "@/lib/supabase/server";
 import { getSupabaseClient } from "@/lib/supabase";
 import type { MaintenanceReminderRule, ReminderChannel } from "@/features/maintenance/types";
 
-// Re-exported for existing callers — the resolution logic itself lives in
-// resolveReminderRule.ts (pure, no Supabase imports) so client components
-// can import it directly without pulling this server-only file's Supabase
-// clients into the client bundle. See that file's own comment.
+// Logic lives in resolveReminderRule.ts (no Supabase) so client components can import it.
 export { resolveRuleForService } from "@/features/maintenance/services/resolveReminderRule";
 
-// The DB's own "applies to every tracked service" sentinel — see
-// 0038_maintenance_reminders.sql's column comment for why this is a
-// non-null sentinel rather than service_slug being nullable. Stays
-// entirely inside this file; every other caller only ever sees
-// MaintenanceReminderRule.serviceSlug as string | null.
+// Non-null wildcard sentinel: PostgREST upsert can't target partial unique
+// indexes, so a nullable service_slug won't work. Never leaves this file.
 const ALL_SCOPE_SENTINEL = "__all__";
 
 type ReminderRuleRow = {
@@ -31,7 +25,6 @@ function toReminderRule(row: ReminderRuleRow): MaintenanceReminderRule {
   };
 }
 
-// RLS-scoped to the caller's own rules (0038_maintenance_reminders.sql).
 export async function getMyReminderRules(): Promise<MaintenanceReminderRule[]> {
   const supabase = await createClient();
   const { data, error } = await supabase.from("maintenance_reminder_rules").select("id, service_slug, minutes_before, channels");
@@ -39,11 +32,6 @@ export async function getMyReminderRules(): Promise<MaintenanceReminderRule[]> {
   return ((data as ReminderRuleRow[] | null) ?? []).map(toReminderRule);
 }
 
-// Create-or-update by (user_id, service_slug) — the table's own unique
-// constraint is what actually enforces "at most one rule per
-// scope-target" (see the migration); this just upserts against it, same
-// onConflict target regardless of whether serviceSlug is a real slug or
-// the "all" sentinel, since both share the one ordinary unique index.
 export async function upsertReminderRule(input: { serviceSlug: string | null; minutesBefore: number; channels: ReminderChannel[] }): Promise<MaintenanceReminderRule> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -65,12 +53,7 @@ export async function removeReminderRule(id: string): Promise<boolean> {
   return (data?.length ?? 0) > 0;
 }
 
-// Every account's reminder rules, tagged with their owner — service-role
-// client, for exactly one caller: the cron reminder scan
-// (lib/pollMaintenanceReminders.ts), which runs with no user session, same
-// reasoning as boards.ts's getAllTrackedSlugsAcrossUsers()/integrations.ts's
-// getAllIntegrationsAcrossUsers(). Never call this from a user-facing code
-// path — it bypasses RLS entirely and would leak every account's rules.
+// Service-role, cron-only (no session). Bypasses RLS: never call from a user-facing path.
 export async function getAllReminderRulesAcrossUsers(): Promise<Map<string, MaintenanceReminderRule[]>> {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase.from("maintenance_reminder_rules").select("id, user_id, service_slug, minutes_before, channels");

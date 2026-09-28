@@ -7,12 +7,6 @@ import "@/lib/i18n/i18n";
 import { requestJson } from "@/lib/fetchJson";
 import Spinner from "@/components/Spinner";
 
-// The visitor-facing counterpart to the owner's Privacy section in
-// BoardStatusPageSettings.tsx — rendered by app/status/[slug]/page.tsx
-// instead of the real PublicStatusPageContent whenever
-// isStatusPageUnlocked() says no. Same "card card-border bg-base-200"
-// centered-form shell LoginForm.tsx already uses for an anonymous,
-// centered access form.
 export default function StatusPagePasswordGate({ slug, requiresPassword }: { slug: string; requiresPassword: boolean }) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -20,10 +14,7 @@ export default function StatusPagePasswordGate({ slug, requiresPassword }: { slu
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // On success there's nothing to read from the response beyond the
-  // Set-Cookie header the browser already stored — router.refresh() re-runs
-  // the Server Component with that cookie now attached, which is what
-  // actually reveals the real content.
+  // On success, router.refresh() re-renders the server page with the new unlock cookie.
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
     setSubmitting(true);
@@ -41,9 +32,7 @@ export default function StatusPagePasswordGate({ slug, requiresPassword }: { slu
     }
   }
 
-  // No password configured at all means only the IP allowlist could have
-  // admitted this visitor and it didn't — there's no form to show, since
-  // there's nothing for them to enter.
+  // No password means only the IP allowlist applies, so there's nothing to enter.
   if (!requiresPassword) {
     return (
       <div className="card card-border bg-base-200 w-full max-w-sm">

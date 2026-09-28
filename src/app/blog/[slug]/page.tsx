@@ -21,10 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-// Public, unauthenticated (see proxy.ts's PUBLIC_PREFIXES). A draft's slug
-// resolves (resolvePostBySlug doesn't filter by published state, see its
-// own comment) but 404s here — the admin-only preview isn't in scope for
-// this pass, only the public read path.
+// resolvePostBySlug also returns drafts, so they must 404 here.
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await resolvePostBySlug(slug);

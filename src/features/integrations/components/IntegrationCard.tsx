@@ -29,11 +29,6 @@ export default function IntegrationCard({
   logo: ReactNode;
   connected: boolean;
   connectHref?: string;
-  // Every non-OAuth integration (email/sms/webhook) opens its own modal on
-  // click — reachable via "Connect" while disconnected, and by clicking the
-  // "Connected" badge once connected, so it stays editable after connecting,
-  // not just connect-once/disconnect like Slack's OAuth flow. The caller
-  // owns the <dialog> entirely; this just needs something to call on click.
   onConnectClick?: () => void;
   removable?: { isRemoving: boolean; onRemove: () => void };
 }) {
@@ -73,14 +68,9 @@ export default function IntegrationCard({
 
       <div className={`card-body min-w-0 flex-row items-center gap-3 p-4 ${removable ? "pr-10" : ""}`}>
         {logo}
-        {/* h3, not h1 — this card repeats once per catalog entry, and the
-            page already has its own <h1> (integrations.title); a repeating
-            card can't own the page's one-and-only h1. */}
         <h3 className="card-title min-w-0 flex-1 truncate text-base">{name}</h3>
         {connected ? (
           onConnectClick ? (
-            // A real <button>, not a span+role mimicking one — gets Enter/
-            // Space activation for free instead of hand-rolling onKeyDown.
             <button type="button" onClick={onConnectClick} className="badge badge-soft badge-success shrink-0 cursor-pointer text-[10px]">
               {t("integrations.connected")}
             </button>

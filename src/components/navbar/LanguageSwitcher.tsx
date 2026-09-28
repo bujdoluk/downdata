@@ -22,8 +22,7 @@ export default function LanguageSwitcher({
   useEffect(() => {
     try {
       const saved = localStorage.getItem("language");
-      // Loads the saved locale's resource bundle before switching to it —
-      // i18n.ts only bundles the default locale eagerly, see its comment.
+      // Only the default locale is bundled eagerly (see i18n.ts).
       if (saved && saved !== i18n.language) loadLocale(saved).then(() => i18n.changeLanguage(saved));
     } catch {
       // ignore

@@ -1,6 +1,4 @@
-// CallFire's mark is a flame beside the wordmark — no color is claimed in
-// their trademark filing, so this uses the same orange as the prior
-// monogram rather than inventing a new one.
+// No official brand color found; an original mark, not a trademark reproduction.
 export default function CallFireLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} fill="#E8542A" aria-hidden="true">

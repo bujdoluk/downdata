@@ -1,6 +1,4 @@
-// Chargify (now Maxio) — no public hex found for the legacy Chargify mark;
-// kept in the same orange as the prior monogram, an abstract angled "billing
-// cycle" arrow rather than a reproduction of Maxio's current wordmark.
+// No official brand color found; an original mark, not a trademark reproduction.
 export default function ChargifyLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="#FF6B35" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

@@ -47,16 +47,12 @@ function parseGroupFromSearchParams(searchParams: URLSearchParams): DebouncedGro
   };
 }
 
-// Content fingerprint of the debounced group, used to tell "we just wrote
-// this ourselves" apart from "the URL genuinely changed" (back/forward, a
-// pasted link) — see the two sync effects below.
+// Distinguishes our own URL writes from real URL changes (back/forward, pasted link).
 function serializeGroup(g: DebouncedGroup): string {
   return JSON.stringify([g.status, g.q, g.board]);
 }
 
-// Every field omits itself from the URL at its default value, for a clean
-// URL when nothing's actually filtered. Always resets pagination — a
-// settled filter change invalidates whatever page the user was on.
+// Resets pagination: a filter change invalidates the current page.
 function debouncedGroupPatch(g: DebouncedGroup): Record<string, string | null> {
   return {
     status: g.status === "all" ? null : g.status,
@@ -87,12 +83,8 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   const selectMaintenance = useSelectAndScrollOnMobile("/maintenance", detailRef);
 
   const { selectedBoardId } = useSelectedBoard();
-  // True on a render where the persisted cross-page board pick (see
-  // hooks/useSelectedBoard) is about to be applied because this URL has no
-  // ?board= of its own yet — filteredMaintenances below is still unfiltered
-  // on that render, so useAutoSelectFirstId is told to sit it out (see its
-  // call below) rather than risk auto-selecting a maintenance outside the
-  // board that's about to be applied.
+  // While the persisted board pick is about to apply, the list is still
+  // unfiltered, so auto-select sits this render out.
   const persistedBoardApplies = !searchParams.has("board") && !!selectedBoardId && boards.some((b) => b.id === selectedBoardId);
 
   useEffect(() => {
@@ -108,9 +100,6 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   const selectedMaintenance = maintenances.find((maintenance) => maintenance.id === selectedId);
   const selectedSlug = selectedMaintenance?.service.slug;
 
-  // Full timeline for whichever maintenance is selected, fetched
-  // separately — see IncidentsPageContent's identical detail query for the
-  // full reasoning.
   const { data: detail, isError: detailError } = useQuery({
     queryKey: queryKeys.maintenance.detail(selectedSlug ?? "", selectedId ?? ""),
     queryFn: () => fetchJson<TrackedMaintenance>(`/api/maintenance/${selectedSlug}/${selectedId}`),
@@ -138,8 +127,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
   const hasActiveFilters = pendingFilters.status !== "all" || pendingFilters.q.trim() !== "";
 
   function clearFilters() {
-    // board isn't reset here — it's no longer a filter this page can set
-    // (see BoardSelect.tsx), just whatever the sidebar has selected.
+    // board isn't reset: the sidebar owns it, not this page.
     setPendingFilters((prev) => ({ ...prev, status: "all", q: "" }));
     updateParams({ page: null });
   }
@@ -244,11 +232,7 @@ export default function MaintenancePageContent({ boards }: { boards: Board[] }) 
 
   const detailContent = detail ? (
     <>
-      {/* key={detail.service.slug + detail.id} forces a fresh mount per
-          selected maintenance — same "reconcile local state on switch"
-          reasoning BoardStatusPageSettings' own key needed (see AGENTS.md's
-          grilling-session history), so the reminder modal's form state
-          never bleeds from one maintenance's service into the next. */}
+      {/* Keyed per maintenance so the reminder modal's form state doesn't bleed between items. */}
       <MaintenanceReminderHeader key={`${detail.service.slug}:${detail.id}`} maintenance={detail} />
       <IncidentDetail incident={detail} timeZone={timeZone} />
     </>

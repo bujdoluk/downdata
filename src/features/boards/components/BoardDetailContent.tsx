@@ -42,21 +42,9 @@ export default function BoardDetailContent({
   const { t } = useTranslation();
   const router = useRouter();
   const queryClient = useQueryClient();
-  // Own state, not just the server-provided prop — adding a service via the
-  // modal/suggestions below must flip which layout renders (the empty state
-  // vs. the full stat panels, below) and update the stat panels themselves
-  // immediately, not only once router.refresh()'s server round trip
-  // resolves. Same "own the state that decides what renders" reasoning as
-  // ServiceCatalogPicker's `boards` array.
+  // Local state so an add updates the layout before router.refresh() lands.
   const [board, setBoard] = useState(initialBoard);
-  // Adjusting state during render (react.dev's recipe for "reset state when
-  // a prop changes"), not an effect — reconciles local state once the
-  // server round trip this same add/rename/etc. mutation already kicked off
-  // (router.refresh()) actually lands a fresh `initialBoard` prop, not just
-  // on mount. Without this, a rename would flip `isEditing` back via
-  // useBoardRename's own onSuccess but the header would keep showing the
-  // old name forever, since nothing else here ever re-derives `board` from
-  // a later prop.
+  // Re-sync during render when a fresh prop lands (see AGENTS.md Failure log, page→modal).
   const [syncedBoard, setSyncedBoard] = useState(initialBoard);
   if (initialBoard !== syncedBoard) {
     setSyncedBoard(initialBoard);
@@ -119,9 +107,7 @@ export default function BoardDetailContent({
       if (!res.ok) return;
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.list() });
       router.push("/boards");
-      // Otherwise the destination /boards list can serve a router-cached
-      // render from before this delete (still showing the deleted board,
-      // or a stale count anywhere else on that page that depends on it).
+      // Otherwise /boards can serve a router-cached render still showing the deleted board.
       router.refresh();
     },
   });

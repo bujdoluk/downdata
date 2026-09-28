@@ -1,21 +1,11 @@
 import { XMLParser } from "fast-xml-parser";
 import type { KeywordSource, RawMatch } from "@/features/early-warnings/services/keywordSources/types";
 
-// Reddit's own guidance for unauthenticated access is a descriptive User-
-// Agent identifying the app — confirmed live (see the Early Warnings plan)
-// that even a well-behaved anonymous client still gets rate-limited fast,
-// but this is still the documented minimum courtesy, not optional.
+// Reddit's documented minimum for unauthenticated access.
 const USER_AGENT = "downdata-early-warnings/1.0 (+https://downdata.app)";
 
-// Posts only — search.rss silently ignores &type=comment and returns the
-// same post results regardless (confirmed live). There is no free,
-// targeted way to search Reddit comments by keyword; see the Early
-// Warnings plan for why that's out of scope rather than worked around.
-//
-// This is relevance-ranked, not a literal keyword match — confirmed live,
-// it can return a result that doesn't contain the searched keyword at all.
-// Don't treat its results as pre-verified matches: lib/pollKeywordSources.ts's
-// matchesKeyword() re-checks every result before it's ever stored.
+// Posts only: search.rss ignores &type=comment. Results are relevance-ranked,
+// not verified matches; pollKeywordSources' matchesKeyword() re-checks them.
 const SEARCH_URL = "https://www.reddit.com/search.rss";
 
 const parser = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_" });
@@ -35,9 +25,6 @@ function textOf(content: AtomEntry["content"]): string {
   return content?.["#text"] ?? "";
 }
 
-// Strips the "submitted by ... to r/... [link] [comments]" footer Reddit
-// appends to every post's content, and any remaining HTML tags, down to a
-// short plain-text preview.
 function snippetFrom(html: string): string {
   const withoutFooter = html.split(/submitted by/i)[0] ?? html;
   const plain = withoutFooter
@@ -58,9 +45,7 @@ async function fetchMatches(keyword: string): Promise<RawMatch[]> {
   const entries = raw ? (Array.isArray(raw) ? raw : [raw]) : [];
 
   return entries.flatMap((entry): RawMatch[] => {
-    // Search results occasionally include a pseudo-entry for a matching
-    // subreddit itself (id prefixed t5_, no published date) alongside real
-    // posts (t3_) — only real posts belong in keyword_matches.
+    // Skip subreddit pseudo-entries (t5_); only posts (t3_) are matches.
     if (!entry.id.startsWith("t3_") || !entry.published) return [];
 
     const subreddit = entry.category?.["@_term"];

@@ -1,14 +1,7 @@
 import BlogPostMeta from "@/features/blog/components/BlogPostMeta";
 import { nowIso } from "@/lib/formatTime";
 
-// The card's actual visual — image/gradient, title, meta strip — with no
-// Link wrapper and no dependency on a real slug, shared by BlogCard (the
-// real /blog grid) and BlogPostPreviewModal's "Card" view, same reasoning
-// as BlogPostBody's own split from BlogPostContent: a preview has neither a
-// saved slug to link to nor any business navigating away if clicked.
-// publishedAt falls back to today when absent (an unsaved/draft preview has
-// none yet), same as BlogPostBody — the real BlogCard never actually hits
-// this branch, since the public grid only ever renders published posts.
+// No Link wrapper so the admin preview can render it without a saved slug.
 export default function BlogCardBody({
   title,
   imageUrl,

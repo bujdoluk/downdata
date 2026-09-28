@@ -48,10 +48,7 @@ export default function ComponentFilterDropdown({
           ))}
         </ul>
       </details>
-      {/* button, not a bare span — a span can never receive keyboard focus,
-          so a keyboard-only user had no way to trigger this tooltip at all;
-          aria-label gives it a real accessible name too, since data-tip's
-          CSS-only content isn't read by screen readers. */}
+      {/* button, not span, so it's keyboard-focusable; aria-label since data-tip isn't read aloud. */}
       <button
         type="button"
         className="tooltip"

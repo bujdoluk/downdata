@@ -9,12 +9,7 @@ import WebhookTargetRow from "@/features/integrations/components/WebhookTargetRo
 import ModalFormFooter from "@/components/ModalFormFooter";
 import { useImpactToggle } from "@/features/integrations/hooks/useImpactToggle";
 
-// Unlike Email/SmsConnectForm, there's no pending/verified split — a
-// webhook target has no human on the other end to confirm it, so it's
-// gated up front instead: the API route sends a real test ping and only
-// ever saves the row if that succeeds (see app/api/integrations/webhook's
-// POST handler). By the time a target shows up in `targets` here, it's
-// already live.
+// No pending state: the route only saves a target after a successful test ping.
 export default function WebhookConnectForm({
   targets,
   notifyImpacts,
@@ -27,8 +22,7 @@ export default function WebhookConnectForm({
 }: {
   targets: WebhookTarget[];
   notifyImpacts: string[];
-  // Takes the currently-checked severities too, not just the URL — see the
-  // comment on this same parameter in SmsConnectForm for why.
+  // Carries severities: before first connect there's no row for the toggle PATCH to update.
   onAdd: (value: string, notifyImpacts: string[]) => void;
   onRemove: (value: string) => void;
   onUpdateImpacts: (impacts: string[]) => void;
@@ -68,10 +62,7 @@ export default function WebhookConnectForm({
           onChange={(event) => setValue(event.target.value)}
           placeholder={t("integrations.webhookPlaceholder")}
           className="input input-sm input-bordered w-full"
-          // <dialog>'s showModal() re-runs its own focusing steps on every
-          // call (not just once on mount like plain HTML autofocus), so
-          // this keeps working even though the dialog stays mounted and is
-          // just shown/hidden — see the sibling comment in SmsConnectForm.
+          // Works in a mounted dialog: showModal() re-runs focusing on every open.
           autoFocus
         />
         {error && (

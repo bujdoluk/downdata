@@ -35,15 +35,11 @@ function DayTooltip({
     const anchorRect = anchor.getBoundingClientRect();
     const tipRect = el.getBoundingClientRect();
 
-    // Prefers opening above the cell (daisyUI's default); flips below when
-    // there isn't room above in the viewport — measured against the actual
-    // viewport, not the grid row, so it stays correct for any content height.
+    // Flip below when there's no viewport room above.
     const openBelow = anchorRect.top - tipRect.height - TOOLTIP_GAP < 0;
     const top = openBelow ? anchorRect.bottom + TOOLTIP_GAP : anchorRect.top - tipRect.height - TOOLTIP_GAP;
 
-    // Centered under/over the trigger, clamped so it can't run off the
-    // left/right edge of the viewport (the first/last week columns would
-    // otherwise push it half off-screen).
+    // Clamped so edge columns don't push it off-screen.
     const idealLeft = anchorRect.left + anchorRect.width / 2 - tipRect.width / 2;
     const maxLeft = Math.max(window.innerWidth - tipRect.width - TOOLTIP_GAP, TOOLTIP_GAP);
     const left = Math.min(Math.max(idealLeft, TOOLTIP_GAP), maxLeft);
@@ -76,14 +72,9 @@ export default function IncidentCalendar({
   const { t } = useTranslation();
   const { weeks, days, monthLabels, today } = calendar;
 
-  // Roving tabindex (WAI-ARIA grid pattern): exactly one day is ever a tab
-  // stop, moved with arrow keys. Necessary because most days have no
-  // incidents, so plain Tab order across ~365 buttons would be useless —
-  // and empty days are focusable-but-inert below (not disabled) precisely
-  // so arrow keys have somewhere to land between real incidents.
+  // Roving tabindex: one tab stop across ~365 days. Empty days stay focusable
+  // (not disabled) so arrow keys can land on them.
   const [focusedDate, setFocusedDate] = useState(() => selectedDate ?? today);
-  // Which day's tooltip is currently showing (hover or keyboard focus) —
-  // see DayTooltip above for why this isn't daisyUI's normal CSS tooltip.
   const [hoveredDate, setHoveredDate] = useState<string | null>(null);
   const buttonRefs = useRef(new Map<string, HTMLButtonElement>());
 
@@ -91,10 +82,7 @@ export default function IncidentCalendar({
     setHoveredDate((current) => (current === date ? null : current));
   }
 
-  // A year switch swaps `days` for an unrelated list, which can leave
-  // `focusedDate` pointing at a date that no longer renders anything —
-  // derived at render time (not an effect) so tabIndex always lands
-  // somewhere real without a setState-during-render/effect cascade.
+  // Derived at render: a year switch can leave focusedDate pointing at nothing.
   const effectiveFocusedDate = days.some((day) => day.date === focusedDate) ? focusedDate : (selectedDate ?? today);
 
   const dayByPosition = useMemo(() => {
@@ -113,7 +101,7 @@ export default function IncidentCalendar({
     if (delta) {
       event.preventDefault();
       const next = dayByPosition.get(`${day.week + delta[0]}:${day.dow + delta[1]}`);
-      if (next) focusDay(next.date); // clamps at grid edges — no wraparound into another year
+      if (next) focusDay(next.date);
       return;
     }
     if (event.key === "Home") {

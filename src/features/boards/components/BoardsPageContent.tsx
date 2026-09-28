@@ -97,11 +97,7 @@ export default function BoardsPageContent({ boards }: { boards: Board[] }) {
         dialogRef={createDialogRef}
         boards={boards}
         onCreated={(board) => {
-          // Sidebar's BoardSelect reads this same query key from its own
-          // cache and stays mounted across this navigation, so without this
-          // it wouldn't show the new board until a full reload — see
-          // BoardSelect.tsx's own create flow, which already does this same
-          // update.
+          // BoardSelect stays mounted and reads this cache, so update it directly.
           queryClient.setQueryData<Board[]>(queryKeys.boards.list(), (prev) =>
             [...(prev ?? []), board].sort((a, b) => a.name.localeCompare(b.name)),
           );

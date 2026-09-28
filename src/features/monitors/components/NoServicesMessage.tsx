@@ -5,11 +5,6 @@ import "@/lib/i18n/i18n";
 import type { Board } from "@/types/board";
 import { PlusIcon } from "@/components/icons/NavIcons";
 
-// Opens the inline add-service modal (features/boards/components/AddServiceModal)
-// — every current caller (BoardDetailContent, MonitorsPageContent's two
-// empty states, MonitorsBoardSection's per-board section) owns one and
-// passes its own open-handler here, since which board (if any) to
-// pre-select differs per caller.
 export default function NoServicesMessage({ board, onAddClick }: { board?: Board; onAddClick: () => void }) {
   const { t } = useTranslation();
 

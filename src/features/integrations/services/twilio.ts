@@ -1,5 +1,3 @@
-// Twilio's REST API is one authenticated POST per recipient — no SDK
-// needed, same as the Slack webhook already avoids Slack's SDK.
 async function sendOne(url: string, authHeader: string, from: string, to: string, body: string): Promise<boolean> {
   try {
     const res = await fetch(url, {
@@ -14,11 +12,7 @@ async function sendOne(url: string, authHeader: string, from: string, to: string
   }
 }
 
-// A partial failure across the recipient list retries the whole
-// integration next cycle — the same "retry by omission" trade-off
-// lib/notifyIncidentEvents.ts already accepts for Slack/email (a few
-// recipients may get a duplicate text on retry, never a silently dropped
-// one).
+// A partial failure retries the whole list next cycle: duplicates over silent drops.
 export async function sendSms({ to, body }: { to: string[]; body: string }): Promise<boolean> {
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -27,8 +21,6 @@ export async function sendSms({ to, body }: { to: string[]; body: string }): Pro
     throw new Error("TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_FROM_NUMBER must be set.");
   }
 
-  // Computed once per call, not once per recipient — identical for every
-  // number being texted about the same event.
   const url = `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`;
   const authHeader = `Basic ${Buffer.from(`${accountSid}:${authToken}`).toString("base64")}`;
 

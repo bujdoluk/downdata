@@ -31,9 +31,7 @@ export default async function Page() {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  // Same check (dashboard)/layout.tsx does for its own Sidebar render —
-  // SupportContent renders that same Sidebar for a signed-in visitor, and
-  // needs this too or "Blog admin" can never show up there.
+  // SupportContent renders the dashboard Sidebar, which needs this to show "Blog admin".
   const isAdmin = await isAdminUser();
 
   return <SupportContent isAuthenticated={Boolean(user)} isAdmin={isAdmin} />;

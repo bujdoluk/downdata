@@ -5,13 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { mergeParams } from "@/lib/mergeParams";
 
-// "Debounced filter state, synced to the URL" was duplicated near-identically
-// between Incidents and Maintenance page content: parse/serialize/patch are
-// page-specific (different filter fields), but the debounce-then-write and
-// read-external-change effects, and the loop-prevention fingerprint ref,
-// were byte-identical. parse/serialize/toPatch must be stable references
-// (module-level functions, not redefined per render) — both callers already
-// define them that way.
+// parse/serialize/toPatch must be stable (module-level) references.
 export function useDebouncedUrlFilters<T>({
   path,
   parse,
@@ -32,7 +26,6 @@ export function useDebouncedUrlFilters<T>({
   const lastWrittenRef = useRef(serialize(pendingFilters));
   const debounced = useDebouncedValue(pendingFilters, debounceMs);
 
-  // pendingFilters -> URL, only once it's settled for debounceMs.
   useEffect(() => {
     const serialized = serialize(debounced);
     if (serialized === lastWrittenRef.current) return;
@@ -41,8 +34,7 @@ export function useDebouncedUrlFilters<T>({
     router.replace(`${path}?${next.toString()}`, { scroll: false });
   }, [debounced, searchParams, router, path, serialize, toPatch]);
 
-  // URL -> pendingFilters, for changes we didn't just make ourselves
-  // (back/forward button, a pasted link with filters already in it).
+  // Only for URL changes we didn't make (back/forward, pasted link).
   useEffect(() => {
     const parsed = parse(searchParams);
     const serialized = serialize(parsed);

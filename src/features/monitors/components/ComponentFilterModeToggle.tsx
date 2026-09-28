@@ -14,10 +14,6 @@ export default function ComponentFilterModeToggle({
   onChooseAll: () => void;
   onChooseCustom: () => void;
   mustKeepOneWarning: boolean;
-  // A failed save (e.g. the server rejecting a submitted component id that
-  // no longer exists upstream) previously had no visible sign anything
-  // went wrong — the checkbox stayed toggled locally with nothing telling
-  // the account it was never actually persisted.
   saveError: string | null;
 }) {
   const { t } = useTranslation();

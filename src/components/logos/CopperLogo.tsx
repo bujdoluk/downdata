@@ -1,5 +1,3 @@
-// Copper's mark: two overlapping dots symbolizing the connection between
-// people and technology, in the brand's eggplant + pink palette.
 export default function CopperLogo({ size = 28 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true">

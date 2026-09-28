@@ -7,10 +7,6 @@ import Logo from "@/components/navbar/Logo";
 import { computeReadMinutes } from "@/features/blog/services/readTime";
 import type { BlogPost } from "@/features/blog/types";
 
-// Shared by BlogCard (the /blog grid) and BlogPostContent (the detail
-// page) so the two never drift. avatarUrl is uploaded the same way as the
-// post's own background image (see BlogPostForm's Avatar field) — falls
-// back to the real downDATA app logo when unset.
 export default function BlogPostMeta({
   post,
   tone = "light",

@@ -547,9 +547,6 @@ export function UserGroupIcon({ className }: { className?: string }) {
   );
 }
 
-// Represents a browser extension (the universal "puzzle piece" glyph browsers
-// themselves use for their extensions toolbar button) — used by the Chrome
-// extension free-tool catalog entry (lib/freeToolsCatalog.ts).
 export function PuzzlePieceIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -569,7 +566,6 @@ export function PuzzlePieceIcon({ className }: { className?: string }) {
   );
 }
 
-// Used by MaintenanceReminderHeader's "Schedule reminder" button.
 export function BellIcon({ className }: { className?: string }) {
   return (
     <svg

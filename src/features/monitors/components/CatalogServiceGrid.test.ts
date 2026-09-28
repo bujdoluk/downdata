@@ -69,8 +69,7 @@ describe("sortCatalog", () => {
     const a = entry({ slug: "a", name: "A" });
     const b = entry({ slug: "b", name: "B" });
     const data: ServiceStatusBatchResponse = {
-      // a has the higher rollup severity but no alert icon; b has a lower
-      // rollup severity but does have the alert icon — a must still sort first.
+      // a: higher severity, no alert icon. b: lower severity with alert icon. a still wins.
       a: { status: { indicator: "major", description: "" } },
       b: {
         status: { indicator: "minor", description: "" },

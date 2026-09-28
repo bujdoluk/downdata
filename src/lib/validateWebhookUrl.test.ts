@@ -1,11 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { validateWebhookUrl } from "@/lib/validateWebhookUrl";
 
-// Every case here uses either a literal IP (skips DNS entirely, per the
-// function's own bracketed-literal handling) or "localhost" (resolves via
-// the OS's local hosts file, no real network needed) — deliberately so this
-// suite runs fully offline and deterministically in CI, not dependent on
-// any real DNS query succeeding.
+// Literal IPs and "localhost" only, so the suite runs offline and deterministically.
 describe("validateWebhookUrl", () => {
   it("rejects a malformed URL", async () => {
     expect(await validateWebhookUrl("not a url")).toEqual({ ok: false, reason: "That doesn't look like a valid URL." });
@@ -45,9 +41,6 @@ describe("validateWebhookUrl", () => {
     ["unique-local fc00::/7 (fc)", "https://[fc00::1]"],
     ["unique-local fc00::/7 (fd)", "https://[fd12::1]"],
     ["link-local fe80::/10", "https://[fe80::1]"],
-    // IPv4-mapped IPv6 — many dual-stack stacks route these straight to
-    // the embedded IPv4 host, so this needs the same rejection as the
-    // plain IPv4 address would get, in both the dotted and hex encodings.
     ["IPv4-mapped loopback, dotted form", "https://[::ffff:127.0.0.1]"],
     ["IPv4-mapped loopback, hex form", "https://[::ffff:7f00:1]"],
     ["IPv4-mapped cloud metadata, dotted form", "https://[::ffff:169.254.169.254]"],
@@ -57,7 +50,6 @@ describe("validateWebhookUrl", () => {
   });
 
   it("does not false-positive on an IPv4-mapped public address", async () => {
-    // 8.8.8.8 mapped into IPv6 form — 0808:0808 hex.
     expect(await validateWebhookUrl("https://[::ffff:808:808]")).toEqual({ ok: true });
   });
 
@@ -66,8 +58,7 @@ describe("validateWebhookUrl", () => {
   });
 
   it("rejects a hostname that resolves to a loopback address (localhost)", async () => {
-    // Exercises the dns.lookup() branch, not just the literal-IP shortcut —
-    // localhost resolves via the OS hosts file with no real network query.
+    // Hits the dns.lookup() branch via the OS hosts file, no network needed.
     const result = await validateWebhookUrl("https://localhost");
     expect(result.ok).toBe(false);
   });

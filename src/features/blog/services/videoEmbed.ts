@@ -20,13 +20,8 @@ function wrapEmbed(src: string): string {
   return `<div class="relative my-4 aspect-[16/9] w-full overflow-hidden rounded-box"><iframe src="${src}" class="h-full w-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
 }
 
-// Recognizes a YouTube or Vimeo watch/share URL and returns the standalone,
-// responsive iframe-embed snippet to insert into the body — null if the URL
-// isn't one of those two providers, so the caller can show an actionable
-// error instead of embedding something that likely won't actually play.
-// Deliberately narrow: most sites refuse to be framed at all
-// (X-Frame-Options/CSP), unlike YouTube/Vimeo, which are built for this —
-// see AGENTS.md's blog entries on why this doesn't attempt a generic embed.
+// YouTube/Vimeo only: most sites refuse framing (X-Frame-Options/CSP).
+// null lets the caller show an actionable error.
 export function buildVideoEmbedHtml(rawUrl: string): string | null {
   let url: URL;
   try {

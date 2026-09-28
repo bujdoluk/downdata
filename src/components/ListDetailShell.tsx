@@ -3,10 +3,6 @@
 import type { ReactNode, RefObject } from "react";
 import Spinner from "@/components/Spinner";
 
-// Shared "title/subtitle → loading/error/empty → two-column list+detail"
-// scaffold behind /incidents and /maintenance — both pages keep their own
-// filter state, list-item markup, and detail-pane resolution, and just pass
-// the already-built pieces in here.
 export default function ListDetailShell({
   title,
   subtitle,
@@ -26,10 +22,7 @@ export default function ListDetailShell({
 }: {
   title: string;
   subtitle: string;
-  // Content that always renders regardless of loading/error/empty state —
-  // e.g. Early Warnings' keyword/source settings panel, which must stay
-  // visible even with zero matches yet, unlike `filters` below (which
-  // only makes sense once there's a list to filter).
+  // Always rendered, even when loading, erroring or empty (unlike `filters`).
   header?: ReactNode;
   isLoading: boolean;
   isError: boolean;
@@ -41,20 +34,9 @@ export default function ListDetailShell({
   list: ReactNode;
   detailRef: RefObject<HTMLDivElement | null>;
   detail: ReactNode;
-  // Rendered as its own centered row below the list/detail grid, not
-  // inside `list` — so it stays centered regardless of how tall or narrow
-  // the list column is.
+  // Below the grid, not inside `list`, so it stays centered.
   pagination?: ReactNode;
-  // "half" (the default — /incidents, /maintenance, /early-warnings) is an
-  // even 50/50 split; "third" narrows the list column to 1/3 and widens
-  // detail to 2/3, for a consumer whose list rows are short but whose
-  // detail pane needs real width (/status-pages' compact per-board rows
-  // next to BoardStatusPageSettings' own centered, capped-width form).
-  // /reports used to be this file's example of that but has since moved
-  // off this shell entirely, onto a dedicated /reports/[id] page with a
-  // real permalink — its report-ready email nudge needed a link that works
-  // cold, from outside the app, which query-param selection doesn't give
-  // you; see ReportDetail.tsx's header comment.
+  // "third" gives short list rows 1/3 and a wide detail pane 2/3 (e.g. /status-pages).
   listColumnWidth?: "half" | "third";
 }) {
   return (
